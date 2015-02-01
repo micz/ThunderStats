@@ -4,4 +4,4 @@ locale    thunderstats   it            chrome/locale/it/
 
 skin thunderstats default chrome/skin/
 
-overlay	chrome://messenger/content/messenger.xul chrome://thunderstats/content/mzts-button.xul
+overlay	chrome://messenger/content/messenger.xul chrome://thunderstats/content/mzts-overlay.xul

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="mzts-settings.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://thunderstats/locale/settings.dtd">
+<prefwindow id="ThunderStats_Settings"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  title="&ThunderStats.SettingsTitle;"
+  onload="miczThunderStatsPref.onLoad();">
+  <prefpane id="ThunderStats_PrefPane">
+   <!-- <preferences>
+      <preference id="ThunderStats.SwapButtons"
+        name="extensions.ThunderStats.SwapButtons"
+        type="bool"/>
+    </preferences>-->
+    <tabbox id="ts_tabbox">
+      <tabs>
+        <tab label="&ThunderStats.TabSettings.label;"/>
+        <tab label="&ThunderStats.TabInfo.label;"/>
+      </tabs>
+      <tabpanels>
+        <tabpanel id="iqtab" orient="vertical">
+          <label control="symbol" value="&ThunderStats.GlobalDescSettingTab;"/>
+          <label control="symbol" value=" "/>
+          <!--<checkbox id="ThunderStats.SwapButtons_checkbox" label="placeholder"
+            preference="ThunderStats.SwapButtons" />-->
+          <label control="symbol" value=" "/>
+        </tabpanel>
+        <tabpanel id="rlbtab_info" orient="vertical">
+	  <description class="mzrlb-desc-big">&ThunderStats.InfoMainDesc;</description>
+          <label control="symbol" value=" "/>
+	  <label value="&ThunderStats.DonateLink;" class="text-link mzts-donate" href="http://micz.it/thunderdbird-addon-thunderstats/donate/"/>
+        </tabpanel>
+      </tabpanels>
+    </tabbox>
+  </prefpane>
+  <script type="application/x-javascript" src="chrome://thunderstats/content/mzts-settings.js" />
+</prefwindow>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="chrome://thunderstats/content/mzts-button.css"?>
+
+<!DOCTYPE overlay>
+<overlay id="mzts-button-overlay"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script type="application/javascript" src="chrome://thunderstats/content/mzts-button.js"/>
+
+<!-- Thunderbird mail -->
+<toolbarpalette id="MailToolbarPalette">
+  <toolbarbutton id="mzts-button"/>
+  </toolbarpalette>
+
+<!-- button details -->
+<toolbarbutton id="mzts-button"
+  label="ThunderStats"
+  tooltiptext="Open ThunderStats Panel"
+  oncommand="miczThunderStatsButton.onCommand();"
+  class="toolbarbutton-1 chromeclass-toolbar-additional"
+  />
+
+</overlay>

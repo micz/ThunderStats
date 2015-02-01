@@ -1,0 +1,7 @@
+content   thunderstats                 chrome/content/
+locale    thunderstats   en-US         chrome/locale/en-US/
+locale    thunderstats   it            chrome/locale/it/
+
+skin thunderstats default chrome/skin/
+
+overlay	chrome://messenger/content/messenger.xul chrome://thunderstats/content/mzts-button.xul

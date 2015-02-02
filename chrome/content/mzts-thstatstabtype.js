@@ -57,6 +57,8 @@ var micz_thstatsTabType = {
       aTab.browser = aTab.panel.querySelector("browser");
 
       aTab.browser.setAttribute("id", "miczThStatsTabBrowser");
+      
+      aTab.tabNode.setAttribute("image","chrome://thunderstats/skin/mzts-button.png");
 
       // Now start loading the content.
       aTab.title = "ThunderStats";

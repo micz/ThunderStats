@@ -7,7 +7,7 @@ var miczThunderStatsButton = {
 			//tabmail.openTab("micz_thstat",{title:"ThunderStats Test"});
 			//let aURL = "chrome://thunderstats/content/mzts-statstab.xul";
 			//tabmail.openTab("chromeTab", { chromePage: aURL });
-			tabmail.openTab("miczThStatsTab",{title:"Test"});
+			tabmail.openTab("miczThStatsTab",{title:"ThunderStats"});
 		}
 		 //alert("Just testing");
 	},

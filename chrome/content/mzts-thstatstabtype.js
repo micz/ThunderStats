@@ -92,7 +92,7 @@ var micz_thstatsTabType = {
       };
     },
     restoreTab: function onRestoreTab(aTabmail, aPersistedState) {
-      aTabmail.openTab("micz_thstats", { background: true } );
+      aTabmail.openTab("miczThStatsTab", { background: true } );
     },
     onTitleChanged: function onTitleChanged(aTab) {
       aTab.title = aTab.browser.contentDocument.title;

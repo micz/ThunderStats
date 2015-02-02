@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="chrome://thunderstats/content/mzts-button.css"?>
+
+<!DOCTYPE overlay>
+<overlay id="mzts-button-overlay"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<label control="symbol" value="Testing stats tab!"/>
+
+</overlay>

@@ -5,6 +5,7 @@
 <overlay id="mzts-button-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+<script type="application/javascript" src="chrome://thunderstats/content/mzts-thstatstabtype.js"/>
 <script type="application/javascript" src="chrome://thunderstats/content/mzts-overlay.js"/>
 <script type="application/javascript" src="chrome://thunderstats/content/mzts-button.js"/>
 

@@ -5,6 +5,8 @@
 <overlay id="mzts-button-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+<script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.js"/>
+
 <label control="symbol" value="Testing stats tab!"/>
 
 </overlay>

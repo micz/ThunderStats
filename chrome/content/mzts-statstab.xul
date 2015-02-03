@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/css" href="chrome://thunderstats/content/mzts-button.css"?>
+<?xml-stylesheet type="text/css" href="chrome://thunderstats/content/mzts-statstab.css"?>
 
 <!DOCTYPE overlay>
 <overlay id="mzts-button-overlay"
@@ -7,7 +7,9 @@
 
 <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.js"/>
 
+<vbox>
 <label control="symbol" value="Testing stats tab!"/>
-<description id="test_output"></description>
+<description id="test_output" class="mzts-desc"></description>
+</vbox>
 
 </overlay>

@@ -1,7 +1,7 @@
 "use strict";
-//Components.utils.import("chrome://thunderstats/lib/sqlite.js");
-//Components.utils.import("chrome://thunderstats/lib/tokenize.js");
-//Components.utils.import("chrome://thunderstats/lib/fileIO.js");
+Components.utils.import("resource://thunderstats/sqlite.js");
+Components.utils.import("resource://thunderstats/tokenize.js");
+Components.utils.import("resource://thunderstats/fileIO.js");
 
 var miczThunderStatsTab = {
 

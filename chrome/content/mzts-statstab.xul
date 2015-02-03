@@ -8,5 +8,6 @@
 <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.js"/>
 
 <label control="symbol" value="Testing stats tab!"/>
+<description id="test_output"></description>
 
 </overlay>

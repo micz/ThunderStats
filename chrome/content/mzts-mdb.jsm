@@ -26,13 +26,13 @@ var miczThunderStatsDB = {
 		//we are in the profile folder via the listbox, so open if the file exists
 		//do not attempt to create new file
 		if(!file.exists()){
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] db file not found {'+file.nativePath+'}!!!\r\n');
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] db file not found {'+file.path+'}!!!\r\n');
 			return false;
 		}else{
 			if(this.mDb.openDatabase(file)){
 				return true;
 			}else{
-				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] Error on db open {'+file.nativePath+'}!!!\r\n');
+				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] Error on db open {'+file.path+'}!!!\r\n');
 				return false;
 			}
 		}

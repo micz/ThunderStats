@@ -2,6 +2,7 @@
 Components.utils.import("resource://thunderstats/sqlite.js");
 Components.utils.import("resource://thunderstats/tokenize.js");
 Components.utils.import("resource://thunderstats/fileIO.js");
+Components.utils.import("resource://gre/modules/osfile.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -14,28 +15,18 @@ var miczThunderStatsDB = {
 	init: function(){
 		this.mDb = new SQLiteHandler();
 
-		// Get profile directory.
-		let file = Components.classes["@mozilla.org/file/directory_service;1"].
-				   getService(Components.interfaces.nsIProperties).
-				   get("ProfD", Components.interfaces.nsIFile);
+		let dirName = OS.Constants.Path.profileDir;
+		let fileName = OS.Path.join(dirName, "global-messages-db.sqlite");
+		let file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+		file.initWithPath(fileName);
 
-		// Append the file name.
-		file.append("global-messages-db.sqlite");
-
-		//proceed only if the file exists
-		//we are in the profile folder via the listbox, so open if the file exists
-		//do not attempt to create new file
-		if(!file.exists()){
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] db file not found {'+file.path+'}!!!\r\n');
-			return false;
+		if(this.mDb.openDatabase(file)){
+			return true;
 		}else{
-			if(this.mDb.openDatabase(file)){
-				return true;
-			}else{
-				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] Error on db open {'+file.path+'}!!!\r\n');
-				return false;
-			}
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] Error on db open {'+fileName+'}!!!\r\n');
+			return false;
 		}
+
 	},
 	
 	close:function(){

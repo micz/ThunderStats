@@ -3,6 +3,7 @@ Components.utils.import("resource://thunderstats/sqlite.js");
 Components.utils.import("resource://thunderstats/tokenize.js");
 Components.utils.import("resource://thunderstats/fileIO.js");
 Components.utils.import("resource://gre/modules/osfile.jsm");
+Components.utils.import("chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -35,14 +36,6 @@ var miczThunderStatsStorageDB = {
 	},
 	
 	querySelect:function(mWhat,mFrom,mWhere){
-		if((mWhere=="")||(mWhere==null))mWhere="1=1";
-		let mQuery="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
-		this.sDb.selectQuery(mQuery);
-		let rows = this.sDb.getRecords();
-		if(rows.length == 0){
-			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] ERROR:\r\nNo matching record found.\r\nSQL: " + sql);
-			return -1;
-		}
-		return rows;
+		return miczThunderStatsQuery.querySelect(this.sDb,mWhat,mFrom,mWhere);
 	},
 };

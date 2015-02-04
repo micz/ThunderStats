@@ -1,6 +1,6 @@
 "use strict";
-Components.utils.import("chrome://thunderstats/content/mzts-mdb.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-storagedb.jsm");
+Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
+Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");
 
 var miczThunderStatsTab = {
 

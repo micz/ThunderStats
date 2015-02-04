@@ -42,7 +42,9 @@ var miczThunderStatsDB = {
 		this.mDb.closeConnection();
 	},
 	
-	query:function(mQuery){
+	querySelect:function(mWhat,mFrom,mWhere){
+		if((mWhere=="")||(mWhere==null))mWhere="1=1";
+		let mQuery="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
 		this.mDb.selectQuery(mQuery);
 		let rows = this.mDb.getRecords();
 		if(rows.length == 0){
@@ -52,20 +54,3 @@ var miczThunderStatsDB = {
 		return rows;
 	},
 };
-
-
-
-
-
-
-/*
- * 			let sql = "SELECT * FROM messages WHERE id=32";
-			this.mDb.selectQuery(sql);
-			let row = this.mDb.getRecords();
-			if(row.length == 0){
-				dump(">>>>>>>>>>>>>> [miczThunderStatsTab] ERROR:\r\nNo matching record found.\r\nSQL: " + sql);
-				return false;
-			}
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] row: " + JSON.stringify(row)+"\r\n");
-			document.getElementById("test_output").setAttribute("value",JSON.stringify(row));
- * */

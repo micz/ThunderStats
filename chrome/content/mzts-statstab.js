@@ -5,7 +5,7 @@ var miczThunderStatsTab = {
 
 	onLoad: function(){
 			miczThunderStatsDB.init();
-			let rows=miczThunderStatsDB.query("SELECT * FROM messages WHERE id=32");
+			let rows=miczThunderStatsDB.querySelect("*","messages","id=32");
 			document.getElementById("test_output").setAttribute("value",JSON.stringify(rows));
 			miczThunderStatsDB.close();
 	},

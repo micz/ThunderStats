@@ -24,7 +24,7 @@ var miczThunderStatsStorageDB = {
 		if(this.sDb.openDatabase(file)){
 			return true;
 		}else{
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] Error on db open {'+fileName+'}!!!\r\n');
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab StorageDB] Error on db open {'+fileName+'}!!!\r\n');
 			return false;
 		}
 

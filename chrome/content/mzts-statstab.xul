@@ -9,6 +9,7 @@
 
 <vbox>
 <label control="symbol" value="Testing stats tab!"/>
+<button label="Exec QRY" oncommand="miczThunderStatsTab.onLoad();"/>
 <description id="test_output" class="mzts-desc"></description>
 </vbox>
 

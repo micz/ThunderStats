@@ -10,7 +10,7 @@ const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 let EXPORTED_SYMBOLS = ["miczThunderStatsDB"];
 
 var miczThunderStatsDB = {
-	
+
 	mDb:null,
 
 	init: function(){
@@ -29,12 +29,17 @@ var miczThunderStatsDB = {
 		}
 
 	},
-	
+
 	close:function(){
 		this.mDb.closeConnection();
 	},
-	
+
 	querySelect:function(mWhat,mFrom,mWhere){
 		return miczThunderStatsQuery.querySelect(this.mDb,mWhat,mFrom,mWhere);
 	},
+
+	querySentMessages:function(mFromDate,mToDate){	//mFromDate,mToDate are in milliseconds
+		let mWhere="jsonAttributes like '%\"53\":%' and date>"+mFromDate+"000 and date<"+mToDate+"000";
+		return this.querySelect("count(*)","messages",mWhere);
+	}
 };

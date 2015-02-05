@@ -10,17 +10,21 @@ const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 let EXPORTED_SYMBOLS = ["miczThunderStatsStorageDB"];
 
 var miczThunderStatsStorageDB = {
-	
+
 	sDb:null,
 
 	init: function(){
 		this.sDb = new SQLiteHandler();
 
 		let dirName = OS.Path.join(OS.Constants.Path.profileDir,"thuderstatsmiczit");
-		let fileName = OS.Path.join(dirName, "thunderstats_localdb.sqlite");
 		OS.File.makeDir(dirName, {ignoreExisting: true});
+		let fileName = OS.Path.join(dirName, "thunderstats_localdb.sqlite");
 		let file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
 		file.initWithPath(fileName);
+		if(!file.exists()){
+			file.create(Ci.nsIFile.NORMAL_FILE_TYPE, parseInt("0666", 8));
+		}
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab StorageDB] fileName {'+fileName+'}\r\n');
 
 		if(this.sDb.openDatabase(file)){
 			return true;
@@ -30,11 +34,11 @@ var miczThunderStatsStorageDB = {
 		}
 
 	},
-	
+
 	close:function(){
 		this.sDb.closeConnection();
 	},
-	
+
 	querySelect:function(mWhat,mFrom,mWhere){
 		return miczThunderStatsQuery.querySelect(this.sDb,mWhat,mFrom,mWhere);
 	},

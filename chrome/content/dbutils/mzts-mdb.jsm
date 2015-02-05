@@ -48,6 +48,7 @@ var miczThunderStatsDB = {
 	//returns an array of ids of folder to be ignored in stats crunching
 	queryGetForbiddenFolders:function(){
 		let folderArray=new Array();
+		//not in drafts folders and not if folder is not indexed
 		let mWhere='indexingPriority=-1 OR name="Drafts"';
 		let rows=this.querySelect("id","folderLocations",mWhere);
 		for(let key in rows){

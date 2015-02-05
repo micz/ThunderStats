@@ -39,7 +39,20 @@ var miczThunderStatsDB = {
 	},
 
 	querySentMessages:function(mFromDate,mToDate){	//mFromDate,mToDate are in milliseconds
-		let mWhere="jsonAttributes like '%\"53\":%' and date>"+mFromDate+"000 and date<"+mToDate+"000";
+		let forbiddenFolders=this.queryGetForbiddenFolders();
+		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
+		let mWhere="jsonAttributes like '%\"53\":%' and date>"+mFromDate+"000 and date<"+mToDate+"000 AND folderID not in "+forbiddenFoldersStr;
 		return this.querySelect("count(*)","messages",mWhere);
-	}
+	},
+
+	//returns an array of ids of folder to be ignored in stats crunching
+	queryGetForbiddenFolders:function(){
+		let folderArray=new Array();
+		let mWhere='indexingPriority=-1 OR name="Drafts"';
+		let rows=this.querySelect("id","folderLocations",mWhere);
+		for(let key in rows){
+			folderArray.push(rows[key][0]);
+		}
+		return folderArray;
+	},
 };

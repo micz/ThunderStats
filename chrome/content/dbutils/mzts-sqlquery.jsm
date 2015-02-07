@@ -8,7 +8,7 @@ var miczThunderStatsQuery = {
 	querySelect:function(mDb,mWhat,mFrom,mWhere){
 		if((mWhere=="")||(mWhere==null))mWhere="1=1";
 		let mQuery="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] querySelect:r\nSQL: " + mQuery+"\r\n");
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] querySelect:\r\nSQL: " + mQuery+"\r\n");
 		mDb.selectQuery(mQuery);
 		let rows = mDb.getRecords();
 		if(rows.length == 0){

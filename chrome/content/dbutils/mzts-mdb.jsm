@@ -12,6 +12,7 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsDB"];
 var miczThunderStatsDB = {
 
 	mDb:null,
+	msgAttributes:null,
 
 	init: function(){
 		this.mDb = new SQLiteHandler();
@@ -22,16 +23,28 @@ var miczThunderStatsDB = {
 		file.initWithPath(fileName);
 
 		if(this.mDb.openDatabase(file)){
+			//load messages attributes!
+			this.loadMsgAttributes();
 			return true;
 		}else{
 			dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] Error on db open {'+fileName+'}!!!\r\n');
 			return false;
 		}
-
 	},
 
 	close:function(){
 		this.mDb.closeConnection();
+	},
+	
+	loadMsgAttributes:function(){
+		this.msgAttributes={};
+		let rows=miczThunderStatsQuery.querySelect(this.mDb,"name,id","attributeDefinitions",null);
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes rows '+JSON.stringify(rows)+'\r\n');
+		for(let key in rows){
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes rows[key] '+JSON.stringify(rows[key])+'\r\n');
+			this.msgAttributes[rows[key][0]]=rows[key][1];
+		}
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes this.msgAttributes  '+JSON.stringify(this.msgAttributes)+'\r\n');
 	},
 
 	querySelect:function(mWhat,mFrom,mWhere){

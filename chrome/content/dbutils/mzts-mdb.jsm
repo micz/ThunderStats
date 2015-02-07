@@ -44,7 +44,7 @@ var miczThunderStatsDB = {
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes rows[key] '+JSON.stringify(rows[key])+'\r\n');
 			this.msgAttributes[rows[key][0]]=rows[key][1];
 		}
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes this.msgAttributes  '+JSON.stringify(this.msgAttributes)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes this.msgAttributes  '+JSON.stringify(this.msgAttributes)+'\r\n');
 	},
 
 	querySelect:function(mWhat,mFrom,mWhere){
@@ -52,10 +52,13 @@ var miczThunderStatsDB = {
 	},
 
 	querySentMessages:function(mFromDate,mToDate){	//mFromDate,mToDate are in milliseconds
+		let fromMe_attribute=this.msgAttributes['fromMe'];
 		let forbiddenFolders=this.queryGetForbiddenFolders();
 		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
-		let mWhere="jsonAttributes like '%\"53\":%' and date>"+mFromDate+"000 and date<"+mToDate+"000 AND folderID not in "+forbiddenFoldersStr;
-		return this.querySelect("count(*)","messages",mWhere);
+		let mWhat="count(distinct ma.messageID)";
+		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
+		let mWhere="ma.attributeID="+fromMe_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		return this.querySelect(mWhat,mFrom,mWhere);
 	},
 
 	//returns an array of ids of folder to be ignored in stats crunching

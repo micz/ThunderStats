@@ -23,6 +23,7 @@ var miczThunderStatsStorageDB = {
 		file.initWithPath(fileName);
 		if(!file.exists()){
 			file.create(Ci.nsIFile.NORMAL_FILE_TYPE, parseInt("0666", 8));
+			this.createDB();
 		}
 		dump('>>>>>>>>>>>>>> [miczThunderStatsTab StorageDB] fileName {'+fileName+'}\r\n');
 
@@ -37,6 +38,10 @@ var miczThunderStatsStorageDB = {
 
 	close:function(){
 		this.sDb.closeConnection();
+	},
+	
+	createDB:function(){
+		//To be implemented
 	},
 
 	querySelect:function(mWhat,mFrom,mWhere){

@@ -72,4 +72,12 @@ var miczThunderStatsDB = {
 		}
 		return folderArray;
 	},
+
+	//returns an array of ids of folder to be ignored in stats crunching
+	queryGetIdentityID:function(email){
+		let mWhere='value="'+email+'" LIMIT 1';
+		let rows=this.querySelect("id","identities",mWhere);
+		return rows[0][0];
+	},
+
 };

@@ -5,12 +5,12 @@ var micz_thstatsTabType = {
   name: "miczThStatsTab",
   perTabPanel: "vbox",
   strings:
-    new StringBundle("chrome://thunderstats/locale/mzts-tab.properties"),
+    new StringBundle("chrome://thunderstats/locale/mzts-tabtype.properties"),
   modes: {
     miczThStatsTab: {
       // this is what get exposed on the tab for icon purposes
       type: "miczThStatsTab"
-    }  
+    }
    },
 
     shouldSwitchTo: function(){
@@ -57,12 +57,12 @@ var micz_thstatsTabType = {
       aTab.browser = aTab.panel.querySelector("browser");
 
       aTab.browser.setAttribute("id", "miczThStatsTabBrowser");
-      
+
       aTab.tabNode.setAttribute("image","chrome://thunderstats/skin/mzts-button.png");
 
       // Now start loading the content.
       aTab.title = "ThunderStats";
-      aTab.browser.loadURI("chrome://thunderstats/content/mzts-statstab.xul");
+      aTab.browser.loadURI("chrome://thunderstats/content/mzts-statstab.xhtml");
 
     },
     tryCloseTab: function onTryCloseTab(aTab) {

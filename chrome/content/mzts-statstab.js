@@ -16,7 +16,7 @@ var miczThunderStatsTab = {
 
 			let rows2=miczThunderStatsDB.queryReceivedMessages(Date.parse('2014/12/01'),Date.now(),identity_id);
 			let str_rcvedMsg="Received messages from 01/12/2014 to today: "+rows2[0][0]+"<br/>";
-			document.getElementById("test_output").setAttribute("value",str_sentMsg+str_rcvedMsg);
+			document.getElementById("test_output").innerHTML=str_sentMsg+str_rcvedMsg;
 
 			miczThunderStatsCore.loadIdentities();
 			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');

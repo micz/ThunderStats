@@ -100,6 +100,25 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere);
 	},
 
+	queryGetNumSender:function(mFromDate,mToDate,mIdentity,mMax){	//mFromDate,mToDate are in milliseconds
+		let toMe_attribute=this.msgAttributes['toMe'];
+		let involves_attribute=this.msgAttributes['involves'];
+		let forbiddenFolders=this.queryGetForbiddenFolders();
+		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
+		let mWhat="ma.value AS ID,c.name AS Name,i.value AS Mail,count(m.id) AS Num";
+		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join identities i on i.id=ma.value left join contacts c on c.id=i.contactID";
+		let mWhere="ma.attributeID="+toMe_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		if(mIdentity>0){
+			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
+			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
+		}
+		mWhere+=" group by ma.value order by Num DESC";
+		if(mMax>0){
+			mWhere+=" LIMIT "+mMax;
+		}
+		return this.querySelect(mWhat,mFrom,mWhere);
+	},
+
 	//returns an array of ids of folder to be ignored in stats crunching
 	queryGetForbiddenFolders:function(){
 		let folderArray=new Array();

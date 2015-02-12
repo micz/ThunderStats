@@ -6,7 +6,29 @@ Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
 var miczThunderStatsTab = {
 
 	onLoad: function(){
-			let identity_id=11;
+		
+			miczThunderStatsDB.init();
+			miczThunderStatsStorageDB.init();
+
+			miczThunderStatsCore.loadIdentities();
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
+			
+			let id_selector = document.getElementById('identities_selector');
+			for(let key in miczThunderStatsCore.identities){
+				let opt = document.createElement('option');
+				opt.value = miczThunderStatsCore.identities[key]["id"];
+				opt.innerHTML = miczThunderStatsTab.escapeHTML(miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["identityName"]+")");
+				id_selector.appendChild(opt);
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector "+miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
+			}
+			
+			miczThunderStatsDB.close();
+			miczThunderStatsStorageDB.close();
+		},
+		
+	doStats: function(){			
+			let id_selector = document.getElementById("identities_selector");
+			let identity_id=id_selector.options[id_selector.selectedIndex].value;
 			let output=new Array();
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
@@ -35,11 +57,15 @@ var miczThunderStatsTab = {
 
 			document.getElementById("test_output").innerHTML=output.join('');
 
-			miczThunderStatsCore.loadIdentities();
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
-
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
+	},
+	
+	escapeHTML: function(s){ 
+		return s.replace(/&/g, '&amp;')
+				.replace(/"/g, '&quot;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;');
 	},
 
 };

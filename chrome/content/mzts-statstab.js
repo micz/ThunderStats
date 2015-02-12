@@ -57,6 +57,8 @@ var miczThunderStatsTab = {
 			
 			let rows4=miczThunderStatsDB.queryGetSentAttachments(Date.parse('2014/12/01'),Date.now(),identity_id,10);
 			output.push("<b>Sent attachments from 01/12/2014 to today:</b> "+rows4[0][0]+"<br/>");
+			let rows5=miczThunderStatsDB.queryGetReceivedAttachments(Date.parse('2014/12/01'),Date.now(),identity_id,10);
+			output.push("<b>Received attachments from 01/12/2014 to today:</b> "+rows5[0][0]+"<br/>");
 			output.push("<br/>");
 
 			document.getElementById("test_output").innerHTML=output.join('');

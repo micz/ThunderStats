@@ -119,6 +119,26 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere);
 	},
 
+	queryGetSentAttachments:function(mFromDate,mToDate,mIdentity,mMax){	//mFromDate,mToDate are in milliseconds
+		let fromMe_attribute=this.msgAttributes['fromMe'];
+		let attachmentTypes_attribute=this.msgAttributes['attachmentTypes'];
+		let involves_attribute=this.msgAttributes['involves'];
+		let forbiddenFolders=this.queryGetForbiddenFolders();
+		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
+		let mWhat="count(m.id) AS TotAttachments,count(distinct m.id) AS NumMails";
+		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join messageattributes ma2 on ma2.messageID=m.id";
+		let mWhere="ma2.attributeID="+attachmentTypes_attribute+" and ma.attributeID="+fromMe_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		if(mIdentity>0){
+			mFrom+=" left join messageattributes ma3 on ma3.messageID=m.id";
+			mWhere+=" AND ma3.attributeID="+involves_attribute+" AND ma3.value="+mIdentity;
+		}
+		mWhere+=" group by m.id";
+		if(mMax>0){
+			mWhere+=" LIMIT "+mMax;
+		}
+		return this.querySelect(mWhat,mFrom,mWhere);	//returns tot_attachments,tot_mails
+	},
+
 	//returns an array of ids of folder to be ignored in stats crunching
 	queryGetForbiddenFolders:function(){
 		let folderArray=new Array();

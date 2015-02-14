@@ -4,6 +4,7 @@ Components.utils.import("resource://thunderstats/tokenize.js");
 Components.utils.import("resource://thunderstats/fileIO.js");
 Components.utils.import("resource://gre/modules/osfile.jsm");
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
+Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -25,12 +26,13 @@ var miczThunderStatsStorageDB = {
 			file.create(Ci.nsIFile.NORMAL_FILE_TYPE, parseInt("0666", 8));
 			this.createDB();
 		}
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab StorageDB] fileName {'+fileName+'}\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab StorageDB] fileName {'+fileName+'}\r\n');
 
 		if(this.sDb.openDatabase(file)){
 			return true;
 		}else{
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab StorageDB] Error on db open {'+fileName+'}!!!\r\n');
+			miczLogger.log('[miczThunderStatsStorageDB] Error on db open {'+fileName+'}!!!\r\n',2);
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab StorageDB] Error on db open {'+fileName+'}!!!\r\n');
 			return false;
 		}
 
@@ -39,7 +41,7 @@ var miczThunderStatsStorageDB = {
 	close:function(){
 		this.sDb.closeConnection();
 	},
-	
+
 	createDB:function(){
 		//To be implemented
 	},

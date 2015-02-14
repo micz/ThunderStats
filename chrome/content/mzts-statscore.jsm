@@ -8,6 +8,7 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsCore"];
 
 var miczThunderStatsCore = {
 	
+	db_version:'1.0',
 	identities:new Array(),
 	
 	loadIdentities:function(){

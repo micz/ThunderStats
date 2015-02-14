@@ -2,11 +2,17 @@
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
+Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
 var miczThunderStatsTab = {
 
 	onLoad: function(){
-		
+			
+			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
+			miczLogger.output('test1');
+			miczLogger.output('test2');
+			miczLogger.output('test3');
+			
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
 

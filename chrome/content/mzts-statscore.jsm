@@ -7,10 +7,10 @@ const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 let EXPORTED_SYMBOLS = ["miczThunderStatsCore"];
 
 var miczThunderStatsCore = {
-	
+
 	db_version:'1.0',
 	identities:new Array(),
-	
+
 	loadIdentities:function(){
 			let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
 			let accounts = acctMgr.accounts;
@@ -36,20 +36,29 @@ var miczThunderStatsCore = {
 };
 
 miczThunderStatsCore.db = {
-	
-	getTodaySentMessages:function(mIdentity){
-		let mFromDate=new Date();
+
+	getOneDaySentMessages:function(mGivenDay,mIdentity){
+		let mFromDate=new Date(mGivenDay);
 		mFromDate.setHours(0,0,0,0);
-		let mToDate=new Date();
+		let mToDate=new Date(mGivenDay);
 		mToDate.setHours(24,0,0,0);
 		return miczThunderStatsDB.querySentMessages(mFromDate.getTime(),mToDate.getTime(),mIdentity);
 	},
-	
-	getTodayReceivedMessages:function(mIdentity){
-		let mFromDate=new Date();
+
+	getOneDayReceivedMessages:function(mGivenDay,mIdentity){
+		let mFromDate=new Date(mGivenDay);
 		mFromDate.setHours(0,0,0,0);
-		let mToDate=new Date();
+		let mToDate=new Date(mGivenDay);
 		mToDate.setHours(24,0,0,0);
 		return queryReceivedMessages(mFromDate.getTime(),mToDate.getTime(),mIdentity);
+	},
+
+	getTodaySentMessages:function(mIdentity){
+		return this.getOneDaySentMessages(new Date(),mIdentity);
+
+	},
+
+	getTodayReceivedMessages:function(mIdentity){
+		return this.getOneDayReceivedMessages(new Date(),mIdentity);
 	},
 };

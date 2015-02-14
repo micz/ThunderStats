@@ -45,19 +45,19 @@ var miczThunderStatsTab = {
 			output.push("<b>Received messages from 01/12/2014 to today:</b> "+rows2[0][0]+"<br/>");
 			output.push("<br/>");
 
-			/*let rows3=miczThunderStatsDB.queryGetNumRecipient(Date.parse('2014/12/01'),Date.now(),identity_id,10);
+			let rows3=miczThunderStatsDB.queryGetNumInvolved(1,Date.parse('2014/12/01'),Date.now(),identity_id,10);
 			output.push("<b>Top 10 Recipient from 01/12/2014 to today:</b> <br/>");
 			for(let key in rows3){
 				output.push(rows3[key][1]+" "+rows3[key][2]+" ("+rows3[key][3]+")<br/>");
 			}
 			output.push("<br/>");
 
-			let rows4=miczThunderStatsDB.queryGetNumSender(Date.parse('2014/12/01'),Date.now(),identity_id,10);
+			let rows4=miczThunderStatsDB.queryGetNumInvolved(0,Date.parse('2014/12/01'),Date.now(),identity_id,10);
 			output.push("<br/><b>Top 10 Sender from 01/12/2014 to today:</b> <br/>");
 			for(let key in rows4){
 				output.push(rows4[key][1]+" "+rows4[key][2]+" ("+rows4[key][3]+")<br/>");
 			}
-			output.push("<br/>");*/
+			output.push("<br/>");
 
 			let rows4=miczThunderStatsDB.queryGetAttachments(1,Date.parse('2014/12/01'),Date.now(),identity_id);
 			output.push("<b>Sent attachments from 01/12/2014 to today:</b> "+rows4[0][0]+"<br/>");

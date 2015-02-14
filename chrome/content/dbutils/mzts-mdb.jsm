@@ -71,33 +71,17 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere);
 	},
 
-	queryGetNumRecipient:function(mFromDate,mToDate,mIdentity,mMax){	//mFromDate,mToDate are in milliseconds
+	queryGetNumInvolved:function(mType,mFromDate,mToDate,mIdentity,mMax){	//mFromDate,mToDate are in milliseconds
 		let fromMe_attribute=this.msgAttributes['fromMe'];
-		let involves_attribute=this.msgAttributes['involves'];
-		let forbiddenFolders=this.queryGetForbiddenFolders();
-		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
-		let mWhat="ma.value AS ID,c.name AS Name,i.value AS Mail,count(m.id) AS Num";
-		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join identities i on i.id=ma.value left join contacts c on c.id=i.contactID";
-		let mWhere="ma.attributeID="+fromMe_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(mIdentity>0){
-			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
-		}
-		mWhere+=" group by ma.value order by Num DESC";
-		if(mMax>0){
-			mWhere+=" LIMIT "+mMax;
-		}
-		return this.querySelect(mWhat,mFrom,mWhere);
-	},
-
-	queryGetNumSender:function(mFromDate,mToDate,mIdentity,mMax){	//mFromDate,mToDate are in milliseconds
 		let toMe_attribute=this.msgAttributes['toMe'];
+		//mType 0: toMe, 1: fromMe
+		let mType_attribute=(mType==1?fromMe_attribute:toMe_attribute);
 		let involves_attribute=this.msgAttributes['involves'];
 		let forbiddenFolders=this.queryGetForbiddenFolders();
 		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
 		let mWhat="ma.value AS ID,c.name AS Name,i.value AS Mail,count(m.id) AS Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join identities i on i.id=ma.value left join contacts c on c.id=i.contactID";
-		let mWhere="ma.attributeID="+toMe_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
 		if(mIdentity>0){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;

@@ -7,18 +7,15 @@ Components.utils.import("resource://thunderstats/miczLogger.jsm");
 var miczThunderStatsTab = {
 
 	onLoad: function(){
-			
+
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
-			miczLogger.output('test1');
-			miczLogger.output('test2');
-			miczLogger.output('test3');
-			
+
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
 
 			miczThunderStatsCore.loadIdentities();
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
-			
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
+
 			let id_selector = document.getElementById('identities_selector');
 			for(let key in miczThunderStatsCore.identities){
 				let opt = document.createElement('option');
@@ -27,18 +24,20 @@ var miczThunderStatsTab = {
 				id_selector.appendChild(opt);
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector "+miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
 			}
-			
+
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
 		},
-		
-	doStats: function(){			
+
+	doStats: function(){
 			let id_selector = document.getElementById("identities_selector");
 			let identity_id=id_selector.options[id_selector.selectedIndex].value;
-			let output=new Array();
+
+			//let output=new Array();
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
-			let rows=miczThunderStatsDB.querySentMessages(Date.parse('2014/12/01'),Date.now(),identity_id);
+
+			/*let rows=miczThunderStatsDB.querySentMessages(Date.parse('2014/12/01'),Date.now(),identity_id);
 			//let rows=miczThunderStatsDB.queryGetForbiddenFolders();
 			//document.getElementById("test_output").setAttribute("value",JSON.stringify(rows));
 			output.push("<b>Sent messages from 01/12/2014 to today:</b> "+rows[0][0]+"<br/>");
@@ -60,24 +59,26 @@ var miczThunderStatsTab = {
 				output.push(rows4[key][1]+" "+rows4[key][2]+" ("+rows4[key][3]+")<br/>");
 			}
 			output.push("<br/>");
-			
+
 			let rows4=miczThunderStatsDB.queryGetSentAttachments(Date.parse('2014/12/01'),Date.now(),identity_id,10);
 			output.push("<b>Sent attachments from 01/12/2014 to today:</b> "+rows4[0][0]+"<br/>");
 			let rows5=miczThunderStatsDB.queryGetReceivedAttachments(Date.parse('2014/12/01'),Date.now(),identity_id,10);
 			output.push("<b>Received attachments from 01/12/2014 to today:</b> "+rows5[0][0]+"<br/>");
 			output.push("<br/>");
-			
+
 			let rows6=miczThunderStatsCore.db.getTodaySentMessages(identity_id);
 			output.push("<b>Today sent messages:</b> "+rows6[0][0]+"<br/>");
 			output.push("<br/>");
 
-			document.getElementById("test_output").innerHTML=output.join('');
+			document.getElementById("test_output").innerHTML=output.join('');*/
+
+
 
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
 	},
-	
-	escapeHTML: function(s){ 
+
+	escapeHTML: function(s){
 		return s.replace(/&/g, '&amp;')
 				.replace(/"/g, '&quot;')
 				.replace(/</g, '&lt;')

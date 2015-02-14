@@ -7,9 +7,7 @@ Components.utils.import("resource://thunderstats/miczLogger.jsm");
 var miczThunderStatsTab = {
 
 	onLoad: function(){
-
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
-			miczLogger.log("error",2);
 
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
@@ -38,7 +36,7 @@ var miczThunderStatsTab = {
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
 
-			let rows=miczThunderStatsDB.queryMessages(1,Date.parse('2014/12/01'),Date.now(),identity_id);
+			/*let rows=miczThunderStatsDB.queryMessages(1,Date.parse('2014/12/01'),Date.now(),identity_id);
 			output.push("<b>Sent messages from 01/12/2014 to today:</b> "+rows[0][0]+"<br/>");
 
 			let rows2=miczThunderStatsDB.queryMessages(0,Date.parse('2014/12/01'),Date.now(),identity_id);
@@ -63,7 +61,7 @@ var miczThunderStatsTab = {
 			output.push("<b>Sent attachments from 01/12/2014 to today:</b> "+rows4[0][0]+"<br/>");
 			let rows5=miczThunderStatsDB.queryGetAttachments(0,Date.parse('2014/12/01'),Date.now(),identity_id);
 			output.push("<b>Received attachments from 01/12/2014 to today:</b> "+rows5[0][0]+"<br/>");
-			output.push("<br/>");
+			output.push("<br/>");*/
 
 			let rows6=miczThunderStatsCore.db.getTodayMessages(1,identity_id);
 			output.push("<b>Today sent messages:</b> "+rows6[0][0]+"<br/>");

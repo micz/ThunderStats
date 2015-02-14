@@ -47,7 +47,6 @@ miczThunderStatsCore.db = {
 
 	getTodayMessages:function(mType,mIdentity){
 		return this.getOneDayMessages(mType,new Date(),mIdentity);
-
 	},
 
 };

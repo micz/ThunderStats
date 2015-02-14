@@ -9,6 +9,7 @@ var miczThunderStatsTab = {
 	onLoad: function(){
 
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
+			miczLogger.log("error",2);
 
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();

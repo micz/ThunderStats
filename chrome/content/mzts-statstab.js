@@ -26,6 +26,8 @@ var miczThunderStatsTab = {
 
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
+
+			miczLogger.log("ThunderStats started...",0);
 		},
 
 	doStats: function(){

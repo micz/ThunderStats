@@ -34,3 +34,22 @@ var miczThunderStatsCore = {
 	},
 
 };
+
+miczThunderStatsCore.db = {
+	
+	getTodaySentMessages:function(mIdentity){
+		let mFromDate=new Date();
+		mFromDate.setHours(0,0,0,0);
+		let mToDate=new Date();
+		mToDate.setHours(24,0,0,0);
+		return miczThunderStatsDB.querySentMessages(mFromDate.getTime(),mToDate.getTime(),mIdentity);
+	},
+	
+	getTodayReceivedMessages:function(mIdentity){
+		let mFromDate=new Date();
+		mFromDate.setHours(0,0,0,0);
+		let mToDate=new Date();
+		mToDate.setHours(24,0,0,0);
+		return queryReceivedMessages(mFromDate.getTime(),mToDate.getTime(),mIdentity);
+	},
+};

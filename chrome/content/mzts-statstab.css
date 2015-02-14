@@ -1,4 +1,5 @@
 html,body{margin:0;padding:0;height:100%;}
-#content_wrapper{padding:5px 5px 70px 5px;position:relative;}
-#log_wrapper{padding:5px;background:white;border:1px solid red;overflow-y:auto;height:70px;width:100%;position:fixed;bottom:0px;}
+#content_wrapper{padding:5px 5px 50px 5px;position:relative;}
+#log_wrapper{margin:1px 5px 0px 5px;padding:5px;background:white;border:1px solid red;overflow-y:auto;height:50px;width:95%;position:fixed;bottom:0px;}
+#log_wrapper p{padding:0;margin:0;}
 .mzts-desc{word-wrap:break-word;width:90%;}

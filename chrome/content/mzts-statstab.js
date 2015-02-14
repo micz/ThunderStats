@@ -38,16 +38,14 @@ var miczThunderStatsTab = {
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
 
-			/*let rows=miczThunderStatsDB.querySentMessages(Date.parse('2014/12/01'),Date.now(),identity_id);
-			//let rows=miczThunderStatsDB.queryGetForbiddenFolders();
-			//document.getElementById("test_output").setAttribute("value",JSON.stringify(rows));
+			let rows=miczThunderStatsDB.queryMessages(1,Date.parse('2014/12/01'),Date.now(),identity_id);
 			output.push("<b>Sent messages from 01/12/2014 to today:</b> "+rows[0][0]+"<br/>");
 
-			let rows2=miczThunderStatsDB.queryReceivedMessages(Date.parse('2014/12/01'),Date.now(),identity_id);
+			let rows2=miczThunderStatsDB.queryMessages(0,Date.parse('2014/12/01'),Date.now(),identity_id);
 			output.push("<b>Received messages from 01/12/2014 to today:</b> "+rows2[0][0]+"<br/>");
 			output.push("<br/>");
 
-			let rows3=miczThunderStatsDB.queryGetNumRecipient(Date.parse('2014/12/01'),Date.now(),identity_id,10);
+			/*let rows3=miczThunderStatsDB.queryGetNumRecipient(Date.parse('2014/12/01'),Date.now(),identity_id,10);
 			output.push("<b>Top 10 Recipient from 01/12/2014 to today:</b> <br/>");
 			for(let key in rows3){
 				output.push(rows3[key][1]+" "+rows3[key][2]+" ("+rows3[key][3]+")<br/>");
@@ -67,7 +65,7 @@ var miczThunderStatsTab = {
 			output.push("<b>Received attachments from 01/12/2014 to today:</b> "+rows5[0][0]+"<br/>");
 			output.push("<br/>");*/
 
-			let rows6=miczThunderStatsCore.db.getTodaySentMessages(identity_id);
+			let rows6=miczThunderStatsCore.db.getTodayMessages(1,identity_id);
 			output.push("<b>Today sent messages:</b> "+rows6[0][0]+"<br/>");
 			output.push("<br/>");
 

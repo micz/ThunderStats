@@ -37,28 +37,17 @@ var miczThunderStatsCore = {
 
 miczThunderStatsCore.db = {
 
-	getOneDaySentMessages:function(mGivenDay,mIdentity){
+	getOneDayMessages:function(mType,mGivenDay,mIdentity){
 		let mFromDate=new Date(mGivenDay);
 		mFromDate.setHours(0,0,0,0);
 		let mToDate=new Date(mGivenDay);
 		mToDate.setHours(24,0,0,0);
-		return miczThunderStatsDB.querySentMessages(mFromDate.getTime(),mToDate.getTime(),mIdentity);
+		return miczThunderStatsDB.queryMessages(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity);
 	},
 
-	getOneDayReceivedMessages:function(mGivenDay,mIdentity){
-		let mFromDate=new Date(mGivenDay);
-		mFromDate.setHours(0,0,0,0);
-		let mToDate=new Date(mGivenDay);
-		mToDate.setHours(24,0,0,0);
-		return queryReceivedMessages(mFromDate.getTime(),mToDate.getTime(),mIdentity);
-	},
-
-	getTodaySentMessages:function(mIdentity){
-		return this.getOneDaySentMessages(new Date(),mIdentity);
+	getTodayMessages:function(mType,mIdentity){
+		return this.getOneDayMessages(mType,new Date(),mIdentity);
 
 	},
 
-	getTodayReceivedMessages:function(mIdentity){
-		return this.getOneDayReceivedMessages(new Date(),mIdentity);
-	},
 };

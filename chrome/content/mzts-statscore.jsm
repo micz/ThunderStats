@@ -49,4 +49,9 @@ miczThunderStatsCore.db = {
 		return this.getOneDayMessages(mType,new Date(),mIdentity);
 	},
 
+	getYesterdayMessages:function(mType,mIdentity){
+		let ydate = new Date();
+		ydate.setDate(ydate.getDate() - 1);
+		return this.getOneDayMessages(mType,ydate,mIdentity);
+	},
 };

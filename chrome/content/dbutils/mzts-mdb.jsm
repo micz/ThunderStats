@@ -4,6 +4,7 @@ Components.utils.import("resource://thunderstats/tokenize.js");
 Components.utils.import("resource://thunderstats/fileIO.js");
 Components.utils.import("resource://gre/modules/osfile.jsm");
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
+Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -27,7 +28,8 @@ var miczThunderStatsDB = {
 			this.loadMsgAttributes();
 			return true;
 		}else{
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] Error on db open {'+fileName+'}!!!\r\n');
+			miczLogger.log('[miczThunderStatsDB] Error on db open {'+fileName+'}!!!\r\n',2);
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] Error on db open {'+fileName+'}!!!\r\n');
 			return false;
 		}
 	},
@@ -138,7 +140,7 @@ var miczThunderStatsDB = {
 		}
 		return this.querySelect(mWhat,mFrom,mWhere);	//returns tot_attachments,tot_mails
 	},
-	
+
 	queryGetReceivedAttachments:function(mFromDate,mToDate,mIdentity,mMax){	//mFromDate,mToDate are in milliseconds
 		let toMe_attribute=this.msgAttributes['toMe'];
 		let attachmentTypes_attribute=this.msgAttributes['attachmentTypes'];

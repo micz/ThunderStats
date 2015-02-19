@@ -1,6 +1,4 @@
 "use strict";
-const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
-
 let EXPORTED_SYMBOLS = ["miczLogger"];
 
 var miczLogger = {

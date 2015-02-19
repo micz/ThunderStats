@@ -1,11 +1,20 @@
 "use strict";
-Components.utils.import("resource://thunderstats/sqlite.js");
-Components.utils.import("resource://thunderstats/tokenize.js");
-Components.utils.import("resource://thunderstats/fileIO.js");
-Components.utils.import("resource://gre/modules/osfile.jsm");
-Components.utils.import("chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
-Components.utils.import("resource://thunderstats/miczLogger.jsm");
+if(typeof Components != "undefined"){
+	Components.utils.import("resource://thunderstats/sqlite.js");
+	Components.utils.import("resource://thunderstats/tokenize.js");
+	Components.utils.import("resource://thunderstats/fileIO.js");
+	Components.utils.import("resource://gre/modules/osfile.jsm");
+	Components.utils.import("chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
+	Components.utils.import("resource://thunderstats/miczLogger.jsm");
+}else{
+	importScripts("resource://thunderstats/sqlite.js",
+	"resource://thunderstats/tokenize.js",
+	"resource://thunderstats/fileIO.js",
+	"resource://gre/modules/osfile.jsm",
+	"chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm",
+	"resource://thunderstats/miczLogger.jsm");
 
+}
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsDB"];

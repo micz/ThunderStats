@@ -33,10 +33,21 @@ var miczThunderStatsTab = {
 	doStats: function(){
 			let id_selector = document.getElementById("identities_selector");
 			let identity_id=id_selector.options[id_selector.selectedIndex].value;
+			
+			//SpecialPowers.setCharPref('dom.worker.jsversion', '1.7');
+			
+			let worker = new ChromeWorker("chrome://thunderstats/content/mzts-statsworker.js");
+			worker.onmessage = function(event) {
+				//displayResults(event.data);
+			};
+			let worker_data={};
+			worker_data="test";
+			worker.postMessage(worker_data);
 
-			let output=new Array();
+
+			/*let output=new Array();
 			miczThunderStatsDB.init();
-			miczThunderStatsStorageDB.init();
+			miczThunderStatsStorageDB.init();*/
 
 			/*let rows=miczThunderStatsDB.queryMessages(1,Date.parse('2014/12/01'),Date.now(),identity_id);
 			output.push("<b>Sent messages from 01/12/2014 to today:</b> "+rows[0][0]+"<br/>");
@@ -65,7 +76,7 @@ var miczThunderStatsTab = {
 			output.push("<b>Received attachments from 01/12/2014 to today:</b> "+rows5[0][0]+"<br/>");
 			output.push("<br/>");*/
 
-			let rows6=miczThunderStatsCore.db.getTodayMessages(1,identity_id);
+			/*let rows6=miczThunderStatsCore.db.getTodayMessages(1,identity_id);
 			output.push("<b>Today sent messages:</b> "+rows6[0][0]+"<br/>");
 			output.push("<br/>");
 
@@ -74,7 +85,7 @@ var miczThunderStatsTab = {
 
 
 			miczThunderStatsDB.close();
-			miczThunderStatsStorageDB.close();
+			miczThunderStatsStorageDB.close();*/
 	},
 
 	escapeHTML: function(s){

@@ -1,21 +1,13 @@
 "use strict";
 if(typeof Components != "undefined"){
-	Components.utils.import("resource://thunderstats/sqlite.js");
-	Components.utils.import("resource://thunderstats/tokenize.js");
-	Components.utils.import("resource://thunderstats/fileIO.js");
+	Components.utils.import("resource://thunderstats/sql-debug.js");
 	Components.utils.import("resource://gre/modules/osfile.jsm");
 	Components.utils.import("chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
-	Components.utils.import("resource://thunderstats/miczLogger.jsm");
 }else{
-	importScripts("resource://thunderstats/sqlite.js",
-	"resource://thunderstats/tokenize.js",
-	"resource://thunderstats/fileIO.js",
+	importScripts("resource://thunderstats/sql.js",
 	"resource://gre/modules/osfile.jsm",
-	"chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm",
-	"resource://thunderstats/miczLogger.jsm");
-
+	"chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
 }
-const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsDB"];
 
@@ -25,14 +17,13 @@ var miczThunderStatsDB = {
 	msgAttributes:null,
 
 	init: function(){
-		this.mDb = new SQLiteHandler();
 
 		let dirName = OS.Constants.Path.profileDir;
 		let fileName = OS.Path.join(dirName, "global-messages-db.sqlite");
-		let file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
-		file.initWithPath(fileName);
+		let Uints = new Uint8Array(OS.File.read(fileName));
+		this.mDb = new SQL.Database(Uints);
 
-		if(this.mDb.openDatabase(file)){
+		if(this.mDb){
 			//load messages attributes!
 			this.loadMsgAttributes();
 			return true;
@@ -44,7 +35,7 @@ var miczThunderStatsDB = {
 	},
 
 	close:function(){
-		this.mDb.closeConnection();
+		this.mDb.close();
 	},
 
 	loadMsgAttributes:function(){

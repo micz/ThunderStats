@@ -23,6 +23,8 @@ var miczThunderStatsDB = {
 		let Uints = new Uint8Array(OS.File.read(fileName));
 		this.mDb = new SQL.Database(Uints);
 
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] '+JSON.stringify(this.mDb)+'\r\n');
+
 		if(this.mDb){
 			//load messages attributes!
 			this.loadMsgAttributes();

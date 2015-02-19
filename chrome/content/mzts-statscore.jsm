@@ -2,8 +2,6 @@
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 //Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");
 
-const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
-
 let EXPORTED_SYMBOLS = ["miczThunderStatsCore"];
 
 var miczThunderStatsCore = {

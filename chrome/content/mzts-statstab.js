@@ -10,7 +10,7 @@ var miczThunderStatsTab = {
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
 
 			miczThunderStatsDB.init();
-			miczThunderStatsStorageDB.init();
+			//miczThunderStatsStorageDB.init();
 
 			miczThunderStatsCore.loadIdentities();
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
@@ -25,7 +25,7 @@ var miczThunderStatsTab = {
 			}
 
 			miczThunderStatsDB.close();
-			miczThunderStatsStorageDB.close();
+			//miczThunderStatsStorageDB.close();
 
 			miczLogger.log("ThunderStats started...",0);
 		},
@@ -34,18 +34,16 @@ var miczThunderStatsTab = {
 			let id_selector = document.getElementById("identities_selector");
 			let identity_id=id_selector.options[id_selector.selectedIndex].value;
 
-			//SpecialPowers.setCharPref('dom.worker.jsversion', '1.7');
-
-			/*let worker = new ChromeWorker("chrome://thunderstats/content/mzts-statsworker.js");
+			let worker = new ChromeWorker("chrome://thunderstats/content/mzts-statsworker.js");
 			worker.onmessage = function(event) {
 				miczLogger.log(event.data);
 			};
 			let worker_data={};
 			worker_data="test";
-			worker.postMessage(worker_data);*/
+			worker.postMessage(worker_data);
 
 
-			let output=new Array();
+			/*let output=new Array();
 			miczThunderStatsDB.init();
 			//miczThunderStatsStorageDB.init();
 
@@ -80,11 +78,11 @@ var miczThunderStatsTab = {
 			output.push("<b>Today sent messages:</b> "+rows6[0][0]+"<br/>");
 			output.push("<br/>");*/
 
-			document.getElementById("test_output").innerHTML=output.join('');
+			//document.getElementById("test_output").innerHTML=output.join('');
 
 
 
-			miczThunderStatsDB.close();
+			//miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();
 	},
 

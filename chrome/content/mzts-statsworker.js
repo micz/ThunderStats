@@ -13,7 +13,9 @@ onmessage=function(event){
 	//let f = dbFileElm.files[0];
     let Uints = new Uint8Array(OS.File.read(f));
     let db = new SQL.Database(Uints);
-	let contents = db.exec("SELECT `name`, `sql` FROM `sqlite_master` WHERE type='table';");
+    postMessage("db: "+JSON.stringify(db));
+	//let contents = db.exec("SELECT `name`, `sql` FROM `sqlite_master` WHERE type='table';");
+	let contents = db.exec("SELECT name,id FROM attributeDefinitions WHERE 1=1;");
 
 	postMessage("Query executed: "+JSON.stringify(contents));
 };

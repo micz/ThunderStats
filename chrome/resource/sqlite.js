@@ -855,7 +855,7 @@ SQLiteHandler.prototype = {
     return dataset;
   },
 
-// 2015/02/20 m@micz.it - Added second parameter for a custom callback function
+// 2015/02/20 m@micz.it - Added second parameter for a custom mozIStorageStatementCallback
   executeAsync: function(aQueries,mCallback) {
     var timeStart = Date.now();
 

@@ -28,5 +28,6 @@ var miczLogger = {
 		node.appendChild(textnode);
 
 		this.logger.appendChild(node);
+		this.logger.scrollTop=this.logger.scrollHeight;
 	},
 };

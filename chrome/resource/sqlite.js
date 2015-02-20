@@ -1,6 +1,5 @@
-//TODO: some documentation for this file
-//TODO: some simplification
-//as of now, depends on mFuncConfirm (a function), mBlobPrefs (from prefs) & setStrForNull (in sqlitefn); but the latter 2 have default values and even if the first one is not set, there will be no confirmation before executing. So, this file is pretty independent now.
+// Original code by https://github.com/lazierthanthou/sqlite-manager
+// Modified by m@micz.it
 
 let EXPORTED_SYMBOLS = ["SQLiteTypes", "SQLiteHandler", "SQLiteFn"];
 
@@ -22,7 +21,8 @@ const promptService  = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(
 
 //promptService.alert(null, "SQLite Manager Alert", sMsg);
 
-var stmtCallback = {
+// 2015/02/20 m@micz.it - No need for a hardcoded callback for async queries
+/*var stmtCallback = {
   handleResult: function(aResultSet) {
     Cu.reportError("in handleResult: ");
     for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow()) {
@@ -47,7 +47,7 @@ var stmtCallback = {
     }
   }
 };
-
+*/
 function SQLiteHandler() {
   this.storageService = Cc["@mozilla.org/storage/service;1"].getService(Ci.mozIStorageService);
   this.consoleService = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
@@ -341,7 +341,7 @@ SQLiteHandler.prototype = {
       this.alert("PRAGMA " + sSetting + ": exception - " + e.message);
     }
   },
-  
+
   tableExists: function(sTable, sDbName) {
     if (typeof sDbName == "undefined")
       return this.dbConn.tableExists(sTable);
@@ -362,7 +362,7 @@ SQLiteHandler.prototype = {
     return false;
   },
 
-  //getObjectList: must return an array of names of type=argument 
+  //getObjectList: must return an array of names of type=argument
   // Type = master|table|index|view|trigger,
   //empty array if no object found
   getObjectList: function(sType, sDb) {
@@ -375,7 +375,7 @@ SQLiteHandler.prototype = {
       aResult = ["sqlite_master"];
       if (sDb == "temp")
         aResult = ["sqlite_temp_master"];
-      return aResult;    
+      return aResult;
     }
 
     var sTable = this.getPrefixedMasterName(sDb);
@@ -410,9 +410,9 @@ SQLiteHandler.prototype = {
     var extracol = "";
     var iRetVal = 0;
     var sLimitClause = " LIMIT " + iLimit + " OFFSET " + iOffset;
-    
+
     if (sObjType == "table" || sObjType == "master") {
-      //find whether the rowid is needed 
+      //find whether the rowid is needed
       //or the table has an integer primary key
       var rowidcol = this.getTableRowidCol(sObjName);
       if (rowidcol["name"] == "rowid") {
@@ -462,7 +462,7 @@ SQLiteHandler.prototype = {
     }
     return oRow;
   },
-  
+
   emptyTable: function(sTableName) {
     var sQuery = "DELETE FROM " + this.getPrefixedName(sTableName, "");
     return this.confirmAndExecute([sQuery], "Delete All Records");
@@ -590,9 +590,9 @@ SQLiteHandler.prototype = {
 
     var aQueries = [];
     aQueries.push("ALTER TABLE " + sTab + " RENAME TO " + sTempTableName);
-    aQueries.push("CREATE TABLE " + sTab + " (" + coldef + ")");    
+    aQueries.push("CREATE TABLE " + sTab + " (" + coldef + ")");
     aQueries.push("INSERT INTO " + sTab + " SELECT " + colList + " FROM " + sTempTable);
-    aQueries.push("DROP TABLE " + sTempTable);    
+    aQueries.push("DROP TABLE " + sTempTable);
 
     var bReturn = this.confirmAndExecute(aQueries, sInfo, "confirm.otherSql");
     return bReturn;
@@ -603,9 +603,9 @@ SQLiteHandler.prototype = {
     this.aTableData = new Array();
     this.aTableType = new Array();
     // if aColumns is not null, there is a problem in tree display
-    this.aColumns = null;        
+    this.aColumns = null;
     var bResult = false;
- 
+
     var timeStart = Date.now();
     try { // mozIStorageStatement
       var stmt = this.dbConn.createStatement(sQuery);
@@ -618,7 +618,7 @@ SQLiteHandler.prototype = {
       this.setErrorString();
       return false;
     }
-    
+
     var iCols = 0;
     var iType, colName;
     try {
@@ -629,7 +629,7 @@ SQLiteHandler.prototype = {
       for (var i = 0; i < iCols; i++) {
         colName = stmt.getColumnName(i);
         aTemp = [colName, iType];
-        this.aColumns.push(aTemp);  
+        this.aColumns.push(aTemp);
       }
     } catch (e) {
       stmt.finalize();
@@ -652,7 +652,7 @@ SQLiteHandler.prototype = {
             this.aColumns[i][1] = iType;
           }
           switch (iType) {
-            case stmt.VALUE_TYPE_NULL: 
+            case stmt.VALUE_TYPE_NULL:
               cell = null;
               break;
             case stmt.VALUE_TYPE_INTEGER:
@@ -687,7 +687,7 @@ SQLiteHandler.prototype = {
                 }
               }
               break;
-            default: sData = "<unknown>"; 
+            default: sData = "<unknown>";
           }
           aTemp.push(cell);
           aType.push(iType);
@@ -744,7 +744,7 @@ SQLiteHandler.prototype = {
       this.setErrorString();
       return false;
     }
-    
+
     if (stmt.columnCount != 1)
       return false;
 
@@ -794,7 +794,7 @@ SQLiteHandler.prototype = {
     }
     if (iNumPk == 1 && iIntPk == 1)
       return aReturn;
-    
+
     aReturn["name"] = "rowid";
     aReturn["cid"] = 0;
     return aReturn;
@@ -818,10 +818,10 @@ SQLiteHandler.prototype = {
       if(aList[i].name == sIndexName)
         aReturn.unique = aList[i].unique;
     }
-    
+
     return aReturn;
   },
-    
+
   select : function(file,sql,param) {
     var ourTransaction = false;
     if (this.dbConn.transactionInProgress) {
@@ -831,7 +831,7 @@ SQLiteHandler.prototype = {
     var statement = this.dbConn.createStatement(sql);
     //Cu.reportError("createStatement");
     if (param) {
-      for (var m = 2, arg = null; arg = arguments[m]; m++) 
+      for (var m = 2, arg = null; arg = arguments[m]; m++)
         statement.bindUTF8StringParameter(m-2, arg);
     }
     try {
@@ -855,7 +855,8 @@ SQLiteHandler.prototype = {
     return dataset;
   },
 
-  executeAsync: function(aQueries) {
+// 2015/02/20 m@micz.it - Added second parameter for a custom callback function
+  executeAsync: function(aQueries,mCallback) {
     var timeStart = Date.now();
 
     var stmt, aStmt = [];
@@ -864,7 +865,7 @@ SQLiteHandler.prototype = {
         stmt = this.dbConn.createStatement(aQueries[i]);
         //Cu.reportError("createStatement");
 //        aStmt.push(stmt);
-        stmt.executeAsync(stmtCallback);
+        stmt.executeAsync(mCallback);
       }
       catch (e) {
 //        stmt.finalize();
@@ -881,7 +882,7 @@ SQLiteHandler.prototype = {
 
     this.miTime = Date.now() - timeStart;
     return true;
-  },  
+  },
 
   executeTransaction: function(aQueries) {
     //IS THIS NEEDED?
@@ -923,7 +924,7 @@ SQLiteHandler.prototype = {
 
     this.miTime = Date.now() - timeStart;
     return true;
-  },  
+  },
 
   // executeWithParams : execute a query with parameter binding
   executeWithParams: function(sQuery, aParamData) {
@@ -1539,7 +1540,7 @@ function getCsvRowFromArray(arrRow, arrTypes, oCsv) {
       case SQLiteTypes.REAL:
       case SQLiteTypes.BLOB:
         break;
-      case SQLiteTypes.NULL: 
+      case SQLiteTypes.NULL:
         arrRow[i] = "";
         break;
       case SQLiteTypes.TEXT:

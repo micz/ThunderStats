@@ -49,11 +49,11 @@ var miczThunderStatsDB = {
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes this.msgAttributes  '+JSON.stringify(this.msgAttributes)+'\r\n');
 	},
 
-	querySelect:function(mWhat,mFrom,mWhere){
-		return miczThunderStatsQuery.querySelect(this.mDb,mWhat,mFrom,mWhere);
+	querySelect:function(mWhat,mFrom,mWhere,mCallback){
+		return miczThunderStatsQuery.querySelect(this.mDb,mWhat,mFrom,mWhere,mCallback);
 	},
 
-	queryMessages:function(mType,mFromDate,mToDate,mIdentity){	//mFromDate,mToDate are in milliseconds
+	queryMessages:function(mType,mFromDate,mToDate,mIdentity,mCallback){	//mFromDate,mToDate are in milliseconds
 		let fromMe_attribute=this.msgAttributes['fromMe'];
 		let toMe_attribute=this.msgAttributes['toMe'];
 		//mType 0: toMe, 1: fromMe
@@ -68,10 +68,10 @@ var miczThunderStatsDB = {
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
 		}
-		return this.querySelect(mWhat,mFrom,mWhere);
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
-	queryGetNumInvolved:function(mType,mFromDate,mToDate,mIdentity,mMax){	//mFromDate,mToDate are in milliseconds
+	queryGetNumInvolved:function(mType,mFromDate,mToDate,mIdentity,mMax,mCallback){	//mFromDate,mToDate are in milliseconds
 		let fromMe_attribute=this.msgAttributes['fromMe'];
 		let toMe_attribute=this.msgAttributes['toMe'];
 		//mType 0: toMe, 1: fromMe
@@ -90,10 +90,10 @@ var miczThunderStatsDB = {
 		if(mMax>0){
 			mWhere+=" LIMIT "+mMax;
 		}
-		return this.querySelect(mWhat,mFrom,mWhere);
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
-	queryGetAttachments:function(mType,mFromDate,mToDate,mIdentity,mMax){	//mFromDate,mToDate are in milliseconds
+	queryGetAttachments:function(mType,mFromDate,mToDate,mIdentity,mMax,mCallback){	//mFromDate,mToDate are in milliseconds
 		let fromMe_attribute=this.msgAttributes['fromMe'];
 		let toMe_attribute=this.msgAttributes['toMe'];
 		let fromMe_attribute=this.msgAttributes['fromMe'];
@@ -115,7 +115,7 @@ var miczThunderStatsDB = {
 		if(mMax>0){
 			mWhere+=" LIMIT "+mMax;
 		}
-		return this.querySelect(mWhat,mFrom,mWhere);	//returns tot_attachments,tot_mails
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns tot_attachments,tot_mails
 	},
 
 	//returns an array of ids of folder to be ignored in stats crunching

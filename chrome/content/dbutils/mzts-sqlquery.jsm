@@ -5,16 +5,23 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsQuery"];
 
 var miczThunderStatsQuery = {
 
-	querySelect:function(mDb,mWhat,mFrom,mWhere){
+	querySelect:function(mDb,mWhat,mFrom,mWhere,mCallback){
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] querySelect mCallback '+(typeof mCallback)+'\r\n');
 		if((mWhere=="")||(mWhere==null))mWhere="1=1";
 		let mQuery="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] querySelect:\r\nSQL: " + mQuery+"\r\n");
-		mDb.selectQuery(mQuery);
-		let rows = mDb.getRecords();
-		if(rows.length == 0){
-			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] ERROR:\r\nNo matching record found.\r\nSQL: " + mQuery+"\r\n");
-			return -1;
+		if(!mCallback){	// do it SYNC
+			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] querySelect (Sync):\r\nSQL: " + mQuery+"\r\n");
+			mDb.selectQuery(mQuery);
+			let rows = mDb.getRecords();
+			if(rows.length == 0){
+				dump(">>>>>>>>>>>>>> [miczThunderStatsTab] ERROR:\r\nNo matching record found.\r\nSQL: " + mQuery+"\r\n");
+				return -1;
+			}
+			return rows;
+		}else{					// do it ASYNC
+			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] querySelect (Async):\r\nSQL: " + mQuery+"\r\n");
+			return mDb.executeAsync([mQuery],mCallback); // returns true/false
 		}
-		return rows;
 	},
+
 };

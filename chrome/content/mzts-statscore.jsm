@@ -37,21 +37,21 @@ var miczThunderStatsCore = {
 
 miczThunderStatsCore.db = {
 
-	getOneDayMessages:function(mType,mGivenDay,mIdentity){
+	getOneDayMessages:function(mType,mGivenDay,mIdentity,mCallback){
 		let mFromDate=new Date(mGivenDay);
 		mFromDate.setHours(0,0,0,0);
 		let mToDate=new Date(mGivenDay);
 		mToDate.setHours(24,0,0,0);
-		return miczThunderStatsDB.queryMessages(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity);
+		return miczThunderStatsDB.queryMessages(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity,mCallback);
 	},
 
-	getTodayMessages:function(mType,mIdentity){
-		return this.getOneDayMessages(mType,new Date(),mIdentity);
+	getTodayMessages:function(mType,mIdentity,mCallback){
+		return this.getOneDayMessages(mType,new Date(),mIdentity,mCallback);
 	},
 
-	getYesterdayMessages:function(mType,mIdentity){
+	getYesterdayMessages:function(mType,mIdentity,mCallback){
 		let ydate = new Date();
 		ydate.setDate(ydate.getDate() - 1);
-		return this.getOneDayMessages(mType,ydate,mIdentity);
+		return this.getOneDayMessages(mType,ydate,mIdentity,mCallback);
 	},
 };

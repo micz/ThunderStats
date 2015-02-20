@@ -65,13 +65,17 @@ var miczThunderStatsTab = {
 			output.push("<b>Received attachments from 01/12/2014 to today:</b> "+rows5[0][0]+"<br/>");
 			output.push("<br/>");*/
 
-			let rows6=miczThunderStatsCore.db.getTodayMessages(1,identity_id);
+			/*let rows6=miczThunderStatsCore.db.getTodayMessages(1,identity_id);
 			output.push("<b>Today sent messages:</b> "+rows6[0][0]+"<br/>");
 			output.push("<br/>");
 
-			document.getElementById("test_output").innerHTML=output.join('');
+			document.getElementById("test_output").innerHTML=output.join('');*/
 
+			//miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.test);
 
+			miczThunderStatsDB.queryGetNumInvolved(1,Date.parse('2014/12/01'),Date.now(),identity_id,10,miczThunderStatsTab.callback.test);
+
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.test '+(typeof miczThunderStatsTab.callback.test)+'\r\n');
 
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
@@ -87,3 +91,29 @@ var miczThunderStatsTab = {
 };
 
 window.addEventListener("load", miczThunderStatsTab.onLoad, false);
+
+miczThunderStatsTab.callback={};
+miczThunderStatsTab.callback.test = {
+  handleResult: function(aResultSet) {
+    miczLogger.log("Results: ");
+    for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow()) {
+		miczLogger.log("Test CALLBACK: "+JSON.stringify(row));
+    }
+  },
+
+  handleError: function(aError) {
+    miczLogger.log("Error in executeAsync: " + aError.message,2);
+  },
+
+  handleCompletion: function(aReason) {
+    miczLogger.log("in handleCompletion: " + aReason);
+    switch (aReason) {
+      case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+        return true;
+      case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+      case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+        miczLogger.log("Query canceled or aborted!",1);
+        return false;
+    }
+  }
+};

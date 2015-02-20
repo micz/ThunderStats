@@ -865,7 +865,8 @@ SQLiteHandler.prototype = {
         stmt = this.dbConn.createStatement(aQueries[i]);
         //Cu.reportError("createStatement");
 //        aStmt.push(stmt);
-        stmt.executeAsync(mCallback);
+		// 2015/02/20 m@micz.it - Returns a mozIStoragePendingStatement object
+        return stmt.executeAsync(mCallback);
       }
       catch (e) {
 //        stmt.finalize();

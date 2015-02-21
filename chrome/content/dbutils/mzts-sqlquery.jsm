@@ -20,7 +20,9 @@ var miczThunderStatsQuery = {
 			return rows;
 		}else{					// do it ASYNC
 			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] querySelect (Async):\r\nSQL: " + mQuery+"\r\n");
-			return mDb.executeAsync([mQuery],mCallback); // returns true/false
+			return mDb.executeAsync([mQuery],mCallback); // returns mozIStoragePendingStatement object or false
 		}
 	},
-	};
+	
+	
+};

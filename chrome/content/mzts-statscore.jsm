@@ -54,4 +54,19 @@ miczThunderStatsCore.db = {
 		ydate.setDate(ydate.getDate() - 1);
 		return this.getOneDayMessages(mType,ydate,mIdentity,mCallback);
 	},
+	
+	getResultObject:function(aFields,aResultSet){
+		let oOutput={};
+		let r_idx=1;
+		for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow()) {
+			oOutput[r_idx]={};
+			for (let colidx in aFields){
+				//miczLogger.log("Test CALLBACK: col "+colidx+" "+JSON.stringify(row.getResultByIndex(colidx)));
+				oOutput[r_idx][aFields[colidx]]=row.getResultByName(aFields[colidx]);
+			}
+			r_idx++;
+		}
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] getResultObject: " +JSON.stringify(oOutput)+"\r\n");
+		return oOutput;
+	},
 };

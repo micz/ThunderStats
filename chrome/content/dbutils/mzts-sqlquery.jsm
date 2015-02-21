@@ -23,5 +23,4 @@ var miczThunderStatsQuery = {
 			return mDb.executeAsync([mQuery],mCallback); // returns true/false
 		}
 	},
-
-};
+	};

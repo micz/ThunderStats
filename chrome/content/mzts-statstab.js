@@ -71,9 +71,10 @@ var miczThunderStatsTab = {
 
 			document.getElementById("test_output").innerHTML=output.join('');*/
 
-			miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.test);
+			//miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.test);
+			//miczThunderStatsCore.db.getYesterdayMessages(1,identity_id,miczThunderStatsTab.callback.test);
 
-			//miczThunderStatsDB.queryGetNumInvolved(1,Date.parse('2014/12/01'),Date.now(),identity_id,10,miczThunderStatsTab.callback.test);
+			miczThunderStatsDB.queryGetNumInvolved(1,Date.parse('2014/12/01'),Date.now(),identity_id,10,miczThunderStatsTab.callback.test);
 
 			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.test '+(typeof miczThunderStatsTab.callback.test)+'\r\n');
 
@@ -95,14 +96,16 @@ window.addEventListener("load", miczThunderStatsTab.onLoad, false);
 miczThunderStatsTab.callback={};
 miczThunderStatsTab.callback.test = {
   handleResult: function(aResultSet) {
-    miczLogger.log("Results: ");
-    for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow()) {
+    miczLogger.log("Query done!");
+    /*for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow()) {
 		miczLogger.log("Test CALLBACK: row "+JSON.stringify(row));
 		miczLogger.log("Test CALLBACK: row "+JSON.stringify(row.numEntries));
 		for (let colidx=0; colidx<row.numEntries; colidx++){
 			miczLogger.log("Test CALLBACK: col "+colidx+" "+JSON.stringify(row.getResultByIndex(colidx)));
 		}
-    }
+    }*/
+    //miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+    miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
   },
 
   handleError: function(aError) {

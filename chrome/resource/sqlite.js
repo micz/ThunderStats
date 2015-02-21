@@ -21,7 +21,7 @@ const promptService  = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(
 
 //promptService.alert(null, "SQLite Manager Alert", sMsg);
 
-// 2015/02/20 m@micz.it - No need for a hardcoded callback for async queries
+// 2015/02/20 m@micz.it - No need for an hardcoded callback for async queries
 /*var stmtCallback = {
   handleResult: function(aResultSet) {
     Cu.reportError("in handleResult: ");

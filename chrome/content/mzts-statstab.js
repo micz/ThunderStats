@@ -2,6 +2,7 @@
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
 var miczThunderStatsTab = {
@@ -19,7 +20,7 @@ var miczThunderStatsTab = {
 			for(let key in miczThunderStatsCore.identities){
 				let opt = document.createElement('option');
 				opt.value = miczThunderStatsCore.identities[key]["id"];
-				opt.innerHTML = miczThunderStatsTab.escapeHTML(miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["identityName"]+")");
+				opt.innerHTML = miczThunderStatsUtils.escapeHTML(miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["identityName"]+")");
 				id_selector.appendChild(opt);
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector "+miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
 			}
@@ -80,13 +81,6 @@ var miczThunderStatsTab = {
 
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
-	},
-
-	escapeHTML: function(s){
-		return s.replace(/&/g, '&amp;')
-				.replace(/"/g, '&quot;')
-				.replace(/</g, '&lt;')
-				.replace(/>/g, '&gt;');
 	},
 
 };

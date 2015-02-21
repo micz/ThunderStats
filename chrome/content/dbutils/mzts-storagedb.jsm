@@ -13,6 +13,7 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsStorageDB"];
 var miczThunderStatsStorageDB = {
 
 	sDb:null,
+	sDb_version:1,
 
 	init: function(){
 		this.sDb = new SQLiteHandler();
@@ -29,6 +30,11 @@ var miczThunderStatsStorageDB = {
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab StorageDB] fileName {'+fileName+'}\r\n');
 
 		if(this.sDb.openDatabase(file)){
+			//check db version and update it if necessary
+			let currDBVersion=this.getDBVersion();
+			if(currDBVersion!=this.sDb_version){
+					this.updateDB(currDBVersion);
+			}			
 			return true;
 		}else{
 			miczLogger.log('[miczThunderStatsStorageDB] Error on db open {'+fileName+'}!!!\r\n',2);
@@ -41,8 +47,16 @@ var miczThunderStatsStorageDB = {
 	close:function(){
 		this.sDb.closeConnection();
 	},
+	
+	getDBVersion:function(){
+		//To be implemented
+	},
 
 	createDB:function(){
+		//To be implemented
+	},
+
+	updateDB:function(oldVersion){
 		//To be implemented
 	},
 

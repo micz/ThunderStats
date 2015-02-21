@@ -52,6 +52,10 @@ var miczThunderStatsDB = {
 	querySelect:function(mWhat,mFrom,mWhere,mCallback){
 		return miczThunderStatsQuery.querySelect(this.mDb,mWhat,mFrom,mWhere,mCallback);
 	},
+	
+	queryExec:function(mQuery,mCallback){
+		return miczThunderStatsQuery.querySelect(this.mDb,mQuery,mCallback);
+	},
 
 	queryMessages:function(mType,mFromDate,mToDate,mIdentity,mCallback){	//mFromDate,mToDate are in milliseconds
 		let fromMe_attribute=this.msgAttributes['fromMe'];

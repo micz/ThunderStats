@@ -49,4 +49,8 @@ var miczThunderStatsStorageDB = {
 	querySelect:function(mWhat,mFrom,mWhere){
 		return miczThunderStatsQuery.querySelect(this.sDb,mWhat,mFrom,mWhere);
 	},
+	
+	queryExec:function(mQuery,mCallback){
+		return miczThunderStatsQuery.querySelect(this.sDb,mQuery,mCallback);
+	},
 };

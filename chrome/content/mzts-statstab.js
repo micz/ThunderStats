@@ -94,6 +94,26 @@ var miczThunderStatsTab = {
 window.addEventListener("load", miczThunderStatsTab.onLoad, false);
 
 miczThunderStatsTab.callback={};
+
+miczThunderStatsTab.callback.base={
+
+	handleError: function(aError) {
+		miczLogger.log("Error in executeAsync: " + aError.message,2);
+	},
+	
+	handleCompletion: function(aReason) {
+		miczLogger.log("in handleCompletion: " + aReason);
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query canceled or aborted!",1);
+				return false;
+		}
+	},
+};
+
 miczThunderStatsTab.callback.test = {
   handleResult: function(aResultSet) {
     miczLogger.log("Query done!");
@@ -108,19 +128,7 @@ miczThunderStatsTab.callback.test = {
     miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
   },
 
-  handleError: function(aError) {
-    miczLogger.log("Error in executeAsync: " + aError.message,2);
-  },
+  handleError: miczThunderStatsTab.callback.base.handleError,
 
-  handleCompletion: function(aReason) {
-    miczLogger.log("in handleCompletion: " + aReason);
-    switch (aReason) {
-      case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-        return true;
-      case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
-      case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
-        miczLogger.log("Query canceled or aborted!",1);
-        return false;
-    }
-  }
+  handleCompletion: miczThunderStatsTab.callback.base.handleCompletion,
 };

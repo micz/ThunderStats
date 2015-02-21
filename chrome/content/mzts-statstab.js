@@ -102,13 +102,15 @@ miczThunderStatsTab.callback.base={
 	},
 	
 	handleCompletion: function(aReason) {
-		miczLogger.log("in handleCompletion: " + aReason);
+		miczLogger.log("Query completed with exit code: " + aReason);
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				return false;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
-				miczLogger.log("Query canceled or aborted!",1);
+				miczLogger.log("Query aborted!",2);
 				return false;
 		}
 	},
@@ -116,7 +118,7 @@ miczThunderStatsTab.callback.base={
 
 miczThunderStatsTab.callback.test = {
   handleResult: function(aResultSet) {
-    miczLogger.log("Query done!");
+    miczLogger.log("Query executed, parsing the result set...");
     /*for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow()) {
 		miczLogger.log("Test CALLBACK: row "+JSON.stringify(row));
 		miczLogger.log("Test CALLBACK: row "+JSON.stringify(row.numEntries));

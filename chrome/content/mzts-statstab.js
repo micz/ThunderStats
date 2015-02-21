@@ -35,6 +35,7 @@ var miczThunderStatsTab = {
 			miczThunderStatsStorageDB.close();
 
 			miczLogger.log("ThunderStats ready.",0);
+			//miczLogger.log("1 ThunderStats ready.",0);miczLogger.log("2 ThunderStats ready.",0);miczLogger.log("3 ThunderStats ready.",0);miczLogger.log("4 ThunderStats ready.",0);
 		},
 
 	doStats: function(){

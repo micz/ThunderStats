@@ -1,6 +1,6 @@
 html,body{margin:0;padding:0;height:100%;background:white;}
 #content_wrapper{padding:5px 5px 100px 5px;position:relative;}
-#log_wrapper{margin:1px 0px 0px 0px;padding:5px;background:white;border:1px solid grey;overflow-y:auto;height:100px;width:100%;position:fixed;bottom:0px;}
+#log_wrapper{margin:1px 0px 0px 0px;padding:5px;background:white;border:1px solid grey;overflow-y:scroll;height:100px;width:99%;position:fixed;bottom:0px;}
 #log_wrapper p{padding:0;margin:0;font-size:0.8em;}
-#log_clear_btn{position:absolute;bottom:1px;right:2px;cursor:pointer;z-index:100;}
+#log_clear_btn{position:absolute;bottom:0px;right:16px;cursor:pointer;z-index:100;}
 .mzts-desc{word-wrap:break-word;width:90%;}

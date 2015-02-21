@@ -24,5 +24,13 @@ var miczThunderStatsQuery = {
 		}
 	},
 	
-	
+	queryExec:function(mDb,mQuery,mCallback){
+		if(!mCallback){	// do it SYNC
+			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] queryExec (Sync):\r\nSQL: " + mQuery+"\r\n");
+			return mDb.executeSimpleSQLs([mQuery]);
+		}else{					// do it ASYNC
+			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] queryExec (Async):\r\nSQL: " + mQuery+"\r\n");
+			return mDb.executeAsync([mQuery],mCallback); // returns mozIStoragePendingStatement object or false
+		}
+	},
 };

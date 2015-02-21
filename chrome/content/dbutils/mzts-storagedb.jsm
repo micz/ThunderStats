@@ -23,8 +23,10 @@ var miczThunderStatsStorageDB = {
 		let file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
 		file.initWithPath(fileName);
 		if(!file.exists()){
+			miczLogger.log('ThunderStats local database not present... creating a new one...');
 			file.create(Ci.nsIFile.NORMAL_FILE_TYPE, parseInt("0666", 8));
 			this.createDB(file);
+			miczLogger.log('ThunderStats local database created.');
 		}
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab StorageDB] fileName {'+fileName+'}\r\n');
 
@@ -33,10 +35,10 @@ var miczThunderStatsStorageDB = {
 			let currDBVersion=this.getDBVersion();
 			if(currDBVersion!=miczThunderStatsStorageDB.structure.sDb_version){
 					this.updateDB(currDBVersion);
-			}			
+			}
 			return true;
 		}else{
-			miczLogger.log('[miczThunderStatsStorageDB] Error on db open {'+fileName+'}!!!\r\n',2);
+			miczLogger.log('[miczThunderStatsStorageDB] Error on db open {'+fileName+'}!!!',2);
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab StorageDB] Error on db open {'+fileName+'}!!!\r\n');
 			return false;
 		}
@@ -46,7 +48,7 @@ var miczThunderStatsStorageDB = {
 	close:function(){
 		this.sDb.closeConnection();
 	},
-	
+
 	getDBVersion:function(){
 		//To be implemented
 	},
@@ -68,7 +70,7 @@ var miczThunderStatsStorageDB = {
 	querySelect:function(mWhat,mFrom,mWhere){
 		return miczThunderStatsQuery.querySelect(this.sDb,mWhat,mFrom,mWhere);
 	},
-	
+
 	queryExec:function(mQuery,mCallback){
 		return miczThunderStatsQuery.queryExec(this.sDb,mQuery,mCallback);
 	},
@@ -76,7 +78,7 @@ var miczThunderStatsStorageDB = {
 
 
 miczThunderStatsStorageDB.structure={
-	
+
 	sDb_version:'1',
 
 	tableStatsCache:"CREATE TABLE 'statsCache' ( \
@@ -98,14 +100,14 @@ miczThunderStatsStorageDB.structure={
 	CREATE INDEX 'yearIdx' on statscache (year DESC); \
 	CREATE INDEX 'identityIdx' on statscache (identity ASC); \
 	CREATE UNIQUE INDEX 'uIndex' on statscache (identity ASC, year ASC, month ASC, day ASC, hour DESC);",
-	
+
 	tableSettings:"CREATE TABLE 'Settings' (\
     'name' TEXT NOT NULL,\
     'value' TEXT NOT NULL DEFAULT (0)\
 	);\
 	\
 	CREATE UNIQUE INDEX 'nameIdx' on settings (name ASC);",
-	
+
 	addDBVersionInfo:"INSERT INTO settings ('name', 'value') VALUES('db_version', '%DBVER%');",
-	
+
 };

@@ -8,14 +8,19 @@ Components.utils.import("resource://thunderstats/miczLogger.jsm");
 var miczThunderStatsTab = {
 
 	onLoad: function(){
+			miczLogger.log("ThunderStats starting...",0);
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
 
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
-
+			miczLogger.log("Opening databases...",0);
+			
+			miczLogger.log("Loading identities...",0);
 			miczThunderStatsCore.loadIdentities();
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
 
+			miczLogger.log("Identities found: "+miczThunderStatsCore.identities.length,0);
+			
 			let id_selector = document.getElementById('identities_selector');
 			for(let key in miczThunderStatsCore.identities){
 				let opt = document.createElement('option');
@@ -24,11 +29,12 @@ var miczThunderStatsTab = {
 				id_selector.appendChild(opt);
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector "+miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
 			}
+			miczLogger.log("Identities loaded.",0);
 
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
 
-			miczLogger.log("ThunderStats started...",0);
+			miczLogger.log("ThunderStats ready.",0);
 		},
 
 	doStats: function(){

@@ -8,8 +8,8 @@ Components.utils.import("resource://thunderstats/miczLogger.jsm");
 var miczThunderStatsTab = {
 
 	onLoad: function(){
-			miczLogger.log("ThunderStats starting...",0);
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
+			miczLogger.log("ThunderStats starting...",0);
 
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();

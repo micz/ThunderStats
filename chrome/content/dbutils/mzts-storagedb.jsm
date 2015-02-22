@@ -55,11 +55,11 @@ var miczThunderStatsStorageDB = {
 
 	createDB:function(file){
 		this.sDb.openDatabase(file);
-		this.queryExec([miczThunderStatsStorageDB.structure.tableStatsCache]);
-		this.queryExec([miczThunderStatsStorageDB.structure.tableSettings]);
+		this.queryExec(miczThunderStatsStorageDB.structure.tableStatsCache);
+		this.queryExec(miczThunderStatsStorageDB.structure.tableSettings);
 		let repl={"%DBVER%":miczThunderStatsStorageDB.structure.sDb_version};
 		let db_ver_qry=miczThunderStatsStorageDB.structure.addDBVersionInfo.replace(/%\w+%/g,function(all){return repl[all] || all;});
-		this.queryExec([db_ver_qry]);
+		this.queryExec(db_ver_qry);
 		this.close();
 	},
 
@@ -71,18 +71,22 @@ var miczThunderStatsStorageDB = {
 		let mY=mGivenDay.getFullYear();
 		let mM=mGivenDay.getMonth();
 		let mD=mGivenDay.getDay();
-		let mQueries="";
+		let mQuery="";
 		for (let mH=0; mH<=23; mH++){
-			mQueries+="INSERT OR IGNORE INTO statscache ('identity', 'year', 'month', 'day', 'hour', 'msg_sent', 'msg_received', 'attachment_sent', 'attachment_received', 'msg_w_attach_sent', 'msg_w_attach_received') VALUES ('"+mIdentity+"', '"+mY+"', '"+mM+"', '"+mD+"', '"+mH+"', '0', '0', '0', '0', '0', '0');");
+			mQuery+="INSERT OR IGNORE INTO statscache ('identity', 'year', 'month', 'day', 'hour', 'msg_sent', 'msg_received', 'attachment_sent', 'attachment_received', 'msg_w_attach_sent', 'msg_w_attach_received') VALUES ('"+mIdentity+"', '"+mY+"', '"+mM+"', '"+mD+"', '"+mH+"', '0', '0', '0', '0', '0', '0');");
 		}
-		return this.queryExec([mQueries],mCallback);
+		return this.queryExec(mQuery,mCallback);
 	},
 
 	querySelect:function(mWhat,mFrom,mWhere){
 		return miczThunderStatsQuery.querySelect(this.sDb,mWhat,mFrom,mWhere);
 	},
 
-	queryExec:function(mQueries,mCallback){ //mQueries is an array of query strings
+	queryExec:function(mQuery,mCallback){ //mQuery is a query string
+		return miczThunderStatsQuery.queryExec(this.sDb,[mQuery],mCallback);
+	},
+	
+	queryExecMulti:function(mQueries,mCallback){ //mQueries is an array of query strings
 		return miczThunderStatsQuery.queryExec(this.sDb,mQueries,mCallback);
 	},
 };

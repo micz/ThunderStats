@@ -53,7 +53,11 @@ var miczThunderStatsDB = {
 		return miczThunderStatsQuery.querySelect(this.mDb,mWhat,mFrom,mWhere,mCallback);
 	},
 	
-	queryExec:function(mQueries,mCallback){ //mQueries is an array of query strings
+	queryExec:function(mQuery,mCallback){ //mQuery is a query string
+		return miczThunderStatsQuery.queryExec(this.mDb,[mQuery],mCallback);
+	},
+	
+	queryExecMulti:function(mQueries,mCallback){ //mQueries is an array of query strings
 		return miczThunderStatsQuery.queryExec(this.mDb,mQueries,mCallback);
 	},
 

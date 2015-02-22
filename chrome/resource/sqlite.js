@@ -866,7 +866,7 @@ SQLiteHandler.prototype = {
         //Cu.reportError("createStatement");
 //        aStmt.push(stmt);
 		// 2015/02/20 m@micz.it - Returns a mozIStoragePendingStatement object
-        return stmt.executeAsync(mCallback);
+        stmt.executeAsync(mCallback);
       }
       catch (e) {
 //        stmt.finalize();

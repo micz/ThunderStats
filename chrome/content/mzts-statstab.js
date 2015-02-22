@@ -31,12 +31,28 @@ var miczThunderStatsTab = {
 			}
 			miczLogger.log("Identities loaded.",0);
 
+			miczLogger.log("Getting home page statistics...",0);
+			miczThunderStatsTab.getHomepageStats(0);
+			miczLogger.log("Home page statistics loaded.",0);
+			
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
 
 			miczLogger.log("ThunderStats ready.",0);
 			//miczLogger.log("1 ThunderStats ready.",0);miczLogger.log("2 ThunderStats ready.",0);miczLogger.log("3 ThunderStats ready.",0);miczLogger.log("4 ThunderStats ready.",0);
 		},
+		
+	getHomepageStats:function(identity_id){
+		//Get today sent messages
+		miczThunderStatsCore.db.getTodayMessages(1,identity_id);
+		
+		//Get today received messages
+		
+		//Get today first 10 senders
+		
+		//Get today first 10 recipients
+		
+	},
 
 	doStats: function(){
 			let id_selector = document.getElementById("identities_selector");
@@ -109,9 +125,9 @@ miczThunderStatsTab.callback.base={
 	},
 	
 	handleCompletion: function(aReason) {
-		miczLogger.log("Query completed with exit code: " + aReason);
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczLogger.log("Query completed successfully.");
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
@@ -121,6 +137,17 @@ miczThunderStatsTab.callback.base={
 				return false;
 		}
 	},
+};
+
+miczThunderStatsTab.callback.homepage_stats = {
+  handleResult: function(aResultSet) {
+    // TODO
+    miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
+  },
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: miczThunderStatsTab.callback.base.handleCompletion,
 };
 
 miczThunderStatsTab.callback.test = {
@@ -144,7 +171,7 @@ miczThunderStatsTab.callback.test = {
 
 miczThunderStatsTab.callback.day_cache_test = {
   handleResult: function(aResultSet) {
-    miczLogger.log("Day cache rows inserted.");
+    miczLogger.log("Day cache row inserted.");
   },
 
   handleError: miczThunderStatsTab.callback.base.handleError,

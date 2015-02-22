@@ -178,7 +178,8 @@ SQLiteHandler.prototype = {
 
     if (this.dbConn != null) {
       try {
-        this.dbConn.close();
+        //this.dbConn.close();
+        this.dbConn.asyncClose();
       } catch (e) {
         this.dbConn = null;
       }

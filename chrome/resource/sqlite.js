@@ -862,7 +862,7 @@ SQLiteHandler.prototype = {
     var stmt, aStmt = [];
     for(var i = 0; i < aQueries.length; i++) {
       try {
-        stmt = this.dbConn.createStatement(aQueries[i]);
+        stmt = this.dbConn.createAsyncStatement(aQueries[i]);
         //Cu.reportError("createStatement");
 //        aStmt.push(stmt);
 		// 2015/02/20 m@micz.it - Returns a mozIStoragePendingStatement object

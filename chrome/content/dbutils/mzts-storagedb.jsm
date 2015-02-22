@@ -55,11 +55,11 @@ var miczThunderStatsStorageDB = {
 
 	createDB:function(file){
 		this.sDb.openDatabase(file);
-		this.queryExec(miczThunderStatsStorageDB.structure.tableStatsCache);
-		this.queryExec(miczThunderStatsStorageDB.structure.tableSettings);
+		this.queryExec([miczThunderStatsStorageDB.structure.tableStatsCache]);
+		this.queryExec([miczThunderStatsStorageDB.structure.tableSettings]);
 		let repl={"%DBVER%":miczThunderStatsStorageDB.structure.sDb_version};
 		let db_ver_qry=miczThunderStatsStorageDB.structure.addDBVersionInfo.replace(/%\w+%/g,function(all){return repl[all] || all;});
-		this.queryExec(db_ver_qry);
+		this.queryExec([db_ver_qry]);
 		this.close();
 	},
 

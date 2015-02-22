@@ -73,7 +73,7 @@ var miczThunderStatsStorageDB = {
 		let mD=mGivenDay.getDay();
 		let mQuery="";
 		for (let mH=0; mH<=23; mH++){
-			mQuery+="INSERT OR IGNORE INTO statscache ('identity', 'year', 'month', 'day', 'hour', 'msg_sent', 'msg_received', 'attachment_sent', 'attachment_received', 'msg_w_attach_sent', 'msg_w_attach_received') VALUES ('"+mIdentity+"', '"+mY+"', '"+mM+"', '"+mD+"', '"+mH+"', '0', '0', '0', '0', '0', '0');");
+			mQuery+="INSERT OR IGNORE INTO statscache ('identity', 'year', 'month', 'day', 'hour', 'msg_sent', 'msg_received', 'attachment_sent', 'attachment_received', 'msg_w_attach_sent', 'msg_w_attach_received') VALUES ('"+mIdentity+"', '"+mY+"', '"+mM+"', '"+mD+"', '"+mH+"', '0', '0', '0', '0', '0', '0');";
 		}
 		return this.queryExec(mQuery,mCallback);
 	},

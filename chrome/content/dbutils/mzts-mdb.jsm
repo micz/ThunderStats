@@ -53,8 +53,8 @@ var miczThunderStatsDB = {
 		return miczThunderStatsQuery.querySelect(this.mDb,mWhat,mFrom,mWhere,mCallback);
 	},
 	
-	queryExec:function(mQuery,mCallback){
-		return miczThunderStatsQuery.queryExec(this.mDb,mQuery,mCallback);
+	queryExec:function(mQueries,mCallback){ //mQueries is an array of query strings
+		return miczThunderStatsQuery.queryExec(this.mDb,mQueries,mCallback);
 	},
 
 	queryMessages:function(mType,mFromDate,mToDate,mIdentity,mCallback){	//mFromDate,mToDate are in milliseconds

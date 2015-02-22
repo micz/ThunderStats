@@ -83,6 +83,8 @@ var miczThunderStatsTab = {
 			//miczThunderStatsCore.db.getYesterdayMessages(1,identity_id,miczThunderStatsTab.callback.test);
 
 			miczThunderStatsDB.queryGetNumInvolved(1,Date.parse('2014/12/01'),Date.now(),identity_id,10,miczThunderStatsTab.callback.test);
+			
+			miczThunderStatsStorageDB.insertNewDay(identity_id,new Date(),miczThunderStatsTab.callback.day_cache_test);
 
 			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.test '+(typeof miczThunderStatsTab.callback.test)+'\r\n');
 
@@ -134,4 +136,26 @@ miczThunderStatsTab.callback.test = {
   handleError: miczThunderStatsTab.callback.base.handleError,
 
   handleCompletion: miczThunderStatsTab.callback.base.handleCompletion,
+};
+
+miczThunderStatsTab.callback.day_cache_test = {
+  handleResult: function(aResultSet) {
+    miczLogger.log("Day cache rows inserted.");
+  },
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		miczLogger.log("Day cache rows inserted. Exit code: " + aReason);
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				return false;
+		}
+	},
 };

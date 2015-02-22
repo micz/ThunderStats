@@ -70,12 +70,12 @@ var miczThunderStatsStorageDB = {
 	insertNewDay:function(mIdentity,mGivenDay,mCallback){ //mIdentity is the identity id, mGivenDay is a Date object
 		let mY=mGivenDay.getFullYear();
 		let mM=mGivenDay.getMonth();
-		let mD=mGivenDay.getDay();
-		let mQuery="";
+		let mD=mGivenDay.getDate();
+		let mQueries=new Array();
 		for (let mH=0; mH<=23; mH++){
-			mQuery+="INSERT OR IGNORE INTO statscache ('identity', 'year', 'month', 'day', 'hour', 'msg_sent', 'msg_received', 'attachment_sent', 'attachment_received', 'msg_w_attach_sent', 'msg_w_attach_received') VALUES ('"+mIdentity+"', '"+mY+"', '"+mM+"', '"+mD+"', '"+mH+"', '0', '0', '0', '0', '0', '0');";
+			mQueries.push("INSERT INTO statscache ('identity', 'year', 'month', 'day', 'hour', 'msg_sent', 'msg_received', 'attachment_sent', 'attachment_received', 'msg_w_attach_sent', 'msg_w_attach_received') VALUES ('"+mIdentity+"', '"+mY+"', '"+mM+"', '"+mD+"', '"+mH+"', '0', '0', '0', '0', '0', '0')");
 		}
-		return this.queryExec(mQuery,mCallback);
+		return this.queryExecMulti(mQueries,mCallback);
 	},
 
 	querySelect:function(mWhat,mFrom,mWhere){

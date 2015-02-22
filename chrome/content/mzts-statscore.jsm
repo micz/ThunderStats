@@ -36,7 +36,7 @@ var miczThunderStatsCore = {
 
 miczThunderStatsCore.db = {
 
-	getOneDayMessages:function(mType,mGivenDay,mIdentity,mCallback){
+	getOneDayMessages:function(mType,mGivenDay,mIdentity,mCallback){	//mGivenDay is a Date object
 		let mFromDate=new Date(mGivenDay);
 		mFromDate.setHours(0,0,0,0);
 		let mToDate=new Date(mGivenDay);

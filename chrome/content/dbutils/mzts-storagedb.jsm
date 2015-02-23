@@ -96,24 +96,33 @@ miczThunderStatsStorageDB.structure={
 
 	sDb_version:'1',
 
-	tableStatsCache:"CREATE TABLE 'statsCache' ( \
-	'identity'	INTEGER NOT NULL, \
-	'year'	INTEGER NOT NULL, \
-	'month'	INTEGER NOT NULL, \
-	'day'	INTEGER NOT NULL, \
-	'hour'	INTEGER NOT NULL, \
-	'msg_sent'	INTEGER NOT NULL, \
-	'msg_received'	INTEGER NOT NULL, \
-	'attachment_sent'	INTEGER NOT NULL, \
-	'attachment_received'	INTEGER NOT NULL, \
-	'msg_w_attach_sent'	INTEGER NOT NULL, \
-	'msg_w_attach_received'	INTEGER NOT NULL \
-	); \
-	\
-	CREATE INDEX 'dayIdx' on statscache (day DESC); \
+	tableStatsCache:"CREATE TABLE 'statsCache' (\
+    'identity' INTEGER NOT NULL,\
+    'year' INTEGER NOT NULL,\
+    'month' INTEGER NOT NULL,\
+    'day' INTEGER NOT NULL,\
+    'hour' INTEGER NOT NULL,\
+    'year_utc' INTEGER NOT NULL,\
+    'month_utc' INTEGER NOT NULL,\
+    'day_utc' INTEGER NOT NULL,\
+    'hour_utc' INTEGER NOT NULL,\
+    'msg_sent' INTEGER NOT NULL,\
+    'msg_received' INTEGER NOT NULL,\
+    'attachment_sent' INTEGER NOT NULL,\
+    'attachment_received' INTEGER NOT NULL,\
+    'msg_w_attach_sent' INTEGER NOT NULL,\
+    'msg_w_attach_received' INTEGER NOT NULL,\
+	'utc_date_from' INTEGER NOT NULL,\
+	'utc_date_to' INTEGER NOT NULL,\
+    'status' INTEGER  NOT NULL  DEFAULT (0));\
+	 \
+	CREATE INDEX 'dayIdx' on statscache (day DESC);\
 	CREATE INDEX 'monthIdx' on statscache (month DESC); \
-	CREATE INDEX 'yearIdx' on statscache (year DESC); \
-	CREATE INDEX 'identityIdx' on statscache (identity ASC); \
+	CREATE INDEX 'yearIdx' on statscache (year DESC);\
+	CREATE INDEX 'day_utcIdx' on statscache (day DESC);\
+	CREATE INDEX 'month_utcIdx' on statscache (month DESC);\
+	CREATE INDEX 'year_utcIdx' on statscache (year DESC);\
+	CREATE INDEX 'identityIdx' on statscache (identity ASC);\
 	CREATE UNIQUE INDEX 'uIndex' on statscache (identity ASC, year ASC, month ASC, day ASC, hour DESC);",
 
 	tableSettings:"CREATE TABLE 'Settings' (\

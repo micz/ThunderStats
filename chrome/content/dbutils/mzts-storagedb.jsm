@@ -68,12 +68,22 @@ var miczThunderStatsStorageDB = {
 	},
 	
 	insertNewDay:function(mIdentity,mGivenDay,mCallback){ //mIdentity is the identity id, mGivenDay is a Date object
-		let mY=mGivenDay.getFullYear();
-		let mM=mGivenDay.getMonth();
-		let mD=mGivenDay.getDate();
+		mGivenDay.setHours(0,0,0,0);
 		let mQueries=new Array();
-		for (let mH=0; mH<=23; mH++){
-			mQueries.push("INSERT INTO statscache ('identity', 'year', 'month', 'day', 'hour', 'msg_sent', 'msg_received', 'attachment_sent', 'attachment_received', 'msg_w_attach_sent', 'msg_w_attach_received') VALUES ('"+mIdentity+"', '"+mY+"', '"+mM+"', '"+mD+"', '"+mH+"', '0', '0', '0', '0', '0', '0')");
+		for (let i=0; i<=23; i++){
+			let mDate=new Date(mGivenDay);
+			mDate.setHours(mGivenDay.getHours() + i);
+			let mY=mDate.getFullYear();
+			let mM=mDate.getMonth();
+			let mD=mDate.getDate();
+			let mH=mDate.getHours();
+			let mY_UTC=mDate.getUTCFullYear();
+			let mM_UTC=mDate.getUTCMonth();
+			let mD_UTC=mDate.getUTCDate();
+			let mH_UTC=mDate.getUTCHours();
+			let mUTC_Date_To=new Date(mDate);
+			mUTC_Date_To.setUTCHours(mDate.getUTCHours() + 1);
+			mQueries.push("INSERT OR IGNORE INTO statscache ('identity', 'year', 'month', 'day', 'hour', 'year_utc', 'month_utc', 'day_utc', 'hour_utc', 'msg_sent', 'msg_received', 'attachment_sent', 'attachment_received', 'msg_w_attach_sent', 'msg_w_attach_received', 'utc_date_from', 'utc_date_to', 'status') VALUES ('"+mIdentity+"', '"+mY+"', '"+mM+"', '"+mD+"', '"+mH+"', '"+mY_UTC+"', '"+mM_UTC+"', '"+mD_UTC+"', '"+mH_UTC+"', '0', '0', '0', '0', '0', '0', '"+mDate.getTime()+"', '"+mUTC_Date_To.getTime()+"', '0')");
 		}
 		return this.queryExecMulti(mQueries,mCallback);
 	},

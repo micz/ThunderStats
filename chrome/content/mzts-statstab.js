@@ -177,7 +177,7 @@ miczThunderStatsTab.callback.day_cache_test = {
   handleError: miczThunderStatsTab.callback.base.handleError,
 
   handleCompletion: function(aReason) {
-		miczLogger.log("Day cache rows inserted. Exit code: " + aReason);
+		miczLogger.log("Day cache row inserted. Exit code: " + aReason);
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				return true;

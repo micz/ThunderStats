@@ -91,9 +91,15 @@ var miczThunderStatsTab = {
 
 			/*let rows6=miczThunderStatsCore.db.getTodayMessages(1,identity_id);
 			output.push("<b>Today sent messages:</b> "+rows6[0][0]+"<br/>");
+			output.push("<br/>");*/
+			
+			let rows7=miczThunderStatsDB.queryGetLastMessageDate();
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] '+JSON.stringify(rows7)+'\r\n');
+			let rows7_date=new Date(rows7[0][0]/1000);
+			output.push("<b>Last message date:</b> "+rows7_date.toString()+"<br/>");
 			output.push("<br/>");
 
-			document.getElementById("test_output").innerHTML=output.join('');*/
+			document.getElementById("test_output").innerHTML=output.join('');
 
 			//miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.test);
 			//miczThunderStatsCore.db.getYesterdayMessages(1,identity_id,miczThunderStatsTab.callback.test);
@@ -103,10 +109,11 @@ var miczThunderStatsTab = {
 			//miczThunderStatsStorageDB.insertNewDay(identity_id,new Date(),miczThunderStatsTab.callback.day_cache_test);
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.test '+(typeof miczThunderStatsTab.callback.test)+'\r\n');
-
-			let fd=new Date('2014/12/01');
+			
+			
+			/*let fd=new Date('2014/12/01');
 			let td=new Date('2014/12/10');
-			miczThunderStatsUtils.getDaysFromRange(fd,td);
+			miczThunderStatsUtils.getDaysFromRange(fd,td);*/
 
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();

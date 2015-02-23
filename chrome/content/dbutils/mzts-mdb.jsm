@@ -144,5 +144,12 @@ var miczThunderStatsDB = {
 		let rows=this.querySelect("id","identities",mWhere);
 		return rows[0][0];
 	},
+	
+	queryGetLastMessageDate:function(mCallback){
+		let mWhat="max(date) as last_msg_date";
+		let mFrom="messages";
+		let mWhere="";
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns last_msg_date
+	},
 
 };

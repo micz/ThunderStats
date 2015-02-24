@@ -25,23 +25,57 @@
   </head>
 
   <body>
-    <div id="content_wrapper">
-      <h1 id="heading"/><div id="settings_wrapper"><span id="settings"
-      class="link" tabindex="0">Testing stats tab!</span></div>
+	  <div id="heading_wrapper">
+      <h1 id="heading">Testing stats tab!</h1>
+    </div>
+
+      <div id="table">
+      <div id="tier1" class="tier">
+        <div class="chunk" id="reading_chunk">
+      <div class="list_heading_wrapper">
+            <h2 class="list_heading cropped"> space.label;</h2>
+          </div>
+			1
+        </div>
+        <div class="chunk" id="writing_chunk">
+          <div class="list_heading_wrapper">
+            <h2 class="list_heading cropped"> space.label;</h2>
+          </div>
+2
+      </div>
+      </div>
+      <div id="tier2" class="tier">
+        <div class="chunk" id="space_chunk">
+          <div class="list_heading_wrapper">
+            <h2 class="list_heading cropped"> space.label;</h2>
+          </div>
+
+        </div>
+        <div class="chunk" id="stats_chunk">
+          <div class="list_heading_wrapper">
+            <h2 class="list_heading cropped"> yourPatterns.label;</h2>
+          </div>
+          </div>
+      </div>
+      </div>
+
 	  <div>
 		<select id="identities_selector">
 		  <option value="0">All identity</option>
 		</select>
 		<button type="button" onclick="miczThunderStatsTab.doStats();">Update</button>
 	  </div>
+	  
 	  <div id="today" class="mzts-desc"><p><span>Today sent messages: </span><span id="today_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_sent_wait"/></p>
 	  <p><span>Today received messages: </span><span id="today_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_rcvd_wait"/></p>
 	  </div>
+	  
 	  <div id="yesterday" class="mzts-desc"><p><span>Yesterday sent messages: </span><span id="yesterday_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_sent_wait"/></p>
 	  <p><span>Yesterday received messages: </span><span id="yesterday_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_rcvd_wait"/></p>
 	  </div>
+	 
 	 <div id="test_output" class="mzts-desc"></div>
-    </div>
+
     <div id="log_wrapper"></div>
     <div id="log_clear_btn"><img src="chrome://thunderstats/skin/mzts-log_clear.png" onclick="$('#log_wrapper').empty();" alt="Clear log" title="Clear log"/></div>
   </body>

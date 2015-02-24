@@ -4,3 +4,64 @@ html,body{margin:0;padding:0;height:100%;background:white;}
 #log_wrapper p{padding:0;margin:0;font-size:0.8em;}
 #log_clear_btn{position:absolute;bottom:0px;right:16px;cursor:pointer;z-index:100;}
 .mzts-desc{word-wrap:break-word;width:90%;}
+
+#heading_wrapper {
+  display: table;
+  table-layout: fixed;
+  position: fixed;
+  width: -moz-available;
+  background-image: -moz-linear-gradient(rgba(242,242,240,0),    /*#94b6db*/
+                                         rgba(242,242,240,.25)); /*#78a3d1*/
+  background-color: Highlight;
+  color: HighlightText; /*white*/
+  z-index: 2;
+}
+
+#heading {
+  display: table-cell;
+  margin: 0;
+  padding: 1ex;
+  white-space: nowrap;
+  font-size: large;
+  font-weight: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#table {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.tier {
+  display: table-row;
+}
+
+.chunk {
+  display: table-cell;
+  width: 50%;
+  padding: 1ex;
+  vertical-align: top;
+}
+
+#tier1 .chunk {
+  padding-top: 3em;
+}
+
+#writing_chunk {
+  background-color: rgba(125,125,105,.1); /*#f2f2f0*/
+}
+
+#space_chunk {
+  background-image: -moz-linear-gradient(rgba(125,125,105,.1) 75%, rgba(125,125,105,0)); /*242,242,240,1), rgba(242,242,240,0)*/
+}
+
+/* Section headings */
+
+.list_heading_wrapper {
+  color: -moz-nativehyperlinktext; /*#2F61A1*/
+  padding: 1ex;
+  -moz-padding-start: 16px;
+  -moz-padding-end: 0;
+}

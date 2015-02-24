@@ -85,3 +85,5 @@ html,body{margin:0;padding:0;height:100%;background:white;}
   width: -moz-min-content;
   max-width: -moz-available;
 }
+
+.circle_wait{text-align:center;width:100%;}

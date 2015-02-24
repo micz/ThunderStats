@@ -47,11 +47,13 @@ var miczThunderStatsTab = {
 	getHomepageStats:function(identity_id){
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingToday("today_sent_wait");
+		miczThunderStatsTab.ui.showLoadingToday("today_rcvd_wait");
 		
 		//Get today sent messages
 		miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_sent);
 		
 		//Get today received messages
+		miczThunderStatsCore.db.getTodayMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_today_rcvd);
 		
 		//Get today first 10 senders
 		
@@ -154,10 +156,21 @@ miczThunderStatsTab.callback.base={
 
 miczThunderStatsTab.callback.homepage_stats_today_sent = {
   handleResult: function(aResultSet) {
-    // TODO
     let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
-    $jQ("#today_sent").append(result[1]["Num"]);
+    $jQ("#today_sent").text(result[1]["Num"]);
     miczThunderStatsTab.ui.hideLoadingToday("today_sent_wait");
+  },
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: miczThunderStatsTab.callback.base.handleCompletion,
+};
+
+miczThunderStatsTab.callback.homepage_stats_today_rcvd = {
+  handleResult: function(aResultSet) {
+    let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+    $jQ("#today_rcvd").text(result[1]["Num"]);
+    miczThunderStatsTab.ui.hideLoadingToday("today_rcvd_wait");
   },
 
   handleError: miczThunderStatsTab.callback.base.handleError,

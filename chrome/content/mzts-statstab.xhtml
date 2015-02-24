@@ -20,8 +20,8 @@
     <title>&ThunderStats.TABTitle;</title>
 
     <script type="application/javascript;version=1.8" src="chrome://messenger/content/protovis-r2.6-modded.js"/>
-    <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/jquery-2.1.3.min.js"/>
+    <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.js"/>
   </head>
 
   <body>
@@ -32,8 +32,10 @@
 		<select id="identities_selector">
 		  <option value="0">All identity</option>
 		</select>
-		<button type="button" onclick="miczThunderStatsTab.doStats();">Do Stats!</button>
+		<button type="button" onclick="miczThunderStatsTab.doStats();">Update</button>
 	  </div>
+	  <div id="today" class="mzts-desc"><p><span>Today sent messages: </span><span id="today_sent"><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_sent_wait"/></span></p>
+	  <p><span>Today received messages: </span><span id="today_rcvd"><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_rcvd_wait"/></span></p></div>
 	 <div id="test_output" class="mzts-desc"></div>
     </div>
     <div id="log_wrapper"></div>

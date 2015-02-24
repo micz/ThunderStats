@@ -5,6 +5,8 @@ Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
+var $jQ = jQuery.noConflict();
+
 var miczThunderStatsTab = {
 
 	onLoad: function(){
@@ -43,8 +45,11 @@ var miczThunderStatsTab = {
 		},
 		
 	getHomepageStats:function(identity_id){
+		//Show loading indicators
+		miczThunderStatsTab.ui.showLoadingToday("today_sent_wait");
+		
 		//Get today sent messages
-		miczThunderStatsCore.db.getTodayMessages(1,identity_id);
+		miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_sent);
 		
 		//Get today received messages
 		
@@ -61,6 +66,8 @@ var miczThunderStatsTab = {
 			let output=new Array();
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
+			
+			this.getHomepageStats(identity_id);
 
 			/*let rows=miczThunderStatsDB.queryMessages(1,Date.parse('2014/12/01'),Date.now(),identity_id);
 			output.push("<b>Sent messages from 01/12/2014 to today:</b> "+rows[0][0]+"<br/>");
@@ -93,13 +100,13 @@ var miczThunderStatsTab = {
 			output.push("<b>Today sent messages:</b> "+rows6[0][0]+"<br/>");
 			output.push("<br/>");*/
 			
-			let rows7=miczThunderStatsDB.queryGetLastMessageDate();
+			/*let rows7=miczThunderStatsDB.queryGetLastMessageDate();
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] '+JSON.stringify(rows7)+'\r\n');
 			let rows7_date=new Date(rows7[0][0]/1000);
 			output.push("<b>Last message date:</b> "+rows7_date.toString()+"<br/>");
 			output.push("<br/>");
 
-			document.getElementById("test_output").innerHTML=output.join('');
+			document.getElementById("test_output").innerHTML=output.join('');*/
 
 			//miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.test);
 			//miczThunderStatsCore.db.getYesterdayMessages(1,identity_id,miczThunderStatsTab.callback.test);
@@ -121,7 +128,6 @@ var miczThunderStatsTab = {
 
 };
 
-window.addEventListener("load", miczThunderStatsTab.onLoad, false);
 
 miczThunderStatsTab.callback={};
 
@@ -146,10 +152,12 @@ miczThunderStatsTab.callback.base={
 	},
 };
 
-miczThunderStatsTab.callback.homepage_stats = {
+miczThunderStatsTab.callback.homepage_stats_today_sent = {
   handleResult: function(aResultSet) {
     // TODO
-    miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
+    let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+    $jQ("#today_sent").append(result[1]["Num"]);
+    miczThunderStatsTab.ui.hideLoadingToday("today_sent_wait");
   },
 
   handleError: miczThunderStatsTab.callback.base.handleError,
@@ -197,3 +205,16 @@ miczThunderStatsTab.callback.day_cache_test = {
 		}
 	},
 };
+
+miczThunderStatsTab.ui={
+
+	showLoadingToday:function(element){
+		$jQ("#"+element).show();
+	},
+
+	hideLoadingToday:function(element){
+		$jQ("#"+element).hide();
+	},
+};
+
+window.addEventListener("load", miczThunderStatsTab.onLoad, false);

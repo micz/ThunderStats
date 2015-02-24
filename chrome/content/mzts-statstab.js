@@ -39,13 +39,16 @@ var miczThunderStatsTab = {
 			
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
-
 		},
 		
 	getHomepageStats:function(identity_id){
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingToday("today_sent_wait");
 		miczThunderStatsTab.ui.showLoadingToday("today_rcvd_wait");
+		
+		//Print dates
+		$jQ("#today_date").text(miczThunderStatsUtils.getTodayString());
+		$jQ("#yesterday_date").text(miczThunderStatsUtils.getYesterdayString());
 		
 		//Today
 		//Get today sent messages

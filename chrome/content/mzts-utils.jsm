@@ -11,6 +11,21 @@ var miczThunderStatsUtils = {
 				.replace(/>/g, '&gt;');
 	},
 	
+	getTodayString:function(){
+		let d = new Date();
+		let day=d.getDate();
+		let month=d.getMonth()+1;
+		return (day<10 ? '0' : '')+day+"/"+(month<10 ? '0' : '')+month+"/"+d.getFullYear();
+	},
+	
+	getYesterdayString:function(){
+		let d = new Date();
+		d.setDate(d.getDate()-1);
+		let day=d.getDate();
+		let month=d.getMonth()+1;
+		return (day<10 ? '0' : '')+day+"/"+(month<10 ? '0' : '')+month+"/"+d.getFullYear();
+	},
+	
 	getDaysFromRange: function(mFromDate,mToDate){
 		let dOutput=new Array();
 		// Calculate days between dates

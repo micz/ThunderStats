@@ -54,6 +54,25 @@ miczThunderStatsCore.db = {
 		return this.getOneDayMessages(mType,ydate,mIdentity,mCallback);
 	},
 	
+	getOneDayInvolved:function(mType,mGivenDay,mIdentity,mCallback){	//mGivenDay is a Date object
+		let mFromDate=new Date(mGivenDay);
+		mFromDate.setHours(0,0,0,0);
+		let mToDate=new Date(mGivenDay);
+		mToDate.setHours(24,0,0,0);
+		let mMax=10;
+		return miczThunderStatsDB.queryGetNumInvolved(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity,mMax,mCallback);
+	},
+	
+	getTodayInvolved:function(mType,mIdentity,mCallback){
+		return this.getOneDayInvolved(mType,new Date(),mIdentity,mCallback);
+	},
+
+	getYesterdayInvolved:function(mType,mIdentity,mCallback){
+		let ydate = new Date();
+		ydate.setDate(ydate.getDate() - 1);
+		return this.getOneDayInvolved(mType,ydate,mIdentity,mCallback);
+	},
+	
 	getResultObject:function(aFields,aResultSet){
 		let oOutput={};
 		let r_idx=1;

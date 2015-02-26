@@ -22,6 +22,22 @@
     <script type="application/javascript;version=1.8" src="chrome://messenger/content/protovis-r2.6-modded.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/jquery-2.1.3.min.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.js"/>
+	<script type="application/javascript;version=1.8">
+	$jQ(document).ready(function() {
+		$jQ('.tabs .tab-links a').on('click', function(e)  {
+			var currentAttrValue = $jQ(this).attr('href');
+
+			// Show/Hide Tabs
+			$jQ('.tabs ' + currentAttrValue).show().siblings().hide();
+
+			// Change/remove current tab to active
+			$jQ(this).parent('li').addClass('active').siblings().removeClass('active');
+
+			e.preventDefault();
+		});
+	});
+	</script>
+
   </head>
 
   <body>
@@ -33,69 +49,94 @@
     </div>
 
 <div id="content_wrapper">
-  <div id="table_today">
-      <div id="tier1_today" class="tier">
-        <div class="chunk" id="top_left_chunk">
-      <div class="list_heading_wrapper">
-            <h2 class="list_heading cropped">Today Messages</h2>
-            <span id="today_date" class="list_heading_date"></span>
-          </div>
-		<p><span>Sent messages: </span><span id="today_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_sent_wait"/></p>
-		<p><span>Received messages: </span><span id="today_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_rcvd_wait"/></p>
-        </div>
-        <div class="chunk" id="top_right_chunk_today">
-          <div class="list_heading_wrapper">
-            <h2 class="list_heading cropped">Title</h2>
-          </div>
-      </div>
-      </div>
-      <div id="tier2_today" class="tier">
-        <div class="chunk" id="bottom_left_chunk_today">
-          <div class="list_heading_wrapper">
-            <h2 class="list_heading cropped"> space.label;</h2>
-          </div>
-          <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="today_recipients_wait"/></div>
-          <div id="today_recipients"></div>
-        </div>
-        <div class="chunk" id="bottom_right_chunk">
-          <div class="list_heading_wrapper">
-            <h2 class="list_heading cropped"> yourPatterns.label;</h2>
-          </div>
-          </div>
-      </div>
-   </div> <!-- table_today -->
+	<div class="tabs">
+		<ul class="tab-links">
+			<li class="active"><a href="#tab_today">Today</a></li>
+			<li><a href="#tab_yesterday">Yesterday</a></li>
+			<!--<li><a href="#tab3">Tab #3</a></li>
+			<li><a href="#tab4">Tab #4</a></li>-->
+		</ul>
 
-     <div id="table_yesterday">
-      <div id="tier1_yesterday" class="tier">
-        <div class="chunk" id="top_left_chunk">
-          <div class="list_heading_wrapper">
-            <h2 class="list_heading cropped">Yesterday Messages</h2>
-            <span id="yesterday_date" class="list_heading_date"></span>
-          </div>
-            <p><span>Sent messages: </span><span id="yesterday_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_sent_wait"/></p>
-			<p><span>Received messages: </span><span id="yesterday_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_rcvd_wait"/></p>
-        </div>
-        <div class="chunk" id="top_right_chunk_today">
-          <div class="list_heading_wrapper">
-            <h2 class="list_heading cropped">Title</h2>
-          </div>
-      	</div>
-      </div>
-      <div id="tier2_yesterday" class="tier">
-        <div class="chunk" id="bottom_left_chunk_today">
-          <div class="list_heading_wrapper">
-            <h2 class="list_heading cropped"> space.label;</h2>
-          </div>
-          <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="yesterday_recipients_wait"/></div>
-          <div id="yesterday_recipients"></div>
-        </div>
-        <div class="chunk" id="bottom_right_chunk">
-          <div class="list_heading_wrapper">
-            <h2 class="list_heading cropped"> yourPatterns.label;</h2>
-          </div>
-          </div>
-      </div>
-   </div> <!-- table_yesterday -->
+		<div class="tab-content">
+			<div id="tab_today" class="tab active">
+				<div id="table_today">
+				  <div id="tier1_today" class="tier">
+					<div class="chunk" id="top_left_chunk">
+				  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">Today Messages</h2>
+						<span id="today_date" class="list_heading_date"></span>
+					  </div>
+					<p><span>Sent messages: </span><span id="today_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_sent_wait"/></p>
+					<p><span>Received messages: </span><span id="today_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_rcvd_wait"/></p>
+					</div>
+					<div class="chunk" id="top_right_chunk_today">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">Title</h2>
+					  </div>
+				  </div>
+				  </div>
+				  <div id="tier2_today" class="tier">
+					<div class="chunk" id="bottom_left_chunk_today">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped"> space.label;</h2>
+					  </div>
+					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="today_recipients_wait"/></div>
+					  <div id="today_recipients"></div>
+					</div>
+					<div class="chunk" id="bottom_right_chunk">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped"> yourPatterns.label;</h2>
+					  </div>
+					  </div>
+				  </div>
+			   </div> <!-- table_today -->
+			</div> <!--tab today-->
+
+			<div id="tab_yesterday" class="tab">
+				<div id="table_yesterday">
+				  <div id="tier1_yesterday" class="tier">
+					<div class="chunk" id="top_left_chunk">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">Yesterday Messages</h2>
+						<span id="yesterday_date" class="list_heading_date"></span>
+					  </div>
+						<p><span>Sent messages: </span><span id="yesterday_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_sent_wait"/></p>
+						<p><span>Received messages: </span><span id="yesterday_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_rcvd_wait"/></p>
+					</div>
+					<div class="chunk" id="top_right_chunk_today">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">Title</h2>
+					  </div>
+					</div>
+				  </div>
+				  <div id="tier2_yesterday" class="tier">
+					<div class="chunk" id="bottom_left_chunk_today">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped"> space.label;</h2>
+					  </div>
+					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="yesterday_recipients_wait"/></div>
+					  <div id="yesterday_recipients"></div>
+					</div>
+					<div class="chunk" id="bottom_right_chunk">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped"> yourPatterns.label;</h2>
+					  </div>
+					  </div>
+				  </div>
+			   </div> <!-- table_yesterday -->
+			</div> <!--tab yesterday-->
+
+			<!--<div id="tab3" class="tab">
+				<p>Tab #3 content goes here!</p>
+				<p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum ri.</p>
+			</div>
+
+			<div id="tab4" class="tab">
+				<p>Tab #4 content goes here!</p>
+				<p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
+			</div>-->
+		</div>
+	</div>
 
 </div>
 	 <!--<div id="test_output" class="mzts-desc"></div>-->

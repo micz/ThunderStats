@@ -28,7 +28,8 @@
 			var currentAttrValue = $jQ(this).attr('href');
 
 			// Show/Hide Tabs
-			$jQ('.tabs ' + currentAttrValue).show().siblings().hide();
+			//$jQ('.tabs ' + currentAttrValue).show().siblings().hide();
+			$jQ('.tabs ' + currentAttrValue).slideDown(400).siblings().slideUp(400);
 
 			// Change/remove current tab to active
 			$jQ(this).parent('li').addClass('active').siblings().removeClass('active');

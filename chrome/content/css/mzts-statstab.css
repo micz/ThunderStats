@@ -29,7 +29,7 @@ html,body{margin:0;padding:0;height:100%;background:white;}
   text-overflow: ellipsis;
 }
 
-#table {
+#table_today,#table_yesterday {
   display: table;
   width: 100%;
   table-layout: fixed;
@@ -47,15 +47,15 @@ html,body{margin:0;padding:0;height:100%;background:white;}
   vertical-align: top;
 }
 
-#tier1 .chunk {
+#tier1_today .chunk,#tier1_yestarday .chunk {
   padding-top: 3em;
 }
 
-#top_right_chunk {
+#top_right_chunk_today,#top_right_chunk_yestarday {
   background-color: rgba(125,125,105,.1); /*#f2f2f0*/
 }
 
-#bottom_left_chunk {
+#bottom_left_chunk_today,#bottom_left_chunk_yestarday {
   background-image: -moz-linear-gradient(rgba(125,125,105,.1) 75%, rgba(125,125,105,0)); /*242,242,240,1), rgba(242,242,240,0)*/
 }
 

@@ -34,14 +34,15 @@ var miczThunderStatsTab = {
 			miczLogger.log("Identities loaded.",0);
 			miczLogger.log("ThunderStats ready.",0);
 
-			miczLogger.log("Getting home page statistics...",0);
-			miczThunderStatsTab.getHomepageStats(0);
+			miczThunderStatsTab.getTodayStats(0);
 
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
 		},
 
 	getTodayStats:function(identity_id){
+		miczLogger.log("Getting today statistics...",0);
+
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingElement("today_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_rcvd_wait");
@@ -65,6 +66,8 @@ var miczThunderStatsTab = {
 	},
 
 	getYesterdayStats:function(identity_id){
+		miczLogger.log("Getting yesterday statistics...",0);
+
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingElement("today_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_rcvd_wait");

@@ -16,13 +16,13 @@ var miczThunderStatsTab = {
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
 			miczLogger.log("Opening databases...",0);
-			
+
 			miczLogger.log("Loading identities...",0);
 			miczThunderStatsCore.loadIdentities();
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
 
 			miczLogger.log("Identities found: "+miczThunderStatsCore.identities.length,0);
-			
+
 			let id_selector = document.getElementById('identities_selector');
 			for(let key in miczThunderStatsCore.identities){
 				let opt = document.createElement('option');
@@ -36,44 +36,54 @@ var miczThunderStatsTab = {
 
 			miczLogger.log("Getting home page statistics...",0);
 			miczThunderStatsTab.getHomepageStats(0);
-			
+
 			miczThunderStatsDB.close();
 			miczThunderStatsStorageDB.close();
 		},
-		
-	getHomepageStats:function(identity_id){
+
+	getTodayStats:function(identity_id){
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingElement("today_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_recipients_wait");
-		
+
 		//Print dates
 		$jQ("#today_date").text(miczThunderStatsUtils.getTodayString());
-		$jQ("#yesterday_date").text(miczThunderStatsUtils.getYesterdayString());
-		
+
 		//Today
 		//Get today sent messages
 		miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_sent);
-		
+
 		//Get today received messages
 		miczThunderStatsCore.db.getTodayMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_today_rcvd);
-		
+
 		//Get today first 10 senders
 		miczThunderStatsCore.db.getTodayInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_recipients);
-		
+
 		//Get today first 10 recipients
-		
+
+	},
+
+	getYesterdayStats:function(identity_id){
+		//Show loading indicators
+		miczThunderStatsTab.ui.showLoadingElement("today_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("today_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("today_recipients_wait");
+
+		//Print dates
+		$jQ("#yesterday_date").text(miczThunderStatsUtils.getYesterdayString());
+
 		//Yesterday
 		//Get yesterday sent messages
 		miczThunderStatsCore.db.getYesterdayMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_sent);
-		
+
 		//Get yesterday received messages
 		miczThunderStatsCore.db.getYesterdayMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_rcvd);
-		
+
 		//Get yesterday first 10 senders
-		
+
 		//Get yesterday first 10 recipients
-		
+
 	},
 
 	doStats: function(){
@@ -83,8 +93,8 @@ var miczThunderStatsTab = {
 			let output=new Array();
 			miczThunderStatsDB.init();
 			miczThunderStatsStorageDB.init();
-			
-			this.getHomepageStats(identity_id);
+
+			this.getTodayStats(identity_id);
 
 			/*let rows=miczThunderStatsDB.queryMessages(1,Date.parse('2014/12/01'),Date.now(),identity_id);
 			output.push("<b>Sent messages from 01/12/2014 to today:</b> "+rows[0][0]+"<br/>");
@@ -116,7 +126,7 @@ var miczThunderStatsTab = {
 			/*let rows6=miczThunderStatsCore.db.getTodayMessages(1,identity_id);
 			output.push("<b>Today sent messages:</b> "+rows6[0][0]+"<br/>");
 			output.push("<br/>");*/
-			
+
 			/*let rows7=miczThunderStatsDB.queryGetLastMessageDate();
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] '+JSON.stringify(rows7)+'\r\n');
 			let rows7_date=new Date(rows7[0][0]/1000);
@@ -129,12 +139,12 @@ var miczThunderStatsTab = {
 			//miczThunderStatsCore.db.getYesterdayMessages(1,identity_id,miczThunderStatsTab.callback.test);
 
 			//miczThunderStatsDB.queryGetNumInvolved(1,Date.parse('2014/12/01'),Date.now(),identity_id,10,miczThunderStatsTab.callback.test);
-			
+
 			//miczThunderStatsStorageDB.insertNewDay(identity_id,new Date(),miczThunderStatsTab.callback.day_cache_test);
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.test '+(typeof miczThunderStatsTab.callback.test)+'\r\n');
-			
-			
+
+
 			/*let fd=new Date('2014/12/01');
 			let td=new Date('2014/12/10');
 			miczThunderStatsUtils.getDaysFromRange(fd,td);*/
@@ -153,7 +163,7 @@ miczThunderStatsTab.callback.base={
 	handleError: function(aError) {
 		miczLogger.log("Error in executeAsync: " + aError.message,2);
 	},
-	
+
 	handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
@@ -227,8 +237,8 @@ miczThunderStatsTab.callback.homepage_stats_today_recipients = {
     let result = miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
     this.empty=false;
     //TODO
-    
-    
+
+
     miczThunderStatsTab.ui.hideLoadingElement("today_recipients_wait");
     miczLogger.log("Home page today recipients loaded.",0);
   },

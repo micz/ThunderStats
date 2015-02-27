@@ -29,7 +29,8 @@
 
 			// Show/Hide Tabs
 			//$jQ('.tabs ' + currentAttrValue).show().siblings().hide();
-			$jQ('.tabs ' + currentAttrValue).slideDown(400).siblings().slideUp(400);
+			//$jQ('.tabs ' + currentAttrValue).slideDown(400).siblings().slideUp(400);
+			$jQ('.tabs ' + currentAttrValue).fadeIn(400).siblings().hide();
 
 			// Change/remove current tab to active
 			$jQ(this).parent('li').addClass('active').siblings().removeClass('active');

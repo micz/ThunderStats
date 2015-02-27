@@ -59,10 +59,10 @@ var miczThunderStatsTab = {
 		miczThunderStatsCore.db.getTodayMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_today_rcvd);
 
 		//Get today first 10 senders
-		miczThunderStatsCore.db.getTodayInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_recipients);
+		//miczThunderStatsCore.db.getTodayInvolved(0,identity_id,miczThunderStatsTab.callback.homepage_stats_today_senders);
 
 		//Get today first 10 recipients
-
+		miczThunderStatsCore.db.getTodayInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_recipients);
 	},
 
 	getYesterdayStats:function(identity_id){
@@ -95,7 +95,7 @@ var miczThunderStatsTab = {
 	},
 
 	doStats: function(){
-			let id_selector = this.getCurrentIdentityId();
+			let identity_id = this.getCurrentIdentityId();
 
 			let output=new Array();
 			miczThunderStatsDB.init();

@@ -240,14 +240,14 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_rcvd = {
 
 miczThunderStatsTab.callback.homepage_stats_today_recipients = {
 	empty:true,
+	data:new Array(),
   handleResult: function(aResultSet) {
     let result = miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
     this.empty=false;
-    //TODO
-
-
-    miczThunderStatsTab.ui.hideLoadingElement("today_recipients_wait");
-    miczLogger.log("Home page today recipients loaded.",0);
+    for (let key in result) {
+		this.data.push(result[key]);
+	}
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_recipients handleResult '+JSON.stringify(this.data)+'\r\n');
   },
 
   handleError: miczThunderStatsTab.callback.base.handleError,
@@ -255,10 +255,12 @@ miczThunderStatsTab.callback.homepage_stats_today_recipients = {
   handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				//miczLogger.log("Involved query completed successfully.");
-				if(this.empty){
-					//TODO
-					miczThunderStatsTab.ui.hideLoadingElement("today_recipients_wait");
+			    miczLogger.log("Today recipients loaded.",0);
+				miczThunderStatsTab.ui.hideLoadingElement("today_recipients_wait");
+				if(!this.empty){
+					$jQ("#today_recipients").text(JSON.stringify(this.data));
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
+				}else{
 					$jQ("#today_recipients").text("No mails sent!");
 				}
 				return true;

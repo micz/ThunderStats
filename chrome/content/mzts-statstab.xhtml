@@ -11,7 +11,7 @@
   %startDTD;
   ]
 >
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <head>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/messageHeader.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-statstab.css"/>
@@ -42,12 +42,22 @@
 
   </head>
 
-  <body>
+  <body> 
+	  
 	  <div id="heading_wrapper">Choose identity:
       <select id="identities_selector">
 		  <option value="0">All identities</option>
 		</select>
 		<button type="button" onclick="miczThunderStatsTab.doStats();">Update</button>
+		<div class="setup_icon">
+			<!--<img src="chrome://thunderstats/skin/mzts-setup.png" alt="Setup" context="setup_menu"/>-->
+			<xul:button label="Setup" image="chrome://thunderstats/skin/mzts-setup.png" type="menu" id="setup_menu">
+			<xul:menupopup>
+  <xul:menuitem label="Historical data consolidation"/>
+  <xul:menuitem label="Preferences"/>
+</xul:menupopup>
+			</xul:button>
+			</div>
     </div>
 
 <div id="content_wrapper">

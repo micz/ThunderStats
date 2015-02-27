@@ -88,10 +88,14 @@ var miczThunderStatsTab = {
 		//Get yesterday first 10 recipients
 
 	},
+	
+	getCurrentIdentityId:function(){
+		let id_selector = document.getElementById("identities_selector");
+		return id_selector.options[id_selector.selectedIndex].value;
+	},
 
 	doStats: function(){
-			let id_selector = document.getElementById("identities_selector");
-			let identity_id=id_selector.options[id_selector.selectedIndex].value;
+			let id_selector = this.getCurrentIdentityId();
 
 			let output=new Array();
 			miczThunderStatsDB.init();
@@ -320,6 +324,21 @@ miczThunderStatsTab.ui={
 	hideLoadingElement:function(element){
 		$jQ("#"+element).hide();
 	},
+	
+	updateTab:function(tab_id){
+		switch(tab_id){
+			case '#tab_today':
+				miczThunderStatsDB.init();
+				miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
+				miczThunderStatsDB.close();
+			break;
+			case '#tab_yesterday':
+				miczThunderStatsDB.init();
+				miczThunderStatsTab.getYesterdayStats(miczThunderStatsTab.getCurrentIdentityId());
+				miczThunderStatsDB.close();
+			break;
+		}
+	}
 };
 
 window.addEventListener("load", miczThunderStatsTab.onLoad, false);

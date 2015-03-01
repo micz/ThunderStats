@@ -4,7 +4,7 @@ html,body{margin:0;padding:0;height:100%;background:white;}
 #log_wrapper p{padding:0;margin:0;font-size:0.8em; color:grey;}
 #log_clear_btn{position:absolute;bottom:0px;right:16px;cursor:pointer;z-index:100;}
 .mzts-desc{word-wrap:break-word;width:90%;}
-.setup_icon{float:right;}
+.setup_icon{float:right;cursor:pointer}
 #setup_menu{max-width:24px;height:24px;}
 
 #heading_wrapper {

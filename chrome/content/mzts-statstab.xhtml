@@ -16,22 +16,30 @@
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/messageHeader.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-statstab.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-log.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css"/>
     <title>&ThunderStats.TABTitle;</title>
 
     <script type="application/javascript;version=1.8" src="chrome://messenger/content/protovis-r2.6-modded.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/jquery-2.1.3.min.js"/>
+    <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/jquery.tooltipster.min.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.ui.js"/>
 	<script type="application/javascript;version=1.8">
 	$jQ(document).ready(function() {
+		$jQ('.tooltip').tooltipster({
+			arrow:false,
+			//debug:false,
+			theme:'tooltipster-light'
+		});
 		$jQ('.tabs .tab-links a').on('click', function(e)  {
 			var currentAttrValue = $jQ(this).attr('href');
 
 			// Show/Hide Tabs
 			//$jQ('.tabs ' + currentAttrValue).show().siblings().hide();
 			$jQ('.tabs ' + currentAttrValue).fadeIn(400).siblings().hide();
-			
+
 			//update value
 			miczThunderStatsTab.ui.updateTab(currentAttrValue);
 
@@ -45,22 +53,21 @@
 
   </head>
 
-  <body> 
-	  
+  <body>
+
+  <xul:popupset id="mainPopupSet">
+    <xul:tooltip id="mztsXulInXhtmlTooltip"/>
+  </xul:popupset>
+
 	  <div id="heading_wrapper">Choose identity:
       <select id="identities_selector">
 		  <option value="0">All identities</option>
 		</select>
 		<button type="button" onclick="miczThunderStatsTab.doStats();">Update</button>
 		<div class="setup_icon">
-			<!--<img src="chrome://thunderstats/skin/mzts-setup.png" alt="Setup" context="setup_menu"/>-->
-			<xul:button label="Setup" image="chrome://thunderstats/skin/mzts-setup.png" type="menu" id="setup_menu">
-			<xul:menupopup>
-  <xul:menuitem label="Historical data consolidation"/>
-  <xul:menuitem label="Preferences"/>
-</xul:menupopup>
-			</xul:button>
-			</div>
+			<img src="chrome://thunderstats/skin/mzts-setup.png" alt="Setup" onclick="miczThunderStatsTab.ui.openPrefWindow();"
+			title="Setup" class="tooltip"/>
+		</div>
     </div>
 
 <div id="content_wrapper">

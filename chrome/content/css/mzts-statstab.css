@@ -2,7 +2,7 @@ html,body{margin:0;padding:0;height:100%;background:white;}
 #content_wrapper{padding:3px 3px 100px 3px;position:relative;top:0px;}
 #log_wrapper{margin:1px 0px 0px 0px;padding:5px;background:white;border:1px solid lightgrey;overflow-y:scroll;height:100px;width:99%;position:fixed;bottom:0px;}
 #log_wrapper p{padding:0;margin:0;font-size:0.8em; color:grey;}
-#log_clear_btn{position:absolute;bottom:0px;right:16px;cursor:pointer;z-index:100;}
+#log_clear_btn{position:fixed;bottom:0px;right:16px;cursor:pointer;z-index:100;}
 .mzts-desc{word-wrap:break-word;width:90%;}
 .setup_icon{float:right;cursor:pointer}
 #setup_menu{max-width:24px;height:24px;}

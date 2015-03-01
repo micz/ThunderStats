@@ -88,7 +88,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsCore.db.getYesterdayInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_yestarday_recipients);
 
 		//Get yesterday first 10 senders
-
+		miczThunderStatsCore.db.getYesterdayInvolved(0,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_senders);
 	},
 
 	getCurrentIdentityId:function(){
@@ -163,6 +163,5 @@ var miczThunderStatsTab = {
 	},
 
 };
-
 
 window.addEventListener("load", miczThunderStatsTab.onLoad, false);

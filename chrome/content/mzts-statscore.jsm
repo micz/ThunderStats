@@ -1,6 +1,6 @@
 "use strict";
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
-Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");
+//Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	 // To be enabled in vesion 2.0
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -53,7 +53,7 @@ miczThunderStatsCore.db = {
 		ydate.setDate(ydate.getDate() - 1);
 		return this.getOneDayMessages(mType,ydate,mIdentity,mCallback);
 	},
-	
+
 	getOneDayInvolved:function(mType,mGivenDay,mIdentity,mCallback){	//mGivenDay is a Date object
 		let mFromDate=new Date(mGivenDay);
 		mFromDate.setHours(0,0,0,0);
@@ -62,7 +62,7 @@ miczThunderStatsCore.db = {
 		let mMax=10;
 		return miczThunderStatsDB.queryGetNumInvolved(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity,mMax,mCallback);
 	},
-	
+
 	getTodayInvolved:function(mType,mIdentity,mCallback){
 		return this.getOneDayInvolved(mType,new Date(),mIdentity,mCallback);
 	},
@@ -72,7 +72,7 @@ miczThunderStatsCore.db = {
 		ydate.setDate(ydate.getDate() - 1);
 		return this.getOneDayInvolved(mType,ydate,mIdentity,mCallback);
 	},
-	
+
 	getResultObject:function(aFields,aResultSet){
 		let oOutput={};
 		let r_idx=1;

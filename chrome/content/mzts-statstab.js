@@ -1,6 +1,6 @@
 "use strict";
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
-Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");
+//Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	// To be enabled in vesion 2.0
 Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
@@ -14,7 +14,7 @@ var miczThunderStatsTab = {
 			miczLogger.log("ThunderStats starting...",0);
 
 			miczThunderStatsDB.init();
-			miczThunderStatsStorageDB.init();
+			//miczThunderStatsStorageDB.init();	// To be enabled in vesion 2.0
 			miczLogger.log("Opening databases...",0);
 
 			miczLogger.log("Loading identities...",0);
@@ -37,7 +37,7 @@ var miczThunderStatsTab = {
 			miczThunderStatsTab.getTodayStats(0);
 
 			miczThunderStatsDB.close();
-			miczThunderStatsStorageDB.close();
+			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
 		},
 
 	getTodayStats:function(identity_id){
@@ -88,7 +88,7 @@ var miczThunderStatsTab = {
 		//Get yesterday first 10 recipients
 
 	},
-	
+
 	getCurrentIdentityId:function(){
 		let id_selector = document.getElementById("identities_selector");
 		return id_selector.options[id_selector.selectedIndex].value;
@@ -99,7 +99,7 @@ var miczThunderStatsTab = {
 
 			let output=new Array();
 			miczThunderStatsDB.init();
-			miczThunderStatsStorageDB.init();
+			//miczThunderStatsStorageDB.init();	 // To be enabled in vesion 2.0
 
 			this.getTodayStats(identity_id);
 
@@ -157,7 +157,7 @@ var miczThunderStatsTab = {
 			miczThunderStatsUtils.getDaysFromRange(fd,td);*/
 
 			miczThunderStatsDB.close();
-			miczThunderStatsStorageDB.close();
+			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
 	},
 
 };

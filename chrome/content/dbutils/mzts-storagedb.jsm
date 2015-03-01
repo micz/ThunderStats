@@ -66,24 +66,20 @@ var miczThunderStatsStorageDB = {
 	updateDB:function(oldVersion){
 		//To be implemented
 	},
-	
+
 	insertNewDay:function(mIdentity,mGivenDay,mCallback){ //mIdentity is the identity id, mGivenDay is a Date object
 		mGivenDay.setHours(0,0,0,0);
 		let mQueries=new Array();
 		for (let i=0; i<=23; i++){
 			let mDate=new Date(mGivenDay);
 			mDate.setHours(mGivenDay.getHours() + i);
-			let mY=mDate.getFullYear();
-			let mM=mDate.getMonth();
-			let mD=mDate.getDate();
-			let mH=mDate.getHours();
 			let mY_UTC=mDate.getUTCFullYear();
 			let mM_UTC=mDate.getUTCMonth();
 			let mD_UTC=mDate.getUTCDate();
 			let mH_UTC=mDate.getUTCHours();
 			let mUTC_Date_To=new Date(mDate);
 			mUTC_Date_To.setUTCHours(mDate.getUTCHours() + 1);
-			mQueries.push("INSERT OR IGNORE INTO statscache ('identity', 'year', 'month', 'day', 'hour', 'year_utc', 'month_utc', 'day_utc', 'hour_utc', 'msg_sent', 'msg_received', 'attachment_sent', 'attachment_received', 'msg_w_attach_sent', 'msg_w_attach_received', 'utc_date_from', 'utc_date_to', 'status') VALUES ('"+mIdentity+"', '"+mY+"', '"+mM+"', '"+mD+"', '"+mH+"', '"+mY_UTC+"', '"+mM_UTC+"', '"+mD_UTC+"', '"+mH_UTC+"', '0', '0', '0', '0', '0', '0', '"+mDate.getTime()+"', '"+mUTC_Date_To.getTime()+"', '0')");
+			mQueries.push("INSERT OR IGNORE INTO statscache ('identity', 'year_utc', 'month_utc', 'day_utc', 'hour_utc', 'msg_sent', 'msg_received', 'attachment_sent', 'attachment_received', 'msg_w_attach_sent', 'msg_w_attach_received', 'utc_date_from', 'utc_date_to', 'status') VALUES ('"+mIdentity+"', '"+mY_UTC+"', '"+mM_UTC+"', '"+mD_UTC+"', '"+mH_UTC+"', '0', '0', '0', '0', '0', '0', '"+mDate.getTime()+"', '"+mUTC_Date_To.getTime()+"', '0')");
 		}
 		return this.queryExecMulti(mQueries,mCallback);
 	},
@@ -95,7 +91,7 @@ var miczThunderStatsStorageDB = {
 	queryExec:function(mQuery,mCallback){ //mQuery is a query string
 		return miczThunderStatsQuery.queryExec(this.sDb,[mQuery],mCallback);
 	},
-	
+
 	queryExecMulti:function(mQueries,mCallback){ //mQueries is an array of query strings
 		return miczThunderStatsQuery.queryExec(this.sDb,mQueries,mCallback);
 	},
@@ -108,10 +104,6 @@ miczThunderStatsStorageDB.structure={
 
 	tableStatsCache:"CREATE TABLE 'statsCache' (\
     'identity' INTEGER NOT NULL,\
-    'year' INTEGER NOT NULL,\
-    'month' INTEGER NOT NULL,\
-    'day' INTEGER NOT NULL,\
-    'hour' INTEGER NOT NULL,\
     'year_utc' INTEGER NOT NULL,\
     'month_utc' INTEGER NOT NULL,\
     'day_utc' INTEGER NOT NULL,\
@@ -126,14 +118,11 @@ miczThunderStatsStorageDB.structure={
 	'utc_date_to' INTEGER NOT NULL,\
     'status' INTEGER  NOT NULL  DEFAULT (0));\
 	 \
-	CREATE INDEX 'dayIdx' on statscache (day DESC);\
-	CREATE INDEX 'monthIdx' on statscache (month DESC); \
-	CREATE INDEX 'yearIdx' on statscache (year DESC);\
-	CREATE INDEX 'day_utcIdx' on statscache (day DESC);\
-	CREATE INDEX 'month_utcIdx' on statscache (month DESC);\
-	CREATE INDEX 'year_utcIdx' on statscache (year DESC);\
+	CREATE INDEX 'day_utcIdx' on statscache (day_utc DESC);\
+	CREATE INDEX 'month_utcIdx' on statscache (month_utc DESC);\
+	CREATE INDEX 'year_utcIdx' on statscache (year_utc DESC);\
 	CREATE INDEX 'identityIdx' on statscache (identity ASC);\
-	CREATE UNIQUE INDEX 'uIndex' on statscache (identity ASC, year ASC, month ASC, day ASC, hour DESC);",
+	CREATE UNIQUE INDEX 'uIndex' on statscache (identity ASC, year_utc ASC, month_utc ASC, day_utc ASC, hour_utc DESC);",
 
 	tableSettings:"CREATE TABLE 'Settings' (\
     'name' TEXT NOT NULL,\

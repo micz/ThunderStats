@@ -11,6 +11,7 @@ miczThunderStatsTab.ui={
 	},
 
 	updateTab:function(tab_id){
+		miczThunderStatsTab.currentTab=tab_id;
 		switch(tab_id){
 			case '#tab_today':
 				miczThunderStatsDB.init();

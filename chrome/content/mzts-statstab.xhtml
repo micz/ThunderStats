@@ -35,7 +35,7 @@
 			theme:'tooltipster-light'
 		});
 		$jQ('.tabs .tab-links a').on('click', function(e)  {
-			var currentAttrValue = $jQ(this).attr('href');
+			let currentAttrValue = $jQ(this).attr('href');
 
 			// Show/Hide Tabs
 			//$jQ('.tabs ' + currentAttrValue).show().siblings().hide();
@@ -64,7 +64,7 @@
       <select id="identities_selector">
 		  <option value="0">All identities</option>
 		</select>
-		<button type="button" onclick="miczThunderStatsTab.doStats();">Update</button>
+		<button type="button" onclick="miczThunderStatsTab.updateStats();">Update</button>
 		<div class="setup_icon">
 			<img src="chrome://thunderstats/skin/mzts-setup.png" alt="Setup" onclick="miczThunderStatsTab.ui.openPrefWindow();"
 			title="Setup" class="tooltip"/>

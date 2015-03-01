@@ -9,6 +9,8 @@ var $jQ = jQuery.noConflict();
 
 var miczThunderStatsTab = {
 
+	currentTab:"#tab_today",
+
 	onLoad: function(){
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
 			miczLogger.log("ThunderStats starting...",0);
@@ -94,6 +96,10 @@ var miczThunderStatsTab = {
 	getCurrentIdentityId:function(){
 		let id_selector = document.getElementById("identities_selector");
 		return id_selector.options[id_selector.selectedIndex].value;
+	},
+
+	updateStats: function(){
+		miczThunderStatsTab.ui.updateTab(this.currentTab);
 	},
 
 	doStats: function(){

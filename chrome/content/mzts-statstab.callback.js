@@ -33,7 +33,7 @@ miczThunderStatsTab.callback.homepage_stats_today_sent = {
     let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
     $jQ("#today_sent").text(result[1]["Num"]);
     miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
-	miczLogger.log("Home page today sent messages loaded.",0);
+	miczLogger.log("Today sent messages loaded.",0);
   },
 
   handleError: miczThunderStatsTab.callback.base.handleError,
@@ -46,7 +46,7 @@ miczThunderStatsTab.callback.homepage_stats_today_rcvd = {
     let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
     $jQ("#today_rcvd").text(result[1]["Num"]);
     miczThunderStatsTab.ui.hideLoadingElement("today_rcvd_wait");
-    miczLogger.log("Home page today received messages loaded.",0);
+    miczLogger.log("Today received messages loaded.",0);
   },
 
   handleError: miczThunderStatsTab.callback.base.handleError,
@@ -59,7 +59,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_sent = {
     let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
     $jQ("#yesterday_sent").text(result[1]["Num"]);
     miczThunderStatsTab.ui.hideLoadingElement("yesterday_sent_wait");
-    miczLogger.log("Home page yesterday sent messages loaded.",0);
+    miczLogger.log("Yesterday sent messages loaded.",0);
   },
 
   handleError: miczThunderStatsTab.callback.base.handleError,
@@ -72,7 +72,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_rcvd = {
     let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
     $jQ("#yesterday_rcvd").text(result[1]["Num"]);
     miczThunderStatsTab.ui.hideLoadingElement("yesterday_rcvd_wait");
-    miczLogger.log("Home page yesterday received messages loaded.",0);
+    miczLogger.log("Yesterday received messages loaded.",0);
   },
 
   handleError: miczThunderStatsTab.callback.base.handleError,

@@ -118,7 +118,6 @@ miczThunderStatsTab.callback.homepage_stats_today_recipients = {
   handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-			    miczLogger.log("Today recipients loaded.",0);
 				miczThunderStatsTab.ui.hideLoadingElement("today_recipients_wait");
 				if(!this.empty){
 					$jQ("#today_recipients").text(JSON.stringify(this.data));
@@ -126,6 +125,7 @@ miczThunderStatsTab.callback.homepage_stats_today_recipients = {
 				}else{
 					$jQ("#today_recipients").text("No mails sent!");
 				}
+				miczLogger.log("Today recipients loaded.",0);
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
@@ -154,7 +154,6 @@ miczThunderStatsTab.callback.homepage_stats_today_senders = {
   handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-			    miczLogger.log("Today senders loaded.",0);
 				miczThunderStatsTab.ui.hideLoadingElement("today_senders_wait");
 				if(!this.empty){
 					$jQ("#today_senders").text(JSON.stringify(this.data));
@@ -162,6 +161,7 @@ miczThunderStatsTab.callback.homepage_stats_today_senders = {
 				}else{
 					$jQ("#today_senders").text("No mails received!");
 				}
+				miczLogger.log("Today senders loaded.",0);
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
@@ -190,7 +190,6 @@ miczThunderStatsTab.callback.homepage_stats_yestarday_recipients = {
   handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-			    miczLogger.log("Yesterday recipients loaded.",0);
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_recipients_wait");
 				if(!this.empty){
 					$jQ("#yesterday_recipients").text(JSON.stringify(this.data));
@@ -198,6 +197,7 @@ miczThunderStatsTab.callback.homepage_stats_yestarday_recipients = {
 				}else{
 					$jQ("#yesterday_recipients").text("No mails sent!");
 				}
+				miczLogger.log("Yesterday recipients loaded.",0);
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
@@ -226,7 +226,6 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_senders = {
   handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-			    miczLogger.log("Yesterday senders loaded.",0);
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_senders_wait");
 				if(!this.empty){
 					$jQ("#yesterday_senders").text(JSON.stringify(this.data));
@@ -234,6 +233,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_senders = {
 				}else{
 					$jQ("#yesterday_senders").text("No mails received!");
 				}
+				miczLogger.log("Yesterday senders loaded.",0);
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);

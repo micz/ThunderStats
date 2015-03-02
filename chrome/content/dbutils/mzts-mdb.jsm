@@ -126,6 +126,25 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns tot_attachments,tot_mails
 	},
 
+	queryMessagesFolders:function(mType,mFromDate,mToDate,mIdentity,mCallback){	//mFromDate,mToDate are in milliseconds
+		let fromMe_attribute=this.msgAttributes['fromMe'];
+		let toMe_attribute=this.msgAttributes['toMe'];
+		//mType 0: toMe (for inbox 0 stats), 1: fromMe (where are you keeping your sent mails?)
+		let mType_attribute=(mType==1?fromMe_attribute:toMe_attribute);
+		let involves_attribute=this.msgAttributes['involves'];
+		let forbiddenFolders=this.queryGetForbiddenFolders();
+		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
+		let mWhat="f.name as Folder, count(distinct m.headerMessageID) as Num";
+		let mFrom=" left join messages m on ma.messageID=m.id left join messageattributes ma2 on ma2.messageID=m.id left join folderLocations f on f.id=m.folderID";
+		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		if(mIdentity>0){
+			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
+			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
+		}
+		mWhere+=" GROUP BY f.name";
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
+	},
+
 	//returns an array of ids of folder to be ignored in stats crunching
 	queryGetForbiddenFolders:function(){
 		let folderArray=new Array();

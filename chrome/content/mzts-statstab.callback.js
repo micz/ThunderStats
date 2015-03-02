@@ -29,16 +29,37 @@ miczThunderStatsTab.callback.base={
 };
 
 miczThunderStatsTab.callback.homepage_stats_today_sent = {
-  handleResult: function(aResultSet) {
-    let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
-    $jQ("#today_sent").text(result[1]["Num"]);
-    miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
-	miczLogger.log("Today sent messages loaded.",0);
-  },
+	empty:true,
+	data:new Array(),
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+		for (let key in result) {
+			this.data.push(result[key]);
+		}
+	},
 
-  handleError: miczThunderStatsTab.callback.base.handleError,
+	handleError: miczThunderStatsTab.callback.base.handleError,
 
-  handleCompletion: miczThunderStatsTab.callback.base.handleCompletion,
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
+				if(!this.empty){
+					$jQ("#today_sent").text(this.data[1]["Num"]);
+				}else{
+					$jQ("#today_sent").text("0");
+				}
+				miczLogger.log("Today sent messages loaded.",0);
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				return false;
+		}
+	},
 };
 
 miczThunderStatsTab.callback.homepage_stats_today_rcvd = {

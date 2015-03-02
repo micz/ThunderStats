@@ -30,11 +30,11 @@ var miczThunderStatsTab = {
 				let opt = document.createElement('option');
 				opt.value = miczThunderStatsCore.identities[key]["id"];
 				opt.innerHTML = miczThunderStatsUtils.escapeHTML(miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["identityName"]+")");
-				dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+miczThunderStatsCore.identities.length+"\r\n");
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+miczThunderStatsCore.identities.length+"\r\n");
 				id_selector.appendChild(opt);
 
 				if(miczThunderStatsCore.identities.length==1){	//If there is only one identity, autochoose it
-					dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
+					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
 					$jQ("#identities_selector").val(miczThunderStatsCore.identities[key]["id"]);
 					$jQ("#identities_selector").change();
 				}

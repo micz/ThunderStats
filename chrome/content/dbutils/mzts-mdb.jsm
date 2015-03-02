@@ -52,11 +52,11 @@ var miczThunderStatsDB = {
 	querySelect:function(mWhat,mFrom,mWhere,mCallback){
 		return miczThunderStatsQuery.querySelect(this.mDb,mWhat,mFrom,mWhere,mCallback);
 	},
-	
+
 	queryExec:function(mQuery,mCallback){ //mQuery is a query string
 		return miczThunderStatsQuery.queryExec(this.mDb,[mQuery],mCallback);
 	},
-	
+
 	queryExecMulti:function(mQueries,mCallback){ //mQueries is an array of query strings
 		return miczThunderStatsQuery.queryExec(this.mDb,mQueries,mCallback);
 	},
@@ -69,14 +69,13 @@ var miczThunderStatsDB = {
 		let involves_attribute=this.msgAttributes['involves'];
 		let forbiddenFolders=this.queryGetForbiddenFolders();
 		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
-		let mWhat="count(distinct ma.messageID) as Num";
+		let mWhat="count(distinct m.headerMessageID) as Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
 		if(mIdentity>0){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
 		}
-		mWhere+=" GROUP BY m.headerMessageID";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
@@ -145,7 +144,7 @@ var miczThunderStatsDB = {
 		let rows=this.querySelect("id","identities",mWhere);
 		return rows[0][0];
 	},
-	
+
 	queryGetLastMessageDate:function(mCallback){
 		let mWhat="max(date) as last_msg_date";
 		let mFrom="messages";

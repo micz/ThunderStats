@@ -30,13 +30,22 @@ var miczThunderStatsTab = {
 				let opt = document.createElement('option');
 				opt.value = miczThunderStatsCore.identities[key]["id"];
 				opt.innerHTML = miczThunderStatsUtils.escapeHTML(miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["identityName"]+")");
+				dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+miczThunderStatsCore.identities.length+"\r\n");
 				id_selector.appendChild(opt);
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector "+miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
+				//If there is only one identity, autochoose it
+				if(miczThunderStatsCore.identities.length==1){
+					dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
+					//id_selector.selectedIndex=1;
+					$jQ("#identities_selector").val(miczThunderStatsCore.identities[key]["id"]);
+					$jQ("#identities_selector").change();
+				}
 			}
+						
 			miczLogger.log("Identities loaded.",0);
 			miczLogger.log("ThunderStats ready.",0);
 
-			miczThunderStatsTab.getTodayStats(0);
+			miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
 
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0

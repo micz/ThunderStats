@@ -208,7 +208,7 @@ miczThunderStatsTab.callback.homepage_stats_today_recipients = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_recipients_wait");
 				if(!this.empty){
-					$jQ("#today_recipients").text(JSON.stringify(this.data));
+					$jQ("#today_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
 					$jQ("#today_recipients").text("No mails sent!");
@@ -250,7 +250,7 @@ miczThunderStatsTab.callback.homepage_stats_today_senders = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_senders_wait");
 				if(!this.empty){
-					$jQ("#today_senders").text(JSON.stringify(this.data));
+					$jQ("#today_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_senders handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
 					$jQ("#today_senders").text("No mails received!");
@@ -292,7 +292,7 @@ miczThunderStatsTab.callback.homepage_stats_yestarday_recipients = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_recipients_wait");
 				if(!this.empty){
-					$jQ("#yesterday_recipients").text(JSON.stringify(this.data));
+					$jQ("#yesterday_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
 					$jQ("#yesterday_recipients").text("No mails sent!");
@@ -334,7 +334,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_senders = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_senders_wait");
 				if(!this.empty){
-					$jQ("#yesterday_senders").text(JSON.stringify(this.data));
+					$jQ("#yesterday_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_senders handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
 					$jQ("#yesterday_senders").text("No mails received!");

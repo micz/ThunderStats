@@ -30,4 +30,16 @@ miczThunderStatsTab.ui={
 		window.openDialog('chrome://thunderstats/content/mzts-settings.xul','ThunderStats_Settings','non-private,chrome,titlebar,dialog=no,resizable,centerscreen').focus();
 	} ,
 
+	formatInvolvedTable: function(involvedData){	//data columns ["ID","Name","Mail","Num"]
+		let outString="<table>";
+		outString+="<tr><td>Name</td><td>Mail</td><td>Total Messages</td></tr>";
+
+		for (let key in involvedData){
+			outString+="<tr><td>"+involvedData[key]["Name"]+"</td><td>"+involvedData[key]["Mail"]+"</td><td>"+involvedData[key]["Num"]+"</td></tr>";
+		}
+
+		outString+="</table>";
+		return outString;
+	},
+
 };

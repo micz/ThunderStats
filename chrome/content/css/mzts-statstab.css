@@ -38,7 +38,7 @@ table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;}
   text-overflow: ellipsis;
 }
 
-#table_today,#table_yesterday {
+#table_today,#table_yesterday,#table_7days {
   display: table;
   width: 100%;
   table-layout: fixed;
@@ -56,15 +56,15 @@ table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;}
   vertical-align: top;
 }
 
-#tier1_today .chunk,#tier1_yestarday .chunk {
+#tier1_today .chunk,#tier1_yesterday .chunk,#tier1_7days .chunk {
   padding-top: 0;
 }
 
-#top_right_chunk_today,#top_right_chunk_yestarday {
+#top_right_chunk_today,#top_right_chunk_yesterday,#top_right_chunk_7days {
   background-color: rgba(125,125,105,.1); /*#f2f2f0*/
 }
 
-#bottom_left_chunk_today,#bottom_left_chunk_yestarday {
+#bottom_left_chunk_today,#bottom_left_chunk_yesterday,#bottom_left_chunk_7days {
   background-image: -moz-linear-gradient(rgba(125,125,105,.1) 75%, rgba(125,125,105,0)); /*242,242,240,1), rgba(242,242,240,0)*/
 }
 

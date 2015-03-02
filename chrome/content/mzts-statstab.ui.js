@@ -23,6 +23,11 @@ miczThunderStatsTab.ui={
 				miczThunderStatsTab.getYesterdayStats(miczThunderStatsTab.getCurrentIdentityId());
 				miczThunderStatsDB.close();
 			break;
+			case '#tab_7days':
+				miczThunderStatsDB.init();
+				//TODO
+				miczThunderStatsDB.close();
+			break;
 		}
 	},
 

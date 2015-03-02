@@ -76,8 +76,8 @@
 		<ul class="tab-links">
 			<li class="active"><a href="#tab_today">Today</a></li>
 			<li><a href="#tab_yesterday">Yesterday</a></li>
-			<!--<li><a href="#tab3">Tab #3</a></li>
-			<li><a href="#tab4">Tab #4</a></li>-->
+			<li><a href="#tab_7days">Last 7 days</a></li>
+			<!--<li><a href="#tab4">Info</a></li>-->
 		</ul>
 
 		<div class="tab-content">
@@ -106,7 +106,7 @@
 					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="today_recipients_wait"/></div>
 					  <div id="today_recipients"></div>
 					</div>
-					<div class="chunk" id="bottom_right_chunk">
+					<div class="chunk" id="bottom_right_chunk_today">
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">Today Top 10 Senders</h2>
 					  </div>
@@ -128,21 +128,21 @@
 						<p><span>Sent messages: </span><span id="yesterday_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_sent_wait"/></p>
 						<p><span>Received messages: </span><span id="yesterday_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_rcvd_wait"/></p>
 					</div>
-					<div class="chunk" id="top_right_chunk_today">
+					<div class="chunk" id="top_right_chunk_yesterday">
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">Inbox 0 Status</h2>
 					  </div>
 					</div>
 				  </div>
 				  <div id="tier2_yesterday" class="tier">
-					<div class="chunk" id="bottom_left_chunk_today">
+					<div class="chunk" id="bottom_left_chunk_yesterday">
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">Yesterday Top 10 Recipients</h2>
 					  </div>
 					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="yesterday_recipients_wait"/></div>
 					  <div id="yesterday_recipients"></div>
 					</div>
-					<div class="chunk" id="bottom_right_chunk">
+					<div class="chunk" id="bottom_right_chunk_yesterday">
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">Yesterday Top 10 Senders</h2>
 					  </div>
@@ -153,12 +153,36 @@
 			   </div> <!-- table_yesterday -->
 			</div> <!--tab yesterday-->
 
-			<!--<div id="tab3" class="tab">
-				<p>Tab #3 content goes here!</p>
-				<p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum ri.</p>
-			</div>
+						<div id="tab_7days" class="tab">
+				<div id="table_7days">
+				  <div id="tier1_7days" class="tier">
+					<div class="chunk" id="top_left_chunk">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">Title</h2>
+					  </div>
+					</div>
+					<div class="chunk" id="top_right_chunk_7days">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">Title</h2>
+					  </div>
+					</div>
+				  </div>
+				  <div id="tier2_7days" class="tier">
+					<div class="chunk" id="bottom_left_chunk_7days">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">Title</h2>
+					  </div>
+					</div>
+					<div class="chunk" id="bottom_right_chunk_7days">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">Title</h2>
+					  </div>
+					  </div>
+				  </div>
+			   </div> <!-- table_7days -->
+			</div> <!--tab 7days-->
 
-			<div id="tab4" class="tab">
+			<!--<div id="tab4" class="tab">
 				<p>Tab #4 content goes here!</p>
 				<p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
 			</div>-->

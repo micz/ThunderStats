@@ -6,6 +6,12 @@ html,body{margin:0;padding:0;height:100%;background:white;}
 .mzts-desc{word-wrap:break-word;width:90%;}
 .setup_icon{float:right;cursor:pointer}
 #setup_menu{max-width:24px;height:24px;}
+table.mzts-tinvolved{width:100%;}
+table.mzts-tinvolved tr.mzts-thead{font-weight:bold;background:grey;}
+table.mzts-tinvolved tr.mzts-trow:nth-child(odd){background:white;}
+table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:lightgrey;}
+table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;}
+
 
 #heading_wrapper {
   display: table;

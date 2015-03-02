@@ -76,6 +76,7 @@ var miczThunderStatsDB = {
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
 		}
+		mWhere+=" GROUP BY m.headerMessageID";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
@@ -94,7 +95,7 @@ var miczThunderStatsDB = {
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
 		}
-		mWhere+=" group by ma.value order by Num DESC";
+		mWhere+=" group by ma.value,m.headerMessageID order by Num DESC";
 		if(mMax>0){
 			mWhere+=" LIMIT "+mMax;
 		}

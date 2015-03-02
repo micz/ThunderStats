@@ -28,6 +28,9 @@ miczThunderStatsTab.ui={
 				//TODO
 				miczThunderStatsDB.close();
 			break;
+			case '#tab_info':
+				//TODO
+			break;
 		}
 	},
 

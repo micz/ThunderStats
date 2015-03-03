@@ -4,8 +4,9 @@ html,body{margin:0;padding:0;height:100%;background:white;}
 #log_wrapper p{padding:0;margin:0;font-size:0.8em; color:grey;}
 #log_clear_btn{position:fixed;bottom:0px;right:16px;cursor:pointer;z-index:100;}
 .mzts-desc{word-wrap:break-word;width:90%;}
-.setup_icon{float:right;cursor:pointer}
-#setup_menu{max-width:24px;height:24px;}
+#mzts-idnt_sel{float:left;display:flex;align-items:center;height:28px;}
+#mzts-last_msg{float:right;font-size:0.8em;margin-right:10px;display:flex;align-items:center;height:28px;}
+#mzts-setup_icon{float:right;cursor:pointer;display:flex;align-items:center;height:28px;}
 table.mzts-tinvolved{width:100%;}
 table.mzts-tinvolved tr.mzts-thead{font-weight:bold;background:grey;}
 table.mzts-tinvolved tr.mzts-trow:nth-child(odd){background:white;}
@@ -25,6 +26,7 @@ table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;}
   z-index: 2;
   padding:2px;
   top:0px;
+  height:24px;
 }
 
 #heading {

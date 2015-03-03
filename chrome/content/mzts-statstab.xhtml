@@ -60,15 +60,18 @@
     <xul:tooltip id="mztsXulInXhtmlTooltip"/>
   </xul:popupset>
 
-	  <div id="heading_wrapper">Choose identity:
-      <select id="identities_selector">
-		  <option value="0">All identities</option>
-		</select>
-		<button type="button" onclick="miczThunderStatsTab.updateStats();">Update</button>
-		<div class="setup_icon">
+	  <div id="heading_wrapper">
+		  <div id="mzts-idnt_sel">Choose identity:
+      		<select id="identities_selector">
+		  	<option value="0">All identities</option>
+			</select>
+			<button type="button" onclick="miczThunderStatsTab.updateStats();">Update</button>
+		  </div>
+		<div id="mzts-setup_icon">
 			<img src="chrome://thunderstats/skin/mzts-setup.png" alt="Setup" onclick="miczThunderStatsTab.ui.openPrefWindow();"
 			title="Setup" class="tooltip"/>
 		</div>
+		<div id="mzts-last_msg"></div>
     </div>
 
 <div id="content_wrapper">

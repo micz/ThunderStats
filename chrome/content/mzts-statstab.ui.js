@@ -12,26 +12,24 @@ miczThunderStatsTab.ui={
 
 	updateTab:function(tab_id){
 		miczThunderStatsTab.currentTab=tab_id;
+		miczThunderStatsDB.init();
 		switch(tab_id){
 			case '#tab_today':
-				miczThunderStatsDB.init();
 				miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
-				miczThunderStatsDB.close();
 			break;
 			case '#tab_yesterday':
-				miczThunderStatsDB.init();
 				miczThunderStatsTab.getYesterdayStats(miczThunderStatsTab.getCurrentIdentityId());
-				miczThunderStatsDB.close();
 			break;
 			case '#tab_7days':
-				miczThunderStatsDB.init();
 				//TODO
-				miczThunderStatsDB.close();
 			break;
 			case '#tab_info':
 				//TODO
 			break;
 		}
+		miczThunderStatsTab.getLastIndexedMessage();
+		miczThunderStatsDB.close();
+		return true;
 	},
 
 	openPrefWindow: function () {

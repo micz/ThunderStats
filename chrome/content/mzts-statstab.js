@@ -44,6 +44,7 @@ var miczThunderStatsTab = {
 			miczLogger.log("ThunderStats ready.",0);
 
 			miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
+			miczThunderStatsTab.getLastIndexedMessage();
 
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
@@ -107,6 +108,10 @@ var miczThunderStatsTab = {
 
 	updateStats: function(){
 		miczThunderStatsTab.ui.updateTab(this.currentTab);
+	},
+
+	getLastIndexedMessage: function(){
+		miczThunderStatsDB.queryGetLastMessageDate(miczThunderStatsTab.callback.last_idx_msg);
 	},
 
 	doStats: function(){

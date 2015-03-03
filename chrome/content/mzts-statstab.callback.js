@@ -357,6 +357,44 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_senders = {
 	},
 };
 
+miczThunderStatsTab.callback.last_idx_msg = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["last_msg_date"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				if(!this.empty){
+					$jQ("#mzts-last_msg").text("Last indexed message: "+miczThunderStatsUtils.getDateTimeString(this.data[1]["last_msg_date"]/1000));
+				}else{
+					$jQ("#mzts-last_msg").text("");
+				}
+				miczLogger.log("Last indexed message loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	},
+};
 
 
 

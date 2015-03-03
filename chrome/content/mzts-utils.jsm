@@ -10,14 +10,28 @@ var miczThunderStatsUtils = {
 				.replace(/</g, '&lt;')
 				.replace(/>/g, '&gt;');
 	},
-	
+
+	getDateString:function(mDate){
+		let d = new Date(mDate);
+		let day=d.getDate();
+		let month=d.getMonth()+1;
+		return (day<10 ? '0' : '')+day+"/"+(month<10 ? '0' : '')+month+"/"+d.getFullYear();
+	},
+
+	getDateTimeString:function(mDate){
+		let d = new Date(mDate);
+		let day=d.getDate();
+		let month=d.getMonth()+1;
+		return (day<10 ? '0' : '')+day+"/"+(month<10 ? '0' : '')+month+"/"+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+	},
+
 	getTodayString:function(){
 		let d = new Date();
 		let day=d.getDate();
 		let month=d.getMonth()+1;
 		return (day<10 ? '0' : '')+day+"/"+(month<10 ? '0' : '')+month+"/"+d.getFullYear();
 	},
-	
+
 	getYesterdayString:function(){
 		let d = new Date();
 		d.setDate(d.getDate()-1);
@@ -25,7 +39,7 @@ var miczThunderStatsUtils = {
 		let month=d.getMonth()+1;
 		return (day<10 ? '0' : '')+day+"/"+(month<10 ? '0' : '')+month+"/"+d.getFullYear();
 	},
-	
+
 	getDaysFromRange: function(mFromDate,mToDate){
 		let dOutput=new Array();
 		// Calculate days between dates
@@ -37,7 +51,7 @@ var miczThunderStatsUtils = {
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] mFromDate '+mFromDate.toLocaleString()+'\r\n');
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] mToDate '+mToDate.toLocaleString()+'\r\n');
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] diffDays '+diffDays+'\r\n');
-		
+
 		for(let ii = 0; ii < diffDays; ii++){
 			let dTmp = new Date(mFromDate);
 			dTmp.setDate(mFromDate.getDate()+ii);

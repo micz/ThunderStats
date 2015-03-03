@@ -101,7 +101,7 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
-	queryGetAttachments:function(mType,mFromDate,mToDate,mIdentity,mMax,mCallback){	//mFromDate,mToDate are in milliseconds
+	/*queryGetAttachments:function(mType,mFromDate,mToDate,mIdentity,mMax,mCallback){	//mFromDate,mToDate are in milliseconds
 		let fromMe_attribute=this.msgAttributes['fromMe'];
 		let toMe_attribute=this.msgAttributes['toMe'];
 		let fromMe_attribute=this.msgAttributes['fromMe'];
@@ -124,7 +124,7 @@ var miczThunderStatsDB = {
 			mWhere+=" LIMIT "+mMax;
 		}
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns tot_attachments,tot_mails
-	},
+	},*/
 
 	queryMessagesFolders:function(mType,mFromDate,mToDate,mIdentity,mCallback){	//mFromDate,mToDate are in milliseconds
 		let fromMe_attribute=this.msgAttributes['fromMe'];

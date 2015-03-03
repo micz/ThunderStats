@@ -46,6 +46,8 @@ var miczThunderStatsTab = {
 			miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
 			miczThunderStatsTab.getLastIndexedMessage();
 
+			id_selector.onchange=miczThunderStatsTab.updateStats;
+
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
 		},
@@ -107,7 +109,7 @@ var miczThunderStatsTab = {
 	},
 
 	updateStats: function(){
-		miczThunderStatsTab.ui.updateTab(this.currentTab);
+		miczThunderStatsTab.ui.updateTab(miczThunderStatsTab.currentTab);
 	},
 
 	getLastIndexedMessage: function(){

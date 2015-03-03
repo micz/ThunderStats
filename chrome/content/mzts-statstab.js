@@ -29,7 +29,7 @@ var miczThunderStatsTab = {
 			for(let key in miczThunderStatsCore.identities){
 				let opt = document.createElement('option');
 				opt.value = miczThunderStatsCore.identities[key]["id"];
-				opt.innerHTML = miczThunderStatsUtils.escapeHTML(miczThunderStatsCore.identities[key]["identityName"]+" ("+miczThunderStatsCore.identities[key]["identityName"]+")");
+				opt.innerHTML = miczThunderStatsUtils.escapeHTML(miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")");
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+miczThunderStatsCore.identities.length+"\r\n");
 				id_selector.appendChild(opt);
 

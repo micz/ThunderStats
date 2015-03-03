@@ -24,7 +24,7 @@ var miczThunderStatsCore = {
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
 					let identity_item={};
 					identity_item["email"]=identity.email;
-					identity_item["identityName"]=identity.identityName;
+					identity_item["fullName"]=identity.fullName;
 					identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity.email);
 					this.identities.push(identity_item);
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');

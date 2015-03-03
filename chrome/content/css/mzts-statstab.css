@@ -11,7 +11,7 @@ table.mzts-tinvolved{width:100%;}
 table.mzts-tinvolved tr.mzts-thead{font-weight:bold;background:grey;}
 table.mzts-tinvolved tr.mzts-trow:nth-child(odd){background:white;}
 table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:lightgrey;}
-table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;}
+table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;white-space:-moz-pre-wrap !important;word-break: break-all;}
 
 
 #heading_wrapper {

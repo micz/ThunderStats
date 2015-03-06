@@ -273,7 +273,7 @@ miczThunderStatsTab.callback.homepage_stats_today_senders = {
 	},
 };
 
-miczThunderStatsTab.callback.homepage_stats_yestarday_recipients = {
+miczThunderStatsTab.callback.homepage_stats_yesterday_recipients = {
 	empty:true,
 	data:{},
   handleResult: function(aResultSet) {

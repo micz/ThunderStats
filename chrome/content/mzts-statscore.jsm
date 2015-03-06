@@ -43,6 +43,14 @@ miczThunderStatsCore.db = {
 		mToDate.setHours(24,0,0,0);
 		return miczThunderStatsDB.queryMessages(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity,mCallback);
 	},
+	
+	getManyDaysMessages:function(mType,mFromDay,mToDay,mIdentity,mCallback){	//mFromDay and mToDay are a Date objects
+		let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay);
+		for(let mKey in mDays){
+			getOneDayMessages(mType,mDays[mKey],mIdentity,mCallback);
+		}
+		return true;
+	},
 
 	getTodayMessages:function(mType,mIdentity,mCallback){
 		return this.getOneDayMessages(mType,new Date(),mIdentity,mCallback);

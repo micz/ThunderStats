@@ -21,7 +21,7 @@ miczThunderStatsTab.ui={
 				miczThunderStatsTab.getYesterdayStats(miczThunderStatsTab.getCurrentIdentityId());
 			break;
 			case '#tab_7days':
-				//TODO
+				miczThunderStatsTab.getLast7DaysStats(miczThunderStatsTab.getCurrentIdentityId());
 			break;
 			case '#tab_info':
 				//TODO

@@ -1,6 +1,7 @@
 "use strict";
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 //Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	 // To be enabled in vesion 2.0
+Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -43,11 +44,11 @@ miczThunderStatsCore.db = {
 		mToDate.setHours(24,0,0,0);
 		return miczThunderStatsDB.queryMessages(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity,mCallback);
 	},
-	
+
 	getManyDaysMessages:function(mType,mFromDay,mToDay,mIdentity,mCallback){	//mFromDay and mToDay are a Date objects
 		let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay);
 		for(let mKey in mDays){
-			getOneDayMessages(mType,mDays[mKey],mIdentity,mCallback);
+			this.getOneDayMessages({type:mType,info:mDays[mKey]},mDays[mKey],mIdentity,mCallback);
 		}
 		return true;
 	},

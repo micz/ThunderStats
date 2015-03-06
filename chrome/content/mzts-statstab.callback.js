@@ -397,49 +397,49 @@ miczThunderStatsTab.callback.last_idx_msg = {
 };
 
 
-
-
-
-
-miczThunderStatsTab.callback.test = {
-  handleResult: function(aResultSet) {
-    miczLogger.log("Query executed, parsing the result set...");
-    /*for (let row = aResultSet.getNextRow(); row; row = aResultSet.getNextRow()) {
-		miczLogger.log("Test CALLBACK: row "+JSON.stringify(row));
-		miczLogger.log("Test CALLBACK: row "+JSON.stringify(row.numEntries));
-		for (let colidx=0; colidx<row.numEntries; colidx++){
-			miczLogger.log("Test CALLBACK: col "+colidx+" "+JSON.stringify(row.getResultByIndex(colidx)));
+miczThunderStatsTab.callback.stats_7days_sent = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num","Info"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
 		}
-    }*/
-    //miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
-    //miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
-  },
+	},
 
-  handleError: miczThunderStatsTab.callback.base.handleError,
+	handleError: miczThunderStatsTab.callback.base.handleError,
 
-  handleCompletion: miczThunderStatsTab.callback.base.handleCompletion,
-};
-
-miczThunderStatsTab.callback.day_cache_test = {
-  handleResult: function(aResultSet) {
-    miczLogger.log("Day cache row inserted.");
-  },
-
-  handleError: miczThunderStatsTab.callback.base.handleError,
-
-  handleCompletion: function(aReason) {
-		miczLogger.log("Day cache row inserted. Exit code: " + aReason);
+    handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				//miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
+				if(!this.empty){
+					miczThunderStatsTab.data_7days_sent.push({day:this.data[1]["Info"],num:this.data[1]["Num"]});
+					//$jQ("#7days_sent").append(this.data[1]["Info"]+": "+this.data[1]["Num"]);
+				}else{
+					miczThunderStatsTab.data_7days_sent.push({day:this.data[1]["Info"],num:0});
+					//$jQ("#7days_sent").append(this.data[1]["Info"]+": 0");
+				}
+				miczLogger.log("7 days sent messages loaded day "+this.data[1]["Info"]+".",0);
+				//if we've collected our 7 days, let's print it!
+				if(miczThunderStatsTab.data_7days_sent.lenght==7){
+					//TODO
+					$jQ("#7days_sent").text(JSON.stringify(miczThunderStatsTab.data_7days_sent));
+				}
+				this.data={};
+				this.empty=true;
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
 				return false;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
 				return false;
 		}
 	},
 };
-
-window.addEventListener("load", miczThunderStatsTab.onLoad, false);

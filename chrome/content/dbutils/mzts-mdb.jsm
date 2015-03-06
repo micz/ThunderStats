@@ -62,6 +62,11 @@ var miczThunderStatsDB = {
 	},
 
 	queryMessages:function(mType,mFromDate,mToDate,mIdentity,mCallback){	//mFromDate,mToDate are in milliseconds
+		let mInfo=null;
+		if(typeof mType === 'object'){
+			mInfo = mType.info;
+			mType = mType.type;
+		}
 		let fromMe_attribute=this.msgAttributes['fromMe'];
 		let toMe_attribute=this.msgAttributes['toMe'];
 		//mType 0: toMe, 1: fromMe
@@ -70,6 +75,9 @@ var miczThunderStatsDB = {
 		let forbiddenFolders=this.queryGetForbiddenFolders();
 		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
 		let mWhat="count(distinct m.headerMessageID) as Num";
+		if(mInfo!=null){
+			mWhat+=", '"+mInfo+"' as Info";
+		}
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
 		if(mIdentity>0){

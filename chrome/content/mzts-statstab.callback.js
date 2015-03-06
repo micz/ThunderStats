@@ -423,9 +423,30 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 				}
 				miczLogger.log("7 days sent messages loaded day "+this.data[1]["Info"]+".",0);
 				//if we've collected our 7 days, let's print it!
-				if(miczThunderStatsTab.data_7days_sent.lenght==7){
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent miczThunderStatsTab.data_7days_sent.length '+miczThunderStatsTab.data_7days_sent.length+'\r\n');
+				if(miczThunderStatsTab.data_7days_sent.length==7){
 					//TODO
 					$jQ("#7days_sent").text(JSON.stringify(miczThunderStatsTab.data_7days_sent));
+					let data_array=new Array();
+					for (let dKey in miczThunderStatsTab.data_7days_sent){
+						data_array.push(miczThunderStatsTab.data_7days_sent[dKey].num);
+					}
+					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent data_array '+data_array+'\r\n');
+
+					let w = 400,
+						h = 200;
+
+					let vis = new pv.Panel().canvas('chart_7days_sent');
+					vis.width(w)
+					.height(h);
+				  	let bar=vis.add(pv.Bar)
+					.data(data_array)
+					.bottom(0)
+					.height(function(d) d * 10)	//TODO: this must be different. we don't now the max messages
+					.left(function() this.index * 25)
+					.width(20)
+				  	.root.render();
+				  	miczLogger.log("7 days sent messages chart rendered.",0);
 				}
 				this.data={};
 				this.empty=true;

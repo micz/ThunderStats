@@ -102,23 +102,23 @@ var miczThunderStatsTab = {
 		//Get yesterday first 10 senders
 		miczThunderStatsCore.db.getYesterdayInvolved(0,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_senders);
 	},
-	
+
 	getLast7DaysStats:function(identity_id){
 		miczLogger.log("Getting last 7 days statistics...",0);
-		
+
 		//Get sent messages
-		//miczThunderStatsCore.db.get7DaysMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_sent);
+		//miczThunderStatsCore.db.getManyDaysMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_sent);
 
 		//Get received messages
-		//miczThunderStatsCore.db.get7DaysMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_rcvd);
+		//miczThunderStatsCore.db.getManyDaysMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_rcvd);
 
 		//Get first 10 recipients
-		//miczThunderStatsCore.db.get7DaysInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_recipients);
+		//miczThunderStatsCore.db.getManyDaysInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_recipients);
 
 		//Get first 10 senders
-		//miczThunderStatsCore.db.get7DaysInvolved(0,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_senders);
+		//miczThunderStatsCore.db.getManyDaysInvolved(0,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_senders);
 	},
-	
+
 	getCurrentIdentityId:function(){
 		let id_selector = document.getElementById("identities_selector");
 		return id_selector.options[id_selector.selectedIndex].value;

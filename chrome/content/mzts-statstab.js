@@ -107,16 +107,16 @@ var miczThunderStatsTab = {
 		miczLogger.log("Getting last 7 days statistics...",0);
 
 		//Get sent messages
-		//miczThunderStatsCore.db.getManyDaysMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_sent);
+		//miczThunderStatsCore.db.getManyDaysMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_sent);
 
 		//Get received messages
-		//miczThunderStatsCore.db.getManyDaysMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_rcvd);
+		//miczThunderStatsCore.db.getManyDaysMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_rcvd);
 
 		//Get first 10 recipients
-		//miczThunderStatsCore.db.getManyDaysInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_recipients);
+		//miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_recipients);
 
 		//Get first 10 senders
-		//miczThunderStatsCore.db.getManyDaysInvolved(0,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_senders);
+		//miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.homepage_stats_7days_senders);
 	},
 
 	getCurrentIdentityId:function(){

@@ -48,8 +48,8 @@ miczThunderStatsTab.ui={
 		return outString;
 	},
 	
-	draw7DaysGraph:function(element_id_txt,data_array){
-		let w = 400,
+	draw7DaysGraph:function(element_id_txt,data_array,label_array){
+		let w = 455,
 		h = 200;
 		
 		let max_data = Math.max.apply(Math, data_array);
@@ -61,13 +61,19 @@ miczThunderStatsTab.ui={
 			.data(data_array)
 			.bottom(0)
 			.height(function(d) d * (h / max_data))
-			.left(function() this.index * 25)
-			.width(20);
+			.left(function() this.index * 65)
+			.width(60);
 		
 		/* The value label. */
 		bar.anchor("top").add(pv.Label)
 			.textStyle("white")
 			.text(function(d) d.toFixed(0));
+		
+		/* The x axis label. */
+		bar.anchor("bottom").add(pv.Label)
+			.textMargin(5)
+			.textAlign("center")
+			.text(function() label_array[this.index]);
 		
 		bar.root.render();
 	},

@@ -427,12 +427,16 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 				if(miczThunderStatsTab.data_7days_sent.length==7){
 					//$jQ("#7days_sent").text(JSON.stringify(miczThunderStatsTab.data_7days_sent));
 					let data_array=new Array();
+					let label_array=new Array();
 					for (let dKey in miczThunderStatsTab.data_7days_sent){
 						data_array.push(miczThunderStatsTab.data_7days_sent[dKey].num);
+						let m = moment(miczThunderStatsTab.data_7days_sent[dKey].day);
+						label_array.push(m.format("DD/MM/YY"));	//put the format string in localization files. See http://momentjs.com/docs/#/displaying/
 					}
 					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent data_array '+data_array+'\r\n');
+					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent label_array '+label_array+'\r\n');
 
-					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_sent',data_array);
+					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_sent',data_array,label_array);
 
 				  	miczLogger.log("7 days sent messages chart rendered.",0);
 				}

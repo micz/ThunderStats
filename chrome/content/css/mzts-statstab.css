@@ -12,7 +12,7 @@ table.mzts-tinvolved tr.mzts-thead{font-weight:bold;background:grey;}
 table.mzts-tinvolved tr.mzts-trow:nth-child(odd){background:white;}
 table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:lightgrey;}
 table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;white-space:-moz-pre-wrap !important;word-break: break-all;}
-
+#chart_7days_sent{width:100%;}
 
 #heading_wrapper {
   display: table;

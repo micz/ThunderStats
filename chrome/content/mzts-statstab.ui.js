@@ -49,12 +49,50 @@ miczThunderStatsTab.ui={
 	},
 	
 	draw7DaysGraph:function(element_id_txt,data_array,label_array){
-		let w = 420;
+		let barWidth = 55;
+		let w = (barWidth + 5) * 7;
 		let h = 200;
 		let bottom = 10;
-		let rh = h - bottom;
+		//let rh = h - bottom;
 		
-		let x = d3.scale.linear()
+
+		//let y = d3.scale.linear().range([h, 0]);
+		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);
+		//var y = d3.scale.linear().domain([0, d3.max(data, function(datum) { return datum.books; })]).rangeRound([0, height]);
+		let y = d3.scale.linear().domain([0, d3.max(data_array)]).rangeRound([0, h]);
+
+		let chart = d3.select("#"+element_id_txt)
+			.append("svg:svg")
+			.attr("width", w)
+			.attr("height", h);
+		
+		chart.selectAll("rect").
+		  data(data_array).
+		  enter().
+		  append("svg:rect").
+		  attr("x", function(datum, index) { return x(index); }).
+		  attr("y", function(datum) { return h - y(datum); }).
+		  attr("height", function(datum) { return y(datum); }).
+		  attr("width", barWidth).
+		  attr("fill", "#2d578b");
+
+		/*let bar = chart.selectAll("g")
+			.data(data_array)
+			.enter().append("g")
+			.attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; });
+
+		bar.append("rect")
+			.attr("y", function(d) { return y(d.value); })
+			.attr("height", function(d) { return h - y(d.value); })
+			.attr("width", barWidth - 1);
+
+		bar.append("text")
+			.attr("x", barWidth / 2)
+			.attr("y", function(d) { return y(d.value) + 3; })
+			.attr("dy", ".75em")
+			.text(function(d) { return d.value; });
+		
+		/*let x = d3.scale.linear()
 			.domain([0, d3.max(data_array)])
 			.range([0, w]);
 
@@ -64,7 +102,7 @@ miczThunderStatsTab.ui={
 			.enter().append("div")
 			.style("heigth",function(d) { return x(d) + "px"; })
 			.text(function(d) { return d; });
-		
+		*/
 		
 		
 		/*let vis = new pv.Panel().canvas(element_id_txt);

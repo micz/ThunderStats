@@ -1,10 +1,9 @@
-#chart_7days_sent{width:100%;}
+.chart_7days rect {
+  fill: steelblue;
+}
 
-div.chart_7days div {
+.chart_7days text {
+  fill: white;
   font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: top;
-  padding: 3px;
-  margin: 1px;
-  color: white;
+  text-anchor: middle;
 }

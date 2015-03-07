@@ -1,6 +1,6 @@
 #chart_7days_sent{width:100%;}
 
-.chart_7days div {
+div.chart_7days div {
   font: 10px sans-serif;
   background-color: steelblue;
   text-align: top;

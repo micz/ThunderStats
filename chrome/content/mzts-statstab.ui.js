@@ -49,8 +49,10 @@ miczThunderStatsTab.ui={
 	},
 	
 	draw7DaysGraph:function(element_id_txt,data_array,label_array){
-		let w = 455,
-		h = 200;
+		let w = 420;
+		let h = 200;
+		let bottom = 10;
+		let rh = h - bottom;
 		
 		let max_data = Math.max.apply(Math, data_array);
 
@@ -59,21 +61,49 @@ miczThunderStatsTab.ui={
 		
 		let bar=vis.add(pv.Bar)
 			.data(data_array)
-			.bottom(0)
-			.height(function(d) d * (h / max_data))
-			.left(function() this.index * 65)
-			.width(60);
+			.bottom(10)
+			.height(function(d) d * (rh / max_data))
+			.left(function() this.index * 60)
+			.width(55);
 		
-		/* The value label. */
+		/* bar stroke lines */
+		vis.add(pv.Rule)
+			.data(pv.range(4))
+			.bottom(function(d) (d * (rh / max_data)) + 10)
+			.left(0)
+			.right(0)
+			.strokeStyle(function(d) (d > 0) ? "white" : "black")
+		
+		/* the value label */
 		bar.anchor("top").add(pv.Label)
+			.top(function(d) h - (d * (rh / max_data)))
 			.textStyle("white")
 			.text(function(d) d.toFixed(0));
 		
-		/* The x axis label. */
-		bar.anchor("bottom").add(pv.Label)
+		/* the x axis label */
+		/*bar.parent.anchor("bottom").add(pv.Label)
+			.textMargin(5)
+			.textAlign("center")
+			.text(function() label_array[this.parent.index]);*/
+		
+		bar.anchor("top").add(pv.Label)
+			.top(function() max_data + 10)
 			.textMargin(5)
 			.textAlign("center")
 			.text(function() label_array[this.index]);
+		
+		/*vis.add(pv.Rule)
+			.anchor("bottom")
+			.data(label_array)
+			.bottom(0)
+			.width(55)
+			.height(0)
+			.fillStyle("white")
+			.left(function() this.index * 60)
+			.add(pv.Label)
+			.textMargin(5)
+			.textAlign("center")
+			.text(function(d) d);*/
 		
 		bar.root.render();
 	},

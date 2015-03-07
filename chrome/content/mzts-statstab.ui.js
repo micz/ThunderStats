@@ -52,7 +52,7 @@ miczThunderStatsTab.ui={
 		let barWidth = 55;
 		let w = (barWidth + 5) * 7;
 		let h = 200;
-		let bottom = 10;
+		let bottom = 30;
 
 		//let y = d3.scale.linear().range([h, 0]);
 		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);
@@ -62,7 +62,7 @@ miczThunderStatsTab.ui={
 		let chart = d3.select("#"+element_id_txt)
 			.append("svg:svg")
 			.attr("width", w)
-			.attr("height", h);
+			.attr("height", h + bottom);
 		
 		chart.selectAll("rect")
 		  .data(data_array)
@@ -86,7 +86,16 @@ miczThunderStatsTab.ui={
 		  .text(function(datum) { return datum.num;})
 		  .attr("fill", "white");
 		  
-		  
+		chart.selectAll("text.xAxis")
+			.data(data_array)
+			.enter().append("svg:text")
+			.attr("x", function(datum, index) { return x(index) + barWidth; })
+			.attr("y", h)
+			.attr("dx", -barWidth/2)
+			.attr("text-anchor", "middle")
+			.text(function(datum) { return datum.day_str; })
+			.attr("transform", "translate(0, 18)")
+			.attr("class", "xAxis");
 	},
 
 };

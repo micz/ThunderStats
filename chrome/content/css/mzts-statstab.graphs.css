@@ -8,3 +8,9 @@
   text-anchor: middle;
   font-weight:bold;
 }
+
+.chart_7days text.xAxis{
+font-size: 12;
+font-family: Helvetica, sans-serif;
+fill:black;
+}

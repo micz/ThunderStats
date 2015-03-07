@@ -414,11 +414,12 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				//miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
-				if(!this.empty){
-					miczThunderStatsTab.data_7days_sent.push({day:this.data[1]["Info"],num:this.data[1]["Num"]});
+				let m = moment(this.data[1]["Info"]);
+				if(!this.empty){		//put the format string in localization files. See http://momentjs.com/docs/#/displaying/
+					miczThunderStatsTab.data_7days_sent.push({day:this.data[1]["Info"],day_str:m.format("DD/MM/YY"),num:this.data[1]["Num"]});
 					//$jQ("#7days_sent").append(this.data[1]["Info"]+": "+this.data[1]["Num"]);
 				}else{
-					miczThunderStatsTab.data_7days_sent.push({day:this.data[1]["Info"],num:0});
+					miczThunderStatsTab.data_7days_sent.push({day:this.data[1]["Info"],day_str:m.format("DD/MM/YY"),num:0});
 					//$jQ("#7days_sent").append(this.data[1]["Info"]+": 0");
 				}
 				miczLogger.log("7 days sent messages loaded day "+this.data[1]["Info"]+".",0);

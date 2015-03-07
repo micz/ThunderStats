@@ -55,15 +55,21 @@ miczThunderStatsTab.ui={
 		let max_data = Math.max.apply(Math, data_array);
 
 		let vis = new pv.Panel().canvas(element_id_txt);
-		vis.width(w)
-		.height(h);
+		vis.width(w).height(h);
+		
 		let bar=vis.add(pv.Bar)
-		.data(data_array)
-		.bottom(0)
-		.height(function(d) d * (h / max_data))	//TODO: this must be different. we don't now the max messages
-		.left(function() this.index * 25)
-		.width(20)
-		.root.render();
+			.data(data_array)
+			.bottom(0)
+			.height(function(d) d * (h / max_data))
+			.left(function() this.index * 25)
+			.width(20);
+		
+		/* The value label. */
+		bar.anchor("top").add(pv.Label)
+			.textStyle("white")
+			.text(function(d) d.toFixed(0));
+		
+		bar.root.render();
 	},
 
 };

@@ -109,7 +109,7 @@ var miczThunderStatsTab = {
 
 		let mToDay = new Date();
 		let mFromDay = new Date();
-		mFromDay.setDate(mFromDay.getDate() - 7);
+		mFromDay.setDate(mFromDay.getDate() - 6);
 
 		//Get sent messages
 		miczThunderStatsCore.db.getManyDaysMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_sent);

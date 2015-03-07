@@ -17,7 +17,16 @@ margin:auto;
 }
 
 .chart_7days text.xAxis{
-font-size: 12;
-font-family: Helvetica, sans-serif;
+font:12px sans-serif;
 fill:black;
+}
+
+.chart_7days .axis text{
+display:none;
+}
+
+.chart_7days .axis path,.chart_7days .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
 }

@@ -64,6 +64,7 @@ miczThunderStatsTab.ui={
 			.attr("width", w)
 			.attr("height", h + bottom);
 		
+		//graph bars
 		chart.selectAll("rect")
 		  .data(data_array)
 		  .enter()
@@ -73,7 +74,8 @@ miczThunderStatsTab.ui={
 		  .attr("height", function(datum) { return y(datum.num); })
 		  .attr("width", barWidth)
 		  .attr("fill", "#2d578b");
-		  
+		
+		//data labels
 		chart.selectAll("text")
 		  .data(data_array)
 		  .enter()
@@ -86,6 +88,7 @@ miczThunderStatsTab.ui={
 		  .text(function(datum) { return datum.num;})
 		  .attr("fill", "white");
 		  
+		//x axis labels
 		chart.selectAll("text.xAxis")
 			.data(data_array)
 			.enter().append("svg:text")
@@ -94,8 +97,17 @@ miczThunderStatsTab.ui={
 			.attr("dx", -barWidth/2)
 			.attr("text-anchor", "middle")
 			.text(function(datum) { return datum.day_str; })
-			.attr("transform", "translate(0, 18)")
+			.attr("transform", "translate(0, "+bottom+")")
 			.attr("class", "xAxis");
+			
+		//x axis
+		let xAxis = d3.svg.axis().scale(x).orient("bottom")
+				.tickValues([0.5,1.5,2.5,3.5,4.5,5.5,6.5])
+				.outerTickSize(0);
+		chart.append("g")
+			.attr("class", "axis")
+			.attr("transform", "translate(0," + h + ")")
+			.call(xAxis);
 	},
 
 };

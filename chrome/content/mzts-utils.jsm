@@ -62,4 +62,14 @@ var miczThunderStatsUtils = {
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
 		return dOutput;		//returns a Date() array
 	},
+	
+	array_7days_compare:function(a,b){
+		if(a.day < b.day){
+			return -1;
+		}
+		if(a.day > b.day){
+			return 1;
+		}
+		return 0;
+	},
 };

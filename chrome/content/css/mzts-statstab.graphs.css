@@ -25,6 +25,12 @@ fill:black;
 display:none;
 }
 
+.chart_7days .y.axis text{
+display:inherit;
+fill:black;
+font-weight:normal;
+}
+
 .chart_7days .axis path,.chart_7days .axis line {
   fill: none;
   stroke: #000;

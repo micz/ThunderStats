@@ -53,6 +53,7 @@ miczThunderStatsTab.ui={
 		let w = (barWidth + 5) * 7;
 		let h = 200;
 		let bottom = 20;
+		let left = 20;
 
 		//let y = d3.scale.linear().range([h, 0]);
 		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);
@@ -61,8 +62,9 @@ miczThunderStatsTab.ui={
 
 		let chart = d3.select("#"+element_id_txt)
 			.append("svg:svg")
-			.attr("width", w)
-			.attr("height", h + bottom);
+			.attr("width", w + left)
+			.attr("height", h + bottom)
+			.attr("transform", "translate("+left+",0)");
 		
 		//graph bars
 		chart.selectAll("rect")
@@ -105,9 +107,15 @@ miczThunderStatsTab.ui={
 				.tickValues([0.5,1.5,2.5,3.5,4.5,5.5,6.5])
 				.outerTickSize(0);
 		chart.append("g")
-			.attr("class", "axis")
+			.attr("class", "x axis")
 			.attr("transform", "translate(0," + h + ")")
 			.call(xAxis);
+			
+		//y axis
+		let yAxis = d3.svg.axis().ticks(4).scale(y).orient("left");	//TODO: FIX TICKS NUMBERS - REVERSE SCALE ON AXIS
+		chart.append("g")
+			.attr("class", "y axis")
+			.call(yAxis);
 	},
 
 };

@@ -52,7 +52,7 @@ miczThunderStatsTab.ui={
 		let barWidth = 55;
 		let w = (barWidth + 5) * 7;
 		let h = 200;
-		let bottom = 30;
+		let bottom = 20;
 
 		//let y = d3.scale.linear().range([h, 0]);
 		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);

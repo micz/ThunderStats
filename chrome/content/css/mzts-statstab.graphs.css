@@ -1,3 +1,10 @@
+.chart_7days{width:100%;}
+
+.chart_7days svg{
+display:block;
+margin:auto;
+}
+
 .chart_7days rect {
   fill: steelblue;
 }

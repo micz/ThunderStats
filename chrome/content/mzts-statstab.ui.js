@@ -54,9 +54,20 @@ miczThunderStatsTab.ui={
 		let bottom = 10;
 		let rh = h - bottom;
 		
-		let max_data = Math.max.apply(Math, data_array);
+		let x = d3.scale.linear()
+			.domain([0, d3.max(data_array)])
+			.range([0, w]);
 
-		let vis = new pv.Panel().canvas(element_id_txt);
+		d3.select("#"+element_id_txt)
+			.selectAll("div")
+			.data(data_array)
+			.enter().append("div")
+			.style("heigth",function(d) { return x(d) + "px"; })
+			.text(function(d) { return d; });
+		
+		
+		
+		/*let vis = new pv.Panel().canvas(element_id_txt);
 		vis.width(w).height(h);
 		
 		let bar=vis.add(pv.Bar)
@@ -66,7 +77,7 @@ miczThunderStatsTab.ui={
 			.left(function() this.index * 60)
 			.width(55);
 		
-		/* bar stroke lines */
+		/* bar stroke lines 
 		vis.add(pv.Rule)
 			.data(pv.range(4))
 			.bottom(function(d) (d * (rh / max_data)) + 10)
@@ -74,17 +85,17 @@ miczThunderStatsTab.ui={
 			.right(0)
 			.strokeStyle(function(d) (d > 0) ? "white" : "black")
 		
-		/* the value label */
+		/* the value label 
 		bar.anchor("top").add(pv.Label)
 			.top(function(d) h - (d * (rh / max_data)))
 			.textStyle("white")
 			.text(function(d) d.toFixed(0));
 		
-		/* the x axis label */
+		/* the x axis label 
 		/*bar.parent.anchor("bottom").add(pv.Label)
 			.textMargin(5)
 			.textAlign("center")
-			.text(function() label_array[this.parent.index]);*/
+			.text(function() label_array[this.parent.index]);
 		
 		bar.anchor("top").add(pv.Label)
 			.top(function() max_data + 10)
@@ -105,7 +116,7 @@ miczThunderStatsTab.ui={
 			.textAlign("center")
 			.text(function(d) d);*/
 		
-		bar.root.render();
+		//bar.root.render();
 	},
 
 };

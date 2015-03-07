@@ -4,6 +4,7 @@
 
 .chart_7days text {
   fill: white;
-  font: 10px sans-serif;
+  font: 12px sans-serif;
   text-anchor: middle;
+  font-weight:bold;
 }

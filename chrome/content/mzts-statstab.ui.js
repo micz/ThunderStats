@@ -48,7 +48,7 @@ miczThunderStatsTab.ui={
 		return outString;
 	},
 	
-	draw7DaysGraph:function(element_id_txt,data_array,label_array){
+	draw7DaysGraph:function(element_id_txt,data_array){
 		let barWidth = 55;
 		let w = (barWidth + 5) * 7;
 		let h = 200;
@@ -64,15 +64,27 @@ miczThunderStatsTab.ui={
 			.attr("width", w)
 			.attr("height", h);
 		
-		chart.selectAll("rect").
-		  data(data_array).
-		  enter().
-		  append("svg:rect").
-		  attr("x", function(datum, index) { return x(index); }).
-		  attr("y", function(datum) { return h - y(datum.num); }).
-		  attr("height", function(datum) { return y(datum.num); }).
-		  attr("width", barWidth).
-		  attr("fill", "#2d578b");
+		chart.selectAll("rect")
+		  .data(data_array)
+		  .enter()
+		  .append("svg:rect")
+		  .attr("x", function(datum, index) { return x(index); })
+		  .attr("y", function(datum) { return h - y(datum.num); })
+		  .attr("height", function(datum) { return y(datum.num); })
+		  .attr("width", barWidth)
+		  .attr("fill", "#2d578b");
+		  
+		chart.selectAll("text")
+		  .data(data_array)
+		  .enter()
+		  .append("svg:text")
+		  .attr("x", function(datum, index) { return x(index) + barWidth; })
+		  .attr("y", function(datum) { return h - y(datum.num); })
+		  .attr("dx", -barWidth/2)
+		  .attr("dy", "1.7em")
+		  .attr("text-anchor", "middle")
+		  .text(function(datum) { return datum.num;})
+		  .attr("fill", "white");
 
 		/*let bar = chart.selectAll("g")
 			.data(data_array)

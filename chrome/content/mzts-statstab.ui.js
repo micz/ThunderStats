@@ -47,5 +47,21 @@ miczThunderStatsTab.ui={
 		outString+="</table>";
 		return outString;
 	},
+	
+	draw7DaysGraph:function(element_id_txt,data_array){
+		let w = 400,
+		h = 200;
+
+		let vis = new pv.Panel().canvas(element_id_txt);
+		vis.width(w)
+		.height(h);
+		let bar=vis.add(pv.Bar)
+		.data(data_array)
+		.bottom(0)
+		.height(function(d) d * 10)	//TODO: this must be different. we don't now the max messages
+		.left(function() this.index * 25)
+		.width(20)
+		.root.render();
+	},
 
 };

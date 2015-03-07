@@ -51,6 +51,8 @@ miczThunderStatsTab.ui={
 	draw7DaysGraph:function(element_id_txt,data_array){
 		let w = 400,
 		h = 200;
+		
+		let max_data = Math.max.apply(Math, data_array);
 
 		let vis = new pv.Panel().canvas(element_id_txt);
 		vis.width(w)
@@ -58,7 +60,7 @@ miczThunderStatsTab.ui={
 		let bar=vis.add(pv.Bar)
 		.data(data_array)
 		.bottom(0)
-		.height(function(d) d * 10)	//TODO: this must be different. we don't now the max messages
+		.height(function(d) d * (h / max_data))	//TODO: this must be different. we don't now the max messages
 		.left(function() this.index * 25)
 		.width(20)
 		.root.render();

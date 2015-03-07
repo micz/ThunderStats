@@ -425,8 +425,7 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 				//if we've collected our 7 days, let's print it!
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent miczThunderStatsTab.data_7days_sent.length '+miczThunderStatsTab.data_7days_sent.length+'\r\n');
 				if(miczThunderStatsTab.data_7days_sent.length==7){
-					//TODO
-					$jQ("#7days_sent").text(JSON.stringify(miczThunderStatsTab.data_7days_sent));
+					//$jQ("#7days_sent").text(JSON.stringify(miczThunderStatsTab.data_7days_sent));
 					let data_array=new Array();
 					for (let dKey in miczThunderStatsTab.data_7days_sent){
 						data_array.push(miczThunderStatsTab.data_7days_sent[dKey].num);

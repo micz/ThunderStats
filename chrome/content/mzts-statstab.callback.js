@@ -396,7 +396,6 @@ miczThunderStatsTab.callback.last_idx_msg = {
 	},
 };
 
-
 miczThunderStatsTab.callback.stats_7days_sent = {
 	empty:true,
 	data:{},

@@ -33,6 +33,7 @@ display:none;
 }
 
 .chart_7days .y.axis text{
+font:12px sans-serif;
 display:inherit;
 fill:black;
 font-weight:normal;

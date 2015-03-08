@@ -457,3 +457,55 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 		}
 	},
 };
+
+miczThunderStatsTab.callback.stats_7days_rcvd = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num","Info"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsTab.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				//miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
+				let m = moment(this.data[1]["Info"]);
+				if(!this.empty){		//put the format string in localization files. See http://momentjs.com/docs/#/displaying/
+					miczThunderStatsTab.data_7days_rcvd.push({day:m.unix(),day_str:m.format("DD/MM/YY"),num:this.data[1]["Num"]});
+					//$jQ("#7days_rcvd").append(this.data[1]["Info"]+": "+this.data[1]["Num"]);
+				}else{
+					miczThunderStatsTab.data_7days_rcvd.push({day:m.unix(),day_str:m.format("DD/MM/YY"),num:0});
+					//$jQ("#7days_rcvd").append(this.data[1]["Info"]+": 0");
+				}
+				miczLogger.log("7 days sent messages loaded day: "+this.data[1]["Info"]+".",0);
+				//if we've collected our 7 days, let's print it!
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent miczThunderStatsTab.data_7days_sent.length '+miczThunderStatsTab.data_7days_sent.length+'\r\n');
+				if(miczThunderStatsTab.data_7days_rcvd.length==7){
+					//$jQ("#7days_rcvd").text(JSON.stringify(miczThunderStatsTab.data_7days_rcvd));
+					//ordering results array
+					miczThunderStatsTab.data_7days_sent.sort(miczThunderStatsUtils.array_7days_compare);
+					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_rcvd',miczThunderStatsTab.data_7days_rcvd);
+				  	miczLogger.log("7 days received messages chart rendered.",0);
+				}
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	},
+};

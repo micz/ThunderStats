@@ -11,6 +11,7 @@ var miczThunderStatsTab = {
 
 	currentTab:"#tab_today",
 	data_7days_sent:new Array(),
+	data_7days_rcvd:new Array(),
 
 	onLoad: function(){
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
@@ -115,7 +116,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsCore.db.getManyDaysMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_sent);
 
 		//Get received messages
-		//miczThunderStatsCore.db.getManyDaysMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_rcvd);
+		miczThunderStatsCore.db.getManyDaysMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_rcvd);
 
 		//Get first 10 recipients
 		//miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_recipients);

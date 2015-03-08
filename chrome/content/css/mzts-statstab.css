@@ -12,7 +12,7 @@ table.mzts-tinvolved tr.mzts-thead{font-weight:bold;background:grey;}
 table.mzts-tinvolved tr.mzts-trow:nth-child(odd){background:white;}
 table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:lightgrey;}
 table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;white-space:-moz-pre-wrap !important;word-break: break-all;}
-
+.circle_wait{text-align:center;width:100%;position:absolute;}
 
 #heading_wrapper {
   display: table;
@@ -75,6 +75,7 @@ table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;white-space:-moz-pre-
   padding: 0;
   -moz-padding-start: 2px;
   -moz-padding-end: 0;
+  position:relative;
 }
 
 .list_heading {
@@ -96,9 +97,6 @@ table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;white-space:-moz-pre-
   width: -moz-min-content;
   max-width: -moz-available;
 }
-
-.circle_wait{text-align:center;width:100%;}
-
 
 /*----- Tabs -----*/
 .tabs {

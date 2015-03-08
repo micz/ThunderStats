@@ -83,10 +83,10 @@ miczThunderStatsTab.ui={
 		  .attr("x", function(datum, index) { return x(index) + barWidth; })
 		  .attr("y", function(datum) { return y(datum.num); })
 		  .attr("dx", -barWidth/2)
-		  .attr("dy", "1.7em")
+		  .attr("dy", function(datum) { return datum.num > 0 ? "1.7em":"-1em"; })
 		  .attr("text-anchor", "middle")
 		  .text(function(datum) { return datum.num;})
-		  .attr("fill", "white");
+		  .attr("class", function(datum) { return datum.num > 0 ? "data_label":"zero_data_label"; });
 		  
 		//x axis labels
 		chart.selectAll("text.xAxis")

@@ -9,8 +9,15 @@ margin:auto;
   fill: steelblue;
 }
 
-.chart_7days text {
+.chart_7days text.data_label {
   fill: white;
+  font: 12px sans-serif;
+  text-anchor: middle;
+  font-weight:bold;
+}
+
+.chart_7days text.zero_data_label {
+  fill: black;
   font: 12px sans-serif;
   text-anchor: middle;
   font-weight:bold;

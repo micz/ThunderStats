@@ -17,6 +17,14 @@ var miczThunderStatsTab = {
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
 			miczLogger.log("ThunderStats starting...",0);
 
+			//check if global indexing is active. Without global indexing we have no data to use!
+			if(!miczThunderStatsUtils.checkGlobalIndexing()){
+				$jQ('#mzts-main-error').show();
+				$jQ('#mzts-idnt_sel').hide();
+				$jQ('#mzts-last_msg').hide();
+				miczLogger.log("Thunderbird Global Indexing is not active!",2);
+			}
+
 			//Setting the correct locale to display dates and times
 			moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 

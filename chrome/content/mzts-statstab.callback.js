@@ -413,7 +413,6 @@ miczThunderStatsTab.callback.stats_7days_sent = {
     handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				//miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
 				let m = moment(this.data[1]["Info"]);
 				if(!this.empty){		//put the format string in localization files. See http://momentjs.com/docs/#/displaying/
 					miczThunderStatsTab.data_7days_sent.push({day:m.unix(),day_str:m.format("DD/MM/YY"),num:this.data[1]["Num"]});
@@ -438,7 +437,7 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent data_array '+data_array+'\r\n');
 */
 					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_sent',miczThunderStatsTab.data_7days_sent);
-
+					miczThunderStatsTab.ui.hideLoadingElement("7days_sent_wait");
 				  	miczLogger.log("7 days sent messages chart rendered.",0);
 				}
 				this.data={};
@@ -474,7 +473,6 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
     handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				//miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
 				let m = moment(this.data[1]["Info"]);
 				if(!this.empty){		//put the format string in localization files. See http://momentjs.com/docs/#/displaying/
 					miczThunderStatsTab.data_7days_rcvd.push({day:m.unix(),day_str:m.format("DD/MM/YY"),num:this.data[1]["Num"]});
@@ -491,6 +489,7 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 					//ordering results array
 					miczThunderStatsTab.data_7days_sent.sort(miczThunderStatsUtils.array_7days_compare);
 					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_rcvd',miczThunderStatsTab.data_7days_rcvd);
+				  	miczThunderStatsTab.ui.hideLoadingElement("7days_rcvd_wait");
 				  	miczLogger.log("7 days received messages chart rendered.",0);
 				}
 				this.data={};

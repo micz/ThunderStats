@@ -206,7 +206,7 @@ miczThunderStatsTab.ui={
 		/* work in progress... see here: http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
 		 *					http://jsfiddle.net/stephenboak/hYuPb/
 		 * 					http://bl.ocks.org/mbostock/3887235
-		 * /
+		 */
 
 	},
 

@@ -107,6 +107,15 @@ var miczThunderStatsTab = {
 
 	getLast7DaysStats:function(identity_id){
 		miczLogger.log("Getting last 7 days statistics...",0);
+		
+		//Show loading indicators
+		miczThunderStatsTab.ui.showLoadingElement("7days_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("7days_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("7days_recipients_wait");
+		miczThunderStatsTab.ui.showLoadingElement("7days_senders_wait");
+		
+		this.data_7days_sent=new Array();
+		this.data_7days_rcvd=new Array();
 
 		let mToDay = new Date();
 		let mFromDay = new Date();
@@ -143,7 +152,7 @@ var miczThunderStatsTab = {
 
 			let output=new Array();
 			miczThunderStatsDB.init();
-			//miczThunderStatsStorageDB.init();	 // To be enabled in vesion 2.0
+			//miczThunderStatsStorageDB.init();	 // To be enabled in version 2.0
 
 			this.getTodayStats(identity_id);
 

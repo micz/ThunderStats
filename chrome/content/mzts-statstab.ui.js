@@ -57,8 +57,12 @@ miczThunderStatsTab.ui={
 		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);
 		let y = d3.scale.linear().domain([0, d3.max(data_array, function(datum) { return datum.num; })]).rangeRound([h, 0]);
 
+		//remove old graph
+		$jQ("#"+element_id_txt+"_svg_graph").remove();
+
 		let chart = d3.select("#"+element_id_txt)
 			.append("svg:svg")
+			.attr("id",element_id_txt+"_svg_graph")
 			.attr("width", w + margin.left + margin.right)
 			.attr("height", h + margin.top + margin.bottom)
 			.attr("transform", "translate("+margin.left+","+margin.top+")");

@@ -143,7 +143,7 @@ var miczThunderStatsDB = {
 		let forbiddenFolders=this.queryGetForbiddenFolders();
 		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
 		let mWhat="f.name as Folder, count(distinct m.headerMessageID) as Num";
-		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join messageattributes ma2 on ma2.messageID=m.id left join folderLocations f on f.id=m.folderID";
+		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join folderLocations f on f.id=m.folderID";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
 		if(mIdentity>0){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";

@@ -13,6 +13,7 @@ table.mzts-tinvolved tr.mzts-trow:nth-child(odd){background:white;}
 table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:lightgrey;}
 table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;white-space:-moz-pre-wrap !important;word-break: break-all;}
 .circle_wait{text-align:center;width:100%;position:absolute;}
+.chart_7days{overflow:auto;}
 
 #heading_wrapper {
   display: table;

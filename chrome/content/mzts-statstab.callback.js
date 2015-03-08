@@ -399,6 +399,7 @@ miczThunderStatsTab.callback.last_idx_msg = {
 miczThunderStatsTab.callback.stats_7days_sent = {
 	empty:true,
 	data:{},
+	total_mail:0,
 	handleResult: function(aResultSet) {
 		this.empty=false;
 		let result = miczThunderStatsCore.db.getResultObject(["Num","Info"],aResultSet);
@@ -414,6 +415,7 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				let m = moment(this.data[1]["Info"]);
 				if(!this.empty){
+					this.total_mail+=this.data[1]["Num"];
 					miczThunderStatsTab.data_7days_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m),num:this.data[1]["Num"]});
 					//$jQ("#7days_sent").append(this.data[1]["Info"]+": "+this.data[1]["Num"]);
 				}else{
@@ -428,8 +430,10 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 					//ordering results array
 					miczThunderStatsTab.data_7days_sent.sort(miczThunderStatsUtils.array_7days_compare);
 					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_sent',miczThunderStatsTab.data_7days_sent);
+					$jQ("#7days_sent_total").text(this.total_mail);
 					miczThunderStatsTab.ui.hideLoadingElement("7days_sent_wait");
 				  	miczLogger.log("7 days sent messages chart rendered.",0);
+				  	this.total_mail=0;
 				}
 				this.data={};
 				this.empty=true;
@@ -438,11 +442,13 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
+				this.total_mail=0;
 				return false;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
+				this.total_mail=0;
 				return false;
 		}
 	},

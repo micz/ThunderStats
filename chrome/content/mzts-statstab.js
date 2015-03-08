@@ -16,6 +16,9 @@ var miczThunderStatsTab = {
 	onLoad: function(){
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
 			miczLogger.log("ThunderStats starting...",0);
+			
+			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentGlobalLocale());
+			miczLogger.log("CurrentMomentLocale: "+moment.locale());
 
 			miczThunderStatsDB.init();
 			//miczThunderStatsStorageDB.init();	// To be enabled in vesion 2.0

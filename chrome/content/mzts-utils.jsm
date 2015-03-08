@@ -72,4 +72,10 @@ var miczThunderStatsUtils = {
 		}
 		return 0;
 	},
+	
+	 getCurrentGlobalLocale:function(){
+		return Components.classes["@mozilla.org/chrome/chrome-registry;1"]
+		  .getService(Components.interfaces.nsIXULChromeRegistry)
+		  .getSelectedLocale('global');
+	},
 };

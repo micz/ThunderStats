@@ -120,4 +120,94 @@ miczThunderStatsTab.ui={
 			.call(yAxis);
 	},
 
+	drawInbox0FolderSpreadGraph:function(element_id_txt,data_array){
+		let margin = {top: 5, right: 0, bottom: 20, left: 20};
+		let barWidth = 50;
+		let w = ((barWidth + 15) * 7) - margin.left - margin.right;
+		let h = 220 - margin.top - margin.bottom;
+		let r = 100;
+		let ir = 45;
+
+		//D3 helper function to populate pie slice parameters from array data
+		let donut = d3.layout.pie().value(function(d){ return d.octetTotalCount; });
+		//D3 helper function to create colors from an ordinal scale
+		let color = d3.scale.category20();
+		//D3 helper function to draw arcs, populates parameter "d" in path object
+		let arc = d3.svg.arc()
+		  .startAngle(function(d){ return d.startAngle; })
+		  .endAngle(function(d){ return d.endAngle; })
+		  .innerRadius(ir)
+		  .outerRadius(r);
+
+		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);
+		let y = d3.scale.linear().domain([0, d3.max(data_array, function(datum) { return datum.num; })]).rangeRound([h, 0]);
+
+		//remove old graph
+		$jQ("#"+element_id_txt+"_svg_graph").remove();
+
+		let chart = d3.select("#"+element_id_txt)
+			.append("svg:svg")
+			.attr("id",element_id_txt+"_svg_graph")
+			.attr("width", w + margin.left + margin.right)
+			.attr("height", h + margin.top + margin.bottom);
+			//.attr("transform", "translate("+margin.left+","+margin.top+")");
+
+		//GROUP FOR ARCS/PATHS
+		let arc_group = vis.append("svg:g")
+		  .attr("class", "arc")
+		  .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+
+		//GROUP FOR LABELS
+		let label_group = vis.append("svg:g")
+		  .attr("class", "label_group")
+		  .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+
+		//GROUP FOR CENTER TEXT
+		let center_group = vis.append("svg:g")
+		  .attr("class", "center_group")
+		  .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+
+		//PLACEHOLDER GRAY CIRCLE
+		let paths = arc_group.append("svg:circle")
+			.attr("fill", "#EFEFEF")
+			.attr("r", r);
+
+		///////////////////////////////////////////////////////////
+		// CENTER TEXT ////////////////////////////////////////////
+		///////////////////////////////////////////////////////////
+
+		//WHITE CIRCLE BEHIND LABELS
+		let whiteCircle = center_group.append("svg:circle")
+		  .attr("fill", "white")
+		  .attr("r", ir);
+
+		// "TOTAL" LABEL
+		let totalLabel = center_group.append("svg:text")
+		  .attr("class", "label")
+		  .attr("dy", -15)
+		  .attr("text-anchor", "middle") // text-align: right
+		  .text("TOTAL");
+
+		//TOTAL TRAFFIC VALUE
+		let totalValue = center_group.append("svg:text")
+		  .attr("class", "total")
+		  .attr("dy", 7)
+		  .attr("text-anchor", "middle") // text-align: right
+		  .text("Waiting...");
+
+		//UNITS LABEL
+		let totalUnits = center_group.append("svg:text")
+		  .attr("class", "units")
+		  .attr("dy", 21)
+		  .attr("text-anchor", "middle") // text-align: right
+		  .text("kb");
+
+
+		/* work in progress... see here: http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
+		 *					http://jsfiddle.net/stephenboak/hYuPb/
+		 * 					http://bl.ocks.org/mbostock/3887235
+		 * /
+
+	},
+
 };

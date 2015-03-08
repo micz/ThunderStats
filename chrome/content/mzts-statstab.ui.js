@@ -47,7 +47,7 @@ miczThunderStatsTab.ui={
 		outString+="</table>";
 		return outString;
 	},
-	
+
 	draw7DaysGraph:function(element_id_txt,data_array){
 		let margin = {top: 5, right: 0, bottom: 20, left: 20};
 		let barWidth = 50;
@@ -66,7 +66,7 @@ miczThunderStatsTab.ui={
 			.attr("width", w + margin.left + margin.right)
 			.attr("height", h + margin.top + margin.bottom)
 			.attr("transform", "translate("+margin.left+","+margin.top+")");
-		
+
 		//graph bars
 		chart.selectAll("rect")
 		  .data(data_array)
@@ -77,7 +77,7 @@ miczThunderStatsTab.ui={
 		  .attr("height", function(datum) { return y(0) - y(datum.num); })
 		  .attr("width", barWidth)
 		  .attr("fill", "#2d578b");
-		
+
 		//data labels
 		chart.selectAll("text")
 		  .data(data_array)
@@ -90,7 +90,7 @@ miczThunderStatsTab.ui={
 		  .attr("text-anchor", "middle")
 		  .text(function(datum) { return datum.num;})
 		  .attr("class", function(datum) { return datum.num > 0 ? "data_label":"zero_data_label"; });
-		  
+
 		//x axis labels
 		chart.selectAll("text.xAxis")
 			.data(data_array)
@@ -102,16 +102,16 @@ miczThunderStatsTab.ui={
 			.text(function(datum) { return datum.day_str; })
 			.attr("transform", "translate(0, "+margin.bottom+")")
 			.attr("class", "xAxis");
-			
+
 		//x axis
 		let xAxis = d3.svg.axis().scale(x).orient("bottom")
-				.tickValues([0.5,1.5,2.5,3.5,4.5,5.5,6.5])
+				.tickValues([0.4,1.4,2.4,3.4,4.4,5.4,6.4])
 				.outerTickSize(0);
 		chart.append("g")
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + h + ")")
 			.call(xAxis);
-			
+
 		//y axis
 		let num_ticks = (d3.max(data_array, function(datum) { return datum.num; })>10 ? 10 : d3.max(data_array, function(datum) { return datum.num; }));
 		let yAxis = d3.svg.axis().tickFormat(d3.format('0:d')).ticks(num_ticks).scale(y).orient("left");

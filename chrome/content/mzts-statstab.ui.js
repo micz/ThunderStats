@@ -55,10 +55,8 @@ miczThunderStatsTab.ui={
 		let bottom = 20;
 		let left = 20;
 
-		//let y = d3.scale.linear().range([h, 0]);
 		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);
-		let y = d3.scale.linear().domain([0, d3.max(data_array, function(datum) { return datum.num; })]).rangeRound([0, h]);
-		//let y = d3.scale.linear().domain([0, d3.max(data_array)]).rangeRound([0, h]);
+		let y = d3.scale.linear().domain([0, d3.max(data_array, function(datum) { return datum.num; })]).rangeRound([h, 0]);
 
 		let chart = d3.select("#"+element_id_txt)
 			.append("svg:svg")
@@ -72,8 +70,8 @@ miczThunderStatsTab.ui={
 		  .enter()
 		  .append("svg:rect")
 		  .attr("x", function(datum, index) { return x(index); })
-		  .attr("y", function(datum) { return h - y(datum.num); })
-		  .attr("height", function(datum) { return y(datum.num); })
+		  .attr("y", function(datum) { return y(datum.num); })
+		  .attr("height", function(datum) { return y(0) - y(datum.num); })
 		  .attr("width", barWidth)
 		  .attr("fill", "#2d578b");
 		
@@ -83,7 +81,7 @@ miczThunderStatsTab.ui={
 		  .enter()
 		  .append("svg:text")
 		  .attr("x", function(datum, index) { return x(index) + barWidth; })
-		  .attr("y", function(datum) { return h - y(datum.num); })
+		  .attr("y", function(datum) { return y(datum.num); })
 		  .attr("dx", -barWidth/2)
 		  .attr("dy", "1.7em")
 		  .attr("text-anchor", "middle")
@@ -113,7 +111,7 @@ miczThunderStatsTab.ui={
 			
 		//y axis
 		let num_ticks = (d3.max(data_array, function(datum) { return datum.num; })>10 ? 10 : d3.max(data_array, function(datum) { return datum.num; }));
-		let yAxis = d3.svg.axis().tickFormat(d3.format('0:d')).ticks(num_ticks).scale(y).orient("left"); //TODO: REVERSE SCALE ON AXIS
+		let yAxis = d3.svg.axis().tickFormat(d3.format('0:d')).ticks(num_ticks).scale(y).orient("left");
 		chart.append("g")
 			.attr("class", "y axis")
 			.call(yAxis);

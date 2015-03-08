@@ -81,6 +81,13 @@ miczThunderStatsCore.db = {
 		ydate.setDate(ydate.getDate() - 1);
 		return this.getOneDayInvolved(mType,ydate,mIdentity,mCallback);
 	},
+	
+	getManyDaysInvolved:function(mType,mFromDate,mToDate,mIdentity,mCallback){
+		mFromDate.setHours(0,0,0,0);
+		mToDate.setHours(24,0,0,0);
+		let mMax=10;
+		return miczThunderStatsDB.queryGetNumInvolved(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity,mMax,mCallback);
+	},
 
 	getResultObject:function(aFields,aResultSet){
 		let oOutput={};

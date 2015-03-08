@@ -508,3 +508,45 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 		}
 	},
 };
+
+miczThunderStatsTab.callback.stats_7days_recipients = {
+	empty:true,
+	data:{},
+  handleResult: function(aResultSet) {
+    let result = miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
+    this.empty=false;
+    for (let key in result) {
+		this.data[key]=result[key];
+	}
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_recipients handleResult '+JSON.stringify(this.data)+'\r\n');
+  },
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("7days_recipients_wait");
+				if(!this.empty){
+					$jQ("#7days_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_7days_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
+				}else{
+					$jQ("#7days_recipients").text("No mails sent!");
+				}
+				miczLogger.log("7 days recipients loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	},
+};

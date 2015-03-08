@@ -112,7 +112,8 @@ miczThunderStatsTab.ui={
 			.call(xAxis);
 			
 		//y axis
-		let yAxis = d3.svg.axis().ticks(4).scale(y).orient("left");	//TODO: FIX TICKS NUMBERS - REVERSE SCALE ON AXIS
+		let num_ticks = (d3.max(data_array, function(datum) { return datum.num; })>10 ? 10 : d3.max(data_array, function(datum) { return datum.num; }));
+		let yAxis = d3.svg.axis().tickFormat(d3.format('0:d')).ticks(num_ticks).scale(y).orient("left"); //TODO: REVERSE SCALE ON AXIS
 		chart.append("g")
 			.attr("class", "y axis")
 			.call(yAxis);

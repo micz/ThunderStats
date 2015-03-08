@@ -56,6 +56,7 @@ table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;white-space:-moz-pre-
   min-height:48%;
   padding: 1ex;
   vertical-align: top;
+  position:relative;
 }
 
 #tier1_today .chunk,#tier1_yesterday .chunk,#tier1_7days .chunk,#tier1_info .chunk {
@@ -75,7 +76,6 @@ table.mzts-tinvolved tr.mzts-trow td{color:black;padding:0;white-space:-moz-pre-
   padding: 0;
   -moz-padding-start: 2px;
   -moz-padding-end: 0;
-  position:relative;
 }
 
 .list_heading {

@@ -87,6 +87,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("today_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_recipients_wait");
+		miczThunderStatsTab.ui.showLoadingElement("today_senders_wait");
 
 		//Print dates
 		$jQ("#yesterday_date").text(miczThunderStatsUtils.getYesterdayString());

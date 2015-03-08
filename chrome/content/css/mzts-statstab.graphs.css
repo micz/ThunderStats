@@ -2,7 +2,7 @@
 
 .chart_7days svg{
 display:block;
-margin:auto;
+margin:0 auto;
 }
 
 .chart_7days rect {
@@ -38,6 +38,8 @@ display:inherit;
 fill:black;
 font-weight:normal;
 }
+
+.chart_7days .y.axis{padding-top:10px;}
 
 .chart_7days .axis path,.chart_7days .axis line {
   fill: none;

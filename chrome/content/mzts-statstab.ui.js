@@ -49,20 +49,19 @@ miczThunderStatsTab.ui={
 	},
 	
 	draw7DaysGraph:function(element_id_txt,data_array){
-		let barWidth = 55;
-		let w = (barWidth + 5) * 7;
-		let h = 200;
-		let bottom = 20;
-		let left = 20;
+		let margin = {top: 5, right: 0, bottom: 20, left: 20};
+		let barWidth = 50;
+		let w = ((barWidth + 15) * 7) - margin.left - margin.right;
+		let h = 220 - margin.top - margin.bottom;
 
 		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);
 		let y = d3.scale.linear().domain([0, d3.max(data_array, function(datum) { return datum.num; })]).rangeRound([h, 0]);
 
 		let chart = d3.select("#"+element_id_txt)
 			.append("svg:svg")
-			.attr("width", w + left)
-			.attr("height", h + bottom)
-			.attr("transform", "translate("+left+",0)");
+			.attr("width", w + margin.left + margin.right)
+			.attr("height", h + margin.top + margin.bottom)
+			.attr("transform", "translate("+margin.left+","+margin.top+")");
 		
 		//graph bars
 		chart.selectAll("rect")
@@ -97,7 +96,7 @@ miczThunderStatsTab.ui={
 			.attr("dx", -barWidth/2)
 			.attr("text-anchor", "middle")
 			.text(function(datum) { return datum.day_str; })
-			.attr("transform", "translate(0, "+bottom+")")
+			.attr("transform", "translate(0, "+margin.bottom+")")
 			.attr("class", "xAxis");
 			
 		//x axis

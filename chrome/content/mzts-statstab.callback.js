@@ -595,3 +595,45 @@ miczThunderStatsTab.callback.stats_7days_senders = {
 		}
 	},
 };
+
+miczThunderStatsTab.callback.stats_today_inbox0_folders = {
+	empty:true,
+	data:{},
+  handleResult: function(aResultSet) {
+    let result = miczThunderStatsCore.db.getResultObject(["Folder","Num"],aResultSet);
+    this.empty=false;
+    for (let key in result) {
+		this.data[key]=result[key];
+	}
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_today_inbox0_folders handleResult '+JSON.stringify(this.data)+'\r\n');
+  },
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_wait");
+				if(!this.empty){
+					$jQ("#today_inbox0_folder_spread").text(JSON.stringify(this.data));
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_today_inbox0_folders handleCompletion '+JSON.stringify(this.data)+'\r\n');
+				}else{
+					$jQ("#today_inbox0_folder_spread").text("No mails received!");
+				}
+				miczLogger.log("Today Inbox 0 data loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	},
+};

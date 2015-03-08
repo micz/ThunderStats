@@ -81,6 +81,13 @@ var miczThunderStatsTab = {
 
 		//Get today first 10 senders
 		miczThunderStatsCore.db.getTodayInvolved(0,identity_id,miczThunderStatsTab.callback.homepage_stats_today_senders);
+
+		//Inbox 0 Today
+		//Get today mails folder spreading
+		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folders);
+
+		//Get inbox mails date spreading
+		//TODO
 	},
 
 	getYesterdayStats:function(identity_id){

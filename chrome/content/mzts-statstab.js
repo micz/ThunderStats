@@ -84,10 +84,10 @@ var miczThunderStatsTab = {
 		miczLogger.log("Getting yesterday statistics...",0);
 
 		//Show loading indicators
-		miczThunderStatsTab.ui.showLoadingElement("today_sent_wait");
-		miczThunderStatsTab.ui.showLoadingElement("today_rcvd_wait");
-		miczThunderStatsTab.ui.showLoadingElement("today_recipients_wait");
-		miczThunderStatsTab.ui.showLoadingElement("today_senders_wait");
+		miczThunderStatsTab.ui.showLoadingElement("yesterday_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("yesterday_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("yesterday_recipients_wait");
+		miczThunderStatsTab.ui.showLoadingElement("yesterday_senders_wait");
 
 		//Print dates
 		$jQ("#yesterday_date").text(miczThunderStatsUtils.getYesterdayString());

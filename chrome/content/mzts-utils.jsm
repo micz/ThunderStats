@@ -11,33 +11,25 @@ var miczThunderStatsUtils = {
 				.replace(/>/g, '&gt;');
 	},
 
-	getDateString:function(mDate){
-		let d = new Date(mDate);
-		let day=d.getDate();
-		let month=d.getMonth()+1;
-		return (day<10 ? '0' : '')+day+"/"+(month<10 ? '0' : '')+month+"/"+d.getFullYear();
+	getDateString:function(mDate){	//mDate is a moment(Date) object
+		return mDate.format('L');	//four digit year
 	},
 
-	getDateTimeString:function(mDate){
-		let d = new Date(mDate);
-		let day=d.getDate();
-		let month=d.getMonth()+1;
-		return (day<10 ? '0' : '')+day+"/"+(month<10 ? '0' : '')+month+"/"+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+	getDateStringYY:function(mDate){	//mDate is a moment(Date) object
+		let strDate=mDate.format('L')
+		return strDate.replace(mDate.format('YYYY'),mDate.format('YY'));	//two digit year
 	},
 
-	getTodayString:function(){
-		let d = new Date();
-		let day=d.getDate();
-		let month=d.getMonth()+1;
-		return (day<10 ? '0' : '')+day+"/"+(month<10 ? '0' : '')+month+"/"+d.getFullYear();
+	getDateTimeString:function(mDate){	//mDate is a moment(Date) object
+		return mDate.format('L')+" "+mDate.format('LTS');
 	},
 
-	getYesterdayString:function(){
-		let d = new Date();
-		d.setDate(d.getDate()-1);
-		let day=d.getDate();
-		let month=d.getMonth()+1;
-		return (day<10 ? '0' : '')+day+"/"+(month<10 ? '0' : '')+month+"/"+d.getFullYear();
+	getTodayString:function(moment){
+		return this.getDateString(moment());
+	},
+
+	getYesterdayString:function(moment){
+		return this.getDateString(moment().subtract(1,'d'));
 	},
 
 	getDaysFromRange: function(mFromDate,mToDate){
@@ -62,7 +54,7 @@ var miczThunderStatsUtils = {
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
 		return dOutput;		//returns a Date() array
 	},
-	
+
 	array_7days_compare:function(a,b){
 		if(a.day < b.day){
 			return -1;
@@ -72,10 +64,11 @@ var miczThunderStatsUtils = {
 		}
 		return 0;
 	},
-	
-	 getCurrentGlobalLocale:function(){
-		return Components.classes["@mozilla.org/chrome/chrome-registry;1"]
-		  .getService(Components.interfaces.nsIXULChromeRegistry)
-		  .getSelectedLocale('global');
+
+	 getCurrentSystemLocale:function(){
+		return Components.classes["@mozilla.org/intl/nslocaleservice;1"]
+          .getService(Components.interfaces.nsILocaleService)
+		  .getSystemLocale()
+		  .getCategory('NSILOCALE_TIME');
 	},
 };

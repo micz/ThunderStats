@@ -16,9 +16,9 @@ var miczThunderStatsTab = {
 	onLoad: function(){
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
 			miczLogger.log("ThunderStats starting...",0);
-			
-			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentGlobalLocale());
-			miczLogger.log("CurrentMomentLocale: "+moment.locale());
+
+			//Setting the correct locale to display dates and times
+			moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 
 			miczThunderStatsDB.init();
 			//miczThunderStatsStorageDB.init();	// To be enabled in vesion 2.0
@@ -67,7 +67,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("today_senders_wait");
 
 		//Print dates
-		$jQ("#today_date").text(miczThunderStatsUtils.getTodayString());
+		$jQ("#today_date").text(miczThunderStatsUtils.getTodayString(moment));
 
 		//Today
 		//Get today sent messages
@@ -93,7 +93,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_senders_wait");
 
 		//Print dates
-		$jQ("#yesterday_date").text(miczThunderStatsUtils.getYesterdayString());
+		$jQ("#yesterday_date").text(miczThunderStatsUtils.getYesterdayString(moment));
 
 		//Yesterday
 		//Get yesterday sent messages
@@ -111,13 +111,13 @@ var miczThunderStatsTab = {
 
 	getLast7DaysStats:function(identity_id){
 		miczLogger.log("Getting last 7 days statistics...",0);
-		
+
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingElement("7days_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("7days_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("7days_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("7days_senders_wait");
-		
+
 		this.data_7days_sent=new Array();
 		this.data_7days_rcvd=new Array();
 

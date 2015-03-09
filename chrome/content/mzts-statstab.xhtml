@@ -38,17 +38,17 @@
 			theme:'tooltipster-light'
 		});
 		$jQ('.tabs .tab-links a').on('click', function(e)  {
-			let currentAttrValue = $jQ(this).attr('href');
+			miczThunderStatsTab.currentTab = $jQ(this).attr('href');
 
 			// Show/Hide Tabs
-			//$jQ('.tabs ' + currentAttrValue).show().siblings().hide();
-			$jQ('.tabs ' + currentAttrValue).fadeIn(400).siblings().hide();
-
-			//update value
-			miczThunderStatsTab.ui.updateTab(currentAttrValue);
+			//$jQ('.tabs ' + miczThunderStatsTab.currentTab).show().siblings().hide();
+			$jQ('.tabs ' + miczThunderStatsTab.currentTab).fadeIn(400,miczThunderStatsTab.ui.updateTab).siblings().hide();
 
 			// Change/remove current tab to active
 			$jQ(this).parent('li').addClass('active').siblings().removeClass('active');
+
+			//update value
+			//miczThunderStatsTab.ui.updateTab(miczThunderStatsTab.currentTab);
 
 			e.preventDefault();
 		});

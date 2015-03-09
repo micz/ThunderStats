@@ -34,10 +34,9 @@ miczThunderStatsTab.ui={
 		$jQ("#"+selector_id).change(miczThunderStatsTab.updateStats);
 	},
 
-	updateTab:function(tab_id){
-		miczThunderStatsTab.currentTab=tab_id;
+	updateTab:function(){
 		miczThunderStatsDB.init();
-		switch(tab_id){
+		switch(miczThunderStatsTab.currentTab){
 			case '#tab_today':
 				miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
 			break;

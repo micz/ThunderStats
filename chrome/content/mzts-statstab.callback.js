@@ -464,6 +464,7 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 	handleResult: function(aResultSet) {
 		this.empty=false;
 		let result = miczThunderStatsCore.db.getResultObject(["Num","Info"],aResultSet);
+		miczLogger.log("RCVD "+JSON.stringify(result),1);
 		for (let key in result) {
 			this.data[key]=result[key];
 		}
@@ -489,7 +490,7 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 				if(this.data_7days_rcvd.length==7){
 					//$jQ("#7days_rcvd").text(JSON.stringify(miczThunderStatsTab.data_7days_rcvd));
 					//ordering results array
-					this.data_7days_sent.sort(miczThunderStatsUtils.array_7days_compare);
+					this.data_7days_rcvd.sort(miczThunderStatsUtils.array_7days_compare);
 					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_rcvd',this.data_7days_rcvd);
 					$jQ("#7days_rcvd_total").text(this.total_mail);
 				  	miczThunderStatsTab.ui.hideLoadingElement("7days_rcvd_wait");
@@ -518,12 +519,12 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 
 miczThunderStatsTab.callback.stats_7days_recipients = {
 	empty:true,
-	data:{},
+	data:new Array(),
   handleResult: function(aResultSet) {
     let result = miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
     this.empty=false;
     for (let key in result) {
-		this.data[key]=result[key];
+		this.data.push(result[key]);
 	}
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_recipients handleResult '+JSON.stringify(this.data)+'\r\n');
   },
@@ -541,17 +542,17 @@ miczThunderStatsTab.callback.stats_7days_recipients = {
 					$jQ("#7days_recipients").text("No mails sent!");
 				}
 				miczLogger.log("7 days recipients loaded.",0);
-				this.data={};
+				this.data=new Array();
 				this.empty=true;
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
-				this.data={};
+				this.data=new Array();
 				this.empty=true;
 				return false;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
-				this.data={};
+				this.data=new Array();
 				this.empty=true;
 				return false;
 		}
@@ -560,12 +561,12 @@ miczThunderStatsTab.callback.stats_7days_recipients = {
 
 miczThunderStatsTab.callback.stats_7days_senders = {
 	empty:true,
-	data:{},
+	data:new Array(),
   handleResult: function(aResultSet) {
     let result = miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
     this.empty=false;
     for (let key in result) {
-		this.data[key]=result[key];
+		this.data.push(result[key]);
 	}
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_senders handleResult '+JSON.stringify(this.data)+'\r\n');
   },
@@ -583,17 +584,17 @@ miczThunderStatsTab.callback.stats_7days_senders = {
 					$jQ("#7days_senders").text("No mails received!");
 				}
 				miczLogger.log("7 days senders loaded.",0);
-				this.data={};
+				this.data=new Array();
 				this.empty=true;
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
-				this.data={};
+				this.data=new Array();
 				this.empty=true;
 				return false;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
-				this.data={};
+				this.data=new Array();
 				this.empty=true;
 				return false;
 		}

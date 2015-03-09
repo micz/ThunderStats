@@ -79,7 +79,7 @@ miczThunderStatsTab.ui={
 		let w = ((barWidth + 15) * 7) - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;
 
-		//data_array=JSON.parse('[{"day":1425337200,"day_str":"03/03/15","num":40},{"day":1425423600,"day_str":"04/03/15","num":78},{"day":1425510000,"day_str":"05/03/15","num":55},{"day":1425596400,"day_str":"06/03/15","num":2},{"day":1425682800,"day_str":"07/03/15","num":0},{"day":1425769200,"day_str":"08/03/15","num":21},{"day":1425855600,"day_str":"09/03/15","num":5}]');
+		//data_array=JSON.parse('[{"day":1425337200,"day_str":"03/03/15","num":11},{"day":1425423600,"day_str":"04/03/15","num":78},{"day":1425510000,"day_str":"05/03/15","num":55},{"day":1425596400,"day_str":"06/03/15","num":2},{"day":1425682800,"day_str":"07/03/15","num":0},{"day":1425769200,"day_str":"08/03/15","num":21},{"day":1425855600,"day_str":"09/03/15","num":5}]');
 
 		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);
 		let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function(datum) { return datum.num; })+1)/10)*10]).rangeRound([h, 0]);
@@ -115,10 +115,10 @@ miczThunderStatsTab.ui={
 		  .attr("x", function(datum, index) { return x(index) + barWidth; })
 		  .attr("y", function(datum) { return y(datum.num); })
 		  .attr("dx", -barWidth/2)
-		  .attr("dy", function(datum) { return datum.num > 0 ? "1.7em":"-1em"; })
+		  .attr("dy", function(datum) { return y(0) - y(datum.num) > 24 ? "1.7em":"-1em"; })
 		  .attr("text-anchor", "middle")
 		  .text(function(datum) { return datum.num;})
-		  .attr("class", function(datum) { return datum.num > 0 ? "data_label":"zero_data_label"; });
+		  .attr("class", function(datum) { return y(0) - y(datum.num) > 24 ? "data_label":"zero_data_label"; });
 
 		//x axis labels
 		chart.selectAll("text.xAxis")

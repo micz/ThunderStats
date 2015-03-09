@@ -61,10 +61,12 @@ miczThunderStatsTab.ui={
 
 	formatInvolvedTable: function(involvedData){	//data columns ["ID","Name","Mail","Num"]
 		let outString="<table class='mzts-tinvolved'>";
-		outString+="<tr class='mzts-thead'><td>Name</td><td>Mail</td><td>Total Messages</td></tr>";
+		outString+="<tr class='mzts-thead'><td>#</td><td>Name</td><td>Mail</td><td>Total Messages</td></tr>";
 
+		let ind=1;
 		for (let key in involvedData){
-			outString+="<tr class='mzts-trow'><td>"+involvedData[key]["Name"]+"</td><td>"+involvedData[key]["Mail"]+"</td><td>"+involvedData[key]["Num"]+"</td></tr>";
+			outString+="<tr class='mzts-trow'><td>"+ind+"</td><td>"+involvedData[key]["Name"]+"</td><td>"+involvedData[key]["Mail"]+"</td><td>"+involvedData[key]["Num"]+"</td></tr>";
+			ind++;
 		}
 
 		outString+="</table>";

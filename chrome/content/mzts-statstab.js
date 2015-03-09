@@ -10,7 +10,6 @@ var $jQ = jQuery.noConflict();
 var miczThunderStatsTab = {
 
 	currentTab:"#tab_today",
-	data_7days_rcvd:new Array(),
 
 	onLoad: function(){
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document);

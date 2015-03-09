@@ -464,7 +464,7 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 	handleResult: function(aResultSet) {
 		this.empty=false;
 		let result = miczThunderStatsCore.db.getResultObject(["Num","Info"],aResultSet);
-		miczLogger.log("RCVD "+JSON.stringify(result),1);
+		//miczLogger.log("RCVD "+JSON.stringify(result),1);
 		for (let key in result) {
 			this.data[key]=result[key];
 		}

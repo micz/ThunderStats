@@ -12,6 +12,7 @@ var miczThunderStatsCore = {
 	identities:new Array(),
 
 	loadIdentities:function(){
+			this.identities=new Array();
 			let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
 			let accounts = acctMgr.accounts;
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');

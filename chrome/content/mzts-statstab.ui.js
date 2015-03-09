@@ -10,6 +10,30 @@ miczThunderStatsTab.ui={
 		$jQ("#"+element).hide();
 	},
 
+	loadIdentitiesSelector:function(selector_id){
+		$jQ("select#"+selector_id).find('option').remove();
+		//let id_selector = document.getElementById(selector_id);
+		/*let opt_0 = document.createElement('option');
+		opt_0.value = "0";
+		opt_0.innerHTML = "All identities";
+		id_selector.appendChild(opt_0);*/
+		$jQ("#"+selector_id).append('<option value="0">All identities</option>');
+		for(let key in miczThunderStatsCore.identities){
+			//let opt = document.createElement('option');
+			/*opt.value = miczThunderStatsCore.identities[key]["id"];
+			opt.innerHTML = miczThunderStatsUtils.escapeHTML(miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+miczThunderStatsCore.identities.length+"\r\n");
+			id_selector.appendChild(opt);*/
+			$jQ("#"+selector_id).append('<option value="'+miczThunderStatsCore.identities[key]["id"]+'">'+miczThunderStatsUtils.escapeHTML(miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")")+'</option>');
+			if(miczThunderStatsCore.identities.length==1){	//If there is only one identity, autochoose it
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
+				$jQ("#"+selector_id).val(miczThunderStatsCore.identities[key]["id"]);
+				$jQ("#"+selector_id).change();
+			}
+		}
+		$jQ("#"+selector_id).change(miczThunderStatsTab.updateStats);
+	},
+
 	updateTab:function(tab_id){
 		miczThunderStatsTab.currentTab=tab_id;
 		miczThunderStatsDB.init();

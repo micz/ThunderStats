@@ -38,28 +38,13 @@ var miczThunderStatsTab = {
 
 			miczLogger.log("Identities found: "+miczThunderStatsCore.identities.length,0);
 
-			let id_selector = document.getElementById('identities_selector');
-			for(let key in miczThunderStatsCore.identities){
-				let opt = document.createElement('option');
-				opt.value = miczThunderStatsCore.identities[key]["id"];
-				opt.innerHTML = miczThunderStatsUtils.escapeHTML(miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")");
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+miczThunderStatsCore.identities.length+"\r\n");
-				id_selector.appendChild(opt);
-
-				if(miczThunderStatsCore.identities.length==1){	//If there is only one identity, autochoose it
-					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
-					$jQ("#identities_selector").val(miczThunderStatsCore.identities[key]["id"]);
-					$jQ("#identities_selector").change();
-				}
-			}
+			miczThunderStatsTab.ui.loadIdentitiesSelector('identities_selector');
 
 			miczLogger.log("Identities loaded.",0);
 			miczLogger.log("ThunderStats ready.",0);
 
 			miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
 			miczThunderStatsTab.getLastIndexedMessage();
-
-			id_selector.onchange=miczThunderStatsTab.updateStats;
 
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0

@@ -72,7 +72,7 @@ miczThunderStatsTab.ui={
 	},
 
 	draw7DaysGraph:function(element_id_txt,data_array){
-		let margin = {top: 5, right: 0, bottom: 20, left: 20};
+		let margin = {top: 5, right: 0, bottom: 20, left: 30};
 		let barWidth = 50;
 		let w = ((barWidth + 15) * 7) - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;

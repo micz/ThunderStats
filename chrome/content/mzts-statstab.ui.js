@@ -61,7 +61,7 @@ miczThunderStatsTab.ui={
 
 	formatInvolvedTable: function(involvedData){	//data columns ["ID","Name","Mail","Num"]
 		let outString="<table class='mzts-tinvolved'>";
-		outString+="<tr class='mzts-thead'><td>#</td><td>Name</td><td>Mail</td><td>Total</td></tr>";
+		outString+="<tr class='mzts-thead'><td class='mzts-row-num'>#</td><td>Name</td><td>Mail</td><td>Total</td></tr>";
 
 		let ind=1;
 		for (let key in involvedData){
@@ -72,7 +72,7 @@ miczThunderStatsTab.ui={
 		outString+="</table>";
 		return outString;
 	},
-	
+
 	util7DaysGraph_InsertLinebreaks:function(d){
 		let el = d3.select(this);
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] d: "+JSON.stringify(d)+"\r\n");
@@ -145,7 +145,7 @@ miczThunderStatsTab.ui={
 			.text(function(datum) { return datum.day_str; })
 			.attr("transform", "translate(0, "+(margin.bottom/2)+")")
 			.attr("class", "xAxis");
-			
+
 		//x axis
 		let xAxis = d3.svg.axis().scale(x).orient("bottom")
 				.tickValues([0.4,1.4,2.4,3.4,4.4,5.4,6.4])

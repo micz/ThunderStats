@@ -72,9 +72,23 @@ miczThunderStatsTab.ui={
 		outString+="</table>";
 		return outString;
 	},
+	
+	util7DaysGraph_InsertLinebreaks:function(d){
+		let el = d3.select(this);
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] d: "+JSON.stringify(d)+"\r\n");
+		let words = d.day_str.split('|');
+		el.text('');
+
+		for (let i = 0; i < words.length; i++) {
+			let tspan = el.append('tspan').text(words[i]);
+			if (i > 0){
+				tspan.attr('x', el.attr('x')).attr('dy', el.attr('dy')+15).attr('dx', el.attr('dx'));
+			}
+		}
+	},
 
 	draw7DaysGraph:function(element_id_txt,data_array){
-		let margin = {top: 5, right: 0, bottom: 20, left: 30};
+		let margin = {top: 5, right: 0, bottom: 40, left: 30};
 		let barWidth = 50;
 		let w = ((barWidth + 15) * 7) - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;
@@ -129,9 +143,9 @@ miczThunderStatsTab.ui={
 			.attr("dx", -barWidth/2)
 			.attr("text-anchor", "middle")
 			.text(function(datum) { return datum.day_str; })
-			.attr("transform", "translate(0, "+margin.bottom+")")
+			.attr("transform", "translate(0, "+(margin.bottom/2)+")")
 			.attr("class", "xAxis");
-
+			
 		//x axis
 		let xAxis = d3.svg.axis().scale(x).orient("bottom")
 				.tickValues([0.4,1.4,2.4,3.4,4.4,5.4,6.4])
@@ -140,6 +154,9 @@ miczThunderStatsTab.ui={
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + h + ")")
 			.call(xAxis);
+
+		//break x axis labels in new lines
+		chart.selectAll('text.xAxis').each(miczThunderStatsTab.ui.util7DaysGraph_InsertLinebreaks);
 
 		//y axis
 		let num_ticks = (d3.max(data_array, function(datum) { return datum.num; })>10 ? 10 : d3.max(data_array, function(datum) { return datum.num; }));

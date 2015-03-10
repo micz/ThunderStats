@@ -15,9 +15,12 @@ var miczThunderStatsUtils = {
 		return mDate.format('L');	//four digit year
 	},
 
-	getDateStringYY:function(mDate){	//mDate is a moment(Date) object
-		let strDate=mDate.format('L')
-		return strDate.replace(mDate.format('YYYY'),mDate.format('YY'));	//two digit year
+	getDateStringYY:function(mDate,mWeekDay){	//mDate is a moment(Date) object, mWeekDay is a boolean
+		let strDate=mDate.format('L').replace(mDate.format('YYYY'),mDate.format('YY'));
+		if(mWeekDay){	//antepone the weekday
+			strDate=mDate.format('dddd')+"|"+strDate;
+		}
+		return strDate;	//two digit year
 	},
 
 	getDateTimeString:function(mDate){	//mDate is a moment(Date) object
@@ -78,4 +81,5 @@ var miczThunderStatsUtils = {
 		let prefs = prefsc.getBranch("mailnews.database.global.indexer.");
 		return prefs.getBoolPref("enabled");
 	},
+
 };

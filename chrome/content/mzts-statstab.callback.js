@@ -417,10 +417,10 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 				let m = moment(this.data[1]["Info"]);
 				if(!this.empty){
 					this.total_mail+=this.data[1]["Num"];
-					this.data_7days_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m),num:this.data[1]["Num"]});
+					this.data_7days_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]});
 					//$jQ("#7days_sent").append(this.data[1]["Info"]+": "+this.data[1]["Num"]);
 				}else{
-					this.data_7days_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m),num:0});
+					this.data_7days_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:0});
 					//$jQ("#7days_sent").append(this.data[1]["Info"]+": 0");
 				}
 				miczLogger.log("7 days sent messages loaded day: "+this.data[1]["Info"]+".",0);
@@ -478,10 +478,10 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 				let m = moment(this.data[1]["Info"]);
 				if(!this.empty){
 					this.total_mail+=this.data[1]["Num"];
-					this.data_7days_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m),num:this.data[1]["Num"]});
+					this.data_7days_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]});
 					//$jQ("#7days_rcvd").append(this.data[1]["Info"]+": "+this.data[1]["Num"]);
 				}else{
-					this.data_7days_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m),num:0});
+					this.data_7days_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:0});
 					//$jQ("#7days_rcvd").append(this.data[1]["Info"]+": 0");
 				}
 				miczLogger.log("7 days sent messages loaded day: "+this.data[1]["Info"]+".",0);

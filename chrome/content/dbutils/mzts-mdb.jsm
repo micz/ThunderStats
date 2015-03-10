@@ -14,6 +14,7 @@ var miczThunderStatsDB = {
 
 	mDb:null,
 	msgAttributes:null,
+	forbiddenFolders:null,
 
 	init: function(){
 		this.mDb = new SQLiteHandler();
@@ -25,7 +26,7 @@ var miczThunderStatsDB = {
 
 		if(this.mDb.openDatabase(file)){
 			//load messages attributes!
-			this.loadMsgAttributes();
+			this.loadMsgAttributes(false);
 			return true;
 		}else{
 			miczLogger.log('[miczThunderStatsDB] Error on db open {'+fileName+'}!!!\r\n',2);
@@ -38,15 +39,20 @@ var miczThunderStatsDB = {
 		this.mDb.closeConnection();
 	},
 
-	loadMsgAttributes:function(){
-		this.msgAttributes={};
-		let rows=miczThunderStatsQuery.querySelect(this.mDb,"name,id","attributeDefinitions",null);
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes rows '+JSON.stringify(rows)+'\r\n');
-		for(let key in rows){
-			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes rows[key] '+JSON.stringify(rows[key])+'\r\n');
-			this.msgAttributes[rows[key][0]]=rows[key][1];
+	loadMsgAttributes:function(async){
+		
+		if(async){	//do it async
+			let rows=miczThunderStatsQuery.querySelect(this.mDb,"name,id","attributeDefinitions",null,miczThunderStatsDB.callback.loadMsgAttributes);
+		}else{	//do it sync
+			this.msgAttributes={};
+			let rows=miczThunderStatsQuery.querySelect(this.mDb,"name,id","attributeDefinitions",null);
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes rows '+JSON.stringify(rows)+'\r\n');
+			for(let key in rows){
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes rows[key] '+JSON.stringify(rows[key])+'\r\n');
+				this.msgAttributes[rows[key][0]]=rows[key][1];
+			}
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes this.msgAttributes  '+JSON.stringify(this.msgAttributes)+'\r\n');
 		}
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes this.msgAttributes  '+JSON.stringify(this.msgAttributes)+'\r\n');
 	},
 
 	querySelect:function(mWhat,mFrom,mWhere,mCallback){
@@ -155,6 +161,9 @@ var miczThunderStatsDB = {
 
 	//returns an array of ids of folder to be ignored in stats crunching
 	queryGetForbiddenFolders:function(){
+		if(this.forbiddenFolders!==null){
+			return this.forbiddenFolders;
+		}
 		let folderArray=new Array();
 		//not in drafts folders and not if folder is not indexed
 		let mWhere='indexingPriority=-1 OR name="Drafts"';
@@ -162,6 +171,7 @@ var miczThunderStatsDB = {
 		for(let key in rows){
 			folderArray.push(rows[key][0]);
 		}
+		this.forbiddenFolders=folderArray;
 		return folderArray;
 	},
 
@@ -179,4 +189,51 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns last_msg_date
 	},
 
+};
+
+miczThunderStatsDB.callback={};
+
+miczThunderStatsDB.callback.loadMsgAttributes = {
+	empty:true,
+	data:new Array(),
+  handleResult: function(aResultSet) {
+    let result = miczThunderStatsCore.db.getResultObject(["name","id"],aResultSet);
+    this.empty=false;
+    for (let key in result) {
+		this.data.push(result[key]);
+	}
+  },
+
+  handleError: function(aError) {
+		miczLogger.log("Error in executeAsync: " + aError.message,2);
+	},
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				this.msgAttributes={};
+				if(!this.empty){
+					for(let key in this.data){
+						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] (Async) loadMsgAttributes this.data '+JSON.stringify(this.data)+'\r\n');
+						miczThunderStatsDB.msgAttributes[this.data[key][0]]=this.data[key][1];
+					}
+				}else{
+					//Do nothing
+				}
+				miczLogger.log("(Async) MsgAttributes loaded.",0);
+				this.data=new Array();
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+		}
+	},
 };

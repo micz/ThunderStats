@@ -65,7 +65,7 @@ miczThunderStatsTab.ui={
 
 		let ind=1;
 		for (let key in involvedData){
-			outString+="<tr class='mzts-trow'><td>"+ind+"</td><td>"+involvedData[key]["Name"]+"</td><td>"+involvedData[key]["Mail"]+"</td><td>"+involvedData[key]["Num"]+"</td></tr>";
+			outString+="<tr class='mzts-trow'><td class='mzts-row-num'>"+ind+"</td><td>"+involvedData[key]["Name"]+"</td><td>"+involvedData[key]["Mail"]+"</td><td>"+involvedData[key]["Num"]+"</td></tr>";
 			ind++;
 		}
 

@@ -17,7 +17,7 @@
 <!-- button details -->
 <toolbarbutton id="mzts-button"
   label="ThunderStats"
-  tooltiptext="Open ThunderStats Panel"
+  tooltiptext="Open ThunderStats Tab"
   oncommand="miczThunderStatsButton.onCommand();"
   class="toolbarbutton-1 chromeclass-toolbar-additional"
   />

@@ -12,7 +12,7 @@ var miczThunderStatsTab = {
 	currentTab:"#tab_today",
 
 	onLoad: function(){
-			miczLogger.setLogger(document.getElementById('log_wrapper'),document);
+			miczLogger.setLogger(document.getElementById('log_wrapper'),document,true);
 			miczLogger.log("ThunderStats starting...",0);
 
 			//check if global indexing is active. Without global indexing we have no data to use!

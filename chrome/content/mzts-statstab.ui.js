@@ -17,6 +17,7 @@ miczThunderStatsTab.ui={
 		$jQ("#log_close_btn").toggleClass('opened');
 		$jQ("#log_close_btn").toggleClass('closed');
 		if(miczThunderStatsTab.ui.log_panel_status){	//hide
+			miczLogger.setActive(false);
 			miczThunderStatsTab.ui.log_panel_status=false;
 			$jQ("#log_wrapper").hide();
 			$jQ("#log_clear_btn").hide();
@@ -26,6 +27,7 @@ miczThunderStatsTab.ui={
 			$jQ("#log_close_btn img").attr('alt','Open log panel');
 			$jQ("#log_close_btn img").tooltipster('content','Open log panel');
 		}else{		//show
+			miczLogger.setActive(true);
 			miczThunderStatsTab.ui.log_panel_status=true;
 			$jQ("#log_wrapper").show();
 			$jQ("#log_clear_btn").show();

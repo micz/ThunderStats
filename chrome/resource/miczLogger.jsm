@@ -6,14 +6,17 @@ let EXPORTED_SYMBOLS = ["miczLogger"];
 var miczLogger = {
 	logger:null,
 	doc:null,
+	active:true,
 
-	setLogger:function(wrapper,document){
+	setLogger:function(wrapper,document,active){
 		this.logger=wrapper;
 		this.doc=document;
+		this.active=active;
 	},
 
 	log:function(msg,level){ //level 0: msg, 1: warning, 2: critical error
 		if(this.logger==null)return;
+		if(!this.active)return;
 
 
 		let node = this.doc.createElement("p");

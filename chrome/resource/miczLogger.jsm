@@ -14,6 +14,10 @@ var miczLogger = {
 		this.active=active;
 	},
 
+	setActive:function(active){
+		this.active=active;
+	},
+
 	log:function(msg,level){ //level 0: msg, 1: warning, 2: critical error
 		if(this.logger==null)return;
 		if(!this.active)return;

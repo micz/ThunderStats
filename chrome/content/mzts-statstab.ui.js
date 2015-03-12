@@ -26,6 +26,7 @@ miczThunderStatsTab.ui={
 			$jQ("#log_close_btn img").attr('title','Open log panel');
 			$jQ("#log_close_btn img").attr('alt','Open log panel');
 			$jQ("#log_close_btn img").tooltipster('content','Open log panel');
+			this.logCloseBtnHide();
 		}else{		//show
 			miczLogger.setActive(true);
 			miczThunderStatsTab.ui.log_panel_status=true;
@@ -36,6 +37,14 @@ miczThunderStatsTab.ui={
 			$jQ("#log_close_btn img").attr('alt','Close log panel');
 			$jQ("#log_close_btn img").tooltipster('content','Close log panel');
 		}
+	},
+
+	logCloseBtnShow:function(){
+		$jQ("#log_close_btn img").fadeIn();
+	},
+
+	logCloseBtnHide:function(){
+		$jQ("#log_close_btn img").fadeOut();
 	},
 
 	loadIdentitiesSelector:function(selector_id){

@@ -7,7 +7,7 @@ html,body{margin:0;padding:0;height:100%;background:white;}
 #log_close_btn{position:fixed;right:16px;cursor:pointer;z-index:100;padding:0;background:white;height:5px;width:16px;text-align:center;}
 #log_close_btn.opened{-moz-transform:rotate(0deg);bottom:111px;border-top:1px solid lightgrey;border-left:1px solid lightgrey;border-right:1px solid lightgrey;}
 #log_close_btn.closed{-moz-transform:rotate(180deg);bottom:0px;border:none;}
-#log_close_btn img{margin:0;position:relative;top:-1px;}
+#log_close_btn img{display:none;margin:0;position:relative;top:-1px;}
 .mzts-desc{word-wrap:break-word;width:90%;}
 #mzts-idnt_sel{float:left;display:flex;align-items:center;height:28px;font-size:0.8em;}
 #mzts-last_msg{float:right;font-size:0.8em;margin-right:10px;display:flex;align-items:center;height:28px;}

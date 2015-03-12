@@ -15,6 +15,10 @@ var miczThunderStatsTab = {
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document,false);
 			miczLogger.log("ThunderStats starting...",0);
 
+			$jQ("#log_close_btn")
+			  .mouseover(miczThunderStatsTab.ui.logCloseBtnShow)
+			  .mouseout(miczThunderStatsTab.ui.logCloseBtnHide);
+
 			//check if global indexing is active. Without global indexing we have no data to use!
 			if(!miczThunderStatsUtils.checkGlobalIndexing()){
 				$jQ('#mzts-main-error').show();

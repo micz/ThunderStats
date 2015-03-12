@@ -2,7 +2,7 @@
 
 miczThunderStatsTab.ui={
 
-	log_panel_status:true,
+	log_panel_status:false,
 
 	showLoadingElement:function(element){
 		$jQ("#"+element).show();

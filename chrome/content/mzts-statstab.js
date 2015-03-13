@@ -60,6 +60,8 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("today_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_senders_wait");
+		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_rcvd_wait");
 
 		//Print dates
 		$jQ("#today_date").text(miczThunderStatsUtils.getTodayString(moment));
@@ -67,9 +69,13 @@ var miczThunderStatsTab = {
 		//Today
 		//Get today sent messages
 		miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_sent);
+		//Yesterday incremental
+		miczThunderStatsCore.db.getYesterdayIncrementalMessages(1,identity_id,miczThunderStatsTab.callback.stats_yesterday_incremental_sent);
 
 		//Get today received messages
 		miczThunderStatsCore.db.getTodayMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_today_rcvd);
+		//Yesterday incremental
+		miczThunderStatsCore.db.getYesterdayIncrementalMessages(0,identity_id,miczThunderStatsTab.callback.stats_yesterday_incremental_rcvd);
 
 		//Get today first 10 recipients
 		miczThunderStatsCore.db.getTodayInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_recipients);
@@ -91,26 +97,18 @@ var miczThunderStatsTab = {
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_rcvd_wait");
-		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_sent_wait");
-		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_senders_wait");
 
 		//Print dates
 		$jQ("#yesterday_date").text(miczThunderStatsUtils.getYesterdayString(moment));
-		$jQ("#yesterday_current_hour_sent").text(miczThunderStatsUtils.getCurrentTimeString(moment));
-		$jQ("#yesterday_current_hour_rcvd").text(miczThunderStatsUtils.getCurrentTimeString(moment));
 
 		//Yesterday
 		//Get yesterday sent messages
 		miczThunderStatsCore.db.getYesterdayMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_sent);
-		//incremental
-		miczThunderStatsCore.db.getYesterdayIncrementalMessages(1,identity_id,miczThunderStatsTab.callback.stats_yesterday_incremental_sent);
 
 		//Get yesterday received messages
 		miczThunderStatsCore.db.getYesterdayMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_rcvd);
-		//incremental
-		miczThunderStatsCore.db.getYesterdayIncrementalMessages(0,identity_id,miczThunderStatsTab.callback.stats_yesterday_incremental_rcvd);
 
 		//Get yesterday first 10 recipients
 		miczThunderStatsCore.db.getYesterdayInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_recipients);

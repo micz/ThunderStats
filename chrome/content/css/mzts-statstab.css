@@ -22,6 +22,7 @@ table.mzts-tinvolved tr.mzts-trow td{padding:2px 4px 2px 2px;color:black;white-s
 table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:normal;}
 .circle_wait{text-align:center;width:100%;position:absolute;}
 .chart_7days{overflow:auto;}
+.yesterday_incremental{color:grey;font-size:0.8em;}
 
 #heading_wrapper {
   display: table;

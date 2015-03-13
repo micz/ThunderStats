@@ -63,6 +63,14 @@ miczThunderStatsCore.db = {
 		ydate.setDate(ydate.getDate() - 1);
 		return this.getOneDayMessages(mType,ydate,mIdentity,mCallback);
 	},
+	
+	getYesterdayIncrementalMessages:function(mType,mIdentity,mCallback){
+		let ydate = new Date();
+		ydate.setDate(ydate.getDate() - 1);
+		let mFromDate=new Date(ydate);
+		mFromDate.setHours(0,0,0,0);
+		return miczThunderStatsDB.queryMessages(mType,mFromDate.getTime(),ydate.getTime(),mIdentity,mCallback);
+	},
 
 	getOneDayInvolved:function(mType,mGivenDay,mIdentity,mCallback){	//mGivenDay is a Date object
 		let mFromDate=new Date(mGivenDay);

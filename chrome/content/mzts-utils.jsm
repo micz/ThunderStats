@@ -2,6 +2,8 @@
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsUtils"];
 
+Components.utils.import("resource:///modules/iteratorUtils.jsm");
+
 var miczThunderStatsUtils = {
 
 	escapeHTML: function(s){
@@ -26,11 +28,11 @@ var miczThunderStatsUtils = {
 	getDateTimeString:function(mDate){	//mDate is a moment(Date) object
 		return mDate.format('L')+" "+mDate.format('LTS');
 	},
-	
+
 	getTimeString:function(mDate){	//mDate is a moment(Date) object
 		return mDate.format('LTS');
 	},
-	
+
 	getCurrentTimeString:function(moment){
 		return this.getTimeString(moment());
 	},
@@ -76,6 +78,13 @@ var miczThunderStatsUtils = {
 		return 0;
 	},
 
+	arrayMerge:function(dest,src){
+	  for(let n = 0; n < src.length; ++n){
+		dest.push(src[n]);
+	  }
+	  return dest;
+	},
+
 	 getCurrentSystemLocale:function(){
 		return Components.classes["@mozilla.org/intl/nslocaleservice;1"]
           .getService(Components.interfaces.nsILocaleService)
@@ -88,6 +97,24 @@ var miczThunderStatsUtils = {
 		let prefsc = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
 		let prefs = prefsc.getBranch("mailnews.database.global.indexer.");
 		return prefs.getBoolPref("enabled");
+	},
+
+	getFolderInbox:function(mFolder){
+		let arr_inbox=new Array();
+		let isInbox = mFolder.getFlag(Components.interfaces.nsMsgFolderFlags.Inbox);
+		if (isInbox){
+			arr_inbox.push(mFolder);
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(mFolder.URI)+'\r\n');
+		}
+		if (mFolder.hasSubFolders){
+			for each (let folder in fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){
+				let tmp_inbox=miczThunderStatsUtils.getFolderInbox(folder);
+				if(tmp_inbox.length > 0){
+					arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,tmp_inbox);
+				}
+			}
+		}
+		return arr_inbox;	//returns and array of inbox folders
 	},
 
 };

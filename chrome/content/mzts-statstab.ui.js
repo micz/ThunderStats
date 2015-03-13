@@ -42,12 +42,14 @@ miczThunderStatsTab.ui={
 	logCloseBtnShow:function(){
 		if(!miczThunderStatsTab.ui.log_panel_status){
 			$jQ("#log_close_btn img").fadeIn();
+			$jQ("#log_close_btn").css('background','white');
 		}
 	},
 
 	logCloseBtnHide:function(){
 		if(!miczThunderStatsTab.ui.log_panel_status){
 			$jQ("#log_close_btn img").fadeOut();
+			$jQ("#log_close_btn").css('background','lightgrey');
 		}
 	},
 

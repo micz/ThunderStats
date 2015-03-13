@@ -9,10 +9,10 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsCore"];
 
 var miczThunderStatsCore = {
 
-	identities:new Array(),
+	identities:{},
 
 	loadIdentities:function(){
-			this.identities=new Array();
+			this.identities={};
 			let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
 			let accounts = acctMgr.accounts;
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
@@ -28,7 +28,8 @@ var miczThunderStatsCore = {
 					identity_item["email"]=identity.email;
 					identity_item["fullName"]=identity.fullName;
 					identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity.email);
-					this.identities.push(identity_item);
+					identity_item["account_key"]=account.key;
+					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 				}
 			}
@@ -63,7 +64,7 @@ miczThunderStatsCore.db = {
 		ydate.setDate(ydate.getDate() - 1);
 		return this.getOneDayMessages(mType,ydate,mIdentity,mCallback);
 	},
-	
+
 	getYesterdayIncrementalMessages:function(mType,mIdentity,mCallback){	//get the messages received yesterday until the actual hour
 		let ydate = new Date();
 		ydate.setDate(ydate.getDate() - 1);
@@ -114,6 +115,24 @@ miczThunderStatsCore.db = {
 		let ydate = new Date();
 		ydate.setDate(ydate.getDate() - 1);
 		return this.getOneDayMessagesFolders(mType,ydate,mIdentity,mCallback);
+	},
+
+	getInboxMessages:function(mIdentity){
+		let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
+		let accounts = acctMgr.accounts;
+		let arr_inbox=new Array();
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
+		for (let i = 0; i < accounts.length; i++) {
+			let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
+			if(account==null) continue;
+			if((mIdentity!=0)&&(this.identities[mIdentity]["account_key"]!=account.key)) continue;
+			// check folders
+			let server = account.incomingServer;
+			let folder = server.rootFolder;
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] folder.URI '+JSON.stringify(folder.URI)+'\r\n');
+			arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,miczThunderStatsUtils.getFolderInbox(folder));
+		}
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] accounts '+JSON.stringify(arr_inbox)+'\r\n');
 	},
 
 	getResultObject:function(aFields,aResultSet){

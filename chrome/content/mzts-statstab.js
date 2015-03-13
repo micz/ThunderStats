@@ -48,6 +48,8 @@ var miczThunderStatsTab = {
 			miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
 			miczThunderStatsTab.getLastIndexedMessage();
 
+			miczThunderStatsCore.db.getInboxMessages(miczThunderStatsTab.getCurrentIdentityId());
+
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
 		},

@@ -40,11 +40,15 @@ miczThunderStatsTab.ui={
 	},
 
 	logCloseBtnShow:function(){
-		$jQ("#log_close_btn img").fadeIn();
+		if(!miczThunderStatsTab.ui.log_panel_status){
+			$jQ("#log_close_btn img").fadeIn();
+		}
 	},
 
 	logCloseBtnHide:function(){
-		$jQ("#log_close_btn img").fadeOut();
+		if(!miczThunderStatsTab.ui.log_panel_status){
+			$jQ("#log_close_btn img").fadeOut();
+		}
 	},
 
 	loadIdentitiesSelector:function(selector_id){

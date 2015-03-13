@@ -91,6 +91,8 @@ var miczThunderStatsTab = {
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_senders_wait");
 

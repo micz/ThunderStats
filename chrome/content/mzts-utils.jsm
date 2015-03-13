@@ -26,6 +26,14 @@ var miczThunderStatsUtils = {
 	getDateTimeString:function(mDate){	//mDate is a moment(Date) object
 		return mDate.format('L')+" "+mDate.format('LTS');
 	},
+	
+	getTimeString:function(mDate){	//mDate is a moment(Date) object
+		return mDate.format('LTS');
+	},
+	
+	getCurrentTimeString:function(moment){
+		return this.getTimeString(moment());
+	},
 
 	getTodayString:function(moment){
 		return this.getDateString(moment());

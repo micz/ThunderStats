@@ -643,3 +643,83 @@ miczThunderStatsTab.callback.stats_today_inbox0_folders = {
 		}
 	},
 };
+
+miczThunderStatsTab.callback.stats_yesterday_incremental_sent = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("yesterday_incremental_sent_wait");
+				if(!this.empty){
+					$jQ("#yesterday_incremental_sent").text(this.data[1]["Num"]);
+				}else{
+					$jQ("#yesterday_incremental_sent").text("0");
+				}
+				miczLogger.log("Yesterday incremental sent messages loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	},
+};
+
+miczThunderStatsTab.callback.stats_yesterday_incremental_rcvd = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("yesterday_incremental_rcvd_wait");
+				if(!this.empty){
+					$jQ("#yesterday_incremental_rcvd").text(this.data[1]["Num"]);
+				}else{
+					$jQ("#yesterday_incremental_rcvd").text("0");
+				}
+				miczLogger.log("Yesterday incremental received messages loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	},
+};

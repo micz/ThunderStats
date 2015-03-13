@@ -64,7 +64,7 @@ miczThunderStatsCore.db = {
 		return this.getOneDayMessages(mType,ydate,mIdentity,mCallback);
 	},
 	
-	getYesterdayIncrementalMessages:function(mType,mIdentity,mCallback){
+	getYesterdayIncrementalMessages:function(mType,mIdentity,mCallback){	//get the messages received yesterday until the actual hour
 		let ydate = new Date();
 		ydate.setDate(ydate.getDate() - 1);
 		let mFromDate=new Date(ydate);

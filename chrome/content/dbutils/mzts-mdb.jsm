@@ -5,6 +5,7 @@ Components.utils.import("resource://thunderstats/fileIO.js");
 Components.utils.import("resource://gre/modules/osfile.jsm");
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -15,6 +16,7 @@ var miczThunderStatsDB = {
 	mDb:null,
 	msgAttributes:null,
 	forbiddenFolders:null,
+	inboxFolders:null,
 
 	init: function(){
 		this.mDb = new SQLiteHandler();
@@ -173,6 +175,35 @@ var miczThunderStatsDB = {
 		}
 		this.forbiddenFolders=folderArray;
 		return folderArray;
+	},
+
+	//returns an array of ids of inbox folders for the given identity
+	queryGetInboxFolders:function(mIdentity,identities){
+		if(this.inboxFolders!==null){
+			return this.inboxFolders;
+		}
+		let arr_output=new Array();
+		//get accounts
+		let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
+		let accounts = acctMgr.accounts;
+		let arr_inbox=new Array();
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
+		for (let i = 0; i < accounts.length; i++) {
+			let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
+			if(account==null) continue;
+			if((mIdentity!=0)&&(identities[mIdentity]["account_key"]!=account.key)) continue;
+			// check folders
+			let server = account.incomingServer;
+			let folder = server.rootFolder;
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] folder.URI '+JSON.stringify(folder.URI)+'\r\n');
+			arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,miczThunderStatsUtils.getInboxFoldersObjects(folder));
+		}
+		for (let kk in arr_inbox){
+			let folder_id=this.queryGetFolderID(arr_inbox[kk]["URI"]);
+			arr_output.push(folder_id);
+		}
+		this.inboxFolders=arr_output;
+		return arr_output;
 	},
 
 	//returns the id of an identity from its email

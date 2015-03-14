@@ -118,21 +118,7 @@ miczThunderStatsCore.db = {
 	},
 
 	getInboxMessages:function(mIdentity){
-		let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
-		let accounts = acctMgr.accounts;
-		let arr_inbox=new Array();
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
-		for (let i = 0; i < accounts.length; i++) {
-			let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
-			if(account==null) continue;
-			if((mIdentity!=0)&&(this.identities[mIdentity]["account_key"]!=account.key)) continue;
-			// check folders
-			let server = account.incomingServer;
-			let folder = server.rootFolder;
-			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] folder.URI '+JSON.stringify(folder.URI)+'\r\n');
-			arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,miczThunderStatsUtils.getInboxFolders(folder));
-		}
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] accounts '+JSON.stringify(arr_inbox)+'\r\n');
+		miczThunderStatsDB.queryGetInboxFolders(mIdentity,miczThunderStatsCore.identities);
 	},
 
 	getResultObject:function(aFields,aResultSet){

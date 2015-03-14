@@ -48,8 +48,6 @@ var miczThunderStatsTab = {
 			miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
 			miczThunderStatsTab.getLastIndexedMessage();
 
-			miczThunderStatsCore.db.getInboxMessages(miczThunderStatsTab.getCurrentIdentityId());
-
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
 		},
@@ -64,6 +62,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("today_senders_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("today_inbox0_inboxmsg_wait");
 
 		//Print dates
 		$jQ("#today_date").text(miczThunderStatsUtils.getTodayString(moment));
@@ -87,7 +86,8 @@ var miczThunderStatsTab = {
 
 		//Inbox 0 Today
 		//Get today mails folder spreading
-		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folders);
+		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
+		miczThunderStatsCore.db.getInboxMessages(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg);
 
 		//Get inbox mails date spreading
 		//TODO

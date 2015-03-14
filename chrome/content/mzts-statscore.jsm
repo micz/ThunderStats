@@ -117,8 +117,8 @@ miczThunderStatsCore.db = {
 		return this.getOneDayMessagesFolders(mType,ydate,mIdentity,mCallback);
 	},
 
-	getInboxMessages:function(mIdentity){
-		miczThunderStatsDB.queryGetInboxFolders(mIdentity,miczThunderStatsCore.identities);
+	getInboxMessages:function(mIdentity,mCallback){
+		miczThunderStatsDB.queryInboxMessages(mIdentity,miczThunderStatsCore.identities,mCallback);
 	},
 
 	getResultObject:function(aFields,aResultSet){

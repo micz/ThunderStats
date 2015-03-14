@@ -161,6 +161,15 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
+	queryInboxMessages:function(mIdentity,identities,mCallback){
+		let inboxFolders=this.queryGetInboxFolders(mIdentity,identities);
+		let inboxFoldersStr="("+inboxFolders.join()+")";
+		let mWhat="count(distinct m.headerMessageID) as Num";
+		let mFrom="messages m";
+		let mWhere="m.folderID in "+inboxFoldersStr;
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
+	},
+
 	//returns an array of ids of folder to be ignored in stats crunching
 	queryGetForbiddenFolders:function(){
 		if(this.forbiddenFolders!==null){

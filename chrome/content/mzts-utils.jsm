@@ -99,16 +99,19 @@ var miczThunderStatsUtils = {
 		return prefs.getBoolPref("enabled");
 	},
 
-	getFolderInbox:function(mFolder){
+	getInboxFolders:function(mFolder){	//first input is a root account folder - then the function is recursive
 		let arr_inbox=new Array();
 		let isInbox = mFolder.getFlag(Components.interfaces.nsMsgFolderFlags.Inbox);
+		let element={};
 		if (isInbox){
-			arr_inbox.push(mFolder);
-			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(mFolder.URI)+'\r\n');
+			element["URI"]=mFolder.URI;
+			element["customIdentity"]=mFolder.customIdentity;
+			arr_inbox.push(element);
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(element)+'\r\n');
 		}
 		if (mFolder.hasSubFolders){
 			for each (let folder in fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){
-				let tmp_inbox=miczThunderStatsUtils.getFolderInbox(folder);
+				let tmp_inbox=miczThunderStatsUtils.getInboxFolders(folder);
 				if(tmp_inbox.length > 0){
 					arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,tmp_inbox);
 				}

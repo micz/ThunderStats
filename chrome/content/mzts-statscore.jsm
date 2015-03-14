@@ -130,7 +130,7 @@ miczThunderStatsCore.db = {
 			let server = account.incomingServer;
 			let folder = server.rootFolder;
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] folder.URI '+JSON.stringify(folder.URI)+'\r\n');
-			arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,miczThunderStatsUtils.getFolderInbox(folder));
+			arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,miczThunderStatsUtils.getInboxFolders(folder));
 		}
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] accounts '+JSON.stringify(arr_inbox)+'\r\n');
 	},

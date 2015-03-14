@@ -182,6 +182,13 @@ var miczThunderStatsDB = {
 		return rows[0][0];
 	},
 
+	//returns the id of a folder from its URI
+	queryGetFolderID:function(URI){
+		let mWhere='folderURI="'+URI+'" LIMIT 1';
+		let rows=this.querySelect("id","folderLocations",mWhere);
+		return rows[0][0];
+	},
+
 	queryGetLastMessageDate:function(mCallback){
 		let mWhat="max(date) as last_msg_date";
 		let mFrom="messages";

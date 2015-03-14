@@ -620,8 +620,8 @@ miczThunderStatsTab.callback.stats_today_inbox0_folder_spread = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_wait");
 				if(!this.empty){
-					$jQ("#today_inbox0_folder_spread").text(JSON.stringify(this.data));
-					//miczThunderStatsTab.ui.drawInbox0FolderSpreadGraph('today_inbox0_folder_spread',this.data);
+					//$jQ("#today_inbox0_folder_spread").text(JSON.stringify(this.data));
+					miczThunderStatsTab.ui.drawInbox0FolderSpreadGraph('today_inbox0_folder_spread',this.data);
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_today_inbox0_folders handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
 					$jQ("#today_inbox0_folder_spread").text("No mails received today!");

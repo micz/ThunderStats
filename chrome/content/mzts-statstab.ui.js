@@ -242,17 +242,17 @@ miczThunderStatsTab.ui={
 			//.attr("transform", "translate("+margin.left+","+margin.top+")");
 
 		//GROUP FOR ARCS/PATHS
-		let arc_group = vis.append("svg:g")
+		let arc_group = chart.append("svg:g")
 		  .attr("class", "arc")
 		  .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
 
 		//GROUP FOR LABELS
-		let label_group = vis.append("svg:g")
+		let label_group = chart.append("svg:g")
 		  .attr("class", "label_group")
 		  .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
 
 		//GROUP FOR CENTER TEXT
-		let center_group = vis.append("svg:g")
+		let center_group = chart.append("svg:g")
 		  .attr("class", "center_group")
 		  .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
 

@@ -121,6 +121,10 @@ miczThunderStatsCore.db = {
 		miczThunderStatsDB.queryInboxMessages(mIdentity,miczThunderStatsCore.identities,mCallback);
 	},
 
+	getInboxMessagesDate:function(mIdentity,mCallback){
+		miczThunderStatsDB.queryInboxMessagesDate(mIdentity,miczThunderStatsCore.identities,mCallback);
+	},
+
 	getResultObject:function(aFields,aResultSet){
 		let oOutput={};
 		let r_idx=1;

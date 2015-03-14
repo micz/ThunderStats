@@ -684,6 +684,49 @@ miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg = {
 	},
 };
 
+miczThunderStatsTab.callback.stats_today_inbox0_datemsg = {
+	empty:true,
+	data:new Array(),
+  handleResult: function(aResultSet) {
+    let result = miczThunderStatsCore.db.getResultObject(["Date","Num"],aResultSet);
+    this.empty=false;
+    for (let key in result) {
+		this.data.push(result[key]);
+	}
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_today_inbox0_folders handleResult '+JSON.stringify(this.data)+'\r\n');
+  },
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				//miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_wait");
+				if(!this.empty){
+					$jQ("#today_inbox0_datemsg").text(JSON.stringify(this.data));
+					//miczThunderStatsTab.ui.drawInbox0FolderSpreadGraph('today_inbox0_folder_spread',this.data);
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_today_inbox0_folders handleCompletion '+JSON.stringify(this.data)+'\r\n');
+				}else{
+					$jQ("#today_inbox0_datemsg").text("No mails in the Inbox!");
+				}
+				miczLogger.log("Date Inbox Mails data loaded.",0);
+				this.data=new Array();
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+		}
+	},
+};
+
 miczThunderStatsTab.callback.stats_yesterday_incremental_sent = {
 	empty:true,
 	data:{},

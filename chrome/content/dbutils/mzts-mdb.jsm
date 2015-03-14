@@ -170,6 +170,17 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
+	//returns the number of messages in the inbox for each day
+	queryInboxMessagesDate:function(mIdentity,identities,mCallback){
+		let inboxFolders=this.queryGetInboxFolders(mIdentity,identities);
+		let inboxFoldersStr="("+inboxFolders.join()+")";
+		let mWhat="strftime('%Y-%m-%d',m.date/1000000,'unixepoch') as Date, count(distinct m.headerMessageID) as Num";
+		let mFrom="messages m";
+		let mWhere="m.folderID in "+inboxFoldersStr;
+		mWhere+= " GROUP BY strftime('%Y-%m-%d',m.date/1000000,'unixepoch')";
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
+	},
+
 	//returns an array of ids of folder to be ignored in stats crunching
 	queryGetForbiddenFolders:function(){
 		if(this.forbiddenFolders!==null){

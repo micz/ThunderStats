@@ -88,6 +88,7 @@ var miczThunderStatsTab = {
 		//Get today mails folder spreading
 		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
 		miczThunderStatsCore.db.getInboxMessagesTotal(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg);
+		miczThunderStatsCore.db.getInboxMessagesDate(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
 
 		//Get inbox mails date spreading
 		//TODO

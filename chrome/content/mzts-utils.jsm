@@ -50,7 +50,7 @@ var miczThunderStatsUtils = {
 		// Calculate days between dates
 		let millisecondsPerDay = 86400 * 1000;	// Day in milliseconds
 		mFromDate.setHours(0,0,0,0);			// Start just after midnight
-		mToDate.setHours(24,0,0,0);			// End just before midnight
+		mToDate.setHours(23,59,59,59);			// End just before midnight
 		let diffDate = mToDate - mFromDate;		// Milliseconds between datetime objects
 		let diffDays = Math.ceil(diffDate / millisecondsPerDay);
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] mFromDate '+mFromDate.toLocaleString()+'\r\n');

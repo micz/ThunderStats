@@ -49,6 +49,7 @@ miczThunderStatsCore.db = {
 
 	getManyDaysMessages:function(mType,mFromDay,mToDay,mIdentity,mCallback){	//mFromDay and mToDay are a Date objects
 		let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay);
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getManyDaysMessages] mDays.length '+JSON.stringify(mDays.length)+'\r\n');
 		for(let mKey in mDays){
 			this.getOneDayMessages({type:mType,info:mDays[mKey]},mDays[mKey],mIdentity,mCallback);
 		}

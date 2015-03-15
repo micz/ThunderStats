@@ -1,6 +1,6 @@
 .chart_7days{width:100%;}
 
-.chart_7days svg{
+.chart_7days svg,.chart_inbox0_datemsg svg{
 display:block;
 margin:0 auto;
 }
@@ -32,17 +32,24 @@ fill:black;
 display:none;
 }
 
-.chart_7days .y.axis text{
+.chart_7days .y.axis text,.chart_inbox0_datemsg .y.axis text{
 font:12px sans-serif;
 display:inherit;
 fill:black;
 font-weight:normal;
 }
 
-.chart_7days .y.axis{padding-top:10px;}
+.chart_7days .y.axis,.chart_inbox0_datemsg .y.axis{padding-top:10px;}
 
-.chart_7days .axis path,.chart_7days .axis line {
+.chart_7days .axis path,.chart_7days .axis line,.chart_inbox0_datemsg .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
+}
+
+.chart_inbox0_datemsg{float:right;}
+
+.chart_inbox0_datemsg text {
+  font: 12px sans-serif;
+  text-anchor: middle;
 }

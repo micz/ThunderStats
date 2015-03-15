@@ -209,6 +209,79 @@ miczThunderStatsTab.ui={
 			.call(yAxis);
 	},
 
+	drawInbox0DateSpreadGraph:function(element_id_txt,data_array){
+		let margin = {top: 10, right: 0, bottom: 10, left: 70};
+		let barWidth = 80;
+		let w = (barWidth + 15 + margin.left + margin.right) - margin.left - margin.right;
+		let h = 220 - margin.top - margin.bottom;
+
+		//calculating total elements
+		let data_sum=0;
+		for(let key in data_array){
+			data_sum+=data_array[key].Num;
+		}
+
+		//adding normalized data
+		let incr_num=0;
+		let incr_norm=0;
+		for(let key in data_array){
+			data_array[key].incremental=data_array[key].Num+incr_num;
+			incr_num+=data_array[key].Num;
+			data_array[key].normalized=data_array[key].Num/data_sum;
+			data_array[key].incremental_normalized=data_array[key].normalized+incr_norm;
+			incr_norm+=data_array[key].normalized;
+		}
+
+		//data_array=JSON.parse('[{"Date":"2010-09-21","Num":3,"incremental":3,"normalized":0.1875,"incremental_normalized":0.1875},{"Date":"2012-01-26","Num":1,"incremental":4,"normalized":0.0625,"incremental_normalized":0.25},{"Date":"2015-03-02","Num":3,"incremental":7,"normalized":0.1875,"incremental_normalized":0.4375},{"Date":"2015-03-08","Num":1,"incremental":8,"normalized":0.0625,"incremental_normalized":0.5},{"Date":"2015-03-13","Num":3,"incremental":11,"normalized":0.1875,"incremental_normalized":0.6875},{"Date":"2015-03-14","Num":5,"incremental":16,"normalized":0.3125,"incremental_normalized":1}]');
+
+		let x = d3.scale.linear().domain([0, 1]).range([0, w]);
+		let y = d3.scale.linear().domain([0, 1]).range([h, 0]);
+		let color = d3.scale.category20();
+
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+
+		//remove old graph
+		$jQ("#"+element_id_txt+"_svg_graph").remove();
+
+		let chart = d3.select("#"+element_id_txt)
+			.append("svg:svg")
+			.attr("id",element_id_txt+"_svg_graph")
+			.attr("width", w + margin.left + margin.right)
+			.attr("height", h + margin.top + margin.bottom)
+			.attr("transform", "translate("+margin.left+","+margin.top+")");
+
+		//graph bars
+		chart.selectAll("rect")
+		  .data(data_array)
+		  .enter()
+		  .append("svg:rect")
+		  .attr("x", 0)
+		  .attr("y", function(datum) { return y(datum.incremental_normalized); })
+		  .attr("height", function(datum) { return y(0) - y(datum.normalized); })
+		  .attr("width", barWidth)
+		  .attr("fill", function(d) { return color(d.Date); });
+
+		//data labels
+		chart.selectAll("text")
+		  .data(data_array)
+		  .enter()
+		  .append("svg:text")
+		  .attr("x", 0)
+		  .attr("y", function(datum) { return y(datum.incremental_normalized); })
+		  .attr("dx", barWidth/2)
+		  .attr("dy", function(datum) { return margin.top/2 + (y(0) - y(datum.normalized))/2; })
+		  .attr("text-anchor", "middle")
+		  .text(function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false);});
+		  //.text(function(datum) { return datum.Date+'|1:'+y(datum.incremental_normalized)+'|2:'+(y(0) - y(datum.normalized))+'d:'+datum.Num;});
+
+		//y axis
+		let num_ticks = (d3.max(data_array, function(datum) { return datum.Num; })>10 ? 10 : d3.max(data_array, function(datum) { return datum.Num; }));
+		let yAxis = d3.svg.axis().tickFormat(d3.format(".0%")).ticks(num_ticks).scale(y).orient("left");
+		chart.append("g")
+			.attr("class", "y axis")
+			.call(yAxis);
+	},
+
 	drawInbox0FolderSpreadGraph:function(element_id_txt,data_array){
 		let margin = {top: 5, right: 0, bottom: 20, left: 20};
 		let barWidth = 50;

@@ -87,11 +87,11 @@ var miczThunderStatsTab = {
 		//Inbox 0 Today
 		//Get today mails folder spreading
 		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
+		//Ge inbox num mails
 		miczThunderStatsCore.db.getInboxMessagesTotal(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg);
+		//Get inbox mails date spreading
 		miczThunderStatsCore.db.getInboxMessagesDate(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
 
-		//Get inbox mails date spreading
-		//TODO
 	},
 
 	getYesterdayStats:function(identity_id){

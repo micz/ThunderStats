@@ -41,7 +41,7 @@ font-weight:normal;
 
 .chart_7days .y.axis,.chart_inbox0_datemsg .y.axis{padding-top:10px;}
 
-.chart_7days .axis path,.chart_7days .axis line,.chart_inbox0_datemsg .axis line {
+.chart_7days .axis path,.chart_7days .axis line,.chart_inbox0_datemsg .axis line,.chart_inbox0_datemsg .domain {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
@@ -49,7 +49,8 @@ font-weight:normal;
 
 .chart_inbox0_datemsg{float:right;}
 
-.chart_inbox0_datemsg text {
+.chart_inbox0_datemsg text{
   font: 12px sans-serif;
   text-anchor: middle;
 }
+

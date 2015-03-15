@@ -275,8 +275,7 @@ miczThunderStatsTab.ui={
 		  //.text(function(datum) { return datum.Date+'|1:'+y(datum.incremental_normalized)+'|2:'+(y(0) - y(datum.normalized))+'d:'+datum.Num;});
 
 		//y axis
-		let num_ticks = (d3.max(data_array, function(datum) { return datum.Num; })>10 ? 10 : d3.max(data_array, function(datum) { return datum.Num; }));
-		let yAxis = d3.svg.axis().tickFormat(d3.format(".0%")).ticks(num_ticks).scale(y).orient("left");
+		let yAxis = d3.svg.axis().tickFormat(d3.format(".0%")).ticks(5).scale(y).orient("left");
 		chart.append("g")
 			.attr("class", "y axis")
 			.call(yAxis);

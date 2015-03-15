@@ -271,7 +271,7 @@ miczThunderStatsTab.ui={
 		  .attr("dx", barWidth/2)
 		  .attr("dy", function(datum) { return margin.top/2 + (y(0) - y(datum.normalized))/2; })
 		  .attr("text-anchor", "middle")
-		  .text(function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false);});
+		  .text(function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+" ("+(datum.normalized*100).toFixed(0)+"%)";});
 		  //.text(function(datum) { return datum.Date+'|1:'+y(datum.incremental_normalized)+'|2:'+(y(0) - y(datum.normalized))+'d:'+datum.Num;});
 
 		//y axis

@@ -177,7 +177,7 @@ var miczThunderStatsDB = {
 		let mWhat="strftime('%Y-%m-%d',m.date/1000000,'unixepoch') as Date, count(distinct m.headerMessageID) as Num";
 		let mFrom="messages m";
 		let mWhere="m.folderID in "+inboxFoldersStr;
-		mWhere+= " GROUP BY strftime('%Y-%m-%d',m.date/1000000,'unixepoch')";
+		mWhere+= " GROUP BY strftime('%Y-%m-%d',m.date/1000000,'unixepoch') ORDER BY m.date ASC";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 

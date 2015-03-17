@@ -19,7 +19,31 @@
   label="ThunderStats"
   tooltiptext="Open ThunderStats Tab"
   oncommand="miczThunderStatsButton.onCommand();"
-  class="toolbarbutton-1 chromeclass-toolbar-additional"
-  />
+  class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+
+<!-- tools menu item -->
+<menupopup id="taskPopup">
+ <menuitem id="miczThunderStats-action-menu-item"
+ label="ThunderStats"
+ oncommand="miczThunderStatsButton.onCommand();"
+ insertafter="joinChatMenuItem"
+ class="menuitem-iconic"
+ image="chrome://thunderstats/skin/mzts-button-small.png"/>
+ <menuseparator id="miczThunderStats-Separator"
+ insertafter="joinChatMenuItem"/>
+ </menupopup>
+
+
+ <menupopup id="appmenu_taskPopup">
+ <menuitem id="miczThunderStats-action-appmenu-item"
+ label="ThunderStats"
+ oncommand="miczThunderStatsButton.onCommand();"
+ insertafter="appmenu_joinChatMenuItem"
+ class="menuitem-iconic"
+ image="chrome://thunderstats/skin/mzts-button-small.png"/>
+ <menuseparator id="appmenu_miczThunderStats-Separator"
+ insertafter="appmenu_joinChatMenuItem"/>
+ </menupopup>
+
 
 </overlay>

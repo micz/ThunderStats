@@ -209,7 +209,7 @@ miczThunderStatsTab.ui={
 			.call(yAxis);
 	},
 
-	drawInbox0DateSpreadGraph:function(element_id_txt,data_array){
+	drawInbox0DateSpreadGraph:function(element_id_txt,data_array,aggregate){
 		let margin = {top: 10, right: 0, bottom: 10, left: 70};
 		let barWidth = 80;
 		let w = (barWidth + 15 + margin.left + margin.right) - margin.left - margin.right;
@@ -219,6 +219,30 @@ miczThunderStatsTab.ui={
 		let data_sum=0;
 		for(let key in data_array){
 			data_sum+=data_array[key].Num;
+		}
+
+		if(aggregate){		//we are going to aggregate old days
+			//choose how much to aggregate
+			let max_el=10;
+			if(data_array.length>max_el){		// ok, we really need to aggregate
+				let spin_day=moment(data_array[data_array.length - max_el].Date);
+				let tmp_array=new Array();
+				let aggregate_day={};
+				aggregate_day.Num=0;
+				aggregate_day.Date=moment('1900/01/01');
+				for(let key in data_array){
+					if(moment(data_array[key].Date) <= spin_day){	//aggregate day
+						dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] aggregating: "+JSON.stringify(data_array[key])+"\r\n");
+						aggregate_day.Num+=data_array[key].Num;
+						aggregate_day.Date=Math.max(moment(aggregate_day.Date),moment(data_array[key].Date));
+					}else{		//keep day
+						tmp_array.push(data_array[key]);
+					}
+
+				}
+				tmp_array.unshift(aggregate_day);
+				data_array=tmp_array;
+			}
 		}
 
 		//adding normalized data

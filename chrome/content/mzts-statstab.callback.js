@@ -704,7 +704,7 @@ miczThunderStatsTab.callback.stats_today_inbox0_datemsg = {
 				//miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_wait");
 				if(!this.empty){
 					//$jQ("#today_inbox0_datemsg").text(JSON.stringify(this.data));
-					miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_inbox0_datemsg',this.data);
+					miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_inbox0_datemsg',this.data,true);	//the last parameter is to activete aggregation
 					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_today_inbox0_datemsg handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
 					$jQ("#today_inbox0_datemsg").text("No mails in the Inbox!");

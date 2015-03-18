@@ -298,6 +298,8 @@ miczThunderStatsTab.ui={
 		  .attr("y", function(datum) { return y(datum.incremental_normalized); })
 		  .attr("height", function(datum) { return y(0) - y(datum.normalized); })
 		  .attr("width", barWidth)
+		  .attr("class","tooltip")
+		  .attr("title","test!!")
 		  .attr("fill", function(d) { return color(d.Date); });
 
 		//data labels
@@ -310,8 +312,12 @@ miczThunderStatsTab.ui={
 		  .attr("dx", barWidth/2)
 		  .attr("dy", function(datum) { return margin.top/2 + (y(0) - y(datum.normalized))/2; })
 		  .attr("text-anchor", "middle")
-		  .text(function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+" ("+(datum.normalized*100).toFixed(0)+"%)";});
+		  .attr("class","tooltip")
+		  .attr("title",function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>"+datum.Num+" - "+(datum.normalized*100).toFixed(0)+"%";})
+		  .text(function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false);});
 		  //.text(function(datum) { return datum.Date+'|1:'+y(datum.incremental_normalized)+'|2:'+(y(0) - y(datum.normalized))+'d:'+datum.Num;});
+
+		$jQ('text.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true});
 
 		//y axis
 		let yAxis = d3.svg.axis().tickFormat(d3.format(".0%")).ticks(5).scale(y).orient("left");

@@ -214,6 +214,7 @@ miczThunderStatsTab.ui={
 		let barWidth = 80;
 		let w = (barWidth + 15 + margin.left + margin.right) - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;
+		let min_bar_height = 12;
 
 		//calculating total elements
 		let data_sum=0;
@@ -245,22 +246,36 @@ miczThunderStatsTab.ui={
 			}
 		}
 
+		let x = d3.scale.linear().domain([0, 1]).range([0, w]);
+		let y = d3.scale.linear().domain([0, 1]).range([h, 0]);
+		let color = d3.scale.category20();
+
 		//adding normalized data
 		let incr_num=0;
 		let incr_norm=0;
+		let total_bar_height=0;
 		for(let key in data_array){
 			data_array[key].incremental=data_array[key].Num+incr_num;
 			incr_num+=data_array[key].Num;
 			data_array[key].normalized=data_array[key].Num/data_sum;
 			data_array[key].incremental_normalized=data_array[key].normalized+incr_norm;
 			incr_norm+=data_array[key].normalized;
+			data_array[key].bar_height=y(0) - y(data_array[key].normalized);
+			dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height: "+JSON.stringify(data_array[key].bar_height)+"\r\n");
+			if(data_array[key].bar_height < min_bar_height){	//set min bar heigth
+				dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height > MIN!!!\r\n");
+				data_array[key].bar_height = min_bar_height;
+			}
+			total_bar_height+=data_array[key].bar_height;
+			dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] total_bar_height: "+JSON.stringify(total_bar_height)+"\r\n");
+		}
+
+		if(total_bar_height > h){		//we need to increment the graph height
+			h = total_bar_height;
+			y = d3.scale.linear().domain([0, 1]).range([h, 0]);
 		}
 
 		//data_array=JSON.parse('[{"Date":"2010-09-21","Num":3,"incremental":3,"normalized":0.1875,"incremental_normalized":0.1875},{"Date":"2012-01-26","Num":1,"incremental":4,"normalized":0.0625,"incremental_normalized":0.25},{"Date":"2015-03-02","Num":3,"incremental":7,"normalized":0.1875,"incremental_normalized":0.4375},{"Date":"2015-03-08","Num":1,"incremental":8,"normalized":0.0625,"incremental_normalized":0.5},{"Date":"2015-03-13","Num":3,"incremental":11,"normalized":0.1875,"incremental_normalized":0.6875},{"Date":"2015-03-14","Num":5,"incremental":16,"normalized":0.3125,"incremental_normalized":1}]');
-
-		let x = d3.scale.linear().domain([0, 1]).range([0, w]);
-		let y = d3.scale.linear().domain([0, 1]).range([h, 0]);
-		let color = d3.scale.category20();
 
 		dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 

@@ -299,7 +299,6 @@ miczThunderStatsTab.ui={
 		  .attr("height", function(datum) { return y(0) - y(datum.normalized); })
 		  .attr("width", barWidth)
 		  .attr("class","tooltip")
-		  .attr("title","test!!")
 		  .attr("fill", function(d) { return color(d.Date); });
 
 		//data labels
@@ -327,7 +326,63 @@ miczThunderStatsTab.ui={
 	},
 
 	drawInbox0FolderSpreadGraph:function(element_id_txt,data_array){
-		let margin = {top: 5, right: 0, bottom: 20, left: 20};
+		let width = 250,
+			height = 250,
+			radius = Math.min(width, height) / 2;
+
+		//calculating total elements
+		let data_sum=0;
+		for(let key in data_array){
+			data_sum+=data_array[key].Num;
+		}
+
+		//adding normalized data
+		for(let key in data_array){
+			data_array[key].normalized=data_array[key].Num/data_sum;
+		}
+
+		let color = d3.scale.category20();
+
+		let arc = d3.svg.arc()
+			.outerRadius(radius - 10)
+			.innerRadius(0);
+
+		let pie = d3.layout.pie()
+			.sort(null)
+			.value(function(d) { return d.Num; });
+
+		let svg = d3.select("#"+element_id_txt).append("svg")
+			.attr("width", width)
+			.attr("height", height)
+		  .append("g")
+			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+		  data_array.forEach(function(d) {
+			d.Num = +d.Num;
+		  });
+
+		  //dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+
+		  let g = svg.selectAll(".arc")
+			  	.data(pie(data_array))
+				.enter().append("g")
+			  	.attr("class", "arc");
+
+		  g.append("path")
+			  .attr("d", arc)
+			  .style("fill", function(d) { return color(d.data.Folder); });
+
+		  g.append("text")
+			  .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+			  .attr("dy", ".35em")
+			  .style("text-anchor", "middle")
+			  .attr("class","tooltip")
+		  	  .attr("title",function(d) { return d.data.Folder+"<br/>"+d.data.Num+" - "+(d.data.normalized*100).toFixed(0)+"%";})
+			  .text(function(d) { return d.data.Folder; });
+
+		$jQ('text.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true});
+
+		/*let margin = {top: 5, right: 0, bottom: 20, left: 20};
 		let barWidth = 50;
 		let w = ((barWidth + 15) * 7) - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;

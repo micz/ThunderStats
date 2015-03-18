@@ -55,3 +55,6 @@ font-weight:normal;
   text-anchor: middle;
 }
 
+.arc path {
+  stroke: #fff;
+}

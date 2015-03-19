@@ -312,7 +312,7 @@ miczThunderStatsTab.ui={
 		  .attr("dy", function(datum) { return margin.top/2 + (y(0) - y(datum.normalized))/2; })
 		  .attr("text-anchor", "middle")
 		  .attr("class","tooltip")
-		  .attr("title",function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>"+datum.Num+" - "+(datum.normalized*100).toFixed(0)+"%";})
+		  .attr("title",function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>Mails: "+datum.Num+" ("+(datum.normalized*100).toFixed(0)+"%)";})
 		  .text(function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false);});
 		  //.text(function(datum) { return datum.Date+'|1:'+y(datum.incremental_normalized)+'|2:'+(y(0) - y(datum.normalized))+'d:'+datum.Num;});
 
@@ -381,7 +381,7 @@ miczThunderStatsTab.ui={
 			  .attr("dy", ".35em")
 			  .style("text-anchor", "middle")
 			  .attr("class","tooltip")
-		  	  .attr("title",function(d) { return d.data.Folder+"<br/>"+d.data.Num+" - "+(d.data.normalized*100).toFixed(0)+"%";})
+		  	  .attr("title",function(d) { return d.data.Folder+"<br/>Mails: "+d.data.Num+" ("+(d.data.normalized*100).toFixed(0)+"%)";})
 			  .text(function(d) { return d.data.Folder; });
 
 		$jQ('text.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true});

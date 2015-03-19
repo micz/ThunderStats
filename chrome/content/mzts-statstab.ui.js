@@ -263,14 +263,14 @@ miczThunderStatsTab.ui={
 			data_array[key].y=incr_bar_height;
 			incr_norm+=data_array[key].normalized;
 			data_array[key].bar_height=y(0) - y(data_array[key].normalized);
-			dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height: "+JSON.stringify(data_array[key].bar_height)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height: "+JSON.stringify(data_array[key].bar_height)+"\r\n");
 			if(data_array[key].bar_height < min_bar_height){	//set min bar heigth
-				dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height > MIN!!!\r\n");
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height > MIN!!!\r\n");
 				data_array[key].bar_height = min_bar_height;
 			}
 			total_bar_height+=data_array[key].bar_height;
 			incr_bar_height+=data_array[key].bar_height;
-			dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] total_bar_height: "+JSON.stringify(total_bar_height)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] total_bar_height: "+JSON.stringify(total_bar_height)+"\r\n");
 		}
 
 		if(total_bar_height > h){		//we need to increment the graph height

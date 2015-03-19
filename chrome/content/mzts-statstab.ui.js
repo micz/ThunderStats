@@ -357,7 +357,8 @@ miczThunderStatsTab.ui={
 		let svg = d3.select("#"+element_id_txt).append("svg")
 			.attr("width", width)
 			.attr("height", height)
-		  .append("g")
+			.attr("id",element_id_txt+"_svg_graph")
+		    .append("g")
 			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 		  data_array.forEach(function(d) {

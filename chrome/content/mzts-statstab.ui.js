@@ -216,6 +216,9 @@ miczThunderStatsTab.ui={
 		let h = 220 - margin.top - margin.bottom;
 		let min_bar_height = 12;
 
+		//remove old graph
+		$jQ("#"+element_id_txt+"_svg_graph").remove();
+
 		//calculating total elements
 		let data_sum=0;
 		for(let key in data_array){

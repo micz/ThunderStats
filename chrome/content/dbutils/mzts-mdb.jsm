@@ -247,6 +247,26 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns last_msg_date
 	},
 
+	getLastIndexUpdate:function(){
+		let dirName = OS.Constants.Path.profileDir;
+		let fileName = OS.Path.join(dirName, "global-messages-db.sqlite");
+		let promise = OS.File.stat(fileName);
+		promise = promise.then(
+		  function onSuccess(stat) {
+			let ObserverService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+			ObserverService.notifyObservers(null,"mzts-last-index-update",JSON.stringify(stat.lastModificationDate));
+		  },
+		  function onFailure(reason) {
+			if (reason instanceof OS.File.Error && reason.becauseNoSuchFile) {
+			  // The file does not exist
+			} else {
+			  // Some other error
+			  throw reason;
+			}
+		  }
+		);
+	},
+
 };
 
 miczThunderStatsDB.callback={};

@@ -29,6 +29,7 @@
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/moment-with-locales.min.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.callback.js"/>
+    <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.observer.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.ui.js"/>
 	<script type="application/javascript;version=1.8">
 	$jQ(document).ready(function() {
@@ -72,6 +73,7 @@
 			<img src="chrome://thunderstats/skin/mzts-setup.png" alt="Setup" onclick="miczThunderStatsTab.ui.openPrefWindow();"
 			title="Setup" class="tooltip"/>
 		</div>
+		<div id="mzts-idx_update"></div>
 		<div id="mzts-last_msg"></div>
     </div>
 

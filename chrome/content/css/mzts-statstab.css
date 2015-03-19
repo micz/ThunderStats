@@ -10,7 +10,7 @@ html,body{margin:0;padding:0;height:100%;background:white;}
 #log_close_btn img{display:none;margin:0;position:relative;top:-1px;}
 .mzts-desc{word-wrap:break-word;width:90%;}
 #mzts-idnt_sel{float:left;display:flex;align-items:center;height:28px;font-size:0.8em;}
-#mzts-last_msg{float:right;font-size:0.8em;margin-right:10px;display:flex;align-items:center;height:28px;}
+#mzts-last_msg,#mzts-idx_update{float:right;font-size:0.8em;margin-right:10px;display:flex;align-items:center;height:28px;}
 #mzts-setup_icon{float:right;cursor:pointer;display:flex;align-items:center;height:28px;}
 table.mzts-tinvolved{width:100%;text-align:right;}
 table.mzts-tinvolved tr.mzts-thead{padding:2px;font-weight:bold;background:grey;}

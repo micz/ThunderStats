@@ -50,6 +50,9 @@ var miczThunderStatsTab = {
 
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
+
+			//Initialize observers
+			miczThunderStatsTab.observer.last_idx_update(miczThunderStatsTab.observer.callback.last_idx_update);
 		},
 
 	getTodayStats:function(identity_id){
@@ -160,6 +163,7 @@ var miczThunderStatsTab = {
 
 	getLastIndexedMessage: function(){
 		miczThunderStatsDB.queryGetLastMessageDate(miczThunderStatsTab.callback.last_idx_msg);
+		miczThunderStatsDB.getLastIndexUpdate();
 	},
 
 };

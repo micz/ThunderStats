@@ -254,11 +254,13 @@ miczThunderStatsTab.ui={
 		let incr_num=0;
 		let incr_norm=0;
 		let total_bar_height=0;
+		let incr_bar_height=0;
 		for(let key in data_array){
 			data_array[key].incremental=data_array[key].Num+incr_num;
 			incr_num+=data_array[key].Num;
 			data_array[key].normalized=data_array[key].Num/data_sum;
 			data_array[key].incremental_normalized=data_array[key].normalized+incr_norm;
+			data_array[key].y=incr_bar_height;
 			incr_norm+=data_array[key].normalized;
 			data_array[key].bar_height=y(0) - y(data_array[key].normalized);
 			dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height: "+JSON.stringify(data_array[key].bar_height)+"\r\n");
@@ -267,6 +269,7 @@ miczThunderStatsTab.ui={
 				data_array[key].bar_height = min_bar_height;
 			}
 			total_bar_height+=data_array[key].bar_height;
+			incr_bar_height+=data_array[key].bar_height;
 			dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] total_bar_height: "+JSON.stringify(total_bar_height)+"\r\n");
 		}
 
@@ -295,8 +298,10 @@ miczThunderStatsTab.ui={
 		  .enter()
 		  .append("svg:rect")
 		  .attr("x", 0)
-		  .attr("y", function(datum) { return y(datum.incremental_normalized); })
-		  .attr("height", function(datum) { return y(0) - y(datum.normalized); })
+		  //.attr("y", function(datum) { return y(datum.incremental_normalized); })
+		  .attr("y", function(datum) { return datum.y; })
+		  //.attr("height", function(datum) { return y(0) - y(datum.normalized); })
+		  .attr("height", function(datum) { return datum.bar_height; })
 		  .attr("width", barWidth)
 		  .attr("class","tooltip")
 		  .attr("fill", function(d) { return color(d.Date); });
@@ -307,14 +312,14 @@ miczThunderStatsTab.ui={
 		  .enter()
 		  .append("svg:text")
 		  .attr("x", 0)
-		  .attr("y", function(datum) { return y(datum.incremental_normalized); })
+		  //.attr("y", function(datum) { return y(datum.incremental_normalized); })
+		  .attr("y", function(datum) { return datum.y; })
 		  .attr("dx", barWidth/2)
-		  .attr("dy", function(datum) { return margin.top/2 + (y(0) - y(datum.normalized))/2; })
+		  .attr("dy", function(datum) { return margin.top/2 + datum.bar_height/2; })
 		  .attr("text-anchor", "middle")
 		  .attr("class","tooltip")
 		  .attr("title",function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>Mails: "+datum.Num+" ("+(datum.normalized*100).toFixed(0)+"%)";})
 		  .text(function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false);});
-		  //.text(function(datum) { return datum.Date+'|1:'+y(datum.incremental_normalized)+'|2:'+(y(0) - y(datum.normalized))+'d:'+datum.Num;});
 
 		$jQ('text.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true});
 

@@ -121,6 +121,14 @@ var miczThunderStatsTab = {
 
 		//Get yesterday first 10 senders
 		miczThunderStatsCore.db.getYesterdayInvolved(0,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_senders);
+
+		//Inbox 0 Yesterday
+		//Get yesterday mails folder spreading
+		miczThunderStatsCore.db.getYesterdayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_folder_spread);
+		//Get inbox num mails
+		miczThunderStatsCore.db.getInboxMessagesTotal(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_yesterday_inbox0_inboxmsg);
+		//Get inbox mails date spreading
+		miczThunderStatsCore.db.getInboxMessagesDate(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg);
 	},
 
 	getLast7DaysStats:function(identity_id){

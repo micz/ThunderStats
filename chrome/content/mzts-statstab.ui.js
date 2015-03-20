@@ -212,7 +212,7 @@ miczThunderStatsTab.ui={
 	drawInbox0DateSpreadGraph:function(element_id_txt,data_array,aggregate){
 		let margin = {top: 5, right: 0, bottom: 5, left: 43};
 		let barWidth = 40;
-		let w = 3 * barWidth;
+		let w = barWidth;
 		let h = 220 - margin.top - margin.bottom;
 		let min_bar_height = 12;
 
@@ -255,7 +255,6 @@ miczThunderStatsTab.ui={
 		let incr_norm=0;
 		let total_bar_height=0;
 		let incr_bar_height=0;
-		let prev_label_y=h;
 		for(let key in data_array){
 			data_array[key].incremental=data_array[key].Num+incr_num;
 			incr_num+=data_array[key].Num;
@@ -263,13 +262,7 @@ miczThunderStatsTab.ui={
 			data_array[key].incremental_normalized=data_array[key].normalized+incr_norm;
 			incr_norm+=data_array[key].normalized;
 			data_array[key].bar_height=y(0) - y(data_array[key].normalized);
-			data_array[key].label_y=margin.top+y(data_array[key].incremental_normalized)+(data_array[key].bar_height/2);
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height: "+JSON.stringify(data_array[key].bar_height)+"\r\n");
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].label_y: "+data_array[key].label_y+"\r\n");
-			if(data_array[key].label_y > prev_label_y-min_bar_height){
-				data_array[key].label_y = prev_label_y-min_bar_height;
-			}
-			prev_label_y=data_array[key].label_y;
 			total_bar_height+=data_array[key].bar_height;
 			incr_bar_height+=data_array[key].bar_height;
 			data_array[key].y=h-incr_bar_height;
@@ -302,10 +295,13 @@ miczThunderStatsTab.ui={
 		  //.attr("height", function(datum) { return datum.bar_height; })
 		  .attr("width", barWidth)
 		  .attr("class","tooltip")
+		  .attr("title",function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>Mails: "+datum.Num+" ("+(datum.normalized*100).toFixed(0)+"%)";})
 		  .attr("fill", function(d) { return color(d.Date); });
 
+		  $jQ('rect.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false});
+
 		//data labels
-		chart.selectAll("text")
+		/*chart.selectAll("text")
 		  .data(data_array)
 		  .enter()
 		  .append("svg:text")
@@ -330,7 +326,7 @@ miczThunderStatsTab.ui={
 				return [barWidth+1,y(datum.incremental_normalized)+(y(0) - y(datum.normalized))/2,
 						barWidth+12,datum.label_y-5];
 					});
-
+*/
 		//y axis
 		let yAxis = d3.svg.axis().tickFormat(d3.format(".0%")).ticks(5).scale(y).orient("left");
 		chart.append("g")

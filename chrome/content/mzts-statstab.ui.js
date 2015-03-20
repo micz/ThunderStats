@@ -400,7 +400,9 @@ miczThunderStatsTab.ui={
 			slice.enter()
 				.insert("path")
 				.style("fill", function(d) { return color(d.data.label); })
-				.attr("class", "slice");
+				.attr("class", "slice")
+				.attr("class","tooltip")
+				.attr("title",function(d){ return "Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
 
 			slice
 				.transition().duration(1000)
@@ -415,6 +417,8 @@ miczThunderStatsTab.ui={
 
 			slice.exit()
 				.remove();
+
+			  $jQ('path.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false});
 
 			/* ------- TEXT LABELS -------*/
 

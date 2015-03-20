@@ -48,18 +48,19 @@ font-weight:normal;
 }
 
 .chart_inbox0_datemsg{float:left;width:20%;min-width:90px;height:220px;}
-.chart_inbox0_folder_spread{float:left;width:68%;min-width:150px;}
+.chart_inbox0_folder_spread{float:left;width:80%;min-width:200px;min-height:200px;}
+.chart_inbox0_folder_spread svg{min-width:300px;min-height:200px;display:block;margin:0 auto;}
 
-.chart_inbox0_datemsg text{
+.chart_inbox0_datemsg text, .chart_inbox0_folder_spread text{
   font: 12px sans-serif;
   text-anchor: middle;
 }
 
-.arc path {
-  stroke: #fff;
+.chart_inbox0_folder_spread path.slice{
+	stroke-width:2px;
 }
 
-polyline{
+.chart_inbox0_folder_spread polyline{
 	opacity: .3;
 	stroke: black;
 	stroke-width: 2px;

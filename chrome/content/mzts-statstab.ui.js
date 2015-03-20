@@ -210,9 +210,9 @@ miczThunderStatsTab.ui={
 	},
 
 	drawInbox0DateSpreadGraph:function(element_id_txt,data_array,aggregate){
-		let margin = {top: 10, right: 0, bottom: 10, left: 70};
-		let barWidth = 80;
-		let w = (barWidth + 15 + margin.left + margin.right) - margin.left - margin.right;
+		let margin = {top: 5, right: 0, bottom: 5, left: 43};
+		let barWidth = 40;
+		let w = 3 * barWidth;
 		let h = 220 - margin.top - margin.bottom;
 		let min_bar_height = 12;
 
@@ -260,7 +260,6 @@ miczThunderStatsTab.ui={
 			incr_num+=data_array[key].Num;
 			data_array[key].normalized=data_array[key].Num/data_sum;
 			data_array[key].incremental_normalized=data_array[key].normalized+incr_norm;
-			data_array[key].y=incr_bar_height;
 			incr_norm+=data_array[key].normalized;
 			data_array[key].bar_height=y(0) - y(data_array[key].normalized);
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height: "+JSON.stringify(data_array[key].bar_height)+"\r\n");
@@ -270,13 +269,14 @@ miczThunderStatsTab.ui={
 			}
 			total_bar_height+=data_array[key].bar_height;
 			incr_bar_height+=data_array[key].bar_height;
+			data_array[key].y=h-incr_bar_height;
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] total_bar_height: "+JSON.stringify(total_bar_height)+"\r\n");
 		}
 
-		if(total_bar_height > h){		//we need to increment the graph height
+		/*if(total_bar_height > h){		//we need to increment the graph height
 			h = total_bar_height;
 			y = d3.scale.linear().domain([0, 1]).range([h, 0]);
-		}
+		}*/
 
 		//data_array=JSON.parse('[{"Date":"2010-09-21","Num":3,"incremental":3,"normalized":0.1875,"incremental_normalized":0.1875},{"Date":"2012-01-26","Num":1,"incremental":4,"normalized":0.0625,"incremental_normalized":0.25},{"Date":"2015-03-02","Num":3,"incremental":7,"normalized":0.1875,"incremental_normalized":0.4375},{"Date":"2015-03-08","Num":1,"incremental":8,"normalized":0.0625,"incremental_normalized":0.5},{"Date":"2015-03-13","Num":3,"incremental":11,"normalized":0.1875,"incremental_normalized":0.6875},{"Date":"2015-03-14","Num":5,"incremental":16,"normalized":0.3125,"incremental_normalized":1}]');
 
@@ -298,10 +298,10 @@ miczThunderStatsTab.ui={
 		  .enter()
 		  .append("svg:rect")
 		  .attr("x", 0)
-		  //.attr("y", function(datum) { return y(datum.incremental_normalized); })
-		  .attr("y", function(datum) { return datum.y; })
-		  //.attr("height", function(datum) { return y(0) - y(datum.normalized); })
-		  .attr("height", function(datum) { return datum.bar_height; })
+		  .attr("y", function(datum) { return y(datum.incremental_normalized); })
+		  //.attr("y", function(datum) { return datum.y; })
+		  .attr("height", function(datum) { return y(0) - y(datum.normalized); })
+		  //.attr("height", function(datum) { return datum.bar_height; })
 		  .attr("width", barWidth)
 		  .attr("class","tooltip")
 		  .attr("fill", function(d) { return color(d.Date); });
@@ -314,7 +314,7 @@ miczThunderStatsTab.ui={
 		  .attr("x", 0)
 		  //.attr("y", function(datum) { return y(datum.incremental_normalized); })
 		  .attr("y", function(datum) { return datum.y; })
-		  .attr("dx", barWidth/2)
+		  .attr("dx", 2*barWidth)
 		  .attr("dy", function(datum) { return margin.top/2 + datum.bar_height/2; })
 		  .attr("text-anchor", "middle")
 		  .attr("class","tooltip")

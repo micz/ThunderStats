@@ -74,11 +74,11 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   padding-top: 0;
 }
 
-#top_right_chunk_today,#top_right_chunk_yesterday,#top_right_chunk_7days,#top_right_chunk_info {
+#top_left_chunk_today,#top_left_chunk_yesterday,#top_left_chunk_7days,#top_left_chunk_info {
   background-color: rgba(125,125,105,.1); /*#f2f2f0*/
 }
 
-#bottom_left_chunk_today,#bottom_left_chunk_yesterday,#bottom_left_chunk_7days,#bottom_left_chunk_info {
+#bottom_right_chunk_today,#bottom_right_chunk_yesterday,#bottom_right_chunk_7days,#bottom_right_chunk_info {
   background-image: -moz-linear-gradient(rgba(125,125,105,.1) 75%, rgba(125,125,105,0)); /*242,242,240,1), rgba(242,242,240,0)*/
 }
 
@@ -107,6 +107,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   text-overflow: ellipsis;
   width: -moz-min-content;
   max-width: -moz-available;
+  margin-top:10px;
 }
 
 /*----- Tabs -----*/
@@ -121,6 +122,10 @@ display:inline-block;
 display:block;
 clear:both;
 content:'';
+}
+
+ul.tab-links{
+margin-bottom:0;
 }
 
 .tab-links li {
@@ -146,7 +151,7 @@ text-decoration:none;
 }
 
 li.active a, li.active a:hover {
-background:#fff;
+background-color: rgba(125,125,105,.1); /*#f2f2f0*/
 color:#4c4c4c;
 }
 

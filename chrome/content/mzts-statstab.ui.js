@@ -224,7 +224,7 @@ miczThunderStatsTab.ui={
 
 		if(aggregate){		//we are going to aggregate old days
 			//choose how much to aggregate
-			let max_el=10;
+			let max_el=20;
 			if(data_array.length>max_el){		// ok, we really need to aggregate
 				let spin_day=moment(data_array[data_array.length - max_el].Date);
 				let tmp_array=new Array();
@@ -255,6 +255,7 @@ miczThunderStatsTab.ui={
 		let incr_norm=0;
 		let total_bar_height=0;
 		let incr_bar_height=0;
+		let prev_label_y=h;
 		for(let key in data_array){
 			data_array[key].incremental=data_array[key].Num+incr_num;
 			incr_num+=data_array[key].Num;
@@ -262,21 +263,18 @@ miczThunderStatsTab.ui={
 			data_array[key].incremental_normalized=data_array[key].normalized+incr_norm;
 			incr_norm+=data_array[key].normalized;
 			data_array[key].bar_height=y(0) - y(data_array[key].normalized);
+			data_array[key].label_y=margin.top+y(data_array[key].incremental_normalized)+(data_array[key].bar_height/2);
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height: "+JSON.stringify(data_array[key].bar_height)+"\r\n");
-			if(data_array[key].bar_height < min_bar_height){	//set min bar heigth
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height > MIN!!!\r\n");
-				data_array[key].bar_height = min_bar_height;
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].label_y: "+data_array[key].label_y+"\r\n");
+			if(data_array[key].label_y > prev_label_y-min_bar_height){
+				data_array[key].label_y = prev_label_y-min_bar_height;
 			}
+			prev_label_y=data_array[key].label_y;
 			total_bar_height+=data_array[key].bar_height;
 			incr_bar_height+=data_array[key].bar_height;
 			data_array[key].y=h-incr_bar_height;
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] total_bar_height: "+JSON.stringify(total_bar_height)+"\r\n");
 		}
-
-		/*if(total_bar_height > h){		//we need to increment the graph height
-			h = total_bar_height;
-			y = d3.scale.linear().domain([0, 1]).range([h, 0]);
-		}*/
 
 		//data_array=JSON.parse('[{"Date":"2010-09-21","Num":3,"incremental":3,"normalized":0.1875,"incremental_normalized":0.1875},{"Date":"2012-01-26","Num":1,"incremental":4,"normalized":0.0625,"incremental_normalized":0.25},{"Date":"2015-03-02","Num":3,"incremental":7,"normalized":0.1875,"incremental_normalized":0.4375},{"Date":"2015-03-08","Num":1,"incremental":8,"normalized":0.0625,"incremental_normalized":0.5},{"Date":"2015-03-13","Num":3,"incremental":11,"normalized":0.1875,"incremental_normalized":0.6875},{"Date":"2015-03-14","Num":5,"incremental":16,"normalized":0.3125,"incremental_normalized":1}]');
 
@@ -313,15 +311,25 @@ miczThunderStatsTab.ui={
 		  .append("svg:text")
 		  .attr("x", 0)
 		  //.attr("y", function(datum) { return y(datum.incremental_normalized); })
-		  .attr("y", function(datum) { return datum.y; })
+		  //.attr("y", function(datum) { return datum.y; })
+		  .attr("y", function(datum) { return datum.label_y})
 		  .attr("dx", 2*barWidth)
-		  .attr("dy", function(datum) { return margin.top/2 + datum.bar_height/2; })
-		  .attr("text-anchor", "middle")
+		  //.attr("dy", function(datum) { return margin.top/2 + datum.bar_height/2; })
 		  .attr("class","tooltip")
 		  .attr("title",function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>Mails: "+datum.Num+" ("+(datum.normalized*100).toFixed(0)+"%)";})
 		  .text(function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false);});
 
 		$jQ('text.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true});
+
+		//labels lines
+		chart.selectAll("polyline")
+			.data(data_array)
+			.enter()
+			.append("svg:polyline")
+			.attr("points",function(datum){
+				return [barWidth+1,y(datum.incremental_normalized)+(y(0) - y(datum.normalized))/2,
+						barWidth+12,datum.label_y-5];
+					});
 
 		//y axis
 		let yAxis = d3.svg.axis().tickFormat(d3.format(".0%")).ticks(5).scale(y).orient("left");

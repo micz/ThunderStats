@@ -234,7 +234,7 @@ miczThunderStatsTab.ui={
 				aggregate_day.aggregate=true;
 				for(let key in data_array){
 					if(moment(data_array[key].Date) <= spin_day){	//aggregate day
-						dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] aggregating: "+JSON.stringify(data_array[key])+"\r\n");
+						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] aggregating: "+JSON.stringify(data_array[key])+"\r\n");
 						aggregate_day.Num+=data_array[key].Num;
 						aggregate_day.Date=Math.max(moment(aggregate_day.Date),moment(data_array[key].Date));
 					}else{		//keep day
@@ -273,7 +273,7 @@ miczThunderStatsTab.ui={
 
 		//data_array=JSON.parse('[{"Date":"2010-09-21","Num":3,"incremental":3,"normalized":0.1875,"incremental_normalized":0.1875},{"Date":"2012-01-26","Num":1,"incremental":4,"normalized":0.0625,"incremental_normalized":0.25},{"Date":"2015-03-02","Num":3,"incremental":7,"normalized":0.1875,"incremental_normalized":0.4375},{"Date":"2015-03-08","Num":1,"incremental":8,"normalized":0.0625,"incremental_normalized":0.5},{"Date":"2015-03-13","Num":3,"incremental":11,"normalized":0.1875,"incremental_normalized":0.6875},{"Date":"2015-03-14","Num":5,"incremental":16,"normalized":0.3125,"incremental_normalized":1}]');
 
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();

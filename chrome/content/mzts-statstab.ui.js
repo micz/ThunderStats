@@ -231,12 +231,14 @@ miczThunderStatsTab.ui={
 				let aggregate_day={};
 				aggregate_day.Num=0;
 				aggregate_day.Date=moment('1900/01/01');
+				aggregate_day.aggregate=true;
 				for(let key in data_array){
 					if(moment(data_array[key].Date) <= spin_day){	//aggregate day
 						dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] aggregating: "+JSON.stringify(data_array[key])+"\r\n");
 						aggregate_day.Num+=data_array[key].Num;
 						aggregate_day.Date=Math.max(moment(aggregate_day.Date),moment(data_array[key].Date));
 					}else{		//keep day
+						data_array[key].aggregate=false;
 						tmp_array.push(data_array[key]);
 					}
 
@@ -295,7 +297,7 @@ miczThunderStatsTab.ui={
 		  //.attr("height", function(datum) { return datum.bar_height; })
 		  .attr("width", barWidth)
 		  .attr("class","tooltip")
-		  .attr("title",function(datum) { return miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>Mails: "+datum.Num+" ("+(datum.normalized*100).toFixed(0)+"%)";})
+		  .attr("title",function(datum) { return (datum.aggregate?'Before<br/>':'')+miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>Mails: "+datum.Num+" ("+(datum.normalized*100).toFixed(0)+"%)";})
 		  .attr("fill", function(d) { return color(d.Date); });
 
 		  $jQ('rect.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false});

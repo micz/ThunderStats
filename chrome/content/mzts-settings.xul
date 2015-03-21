@@ -28,7 +28,7 @@
         <tabpanel id="rlbtab_info" orient="vertical">
 	  <description class="mzrlb-desc-big">&ThunderStats.InfoMainDesc;</description>
           <label control="symbol" value=" "/>
-	  <label value="&ThunderStats.DonateLink;" class="text-link mzts-donate" href="http://micz.it/thunderdbird-addon-thunderstats/donate/"/>
+	  <label value="&ThunderStats.DonateLink;" class="text-link mzts-donate" href="http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/donate/"/>
         </tabpanel>
       </tabpanels>
     </tabbox>

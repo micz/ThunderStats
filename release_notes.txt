@@ -1,6 +1,9 @@
 -= ThunderStats Thunderbird Addon Release Notes =-
 
 ==========
+Version 0.2 - ??/??/2015
+- 
+==========
 Version 0.1 - 21/03/2015
 - First experimental release.
 ==========

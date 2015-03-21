@@ -120,4 +120,15 @@ var miczThunderStatsUtils = {
 		return arr_inbox;	//returns and array of inbox folders objects {URI,customIdentity}
 	},
 
+	openLink:function(link){
+		// first construct an nsIURI object using the ioservice
+		let ioservice = Components.classes["@mozilla.org/network/io-service;1"]
+								  .getService(Components.interfaces.nsIIOService);
+		let uriToOpen = ioservice.newURI(link, null, null);
+		let extps = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"]
+							  .getService(Components.interfaces.nsIExternalProtocolService);
+		// now, open it!
+		extps.loadURI(uriToOpen, null);
+	},
+
 };

@@ -24,6 +24,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .chart_7days{overflow:auto;}
 .chart_inbox0{overflow:auto;width:100%;}
 .yesterday_incremental{color:grey;font-size:0.8em;}
+span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
 
 #heading_wrapper {
   display: table;

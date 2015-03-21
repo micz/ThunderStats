@@ -30,6 +30,7 @@
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.callback.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.observer.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.ui.js"/>
+    <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-utils.jsm"/>
 	<script type="application/javascript;version=1.8">
 	$jQ(document).ready(function() {
 		$jQ('.tooltip').tooltipster({
@@ -213,26 +214,29 @@
 			<div id="tab_info" class="tab">
 				<div id="table_info">
 				  <div id="tier1_info" class="tier">
-					<div class="chunk" id="top_left_chunk">
+					<div class="chunk" id="top_left_chunk_info">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Title</h2>
+						<h2 class="list_heading cropped">About this addon</h2>
 					  </div>
 					</div>
 					<div class="chunk" id="top_right_chunk_info">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Title</h2>
+						<h2 class="list_heading cropped">What is Inbox 0?</h2>
 					  </div>
+					  <p>Inbox Zero is a rigorous approach to email management aimed at keeping the inbox empty — or almost empty — at all times.</p>
+						<p>ThunderStats gives you some insights on how you're managing your inbox.</p>
+						<p><span class="outlink" onclick="miczThunderStatsUtils.openLink('http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/what-is-inbox-0/');">More info here</span></p>
 					</div>
 				  </div>
 				  <div id="tier2_7days" class="tier">
 					<div class="chunk" id="bottom_left_chunk_info">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Title</h2>
+						<h2 class="list_heading cropped">This is a test version!</h2>
 					  </div>
 					</div>
 					<div class="chunk" id="bottom_right_chunk_info">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Title</h2>
+						<h2 class="list_heading cropped">Donations</h2>
 					  </div>
 					  </div>
 				  </div>

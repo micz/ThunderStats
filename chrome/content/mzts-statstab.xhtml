@@ -9,6 +9,8 @@
   %globalDTD;
   <!ENTITY % startDTD SYSTEM "chrome://thunderstats/locale/mzts-statstab.dtd">
   %startDTD;
+  <!ENTITY % settingsDTD SYSTEM "chrome://thunderstats/locale/settings.dtd">
+  %settingsDTD;
   ]
 >
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -241,6 +243,8 @@
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">Donations</h2>
 					  </div>
+					  <p>&ThunderStats.InfoMainDesc;</p>
+					  <p><span class="outlink" onclick="miczThunderStatsUtils.openLink('http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/donate/');">&ThunderStats.DonateLink;</span></p>
 					  </div>
 				  </div>
 			   </div> <!-- table_info -->

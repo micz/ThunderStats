@@ -16,7 +16,7 @@ var miczThunderStatsDB = {
 	mDb:null,
 	msgAttributes:null,
 	forbiddenFolders:null,
-	inboxFolders:null,
+	inboxFolders:{},
 
 	init: function(){
 		this.mDb = new SQLiteHandler();
@@ -199,8 +199,8 @@ var miczThunderStatsDB = {
 
 	//returns an array of ids of inbox folders for the given identity
 	queryGetInboxFolders:function(mIdentity,identities){
-		if(this.inboxFolders!==null){
-			return this.inboxFolders;
+		if(typeof this.inboxFolders[mIdentity]!=='undefined'){
+			return this.inboxFolders[mIdentity];
 		}
 		let arr_output=new Array();
 		//get accounts
@@ -211,6 +211,7 @@ var miczThunderStatsDB = {
 		for (let i = 0; i < accounts.length; i++) {
 			let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
 			if(account==null) continue;
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab queryGetInboxFolders] mIdentity|identities '+mIdentity+"|"+JSON.stringify(identities)+'\r\n');
 			if((mIdentity!=0)&&(identities[mIdentity]["account_key"]!=account.key)) continue;
 			// check folders
 			let server = account.incomingServer;
@@ -222,7 +223,7 @@ var miczThunderStatsDB = {
 			let folder_id=this.queryGetFolderID(arr_inbox[kk]["URI"]);
 			arr_output.push(folder_id);
 		}
-		this.inboxFolders=arr_output;
+		this.inboxFolders[mIdentity]=arr_output;
 		return arr_output;
 	},
 

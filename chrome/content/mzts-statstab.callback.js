@@ -86,7 +86,7 @@ miczThunderStatsTab.callback.homepage_stats_today_rcvd = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_rcvd_wait");
 				if(!this.empty){
-					dump(">>>>>>>>>>>>>> [miczThunderStatsTab today_rcvd] this.data "+JSON.stringify(this.data)+"\r\n");
+					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab today_rcvd] this.data "+JSON.stringify(this.data)+"\r\n");
 					$jQ("#today_rcvd").text(this.data[1]["Num"]);
 				}else{
 					$jQ("#today_rcvd").text("0");

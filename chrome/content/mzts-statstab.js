@@ -91,9 +91,9 @@ var miczThunderStatsTab = {
 		//Get today mails folder spreading
 		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
 		//Get inbox num mails
-		miczThunderStatsCore.db.getInboxMessagesTotal(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg);
+		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg);
 		//Get inbox mails date spreading
-		miczThunderStatsCore.db.getInboxMessagesDate(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
+		miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
 
 	},
 
@@ -126,9 +126,9 @@ var miczThunderStatsTab = {
 		//Get yesterday mails folder spreading
 		miczThunderStatsCore.db.getYesterdayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_folder_spread);
 		//Get inbox num mails
-		miczThunderStatsCore.db.getInboxMessagesTotal(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_yesterday_inbox0_inboxmsg);
+		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_inboxmsg);
 		//Get inbox mails date spreading
-		miczThunderStatsCore.db.getInboxMessagesDate(miczThunderStatsTab.getCurrentIdentityId(),miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg);
+		miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg);
 	},
 
 	getLast7DaysStats:function(identity_id){

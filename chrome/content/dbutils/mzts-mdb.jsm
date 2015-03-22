@@ -260,8 +260,16 @@ var miczThunderStatsDB = {
 		  function onFailure(reason) {
 			if (reason instanceof OS.File.Error && reason.becauseNoSuchFile) {
 			  // The file does not exist
+			  miczLogger.log("Failed loading last index update: file not found.",2);
 			} else {
 			  // Some other error
+			  let error=0;
+			  if(getHostSystem()=='winnt'){
+				  error=reason.unixErrno;
+			  }else{
+				  error=reason.winLastError;
+			  }
+			  miczLogger.log("Failed loading last index update: "+reason.operation+", error: "+error+".",2);
 			  throw reason;
 			}
 		  }

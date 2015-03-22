@@ -130,5 +130,13 @@ var miczThunderStatsUtils = {
 		// now, open it!
 		extps.loadURI(uriToOpen, null);
 	},
+	
+	getHostSystem:function(){
+		if (null==this.mHost) {
+				let osString = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS;
+				this.mHost = osString.toLowerCase();
+		}
+		return this.mHost; // linux - winnt - darwin
+	},
 
 };

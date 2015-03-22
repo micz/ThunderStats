@@ -264,7 +264,7 @@ var miczThunderStatsDB = {
 			} else {
 			  // Some other error
 			  let error=0;
-			  if(getHostSystem()=='winnt'){
+			  if(miczThunderStatsUtils.getHostSystem()=='winnt'){
 				  error=reason.unixErrno;
 			  }else{
 				  error=reason.winLastError;

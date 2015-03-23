@@ -3,6 +3,8 @@
 let EXPORTED_SYMBOLS = ["miczThunderStatsUtils"];
 
 Components.utils.import("resource:///modules/iteratorUtils.jsm");
+Components.utils.import("resource:///modules/gloda/datastore.js");
+Components.utils.import("resource:///modules/gloda/index_msg.js");
 
 var miczThunderStatsUtils = {
 
@@ -107,7 +109,7 @@ var miczThunderStatsUtils = {
 			element["URI"]=mFolder.URI;
 			element["customIdentity"]=mFolder.customIdentity;
 			arr_inbox.push(element);
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(element)+'\r\n');
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(mFolder.URI)+'\r\n');
 		}
 		if (mFolder.hasSubFolders){
 			for each (let folder in fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){
@@ -130,13 +132,29 @@ var miczThunderStatsUtils = {
 		// now, open it!
 		extps.loadURI(uriToOpen, null);
 	},
-	
+
 	getHostSystem:function(){
 		if (null==this.mHost) {
 				let osString = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS;
 				this.mHost = osString.toLowerCase();
 		}
 		return this.mHost; // linux - winnt - darwin
+	},
+
+	forceFolderIndexing:function(mFolder){
+		let glodaFolder = GlodaDatastore._mapFolder(mFolder);
+		if (glodaFolder.indexingPriority !== glodaFolder.kIndexingNeverPriority){
+			glodaFolder._ensureFolderDirty();
+		}
+	},
+
+	forceAllfolderIndexing:function(){
+		GlodaMsgIndexer.dirtyAllKnownFolders();
+		GlodaMsgIndexer.indexingSweepNeeded = true;
+	},
+
+	getFolderTotalMessages:function(mFolder){
+		 return mFolder.getTotalMessages(false);	//do not consider mails in subfolder
 	},
 
 };

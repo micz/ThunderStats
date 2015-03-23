@@ -53,6 +53,8 @@ var miczThunderStatsTab = {
 
 			//Initialize observers
 			miczThunderStatsTab.observer.last_idx_update(miczThunderStatsTab.observer.callback.last_idx_update);
+
+			//miczThunderStatsUtils.forceAllfolderIndexing();
 		},
 
 	getTodayStats:function(identity_id){

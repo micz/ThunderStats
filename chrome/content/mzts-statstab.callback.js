@@ -621,11 +621,11 @@ miczThunderStatsTab.callback.stats_today_inbox0_folder_spread = {
 				miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_wait");
 				if(!this.empty){
 					//$jQ("#today_inbox0_folder_spread").text(JSON.stringify(this.data));
-					$jQ("#today_inbox0_folder_spread").text("");
+					$jQ("#today_inbox0_folder_spread_nomails").hide();
 					miczThunderStatsTab.ui.drawInbox0FolderSpreadGraph('today_inbox0_folder_spread',this.data);
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_today_inbox0_folders handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
-					$jQ("#today_inbox0_folder_spread").text("No mails received today!");
+					$jQ("#today_inbox0_folder_spread_nomails").show();
 					miczThunderStatsTab.ui.drawInbox0FolderSpreadGraph('today_inbox0_folder_spread',{});
 				}
 				miczLogger.log("Today Inbox 0 data loaded.",0);
@@ -706,12 +706,12 @@ miczThunderStatsTab.callback.stats_today_inbox0_datemsg = {
 				//miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_wait");
 				if(!this.empty){
 					//$jQ("#today_inbox0_datemsg").text(JSON.stringify(this.data));
-					$jQ("#today_inbox0_datemsg").text("");
+					$jQ("#today_inbox0_datemsg_nomails").hide();
 					miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_inbox0_datemsg',this.data,true);	//the last parameter is to activate aggregation
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_today_inbox0_datemsg handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
 					miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_inbox0_datemsg',{},true);	//the last parameter is to activate aggregation
-					$jQ("#today_inbox0_datemsg").text("No mails in the Inbox!");
+					$jQ("#today_inbox0_datemsg_nomails").show();
 				}
 				miczLogger.log("Date Inbox Mails data loaded.",0);
 				this.data=new Array();
@@ -830,11 +830,11 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_folder_spread = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_inbox0_wait");
 				if(!this.empty){
-					//$jQ("#today_inbox0_folder_spread").text(JSON.stringify(this.data));
+					$jQ("#yesterday_inbox0_folder_spread_nomails").hide();
 					miczThunderStatsTab.ui.drawInbox0FolderSpreadGraph('yesterday_inbox0_folder_spread',this.data);
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_yesterday_inbox0_folders handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
-					$jQ("#yesterday_inbox0_folder_spread").text("No mails received yesterday!");
+					$jQ("#yesterday_inbox0_folder_spread_nomails").show();
 				}
 				miczLogger.log("Today Inbox 0 data loaded.",0);
 				this.data=new Array();
@@ -913,11 +913,11 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				//miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_wait");
 				if(!this.empty){
-					//$jQ("#yesterday_inbox0_datemsg").text(JSON.stringify(this.data));
+					$jQ("#yesterday_inbox0_datemsg_nomails").hide();
 					miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('yesterday_inbox0_datemsg',this.data,true);	//the last parameter is to activete aggregation
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
-					$jQ("#yesterday_inbox0_datemsg").text("No mails in the Inbox!");
+					$jQ("#yesterday_inbox0_datemsg_nomails").show();
 				}
 				miczLogger.log("Date Inbox Mails data loaded.",0);
 				this.data=new Array();

@@ -28,7 +28,7 @@ var miczThunderStatsCore = {
 					identity_item["email"]=identity.email;
 					identity_item["fullName"]=identity.fullName;
 					identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity.email);
-					identity_item["account_key"]=account.key;
+					//identity_item["account_key"]=account.key;
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 				}
@@ -119,11 +119,11 @@ miczThunderStatsCore.db = {
 	},
 
 	getInboxMessagesTotal:function(mIdentity,mCallback){
-		miczThunderStatsDB.queryInboxMessages(mIdentity,miczThunderStatsCore.identities,mCallback);
+		miczThunderStatsDB.queryInboxMessages(mIdentity,mCallback);
 	},
 
 	getInboxMessagesDate:function(mIdentity,mCallback){
-		miczThunderStatsDB.queryInboxMessagesDate(mIdentity,miczThunderStatsCore.identities,mCallback);
+		miczThunderStatsDB.queryInboxMessagesDate(mIdentity,mCallback);
 	},
 
 	getResultObject:function(aFields,aResultSet){

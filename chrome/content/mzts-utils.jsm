@@ -141,18 +141,6 @@ var miczThunderStatsUtils = {
 		return this.mHost; // linux - winnt - darwin
 	},
 
-	forceFolderIndexing:function(mFolder){
-		let glodaFolder = GlodaDatastore._mapFolder(mFolder);
-		if (glodaFolder.indexingPriority !== glodaFolder.kIndexingNeverPriority){
-			glodaFolder._ensureFolderDirty();
-		}
-	},
-
-	forceAllfolderIndexing:function(){
-		GlodaMsgIndexer.dirtyAllKnownFolders();
-		GlodaMsgIndexer.indexingSweepNeeded = true;
-	},
-
 	getFolderTotalMessages:function(mFolder){
 		 return mFolder.getTotalMessages(false);	//do not consider mails in subfolder
 	},

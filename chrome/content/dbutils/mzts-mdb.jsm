@@ -209,12 +209,11 @@ var miczThunderStatsDB = {
 		return folderArray;
 	},
 
-	//returns an array of ids of inbox folders for the given identity
+	//returns an array of nsIMsgFolders of inbox folders for the given identity
 	queryGetInboxFolders:function(){
 		if(this.inboxFolders!==null){
 			return this.inboxFolders;
 		}
-		let arr_output=new Array();
 		//get accounts
 		let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
 		let accounts = acctMgr.accounts;
@@ -231,12 +230,8 @@ var miczThunderStatsDB = {
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] folder.URI '+JSON.stringify(folder.URI)+'\r\n');
 			arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,miczThunderStatsUtils.getInboxFoldersObjects(folder));
 		}
-		for (let kk in arr_inbox){
-			let folder_id=this.queryGetFolderID(arr_inbox[kk]["URI"]);
-			arr_output.push(folder_id);
-		}
-		this.inboxFolders=arr_output;
-		return arr_output;
+		this.inboxFolders=arr_inbox;
+		return arr_inbox;
 	},
 
 	//returns the id of an identity from its email

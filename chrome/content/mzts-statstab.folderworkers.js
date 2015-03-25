@@ -1,6 +1,7 @@
 "use strict";
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
+Components.utils.import("resource:///modules/mailServices.js");
 
 miczThunderStatsTab.folderworker={};
 
@@ -10,6 +11,7 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
     this.context = context;
     this.inboxmsg = 0;
     this.stale = true;
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] init done.\r\n');
   },
 
   uninit: function() {
@@ -31,6 +33,9 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 
     let headerValue = message.mime2DecodedAuthor;
     let identity_address=this.context.identityAddress;
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] identity_address '+JSON.stringify(identity_address)+'\r\n');
+    
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerValue '+JSON.stringify(headerValue)+'\r\n');
 
     let tmpAddresses = {};
     let tmpFullAddresses = {};
@@ -42,8 +47,10 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 
     if (!deleted) {
       for (let i = 0; i < addresses.length; i++) {
-		  if(identity_address==addresses[i]){
+		  //if(identity_address==addresses[i]){
+		  if(addresses[i].indexOf(identity_address)>=0){
 			  this.inboxmsg++;
+			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] this.inboxmsg '+this.inboxmsg+'\r\n');
 		  }
       }
     }
@@ -68,7 +75,7 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
   },
 
   _clear: function() {
-
+	this.inboxmsg=0;
   },
 
 };

@@ -6,6 +6,7 @@
 "use strict";
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
+Components.utils.import("resource:///modules/iteratorUtils.jsm");
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsFolderQ"];
 
@@ -13,7 +14,7 @@ const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
 var miczThunderStatsFolderQ = {
 	
-  identityAdress: null,
+  identityAddress: null,
   _analyzers: [],
   folder: null,
   _timeoutId: null,
@@ -25,7 +26,12 @@ var miczThunderStatsFolderQ = {
 
 	init:function(mFolder,mIdentityAddress){
 		this.folder=mFolder;
-		this.identityAdress=mIdentityAddress;
+		this.identityAddress=mIdentityAddress;
+	},
+
+	run:function(){
+		let messages = fixIterator(this.folder.msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr);
+		this.processMessages(messages);
 	},
 
   /**
@@ -122,8 +128,7 @@ var miczThunderStatsFolderQ = {
     this.loading = true;
 
     let messagesProcessed = 0;
-    let maxMessages = Services.prefs.getIntPref(
-      "extensions.mailsummaries.max_messages");
+    let maxMessages = 100;// Services.prefs.getIntPref("extensions.mailsummaries.max_messages");
     let overflowed = false;
 
     for each (let [,analyzer] in Iterator(this._analyzers)) {
@@ -141,14 +146,11 @@ var miczThunderStatsFolderQ = {
         return;
     }
 
-    this._setMode("loading", false);
-    this._setMode("content", true);
-
-    // Let the user know if we decided to bail out from processing all the
+/*   // Let the user know if we decided to bail out from processing all the
     // messages in the folder.
     document.getElementById("overflow").textContent = overflowed ?
       this.formatString("overflowNote", [maxMessages.toLocaleString()]) : "";
-
+*/
     for each (let [,analyzer] in Iterator(this._analyzers))
       analyzer.render();
 

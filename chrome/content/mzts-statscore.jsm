@@ -124,8 +124,11 @@ miczThunderStatsCore.db = {
 		//miczThunderStatsDB.queryInboxMessages(mIdentity,mCallback);
 		let inboxFolders=miczThunderStatsDB.queryGetInboxFolders();
 		let mFolder=inboxFolders[0];
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mFolder: " +JSON.stringify(mFolder.URI)+"\r\n");
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddress)+"\r\n");
 		miczThunderStatsFolderQ.init(mFolder,mIdentityAddress);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
+		miczThunderStatsFolderQ.run();
 	},
 
 	getInboxMessagesDate:function(mIdentity,mCallback){

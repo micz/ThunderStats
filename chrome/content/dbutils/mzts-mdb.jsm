@@ -161,7 +161,7 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
-	queryInboxMessages:function(mIdentity,mCallback){
+	/*queryInboxMessages:function(mIdentity,mCallback){
 		let toMe_attribute=this.msgAttributes['toMe'];
 		let involves_attribute=this.msgAttributes['involves'];
 		let inboxFolders=this.queryGetInboxFolders();
@@ -191,7 +191,7 @@ var miczThunderStatsDB = {
 		}
 		mWhere+= " GROUP BY strftime('%Y-%m-%d',m.date/1000000,'unixepoch') ORDER BY m.date ASC";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
-	},
+	},*/
 
 	//returns an array of ids of folder to be ignored in stats crunching
 	queryGetForbiddenFolders:function(){

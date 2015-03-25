@@ -1,6 +1,7 @@
 "use strict";
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 //Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	 // To be enabled in vesion 2.0
+Components.utils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
@@ -119,12 +120,16 @@ miczThunderStatsCore.db = {
 		return this.getOneDayMessagesFolders(mType,ydate,mIdentity,mCallback);
 	},
 
-	getInboxMessagesTotal:function(mIdentity,mCallback){
-		miczThunderStatsDB.queryInboxMessages(mIdentity,mCallback);
+	getInboxMessagesTotal:function(mIdentityAddress,mCallback){
+		//miczThunderStatsDB.queryInboxMessages(mIdentity,mCallback);
+		let inboxFolders=miczThunderStatsDB.queryGetInboxFolders();
+		let mFolder=inboxFolders[0];
+		miczThunderStatsFolderQ.init(mFolder,mIdentityAddress);
+		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
 	},
 
 	getInboxMessagesDate:function(mIdentity,mCallback){
-		miczThunderStatsDB.queryInboxMessagesDate(mIdentity,mCallback);
+		//miczThunderStatsDB.queryInboxMessagesDate(mIdentity,mCallback);
 	},
 
 	getResultObject:function(aFields,aResultSet){

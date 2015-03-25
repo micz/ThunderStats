@@ -103,7 +103,7 @@ var miczThunderStatsUtils = {
 
 	getInboxFoldersObjects:function(mFolder){	//first input is a root account folder - then the function is recursive
 		let arr_inbox=new Array();
-		let isInbox = mFolder.getFlag(Components.interfaces.nsMsgFolderFlags.Inbox);
+		let isInbox = mFolder.flags & Components.interfaces.nsMsgFolderFlags.Inbox;
 		let element={};
 		if (isInbox){
 			element["URI"]=mFolder.URI;

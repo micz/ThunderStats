@@ -16,7 +16,6 @@ var miczThunderStatsDB = {
 	mDb:null,
 	msgAttributes:null,
 	forbiddenFolders:null,
-	inboxFolders:null,
 
 	init: function(){
 		this.mDb = new SQLiteHandler();
@@ -161,38 +160,6 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
-	queryInboxMessages:function(mIdentity,mCallback){
-		let toMe_attribute=this.msgAttributes['toMe'];
-		let involves_attribute=this.msgAttributes['involves'];
-		let inboxFolders=this.queryGetInboxFolders();
-		let inboxFoldersStr="("+inboxFolders.join()+")";
-		let mWhat="count(distinct m.headerMessageID) as Num";
-		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
-		let mWhere="ma.attributeID="+toMe_attribute+" AND m.folderID in "+inboxFoldersStr;
-		if(mIdentity>0){
-			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
-		}
-		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
-	},
-
-	//returns the number of messages in the inbox for each day
-	queryInboxMessagesDate:function(mIdentity,mCallback){
-		let toMe_attribute=this.msgAttributes['toMe'];
-		let involves_attribute=this.msgAttributes['involves'];
-		let inboxFolders=this.queryGetInboxFolders();
-		let inboxFoldersStr="("+inboxFolders.join()+")";
-		let mWhat="strftime('%Y-%m-%d',m.date/1000000,'unixepoch') as Date, count(distinct m.headerMessageID) as Num";
-		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
-		let mWhere="ma.attributeID="+toMe_attribute+" AND m.folderID in "+inboxFoldersStr;
-		if(mIdentity>0){
-			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
-		}
-		mWhere+= " GROUP BY strftime('%Y-%m-%d',m.date/1000000,'unixepoch') ORDER BY m.date ASC";
-		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
-	},
-
 	//returns an array of ids of folder to be ignored in stats crunching
 	queryGetForbiddenFolders:function(){
 		if(this.forbiddenFolders!==null){
@@ -207,31 +174,6 @@ var miczThunderStatsDB = {
 		}
 		this.forbiddenFolders=folderArray;
 		return folderArray;
-	},
-
-	//returns an array of nsIMsgFolders of inbox folders for the given identity
-	queryGetInboxFolders:function(){
-		if(this.inboxFolders!==null){
-			return this.inboxFolders;
-		}
-		//get accounts
-		let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
-		let accounts = acctMgr.accounts;
-		let arr_inbox=new Array();
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
-		for (let i = 0; i < accounts.length; i++) {
-			let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
-			if(account==null) continue;
-			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab queryGetInboxFolders] mIdentity|identities '+mIdentity+"|"+JSON.stringify(identities)+'\r\n');
-			//if((mIdentity!=0)&&(identities[mIdentity]["account_key"]!=account.key)) continue;
-			// check folders
-			let server = account.incomingServer;
-			let folder = server.rootFolder;
-			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] folder.URI '+JSON.stringify(folder.URI)+'\r\n');
-			arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,miczThunderStatsUtils.getInboxFoldersObjects(folder));
-		}
-		this.inboxFolders=arr_inbox;
-		return arr_inbox;
 	},
 
 	//returns the id of an identity from its email

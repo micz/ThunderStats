@@ -3,8 +3,6 @@
 let EXPORTED_SYMBOLS = ["miczThunderStatsUtils"];
 
 Components.utils.import("resource:///modules/iteratorUtils.jsm");
-Components.utils.import("resource:///modules/gloda/datastore.js");
-Components.utils.import("resource:///modules/gloda/index_msg.js");
 
 var miczThunderStatsUtils = {
 

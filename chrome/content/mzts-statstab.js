@@ -93,9 +93,9 @@ var miczThunderStatsTab = {
 		//Get today mails folder spreading
 		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
 		//Get inbox num mails
-		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg);
+		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.worker.today_inboxnum);
 		//Get inbox mails date spreading
-		miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
+		miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.worker.yesterday_inboxnum);
 
 	},
 

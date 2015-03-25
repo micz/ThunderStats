@@ -29,6 +29,7 @@ var miczThunderStatsCore = {
 					identity_item["fullName"]=identity.fullName;
 					identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity.email);
 					//identity_item["account_key"]=account.key;
+					identity_item["key"]=identity.key;
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 				}

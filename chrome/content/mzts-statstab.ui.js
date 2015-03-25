@@ -430,7 +430,7 @@ miczThunderStatsTab.ui={
 				.append("text")
 				.attr("dy", ".35em")
 				.text(function(d) {
-					return d.data.label;
+					return d.data.label+" ("+d.data.value+")";
 				})
 				.attr("class","tooltip")
 				.attr("title",function(d){ return "Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});

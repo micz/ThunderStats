@@ -128,7 +128,7 @@ var miczThunderStatsFolderQ = {
     this.loading = true;
 
     let messagesProcessed = 0;
-    let maxMessages = 100;// Services.prefs.getIntPref("extensions.mailsummaries.max_messages");
+    let maxMessages = 10000;// Services.prefs.getIntPref("extensions.mailsummaries.max_messages");
     let overflowed = false;
 
     for each (let [,analyzer] in Iterator(this._analyzers)) {
@@ -137,13 +137,16 @@ var miczThunderStatsFolderQ = {
 
     for each (let message in messageGenerator) {
       messagesProcessed++;
+      dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
       if (maxMessages != -1 && messagesProcessed > maxMessages) {
         overflowed = true;
         break;
       }
       if (messagesProcessed % 500 == 0) yield;
-      if (this._processMessage(message))
+      if (this._processMessage(message)){
+		 dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] returning: '+JSON.stringify(message)+'\r\n');
         return;
+	  }
     }
 
 /*   // Let the user know if we decided to bail out from processing all the
@@ -195,6 +198,7 @@ var miczThunderStatsFolderQ = {
     }
 
     if (reprocess) {
+	dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessage] reprocess: '+JSON.stringify(reprocess)+'\r\n');
       let self = this;
       setTimeout(function() { self.reprocessMessages(); }, 0);
     }

@@ -1,6 +1,6 @@
 /*
  * Original code thanks to https://bitbucket.org/squib/mail-summaries/
- * 
+ *
 */
 
 "use strict";
@@ -13,7 +13,7 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsFolderQ"];
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
 var miczThunderStatsFolderQ = {
-	
+
   identityAddress: null,
   _analyzers: [],
   folder: null,
@@ -38,7 +38,7 @@ var miczThunderStatsFolderQ = {
    * Register a new folder analyzer.
    *
    * @param analyzer the analyzer object
-   */   
+   */
   registerAnalyzer: function FolderSummary__registerAnalyzer(analyzer) {
     this._analyzers.push(analyzer);
   },
@@ -91,6 +91,7 @@ var miczThunderStatsFolderQ = {
       catch(e if e instanceof StopIteration) {
         self._timeoutId = null;
         gen.close();
+        dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] processMessages: Stopping...\r\n');
         //dump("  took "+(Date.now() - then)/1000+" seconds\n");
       }
       catch(e) {

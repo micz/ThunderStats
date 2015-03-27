@@ -15,6 +15,9 @@ var miczThunderStatsTab = {
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document,false);
 			miczLogger.log("ThunderStats starting...",0);
 
+			//Initialize observers
+			miczThunderStatsTab.observer.last_idx_update(miczThunderStatsTab.observer.callback.last_idx_update);
+
 			$jQ("#log_close_btn")
 			  .mouseover(miczThunderStatsTab.ui.logCloseBtnShow)
 			  .mouseout(miczThunderStatsTab.ui.logCloseBtnHide);
@@ -50,9 +53,6 @@ var miczThunderStatsTab = {
 
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
-
-			//Initialize observers
-			miczThunderStatsTab.observer.last_idx_update(miczThunderStatsTab.observer.callback.last_idx_update);
 
 			//miczThunderStatsUtils.forceAllfolderIndexing();
 		},

@@ -11,12 +11,13 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
     this.context = context;
     this.inboxmsg = 0;
     this.stale = true;
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] init done.\r\n');
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] init done [inboxmsg: '+this.inboxmsg +'.\r\n');
   },
 
   uninit: function() {
     this._clear();
     delete this.inboxmsg;
+    delete this.context;
   },
 
   /**
@@ -25,16 +26,17 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
    * @param message the message to process
    * @param deleted true if the message was deleted, false otherwise
    */
-  processMessage: function (message,deleted) {
+  processMessage: function(message,deleted) {
     this.stale = true;
 
     let addresses;
     let fullAddresses;
 
-    let headerValue = message.mime2DecodedAuthor;
+    //let headerValue = message.mime2DecodedAuthor;
+    let headerValue = message.mime2DecodedRecipients;
     let identity_address=this.context.identityAddress;
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] identity_address '+JSON.stringify(identity_address)+'\r\n');
-    
+
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerValue '+JSON.stringify(headerValue)+'\r\n');
 
     let tmpAddresses = {};
@@ -56,10 +58,6 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
     }
   },
 
-  /**
-   * Render the top correspondents list. This includes the subset of the
-   * sparkline for each correspondent, to be shown on mouseover.
-   */
   render:function() {
 	miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_inboxmsg_wait");
 	$jQ("#today_inbox0_inboxmsg").text(this.inboxmsg);
@@ -67,7 +65,7 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
     this.stale = false;
   },
 
-  update: function topCorrespondentsWidget_update() {
+  update: function() {
     if (this.stale) {
       this._clear();
       this.render();

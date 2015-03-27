@@ -129,6 +129,7 @@ miczThunderStatsCore.db = {
 		miczThunderStatsFolderQ.init(mFolder,mIdentityAddress);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
 		miczThunderStatsFolderQ.run();
+		miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
 	},
 
 	getInboxMessagesDate:function(mIdentity,mCallback){

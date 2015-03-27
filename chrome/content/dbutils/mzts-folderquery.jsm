@@ -39,8 +39,12 @@ var miczThunderStatsFolderQ = {
    *
    * @param analyzer the analyzer object
    */
-  registerAnalyzer: function FolderSummary__registerAnalyzer(analyzer) {
+  registerAnalyzer: function(analyzer) {
     this._analyzers.push(analyzer);
+  },
+
+  unregisterAnalyzer: function(analyzer) {
+    this._analyzers.splice(this._analyzers.indexOf(analyzer));
   },
 
   /**
@@ -76,7 +80,7 @@ var miczThunderStatsFolderQ = {
    * @param messageGenerator a generator returning a sequence of messages in the
    *        folder
    */
-  processMessages: function FolderSummary_processMessages(messageGenerator) {
+  processMessages: function(messageGenerator) {
     let gen = this._processMessages(messageGenerator);
     let self = this;
     let then = Date.now();
@@ -91,7 +95,7 @@ var miczThunderStatsFolderQ = {
       catch(e if e instanceof StopIteration) {
         self._timeoutId = null;
         gen.close();
-        dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] processMessages: Stopping...\r\n');
+        dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] processMessages: Stopping...'+JSON.stringify(e)+'\r\n');
         //dump("  took "+(Date.now() - then)/1000+" seconds\n");
       }
       catch(e) {
@@ -106,7 +110,7 @@ var miczThunderStatsFolderQ = {
   /**
    * Cancel any running message processing queues.
    */
-  cancelProcessing: function FolderSummary_cancelProcessing() {
+  cancelProcessing: function() {
     if (this._timeoutId !== null)
       window.clearTimeout(this._timeoutId);
   },
@@ -121,7 +125,7 @@ var miczThunderStatsFolderQ = {
    * @param messageGenerator a generator returning a sequence of messages in the
    *        folder
    */
-  _processMessages: function FolderSummary__processMessages(messageGenerator) {
+  _processMessages: function(messageGenerator) {
     // Use microseconds here.
     let maxDate = Date.now() * 1000;
     this.numDays = 30;
@@ -168,7 +172,7 @@ var miczThunderStatsFolderQ = {
    * @param deleted true if the message was deleted, false otherwise
    * @return true if a full reprocess was requested and queued
    */
-  _processMessage: function FolderSummary__processMessage(message, deleted) {
+  _processMessage: function(message, deleted) {
     // Don't process killed messages unless we're counting them as deleted.
     let isKilled = false;
     try {
@@ -206,7 +210,7 @@ var miczThunderStatsFolderQ = {
     return reprocess;
   },
 
-  reprocessMessages: function FolderSummary_reprocessMessages() {
+  reprocessMessages: function() {
     dump(" Reprocessing messges\n");
     for each (let [,analyzer] in Iterator(this._analyzers))
       analyzer.uninit();
@@ -225,7 +229,7 @@ var miczThunderStatsFolderQ = {
   /**
    * Update the total and unread message counts for this folder.
    */
-  updateMessageCounts: function FolderSummary_updateMessageCounts() {
+  updateMessageCounts: function() {
     let numTotal = this.folder.getTotalMessages(false);
     let numUnread = this.folder.getNumUnread(false);
     let messageCount = document.getElementById("messageCount");

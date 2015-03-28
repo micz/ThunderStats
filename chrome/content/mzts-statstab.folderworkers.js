@@ -33,10 +33,9 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
     let fullAddresses;
 
     //let headerValue = message.mime2DecodedAuthor;
-    let headerValue = message.mime2DecodedRecipients;
-    let identity_address=this.context.identityAddress;
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] identity_address '+JSON.stringify(identity_address)+'\r\n');
-
+    let headerValue = message.mime2DecodedRecipients.toLowerCase();
+    let identity_addresses=this.context.identityAddresses.join(',');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] identity_address '+JSON.stringify(identity_addresses)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerValue '+JSON.stringify(headerValue)+'\r\n');
 
     let tmpAddresses = {};
@@ -47,10 +46,11 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
     addresses = tmpAddresses.value;
     fullAddresses = tmpFullAddresses.value;
 
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] addresses '+JSON.stringify(addresses)+'\r\n');
+
     if (!deleted) {
       for (let i = 0; i < addresses.length; i++) {
-		  //if(identity_address==addresses[i]){
-		  if(addresses[i].indexOf(identity_address)>=0){
+		  if(identity_addresses.indexOf(addresses[i])>=0){
 			  this.inboxmsg++;
 			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] this.inboxmsg '+this.inboxmsg+'\r\n');
 		  }

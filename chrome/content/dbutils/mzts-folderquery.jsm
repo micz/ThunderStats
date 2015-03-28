@@ -14,24 +14,29 @@ const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
 var miczThunderStatsFolderQ = {
 
-  identityAddress: null,
-  _analyzers: [],
-  folder: null,
-  _timeoutId: null,
+	win:null,
+	identityAddresses: null,
+	_analyzers: [],
+	folders: null,
+	_timeoutId: null,
   /*_bundle: Cc["@mozilla.org/intl/stringbundle;1"]
                    .getService(Ci.nsIStringBundleService)
                    .createBundle("chrome://mailsummaries/locale/folderSummary.properties");
 */
-  mailSession: Cc["@mozilla.org/messenger/services/session;1"].getService(Ci.nsIMsgMailSession),
+	mailSession: Cc["@mozilla.org/messenger/services/session;1"].getService(Ci.nsIMsgMailSession),
 
-	init:function(mFolder,mIdentityAddress){
-		this.folder=mFolder;
-		this.identityAddress=mIdentityAddress;
+	init:function(mFolders,mIdentityAddresses,mWindow){
+		this.folders=mFolders;
+		this.identityAddresses=mIdentityAddresses;
+		this.win=mWindow;
 	},
 
 	run:function(){
-		let messages = fixIterator(this.folder.msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr);
-		this.processMessages(messages);
+		for (let key in this.folders){
+			 let messages = fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr);
+			 dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ run] messages: '+JSON.stringify(messages)+'\r\n');
+			 this.processMessages(messages);
+		}
 	},
 
   /**
@@ -45,31 +50,6 @@ var miczThunderStatsFolderQ = {
 
   unregisterAnalyzer: function(analyzer) {
     this._analyzers.splice(this._analyzers.indexOf(analyzer));
-  },
-
-  /**
-   * Determine whether the current folder is virtual or not.
-   *
-   * @return true if the folder is virtual, false otherwise.
-   */
-  get isVirtualFolder() {
-    return this.folder.isSpecialFolder(Ci.nsMsgFolderFlags.Virtual);
-  },
-
-  /**
-   * Determine whether the current folder is an outgoing one or not.
-   *
-   * @return true if the folder is outgoing, false otherwise.
-   */
-  get isOutgoingFolder() {
-    const outgoingFlags =
-      Ci.nsMsgFolderFlags.SentMail | Ci.nsMsgFolderFlags.Drafts |
-      Ci.nsMsgFolderFlags.Templates | Ci.nsMsgFolderFlags.Queue;
-    return this.folder.isSpecialFolder(outgoingFlags);
-  },
-
-  get isInbox() {
-    return this.folder.isSpecialFolder(Ci.nsMsgFolderFlags.Inbox);
   },
 
   /**
@@ -89,7 +69,7 @@ var miczThunderStatsFolderQ = {
       try {
         gen.next();
         if (first){
-			self._timeoutId = window.setTimeout(defer, 10);
+			self._timeoutId = self.win.setTimeout(defer, 10);
 		}
       }
       catch(e if e instanceof StopIteration) {
@@ -112,7 +92,7 @@ var miczThunderStatsFolderQ = {
    */
   cancelProcessing: function() {
     if (this._timeoutId !== null)
-      window.clearTimeout(this._timeoutId);
+      this.win.clearTimeout(this._timeoutId);
   },
 
   /**
@@ -219,28 +199,12 @@ var miczThunderStatsFolderQ = {
       this.onMessagesLoaded(gFolderDisplay, true);
     }
     else {
-      let messages = fixIterator(this.folder.msgDatabase
-                                     .ReverseEnumerateMessages(),
-                                 Ci.nsIMsgDBHdr);
-      this.processMessages(messages);
+		let messages=new Array();
+		for (let key in this.folders){
+			 messages = miczThunderStatsUtils.arrayMerge(messages,fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr));
+		}
+       this.processMessages(messages);
     }
-  },
-
-  /**
-   * Update the total and unread message counts for this folder.
-   */
-  updateMessageCounts: function() {
-    let numTotal = this.folder.getTotalMessages(false);
-    let numUnread = this.folder.getNumUnread(false);
-    let messageCount = document.getElementById("messageCount");
-    messageCount.textContent = this.formatString(
-      "messageCount", [numTotal.toLocaleString()], numTotal);
-
-    this._setMode("empty", numTotal == 0);
-
-    if (numUnread)
-      messageCount.textContent += this.formatString(
-        "unreadCount", [numUnread.toLocaleString()], numUnread);
   },
 
   /**
@@ -255,9 +219,9 @@ var miczThunderStatsFolderQ = {
       analyzer.uninit();
 
     this._removeListeners();
-    this.folder = null;
+    this.folders = null;
 
-    window.removeEventListener("unload", this._unloadFunc, false);
+    this.win.removeEventListener("unload", this._unloadFunc, false);
   },
 
   /**

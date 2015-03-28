@@ -15,6 +15,8 @@ var miczThunderStatsTab = {
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document,false);
 			miczLogger.log("ThunderStats starting...",0);
 
+			miczThunderStatsCore.db.init(window);
+
 			//Initialize observers
 			miczThunderStatsTab.observer.last_idx_update(miczThunderStatsTab.observer.callback.last_idx_update);
 
@@ -93,7 +95,7 @@ var miczThunderStatsTab = {
 		//Get today mails folder spreading
 		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
 		//Get inbox num mails
-		miczThunderStatsCore.db.getInboxMessagesTotal(miczThunderStatsCore.identities[identity_id]["email"],miczThunderStatsTab.folderworker.today_inboxmsg);
+		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
 		//Get inbox mails date spreading
 		miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
 

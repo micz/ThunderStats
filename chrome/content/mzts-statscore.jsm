@@ -41,6 +41,12 @@ var miczThunderStatsCore = {
 
 miczThunderStatsCore.db = {
 
+	win:null,
+
+	init:function(mWindow){
+		this.win=mWindow;
+	},
+
 	getOneDayMessages:function(mType,mGivenDay,mIdentity,mCallback){	//mGivenDay is a Date object
 		let mFromDate=new Date(mGivenDay);
 		mFromDate.setHours(0,0,0,0);
@@ -120,13 +126,17 @@ miczThunderStatsCore.db = {
 		return this.getOneDayMessagesFolders(mType,ydate,mIdentity,mCallback);
 	},
 
-	getInboxMessagesTotal:function(mIdentityAddress,mCallback){
-		//miczThunderStatsDB.queryInboxMessages(mIdentity,mCallback);
-		let inboxFolders=miczThunderStatsDB.queryGetInboxFolders();
-		let mFolder=inboxFolders[0];
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mFolder: " +JSON.stringify(mFolder.URI)+"\r\n");
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddress)+"\r\n");
-		miczThunderStatsFolderQ.init(mFolder,mIdentityAddress);
+	getInboxMessagesTotal:function(mIdentity,mCallback){
+		let mIdentityAddresses=new Array();
+		if(mIdentity==0){
+			for (let key in miczThunderStatsCore.identities){
+				mIdentityAddresses.push(miczThunderStatsCore.identities[key]["email"]);
+			}
+		}else{
+			mIdentityAddresses.push(miczThunderStatsCore.identities[mIdentity]["email"]);
+		}
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
+		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(),mIdentityAddresses,this.win);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
 		miczThunderStatsFolderQ.run();
 		miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);

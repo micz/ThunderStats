@@ -135,11 +135,11 @@ miczThunderStatsCore.db = {
 		}else{
 			mIdentityAddresses.push(miczThunderStatsCore.identities[mIdentity]["email"]);
 		}
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
 		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(),mIdentityAddresses,this.win);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
 		miczThunderStatsFolderQ.run();
-		miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
+		//miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
 	},
 
 	getInboxMessagesDate:function(mIdentity,mCallback){

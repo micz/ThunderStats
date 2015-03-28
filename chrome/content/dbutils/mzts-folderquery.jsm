@@ -34,7 +34,6 @@ var miczThunderStatsFolderQ = {
 	run:function(){
 		for (let key in this.folders){
 			 let messages = fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr);
-			 dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ run] messages: '+JSON.stringify(messages)+'\r\n');
 			 this.processMessages(messages);
 		}
 	},
@@ -45,7 +44,10 @@ var miczThunderStatsFolderQ = {
    * @param analyzer the analyzer object
    */
   registerAnalyzer: function(analyzer) {
-    this._analyzers.push(analyzer);
+    if(this._analyzers.indexOf(analyzer)==-1){
+		this._analyzers.push(analyzer);
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab registerAnalyzer] analyzer: '+analyzer +'\r\n');
+	}
   },
 
   unregisterAnalyzer: function(analyzer) {
@@ -122,14 +124,13 @@ var miczThunderStatsFolderQ = {
 
     for each (let message in messageGenerator) {
       messagesProcessed++;
-      dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
+      //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
       if (maxMessages != -1 && messagesProcessed > maxMessages) {
         overflowed = true;
         break;
       }
-      if (messagesProcessed % 500 == 0) yield;
+      if (messagesProcessed % 500 == 0) yield undefined;
       if (this._processMessage(message)){
-		 dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] returning: '+JSON.stringify(message)+'\r\n');
         return;
 	  }
     }
@@ -185,24 +186,19 @@ var miczThunderStatsFolderQ = {
     if (reprocess) {
 	dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessage] reprocess: '+JSON.stringify(reprocess)+'\r\n');
       let self = this;
-      setTimeout(function() { self.reprocessMessages(); }, 0);
+      this.win.setTimeout(function() { self.reprocessMessages(); }, 0);
     }
     return reprocess;
   },
 
   reprocessMessages: function() {
-    dump(" Reprocessing messges\n");
+   //dump(" Reprocessing messages\n");
     for each (let [,analyzer] in Iterator(this._analyzers))
       analyzer.uninit();
-
-    if (this.isVirtualFolder) {
-      this.onMessagesLoaded(gFolderDisplay, true);
-    }
-    else {
 		let messages=new Array();
 		for (let key in this.folders){
+			 if (this.isVirtualFolder(this.folders[key])) { continue; }
 			 messages = miczThunderStatsUtils.arrayMerge(messages,fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr));
-		}
        this.processMessages(messages);
     }
   },
@@ -236,5 +232,31 @@ var miczThunderStatsFolderQ = {
       }
     }
   },
+
+    /**
+   * Determine whether the current folder is virtual or not.
+   *
+   * @return true if the folder is virtual, false otherwise.
+   */
+  isVirtualFolder:function(mFolder) {
+    return mFolder.isSpecialFolder(Ci.nsMsgFolderFlags.Virtual);
+  },
+
+  /**
+   * Determine whether the current folder is an outgoing one or not.
+   *
+   * @return true if the folder is outgoing, false otherwise.
+   */
+  isOutgoingFolder:function(mFolder) {
+    const outgoingFlags =
+      Ci.nsMsgFolderFlags.SentMail | Ci.nsMsgFolderFlags.Drafts |
+      Ci.nsMsgFolderFlags.Templates | Ci.nsMsgFolderFlags.Queue;
+    return mFolder.isSpecialFolder(outgoingFlags);
+  },
+
+  isInbox:function(mFolder) {
+    return mFolder.isSpecialFolder(Ci.nsMsgFolderFlags.Inbox);
+  },
+
 
 };

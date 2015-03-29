@@ -167,7 +167,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_senders);
 	},
 
-	getCurrentIdentityId:function(){
+	getCurrentIdentityId:function(){	//returning an identities ids array
 		let id_selector_value = $jQ("#identities_selector").val();
 		let output=new Array();
 		if(id_selector_value.indexOf(miczThunderStatsCore._account_selector_prefix)>=0){	//the user selected an account!

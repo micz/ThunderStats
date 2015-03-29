@@ -62,7 +62,7 @@ miczThunderStatsTab.ui={
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
 			if(tmp_account_key!=miczThunderStatsCore.identities[key]["account_key"]){	//it's a new account
 				tmp_account_key=miczThunderStatsCore.identities[key]["account_key"];
-				$jQ("#"+selector_id).append('<option class="mzts-sel-account" value="_account:'+miczThunderStatsCore.identities[key]["account_key"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["account_key"]+"] "+miczThunderStatsCore.identities[key]["account_name"])+'</option>');
+				$jQ("#"+selector_id).append('<option class="mzts-sel-account" value="'+miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.identities[key]["account_key"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["account_key"]+"] "+miczThunderStatsCore.identities[key]["account_name"])+'</option>');
 			}
 			$jQ("#"+selector_id).append('<option class="mzts-sel-identity" value="'+miczThunderStatsCore.identities[key]["id"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["id"]+":"+miczThunderStatsCore.identities[key]["key"]+"] "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")")+'</option>');
 			if(Object.keys(miczThunderStatsCore.identities).length==1){	//If there is only one identity, autochoose it

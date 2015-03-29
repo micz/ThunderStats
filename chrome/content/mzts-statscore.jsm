@@ -11,6 +11,8 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsCore"];
 var miczThunderStatsCore = {
 
 	identities:{},
+	accounts_identities:{};
+	_account_selector_prefix:'_account:',
 
 	loadIdentities:function(){
 			this.identities={};
@@ -20,6 +22,7 @@ var miczThunderStatsCore = {
 			for (let i = 0; i < accounts.length; i++) {
 				let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
 				if(account==null) continue;
+				this.accounts_identities[account.key]=new Array();
 				// Enumerate identities
 				let identities=account.identities;
 				for (let j = 0; j < identities.length; j++) {
@@ -33,6 +36,7 @@ var miczThunderStatsCore = {
 					identity_item["account_key"]=account.key;
 					identity_item["account_name"]=account.incomingServer.rootFolder.prettiestName
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
+					this.accounts_identities[account.key].push(miczThunderStatsDB.queryGetIdentityID(identity.email));
 					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 				}
 			}

@@ -165,8 +165,14 @@ var miczThunderStatsTab = {
 	},
 
 	getCurrentIdentityId:function(){
-		let id_selector = document.getElementById("identities_selector");
-		return id_selector.options[id_selector.selectedIndex].value;
+		let id_selector_value = $jQ("#identities_selector").val();
+		let output=new Array();
+		if(id_selector_value.indexOf(miczThunderStatsCore._account_selector_prefix)>=0){	//the user selected an account!
+			output=miczThunderStatsCore.accounts_identities[id_selector_value.replace(miczThunderStatsCore._account_selector_prefix,'')];
+		}else{	//the user selected an identity
+			output.push(id_selector_value);
+		}
+		return output;
 	},
 
 	updateStats: function(){

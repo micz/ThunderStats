@@ -55,20 +55,16 @@ miczThunderStatsTab.ui={
 
 	loadIdentitiesSelector:function(selector_id){
 		$jQ("select#"+selector_id).find('option').remove();
-		//let id_selector = document.getElementById(selector_id);
-		/*let opt_0 = document.createElement('option');
-		opt_0.value = "0";
-		opt_0.innerHTML = "All identities";
-		id_selector.appendChild(opt_0);*/
-		$jQ("#"+selector_id).append('<option value="0">All identities</option>');
+		$jQ("#"+selector_id).append('<option value="0">All accounts</option>');
+		let tmp_account_key='';
 		for(let key in miczThunderStatsCore.identities){
-			//let opt = document.createElement('option');
-			/*opt.value = miczThunderStatsCore.identities[key]["id"];
-			opt.innerHTML = miczThunderStatsUtils.escapeHTML(miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")");*/
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+Object.keys(miczThunderStatsCore.identities).length+"\r\n");
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
-			/*id_selector.appendChild(opt);*/
-			$jQ("#"+selector_id).append('<option value="'+miczThunderStatsCore.identities[key]["id"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["id"]+":"+miczThunderStatsCore.identities[key]["key"]+"] "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")")+'</option>');
+			if(tmp_account_key!=miczThunderStatsCore.identities[key]["account_key"]){	//it's a new account
+				tmp_account_key=miczThunderStatsCore.identities[key]["account_key"];
+				$jQ("#"+selector_id).append('<option class="mzts-sel-account" value="_account:'+miczThunderStatsCore.identities[key]["account_key"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["account_key"]+"] "+miczThunderStatsCore.identities[key]["account_name"])+'</option>');
+			}
+			$jQ("#"+selector_id).append('<option class="mzts-sel-identity" value="'+miczThunderStatsCore.identities[key]["id"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["id"]+":"+miczThunderStatsCore.identities[key]["key"]+"] "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")")+'</option>');
 			if(Object.keys(miczThunderStatsCore.identities).length==1){	//If there is only one identity, autochoose it
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
 				$jQ("#"+selector_id).val(miczThunderStatsCore.identities[key]["id"]);

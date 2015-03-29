@@ -27,6 +27,8 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .chart_inbox0{overflow:auto;width:100%;}
 .yesterday_incremental{color:grey;font-size:0.8em;}
 span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
+.mzts-sel-account{font-weight:bold;}
+.mzts-sel-identity{padding-left:30px;}
 
 #heading_wrapper {
   display: table;

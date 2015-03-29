@@ -29,10 +29,11 @@ var miczThunderStatsCore = {
 					identity_item["email"]=identity.email;
 					identity_item["fullName"]=identity.fullName;
 					identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity.email);
-					//identity_item["account_key"]=account.key;
 					identity_item["key"]=identity.key;
+					identity_item["account_key"]=account.key;
+					identity_item["account_name"]=account.incomingServer.rootFolder.prettiestName
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
-					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 				}
 			}
 	},

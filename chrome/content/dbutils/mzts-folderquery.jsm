@@ -32,6 +32,9 @@ var miczThunderStatsFolderQ = {
 	},
 
 	run:function(){
+		for each (let [,analyzer] in Iterator(this._analyzers)) {
+		  analyzer.init(this);
+		}
 		for (let key in this.folders){
 			 let messages = fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr);
 			 this.processMessages(messages);
@@ -118,13 +121,13 @@ var miczThunderStatsFolderQ = {
     let maxMessages = 10000;// Services.prefs.getIntPref("extensions.mailsummaries.max_messages");
     let overflowed = false;
 
-    for each (let [,analyzer] in Iterator(this._analyzers)) {
+    /*for each (let [,analyzer] in Iterator(this._analyzers)) {
       analyzer.init(this);
-    }
+    }*/
 
     for each (let message in messageGenerator) {
       messagesProcessed++;
-      //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
+      dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
       if (maxMessages != -1 && messagesProcessed > maxMessages) {
         overflowed = true;
         break;

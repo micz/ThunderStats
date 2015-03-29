@@ -34,7 +34,7 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
     //let headerValue = message.mime2DecodedAuthor;
     let headerValue = message.mime2DecodedRecipients.toLowerCase();
     let identity_addresses=this.context.identityAddresses.join(',');
-    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerValue '+JSON.stringify(headerValue)+'\r\n');
 
     let tmpAddresses = {};
@@ -45,13 +45,13 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
     addresses = tmpAddresses.value;
     fullAddresses = tmpFullAddresses.value;
 
-    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] addresses '+JSON.stringify(addresses)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] addresses '+JSON.stringify(addresses)+'\r\n');
 
     if (!deleted) {
       for (let i = 0; i < addresses.length; i++) {
 		  if(identity_addresses.indexOf(addresses[i])>=0){
 			  this.inboxmsg++;
-			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] this.inboxmsg '+this.inboxmsg+'\r\n');
+			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] this.inboxmsg '+this.inboxmsg+'\r\n');
 		  }
       }
     }

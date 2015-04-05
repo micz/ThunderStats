@@ -141,9 +141,9 @@ miczThunderStatsCore.db = {
 		//miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
 	},
 
-	getInboxMessagesDate:function(mIdentity,mCallback){
+	/*getInboxMessagesDate:function(mIdentity,mCallback){
 		//miczThunderStatsDB.queryInboxMessagesDate(mIdentity,mCallback);
-	},
+	},*/
 
 	getResultObject:function(aFields,aResultSet){
 		let oOutput={};

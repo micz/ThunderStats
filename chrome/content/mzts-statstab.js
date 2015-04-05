@@ -133,8 +133,8 @@ var miczThunderStatsTab = {
 		miczThunderStatsCore.db.getYesterdayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_folder_spread);
 		//Get inbox num mails
 		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.yesterday_inboxmsg);
-		//Get inbox mails date spreading
-		miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg);
+		//Get inbox mails date spreading -- disabled we are going to iterate inbox messages only once and get all the info we need
+		//miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg);
 	},
 
 	getLast7DaysStats:function(identity_id){

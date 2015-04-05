@@ -132,16 +132,7 @@ miczThunderStatsCore.db = {
 	},
 
 	getInboxMessagesTotal:function(mIdentity,mCallback){
-		let mIdentityAddresses=new Array();
-		if(mIdentity==0){
-			for (let key in miczThunderStatsCore.identities){
-				mIdentityAddresses.push(miczThunderStatsCore.identities[key]["email"]);
-			}
-		}else{
-			for (let key in mIdentity){
-				mIdentityAddresses.push(miczThunderStatsCore.identities[mIdentity[key]]["email"]);
-			}
-		}
+		let mIdentityAddresses=miczThunderStatsUtils.getIdentitiesArray(mIdentity,miczThunderStatsCore.identities);
 		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
 		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
 		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(),mIdentityAddresses,this.win);

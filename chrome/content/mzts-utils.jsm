@@ -142,4 +142,18 @@ var miczThunderStatsUtils = {
 		 return mFolder.getTotalMessages(false);	//do not consider mails in subfolder
 	},
 
+	getIdentitiesArray:function(mIdentity,identities){
+		let mIdentityAddresses=new Array();
+		if(mIdentity==0){
+			for (let key in identities){
+				mIdentityAddresses.push(identities[key]["email"]);
+			}
+		}else{
+			for (let key in mIdentity){
+				mIdentityAddresses.push(identities[mIdentity[key]]["email"]);
+			}
+		}
+		return mIdentityAddresses;
+	},
+
 };

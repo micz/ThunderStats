@@ -138,9 +138,12 @@ miczThunderStatsCore.db = {
 				mIdentityAddresses.push(miczThunderStatsCore.identities[key]["email"]);
 			}
 		}else{
-			mIdentityAddresses.push(miczThunderStatsCore.identities[mIdentity]["email"]);
+			for (let key in mIdentity){
+				mIdentityAddresses.push(miczThunderStatsCore.identities[mIdentity[key]]["email"]);
+			}
 		}
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
 		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(),mIdentityAddresses,this.win);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
 		miczThunderStatsFolderQ.run();

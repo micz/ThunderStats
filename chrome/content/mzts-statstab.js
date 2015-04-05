@@ -178,6 +178,7 @@ var miczThunderStatsTab = {
 		}else{	//the user selected an identity
 			output.push(id_selector_value);
 		}
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] getCurrentIdentityId '+JSON.stringify(output)+'\r\n');
 		return output;
 	},
 

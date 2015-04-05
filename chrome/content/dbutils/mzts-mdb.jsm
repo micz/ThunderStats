@@ -88,7 +88,8 @@ var miczThunderStatsDB = {
 		}
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(typeof mIdentity == "Array"){
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsDB] queryMessages (typeof mIdentity) '+typeof mIdentity+'\r\n');
+		if(typeof mIdentity == "object"){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 			let identitiesStr="("+mIdentity.join()+")";
 			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
@@ -107,7 +108,7 @@ var miczThunderStatsDB = {
 		let mWhat="ma.value AS ID,c.name AS Name,i.value AS Mail,count(distinct m.headerMessageID) AS Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join identities i on i.id=ma.value left join contacts c on c.id=i.contactID";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(typeof mIdentity == "Array"){
+		if(typeof mIdentity == "object"){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 			let identitiesStr="("+mIdentity.join()+")";
 			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
@@ -156,7 +157,7 @@ var miczThunderStatsDB = {
 		let mWhat="f.name as Folder, count(distinct m.headerMessageID) as Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join folderLocations f on f.id=m.folderID";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(typeof mIdentity == "Array"){
+		if(typeof mIdentity == "object"){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 			let identitiesStr="("+mIdentity.join()+")";
 			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;

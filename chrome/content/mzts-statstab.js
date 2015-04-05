@@ -99,9 +99,8 @@ var miczThunderStatsTab = {
 		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
 		//Get inbox num mails
 		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
-		//Get inbox mails date spreading
-		miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
-
+		//Get inbox mails date spreading -- disabled we are going to iterate inbox messages only once and get all the info we need
+		//miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
 	},
 
 	getYesterdayStats:function(identity_id){

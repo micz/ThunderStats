@@ -646,7 +646,7 @@ miczThunderStatsTab.callback.stats_today_inbox0_folder_spread = {
 	},
 };
 
-miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg = {
+/*miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg = {
 	empty:true,
 	data:{},
 	handleResult: function(aResultSet) {
@@ -685,7 +685,7 @@ miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg = {
 		}
 	},
 };
-
+*/
 miczThunderStatsTab.callback.stats_today_inbox0_datemsg = {
 	empty:true,
 	data:new Array(),

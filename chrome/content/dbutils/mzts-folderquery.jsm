@@ -80,7 +80,7 @@ var miczThunderStatsFolderQ = {
       catch(e if e instanceof StopIteration) {
         self._timeoutId = null;
         gen.close();
-        dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] processMessages: Stopping...'+JSON.stringify(e)+'\r\n');
+        //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] processMessages: Stopping...'+JSON.stringify(e)+'\r\n');
         //dump("  took "+(Date.now() - then)/1000+" seconds\n");
       }
       catch(e) {
@@ -127,7 +127,7 @@ var miczThunderStatsFolderQ = {
 
     for each (let message in messageGenerator) {
       messagesProcessed++;
-      dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
+      //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
       if (maxMessages != -1 && messagesProcessed > maxMessages) {
         overflowed = true;
         break;

@@ -50,7 +50,7 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
     fullAddresses = tmpFullAddresses.value;
 
 	//message date
-	let msg_date=moment.unix(message.dateInSeconds).format("L");
+	let msg_date=moment.unix(message.dateInSeconds).format("YYYY-MM-DD");
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] message.dateInSeconds '+JSON.stringify(message.dateInSeconds)+'\r\n');
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] msg_date '+JSON.stringify(msg_date)+'\r\n');
 
@@ -84,6 +84,8 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 		for (let key in this.inbox0_msgdate){
 			data_array.push({"Date":key,"Num":this.inbox0_msgdate[key]});
 		}
+		//sort data
+		data_array.sort(miczThunderStatsUtils.array_inbox0_date_compare);
 		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.folderworker.today_inboxmsg render (data_array) '+JSON.stringify(data_array)+'\r\n');
 		$jQ("#today_inbox0_datemsg_nomails").hide();
 		miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_inbox0_datemsg',data_array,true);	//the last parameter is to activate aggregation

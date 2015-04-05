@@ -399,7 +399,7 @@ miczThunderStatsTab.ui={
 				.style("fill", function(d) { return color(d.data.label); })
 				.attr("class", "slice")
 				.attr("class","tooltip")
-				.attr("title",function(d){ return "Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
+				.attr("title",function(d){ return d.data.label+"<br/>Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
 
 			slice
 				.transition().duration(1000)
@@ -429,7 +429,7 @@ miczThunderStatsTab.ui={
 					return d.data.label+" ("+d.data.value+")";
 				})
 				.attr("class","tooltip")
-				.attr("title",function(d){ return "Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
+				.attr("title",function(d){ return d.data.label+"<br/>Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
 
 			  $jQ('text.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false});
 

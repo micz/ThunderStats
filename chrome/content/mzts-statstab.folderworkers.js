@@ -78,7 +78,7 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 	$jQ("#today_inbox0_inboxmsg").text(this.inboxmsg);
 	miczLogger.log("Inbox messages loaded.",0);
 	//inbox date spread graph
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.folderworker.today_inboxmsg render (this.inbox0_msgdate) '+JSON.stringify(this.inbox0_msgdate)+'\r\n');
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.folderworker.today_inboxmsg render (this.inbox0_msgdate) '+JSON.stringify(this.inbox0_msgdate)+'\r\n');
 	if(!this.inbox0_msgdate_empty){
 		let data_array=new Array();
 		for (let key in this.inbox0_msgdate){

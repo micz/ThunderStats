@@ -32,8 +32,8 @@ var miczThunderStatsTab = {
 				miczLogger.log("Thunderbird Global Indexing is not active!",2);
 			}
 
-			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentGlobalLocale());
-			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentGlobalLocale());
+			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale());
+			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale());
 
 			//Setting the correct locale to display dates and times
 			moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());

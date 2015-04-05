@@ -88,9 +88,10 @@ var miczThunderStatsDB = {
 		}
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(mIdentity>0){
+		if(typeof mIdentity == "Array"){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
+			let identitiesStr="("+mIdentity.join()+")";
+			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
 		}
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
@@ -106,9 +107,10 @@ var miczThunderStatsDB = {
 		let mWhat="ma.value AS ID,c.name AS Name,i.value AS Mail,count(distinct m.headerMessageID) AS Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join identities i on i.id=ma.value left join contacts c on c.id=i.contactID";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(mIdentity>0){
+		if(typeof mIdentity == "Array"){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
+			let identitiesStr="("+mIdentity.join()+")";
+			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
 		}
 		mWhere+=" group by ma.value order by Num DESC";
 		if(mMax>0){
@@ -131,9 +133,10 @@ var miczThunderStatsDB = {
 		let mWhat="count(m.id) AS TotAttachments,count(distinct m.id) AS NumMails";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join messageattributes ma2 on ma2.messageID=m.id";
 		let mWhere="ma2.attributeID="+attachmentTypes_attribute+" and ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(mIdentity>0){
+		if(typeof mIdentity == "Array"){
 			mFrom+=" left join messageattributes ma3 on ma3.messageID=m.id";
-			mWhere+=" AND ma3.attributeID="+involves_attribute+" AND ma3.value="+mIdentity;
+			let identitiesStr="("+mIdentity.join()+")";
+			mWhere+=" AND ma3.attributeID="+involves_attribute+" AND ma3.value in "+identitiesStr;
 		}
 		mWhere+=" group by m.id";
 		if(mMax>0){
@@ -153,9 +156,10 @@ var miczThunderStatsDB = {
 		let mWhat="f.name as Folder, count(distinct m.headerMessageID) as Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join folderLocations f on f.id=m.folderID";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(mIdentity>0){
+		if(typeof mIdentity == "Array"){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
+			let identitiesStr="("+mIdentity.join()+")";
+			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
 		}
 		mWhere+=" GROUP BY f.name";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);

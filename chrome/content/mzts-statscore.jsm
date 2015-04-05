@@ -11,7 +11,7 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsCore"];
 var miczThunderStatsCore = {
 
 	identities:{},
-	accounts_identities:{};
+	accounts_identities:{},
 	_account_selector_prefix:'_account:',
 
 	loadIdentities:function(){

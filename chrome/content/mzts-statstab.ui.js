@@ -62,9 +62,9 @@ miczThunderStatsTab.ui={
 				let curr_idn=miczThunderStatsCore.accounts[key].identities[ikey];
 				$jQ("#"+selector_id).append('<option class="mzts-sel-identity" value="'+miczThunderStatsCore.identities[curr_idn]["id"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[curr_idn]["id"]+":"+miczThunderStatsCore.identities[curr_idn]["key"]+"] "+miczThunderStatsCore.identities[curr_idn]["fullName"]+" ("+miczThunderStatsCore.identities[curr_idn]["email"]+")")+'</option>');
 			}
-			if(Object.keys(miczThunderStatsCore.accounts[key].identities).length==1){	//If there is only one identity, autochoose it
+			if(Object.keys(miczThunderStatsCore.accounts).length==1){	//If there is only one account, autochoose it
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
-				$jQ("#"+selector_id).val(miczThunderStatsCore.accounts[key].identities[0]["id"]);
+				$jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key);
 				$jQ("#"+selector_id).change();
 			}
 		}

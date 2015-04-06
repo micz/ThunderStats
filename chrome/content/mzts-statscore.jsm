@@ -46,6 +46,19 @@ var miczThunderStatsCore = {
 					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 				}
 			}
+			this.sortAccounts();
+	},
+
+	sortAccounts:function(){
+		let accounts_order=miczThunderStatsUtils.getAccountsOrder();
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab sortAccounts] accounts_order '+JSON.stringify(accounts_order)+'\r\n');
+		let tmp_accounts={};
+		for(let key in accounts_order){
+			if(accounts_order[key] in this.accounts){
+				tmp_accounts[accounts_order[key]]=this.accounts[accounts_order[key]];
+			}
+		}
+		this.accounts=tmp_accounts;
 	},
 
 };

@@ -56,8 +56,19 @@ miczThunderStatsTab.ui={
 	loadIdentitiesSelector:function(selector_id){
 		$jQ("select#"+selector_id).find('option').remove();
 		$jQ("#"+selector_id).append('<option value="0">All accounts</option>');
-		let tmp_account_key='';
-		for(let key in miczThunderStatsCore.identities){
+		for(let key in miczThunderStatsCore.accounts){
+			$jQ("#"+selector_id).append('<option class="mzts-sel-account" value="'+miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.accounts[key].key+"] "+miczThunderStatsCore.accounts[key].name)+'</option>');
+			for(let ikey in miczThunderStatsCore.accounts[key].identities){
+				let curr_idn=miczThunderStatsCore.accounts[key].identities[ikey];
+				$jQ("#"+selector_id).append('<option class="mzts-sel-identity" value="'+miczThunderStatsCore.identities[curr_idn]["id"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[curr_idn]["id"]+":"+miczThunderStatsCore.identities[curr_idn]["key"]+"] "+miczThunderStatsCore.identities[curr_idn]["fullName"]+" ("+miczThunderStatsCore.identities[curr_idn]["email"]+")")+'</option>');
+			}
+			if(Object.keys(miczThunderStatsCore.accounts[key].identities).length==1){	//If there is only one identity, autochoose it
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
+				$jQ("#"+selector_id).val(miczThunderStatsCore.accounts[key].identities[0]["id"]);
+				$jQ("#"+selector_id).change();
+			}
+		}
+		/*for(let key in miczThunderStatsCore.identities){
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+Object.keys(miczThunderStatsCore.identities).length+"\r\n");
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
 			if(tmp_account_key!=miczThunderStatsCore.identities[key]["account_key"]){	//it's a new account
@@ -70,7 +81,7 @@ miczThunderStatsTab.ui={
 				$jQ("#"+selector_id).val(miczThunderStatsCore.identities[key]["id"]);
 				$jQ("#"+selector_id).change();
 			}
-		}
+		}*/
 		$jQ("#"+selector_id).change(miczThunderStatsTab.updateStats);
 	},
 

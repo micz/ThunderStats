@@ -173,7 +173,7 @@ var miczThunderStatsTab = {
 			return 0;
 		}
 		if(id_selector_value.indexOf(miczThunderStatsCore._account_selector_prefix)>=0){	//the user selected an account!
-			output=miczThunderStatsCore.accounts_identities[id_selector_value.replace(miczThunderStatsCore._account_selector_prefix,'')];
+			output=miczThunderStatsCore.accounts[id_selector_value.replace(miczThunderStatsCore._account_selector_prefix,'')].identities;
 		}else{	//the user selected an identity
 			output.push(id_selector_value);
 		}

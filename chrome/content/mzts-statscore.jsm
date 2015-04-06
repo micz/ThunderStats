@@ -22,7 +22,9 @@ var miczThunderStatsCore = {
 			for (let i = 0; i < accounts.length; i++) {
 				let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
 				if(account==null) continue;
+				if((account.incomingServer.type!='pop3')&&(account.incomingServer.type!='imap')) continue;
 				this.accounts_identities[account.key]=new Array();
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] account.incomingServer '+JSON.stringify(account.incomingServer.type)+'\r\n');
 				// Enumerate identities
 				let identities=account.identities;
 				for (let j = 0; j < identities.length; j++) {

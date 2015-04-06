@@ -28,6 +28,7 @@ var miczThunderStatsCore = {
 				for (let j = 0; j < identities.length; j++) {
 					let identity = identities.queryElementAt(j, Components.interfaces.nsIMsgIdentity);
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
+					if(!identity.email)continue;
 					let identity_item={};
 					identity_item["email"]=identity.email;
 					identity_item["fullName"]=identity.fullName;

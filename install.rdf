@@ -4,7 +4,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>thunderstats@micz.it</em:id>
     <em:type>2</em:type>
-    <em:version>0.2alpha4</em:version>
+    <em:version>0.2alpha6</em:version>
     <em:name>ThunderStats</em:name>
     <em:description>ThunderStats</em:description>
     <em:iconURL>chrome://thunderstats/skin/mzts-icon.png</em:iconURL>

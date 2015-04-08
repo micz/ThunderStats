@@ -1,6 +1,7 @@
 "use strict";
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 //Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	 // To be enabled in vesion 2.0
+Components.utils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
@@ -9,7 +10,9 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsCore"];
 
 var miczThunderStatsCore = {
 
+	accounts:{},
 	identities:{},
+	_account_selector_prefix:'_account:',
 
 	loadIdentities:function(){
 			this.identities={};
@@ -19,26 +22,54 @@ var miczThunderStatsCore = {
 			for (let i = 0; i < accounts.length; i++) {
 				let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
 				if(account==null) continue;
+				if((account.incomingServer.type!='pop3')&&(account.incomingServer.type!='imap')) continue;
+				this.accounts[account.key]={};
+				this.accounts[account.key].name=account.incomingServer.rootFolder.prettiestName;
+				this.accounts[account.key].key=account.key;
+				this.accounts[account.key].identities=new Array();
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] account.incomingServer '+JSON.stringify(account.incomingServer.type)+'\r\n');
 				// Enumerate identities
 				let identities=account.identities;
 				for (let j = 0; j < identities.length; j++) {
 					let identity = identities.queryElementAt(j, Components.interfaces.nsIMsgIdentity);
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
+					if(!identity.email)continue;
 					let identity_item={};
 					identity_item["email"]=identity.email;
 					identity_item["fullName"]=identity.fullName;
 					identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity.email);
-					//identity_item["account_key"]=account.key;
 					identity_item["key"]=identity.key;
+					//identity_item["account_key"]=account.key;
+					//identity_item["account_name"]=account.incomingServer.rootFolder.prettiestName;
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
-					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+					this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity.email));
+					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 				}
 			}
+			this.sortAccounts();
+	},
+
+	sortAccounts:function(){
+		let accounts_order=miczThunderStatsUtils.getAccountsOrder();
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab sortAccounts] accounts_order '+JSON.stringify(accounts_order)+'\r\n');
+		let tmp_accounts={};
+		for(let key in accounts_order){
+			if(accounts_order[key] in this.accounts){
+				tmp_accounts[accounts_order[key]]=this.accounts[accounts_order[key]];
+			}
+		}
+		this.accounts=tmp_accounts;
 	},
 
 };
 
 miczThunderStatsCore.db = {
+
+	win:null,
+
+	init:function(mWindow){
+		this.win=mWindow;
+	},
 
 	getOneDayMessages:function(mType,mGivenDay,mIdentity,mCallback){	//mGivenDay is a Date object
 		let mFromDate=new Date(mGivenDay);
@@ -120,12 +151,18 @@ miczThunderStatsCore.db = {
 	},
 
 	getInboxMessagesTotal:function(mIdentity,mCallback){
-		miczThunderStatsDB.queryInboxMessages(mIdentity,mCallback);
+		let mIdentityAddresses=miczThunderStatsUtils.getIdentitiesArray(mIdentity,miczThunderStatsCore.identities);
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
+		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(),mIdentityAddresses,this.win);
+		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
+		miczThunderStatsFolderQ.run();
+		//miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
 	},
 
-	getInboxMessagesDate:function(mIdentity,mCallback){
-		miczThunderStatsDB.queryInboxMessagesDate(mIdentity,mCallback);
-	},
+	/*getInboxMessagesDate:function(mIdentity,mCallback){
+		//miczThunderStatsDB.queryInboxMessagesDate(mIdentity,mCallback);
+	},*/
 
 	getResultObject:function(aFields,aResultSet){
 		let oOutput={};

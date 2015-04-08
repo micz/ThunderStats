@@ -88,9 +88,11 @@ var miczThunderStatsDB = {
 		}
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(mIdentity>0){
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsDB] queryMessages (typeof mIdentity) '+typeof mIdentity+'\r\n');
+		if(typeof mIdentity == "object"){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
+			let identitiesStr="("+mIdentity.join()+")";
+			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
 		}
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
@@ -106,9 +108,10 @@ var miczThunderStatsDB = {
 		let mWhat="ma.value AS ID,c.name AS Name,i.value AS Mail,count(distinct m.headerMessageID) AS Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join identities i on i.id=ma.value left join contacts c on c.id=i.contactID";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(mIdentity>0){
+		if(typeof mIdentity == "object"){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
+			let identitiesStr="("+mIdentity.join()+")";
+			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
 		}
 		mWhere+=" group by ma.value order by Num DESC";
 		if(mMax>0){
@@ -131,9 +134,10 @@ var miczThunderStatsDB = {
 		let mWhat="count(m.id) AS TotAttachments,count(distinct m.id) AS NumMails";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join messageattributes ma2 on ma2.messageID=m.id";
 		let mWhere="ma2.attributeID="+attachmentTypes_attribute+" and ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(mIdentity>0){
+		if(typeof mIdentity == "Array"){
 			mFrom+=" left join messageattributes ma3 on ma3.messageID=m.id";
-			mWhere+=" AND ma3.attributeID="+involves_attribute+" AND ma3.value="+mIdentity;
+			let identitiesStr="("+mIdentity.join()+")";
+			mWhere+=" AND ma3.attributeID="+involves_attribute+" AND ma3.value in "+identitiesStr;
 		}
 		mWhere+=" group by m.id";
 		if(mMax>0){
@@ -153,15 +157,16 @@ var miczThunderStatsDB = {
 		let mWhat="f.name as Folder, count(distinct m.headerMessageID) as Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join folderLocations f on f.id=m.folderID";
 		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(mIdentity>0){
+		if(typeof mIdentity == "object"){
 			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value="+mIdentity;
+			let identitiesStr="("+mIdentity.join()+")";
+			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
 		}
 		mWhere+=" GROUP BY f.name";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
-	queryInboxMessages:function(mIdentity,mCallback){
+	/*queryInboxMessages:function(mIdentity,mCallback){
 		let toMe_attribute=this.msgAttributes['toMe'];
 		let involves_attribute=this.msgAttributes['involves'];
 		let inboxFolders=this.queryGetInboxFolders();
@@ -191,7 +196,7 @@ var miczThunderStatsDB = {
 		}
 		mWhere+= " GROUP BY strftime('%Y-%m-%d',m.date/1000000,'unixepoch') ORDER BY m.date ASC";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
-	},
+	},*/
 
 	//returns an array of ids of folder to be ignored in stats crunching
 	queryGetForbiddenFolders:function(){
@@ -209,12 +214,11 @@ var miczThunderStatsDB = {
 		return folderArray;
 	},
 
-	//returns an array of ids of inbox folders for the given identity
+	//returns an array of nsIMsgFolders of inbox folders for the given identity
 	queryGetInboxFolders:function(){
 		if(this.inboxFolders!==null){
 			return this.inboxFolders;
 		}
-		let arr_output=new Array();
 		//get accounts
 		let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
 		let accounts = acctMgr.accounts;
@@ -231,12 +235,8 @@ var miczThunderStatsDB = {
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] folder.URI '+JSON.stringify(folder.URI)+'\r\n');
 			arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,miczThunderStatsUtils.getInboxFoldersObjects(folder));
 		}
-		for (let kk in arr_inbox){
-			let folder_id=this.queryGetFolderID(arr_inbox[kk]["URI"]);
-			arr_output.push(folder_id);
-		}
-		this.inboxFolders=arr_output;
-		return arr_output;
+		this.inboxFolders=arr_inbox;
+		return arr_inbox;
 	},
 
 	//returns the id of an identity from its email

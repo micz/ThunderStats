@@ -15,6 +15,8 @@ var miczThunderStatsTab = {
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document,false);
 			miczLogger.log("ThunderStats starting...",0);
 
+			miczThunderStatsCore.db.init(window);
+
 			//Initialize observers
 			miczThunderStatsTab.observer.last_idx_update(miczThunderStatsTab.observer.callback.last_idx_update);
 
@@ -29,6 +31,9 @@ var miczThunderStatsTab = {
 				$jQ('#mzts-last_msg').hide();
 				miczLogger.log("Thunderbird Global Indexing is not active!",2);
 			}
+
+			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale());
+			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale()+"\r\n");
 
 			//Setting the correct locale to display dates and times
 			moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
@@ -53,6 +58,8 @@ var miczThunderStatsTab = {
 
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
+
+			//miczThunderStatsUtils.forceAllfolderIndexing();
 		},
 
 	getTodayStats:function(identity_id){
@@ -91,10 +98,9 @@ var miczThunderStatsTab = {
 		//Get today mails folder spreading
 		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
 		//Get inbox num mails
-		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg);
-		//Get inbox mails date spreading
-		miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
-
+		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
+		//Get inbox mails date spreading -- disabled we are going to iterate inbox messages only once and get all the info we need
+		//miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
 	},
 
 	getYesterdayStats:function(identity_id){
@@ -126,9 +132,9 @@ var miczThunderStatsTab = {
 		//Get yesterday mails folder spreading
 		miczThunderStatsCore.db.getYesterdayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_folder_spread);
 		//Get inbox num mails
-		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_inboxmsg);
-		//Get inbox mails date spreading
-		miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg);
+		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.yesterday_inboxmsg);
+		//Get inbox mails date spreading -- disabled we are going to iterate inbox messages only once and get all the info we need
+		//miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg);
 	},
 
 	getLast7DaysStats:function(identity_id){
@@ -160,9 +166,19 @@ var miczThunderStatsTab = {
 		miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_senders);
 	},
 
-	getCurrentIdentityId:function(){
-		let id_selector = document.getElementById("identities_selector");
-		return id_selector.options[id_selector.selectedIndex].value;
+	getCurrentIdentityId:function(){	//returning an identities ids array or a 0 if none selected
+		let id_selector_value = $jQ("#identities_selector").val();
+		let output=new Array();
+		if(id_selector_value==0){
+			return 0;
+		}
+		if(id_selector_value.indexOf(miczThunderStatsCore._account_selector_prefix)>=0){	//the user selected an account!
+			output=miczThunderStatsCore.accounts[id_selector_value.replace(miczThunderStatsCore._account_selector_prefix,'')].identities;
+		}else{	//the user selected an identity
+			output.push(id_selector_value);
+		}
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] getCurrentIdentityId '+JSON.stringify(output)+'\r\n');
+		return output;
 	},
 
 	updateStats: function(){

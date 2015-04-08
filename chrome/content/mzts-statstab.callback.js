@@ -25,6 +25,7 @@ miczThunderStatsTab.callback.base={
 				miczLogger.log("Query aborted!",2);
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -65,6 +66,7 @@ miczThunderStatsTab.callback.homepage_stats_today_sent = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -106,6 +108,7 @@ miczThunderStatsTab.callback.homepage_stats_today_rcvd = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -146,6 +149,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_sent = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -186,6 +190,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_rcvd = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -228,6 +233,7 @@ miczThunderStatsTab.callback.homepage_stats_today_recipients = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -270,6 +276,7 @@ miczThunderStatsTab.callback.homepage_stats_today_senders = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -312,6 +319,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_recipients = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -354,6 +362,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_senders = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -393,6 +402,7 @@ miczThunderStatsTab.callback.last_idx_msg = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -453,6 +463,7 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 				this.total_mail=0;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -514,6 +525,7 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 				this.total_mail=0;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -556,6 +568,7 @@ miczThunderStatsTab.callback.stats_7days_recipients = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -598,6 +611,7 @@ miczThunderStatsTab.callback.stats_7days_senders = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -643,10 +657,11 @@ miczThunderStatsTab.callback.stats_today_inbox0_folder_spread = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
-miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg = {
+/*miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg = {
 	empty:true,
 	data:{},
 	handleResult: function(aResultSet) {
@@ -685,7 +700,7 @@ miczThunderStatsTab.callback.stats_today_inbox0_inboxmsg = {
 		}
 	},
 };
-
+*/
 miczThunderStatsTab.callback.stats_today_inbox0_datemsg = {
 	empty:true,
 	data:new Array(),
@@ -728,6 +743,7 @@ miczThunderStatsTab.callback.stats_today_inbox0_datemsg = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -768,6 +784,7 @@ miczThunderStatsTab.callback.stats_yesterday_incremental_sent = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -808,6 +825,7 @@ miczThunderStatsTab.callback.stats_yesterday_incremental_rcvd = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -851,6 +869,7 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_folder_spread = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -891,6 +910,7 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_inboxmsg = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };
 
@@ -934,5 +954,6 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg = {
 				this.empty=true;
 				return false;
 		}
+	return false;
 	},
 };

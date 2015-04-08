@@ -55,26 +55,33 @@ miczThunderStatsTab.ui={
 
 	loadIdentitiesSelector:function(selector_id){
 		$jQ("select#"+selector_id).find('option').remove();
-		//let id_selector = document.getElementById(selector_id);
-		/*let opt_0 = document.createElement('option');
-		opt_0.value = "0";
-		opt_0.innerHTML = "All identities";
-		id_selector.appendChild(opt_0);*/
-		$jQ("#"+selector_id).append('<option value="0">All identities</option>');
-		for(let key in miczThunderStatsCore.identities){
-			//let opt = document.createElement('option');
-			/*opt.value = miczThunderStatsCore.identities[key]["id"];
-			opt.innerHTML = miczThunderStatsUtils.escapeHTML(miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")");*/
+		$jQ("#"+selector_id).append('<option value="0">All accounts</option>');
+		for(let key in miczThunderStatsCore.accounts){
+			$jQ("#"+selector_id).append('<option class="mzts-sel-account" value="'+miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.accounts[key].key+':'+miczThunderStatsCore.accounts[key].identities.join(',')+"] "+miczThunderStatsCore.accounts[key].name)+'</option>');
+			for(let ikey in miczThunderStatsCore.accounts[key].identities){
+				let curr_idn=miczThunderStatsCore.accounts[key].identities[ikey];
+				$jQ("#"+selector_id).append('<option class="mzts-sel-identity" value="'+miczThunderStatsCore.identities[curr_idn]["id"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[curr_idn]["id"]+":"+miczThunderStatsCore.identities[curr_idn]["key"]+"] "+miczThunderStatsCore.identities[curr_idn]["fullName"]+" ("+miczThunderStatsCore.identities[curr_idn]["email"]+")")+'</option>');
+			}
+			if(Object.keys(miczThunderStatsCore.accounts).length==1){	//If there is only one account, autochoose it
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
+				$jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key);
+				$jQ("#"+selector_id).change();
+			}
+		}
+		/*for(let key in miczThunderStatsCore.identities){
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+Object.keys(miczThunderStatsCore.identities).length+"\r\n");
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
-			/*id_selector.appendChild(opt);*/
-			$jQ("#"+selector_id).append('<option value="'+miczThunderStatsCore.identities[key]["id"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["id"]+": "+miczThunderStatsCore.identities[key]["key"]+"] "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")")+'</option>');
+			if(tmp_account_key!=miczThunderStatsCore.identities[key]["account_key"]){	//it's a new account
+				tmp_account_key=miczThunderStatsCore.identities[key]["account_key"];
+				$jQ("#"+selector_id).append('<option class="mzts-sel-account" value="'+miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.identities[key]["account_key"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["account_key"]+"] "+miczThunderStatsCore.identities[key]["account_name"])+'</option>');
+			}
+			$jQ("#"+selector_id).append('<option class="mzts-sel-identity" value="'+miczThunderStatsCore.identities[key]["id"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["id"]+":"+miczThunderStatsCore.identities[key]["key"]+"] "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")")+'</option>');
 			if(Object.keys(miczThunderStatsCore.identities).length==1){	//If there is only one identity, autochoose it
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
 				$jQ("#"+selector_id).val(miczThunderStatsCore.identities[key]["id"]);
 				$jQ("#"+selector_id).change();
 			}
-		}
+		}*/
 		$jQ("#"+selector_id).change(miczThunderStatsTab.updateStats);
 	},
 
@@ -403,7 +410,7 @@ miczThunderStatsTab.ui={
 				.style("fill", function(d) { return color(d.data.label); })
 				.attr("class", "slice")
 				.attr("class","tooltip")
-				.attr("title",function(d){ return "Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
+				.attr("title",function(d){ return d.data.label+"<br/>Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
 
 			slice
 				.transition().duration(1000)
@@ -433,7 +440,7 @@ miczThunderStatsTab.ui={
 					return d.data.label+" ("+d.data.value+")";
 				})
 				.attr("class","tooltip")
-				.attr("title",function(d){ return "Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
+				.attr("title",function(d){ return d.data.label+"<br/>Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
 
 			  $jQ('text.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false});
 

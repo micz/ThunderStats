@@ -78,6 +78,16 @@ var miczThunderStatsUtils = {
 		return 0;
 	},
 
+	array_inbox0_date_compare:function(a,b){
+		if(a.Date < b.Date){
+			return -1;
+		}
+		if(a.Date > b.Date){
+			return 1;
+		}
+		return 0;
+	},
+
 	arrayMerge:function(dest,src){
 	  for(let n = 0; n < src.length; ++n){
 		dest.push(src[n]);
@@ -99,14 +109,26 @@ var miczThunderStatsUtils = {
 		return prefs.getBoolPref("enabled");
 	},
 
-	getInboxFoldersObjects:function(mFolder){	//first input is a root account folder - then the function is recursive
+	getAccountsOrder:function(){
+		let prefsc = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+		let prefs = prefsc.getBranch("mail.accountmanager.");
+		let default_account=prefs.getCharPref("defaultaccount");
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab getAccountsOrder] default_account '+JSON.stringify(default_account)+'\r\n');
+		let accounts_order_array=prefs.getCharPref("accounts").split(",");
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab getAccountsOrder] accounts_order_array '+JSON.stringify(accounts_order_array)+'\r\n');
+		let def_acc_idx=accounts_order_array.indexOf(default_account);
+		if (def_acc_idx > -1) {
+			accounts_order_array.splice(def_acc_idx, 1);
+		}
+		accounts_order_array.unshift(default_account);
+		return accounts_order_array;
+	},
+
+	getInboxFoldersObjects:function(mFolder){ //first input is a root account folder - then the function is recursive
 		let arr_inbox=new Array();
 		let isInbox = mFolder.flags & Components.interfaces.nsMsgFolderFlags.Inbox;
-		let element={};
 		if (isInbox){
-			element["URI"]=mFolder.URI;
-			element["customIdentity"]=mFolder.customIdentity;
-			arr_inbox.push(element);
+			arr_inbox.push(mFolder);
 			dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(mFolder.URI)+'\r\n');
 		}
 		if (mFolder.hasSubFolders){
@@ -117,7 +139,7 @@ var miczThunderStatsUtils = {
 				}
 			}
 		}
-		return arr_inbox;	//returns and array of inbox folders objects {URI,customIdentity}
+		return arr_inbox; //returns and array of inbox nsIMsgFolder
 	},
 
 	openLink:function(link){
@@ -141,6 +163,20 @@ var miczThunderStatsUtils = {
 
 	getFolderTotalMessages:function(mFolder){
 		 return mFolder.getTotalMessages(false);	//do not consider mails in subfolder
+	},
+
+	getIdentitiesArray:function(mIdentity,identities){
+		let mIdentityAddresses=new Array();
+		if(mIdentity==0){
+			for (let key in identities){
+				mIdentityAddresses.push(identities[key]["email"]);
+			}
+		}else{
+			for (let key in mIdentity){
+				mIdentityAddresses.push(identities[mIdentity[key]]["email"]);
+			}
+		}
+		return mIdentityAddresses;
 	},
 
 };

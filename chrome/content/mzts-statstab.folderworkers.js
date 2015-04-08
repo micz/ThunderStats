@@ -66,8 +66,8 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 			  this.msg_crunched.push(message.messageId);
 			  this.inboxmsg++;
 			  this.inbox0_msgdate_empty=false;
-			  if(this.inbox0_msgdate[msg_date]>=0){
-			  	this.inbox0_msgdate[msg_date]++;
+			  if(msg_date in this.inbox0_msgdate){
+				this.inbox0_msgdate[msg_date]++;
 			  }else{
 				this.inbox0_msgdate[msg_date]=1;
 			  }
@@ -180,8 +180,8 @@ miczThunderStatsTab.folderworker.yesterday_inboxmsg = {
 			  this.msg_crunched.push(message.messageId);
 			  this.inboxmsg++;
 			  this.inbox0_msgdate_empty=false;
-			  if(this.inbox0_msgdate[msg_date]>=0){
-			  	this.inbox0_msgdate[msg_date]++;
+			  if(msg_date in this.inbox0_msgdate){
+				this.inbox0_msgdate[msg_date]++;
 			  }else{
 				this.inbox0_msgdate[msg_date]=1;
 			  }

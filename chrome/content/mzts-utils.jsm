@@ -96,10 +96,16 @@ var miczThunderStatsUtils = {
 	},
 
 	 getCurrentSystemLocale:function(){
-		return Components.classes["@mozilla.org/intl/nslocaleservice;1"]
+		let th_locale = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
           .getService(Components.interfaces.nsILocaleService)
 		  .getSystemLocale()
 		  .getCategory('NSILOCALE_TIME');
+
+		  if((th_locale=='en-ie')||(th_locale=='en-uk')){
+			th_locale='en-gb';
+		  }
+
+		return th_locale;
 	},
 
 	checkGlobalIndexing:function(){

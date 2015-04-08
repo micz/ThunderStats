@@ -74,6 +74,7 @@ var micz_thstatsTabType = {
         && !docShell.contentViewer.permitUnload());
     },
     closeTab: function onTabClosed(aTab) {
+      aTab.browser.removeEventListener("DOMWindowClose",aTab.closeListener, true);
       aTab.browser.destroy();
     },
     saveTabState: function onSaveTabState(aTab) {
@@ -91,8 +92,8 @@ var micz_thstatsTabType = {
         //clickHandler: onClick ? onClick : null
       };
     },
-    restoreTab: function onRestoreTab(aTabmail, aPersistedState) {
-      aTabmail.openTab("miczThStatsTab", { background: true } );
+    restoreTab: function onRestoreTab(aTab, aPersistedState) {
+      aTab.openTab("miczThStatsTab", { background: true } );
     },
     onTitleChanged: function onTitleChanged(aTab) {
       aTab.title = aTab.browser.contentDocument.title;
@@ -108,17 +109,17 @@ var micz_thstatsTabType = {
      */
     _setUpCloseWindowListener: function setUpCloseWindowListener(aTab) {
       function onDOMWindowClose(aEvent) {
-      try {
-        if (!aEvent.isTrusted)
-          return;
+		  try {
+			if (!aEvent.isTrusted)
+			  return;
 
-        // Redirect any window.close events to closing the tab. As a 3-pane tab
-        // must be open, we don't need to worry about being the last tab open.
-        document.getElementById("tabmail").closeTab(aTab);
-        aEvent.preventDefault();
-      } catch (e) {
-        logException(e);
-      }
+			// Redirect any window.close events to closing the tab. As a 3-pane tab
+			// must be open, we don't need to worry about being the last tab open.
+			document.getElementById("tabmail").closeTab(aTab);
+			aEvent.preventDefault();
+		  } catch (e) {
+			logException(e);
+		  }
       }
       // Save the function we'll use as listener so we can remove it later.
       aTab.closeListener = onDOMWindowClose;

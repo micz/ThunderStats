@@ -5,7 +5,7 @@
 "use strict";
 miczThunderStatsTab.prefs = {
 	service: Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch),
-	pref_base:'extensions.thunderstats.',
+	pref_base:'extensions.ThunderStats.',
 
 	get isDebug() {
 		return this.getBoolPref("debug");

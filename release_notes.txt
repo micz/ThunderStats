@@ -6,6 +6,7 @@ Version 0.2 - ??/??/2015
 - Minor improvements.
 - New identities / accounts selector.
 - Graphs improvements.
+- Debug options added.
 - 
 ==========
 Version 0.1 - 21/03/2015

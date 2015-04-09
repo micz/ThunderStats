@@ -3,7 +3,7 @@
  *
  * */
 "use strict";
-miczThunderStatsTab.prefs = {
+var miczThunderStatsPrefs = {
 	service: Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch),
 	pref_base:'extensions.ThunderStats.',
 
@@ -73,7 +73,7 @@ miczThunderStatsTab.prefs = {
 	},
 
 	getIntPref: function getIntPref(p) {
-		return miczThunderStatsTab.prefs.getIntPreference(this.pref_base + p);
+		return this.getIntPreference(this.pref_base + p);
 	},
 
 	setIntPref: function setIntPref(p, v) {

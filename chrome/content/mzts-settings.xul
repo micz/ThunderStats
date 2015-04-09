@@ -26,7 +26,7 @@
           <label control="symbol" value=" "/>
           <checkbox id="ThunderStats.debug_checkbox" label="Activate debug system."
             preference="ThunderStats.debug" />
-            <checkbox id="ThunderStats.log_panel_startup_checkbox" label="Show log panel at sturtup."
+            <checkbox id="ThunderStats.log_panel_startup_checkbox" label="Show log panel at startup."
             preference="ThunderStats.log_panel_startup" />
           <label control="symbol" value=" "/>
         </tabpanel>

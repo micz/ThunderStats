@@ -11,6 +11,10 @@ var miczThunderStatsPrefs = {
 		return this.getBoolPref("debug");
 	},
 
+	get showLogPanelStartup() {
+		return this.getBoolPref("log_panel_startup");
+	},
+
 	/*isDebugOption: function(option) { // granular debugging
 		if(!this.isDebug) return false;
 		try {return this.getBoolPref("debug." + option);}

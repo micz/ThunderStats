@@ -12,17 +12,23 @@ var miczThunderStatsTab = {
 	currentTab:"#tab_today",
 
 	onLoad: function(){
+
 			miczLogger.setLogger(document.getElementById('log_wrapper'),document,false);
+
+			$jQ("#log_close_btn")
+			  .mouseover(miczThunderStatsTab.ui.logCloseBtnShow)
+			  .mouseout(miczThunderStatsTab.ui.logCloseBtnHide);
+
+			if(miczThunderStatsPrefs.showLogPanelStartup){
+				miczThunderStatsTab.ui.toggleLogPanel();
+			}
+
 			miczLogger.log("ThunderStats starting...",0);
 
 			miczThunderStatsCore.db.init(window);
 
 			//Initialize observers
 			miczThunderStatsTab.observer.last_idx_update(miczThunderStatsTab.observer.callback.last_idx_update);
-
-			$jQ("#log_close_btn")
-			  .mouseover(miczThunderStatsTab.ui.logCloseBtnShow)
-			  .mouseout(miczThunderStatsTab.ui.logCloseBtnHide);
 
 			//check if global indexing is active. Without global indexing we have no data to use!
 			if(!miczThunderStatsUtils.checkGlobalIndexing()){

@@ -57,8 +57,9 @@ var micz_thstatsTabType = {
       aTab.browser = aTab.panel.querySelector("browser");
 
       aTab.browser.setAttribute("id", "miczThStatsTabBrowser");
-
       aTab.tabNode.setAttribute("image","chrome://thunderstats/skin/mzts-button.png");
+
+      this._setUpCloseWindowListener(aTab);
 
       // Now start loading the content.
       aTab.title = "ThunderStats";
@@ -93,7 +94,7 @@ var micz_thstatsTabType = {
       };
     },
     restoreTab: function onRestoreTab(aTab, aPersistedState) {
-      aTab.openTab("miczThStatsTab", { background: true } );
+      aTab.openTab("miczThStatsTab", { background: false } );
     },
     onTitleChanged: function onTitleChanged(aTab) {
       aTab.title = aTab.browser.contentDocument.title;
@@ -115,7 +116,7 @@ var micz_thstatsTabType = {
 
 			// Redirect any window.close events to closing the tab. As a 3-pane tab
 			// must be open, we don't need to worry about being the last tab open.
-			document.getElementById("tabmail").closeTab(aTab);
+			document.getElementById("miczThStatsTabBrowser").closeTab(aTab);
 			aEvent.preventDefault();
 		  } catch (e) {
 			logException(e);

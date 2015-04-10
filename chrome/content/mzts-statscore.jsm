@@ -154,6 +154,7 @@ miczThunderStatsCore.db = {
 		let mIdentityAddresses=miczThunderStatsUtils.getIdentitiesArray(mIdentity,miczThunderStatsCore.identities);
 		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
 		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
+		miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
 		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(),mIdentityAddresses,this.win);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
 		miczThunderStatsFolderQ.run();

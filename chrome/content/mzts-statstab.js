@@ -25,6 +25,8 @@ var miczThunderStatsTab = {
 
 			miczLogger.log("ThunderStats starting...",0);
 
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');
+
 			miczThunderStatsCore.db.init(window);
 
 			//Initialize observers
@@ -64,8 +66,6 @@ var miczThunderStatsTab = {
 
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
-
-			//miczThunderStatsUtils.forceAllfolderIndexing();
 		},
 
 	getTodayStats:function(identity_id){

@@ -83,6 +83,8 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 
   render:function() {
 	//inbox total messages
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] document.getElementById("today_inbox0_inboxmsg_wait") '+JSON.stringify(document.getElementById("today_inbox0_inboxmsg_wait"))+'\r\n');
+
 	miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_inboxmsg_wait");
 	$jQ("#today_inbox0_inboxmsg").text(this.inboxmsg);
 	miczLogger.log("Inbox messages loaded.",0);

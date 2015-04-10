@@ -62,13 +62,15 @@ miczThunderStatsTab.ui={
 				debug_txt="["+miczThunderStatsCore.accounts[key].key+':'+miczThunderStatsCore.accounts[key].identities.join(',')+"] ";
 			}
 			$jQ("#"+selector_id).append('<option class="mzts-sel-account" value="'+miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key+'">'+miczThunderStatsUtils.escapeHTML(debug_txt+miczThunderStatsCore.accounts[key].name)+'</option>');
-			for(let ikey in miczThunderStatsCore.accounts[key].identities){
-				let curr_idn=miczThunderStatsCore.accounts[key].identities[ikey];
-				let debug_txt_idn='';
-				if(miczThunderStatsPrefs.isDebug){
-					debug_txt_idn="["+miczThunderStatsCore.identities[curr_idn]["id"]+":"+miczThunderStatsCore.identities[curr_idn]["key"]+"] ";
+			if(miczThunderStatsPrefs.showIdentitiesSelector){
+				for(let ikey in miczThunderStatsCore.accounts[key].identities){
+					let curr_idn=miczThunderStatsCore.accounts[key].identities[ikey];
+					let debug_txt_idn='';
+					if(miczThunderStatsPrefs.isDebug){
+						debug_txt_idn="["+miczThunderStatsCore.identities[curr_idn]["id"]+":"+miczThunderStatsCore.identities[curr_idn]["key"]+"] ";
+					}
+					$jQ("#"+selector_id).append('<option class="mzts-sel-identity" value="'+miczThunderStatsCore.identities[curr_idn]["id"]+'">'+miczThunderStatsUtils.escapeHTML(debug_txt_idn+miczThunderStatsCore.identities[curr_idn]["fullName"]+" ("+miczThunderStatsCore.identities[curr_idn]["email"]+")")+'</option>');
 				}
-				$jQ("#"+selector_id).append('<option class="mzts-sel-identity" value="'+miczThunderStatsCore.identities[curr_idn]["id"]+'">'+miczThunderStatsUtils.escapeHTML(debug_txt_idn+miczThunderStatsCore.identities[curr_idn]["fullName"]+" ("+miczThunderStatsCore.identities[curr_idn]["email"]+")")+'</option>');
 			}
 			if(Object.keys(miczThunderStatsCore.accounts).length==1){	//If there is only one account, autochoose it
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");

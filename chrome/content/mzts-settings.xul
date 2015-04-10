@@ -8,7 +8,10 @@
   onload="miczThunderStatsPref.onLoad();">
   <prefpane id="ThunderStats_PrefPane">
   	<preferences>
-      <preference id="ThunderStats.debug"
+		<preference id="ThunderStats.identities_selector"
+        name="extensions.ThunderStats.identities_selector"
+        type="bool"/>
+      	<preference id="ThunderStats.debug"
         name="extensions.ThunderStats.debug"
         type="bool"/>
         <preference id="ThunderStats.log_panel_startup"
@@ -25,6 +28,8 @@
         <tabpanel id="tstab" orient="vertical">
           <label control="symbol" value="&ThunderStats.GlobalDescSettingTab;"/>
           <label control="symbol" value=" "/>
+          <checkbox id="ThunderStats.identities_selector_checkbox" label="Show identities in the accounts selector"
+            preference="ThunderStats.identities_selector" />
           <label control="symbol" value=" "/>
         </tabpanel>
         <tabpanel id="tstab_debug" orient="vertical">

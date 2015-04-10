@@ -15,6 +15,10 @@ var miczThunderStatsPrefs = {
 		return this.getBoolPref("log_panel_startup");
 	},
 
+	get showIdentitiesSelector() {
+		return this.getBoolPref("identities_selector");
+	},
+
 	/*isDebugOption: function(option) { // granular debugging
 		if(!this.isDebug) return false;
 		try {return this.getBoolPref("debug." + option);}

@@ -18,15 +18,21 @@
     <tabbox id="ts_tabbox">
       <tabs>
         <tab label="&ThunderStats.TabSettings.label;"/>
+        <tab label="&ThunderStats.TabSettingsDebug.label;"/>
         <tab label="&ThunderStats.TabInfo.label;"/>
       </tabs>
       <tabpanels>
         <tabpanel id="tstab" orient="vertical">
           <label control="symbol" value="&ThunderStats.GlobalDescSettingTab;"/>
           <label control="symbol" value=" "/>
-          <checkbox id="ThunderStats.debug_checkbox" label="Activate debug system."
+          <label control="symbol" value=" "/>
+        </tabpanel>
+        <tabpanel id="tstab_debug" orient="vertical">
+		  <label control="symbol" value="Set here the debug options."/>
+          <label control="symbol" value=" "/>
+          <checkbox id="ThunderStats.debug_checkbox" label="Activate debug system"
             preference="ThunderStats.debug" />
-            <checkbox id="ThunderStats.log_panel_startup_checkbox" label="Show log panel at startup."
+            <checkbox id="ThunderStats.log_panel_startup_checkbox" label="Show log panel at startup"
             preference="ThunderStats.log_panel_startup" />
           <label control="symbol" value=" "/>
         </tabpanel>

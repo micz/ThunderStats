@@ -43,7 +43,7 @@ var miczThunderStatsCore = {
 					//identity_item["account_name"]=account.incomingServer.rootFolder.prettiestName;
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
 					this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity.email));
-					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 				}
 			}
 			this.sortAccounts();
@@ -51,7 +51,7 @@ var miczThunderStatsCore = {
 
 	sortAccounts:function(){
 		let accounts_order=miczThunderStatsUtils.getAccountsOrder();
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab sortAccounts] accounts_order '+JSON.stringify(accounts_order)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab sortAccounts] accounts_order '+JSON.stringify(accounts_order)+'\r\n');
 		let tmp_accounts={};
 		for(let key in accounts_order){
 			if(accounts_order[key] in this.accounts){
@@ -152,8 +152,8 @@ miczThunderStatsCore.db = {
 
 	getInboxMessagesTotal:function(mIdentity,mCallback){
 		let mIdentityAddresses=miczThunderStatsUtils.getIdentitiesArray(mIdentity,miczThunderStatsCore.identities);
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
 		miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
 		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(),mIdentityAddresses,this.win);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
@@ -176,7 +176,7 @@ miczThunderStatsCore.db = {
 			}
 			r_idx++;
 		}
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] getResultObject: " +JSON.stringify(oOutput)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] getResultObject: " +JSON.stringify(oOutput)+"\r\n");
 		return oOutput;
 	},
 };

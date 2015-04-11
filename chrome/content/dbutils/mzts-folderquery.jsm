@@ -49,7 +49,7 @@ var miczThunderStatsFolderQ = {
   registerAnalyzer: function(analyzer) {
     if(this._analyzers.indexOf(analyzer)==-1){
 		this._analyzers.push(analyzer);
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab registerAnalyzer] analyzer: '+analyzer +'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab registerAnalyzer] analyzer: '+analyzer +'\r\n');
 	}
   },
 
@@ -187,7 +187,7 @@ var miczThunderStatsFolderQ = {
     }
 
     if (reprocess) {
-	dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessage] reprocess: '+JSON.stringify(reprocess)+'\r\n');
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessage] reprocess: '+JSON.stringify(reprocess)+'\r\n');
       let self = this;
       this.win.setTimeout(function() { self.reprocessMessages(); }, 0);
     }

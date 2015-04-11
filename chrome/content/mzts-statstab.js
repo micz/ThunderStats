@@ -37,6 +37,7 @@ var miczThunderStatsTab = {
 				$jQ('#mzts-main-error').show();
 				$jQ('#mzts-idnt_sel').hide();
 				$jQ('#mzts-last_msg').hide();
+				$jQ('#mzts-idx_update').hide();
 				miczLogger.log("Thunderbird Global Indexing is not active!",2);
 			}
 

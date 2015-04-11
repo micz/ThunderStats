@@ -50,11 +50,12 @@ var miczThunderStatsTab = {
 			//miczThunderStatsStorageDB.init();	// To be enabled in vesion 2.0
 			miczLogger.log("Opening databases...",0);
 
-			miczLogger.log("Loading identities...",0);
+			miczLogger.log("Loading accounts...",0);
 			miczThunderStatsCore.loadIdentities();
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
 
-			miczLogger.log("Identities found: "+miczThunderStatsCore.identities.length,0);
+			miczLogger.log("Accounts found: "+Object.keys(miczThunderStatsCore.accounts).length,0);
+			miczLogger.log("Identities found: "+Object.keys(miczThunderStatsCore.identities).length,0);
 
 			miczThunderStatsTab.ui.loadIdentitiesSelector('identities_selector');
 

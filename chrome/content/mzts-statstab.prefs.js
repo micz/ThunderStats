@@ -8,20 +8,20 @@ var miczThunderStatsPrefs = {
 	pref_base:'extensions.ThunderStats.',
 
 	get isDebug() {
-		return this.getBoolPref("debug");
+		return this.getBoolPref_TS("debug");
 	},
 
 	get showLogPanelStartup() {
-		return this.getBoolPref("log_panel_startup");
+		return this.getBoolPref_TS("log_panel_startup");
 	},
 
 	get showIdentitiesSelector() {
-		return this.getBoolPref("identities_selector");
+		return this.getBoolPref_TS("identities_selector");
 	},
 
 	/*isDebugOption: function(option) { // granular debugging
 		if(!this.isDebug) return false;
-		try {return this.getBoolPref("debug." + option);}
+		try {return this.getBoolPref_TS("debug." + option);}
 		catch(e) {return false;}
 	},*/
 
@@ -47,16 +47,7 @@ var miczThunderStatsPrefs = {
 		return false;
 	},
 
-	getBoolPrefGeneric: function getBoolPrefSilent(p) {
-		try {
-			return this.service.getBoolPref(p);
-		}
-		catch(e) {
-			return false;
-		}
-	},
-
-	getBoolPref: function getBoolPref(p) {
+	getBoolPref_TS: function getBoolPref_TS(p) {
 	  let ans;
 	  try {
 	    ans = this.service.getBoolPref(this.pref_base + p);
@@ -68,35 +59,56 @@ var miczThunderStatsPrefs = {
 		return ans;
 	},
 
-	setBoolPref: function setBoolPref(p, v) {
+	getBoolPref: function getBoolPref(p) {
+	  let ans;
+	  try {
+	    ans = this.service.getBoolPref(p);
+		}
+		catch(ex) {
+		  //QuickFolders.Util.logException("getBoolPref("  + p +") failed\n", ex);
+		  throw(ex);
+		}
+		return ans;
+	},
+
+	setBoolPref_TS: function setBoolPref_TS(p, v) {
 		return this.service.setBoolPref(this.pref_base + p, v);
 	},
 
-	getCharPref: function getCharPref(p) {
+	setBoolPref: function setBoolPref(p, v) {
+		return this.service.setBoolPref(p, v);
+	},
+
+	getCharPref_TS: function getCharPref_TS(p) {
 		return this.service.getCharPref(this.pref_base + p);
 	},
 
-	setCharPref: function setCharPref(p, v) {
+	getCharPref: function getCharPref(p) {
+		return this.service.getCharPref(p);
+	},
+
+	setCharPref_TS: function setCharPref_TS(p, v) {
 		return this.service.setCharPref(this.pref_base + p, v);
 	},
 
-	getIntPref: function getIntPref(p) {
+	setCharPref: function setCharPref(p, v) {
+		return this.service.setCharPref(p, v);
+	},
+
+	getIntPref_TS: function getIntPref_TS(p) {
 		return this.getIntPreference(this.pref_base + p);
 	},
 
-	setIntPref: function setIntPref(p, v) {
+	getIntPref: function getIntPref(p) {
+		return this.getIntPreference(p);
+	},
+
+	setIntPref_TS: function setIntPref_TS(p, v) {
 		return this.service.setIntPref(this.pref_base + p, v);
 	},
 
-	setBoolPrefVerbose: function setBoolPrefVerbose(p, v) {
-		try {
-			return this.service.setBoolPref(p, v);
-		}
-    	catch(e) {
-			let s="Err:" +e;
-//			QuickFolders.Util.logException("setBoolPrefVerbose(" + p + ") failed\n", e);
-			return false;
-		}
+	setIntPref: function setIntPref(p, v) {
+		return this.service.setIntPref(p, v);
 	},
 
 }

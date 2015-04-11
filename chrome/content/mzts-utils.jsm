@@ -110,9 +110,7 @@ var miczThunderStatsUtils = {
 
 	checkGlobalIndexing:function(){
 		//mailnews.database.global.indexer.enabled
-		let prefsc = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-		let prefs = prefsc.getBranch("mailnews.database.global.indexer.");
-		return prefs.getBoolPref("enabled");
+		return miczThunderStatsPrefs.getBoolPref("mailnews.database.global.indexer.enabled");
 	},
 
 	getAccountsOrder:function(){

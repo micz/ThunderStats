@@ -101,6 +101,8 @@ var miczThunderStatsUtils = {
 		  .getSystemLocale()
 		  .getCategory('NSILOCALE_TIME');
 
+		  th_locale=th_locale.toLowerCase();
+
 		  if((th_locale=='en-ie')||(th_locale=='en-uk')){
 			th_locale='en-gb';
 		  }

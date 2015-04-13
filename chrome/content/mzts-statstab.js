@@ -13,15 +13,7 @@ var miczThunderStatsTab = {
 
 	onLoad: function(){
 
-			miczLogger.setLogger(document.getElementById('log_wrapper'),document,false);
-
-			$jQ("#log_close_btn")
-			  .mouseover(miczThunderStatsTab.ui.logCloseBtnShow)
-			  .mouseout(miczThunderStatsTab.ui.logCloseBtnHide);
-
-			if(miczThunderStatsPrefs.showLogPanelStartup){
-				miczThunderStatsTab.ui.toggleLogPanel();
-			}
+			miczLogger.setLogger(true);
 
 			miczLogger.log("ThunderStats starting...",0);
 

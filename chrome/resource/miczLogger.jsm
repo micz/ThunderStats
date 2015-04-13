@@ -4,13 +4,9 @@ const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 let EXPORTED_SYMBOLS = ["miczLogger"];
 
 var miczLogger = {
-	logger:null,
-	doc:null,
 	active:true,
 
-	setLogger:function(wrapper,document,active){
-		this.logger=wrapper;
-		this.doc=document;
+	setLogger:function(active){
 		this.active=active;
 	},
 
@@ -19,7 +15,7 @@ var miczLogger = {
 	},
 
 	log:function(msg,level){ //level 0: msg, 1: warning, 2: critical error
-		if(this.logger==null)return;
+		/*if(this.logger==null)return;
 		if(!this.active)return;
 
 
@@ -35,6 +31,6 @@ var miczLogger = {
 		node.appendChild(textnode);
 
 		this.logger.appendChild(node);
-		this.logger.scrollTop=this.logger.scrollHeight;
+		this.logger.scrollTop=this.logger.scrollHeight;*/
 	},
 };

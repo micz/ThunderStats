@@ -2,55 +2,12 @@
 
 miczThunderStatsTab.ui={
 
-	log_panel_status:false,
-
 	showLoadingElement:function(element){
 		$jQ("#"+element).show();
 	},
 
 	hideLoadingElement:function(element){
 		$jQ("#"+element).hide();
-	},
-
-	toggleLogPanel:function(){
-		$jQ("#log_close_btn img").tooltipster('hide');
-		$jQ("#log_close_btn").toggleClass('opened');
-		$jQ("#log_close_btn").toggleClass('closed');
-		if(miczThunderStatsTab.ui.log_panel_status){	//hide
-			miczLogger.setActive(false);
-			miczThunderStatsTab.ui.log_panel_status=false;
-			$jQ("#log_wrapper").hide();
-			$jQ("#log_clear_btn").hide();
-			$jQ('#log_wrapper').empty();
-			$jQ('#content_wrapper').css('padding-bottom','0px');
-			$jQ("#log_close_btn img").attr('title','Open log panel');
-			$jQ("#log_close_btn img").attr('alt','Open log panel');
-			$jQ("#log_close_btn img").tooltipster('content','Open log panel');
-			this.logCloseBtnHide();
-		}else{		//show
-			miczLogger.setActive(true);
-			miczThunderStatsTab.ui.log_panel_status=true;
-			$jQ("#log_wrapper").show();
-			$jQ("#log_clear_btn").show();
-			$jQ('#content_wrapper').css('padding-bottom','100px');
-			$jQ("#log_close_btn img").attr('title','Close log panel');
-			$jQ("#log_close_btn img").attr('alt','Close log panel');
-			$jQ("#log_close_btn img").tooltipster('content','Close log panel');
-		}
-	},
-
-	logCloseBtnShow:function(){
-		if(!miczThunderStatsTab.ui.log_panel_status){
-			$jQ("#log_close_btn img").fadeIn();
-			$jQ("#log_close_btn").css('background','white');
-		}
-	},
-
-	logCloseBtnHide:function(){
-		if(!miczThunderStatsTab.ui.log_panel_status){
-			$jQ("#log_close_btn img").fadeOut();
-			$jQ("#log_close_btn").css('background','lightgrey');
-		}
 	},
 
 	loadIdentitiesSelector:function(selector_id){

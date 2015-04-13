@@ -14,9 +14,6 @@
       	<preference id="ThunderStats.debug"
         name="extensions.ThunderStats.debug"
         type="bool"/>
-        <preference id="ThunderStats.log_panel_startup"
-        name="extensions.ThunderStats.log_panel_startup"
-        type="bool"/>
     </preferences>
     <tabbox id="ts_tabbox">
       <tabs>
@@ -38,8 +35,6 @@
           <label control="symbol" value=" "/>
           <checkbox id="ThunderStats.debug_checkbox" label="Activate debug system"
             preference="ThunderStats.debug" />
-            <checkbox id="ThunderStats.log_panel_startup_checkbox" label="Show log panel at startup"
-            preference="ThunderStats.log_panel_startup" />
           <label control="symbol" value=" "/>
         </tabpanel>
         <tabpanel id="tstab_info" orient="vertical">

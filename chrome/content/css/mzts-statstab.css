@@ -1,13 +1,6 @@
 html,body{margin:0;padding:0;height:100%;background:white;min-height:100% !important;}
 #content_wrapper{padding:3px 3px 0px 3px;position:relative;top:0px;}
 #mzts-main-error{align-items:center;float:left;display:none;color:red;font-weight:bold;font-size:24px;height:28px;width:80%;text-align:center;margin:auto;}
-#log_wrapper{display:none;margin:1px 0px 0px 0px;padding:5px;background:white;border:1px solid lightgrey;overflow-y:scroll;height:100px;width:99%;position:fixed;bottom:0px;}
-#log_wrapper p{padding:0;margin:0;font-size:0.8em; color:grey;}
-#log_clear_btn{display:none;position:fixed;bottom:0px;right:16px;cursor:pointer;z-index:100;}
-#log_close_btn{position:fixed;right:16px;cursor:pointer;z-index:100;padding:0;background:white;height:5px;width:16px;text-align:center;}
-#log_close_btn.opened{-moz-transform:rotate(0deg);bottom:111px;border-top:1px solid lightgrey;border-left:1px solid lightgrey;border-right:1px solid lightgrey;}
-#log_close_btn.closed{-moz-transform:rotate(180deg);bottom:0px;border:none;background:lightgrey;}
-#log_close_btn img{display:none;margin:0;position:relative;top:-1px;}
 .mzts-desc{word-wrap:break-word;width:90%;}
 .chart_info{font-size:0.8em;margin-bottom:0;}
 .chart_info_nomail{display:none;}

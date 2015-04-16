@@ -58,9 +58,11 @@ var miczThunderStatsCore = {
 						identity_item["fullName"]="CustomID"+j;
 						identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity);
 						identity_item["key"]="__custom"+j;
-						this.identities[miczThunderStatsDB.queryGetIdentityID(identity)]=identity_item;
-						this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
-						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+						if(identity_item["id"]){
+							this.identities[miczThunderStatsDB.queryGetIdentityID(identity)]=identity_item;
+							this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
+							//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+						}
 					}
 				}
 			}

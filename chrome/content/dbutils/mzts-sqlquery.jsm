@@ -10,7 +10,7 @@ var miczThunderStatsQuery = {
 		if((mWhere=="")||(mWhere==null))mWhere="1=1";
 		let mQuery="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
 		if(!mCallback){	// do it SYNC
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] querySelect (Sync):\r\nSQL: " + mQuery+"\r\n");
+			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] querySelect (Sync):\r\nSQL: " + mQuery+"\r\n");
 			mDb.selectQuery(mQuery);
 			let rows = mDb.getRecords();
 			if(rows.length == 0){

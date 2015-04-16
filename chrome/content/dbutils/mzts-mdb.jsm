@@ -243,14 +243,22 @@ var miczThunderStatsDB = {
 	queryGetIdentityID:function(email){
 		let mWhere='value="'+email+'" LIMIT 1';
 		let rows=this.querySelect("id","identities",mWhere);
-		return rows[0][0];
+		if(rows.length>0){
+			return rows[0][0];
+		}else{
+			return false;
+		}
 	},
 
 	//returns the id of a folder from its URI
 	queryGetFolderID:function(URI){
 		let mWhere='folderURI="'+URI+'" LIMIT 1';
 		let rows=this.querySelect("id","folderLocations",mWhere);
-		return rows[0][0];
+		if(rows.length>0){
+			return rows[0][0];
+		}else{
+			return false;
+		}
 	},
 
 	queryGetLastMessageDate:function(mCallback){

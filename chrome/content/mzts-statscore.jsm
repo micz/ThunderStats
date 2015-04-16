@@ -40,7 +40,7 @@ var miczThunderStatsCore = {
 					identity_item["fullName"]=identity.fullName;
 					identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity.email);
 					identity_item["key"]=identity.key;
-					identity_item["custom"]=0;
+					identity_item["custom"]=false;
 					//identity_item["account_key"]=account.key;
 					//identity_item["account_name"]=account.incomingServer.rootFolder.prettiestName;
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
@@ -59,7 +59,7 @@ var miczThunderStatsCore = {
 						identity_item["fullName"]="CustomID"+j;
 						identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity);
 						identity_item["key"]="__custom"+j;
-						identity_item["custom"]=1;
+						identity_item["custom"]=true;
 						if(identity_item["id"]){
 							this.identities[miczThunderStatsDB.queryGetIdentityID(identity)]=identity_item;
 							this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
@@ -81,6 +81,10 @@ var miczThunderStatsCore = {
 			}
 		}
 		this.accounts=tmp_accounts;
+	},
+
+	getIdentityCustomStatus:function(identity_id){
+		return this.identities[identity_id]["custom"];
 	},
 
 };

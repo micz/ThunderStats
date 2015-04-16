@@ -3,6 +3,7 @@
 let EXPORTED_SYMBOLS = ["miczThunderStatsUtils"];
 
 Components.utils.import("resource:///modules/iteratorUtils.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 
 var miczThunderStatsUtils = {
 

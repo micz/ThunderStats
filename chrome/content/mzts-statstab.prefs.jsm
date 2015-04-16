@@ -3,6 +3,9 @@
  *
  * */
 "use strict";
+
+let EXPORTED_SYMBOLS = ["miczThunderStatsPrefs"];
+
 var miczThunderStatsPrefs = {
 	service: Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch),
 	pref_base:'extensions.ThunderStats.',
@@ -17,6 +20,15 @@ var miczThunderStatsPrefs = {
 
 	get showIdentitiesSelector() {
 		return this.getBoolPref_TS("identities_selector");
+	},
+
+	accountCustomIdentities:function(account_key){
+		let account_pref='account_custom_identities.'+account_key;
+		if(this.existsCharPref(this.pref_base+account_pref)){
+			return this.getCharPref_TS(account_pref);
+		}else{
+			return '';
+		}
 	},
 
 	/*isDebugOption: function(option) { // granular debugging

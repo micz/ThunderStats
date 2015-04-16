@@ -2,6 +2,7 @@
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 //Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	 // To be enabled in vesion 2.0
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
@@ -45,6 +46,8 @@ var miczThunderStatsCore = {
 					this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity.email));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 				}
+				//enumerate custom identities for this account
+				//let account_custom_identities=
 			}
 			this.sortAccounts();
 	},

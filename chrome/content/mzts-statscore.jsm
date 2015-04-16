@@ -47,7 +47,22 @@ var miczThunderStatsCore = {
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 				}
 				//enumerate custom identities for this account
-				//let account_custom_identities=
+				let account_custom_identities=miczThunderStatsPrefs.accountCustomIdentities(account.key);
+				if(account_custom_identities!=''){
+					let account_custom_identities_arr=account_custom_identities.split(',');
+					for (let j = 0; j < account_custom_identities_arr.length; j++) {
+						let identity = account_custom_identities_arr[j];
+						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
+						let identity_item={};
+						identity_item["email"]=identity;
+						identity_item["fullName"]="CustomID"+j;
+						identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity);
+						identity_item["key"]="__custom"+j;
+						this.identities[miczThunderStatsDB.queryGetIdentityID(identity)]=identity_item;
+						this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
+						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+					}
+				}
 			}
 			this.sortAccounts();
 	},

@@ -23,7 +23,7 @@ var miczThunderStatsPrefs = {
 	},
 
 	accountCustomIdentities:function(account_key){
-		let account_pref='account_custom_identities.'+account_key;
+		let account_pref='acc_cust_ids.'+account_key;
 		if(this.existsCharPref(this.pref_base+account_pref)){
 			return this.getCharPref_TS(account_pref);
 		}else{

@@ -62,6 +62,8 @@ var miczThunderStatsCore = {
 						identity_item["custom"]=true;
 						if(identity_item["id"]){
 							this.identities[miczThunderStatsDB.queryGetIdentityID(identity)]=identity_item;
+							miczThunderStatsDB.identities_custom_ids.push(miczThunderStatsDB.queryGetIdentityID(identity));
+							miczThunderStatsDB.identities_custom_ids_mail.push(identity);
 							this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
 							//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
 						}

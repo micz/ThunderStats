@@ -166,9 +166,11 @@ var miczThunderStatsTab = {
 		miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_senders);
 	},
 
-	getCurrentIdentityId:function(){	//returning an identities ids array or a 0 if none selected
+	getCurrentIdentityId:function(){	//returning an identities object or a 0 if none selected
+										//identities object is {ids_merged: array of all ids; ids:array of normal identities ids; ids_custom: array of custom identities ids}}
 		let id_selector_value = $jQ("#identities_selector").val();
 		let output=new Array();
+		let output_obj={};
 		if(id_selector_value==0){
 			return 0;
 		}
@@ -178,7 +180,18 @@ var miczThunderStatsTab = {
 			output.push(id_selector_value);
 		}
 		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] getCurrentIdentityId '+JSON.stringify(output)+'\r\n');
-		return output;
+		output_obj.ids_merged=output;
+		output_obj.ids=new Array();
+		output_obj.ids_custom=new Array();
+		for (let ii in output){
+			if(miczThunderStatsCore.getIdentityCustomStatus(output[ii])){ //is custom
+				output_obj.ids_custom.push(output[ii]);
+			}else{	//is normal
+				output_obj.ids.push(output[ii]);
+			}
+		}
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] output_obj: "+JSON.stringify(output_obj)+"\r\n");
+		return output_obj;
 	},
 
 	updateStats: function(){

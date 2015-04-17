@@ -17,6 +17,8 @@ var miczThunderStatsDB = {
 	msgAttributes:null,
 	forbiddenFolders:null,
 	inboxFolders:null,
+	identities_custom_ids:new Array(),
+	identities_custom_ids_mail:new Array(),
 
 	init: function(){
 		this.mDb = new SQLiteHandler();
@@ -87,12 +89,28 @@ var miczThunderStatsDB = {
 			mWhat+=", '"+mInfo+"' as Info";
 		}
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
-		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsDB] queryMessages (typeof mIdentity) '+typeof mIdentity+'\r\n');
-		if(typeof mIdentity == "object"){
-			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			let identitiesStr="("+mIdentity.join()+")";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
+
+		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		//if mType!=0 do not consider custom identities, they do not send emails
+		if(mType==1){
+			mWhere+=" and ma.attributeID="+mType_attribute;
+			if(typeof mIdentity == "object"){
+				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
+				let identitiesStr="("+mIdentity.ids.join()+")";
+				mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
+			}
+		}else{		//do consider custom identities
+			if(typeof mIdentity == "object"){
+				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
+				let identitiesStr="("+mIdentity.ids.join()+")";
+				let identities_customStr="("+mIdentity.ids_custom.join()+")";
+				mWhere+="and ((ma.attributeID="+mType_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+") OR ";
+				mWhere+=" (ma.attributeID="+involves_attribute+" AND ma.value in "+identities_customStr+"))";
+			}else{	//all identities
+				let identitiesStr="("+this.identities_custom_ids.join()+")";
+				mWhere+="and ((ma.attributeID="+mType_attribute+") OR ";
+				mWhere+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
+			}
 		}
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
@@ -107,11 +125,29 @@ var miczThunderStatsDB = {
 		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
 		let mWhat="ma.value AS ID,c.name AS Name,i.value AS Mail,count(distinct m.headerMessageID) AS Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join identities i on i.id=ma.value left join contacts c on c.id=i.contactID";
-		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(typeof mIdentity == "object"){
-			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			let identitiesStr="("+mIdentity.join()+")";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
+		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		//if mType!=0 do not consider custom identities, they do not send emails
+		if(mType==1){
+			mWhere+=" and ma.attributeID="+mType_attribute;
+			if(typeof mIdentity == "object"){
+				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
+				let identitiesStr="("+mIdentity.ids.join()+")";
+				mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
+			}
+		}else{		//do consider custom identities
+			let not_like_mail_Str='("'+this.identities_custom_ids_mail.join()+'")';
+			if(typeof mIdentity == "object"){
+				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
+				let identitiesStr="("+mIdentity.ids.join()+")";
+				let identities_customStr="("+mIdentity.ids_custom.join()+")";
+				mWhere+=" and ((ma.attributeID="+mType_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+") OR ";
+				mWhere+=" (ma.attributeID="+involves_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identities_customStr+" AND i.value NOT IN "+not_like_mail_Str+"))";
+			}else{	//all identities
+				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
+				let identitiesStr="("+this.identities_custom_ids.join()+")";
+				mWhere+=" and ((ma.attributeID="+mType_attribute+") OR ";
+				mWhere+="(ma.attributeID="+involves_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+" AND i.value NOT IN "+not_like_mail_Str+"))";
+			}
 		}
 		mWhere+=" group by ma.value order by Num DESC";
 		if(mMax>0){
@@ -156,11 +192,27 @@ var miczThunderStatsDB = {
 		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
 		let mWhat="f.name as Folder, count(distinct m.headerMessageID) as Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join folderLocations f on f.id=m.folderID";
-		let mWhere="ma.attributeID="+mType_attribute+" and m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		if(typeof mIdentity == "object"){
-			mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
-			let identitiesStr="("+mIdentity.join()+")";
-			mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
+		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		//if mType!=0 do not consider custom identities, they do not send emails
+		if(mType==1){
+			mWhere+=" and ma.attributeID="+mType_attribute;
+			if(typeof mIdentity == "object"){
+				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
+				let identitiesStr="("+mIdentity.ids.join()+")";
+				mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
+			}
+		}else{		//do consider custom identities
+			if(typeof mIdentity == "object"){
+				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
+				let identitiesStr="("+mIdentity.ids.join()+")";
+				let identities_customStr="("+mIdentity.ids_custom.join()+")";
+				mWhere+=" and ((ma.attributeID="+mType_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+") OR ";
+				mWhere+=" (ma.attributeID="+involves_attribute+" AND ma.value in "+identities_customStr+"))";
+			}else{	//all identities
+				let identitiesStr="("+this.identities_custom_ids.join()+")";
+				mWhere+=" and ((ma.attributeID="+mType_attribute+") OR ";
+				mWhere+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
+			}
 		}
 		mWhere+=" GROUP BY f.name";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);

@@ -179,10 +179,12 @@ var miczThunderStatsUtils = {
 				mIdentityAddresses.push(identities[key]["email"]);
 			}
 		}else{
-			for (let key in mIdentity){
-				mIdentityAddresses.push(identities[mIdentity[key]]["email"]);
+			for (let key in mIdentity.ids_merged){
+				mIdentityAddresses.push(identities[mIdentity.ids_merged[key]]["email"]);
 			}
 		}
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] mIdentity: "+JSON.stringify(mIdentity)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] mIdentityAddresses: "+JSON.stringify(mIdentityAddresses)+"\r\n");
 		return mIdentityAddresses;
 	},
 

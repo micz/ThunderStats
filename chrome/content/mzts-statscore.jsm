@@ -14,11 +14,13 @@ var miczThunderStatsCore = {
 	accounts:{},
 	identities:{},
 	_account_selector_prefix:'_account:',
+	custom_account_key:'cstm_accnt',
 
 	loadIdentities:function(){
 			this.identities={};
 			let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
 			let accounts = acctMgr.accounts;
+			let cid_prog=0;	//custom identities id prog
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
 			for (let i = 0; i < accounts.length; i++) {
 				let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
@@ -56,11 +58,12 @@ var miczThunderStatsCore = {
 						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
 						let identity_item={};
 						identity_item["email"]=identity;
-						identity_item["fullName"]="CustomID"+j;
+						identity_item["fullName"]="CustomID"+cid_prog;
 						identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity);
-						identity_item["key"]="__custom"+j;
+						identity_item["key"]="__custom"+cid_prog;
 						identity_item["custom"]=true;
 						if(identity_item["id"]){
+							cid_prog++;
 							this.identities[miczThunderStatsDB.queryGetIdentityID(identity)]=identity_item;
 							miczThunderStatsDB.identities_custom_ids.push(miczThunderStatsDB.queryGetIdentityID(identity));
 							miczThunderStatsDB.identities_custom_ids_mail.push(identity);
@@ -70,11 +73,40 @@ var miczThunderStatsCore = {
 					}
 				}
 			}
+			//If there are custom identities for the custom account, add it and its identities
+			let account_custom_identities=miczThunderStatsPrefs.accountCustomIdentities(this.custom_account_key);
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] account_custom_identities '+JSON.stringify(account_custom_identities)+'\r\n');
+			if(account_custom_identities!=''){
+				this.accounts[this.custom_account_key]={};
+				this.accounts[this.custom_account_key].name="Custom Identities";
+				this.accounts[this.custom_account_key].key=this.custom_account_key;
+				this.accounts[this.custom_account_key].identities=new Array();
+				let account_custom_identities_arr=account_custom_identities.split(',');
+				for (let j = 0; j < account_custom_identities_arr.length; j++) {
+					let identity = account_custom_identities_arr[j];
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
+					let identity_item={};
+					identity_item["email"]=identity;
+					identity_item["fullName"]="CustomID"+cid_prog;
+					identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity);
+					identity_item["key"]="__custom"+cid_prog;
+					identity_item["custom"]=true;
+					if(identity_item["id"]){
+						cid_prog++;
+						this.identities[miczThunderStatsDB.queryGetIdentityID(identity)]=identity_item;
+						miczThunderStatsDB.identities_custom_ids.push(miczThunderStatsDB.queryGetIdentityID(identity));
+						miczThunderStatsDB.identities_custom_ids_mail.push(identity);
+						this.accounts[this.custom_account_key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
+						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+					}
+				}
+			}
+
 			this.sortAccounts();
 	},
 
 	sortAccounts:function(){
-		let accounts_order=miczThunderStatsUtils.getAccountsOrder();
+		let accounts_order=miczThunderStatsUtils.getAccountsOrder(this.custom_account_key);
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab sortAccounts] accounts_order '+JSON.stringify(accounts_order)+'\r\n');
 		let tmp_accounts={};
 		for(let key in accounts_order){

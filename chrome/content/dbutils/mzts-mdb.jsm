@@ -92,7 +92,8 @@ var miczThunderStatsDB = {
 
 		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
 		//if mType!=0 do not consider custom identities, they do not send emails
-		if(mType==1){
+		//Also do not consider custom identities if there are no ones
+		if((mType==1)||(this.identities_custom_ids_mail.length==0)){
 			mWhere+=" and ma.attributeID="+mType_attribute;
 			if(typeof mIdentity == "object"){
 				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
@@ -127,7 +128,8 @@ var miczThunderStatsDB = {
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join identities i on i.id=ma.value left join contacts c on c.id=i.contactID";
 		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
 		//if mType!=0 do not consider custom identities, they do not send emails
-		if(mType==1){
+		//Also do not consider custom identities if there are no ones
+		if((mType==1)||(this.identities_custom_ids_mail.length==0)){
 			mWhere+=" and ma.attributeID="+mType_attribute;
 			if(typeof mIdentity == "object"){
 				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
@@ -196,7 +198,8 @@ var miczThunderStatsDB = {
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join folderLocations f on f.id=m.folderID";
 		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
 		//if mType!=0 do not consider custom identities, they do not send emails
-		if(mType==1){
+		//Also do not consider custom identities if there are no ones
+		if((mType==1)||(this.identities_custom_ids_mail.length==0)){
 			mWhere+=" and ma.attributeID="+mType_attribute;
 			if(typeof mIdentity == "object"){
 				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";

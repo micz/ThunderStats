@@ -137,16 +137,18 @@ var miczThunderStatsDB = {
 		}else{		//do consider custom identities
 			let not_like_mail_Str='("'+this.identities_custom_ids_mail.join()+'")';
 			if(typeof mIdentity == "object"){
+				mFrom+=" left join messagesText_content mt on m.id=mt.docid";
 				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 				let identitiesStr="("+mIdentity.ids.join()+")";
 				let identities_customStr="("+mIdentity.ids_custom.join()+")";
 				mWhere+=" and ((ma.attributeID="+mType_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+") OR ";
-				mWhere+=" (ma.attributeID="+involves_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identities_customStr+" AND i.value NOT IN "+not_like_mail_Str+"))";
+				mWhere+=" (ma.attributeID="+involves_attribute+" AND mt.c3author LIKE '%'||i.value||'%' AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identities_customStr+" AND i.value NOT IN "+not_like_mail_Str+"))";
 			}else{	//all identities
+				mFrom+=" left join messagesText_content mt on m.id=mt.docid";
 				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 				let identitiesStr="("+this.identities_custom_ids.join()+")";
 				mWhere+=" and ((ma.attributeID="+mType_attribute+") OR ";
-				mWhere+="(ma.attributeID="+involves_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+" AND i.value NOT IN "+not_like_mail_Str+"))";
+				mWhere+="(ma.attributeID="+involves_attribute+" AND mt.c3author LIKE '%'||i.value||'%' AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+" AND i.value NOT IN "+not_like_mail_Str+"))";
 			}
 		}
 		mWhere+=" group by ma.value order by Num DESC";

@@ -10,7 +10,7 @@ miczThunderStatsTab.ui={
 		$jQ("#"+element).hide();
 	},
 
-	loadIdentitiesSelector:function(selector_id){
+	loadIdentitiesSelector:function(selector_id,custom_account_key){
 		$jQ("select#"+selector_id).find('option').remove();
 		$jQ("#"+selector_id).append('<option value="0">All Accounts</option>');
 		for(let key in miczThunderStatsCore.accounts){
@@ -19,11 +19,12 @@ miczThunderStatsTab.ui={
 				debug_txt="["+miczThunderStatsCore.accounts[key].key+':'+miczThunderStatsCore.accounts[key].identities.join(',')+"] ";
 			}
 			let item_css_class='mzts-sel-account';
-			if(!miczThunderStatsPrefs.showIdentitiesSelector){
+			let show_identities=miczThunderStatsPrefs.showIdentitiesSelector||(key==custom_account_key);
+			/*if(!show_identities){
 				item_css_class='';
-			}
+			}*/
 			$jQ("#"+selector_id).append('<option class="'+item_css_class+'" value="'+miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key+'">'+miczThunderStatsUtils.escapeHTML(debug_txt+miczThunderStatsCore.accounts[key].name)+'</option>');
-			if(miczThunderStatsPrefs.showIdentitiesSelector){
+			if(show_identities){
 				for(let ikey in miczThunderStatsCore.accounts[key].identities){
 					let curr_idn=miczThunderStatsCore.accounts[key].identities[ikey];
 					let debug_txt_idn='';

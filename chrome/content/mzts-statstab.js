@@ -50,7 +50,7 @@ var miczThunderStatsTab = {
 			miczLogger.log("Accounts found: "+Object.keys(miczThunderStatsCore.accounts).length,0);
 			miczLogger.log("Identities found: "+Object.keys(miczThunderStatsCore.identities).length,0);
 
-			miczThunderStatsTab.ui.loadIdentitiesSelector('identities_selector');
+			miczThunderStatsTab.ui.loadIdentitiesSelector('identities_selector',miczThunderStatsCore.custom_account_key);
 
 			miczLogger.log("Identities loaded.",0);
 			miczLogger.log("ThunderStats ready.",0);

@@ -13,7 +13,7 @@ var miczThunderStatsTab = {
 
 	onLoad: function(){
 
-			miczLogger.setLogger(true);
+			miczLogger.setLogger(true,miczThunderStatsPrefs.isDebug);
 
 			miczLogger.log("ThunderStats starting...",0);
 

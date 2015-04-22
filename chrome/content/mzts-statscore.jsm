@@ -78,7 +78,7 @@ var miczThunderStatsCore = {
 			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] account_custom_identities '+JSON.stringify(account_custom_identities)+'\r\n');
 			if(account_custom_identities!=''){
 				this.accounts[this.custom_account_key]={};
-				this.accounts[this.custom_account_key].name="Custom Identities";
+				this.accounts[this.custom_account_key].name="Other Identities";
 				this.accounts[this.custom_account_key].key=this.custom_account_key;
 				this.accounts[this.custom_account_key].identities=new Array();
 				let account_custom_identities_arr=account_custom_identities.split(',');

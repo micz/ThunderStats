@@ -18,6 +18,7 @@
     <tabbox id="ts_tabbox">
       <tabs>
         <tab label="&ThunderStats.TabSettings.label;"/>
+        <tab label="&ThunderStats.TabCustomIdentities.label;"/>
         <tab label="&ThunderStats.TabSettingsDebug.label;"/>
         <tab label="&ThunderStats.TabInfo.label;"/>
       </tabs>
@@ -29,6 +30,12 @@
             preference="ThunderStats.identities_selector" />
           <label control="symbol" value=" "/>
           <label control="symbol" value="* You need to close and reopen the ThunderStats tab to make the change effective."/>
+        </tabpanel>
+        <tabpanel id="tstab_cstmids" orient="vertical">
+		  <label control="symbol" value="Manage here your custom identitites."/>
+          <label control="symbol" value=" "/>
+
+          <label control="symbol" value=" "/>
         </tabpanel>
         <tabpanel id="tstab_debug" orient="vertical">
 		  <label control="symbol" value="Set here the debug options."/>

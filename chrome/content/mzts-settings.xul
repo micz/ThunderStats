@@ -28,6 +28,11 @@
           <label control="symbol" value=" "/>
           <checkbox id="ThunderStats.identities_selector_checkbox" label="Show identities in the accounts selector (*)"
             preference="ThunderStats.identities_selector" />
+          <hbox><menulist id="ts_strt_accnt" value="Choose an account" oncommand="miczThunderStatsPrefPanel.onDefaultAccountChange();">
+			  <menupopup>
+		 	 </menupopup>
+			</menulist>
+		  </hbox>
           <label control="symbol" value=" "/>
           <label control="symbol" value="* You need to close and reopen the ThunderStats tab to make the change effective."/>
         </tabpanel>
@@ -35,7 +40,7 @@
 		  <label control="symbol" value="Manage here your custom identitites."/>
           <label control="symbol" value=" "/>
           <label control="symbol" value="Account"/>
-          <menulist id="ts_accnt_lst" value="Choose an account" oncommand="miczThunderStatsPrefPanel.onAccountChange();">
+          <menulist id="ts_accnt_lst" value="Choose an account" oncommand="miczThunderStatsPrefPanel.onCIAccountChange();">
 			  <menupopup>
 				<menuitem label="Choose an account" value="0" />
 		 	 </menupopup>

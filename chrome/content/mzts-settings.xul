@@ -5,7 +5,7 @@
 <prefwindow id="ThunderStats_Settings"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   title="&ThunderStats.SettingsTitle;"
-  onload="miczThunderStatsPref.onLoad();">
+  onload="miczThunderStatsPrefPanel.onLoad();">
   <prefpane id="ThunderStats_PrefPane">
   	<preferences>
 		<preference id="ThunderStats.identities_selector"

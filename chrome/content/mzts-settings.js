@@ -1,5 +1,5 @@
 "use strict";
-var miczThunderStatsPref = {
+var miczThunderStatsPrefPanel = {
 
 	onLoad: function(){
 		//Fixing window height

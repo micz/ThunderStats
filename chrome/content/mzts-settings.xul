@@ -34,7 +34,14 @@
         <tabpanel id="tstab_cstmids" orient="vertical">
 		  <label control="symbol" value="Manage here your custom identitites."/>
           <label control="symbol" value=" "/>
-
+          <label control="symbol" value="Account"/>
+          <menulist id="ts_accnt_lst" value="Choose an account" oncommand="miczThunderStatsPrefPanel.onAccountChange();">
+			  <menupopup>
+				<menuitem label="Choose an account" value="0" />
+		 	 </menupopup>
+			</menulist>
+		  <label control="symbol" value="Custom Identitites"/>
+		  <textbox id="ts_cstmids" value="" multiline="true" rows="5"/>
           <label control="symbol" value=" "/>
         </tabpanel>
         <tabpanel id="tstab_debug" orient="vertical">

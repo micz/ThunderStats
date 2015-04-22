@@ -7,13 +7,15 @@ var miczThunderStatsPrefPanel = {
 	onLoad: function(){
 
 		//Loading accounts
+		let chosen_strt_acc=miczThunderStatsPrefs.getCharPref_TS('strt_acc');
 		let acc_list = document.getElementById('ts_accnt_lst');
 		let strt_acc = document.getElementById('ts_strt_accnt');
 		let strt_acc_sel_idx=0;
+		strt_acc.appendItem("All Accounts",0);
 		for(let key in miczThunderStatsCore.accounts){
 			acc_list.appendItem(miczThunderStatsCore.accounts[key].name,key);
 			let curr_item=strt_acc.appendItem(miczThunderStatsCore.accounts[key].name,key);
-			if(key==miczThunderStatsPrefs.getCharPref_TS('strt_acc')){
+			if(key==chosen_strt_acc){
 				strt_acc_sel_idx=strt_acc.getIndexOfItem(curr_item);
 			}
 		}

@@ -38,6 +38,12 @@ miczThunderStatsTab.ui={
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
 				$jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key);
 				$jQ("#"+selector_id).change();
+			}else{	//choose the chosen startup account from prefs
+				let strt_acc=miczThunderStatsPrefs.getCharPref_TS('strt_acc');
+				if(strt_acc!=0){
+					$jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[strt_acc].key);
+					$jQ("#"+selector_id).change();
+				}
 			}
 		}
 		/*for(let key in miczThunderStatsCore.identities){

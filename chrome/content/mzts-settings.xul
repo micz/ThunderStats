@@ -35,6 +35,7 @@
           <checkbox id="ThunderStats.identities_selector_checkbox" label="Show identities in the accounts selector (*)"
             preference="ThunderStats.identities_selector" />
           <label control="symbol" value=" "/>
+          <label control="symbol" value=" "/>
           <label control="symbol" value="* You need to close and reopen the ThunderStats tab to make the change effective."/>
         </tabpanel>
         <tabpanel id="tstab_cstmids" orient="vertical">

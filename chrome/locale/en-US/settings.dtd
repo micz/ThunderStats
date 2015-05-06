@@ -1,5 +1,5 @@
 <!ENTITY ThunderStats.SettingsTitle "ThunderStats Settings">
-<!ENTITY ThunderStats.GlobalDescSettingTab "In version 1.0 all the ThunderStats options will be available here!">
+<!ENTITY ThunderStats.GlobalDescSettingTab "Use these options to customize your ThunderStats experience!">
 <!ENTITY ThunderStats.TabSettings.label "General">
 <!ENTITY ThunderStats.TabSettingsDebug.label "Debug">
 <!ENTITY ThunderStats.TabCustomIdentities.label "Custom Identities">

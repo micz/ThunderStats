@@ -32,7 +32,7 @@ var miczThunderStatsPrefPanel = {
 	onCIAccountChange: function(){
 		let acc_list = document.getElementById('ts_accnt_lst');
 		let cstid_txtbox = document.getElementById('ts_cstmids');
-		let sel_account_identities=miczThunderStatsCore.accounts[acc_list.selectedItem.value].identities;
+/*		let sel_account_identities=miczThunderStatsCore.accounts[acc_list.selectedItem.value].identities;
 		dump(">>>>>>>>>>>>> miczThunderStatsPrefPanel: [onAccountChange] acc_list.selectedItem.value "+acc_list.selectedItem.value+"\r\n");
 		dump(">>>>>>>>>>>>> miczThunderStatsPrefPanel: [onAccountChange] sel_account_identities "+JSON.stringify(sel_account_identities)+"\r\n");
 		cstid_txtbox.value="";
@@ -41,7 +41,16 @@ var miczThunderStatsPrefPanel = {
 			if(curr_identity.custom){
 				cstid_txtbox.value+=curr_identity.email+"\r\n";
 			}
-		}
+		}*/
+		let sel_account_identities=miczThunderStatsPrefs.accountCustomIdentities(acc_list.selectedItem.value);
+		cstid_txtbox.value=sel_account_identities.replace(',',"\r\n");
+	},
+
+	onCIAccountTextbox: function(){
+		let acc_list = document.getElementById('ts_accnt_lst');
+		let cstid_txtbox = document.getElementById('ts_cstmids');
+		let ci_pref_string=cstid_txtbox.value.replace(/(?:\r\n|\r|\n)/g, ',');
+		miczThunderStatsPrefs.saveAccountCustomIdentities(acc_list.selectedItem.value,ci_pref_string);
 	},
 
 	onDefaultAccountChange: function(){

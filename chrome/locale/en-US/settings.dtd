@@ -6,3 +6,4 @@
 <!ENTITY ThunderStats.TabInfo.label "Info">
 <!ENTITY ThunderStats.InfoMainDesc "This addon is free and developed in my spare time. If you're using it in your every day routine, feel free to support it with a little donation clicking on the link below. Thanks!!">
 <!ENTITY ThunderStats.DonateLink "Make a donation!">
+<!ENTITY ThunderStats.ReopenTabDesc "You need to close and reopen the ThunderStats tab to make the changes effective.">

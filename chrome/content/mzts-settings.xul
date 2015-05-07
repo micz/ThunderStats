@@ -47,7 +47,7 @@
 		</grid>
           <label control="symbol" value=" "/>
           <label control="symbol" value=" "/>
-          <label control="symbol" value="* You need to close and reopen the ThunderStats tab to make the change effective."/>
+          <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>
         </tabpanel>
         <tabpanel id="tstab_cstmids" orient="vertical">
 		  <label control="symbol" value="Manage here your custom identitites."/>
@@ -67,11 +67,11 @@
 					</menulist>
 				</row>
 			<vbox><label control="symbol" value="Custom Identitites for the selected Account"/>
-		  		<textbox id="ts_cstmids" value="" multiline="true" rows="5"/>
+		  		<textbox id="ts_cstmids" value="" multiline="true" rows="5" onblur="miczThunderStatsPrefPanel.onCIAccountTextbox();"/>
 		  	</vbox>
 			  </rows>
 		</grid>
-          <label control="symbol" value=" "/>
+          <label control="symbol" value="&ThunderStats.ReopenTabDesc;"/>
         </tabpanel>
         <tabpanel id="tstab_debug" orient="vertical">
 		  <label control="symbol" value="Set here the debug options."/>

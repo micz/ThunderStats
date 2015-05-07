@@ -31,6 +31,11 @@ var miczThunderStatsPrefs = {
 		}
 	},
 
+	saveAccountCustomIdentities:function(account_key,pref_value){
+		let account_pref='acc_cust_ids.'+account_key;
+		return this.setCharPref_TS(account_pref,pref_value);
+	},
+
 	/*isDebugOption: function(option) { // granular debugging
 		if(!this.isDebug) return false;
 		try {return this.getBoolPref_TS("debug." + option);}

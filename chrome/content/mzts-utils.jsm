@@ -116,6 +116,14 @@ var miczThunderStatsUtils = {
 		return miczThunderStatsPrefs.getBoolPref("mailnews.database.global.indexer.enabled");
 	},
 
+	activateGlobalIndexing:function(){
+		let promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+		if(!promptService.confirm(null,"Attention!","Do you really want to activate the Global Search and Indexer?"))return;
+		miczThunderStatsPrefs.setBoolPref("mailnews.database.global.indexer.enabled",true);
+		miczThunderStatsTab.ui.showGlobalIndexingWarning(true);
+		alert("Global Search and Indexer activated.\r\nIt could take some time to index your messages...");
+	},
+
 	getAccountsOrder:function(custom_account_key){
 		let prefsc = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
 		let prefs = prefsc.getBranch("mail.accountmanager.");

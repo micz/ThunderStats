@@ -102,6 +102,20 @@ miczThunderStatsTab.ui={
 		return outString;
 	},
 
+	showGlobalIndexingWarning:function(show){
+		if(!show){
+			$jQ('#mzts-main-error').show();
+			$jQ('#mzts-idnt_sel').hide();
+			$jQ('#mzts-last_msg').hide();
+			$jQ('#mzts-idx_update').hide();
+		}else{
+			$jQ('#mzts-main-error').hide();
+			$jQ('#mzts-idnt_sel').show();
+			$jQ('#mzts-last_msg').show();
+			$jQ('#mzts-idx_update').show();
+		}
+	},
+
 	util7DaysGraph_InsertLinebreaks:function(d){
 		let el = d3.select(this);
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] d: "+JSON.stringify(d)+"\r\n");

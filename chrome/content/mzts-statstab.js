@@ -26,10 +26,7 @@ var miczThunderStatsTab = {
 
 			//check if global indexing is active. Without global indexing we have no data to use!
 			if(!miczThunderStatsUtils.checkGlobalIndexing()){
-				$jQ('#mzts-main-error').show();
-				$jQ('#mzts-idnt_sel').hide();
-				$jQ('#mzts-last_msg').hide();
-				$jQ('#mzts-idx_update').hide();
+				miczThunderStatsTab.ui.showGlobalIndexingWarning(false);
 				miczLogger.log("Thunderbird Global Indexing is not active!",2);
 			}
 

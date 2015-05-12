@@ -48,8 +48,9 @@ font-weight:normal;
 }
 
 .chart_inbox0_datemsg{float:left;width:20%;min-width:90px;height:220px;}
-.chart_inbox0_folder_spread{float:left;width:80%;min-width:200px;min-height:200px;}
-.chart_inbox0_folder_spread svg{min-width:300px;min-height:200px;display:block;margin:0 auto;width:100%;}
+
+.chart_inbox0_folder_spread{float:left;width:80%;min-width:200px;min-height:250px;}
+.chart_inbox0_folder_spread svg{min-width:300px;min-height:250px;display:block;margin:0 auto;width:100%;}
 
 .chart_inbox0_datemsg text, .chart_inbox0_folder_spread text{
   font: 12px sans-serif;

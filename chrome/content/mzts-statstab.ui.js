@@ -2,6 +2,10 @@
 
 miczThunderStatsTab.ui={
 
+	last_pos0:0,
+	last_pos1:0,
+	label_height:15,
+
 	showLoadingElement:function(element){
 		$jQ("#"+element).show();
 	},
@@ -345,6 +349,12 @@ miczThunderStatsTab.ui={
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
+		miczThunderStatsTab.ui.last_pos0=0;
+		miczThunderStatsTab.ui.last_pos1=0;
+
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+
+		//data_array=JSON.parse('[{"Folder":"All Mail","Num":10},{"Folder":"Inbox","Num":21},{"Folder":"test1","Num":21},{"Folder":"test2","Num":21},{"Folder":"test3","Num":21},{"Folder":"test4","Num":21},{"Folder":"test5","Num":21},{"Folder":"test6","Num":21},{"Folder":"test7","Num":2},{"Folder":"test8","Num":3},{"Folder":"test9","Num":14},{"Folder":"test10","Num":14},{"Folder":"test11","Num":14},{"Folder":"test12","Num":14}]');
 
 		let svg = d3.select("#"+element_id_txt)
 			.append("svg")
@@ -358,9 +368,11 @@ miczThunderStatsTab.ui={
 		svg.append("g")
 			.attr("class", "lines");
 
-		let width = 350,
-			height = 200,
-			radius = Math.min(width, height) / 2;
+		let arc_width = 350,
+			arc_height = 200,
+			width = 350,
+			height = 250,
+			radius = Math.min(arc_width, arc_height) / 2;
 
 		//calculating total elements
 		let data_sum=0;
@@ -445,32 +457,23 @@ miczThunderStatsTab.ui={
 				return d.startAngle + (d.endAngle - d.startAngle)/2;
 			}
 
-			text.transition().duration(1000)
-				.attrTween("transform", function(d) {
-					this._current = this._current || d;
-					let interpolate = d3.interpolate(this._current, d);
-					this._current = interpolate(0);
-					return function(t) {
-						let d2 = interpolate(t);
-						let pos = outerArc.centroid(d2);
-						pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+			text.attr("transform", function(d) {
+						let pos = outerArc.centroid(d);
+						pos[0] = radius * (midAngle(d) < Math.PI ? 1 : -1);
+						pos[1] = miczThunderStatsTab.ui.utilInbox0FolderSpreadGraph_LabelPosition(pos);
+						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] "+d.data.label+" "+JSON.stringify(pos)+"\r\n");
 						return "translate("+ pos +")";
-					};
 				})
-				.styleTween("text-anchor", function(d){
-					this._current = this._current || d;
-					let interpolate = d3.interpolate(this._current, d);
-					this._current = interpolate(0);
-					return function(t) {
-						let d2 = interpolate(t);
-						return midAngle(d2) < Math.PI ? "start":"end";
-					};
+				.style("text-anchor", function(d){
+					return midAngle(d) < Math.PI ? "start":"end";
 				});
 
 			text.exit()
 				.remove();
 
 			/* ------- SLICE TO TEXT POLYLINES -------*/
+			miczThunderStatsTab.ui.last_pos0=0;
+			miczThunderStatsTab.ui.last_pos1=0;
 
 			var polyline = svg.select(".lines").selectAll("polyline")
 				.data(pie(norm_data), key);
@@ -478,22 +481,65 @@ miczThunderStatsTab.ui={
 			polyline.enter()
 				.append("polyline");
 
-			polyline.transition().duration(1000)
-				.attrTween("points", function(d){
-					this._current = this._current || d;
-					let interpolate = d3.interpolate(this._current, d);
-					this._current = interpolate(0);
-					return function(t) {
-						let d2 = interpolate(t);
-						let pos = outerArc.centroid(d2);
-						pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-						return [arc.centroid(d2), outerArc.centroid(d2), pos];
-					};
+			polyline.attr("points", function(d){
+					let pos = outerArc.centroid(d);
+					pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
+					pos[1] = miczThunderStatsTab.ui.utilInbox0FolderSpreadGraph_LabelPosition(pos);
+					return [arc.centroid(d), outerArc.centroid(d), pos];
 				});
 
 			polyline.exit()
 				.remove();
-
 	},
+
+	utilInbox0FolderSpreadGraph_LabelPosition:function(pos){
+
+		if((miczThunderStatsTab.ui.last_pos0==0)||(miczThunderStatsTab.ui.last_pos1==0)){
+			miczThunderStatsTab.ui.last_pos0=pos[0];
+			miczThunderStatsTab.ui.last_pos1=pos[1];
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label\r\n");
+			return pos[1];
+		}	//first label
+		if(pos[0]>0){	//starting from 12 hours CW...
+			if(pos[1]<0){ //first quarter
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first quarter\r\n");
+				let label_diff=pos[1]-miczThunderStatsTab.ui.last_pos1;
+				if(label_diff<miczThunderStatsTab.ui.label_height){
+					pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
+				}
+			}else{	//second quarter
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] second quarter\r\n");
+				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1);
+				if(label_diff<miczThunderStatsTab.ui.label_height){
+					pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
+				}
+			}
+		}else{	//second half
+			if(miczThunderStatsTab.ui.last_pos0>0){	//first label in the second half
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label in the second half\r\n");
+				miczThunderStatsTab.ui.last_pos0=pos[0];
+				miczThunderStatsTab.ui.last_pos1=pos[1];
+				return pos[1];
+			}
+			if(pos[1]>0){ //third quarter
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] third quarter\r\n");
+				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1);
+				if(label_diff<miczThunderStatsTab.ui.label_height){
+					pos[1]-=miczThunderStatsTab.ui.label_height-label_diff;
+				}
+			}else{	//fourth quarter
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fourth quarter\r\n");
+				let label_diff=miczThunderStatsTab.ui.last_pos1-pos[1];
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] label_diff: "+label_diff+"\r\n");
+				if(label_diff<miczThunderStatsTab.ui.label_height){
+					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fixing position\r\n");
+					pos[1]-=miczThunderStatsTab.ui.label_height-label_diff;
+				}
+			}
+		}
+		miczThunderStatsTab.ui.last_pos0=pos[0];
+		miczThunderStatsTab.ui.last_pos1=pos[1];
+		return pos[1];
+	}
 
 };

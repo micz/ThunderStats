@@ -51,6 +51,7 @@
         </tabpanel>
         <tabpanel id="tstab_cstmids" orient="vertical">
 		  <label control="symbol" value="Manage here your custom identitites."/>
+          <description class="mzts-desc">A custom identity is an email address, different from the ones registered for the account, with you receive mails. Usually are email addresses of mailing lists that you're subcribed to, where your email address is not used in any "to" or "cc" fields.</description>
           <label control="symbol" value=" "/>
           <grid flex="1">
 			  <columns>
@@ -71,6 +72,7 @@
 		  	</vbox>
 			  </rows>
 		</grid>
+		  <label control="symbol" value="The changes made here are immediately saved."/>
           <label control="symbol" value="&ThunderStats.ReopenTabDesc;"/>
         </tabpanel>
         <tabpanel id="tstab_debug" orient="vertical">

@@ -641,6 +641,7 @@ miczThunderStatsTab.callback.stats_today_inbox0_folder_spread = {
 				}else{
 					$jQ("#today_inbox0_folder_spread_nomails").show();
 					miczThunderStatsTab.ui.drawInbox0FolderSpreadGraph('today_inbox0_folder_spread',{});
+					$jQ("#today_inbox0_folder_spread_svg_graph").hide();
 				}
 				miczLogger.log("Today Inbox 0 data loaded.",0);
 				this.data=new Array();

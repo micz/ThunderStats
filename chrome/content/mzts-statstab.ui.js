@@ -309,7 +309,7 @@ miczThunderStatsTab.ui={
 		  .attr("title",function(datum) { return (datum.aggregate?'Before<br/>':'')+miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>Mails: "+datum.Num+" ("+(datum.normalized*100).toFixed(0)+"%)";})
 		  .attr("fill", function(d) { return color(d.Date); });
 
-		  $jQ('rect.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false});
+		  $jQ('rect.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false,position:'left'});
 
 		//data labels
 		/*chart.selectAll("text")

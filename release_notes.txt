@@ -2,7 +2,8 @@
 
 ==========
 Version 0.4 - ??/??/2015
--
+- Inbox Zero Date Spread graph tooltip's position is now on the left.
+- 
 ==========
 Version 0.3 - 13/05/2015
 - Log panel removed. Messages are now printed on the Thunderbird error console.

@@ -1,6 +1,9 @@
 -= ThunderStats Thunderbird Addon Release Notes =-
 
 ==========
+Version 0.4 - ??/??/2015
+-
+==========
 Version 0.3 - 13/05/2015
 - Log panel removed. Messages are now printed on the Thunderbird error console.
 - Added an option to choose the selected startup account.

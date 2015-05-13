@@ -1,2 +1,5 @@
 <!ENTITY ThunderStats.TABTitle "ThunderStats Settings">
 <!ENTITY ThunderStats.DonateLink "Make a donation!">
+<!ENTITY ThunderStats.NoSearchWarn "Global Search and Indexer is not active!">
+<!ENTITY ThunderStats.NoSearchWarn2 "Click here to activate it">
+<!ENTITY ThunderStats.ChooseAccount "Choose Account">

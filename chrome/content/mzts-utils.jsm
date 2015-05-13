@@ -4,6 +4,7 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsUtils"];
 
 Components.utils.import("resource:///modules/iteratorUtils.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 
 var miczThunderStatsUtils = {
 
@@ -117,11 +118,12 @@ var miczThunderStatsUtils = {
 	},
 
 	activateGlobalIndexing:function(){
+    	let _bundleCW = miczThunderStatsI18n.createBundle("mzts-searchwarn");
 		let promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-		if(!promptService.confirm(null,"Attention!","Do you really want to activate the Global Search and Indexer?"))return;
+		if(!promptService.confirm(null,_bundleCW.GetStringFromName("ThunderStats.Attention"),_bundleCW.GetStringFromName("ThunderStats.SearchWarnQuestion")))return;
 		miczThunderStatsPrefs.setBoolPref("mailnews.database.global.indexer.enabled",true);
 		miczThunderStatsTab.ui.showGlobalIndexingWarning(true);
-		alert("Global Search and Indexer activated.\r\nIt could take some time to index your messages...");
+		alert(_bundleCW.GetStringFromName("ThunderStats.SearchWarnMsg1")+"\r\n"+_bundleCW.GetStringFromName("ThunderStats.SearchWarnMsg2"));
 	},
 
 	getAccountsOrder:function(custom_account_key){

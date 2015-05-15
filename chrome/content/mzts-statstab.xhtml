@@ -70,11 +70,11 @@
 		  <div id="mzts-main-error">&ThunderStats.NoSearchWarn; <span class="outlink" onclick="miczThunderStatsUtils.activateGlobalIndexing();">&ThunderStats.NoSearchWarn2;</span></div>
 		  <div id="mzts-idnt_sel">&ThunderStats.ChooseAccount;:&nbsp;
       		<select id="identities_selector"></select>&nbsp;
-			<button type="button" onclick="miczThunderStatsTab.updateStats();">Update</button>
+			<button type="button" onclick="miczThunderStatsTab.updateStats();">&ThunderStats.Update;</button>
 		  </div>
 		<div id="mzts-setup_icon">
-			<img src="chrome://thunderstats/skin/mzts-setup.png" alt="Setup" onclick="miczThunderStatsTab.ui.openPrefWindow();"
-			title="Setup" class="tooltip"/>
+			<img src="chrome://thunderstats/skin/mzts-setup.png" alt="&ThunderStats.Setup;" onclick="miczThunderStatsTab.ui.openPrefWindow();"
+			title="&ThunderStats.Setup;" class="tooltip"/>
 		</div>
 		<div id="mzts-updates">
 			<span id="mzts-idx_update"></span><br/>
@@ -85,10 +85,10 @@
 <div id="content_wrapper">
 	<div class="tabs">
 		<ul class="tab-links">
-			<li class="active"><a href="#tab_today">Today</a></li>
-			<li><a href="#tab_yesterday">Yesterday</a></li>
-			<li><a href="#tab_7days">Last 7 days</a></li>
-			<li><a href="#tab_info">Info</a></li>
+			<li class="active"><a href="#tab_today">&ThunderStats.Today;</a></li>
+			<li><a href="#tab_yesterday">&ThunderStats.Yesterday;</a></li>
+			<li><a href="#tab_7days">&ThunderStats.Last7days;</a></li>
+			<li><a href="#tab_info">&ThunderStats.Info;</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -97,20 +97,20 @@
 				  <div id="tier1_today" class="tier1">
 					<div class="chunk" id="top_left_chunk_today">
 				  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Today Mails</h2>
+						<h2 class="list_heading cropped">&ThunderStats.TodayMails;</h2>
 						<span id="today_date" class="list_heading_date"></span>
 					  </div>
-					<p><span>Sent mails: </span><span id="today_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_sent_wait"/></p>
-					<p><span>Received mails: </span><span id="today_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_rcvd_wait"/></p>
-					<p><span class="yesterday_incremental">Yesterday at this time it was <span id="yesterday_incremental_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_incremental_sent_wait"/> sent and <span id="yesterday_incremental_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_incremental_rcvd_wait"/> received.</span></p>
+					<p><span>&ThunderStats.SentMails;: </span><span id="today_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="today_sent_wait"/></p>
+					<p><span>&ThunderStats.ReceivedMails;: </span><span id="today_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="today_rcvd_wait"/></p>
+					<p><span class="yesterday_incremental">Yesterday at this time it was <span id="yesterday_incremental_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="yesterday_incremental_sent_wait"/> sent and <span id="yesterday_incremental_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="yesterday_incremental_rcvd_wait"/> received.</span></p>
 					</div>
 					<div class="chunk" id="top_right_chunk_today">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Inbox Zero Status</h2>
+						<h2 class="list_heading cropped">&ThunderStats.InboxZeroStatus;</h2>
 					  </div>
 					  <div class="chart_inbox0">
-						  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="today_inbox0_wait"/></div>
-						  <div>Total mails in the inbox: <span id="today_inbox0_inboxmsg"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="today_inbox0_inboxmsg_wait"/></div>
+						  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="today_inbox0_wait"/></div>
+						  <div>&ThunderStats.TotalInbox;: <span id="today_inbox0_inboxmsg"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="today_inbox0_inboxmsg_wait"/></div>
 						  <div id="today_inbox0_folder_spread" class="chart_inbox0_folder_spread"><p class="chart_info">Today mails folder locations chart</p><p class="chart_info_nomail" id="today_inbox0_folder_spread_nomails">No mails received today!</p></div>
 						  <div id="today_inbox0_datemsg" class="chart_inbox0_datemsg"><p class="chart_info">Inbox mails date spreading chart</p><p class="chart_info_nomail" id="today_inbox0_datemsg_nomails">No mails in the Inbox!</p></div>
 					  </div>
@@ -119,16 +119,16 @@
 				  <div id="tier2_today" class="tier2">
 					<div class="chunk" id="bottom_left_chunk_today">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Today Top 10 Recipients</h2>
+						<h2 class="list_heading cropped">&ThunderStats.TodayTop10Recipients;</h2>
 					  </div>
-					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="today_recipients_wait"/></div>
+					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="today_recipients_wait"/></div>
 					  <div id="today_recipients"></div>
 					</div>
 					<div class="chunk" id="bottom_right_chunk_today">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Today Top 10 Senders</h2>
+						<h2 class="list_heading cropped">&ThunderStats.TodayTop10Senders;</h2>
 					  </div>
-					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="today_senders_wait"/></div>
+					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="today_senders_wait"/></div>
 					  <div id="today_senders"></div>
 					  </div>
 				  </div>
@@ -140,19 +140,19 @@
 				  <div id="tier1_yesterday" class="tier1">
 					<div class="chunk" id="top_left_chunk_yesterday">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Yesterday Mails</h2>
+						<h2 class="list_heading cropped">&ThunderStats.YesterdayMails;</h2>
 						<span id="yesterday_date" class="list_heading_date"></span>
 					  </div>
-						<p><span>Sent mails: </span><span id="yesterday_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_sent_wait"/></p>
-						<p><span>Received mails: </span><span id="yesterday_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_rcvd_wait"/></p>
+						<p><span>&ThunderStats.SentMails;: </span><span id="yesterday_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="yesterday_sent_wait"/></p>
+						<p><span>&ThunderStats.ReceivedMails;: </span><span id="yesterday_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="yesterday_rcvd_wait"/></p>
 					</div>
 					<div class="chunk" id="top_right_chunk_yesterday">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Inbox Zero Status</h2>
+						<h2 class="list_heading cropped">&ThunderStats.InboxZeroStatus;</h2>
 					  </div>
 					  <div class="chart_inbox0">
-						  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="yesterday_inbox0_wait"/></div>
-						  <div>Total mails in the inbox: <span id="yesterday_inbox0_inboxmsg"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="Loading..." id="yesterday_inbox0_inboxmsg_wait"/></div>
+						  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="yesterday_inbox0_wait"/></div>
+						  <div>&ThunderStats.TotalInbox;: <span id="yesterday_inbox0_inboxmsg"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="yesterday_inbox0_inboxmsg_wait"/></div>
 						  <div id="yesterday_inbox0_folder_spread" class="chart_inbox0_folder_spread"><p class="chart_info_nomail" id="yesterday_inbox0_folder_spread_nomails">No mails received yesterday!</p><p class="chart_info">Yesterday mails folder locations chart</p></div>
 						  <div id="yesterday_inbox0_datemsg" class="chart_inbox0_datemsg"><p class="chart_info_nomail" id="yesterday_inbox0_datemsg_nomails">No mails in the Inbox!</p><p class="chart_info">Inbox mails date spreading chart</p></div>
 					  </div>
@@ -163,14 +163,14 @@
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">Yesterday Top 10 Recipients</h2>
 					  </div>
-					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="yesterday_recipients_wait"/></div>
+					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="yesterday_recipients_wait"/></div>
 					  <div id="yesterday_recipients"></div>
 					</div>
 					<div class="chunk" id="bottom_right_chunk_yesterday">
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">Yesterday Top 10 Senders</h2>
 					  </div>
-					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="yesterday_senders_wait"/></div>
+					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="yesterday_senders_wait"/></div>
 					  <div id="yesterday_senders"></div>
 					  </div>
 				  </div>
@@ -182,16 +182,16 @@
 				  <div id="tier1_7days" class="tier1">
 					<div class="chunk" id="top_left_chunk_7days">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Sent Mails: <span id="7days_sent_total"></span></h2>
+						<h2 class="list_heading cropped">&ThunderStats.SentMails;: <span id="7days_sent_total"></span></h2>
 					  </div>
-					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="7days_sent_wait"/></div>
+					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="7days_sent_wait"/></div>
 						<div id="chart_7days_sent" class="chart_7days"></div>
 					</div>
 					<div class="chunk" id="top_right_chunk_7days">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">Received Mails: <span id="7days_rcvd_total"></span></h2>
+						<h2 class="list_heading cropped">&ThunderStats.ReceivedMails;: <span id="7days_rcvd_total"></span></h2>
 					  </div>
-						<div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="7days_rcvd_wait"/></div>
+						<div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="7days_rcvd_wait"/></div>
 						<div id="chart_7days_rcvd" class="chart_7days"></div>
 					</div>
 				  </div>
@@ -200,14 +200,14 @@
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">Top 10 Recipients</h2>
 					  </div>
-					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="7days_recipients_wait"/></div>
+					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="7days_recipients_wait"/></div>
 						<div id="7days_recipients"></div>
 					</div>
 					<div class="chunk" id="bottom_right_chunk_7days">
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">Top 10 Senders</h2>
 					  </div>
-					  	<div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="Loading..." id="7days_senders_wait"/></div>
+					  	<div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="7days_senders_wait"/></div>
 						<div id="7days_senders"></div>
 					  </div>
 				  </div>

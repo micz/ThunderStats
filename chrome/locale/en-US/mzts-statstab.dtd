@@ -3,3 +3,18 @@
 <!ENTITY ThunderStats.NoSearchWarn "Global Search and Indexer is not active!">
 <!ENTITY ThunderStats.NoSearchWarn2 "Click here to activate it">
 <!ENTITY ThunderStats.ChooseAccount "Choose Account">
+<!ENTITY ThunderStats.Update "Update">
+<!ENTITY ThunderStats.Setup "Setup">
+<!ENTITY ThunderStats.Today "Today">
+<!ENTITY ThunderStats.Yesterday "Yesterday">
+<!ENTITY ThunderStats.Last7days "Last 7 days">
+<!ENTITY ThunderStats.Info "Info">
+<!ENTITY ThunderStats.TodayMails "Today Mails">
+<!ENTITY ThunderStats.Loading "Loading">
+<!ENTITY ThunderStats.SentMails "Sent mails">
+<!ENTITY ThunderStats.ReceivedMails "Received mails">
+<!ENTITY ThunderStats.InboxZeroStatus "Inbox Zero Status">
+<!ENTITY ThunderStats.TotalInbox "Total mails in the inbox">
+<!ENTITY ThunderStats.YesterdayMails "Yesterday Mails">
+<!ENTITY ThunderStats.TodayTop10Recipients "Today Top 10 Recipients">
+<!ENTITY ThunderStats.TodayTop10Senders "Today Top 10 Senders">

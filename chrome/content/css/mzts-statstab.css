@@ -5,7 +5,7 @@ html,body{margin:0;padding:0;height:100%;background:white;min-height:100% !impor
 .chart_info{font-size:0.8em;margin-bottom:0;}
 .chart_info_nomail{display:none;}
 #mzts-idnt_sel{float:left;display:flex;align-items:center;height:28px;font-size:0.8em;}
-#mzts-updates{float:right;font-size:0.75em;margin-right:10px;align-items:center;height:28px;text-align:right;margin-top:-1px}
+#mzts-updates{float:right;font-size:0.75em;margin-right:10px;align-items:center;height:28px;text-align:right;margin-top:-2px}
 #mzts-setup_icon{float:right;cursor:pointer;display:flex;align-items:center;height:28px;}
 table.mzts-tinvolved{width:100%;text-align:right;}
 table.mzts-tinvolved tr.mzts-thead{padding:2px;font-weight:bold;background:grey;}

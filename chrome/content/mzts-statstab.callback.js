@@ -216,7 +216,8 @@ miczThunderStatsTab.callback.homepage_stats_today_recipients = {
 					$jQ("#today_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
-					$jQ("#today_recipients").text("No mails sent!");
+					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+					$jQ("#today_recipients").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));
 				}
 				miczLogger.log("Today recipients loaded.",0);
 				this.data=new Array();
@@ -259,7 +260,8 @@ miczThunderStatsTab.callback.homepage_stats_today_senders = {
 					$jQ("#today_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_senders handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
-					$jQ("#today_senders").text("No mails received!");
+					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+					$jQ("#today_senders").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsReceived"));
 				}
 				miczLogger.log("Today senders loaded.",0);
 				this.data=new Array();
@@ -302,7 +304,8 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_recipients = {
 					$jQ("#yesterday_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
-					$jQ("#yesterday_recipients").text("No mails sent!");
+					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+					$jQ("#yesterday_recipients").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));
 				}
 				miczLogger.log("Yesterday recipients loaded.",0);
 				this.data=new Array();
@@ -345,7 +348,8 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_senders = {
 					$jQ("#yesterday_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_senders handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
-					$jQ("#yesterday_senders").text("No mails received!");
+					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+					$jQ("#yesterday_senders").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsReceived"));
 				}
 				miczLogger.log("Yesterday senders loaded.",0);
 				this.data=new Array();
@@ -551,7 +555,8 @@ miczThunderStatsTab.callback.stats_7days_recipients = {
 					$jQ("#7days_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_7days_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
-					$jQ("#7days_recipients").text("No mails sent!");
+					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+					$jQ("#7days_recipients").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));
 				}
 				miczLogger.log("7 days recipients loaded.",0);
 				this.data=new Array();
@@ -594,7 +599,8 @@ miczThunderStatsTab.callback.stats_7days_senders = {
 					$jQ("#7days_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_7days_senders handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
-					$jQ("#7days_senders").text("No mails received!");
+					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+					$jQ("#7days_senders").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsReceived"));
 				}
 				miczLogger.log("7 days senders loaded.",0);
 				this.data=new Array();

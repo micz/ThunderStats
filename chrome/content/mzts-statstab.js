@@ -176,7 +176,7 @@ var miczThunderStatsTab = {
 		}else{	//the user selected an identity
 			output.push(id_selector_value);
 		}
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] getCurrentIdentityId '+JSON.stringify(output)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] getCurrentIdentityId '+JSON.stringify(output)+'\r\n');
 		output_obj.ids_merged=output;
 		output_obj.ids=new Array();
 		output_obj.ids_custom=new Array();

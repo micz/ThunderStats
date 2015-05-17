@@ -387,7 +387,8 @@ miczThunderStatsTab.callback.last_idx_msg = {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				if(!this.empty){
-					$jQ("#mzts-last_msg").text("Last indexed message: "+miczThunderStatsUtils.getDateTimeString(moment(this.data[1]["last_msg_date"]/1000)));
+					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+					$jQ("#mzts-last_msg").text(_bundleCW.GetStringFromName("ThunderStats.LastIndexedMessage")+": "+miczThunderStatsUtils.getDateTimeString(moment(this.data[1]["last_msg_date"]/1000)));
 				}else{
 					$jQ("#mzts-last_msg").text("");
 				}

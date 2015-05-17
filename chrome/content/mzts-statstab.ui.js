@@ -298,6 +298,8 @@ miczThunderStatsTab.ui={
 			.attr("height", h + margin.top + margin.bottom)
 			.attr("transform", "translate("+margin.left+","+margin.top+")");
 
+		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+
 		//graph bars
 		chart.selectAll("rect")
 		  .data(data_array)
@@ -310,7 +312,7 @@ miczThunderStatsTab.ui={
 		  //.attr("height", function(datum) { return datum.bar_height; })
 		  .attr("width", barWidth)
 		  .attr("class","tooltip")
-		  .attr("title",function(datum) { return (datum.aggregate?'Before<br/>':'')+miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>Mails: "+datum.Num+" ("+(datum.normalized*100).toFixed(0)+"%)";})
+		  .attr("title",function(datum) { return (datum.aggregate?_bundleCW.GetStringFromName("ThunderStats.Before")+'<br/>':'')+miczThunderStatsUtils.getDateStringYY(moment(datum.Date),false)+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.Mails")+": "+datum.Num+" ("+(datum.normalized*100).toFixed(0)+"%)";})
 		  .attr("fill", function(d) { return color(d.Date); });
 
 		  $jQ('rect.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false,position:'left'});
@@ -446,6 +448,8 @@ miczThunderStatsTab.ui={
 			let text = svg.select(".labels").selectAll("text")
 				.data(pie(norm_data), key);
 
+			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+
 			text.enter()
 				.append("text")
 				.attr("dy", ".35em")
@@ -453,7 +457,7 @@ miczThunderStatsTab.ui={
 					return d.data.label+" ("+d.data.value+")";
 				})
 				.attr("class","tooltip")
-				.attr("title",function(d){ return d.data.label+"<br/>Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
+				.attr("title",function(d){ return d.data.label+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.Mails")+": "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
 
 			  $jQ('text.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false});
 

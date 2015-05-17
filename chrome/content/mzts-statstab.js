@@ -31,7 +31,7 @@ var miczThunderStatsTab = {
 			}
 
 			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale());
-			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale()+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale()+"\r\n");
 
 			//Setting the correct locale to display dates and times
 			moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());

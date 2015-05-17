@@ -18,3 +18,16 @@
 <!ENTITY ThunderStats.YesterdayMails "Yesterday Mails">
 <!ENTITY ThunderStats.TodayTop10Recipients "Today Top 10 Recipients">
 <!ENTITY ThunderStats.TodayTop10Senders "Today Top 10 Senders">
+<!ENTITY ThunderStats.YesterdayThisTime "Yesterday at this time">
+<!ENTITY ThunderStats.sent "sent">
+<!ENTITY ThunderStats.received "received">
+<!ENTITY ThunderStats.TodayFolderLocation "Today mails folder locations chart">
+<!ENTITY ThunderStats.NoMailsReceivedToday "No mails received today!">
+<!ENTITY ThunderStats.InboxMailsDateSpreading "Inbox mails date spreading chart">
+<!ENTITY ThunderStats.NoMailsInbox "No mails in the Inbox!">
+<!ENTITY ThunderStats.NoMailsReceivedYesterday "No mails received yesterday!">
+<!ENTITY ThunderStats.YesterdayFolderLocation "Yesterday mails folder locations chart">
+<!ENTITY ThunderStats.YesterdayTop10Recipients "Yesterday Top 10 Recipients">
+<!ENTITY ThunderStats.YesterdayTop10Senders "Yesterday Top 10 Senders">
+<!ENTITY ThunderStats.Top10Recipients "Top 10 Recipients">
+<!ENTITY ThunderStats.Top10Senders "Top 10 Senders">

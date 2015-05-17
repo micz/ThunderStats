@@ -79,11 +79,11 @@ span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
 }
 
 #top_left_chunk_today,#top_left_chunk_yesterday,#top_left_chunk_7days,#top_left_chunk_info {
-  background-color: rgba(125,125,105,.1); /*#f2f2f0*/
+  background-color: #f1f9fd; /*#f2f2f0*/
 }
 
 #bottom_right_chunk_today,#bottom_right_chunk_yesterday,#bottom_right_chunk_7days,#bottom_right_chunk_info {
-  background-image: -moz-linear-gradient(rgba(125,125,105,.1) 75%, rgba(125,125,105,0)); /*242,242,240,1), rgba(242,242,240,0)*/
+  background-image: -moz-linear-gradient(#f1f9fd 75%, #ffffff); /*242,242,240,1), rgba(242,242,240,0)*/
 }
 
 .list_heading_wrapper {
@@ -155,7 +155,7 @@ text-decoration:none;
 }
 
 li.active a, li.active a:hover {
-background-color: rgba(125,125,105,.1); /*#f2f2f0*/
+background-color: #f1f9fd; /*#f2f2f0*/
 color:#4c4c4c;
 }
 

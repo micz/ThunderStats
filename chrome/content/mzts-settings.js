@@ -1,6 +1,7 @@
 "use strict";
 Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 
 var miczThunderStatsPrefPanel = {
 
@@ -11,7 +12,8 @@ var miczThunderStatsPrefPanel = {
 		let acc_list = document.getElementById('ts_accnt_lst');
 		let strt_acc = document.getElementById('ts_strt_accnt');
 		let strt_acc_sel_idx=0;
-		strt_acc.appendItem("All Accounts",0);
+		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+		strt_acc.appendItem(_bundleCW.GetStringFromName("ThunderStats.AllAccounts"),0);
 		for(let key in miczThunderStatsCore.accounts){
 			acc_list.appendItem(miczThunderStatsCore.accounts[key].name,key);
 			let curr_item=strt_acc.appendItem(miczThunderStatsCore.accounts[key].name,key);

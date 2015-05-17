@@ -4,6 +4,7 @@ Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 Components.utils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -77,8 +78,9 @@ var miczThunderStatsCore = {
 			let account_custom_identities=miczThunderStatsPrefs.accountCustomIdentities(this.custom_account_key);
 			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] account_custom_identities '+JSON.stringify(account_custom_identities)+'\r\n');
 			if(account_custom_identities!=''){
+				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statscore");
 				this.accounts[this.custom_account_key]={};
-				this.accounts[this.custom_account_key].name="Other Identities";
+				this.accounts[this.custom_account_key].name=_bundleCW.GetStringFromName("ThunderStats.OtherIdentities");
 				this.accounts[this.custom_account_key].key=this.custom_account_key;
 				this.accounts[this.custom_account_key].identities=new Array();
 				let account_custom_identities_arr=account_custom_identities.split(',');

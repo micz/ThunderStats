@@ -8,11 +8,11 @@ html,body{margin:0;padding:0;height:100%;background:white;min-height:100% !impor
 #mzts-updates{float:right;font-size:0.75em;margin-right:10px;align-items:center;height:28px;text-align:right;margin-top:-2px}
 #mzts-setup_icon{float:right;cursor:pointer;display:flex;align-items:center;height:28px;}
 table.mzts-tinvolved{width:100%;text-align:right;}
-table.mzts-tinvolved tr.mzts-thead{padding:2px;font-weight:bold;background:grey;}
+table.mzts-tinvolved tr.mzts-thead{padding:2px;font-weight:bold;background:steelblue;color:#bae0fa;}
 table.mzts-tinvolved tr.mzts-thead td{padding:2px 4px 2px 2px;}
 table.mzts-tinvolved tr.mzts-thead td.mzts-row-num{text-align:center;}
 table.mzts-tinvolved tr.mzts-trow:nth-child(odd){background:white;}
-table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:lightgrey;}
+table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:#bae0fa;}
 table.mzts-tinvolved tr.mzts-trow td{padding:2px 4px 2px 2px;color:black;white-space:-moz-pre-wrap !important;word-break: break-all;}
 table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:normal;}
 .circle_wait{text-align:center;width:100%;position:absolute;}

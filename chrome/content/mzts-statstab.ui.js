@@ -1,5 +1,7 @@
 "use strict";
 
+Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+
 miczThunderStatsTab.ui={
 
 	last_pos0:0,
@@ -16,7 +18,8 @@ miczThunderStatsTab.ui={
 
 	loadIdentitiesSelector:function(selector_id,custom_account_key){
 		$jQ("select#"+selector_id).find('option').remove();
-		$jQ("#"+selector_id).append('<option value="0">All Accounts</option>');
+		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+		$jQ("#"+selector_id).append('<option value="0">'+_bundleCW.GetStringFromName("ThunderStats.AllAccounts")+'</option>');
 		for(let key in miczThunderStatsCore.accounts){
 			let debug_txt='';
 			if(miczThunderStatsPrefs.isDebug){

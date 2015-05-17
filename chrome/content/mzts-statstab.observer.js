@@ -1,5 +1,6 @@
 "use strict";
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
 miczThunderStatsTab.observer={};
@@ -13,7 +14,8 @@ miczThunderStatsTab.observer.last_idx_update = function(mCallback){
 miczThunderStatsTab.observer.callback.last_idx_update = {
 	observe: function(aSubject,aTopic,aData){
 			//dump(">>>>>>>>>>>>> miczThunderStats: [aSubject] "+aData+"\r\n");
-			$jQ("#mzts-idx_update").text("Last index update: "+miczThunderStatsUtils.getDateTimeString(moment(JSON.parse(aData))));
+			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.observer");
+			$jQ("#mzts-idx_update").text(_bundleCW.GetStringFromName("ThunderStats.LastIndexUpdate")+": "+miczThunderStatsUtils.getDateTimeString(moment(JSON.parse(aData))));
 			miczLogger.log("Last index update loaded.",0);
 	}
 };

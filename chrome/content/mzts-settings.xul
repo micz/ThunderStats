@@ -33,14 +33,14 @@
 			  </columns>
 			  <rows>
 				<row align="center">
-				  <label control="symbol" value="Startup Account:"/>
-				  <menulist id="ts_strt_accnt" value="Choose an account" oncommand="miczThunderStatsPrefPanel.onDefaultAccountChange();">
+				  <label control="symbol" value="&ThunderStats.StartupAccount;:"/>
+				  <menulist id="ts_strt_accnt" value="&ThunderStats.ChooseAccount;" oncommand="miczThunderStatsPrefPanel.onDefaultAccountChange();">
 					  <menupopup>
 					 </menupopup>
 					</menulist>
 				</row>
 				<label control="symbol" value=" "/>
-				 <checkbox id="ThunderStats.identities_selector_checkbox" label="Show identities in the accounts selector (*)"
+				 <checkbox id="ThunderStats.identities_selector_checkbox" label="&ThunderStats.ShowIdentitiesAccountsSelector; (*)"
             		preference="ThunderStats.identities_selector" />
             <label control="symbol" value=" "/>
 			  </rows>
@@ -50,8 +50,8 @@
           <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>
         </tabpanel>
         <tabpanel id="tstab_cstmids" orient="vertical">
-		  <label control="symbol" value="Manage here your custom identitites."/>
-          <description class="mzts-desc">A custom identity is an email address, different from the ones registered for the account, with you receive mails. Usually are email addresses of mailing lists that you're subcribed to, where your email address is not used in any "to" or "cc" fields.</description>
+		  <label control="symbol" value="&ThunderStats.ManageCustomIdentitites;"/>
+          <description class="mzts-desc">&ThunderStats.ManageCustomIdentititesDesc;</description>
           <label control="symbol" value=" "/>
           <grid flex="1">
 			  <columns>
@@ -60,25 +60,25 @@
 			  </columns>
 			  <rows>
 				<row align="center">
-				  <label control="symbol" value="Account:"/>
-				  <menulist id="ts_accnt_lst" value="Choose an account" oncommand="miczThunderStatsPrefPanel.onCIAccountChange();">
+				  <label control="symbol" value="&ThunderStats.Account;:"/>
+				  <menulist id="ts_accnt_lst" value="&ThunderStats.ChooseAccount;" oncommand="miczThunderStatsPrefPanel.onCIAccountChange();">
 					<menupopup>
-					  <menuitem label="Choose an account" value="0" />
+					  <menuitem label="&ThunderStats.ChooseAccount;" value="0" />
 					 </menupopup>
 					</menulist>
 				</row>
-			<vbox><label control="symbol" value="Custom Identitites for the selected Account"/>
+			<vbox><label control="symbol" value="&ThunderStats.CustomIdentititesAccount;"/>
 		  		<textbox id="ts_cstmids" value="" multiline="true" rows="5" onblur="miczThunderStatsPrefPanel.onCIAccountTextbox();"/>
 		  	</vbox>
 			  </rows>
 		</grid>
-		  <label control="symbol" value="The changes made here are immediately saved."/>
+		  <label control="symbol" value="&ThunderStats.ChangesSavedWarn;"/>
           <label control="symbol" value="&ThunderStats.ReopenTabDesc;"/>
         </tabpanel>
         <tabpanel id="tstab_debug" orient="vertical">
-		  <label control="symbol" value="Set here the debug options."/>
+		  <label control="symbol" value="&ThunderStats.DebugDesc;"/>
           <label control="symbol" value=" "/>
-          <checkbox id="ThunderStats.debug_checkbox" label="Activate debug system"
+          <checkbox id="ThunderStats.debug_checkbox" label="&ThunderStats.ActivateDebug;"
             preference="ThunderStats.debug" />
           <label control="symbol" value=" "/>
         </tabpanel>

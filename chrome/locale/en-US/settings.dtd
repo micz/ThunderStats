@@ -7,3 +7,18 @@
 <!ENTITY ThunderStats.InfoMainDesc "This addon is free and developed in my spare time. If you're using it in your every day routine, feel free to support it with a little donation clicking on the link below. Thanks!!">
 <!ENTITY ThunderStats.DonateLink "Make a donation!">
 <!ENTITY ThunderStats.ReopenTabDesc "You need to close and reopen the ThunderStats tab to make the changes effective.">
+<!ENTITY ThunderStats.StartupAccount "Startup Account">
+<!ENTITY ThunderStats.ChooseAccount "Choose an account">
+<!ENTITY ThunderStats.ShowIdentitiesAccountsSelector "Show identities in the accounts selector">
+<!ENTITY ThunderStats.ManageCustomIdentitites "Manage here your custom identitites.">
+<!ENTITY ThunderStats.ManageCustomIdentititesDesc "A custom identity is an email address, different from the ones registered for the account, with you receive mails. Usually are email addresses of mailing lists that you're subcribed to, where your email address is not used in any 'to' or 'cc' fields.">
+<!ENTITY ThunderStats.Account "Account">
+<!ENTITY ThunderStats.CustomIdentititesAccount "Custom Identitites for the selected Account">
+<!ENTITY ThunderStats.ChangesSavedWarn "The changes made here are immediately saved.">
+<!ENTITY ThunderStats.DebugDesc "Set here the debug options.">
+<!ENTITY ThunderStats.ActivateDebug "Activate debug system">
+
+<!ENTITY ThunderStats.TabInfo.label "Info">
+<!ENTITY ThunderStats.TabInfo.label "Info">
+<!ENTITY ThunderStats.TabInfo.label "Info">
+

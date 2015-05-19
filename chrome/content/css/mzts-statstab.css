@@ -22,6 +22,8 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
 .mzts-sel-account{font-weight:bold;}
 .mzts-sel-identity{padding-left:30px;}
+#mzts-idx_update{float:left;width:100%;}
+#mzts-idx_msg{float:left;width:100%;}
 
 #heading_wrapper {
   display: table;

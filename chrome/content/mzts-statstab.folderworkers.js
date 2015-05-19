@@ -10,6 +10,7 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
   init: function(context) {
     this.context = context;
     this.inboxmsg = 0;
+    this.inboxmsg_unread = 0;
     this.inbox0_msgdate = {};
     this.inbox0_msgdate_empty=true;
     this.msg_crunched=new Array();
@@ -20,6 +21,7 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
   uninit: function() {
     this._clear();
     delete this.inboxmsg;
+    delete this.inboxmsg_unread;
     delete this.inbox0_msgdate;
     delete this.inbox0_msgdate_empty;
     delete this.msg_crunched;
@@ -65,6 +67,9 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 			  if(this.msg_crunched.indexOf(message.messageId)>-1)continue;
 			  this.msg_crunched.push(message.messageId);
 			  this.inboxmsg++;
+			  if(!message.isRead){
+				this.inboxmsg_unread++;
+			  }
 			  this.inbox0_msgdate_empty=false;
 			  if(msg_date in this.inbox0_msgdate){
 				this.inbox0_msgdate[msg_date]++;
@@ -87,6 +92,8 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 
 	miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_inboxmsg_wait");
 	$jQ("#today_inbox0_inboxmsg").text(this.inboxmsg);
+	miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_inboxmsg_unread_wait");
+	$jQ("#today_inbox0_inboxmsg_unread").text(this.inboxmsg_unread);
 	miczLogger.log("Inbox messages loaded.",0);
 
 	//inbox date spread graph
@@ -129,6 +136,7 @@ miczThunderStatsTab.folderworker.yesterday_inboxmsg = {
   init: function(context) {
     this.context = context;
     this.inboxmsg = 0;
+    this.inboxmsg_unread = 0;
     this.inbox0_msgdate = {};
     this.inbox0_msgdate_empty=true;
     this.msg_crunched=new Array();
@@ -139,6 +147,7 @@ miczThunderStatsTab.folderworker.yesterday_inboxmsg = {
   uninit: function() {
     this._clear();
     delete this.inboxmsg;
+    delete this.inboxmsg_unread;
     delete this.inbox0_msgdate;
     delete this.inbox0_msgdate_empty;
     delete this.msg_crunched;
@@ -181,6 +190,9 @@ miczThunderStatsTab.folderworker.yesterday_inboxmsg = {
 			  if(this.msg_crunched.indexOf(message.messageId)>-1)continue;
 			  this.msg_crunched.push(message.messageId);
 			  this.inboxmsg++;
+			  if(!message.isRead){
+				this.inboxmsg_unread++;
+			  }
 			  this.inbox0_msgdate_empty=false;
 			  if(msg_date in this.inbox0_msgdate){
 				this.inbox0_msgdate[msg_date]++;
@@ -197,6 +209,8 @@ miczThunderStatsTab.folderworker.yesterday_inboxmsg = {
 	//inbox total messages
 	miczThunderStatsTab.ui.hideLoadingElement("yesterday_inbox0_inboxmsg_wait");
 	$jQ("#yesterday_inbox0_inboxmsg").text(this.inboxmsg);
+	miczThunderStatsTab.ui.hideLoadingElement("yesterday_inbox0_inboxmsg_unread_wait");
+	$jQ("#yesterday_inbox0_inboxmsg_unread").text(this.inboxmsg_unread);
 	miczLogger.log("Inbox messages loaded.",0);
 
 	//inbox date spread graph

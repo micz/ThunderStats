@@ -70,6 +70,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_inbox0_inboxmsg_wait");
+		miczThunderStatsTab.ui.showLoadingElement("today_inbox0_inboxmsg_unread_wait");
 
 		//Print dates
 		$jQ("#today_date").text(miczThunderStatsUtils.getTodayString(moment));
@@ -108,6 +109,8 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_senders_wait");
+		miczThunderStatsTab.ui.showLoadingElement("yesterday_inbox0_inboxmsg_wait");
+		miczThunderStatsTab.ui.showLoadingElement("yesterday_inbox0_inboxmsg_unread_wait");
 
 		//Print dates
 		$jQ("#yesterday_date").text(miczThunderStatsUtils.getYesterdayString(moment));

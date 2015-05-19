@@ -15,6 +15,7 @@
 <!ENTITY ThunderStats.ReceivedMails "Received mails">
 <!ENTITY ThunderStats.InboxZeroStatus "Inbox Zero Status">
 <!ENTITY ThunderStats.TotalInbox "Total mails in the inbox">
+<!ENTITY ThunderStats.TotalInboxUnread "unread">
 <!ENTITY ThunderStats.YesterdayMails "Yesterday Mails">
 <!ENTITY ThunderStats.TodayTop10Recipients "Today Top 10 Recipients">
 <!ENTITY ThunderStats.TodayTop10Senders "Today Top 10 Senders">

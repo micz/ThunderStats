@@ -91,7 +91,7 @@ var miczThunderStatsDB = {
 			mWhat+=", '"+mInfo+"' as Info";
 		}
 		if(mHours!=null){
-			mWhat+=", strftime('%H',m.date/1000000,'unixepoch') AS mHour";
+			mWhat+=", strftime('%H',m.date/1000000,'unixepoch','localtime') AS mHour";
 		}
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
 

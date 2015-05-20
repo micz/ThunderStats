@@ -145,13 +145,17 @@ miczThunderStatsCore.db = {
 		let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay);
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getManyDaysMessages] mDays.length '+JSON.stringify(mDays.length)+'\r\n');
 		for(let mKey in mDays){
-			this.getOneDayMessages({type:mType,info:mDays[mKey]},mDays[mKey],mIdentity,mCallback);
+			this.getOneDayMessages({type:mType,info:mDays[mKey],hours:null},mDays[mKey],mIdentity,mCallback);
 		}
 		return true;
 	},
 
 	getTodayMessages:function(mType,mIdentity,mCallback){
 		return this.getOneDayMessages(mType,new Date(),mIdentity,mCallback);
+	},
+
+	getTodayMessagesHours:function(mType,mIdentity,mCallback){
+		return this.getOneDayMessages({type:mType,info:null,hours:1},new Date(),mIdentity,mCallback);
 	},
 
 	getYesterdayMessages:function(mType,mIdentity,mCallback){

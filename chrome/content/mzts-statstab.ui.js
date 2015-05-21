@@ -360,7 +360,7 @@ miczThunderStatsTab.ui={
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 
-		//data_array=JSON.parse('[{"Folder":"All Mail","Num":10},{"Folder":"Inbox","Num":21},{"Folder":"test1","Num":21},{"Folder":"test2","Num":21},{"Folder":"test3","Num":21},{"Folder":"test4","Num":21},{"Folder":"test5","Num":21},{"Folder":"test6","Num":21},{"Folder":"test7","Num":2},{"Folder":"test8","Num":3},{"Folder":"test9","Num":14},{"Folder":"test10","Num":14},{"Folder":"test11","Num":14},{"Folder":"test12","Num":14}]');
+		//data_array=JSON.parse('[{"Folder":"All Mail","Num":10},{"Folder":"Inbox","Num":21},{"Folder":"test1","Num":21},{"Folder":"test2","Num":21},{"Folder":"test3","Num":21},{"Folder":"test4","Num":21},{"Folder":"test5","Num":21},{"Folder":"test6","Num":21},{"Folder":"test7","Num":2},{"Folder":"test8","Num":3},{"Folder":"test________________9","Num":14},{"Folder":"test_____________10","Num":14},{"Folder":"test11","Num":14},{"Folder":"test12","Num":14}]');
 
 		let svg = d3.select("#"+element_id_txt)
 			.append("svg")
@@ -376,7 +376,7 @@ miczThunderStatsTab.ui={
 
 		let arc_width = 350,
 			arc_height = 200,
-			width = 350,
+			width = 450,
 			height = 250,
 			radius = Math.min(arc_width, arc_height) / 2;
 

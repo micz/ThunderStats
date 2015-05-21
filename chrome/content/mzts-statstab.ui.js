@@ -552,7 +552,7 @@ miczThunderStatsTab.ui={
 
 	drawHoursGraph:function(element_id_txt,data_array){
 
-		var data = [
+		/*let data_array = [
 			{
 				"type": "today_sent",
 				"data": [
@@ -603,7 +603,7 @@ miczThunderStatsTab.ui={
 						"value": "93"
 					}
 				]}
-			];
+			];*/
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
@@ -661,7 +661,7 @@ miczThunderStatsTab.ui={
 			});
 		});*/
 
-		let cities = data;
+		let cities = data_array;
 
 		//let minX = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.hour; }) });
 		//let maxX = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.hour; }) });

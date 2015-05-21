@@ -91,7 +91,7 @@ miczThunderStatsTab.callback.homepage_stats_today_sent_hours = {
 				//miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
 				if(!this.empty){
 					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_sent_hours handleResult '+JSON.stringify(this.data)+'\r\n');
-					//miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_sent',this.data_7days_sent);
+					//miczThunderStatsTab.ui.drawHoursGraph("today_hours_graph",this.data);
 				}else{
 					//TODO
 				}
@@ -175,7 +175,7 @@ miczThunderStatsTab.callback.homepage_stats_today_rcvd_hours = {
 				//miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
 				if(!this.empty){
 					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_rcvd_hours handleResult '+JSON.stringify(this.data)+'\r\n');
-					//miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_sent',this.data_7days_sent);
+					miczThunderStatsTab.ui.drawHoursGraph("today_hours_graph",this.data);
 				}else{
 					//TODO
 				}

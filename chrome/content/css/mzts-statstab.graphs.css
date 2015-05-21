@@ -67,3 +67,19 @@ font-weight:normal;
 	stroke-width: 2px;
 	fill: none;
 }
+
+.chart_hours .axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.chart_hours .x.axis path {
+    display: none;
+}
+
+.chart_hours .line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}

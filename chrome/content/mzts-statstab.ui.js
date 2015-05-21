@@ -548,6 +548,173 @@ miczThunderStatsTab.ui={
 		miczThunderStatsTab.ui.last_pos0=pos[0];
 		miczThunderStatsTab.ui.last_pos1=pos[1];
 		return pos[1];
-	}
+	},
+
+	drawHoursGraph:function(element_id_txt,data_array){
+
+		var data = [
+			{
+				"type": "today_sent",
+				"data": [
+					{
+						"hour": "11",
+						"value": "63"
+					},
+					{
+						"hour": "18",
+						"value": "18"
+					},
+					{
+						"Date": "21",
+						"Value": "53"
+					}
+				]
+			},
+			{
+				"type": "today_rcvd",
+				"data": [
+					{
+						"hour": "8",
+						"value": "23"
+					},
+					{
+						"hour": "9",
+						"value": "38"
+					},
+					{
+						"Date": "21",
+						"Value": "63"
+					}
+				]
+			},
+			{
+				"type": "yesterday_sent",
+				"data": [
+					{
+						"hour": "10",
+						"value": "23"
+					},
+					{
+						"hour": "18",
+						"value": "48"
+					},
+					{
+						"hour": "23",
+						"value": "93"
+					}
+				]}
+			];
+
+		//remove old graph
+		$jQ("#"+element_id_txt+"_svg_graph").remove();
+
+		let margin = {
+			top: 10,
+			right: 10,
+			bottom: 40,
+			left: 40
+		},
+		width = 400 - margin.left - margin.right,
+		height = 100 - margin.top - margin.bottom;
+
+		//let parseDate = d3.time.format("%Y%m%d").parse;
+
+		let x = d3.scale.linear().domain([0,24]).range([0, width]);
+
+		let y = d3.scale.linear().range([height, 0]);
+
+		let color = d3.scale.category10();
+
+		let xAxis = d3.svg.axis()
+			.ticks(12)
+			.outerTickSize(0)
+			.scale(x)
+			.orient("bottom");
+
+		let yAxis = d3.svg.axis()
+			.scale(y)
+			.ticks(2)
+			.tickFormat(d3.format('0'))
+			.orient("left");
+
+		let line = d3.svg.line()
+			.interpolate("basis")
+			.x(function (d) {
+			return x(d.hour);
+		})
+			.y(function (d) {
+			return y(d.value);
+		});
+
+		let svg = d3.select("#"+element_id_txt).append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.attr("id",element_id_txt+"_svg_graph")
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		color.domain(data.map(function (d) { return d.type; }));
+
+		/*data.forEach(function (kv) {
+			kv.data.forEach(function (d) {
+				d.hour = parseDate(d.hour);
+			});
+		});*/
+
+		let cities = data;
+
+		//let minX = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.hour; }) });
+		//let maxX = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.hour; }) });
+		let minY = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.value; }) });
+		let maxY = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; }) });
+
+		y.domain([minY, maxY]);
+
+		svg.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis);
+
+		svg.append("g")
+			.attr("class", "y axis")
+			.call(yAxis)
+			.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 6)
+			.attr("dy", ".71em")
+			.style("text-anchor", "end");
+
+		let city = svg.selectAll(".city")
+			.data(cities)
+			.enter().append("g")
+			.attr("class", "city");
+
+		city.append("path")
+			.attr("class", "line")
+			.attr("d", function (d) {
+			return line(d.data);
+		})
+			.style("stroke", function (d) {
+			return color(d.type);
+		});
+
+		city.append("text")
+			.datum(function (d) {
+			return {
+				name: d.type,
+				hour: d.data[d.data.length - 1].hour,
+				value: d.data[d.data.length - 1].value
+			};
+		})
+			.attr("transform", function (d) {
+			return "translate(" + x(d.hour) + "," + y(d.value) + ")";
+		})
+			.attr("x", 3)
+			.attr("dy", ".35em")
+			.text(function (d) {
+				return d.name;
+		});
+
+	},
 
 };

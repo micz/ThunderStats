@@ -72,12 +72,14 @@ miczThunderStatsTab.callback.homepage_stats_today_sent = {
 	},
 };
 
-miczThunderStatsTab.callback.homepage_stats_today_sent_hours = {
+miczThunderStatsTab.callback.homepage_stats_today_hours = {
 	empty:true,
 	data:new Array(),
+	_graph_handle:{today_sent:0,today_rcvd:0,yesterday_sent:0,yesterday_rcvd:0},
+	_graph_data:{today_sent:{},today_rcvd:{},yesterday_sent:{},yesterday_rcvd:{}},
 	handleResult: function(aResultSet) {
 		this.empty=false;
-		let result = miczThunderStatsCore.db.getResultObject(["Num","mHour"],aResultSet);
+		let result = miczThunderStatsCore.db.getResultObject(["Num","Info","mHour"],aResultSet);
 		for (let key in result) {
 			this.data.push(result[key]);
 		}
@@ -95,7 +97,7 @@ miczThunderStatsTab.callback.homepage_stats_today_sent_hours = {
 				}else{
 					//TODO
 				}
-				miczLogger.log("Today sent messages hours graph loaded.",0);
+				miczLogger.log("Today hours graph loaded.",0);
 				this.data=new Array();
 				this.empty=true;
 				return true;
@@ -149,48 +151,6 @@ miczThunderStatsTab.callback.homepage_stats_today_rcvd = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
-				this.empty=true;
-				return false;
-		}
-	return false;
-	},
-};
-
-miczThunderStatsTab.callback.homepage_stats_today_rcvd_hours = {
-	empty:true,
-	data:new Array(),
-	handleResult: function(aResultSet) {
-		this.empty=false;
-		let result = miczThunderStatsCore.db.getResultObject(["Num","mHour"],aResultSet);
-		for (let key in result) {
-			this.data.push(result[key]);
-		}
-	},
-
-	handleError: miczThunderStatsTab.callback.base.handleError,
-
-    handleCompletion: function(aReason) {
-		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				//miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
-				if(!this.empty){
-					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_rcvd_hours handleResult '+JSON.stringify(this.data)+'\r\n');
-					miczThunderStatsTab.ui.drawHoursGraph("today_hours_graph",this.data);
-				}else{
-					//TODO
-				}
-				miczLogger.log("Today sent messages hours graph loaded.",0);
-				this.data=new Array();
-				this.empty=true;
-				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
-				miczLogger.log("Query canceled by the user!",1);
-				this.data=new Array();
-				this.empty=true;
-				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
-				miczLogger.log("Query aborted!",2);
-				this.data=new Array();
 				this.empty=true;
 				return false;
 		}

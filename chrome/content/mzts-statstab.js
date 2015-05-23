@@ -78,13 +78,11 @@ var miczThunderStatsTab = {
 		//Today
 		//Get today sent messages
 		miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_sent);
-		miczThunderStatsCore.db.getTodayMessagesHours(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_sent_hours);
 		//Yesterday incremental
 		miczThunderStatsCore.db.getYesterdayIncrementalMessages(1,identity_id,miczThunderStatsTab.callback.stats_yesterday_incremental_sent);
 
 		//Get today received messages
 		miczThunderStatsCore.db.getTodayMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_today_rcvd);
-		miczThunderStatsCore.db.getTodayMessagesHours(0,identity_id,miczThunderStatsTab.callback.homepage_stats_today_rcvd_hours);
 		//Yesterday incremental
 		miczThunderStatsCore.db.getYesterdayIncrementalMessages(0,identity_id,miczThunderStatsTab.callback.stats_yesterday_incremental_rcvd);
 
@@ -93,6 +91,9 @@ var miczThunderStatsTab = {
 
 		//Get today first 10 senders
 		miczThunderStatsCore.db.getTodayInvolved(0,identity_id,miczThunderStatsTab.callback.homepage_stats_today_senders);
+
+		//Get today hours graph
+		miczThunderStatsCore.db.getTodayHours(identity_id,miczThunderStatsTab.callback.homepage_stats_today_hours);
 
 		//Inbox 0 Today
 		//Get today mails folder spreading

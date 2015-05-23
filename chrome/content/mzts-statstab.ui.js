@@ -633,7 +633,8 @@ miczThunderStatsTab.ui={
 
 		let y = d3.scale.linear().range([height, 0]);
 
-		let color = d3.scale.category10();
+		//let color = d3.scale.category10();
+		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#1f77b4','#ff7f0e']);
 
 		let xAxis = d3.svg.axis()
 			.ticks(13)
@@ -704,7 +705,10 @@ miczThunderStatsTab.ui={
 		})
 			.style("stroke", function (d) {
 			return color(d.type);
-		});
+		})
+		.style('stroke-opacity',function(d,i){
+			  	return (i>=2?"0.3":"1");
+			  });
 
 //Legend
 		let legend = svg.selectAll('.legend')
@@ -714,9 +718,6 @@ miczThunderStatsTab.ui={
 			  .attr('class', 'legend')
 			  .attr('transform', function(d, i) {
 				let l_height = legendRectSize + legendSpacing;
-				/*let offset =  l_height * color.domain().length / 2;
-				let horz = -2 * legendRectSize;
-				let vert = i * l_height - offset;*/
 				let horz = full_width - legendRectSize - margin.right - 10;
 				let vert = i * l_height + 15 + (i>=2?15:0);
 				return 'translate(' + horz + ',' + vert + ')';
@@ -726,7 +727,10 @@ miczThunderStatsTab.ui={
 		  .attr('width', legendRectSize)
 		  .attr('height', legendRectSize)
 		  .style('fill', color)
-		  .style('stroke', color);
+		  .style('stroke', color)
+		  .attr('class',function(d,i){
+			  	return (i>=2?"yday_hours":"tday_hours");
+			  });
 
 		legend.append('text')
 		  .text(function(d) {

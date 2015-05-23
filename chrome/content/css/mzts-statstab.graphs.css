@@ -76,7 +76,7 @@ font-weight:normal;
     shape-rendering: crispEdges;
 }
 
-.chart_hours .line {
+.chart_hours .line{
     fill: none;
     stroke: steelblue;
     stroke-width: 1.5px;
@@ -99,4 +99,9 @@ font-weight:normal;
 
 .chart_hours .legend .legend_text{
   font: 10px sans-serif;
+}
+
+.chart_hours rect.yday_hours{
+	fill-opacity:0.3;
+	stroke-opacity:0.2;
 }

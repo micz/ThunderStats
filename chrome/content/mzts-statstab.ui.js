@@ -558,7 +558,9 @@ miczThunderStatsTab.ui={
 		data_today_sent['type']='today_sent';
 		data_today_sent['data']=new Array();
 		for(let el in data_array['today_sent']){
-			data_today_sent['data'].push({'hour':data_array['today_sent'][el]['mHour'],'value':data_array['today_sent'][el]['Num']});
+			if(data_array['today_sent'][el]['mHour']>=0){
+				data_today_sent['data'].push({'hour':data_array['today_sent'][el]['mHour'],'value':data_array['today_sent'][el]['Num']});
+			}
 		}
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data BEFORE SORTING: "+JSON.stringify(data)+"\r\n");
 		

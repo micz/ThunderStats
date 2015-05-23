@@ -37,8 +37,6 @@ var miczThunderStatsTab = {
 			moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 
 			miczThunderStatsDB.init();
-			//init temp table for hours calculation
-			miczThunderStatsDB.initHoursTempTable();
 			//miczThunderStatsStorageDB.init();	// To be enabled in vesion 2.0
 			miczLogger.log("Opening databases...",0);
 

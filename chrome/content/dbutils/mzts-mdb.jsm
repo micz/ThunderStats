@@ -104,73 +104,39 @@ var miczThunderStatsDB = {
 		if(mInfo!=null){
 			mWhat+=", '"+mInfo+"' as Info";
 		}
-		let mFrom="";
-		let mWhere="";
-		if(mHours!=null){	//group messages by hours
-			/*****************************************
-			 * for test 
-			 * */
-			 mWhat="h.hour AS mHour";
-			 mFrom="th_hours h";
-			 mWhere="1=1";
-			 return this.querySelect(mWhat,mFrom,mWhere,mCallback);
-			 /*****************************************
-			 * for test - END
-			 * */
-			mWhat+=", h.hour AS mHour";
-			mFrom="th_hours h";
-			mFrom+=" LEFT OUTER JOIN messages m on h.hour=strftime('%H',m.date/1000000,'unixepoch') AND m.date>"+mFromDate+"000 and m.date<"+mToDate+"000";
-			mFrom+=" LEFT JOIN messageattributes ma on ma.messageID=m.id";
-		}else{
-			mFrom="messageattributes ma left join messages m on ma.messageID=m.id AND m.date>"+mFromDate+"000 and m.date<"+mToDate+"000";
-			mWhere="m.folderID not in "+forbiddenFoldersStr+" ";
+		if(mHours!=null){
+			mWhat+=", strftime('%H',m.date/1000000,'unixepoch','localtime') AS mHour";
 		}
-		//let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		//
+		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
+
+		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
 		//if mType!=0 do not consider custom identities, they do not send emails
 		//Also do not consider custom identities if there are no ones
 		if((mType==1)||(this.identities_custom_ids_mail.length==0)){
-			if(mHours!=null){	//group messages by hours
-				mFrom+=" and ma.attributeID="+mType_attribute;
-			}else{
-				mWhere+=" and ma.attributeID="+mType_attribute;
-			}
+			mWhere+=" and ma.attributeID="+mType_attribute;
 			if(typeof mIdentity == "object"){
 				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 				let identitiesStr="("+mIdentity.ids.join()+")";
-				if(mHours!=null){	//group messages by hours
-					mFrom+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
-				}else{
-					mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
-				}
+				mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
 			}
 		}else{		//do consider custom identities
 			if(typeof mIdentity == "object"){
 				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 				let identitiesStr="("+mIdentity.ids.join()+")";
 				let identities_customStr="("+mIdentity.ids_custom.join()+")";
-				if(mHours!=null){	//group messages by hours
-					mFrom+="and ((ma.attributeID="+mType_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+") OR ";
-					mFrom+=" (ma.attributeID="+involves_attribute+" AND ma.value in "+identities_customStr+"))";
-				}else{
-					mWhere+="and ((ma.attributeID="+mType_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+") OR ";
-					mWhere+=" (ma.attributeID="+involves_attribute+" AND ma.value in "+identities_customStr+"))";
-				}
+				mWhere+="and ((ma.attributeID="+mType_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+") OR ";
+				mWhere+=" (ma.attributeID="+involves_attribute+" AND ma.value in "+identities_customStr+"))";
 			}else{	//all identities
 				let identitiesStr="("+this.identities_custom_ids.join()+")";
-				if(mHours!=null){	//group messages by hours
-					mFrom+="and ((ma.attributeID="+mType_attribute+") OR ";
-					mFrom+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
-				}else{
-					mWhere+="and ((ma.attributeID="+mType_attribute+") OR ";
-					mWhere+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
-				}
+				mWhere+="and ((ma.attributeID="+mType_attribute+") OR ";
+				mWhere+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
 			}
 		}
 		if(mHours!=null){	//group messages by hours
-			mWhere+="1=1";
 			mWhere+=" GROUP BY mHour";
-			mWhere+=" ORDER BY mHour ASC";
+			let mQuery="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
+			mQuery+=" UNION SELECT 0 AS Num, '"+mInfo+"' as Info, -1 AS mHour";
+			return this.queryExec(mQuery,mCallback);
 		}
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},

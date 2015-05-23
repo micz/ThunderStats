@@ -975,14 +975,7 @@ miczThunderStatsTab.callback.homepage_stats_today_hours = {
 	_graph_data:{today_sent:{},today_rcvd:{},yesterday_sent:{},yesterday_rcvd:{}},
 	handleResult: function(aResultSet) {
 		this.empty=false;
-		//let result = miczThunderStatsCore.db.getResultObject(["Num","Info","mHour"],aResultSet);
-		/***********
-		 * FOR TEST
-		 * */
-		let result = miczThunderStatsCore.db.getResultObject(["mHour"],aResultSet);
-		/***********
-		 * FOR TEST - END
-		 * */
+		let result = miczThunderStatsCore.db.getResultObject(["Num","Info","mHour"],aResultSet);
 		for (let key in result) {
 			this.data[key]=result[key];
 		}

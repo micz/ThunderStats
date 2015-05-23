@@ -550,9 +550,19 @@ miczThunderStatsTab.ui={
 		return pos[1];
 	},
 
+	utilDrawHoursGraph_ArrangeData:function(data_array){
+		let data_output:new Array();
+		//_graph_data:{today_sent:{},today_rcvd:{},yesterday_sent:{},yesterday_rcvd:{}},
+
+
+		return data_output;
+	},
+
 	drawHoursGraph:function(element_id_txt,data_array){
 
-		/*let data_array = [
+		let data=this.utilDrawHoursGraph_ArrangeData(data_array);
+
+		/*let data = [
 			{
 				"type": "today_sent",
 				"data": [
@@ -661,7 +671,7 @@ miczThunderStatsTab.ui={
 			});
 		});*/
 
-		let cities = data_array;
+		let cities = data;
 
 		//let minX = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.hour; }) });
 		//let maxX = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.hour; }) });

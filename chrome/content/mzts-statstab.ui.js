@@ -554,7 +554,7 @@ miczThunderStatsTab.ui={
 	utilDrawHoursGraph_ArrangeData:function(data_array){
 		let data_output=new Array();
 		let _data_handles=['today_sent','today_rcvd','yesterday_sent','yesterday_rcvd'];
-		
+
 		for(let h_el in _data_handles){
 			let current_data={};
 			current_data['type']=_data_handles[h_el];
@@ -565,7 +565,7 @@ miczThunderStatsTab.ui={
 					current_data['data'].push({'hour':data_array[_data_handles[h_el]][el]['mHour'],'value':data_array[_data_handles[h_el]][el]['Num']});
 				}
 			}
-			
+
 			//add missing hours
 			if(current_data['data'].length<24){
 				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
@@ -582,7 +582,7 @@ miczThunderStatsTab.ui={
 
 		return data_output;
 	},
-	
+
 	utilDrawHoursGraph_ArrayCompare:function(a,b){
 		if(a.hour < b.hour){
 			return -1;
@@ -592,7 +592,7 @@ miczThunderStatsTab.ui={
 		}
 		return 0;
 	},
-	
+
 	utilDrawHoursGraph_CheckRecord:function(currentValue){
 		if(currentValue.hour===this._tmp_i){
 			return true;
@@ -612,16 +612,16 @@ miczThunderStatsTab.ui={
 		let full_height=150;
 		let width = full_width - margin.left - margin.right;
 		let height = full_height - margin.top - margin.bottom;
-		
+
 		let legendRectSize = 10;
 		let legendSpacing = 8;
-		
+
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 
 		let data=this.utilDrawHoursGraph_ArrangeData(data_array);
 
 		//let data = [{"type": "today_sent","data": [{"hour": "11","value": "63"},{"hour": "18","value": "18"},{"Date": "21","Value": "53"}]},];
-			
+
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data: "+JSON.stringify(data)+"\r\n");
 
 		//remove old graph
@@ -727,7 +727,7 @@ miczThunderStatsTab.ui={
 		  .attr('height', legendRectSize)
 		  .style('fill', color)
 		  .style('stroke', color);
-		
+
 		legend.append('text')
 		  .text(function(d) {
 				return _bundleCW.GetStringFromName("ThunderStats.HoursGraph."+d);
@@ -739,7 +739,7 @@ miczThunderStatsTab.ui={
 				return 'translate(' + horz + ',' + vert + ')';
 			  })
 			.attr('height', legendRectSize);
-			
+
 		//Legend "Today" title
 		let legend_day_title_today=svg.selectAll('.legend_day_title')
 			.data(color.domain())
@@ -761,11 +761,11 @@ miczThunderStatsTab.ui={
 			.attr('transform',
 			function(d,i){
 				let ldt_horz = full_width - legendRectSize - margin.right - 10;
-				let ldt_vert = i * (legendRectSize + legendSpacing) + 15;
+				let ldt_vert = i * (legendRectSize + legendSpacing) + 10 + (i>=2?15:0);
 				return 'translate(' + ldt_horz + ',' + ldt_vert + ')'
 			}
 			);
-		
+
 	},
 
 };

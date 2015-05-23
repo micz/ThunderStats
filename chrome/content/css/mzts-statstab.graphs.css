@@ -83,16 +83,20 @@ font-weight:normal;
 }
 
 .chart_hours .axis text{
-  font: 10px sans-serif;	
+  font: 10px sans-serif;
 }
 
 .chart_hours .legend,.chart_hours .legend_day_title{
   font-size: 12px;
 }
+.chart_hours .legend_day_title{
+  font-weight:bold;
+}
+
 .chart_hours rect{
   stroke-width: 2;
 }
 
 .chart_hours .legend .legend_text{
-  font: 10px sans-serif;	
+  font: 10px sans-serif;
 }

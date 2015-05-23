@@ -621,6 +621,8 @@ miczThunderStatsTab.ui={
 					}
 				]}
 			];*/
+			
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data: "+JSON.stringify(data)+"\r\n");
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();

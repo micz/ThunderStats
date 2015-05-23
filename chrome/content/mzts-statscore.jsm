@@ -164,7 +164,7 @@ miczThunderStatsCore.db = {
 		this.getOneDayMessages({type:1,info:'today_sent',hours:1},new Date(),mIdentity,mCallback);	//today sent
 		this.getOneDayMessages({type:0,info:'today_rcvd',hours:1},new Date(),mIdentity,mCallback);	//today rcvd
 		this.getOneDayMessages({type:1,info:'yesterday_sent',hours:1},ydate,mIdentity,mCallback);	//yesterday sent
-		this.getOneDayMessages({type:0,info:'yestarday_rcvd',hours:1},ydate,mIdentity,mCallback);	//yestarday rcvd
+		this.getOneDayMessages({type:0,info:'yesterday_rcvd',hours:1},ydate,mIdentity,mCallback);	//yestarday rcvd
 		return true;
 	},
 

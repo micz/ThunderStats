@@ -92,7 +92,7 @@ miczThunderStatsTab.callback.homepage_stats_today_hours = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				//miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
 				if(!this.empty){
-					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours handleResult '+JSON.stringify(this.data)+'\r\n');
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours handleResult '+JSON.stringify(this.data)+'\r\n');
 					let data_type=this.data[1]["Info"];
 					this._graph_data[data_type]=this.data;
 					this._graph_handle[data_type]=1;
@@ -122,6 +122,7 @@ miczThunderStatsTab.callback.homepage_stats_today_hours = {
 	},
 
 	_data_collected:function(){
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours _data_collected '+JSON.stringify(this._graph_handle)+'\r\n');
 		return (this._graph_handle.today_sent==1)&&(this._graph_handle.today_rcvd==1)&&(this._graph_handle.yesterday_sent==1)&&(this._graph_handle.yesterday_rcvd==1);
 	},
 };

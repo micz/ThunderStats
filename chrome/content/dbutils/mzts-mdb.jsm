@@ -69,7 +69,7 @@ var miczThunderStatsDB = {
 			mQueries.push("INSERT INTO th_hours (hour) VALUES ('"+i+"');");
 		}
 		dump(">>>>>>>>>>>>>> [miczThunderStatsTab mDB] initHoursTempTable mQueries: "+JSON.stringify(mQueries)+"\r\n");
-		return miczThunderStatsQuery.queryExec(this.mDb,mQueries,null);
+		return miczThunderStatsQuery.queryExec(this.mDb,mQueries,function(){});
 	},
 
 	querySelect:function(mWhat,mFrom,mWhere,mCallback){
@@ -157,7 +157,9 @@ var miczThunderStatsDB = {
 			}
 		}
 		if(mHours!=null){	//group messages by hours
-			mWhere+="1=1 GROUP BY mHour";
+			mWhere+="1=1";
+			mWhere+=" GROUP BY mHour";
+			mWhere+=" ORDER BY mHour ASC";
 		}
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},

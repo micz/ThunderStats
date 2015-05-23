@@ -553,32 +553,35 @@ miczThunderStatsTab.ui={
 
 	utilDrawHoursGraph_ArrangeData:function(data_array){
 		let data_output=new Array();
+		let _data_handles=['today_sent','today_rcvd','yesterday_sent','yesterday_rcvd'];
 		//_graph_data:{today_sent:{},today_rcvd:{},yesterday_sent:{},yesterday_rcvd:{}},
 		
-		let data_today_sent={};
-		data_today_sent['type']='today_sent';
-		data_today_sent['data']=new Array();
-		//rearrange actual data
-		for(let el in data_array['today_sent']){
-			if(data_array['today_sent'][el]['mHour']>=0){
-				data_today_sent['data'].push({'hour':data_array['today_sent'][el]['mHour'],'value':data_array['today_sent'][el]['Num']});
+		for(let h_el in _data_handles){
+			let current_data={};
+			current_data['type']=_data_handles[h_el];
+			current_data['data']=new Array();
+			//rearrange actual data
+			for(let el in data_array[_data_handles[h_el]]){
+				if(data_array[_data_handles[h_el]][el]['mHour']>=0){
+					current_data['data'].push({'hour':data_array[_data_handles[h_el]][el]['mHour'],'value':data_array[_data_handles[h_el]][el]['Num']});
+				}
 			}
-		}
-		
-		//add missing hours
-		if(data_today_sent['data'].length<24){
-			for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
-				if(!data_today_sent['data'].some(this.utilDrawHoursGraph_CheckRecord,this)){
-					data_today_sent['data'].push({'hour':this._tmp_i,'value':0});
-				};
+			
+			//add missing hours
+			if(current_data['data'].length<24){
+				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
+					if(!current_data['data'].some(this.utilDrawHoursGraph_CheckRecord,this)){
+						current_data['data'].push({'hour':this._tmp_i,'value':0});
+					};
+				}
 			}
+			
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data BEFORE SORTING: "+JSON.stringify(data)+"\r\n");
+			
+			current_data.data.sort(this.utilDrawHoursGraph_ArrayCompare);
+			
+			data_output.push(current_data);
 		}
-		
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data BEFORE SORTING: "+JSON.stringify(data)+"\r\n");
-		
-		data_today_sent.data.sort(this.utilDrawHoursGraph_ArrayCompare);
-		
-		data_output.push(data_today_sent);
 
 		return data_output;
 	},

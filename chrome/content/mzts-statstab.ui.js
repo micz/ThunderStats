@@ -7,6 +7,7 @@ miczThunderStatsTab.ui={
 	last_pos0:0,
 	last_pos1:0,
 	label_height:15,
+	_tmp_i:-1,
 
 	showLoadingElement:function(element){
 		$jQ("#"+element).show();
@@ -557,11 +558,22 @@ miczThunderStatsTab.ui={
 		let data_today_sent={};
 		data_today_sent['type']='today_sent';
 		data_today_sent['data']=new Array();
+		//rearrange actual data
 		for(let el in data_array['today_sent']){
 			if(data_array['today_sent'][el]['mHour']>=0){
 				data_today_sent['data'].push({'hour':data_array['today_sent'][el]['mHour'],'value':data_array['today_sent'][el]['Num']});
 			}
 		}
+		
+		//add missing hours
+		if(data_today_sent['data'].length<24){
+			for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
+				if(!data_today_sent['data'].some(this.utilDrawHoursGraph_CheckRecord,this)){
+					data_today_sent['data'].push({'hour':this._tmp_i,'value':0});
+				};
+			}
+		}
+		
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data BEFORE SORTING: "+JSON.stringify(data)+"\r\n");
 		
 		data_today_sent.data.sort(this.utilDrawHoursGraph_ArrayCompare);
@@ -579,6 +591,13 @@ miczThunderStatsTab.ui={
 			return 1;
 		}
 		return 0;
+	},
+	
+	utilDrawHoursGraph_CheckRecord:function(currentValue){
+		if(currentValue.hour===this._tmp_i){
+			return true;
+		}
+		return false;
 	},
 
 	drawHoursGraph:function(element_id_txt,data_array){

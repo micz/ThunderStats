@@ -59,20 +59,6 @@ var miczThunderStatsDB = {
 		}
 	},
 	
-	initHoursTempTable:function(){
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab mDB] initHoursTempTable\r\n");
-		let mQueries=new Array();
-		//do it sync
-		mQueries.push("CREATE TEMP TABLE th_hours(hour INTEGER);");
-		miczThunderStatsQuery.queryExec(this.mDb,mQueries,null);
-		//do it async
-		mQueries=new Array();
-		for(let i=0;i<=23;i++){
-			mQueries.push("INSERT INTO th_hours (hour) VALUES ("+i+");");
-		}
-		return miczThunderStatsQuery.queryExec(this.mDb,mQueries,function(){});
-	},
-
 	querySelect:function(mWhat,mFrom,mWhere,mCallback){
 		return miczThunderStatsQuery.querySelect(this.mDb,mWhat,mFrom,mWhere,mCallback);
 	},

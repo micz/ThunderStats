@@ -988,12 +988,12 @@ miczThunderStatsTab.callback.homepage_stats_today_hours = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				//miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
 				if(!this.empty){
-					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours handleResult '+JSON.stringify(this.data)+'\r\n');
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours handleResult '+JSON.stringify(this.data)+'\r\n');
 					let data_type=this.data[1]["Info"];
 					this._graph_data[data_type]=this.data;
 					this._graph_handle[data_type]=1;
 				}else{
-					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours handleResult EMPTY '+JSON.stringify(this.data)+'\r\n');
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours handleResult EMPTY '+JSON.stringify(this.data)+'\r\n');
 					miczLogger.log("Today hours graph empty result!",2);
 				}
 				if(this._data_collected()){

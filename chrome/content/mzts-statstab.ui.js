@@ -613,63 +613,14 @@ miczThunderStatsTab.ui={
 		let width = full_width - margin.left - margin.right;
 		let height = full_height - margin.top - margin.bottom;
 		
-		let legendRectSize = 15;
+		let legendRectSize = 10;
 		let legendSpacing = 8;
+		
+		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 
 		let data=this.utilDrawHoursGraph_ArrangeData(data_array);
 
-		/*let data = [
-			{
-				"type": "today_sent",
-				"data": [
-					{
-						"hour": "11",
-						"value": "63"
-					},
-					{
-						"hour": "18",
-						"value": "18"
-					},
-					{
-						"Date": "21",
-						"Value": "53"
-					}
-				]
-			},
-			{
-				"type": "today_rcvd",
-				"data": [
-					{
-						"hour": "8",
-						"value": "23"
-					},
-					{
-						"hour": "9",
-						"value": "38"
-					},
-					{
-						"Date": "21",
-						"Value": "63"
-					}
-				]
-			},
-			{
-				"type": "yesterday_sent",
-				"data": [
-					{
-						"hour": "10",
-						"value": "23"
-					},
-					{
-						"hour": "18",
-						"value": "48"
-					},
-					{
-						"hour": "23",
-						"value": "93"
-					}
-				]}
-			];*/
+		//let data = [{"type": "today_sent","data": [{"hour": "11","value": "63"},{"hour": "18","value": "18"},{"Date": "21","Value": "53"}]},];
 			
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data: "+JSON.stringify(data)+"\r\n");
 
@@ -722,10 +673,6 @@ miczThunderStatsTab.ui={
 			});
 		});*/
 
-		let cities = data;
-
-		//let minX = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.hour; }) });
-		//let maxX = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.hour; }) });
 		let minY = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.value; }) });
 		let maxY = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; }) });
 
@@ -745,12 +692,12 @@ miczThunderStatsTab.ui={
 			.attr("dy", ".71em")
 			.style("text-anchor", "end");
 
-		let city = svg.selectAll(".city")
-			.data(cities)
+		let serie = svg.selectAll(".serie")
+			.data(data)
 			.enter().append("g")
-			.attr("class", "city");
+			.attr("class", "serie");
 
-		city.append("path")
+		serie.append("path")
 			.attr("class", "line")
 			.attr("d", function (d) {
 			return line(d.data);
@@ -759,23 +706,7 @@ miczThunderStatsTab.ui={
 			return color(d.type);
 		});
 
-		/*city.append("text")
-			.datum(function (d) {
-			return {
-				name: d.type,
-				hour: d.data[d.data.length - 1].hour,
-				value: d.data[d.data.length - 1].value
-			};
-		})
-			.attr("transform", function (d) {
-			return "translate(" + x(d.hour) + "," + y(d.value) + ")";
-		})
-			.attr("x", 3)
-			.attr("dy", ".35em")
-			.text(function (d) {
-				return d.name;
-		});*/
-		
+//Legend
 		let legend = svg.selectAll('.legend')
 			  .data(color.domain())
 			  .enter()
@@ -787,7 +718,7 @@ miczThunderStatsTab.ui={
 				let horz = -2 * legendRectSize;
 				let vert = i * l_height - offset;*/
 				let horz = full_width - legendRectSize - margin.right - 10;
-				let vert = i * l_height + 15;
+				let vert = i * l_height + 15 + (i>=2?15:0);
 				return 'translate(' + horz + ',' + vert + ')';
 			  });
 
@@ -798,15 +729,43 @@ miczThunderStatsTab.ui={
 		  .style('stroke', color);
 		
 		legend.append('text')
-		  .text(function(d) { return d; })
+		  .text(function(d) {
+				return _bundleCW.GetStringFromName("ThunderStats.HoursGraph."+d);
+			  })
 		  .attr('transform', function(d, i) {
 				let l_height = legendRectSize + legendSpacing;
 				let horz = legendRectSize + 3;
-				let vert = l_height/2 - 2;
+				let vert = l_height/2;
 				return 'translate(' + horz + ',' + vert + ')';
 			  })
-			//.attr('width', 100)
-			.attr('height', legendRectSize)
+			.attr('height', legendRectSize);
+			
+		//Legend "Today" title
+		let legend_day_title_today=svg.selectAll('.legend_day_title')
+			.data(color.domain())
+			.enter()
+			.append('g')
+			.attr('class', 'legend_day_title')
+			.append('text')
+			.text(
+			 function(d, i) {
+				if(i==0){
+					return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.today")
+				}else{
+					if(i==2){
+						return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.yesterday")
+					}
+				}
+				return "";
+			 })
+			.attr('transform',
+			function(d,i){
+				let ldt_horz = full_width - legendRectSize - margin.right - 10;
+				let ldt_vert = i * (legendRectSize + legendSpacing) + 15;
+				return 'translate(' + ldt_horz + ',' + ldt_vert + ')'
+			}
+			);
+		
 	},
 
 };

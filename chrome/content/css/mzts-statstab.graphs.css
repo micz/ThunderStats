@@ -86,7 +86,7 @@ font-weight:normal;
   font: 10px sans-serif;	
 }
 
-.chart_hours .legend{
+.chart_hours .legend,.chart_hours .legend_day_title{
   font-size: 12px;
 }
 .chart_hours rect{

@@ -560,9 +560,23 @@ miczThunderStatsTab.ui={
 		for(let el in data_array['today_sent']){
 			data_today_sent['data'].push({'hour':data_array['today_sent'][el]['mHour'],'value':data_array['today_sent'][el]['Num']});
 		}
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data BEFORE SORTING: "+JSON.stringify(data)+"\r\n");
+		
+		data_today_sent.data.sort(this.utilDrawHoursGraph_ArrayCompare);
+		
 		data_output.push(data_today_sent);
 
 		return data_output;
+	},
+	
+	utilDrawHoursGraph_ArrayCompare:function(a,b){
+		if(a.hour < b.hour){
+			return -1;
+		}
+		if(a.hour > b.hour){
+			return 1;
+		}
+		return 0;
 	},
 
 	drawHoursGraph:function(element_id_txt,data_array){

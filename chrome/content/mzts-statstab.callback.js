@@ -1018,7 +1018,7 @@ miczThunderStatsTab.callback.homepage_stats_today_hours = {
 	},
 
 	_data_collected:function(){
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours _data_collected '+JSON.stringify(this._graph_handle)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours _data_collected '+JSON.stringify(this._graph_handle)+'\r\n');
 		return (this._graph_handle.today_sent==1)&&(this._graph_handle.today_rcvd==1)&&(this._graph_handle.yesterday_sent==1)&&(this._graph_handle.yesterday_rcvd==1);
 	},
 };

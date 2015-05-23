@@ -602,6 +602,20 @@ miczThunderStatsTab.ui={
 
 	drawHoursGraph:function(element_id_txt,data_array){
 
+		let margin = {
+			top: 10,
+			right: 150,
+			bottom: 40,
+			left: 40
+		};
+		let full_width=550;
+		let full_height=150;
+		let width = full_width - margin.left - margin.right;
+		let height = full_height - margin.top - margin.bottom;
+		
+		let legendRectSize = 15;
+		let legendSpacing = 8;
+
 		let data=this.utilDrawHoursGraph_ArrangeData(data_array);
 
 		/*let data = [
@@ -657,19 +671,10 @@ miczThunderStatsTab.ui={
 				]}
 			];*/
 			
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data: "+JSON.stringify(data)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data: "+JSON.stringify(data)+"\r\n");
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
-
-		let margin = {
-			top: 10,
-			right: 10,
-			bottom: 40,
-			left: 40
-		},
-		width = 400 - margin.left - margin.right,
-		height = 100 - margin.top - margin.bottom;
 
 		//let parseDate = d3.time.format("%Y%m%d").parse;
 
@@ -703,8 +708,8 @@ miczThunderStatsTab.ui={
 		});
 
 		let svg = d3.select("#"+element_id_txt).append("svg")
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom)
+			.attr("width", full_width)
+			.attr("height", full_height)
 			.attr("id",element_id_txt+"_svg_graph")
 			.append("g")
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -770,7 +775,38 @@ miczThunderStatsTab.ui={
 			.text(function (d) {
 				return d.name;
 		});*/
+		
+		let legend = svg.selectAll('.legend')
+			  .data(color.domain())
+			  .enter()
+			  .append('g')
+			  .attr('class', 'legend')
+			  .attr('transform', function(d, i) {
+				let l_height = legendRectSize + legendSpacing;
+				/*let offset =  l_height * color.domain().length / 2;
+				let horz = -2 * legendRectSize;
+				let vert = i * l_height - offset;*/
+				let horz = full_width - legendRectSize - margin.right - 10;
+				let vert = i * l_height + 15;
+				return 'translate(' + horz + ',' + vert + ')';
+			  });
 
+		legend.append('rect')
+		  .attr('width', legendRectSize)
+		  .attr('height', legendRectSize)
+		  .style('fill', color)
+		  .style('stroke', color);
+		
+		legend.append('text')
+		  .text(function(d) { return d; })
+		  .attr('transform', function(d, i) {
+				let l_height = legendRectSize + legendSpacing;
+				let horz = legendRectSize + 3;
+				let vert = l_height/2 - 2;
+				return 'translate(' + horz + ',' + vert + ')';
+			  })
+			//.attr('width', 100)
+			.attr('height', legendRectSize)
 	},
 
 };

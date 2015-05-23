@@ -26,10 +26,10 @@ var miczThunderStatsQuery = {
 
 	queryExec:function(mDb,mQueries,mCallback){
 		if(!mCallback){	// do it SYNC
-			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] queryExec (Sync):\r\nSQLs: " + JSON.stringify(mQueries)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] queryExec (Sync):\r\nSQLs: " + JSON.stringify(mQueries)+"\r\n");
 			return mDb.executeSimpleSQLs(mQueries);
 		}else{					// do it ASYNC
-			dump(">>>>>>>>>>>>>> [miczThunderStatsTab] queryExec (Async):\r\nSQLs: " + JSON.stringify(mQueries)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] queryExec (Async):\r\nSQLs: " + JSON.stringify(mQueries)+"\r\n");
 			return mDb.executeAsync(mQueries,mCallback); // returns true or false
 		}
 	},

@@ -31,8 +31,6 @@ var miczThunderStatsDB = {
 		if(this.mDb.openDatabase(file)){
 			//load messages attributes!
 			this.loadMsgAttributes(false);
-			//init temp table for hours calculation
-			this.initHoursTempTable();
 			return true;
 		}else{
 			miczLogger.log('[miczThunderStatsDB] Error on db open {'+fileName+'}!!!\r\n',2);
@@ -64,11 +62,14 @@ var miczThunderStatsDB = {
 	initHoursTempTable:function(){
 		dump(">>>>>>>>>>>>>> [miczThunderStatsTab mDB] initHoursTempTable\r\n");
 		let mQueries=new Array();
+		//do it sync
 		mQueries.push("CREATE TEMP TABLE th_hours(hour INTEGER);");
+		miczThunderStatsQuery.queryExec(this.mDb,mQueries,null);
+		//do it async
+		mQueries=new Array();
 		for(let i=0;i<=23;i++){
-			mQueries.push("INSERT INTO th_hours (hour) VALUES ('"+i+"');");
+			mQueries.push("INSERT INTO th_hours (hour) VALUES ("+i+");");
 		}
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab mDB] initHoursTempTable mQueries: "+JSON.stringify(mQueries)+"\r\n");
 		return miczThunderStatsQuery.queryExec(this.mDb,mQueries,function(){});
 	},
 
@@ -106,6 +107,16 @@ var miczThunderStatsDB = {
 		let mFrom="";
 		let mWhere="";
 		if(mHours!=null){	//group messages by hours
+			/*****************************************
+			 * for test 
+			 * */
+			 mWhat="h.hour AS mHour";
+			 mFrom="th_hours h";
+			 mWhere="1=1";
+			 return this.querySelect(mWhat,mFrom,mWhere,mCallback);
+			 /*****************************************
+			 * for test - END
+			 * */
 			mWhat+=", h.hour AS mHour";
 			mFrom="th_hours h";
 			mFrom+=" LEFT OUTER JOIN messages m on h.hour=strftime('%H',m.date/1000000,'unixepoch') AND m.date>"+mFromDate+"000 and m.date<"+mToDate+"000";

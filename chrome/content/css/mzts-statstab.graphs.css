@@ -79,3 +79,7 @@ font-weight:normal;
     stroke: steelblue;
     stroke-width: 1.5px;
 }
+
+.chart_hours .axis text{
+  font: 10px sans-serif;	
+}

@@ -94,7 +94,7 @@ miczThunderStatsTab.ui={
 
 	openPrefWindow: function () {
 		window.openDialog('chrome://thunderstats/content/mzts-settings.xul','ThunderStats_Settings','non-private,chrome,titlebar,dialog=no,resizable,centerscreen').focus();
-	} ,
+	},
 
 	formatInvolvedTable: function(involvedData){	//data columns ["ID","Name","Mail","Num"]
 		let outString="<table class='mzts-tinvolved'>";
@@ -554,7 +554,6 @@ miczThunderStatsTab.ui={
 	utilDrawHoursGraph_ArrangeData:function(data_array){
 		let data_output=new Array();
 		let _data_handles=['today_sent','today_rcvd','yesterday_sent','yesterday_rcvd'];
-		//_graph_data:{today_sent:{},today_rcvd:{},yesterday_sent:{},yesterday_rcvd:{}},
 		
 		for(let h_el in _data_handles){
 			let current_data={};
@@ -571,15 +570,13 @@ miczThunderStatsTab.ui={
 			if(current_data['data'].length<24){
 				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
 					if(!current_data['data'].some(this.utilDrawHoursGraph_CheckRecord,this)){
-						current_data['data'].push({'hour':this._tmp_i,'value':0});
+						//current_data['data'].push({'hour':this._tmp_i,'value':0});
+						current_data['data'].push({'hour':this._tmp_i,'value':Math.floor(Math.random() * (40 - 0)) + 0});
 					};
 				}
 			}
-			
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data BEFORE SORTING: "+JSON.stringify(data)+"\r\n");
-			
+
 			current_data.data.sort(this.utilDrawHoursGraph_ArrayCompare);
-			
 			data_output.push(current_data);
 		}
 
@@ -676,21 +673,23 @@ miczThunderStatsTab.ui={
 
 		//let parseDate = d3.time.format("%Y%m%d").parse;
 
-		let x = d3.scale.linear().domain([0,24]).range([0, width]);
+		let x = d3.scale.linear().domain([0,23]).range([0, width]);
 
 		let y = d3.scale.linear().range([height, 0]);
 
 		let color = d3.scale.category10();
 
 		let xAxis = d3.svg.axis()
-			.ticks(12)
-			.outerTickSize(0)
+			.ticks(13)
+			.outerTickSize(1)
+			.tickValues([0,2,4,6,8,10,12,14,16,18,20,22,23])
 			.scale(x)
 			.orient("bottom");
 
 		let yAxis = d3.svg.axis()
 			.scale(y)
-			.ticks(2)
+			.outerTickSize(1)
+			.ticks(4)
 			.tickFormat(d3.format('0'))
 			.orient("left");
 
@@ -755,7 +754,7 @@ miczThunderStatsTab.ui={
 			return color(d.type);
 		});
 
-		city.append("text")
+		/*city.append("text")
 			.datum(function (d) {
 			return {
 				name: d.type,
@@ -770,7 +769,7 @@ miczThunderStatsTab.ui={
 			.attr("dy", ".35em")
 			.text(function (d) {
 				return d.name;
-		});
+		});*/
 
 	},
 

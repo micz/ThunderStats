@@ -551,9 +551,16 @@ miczThunderStatsTab.ui={
 	},
 
 	utilDrawHoursGraph_ArrangeData:function(data_array){
-		let data_output:new Array();
+		let data_output=new Array();
 		//_graph_data:{today_sent:{},today_rcvd:{},yesterday_sent:{},yesterday_rcvd:{}},
-
+		
+		let data_today_sent={};
+		data_today_sent['type']='today_sent';
+		data_today_sent['data']=new Array();
+		for(let el in data_array['today_sent']){
+			data_today_sent['data'].push({'hour':data_array['today_sent'][el]['mHour'],'value':data_array['today_sent'][el]['Num']});
+		}
+		data_output.push(data_today_sent);
 
 		return data_output;
 	},

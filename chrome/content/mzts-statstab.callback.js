@@ -81,7 +81,7 @@ miczThunderStatsTab.callback.homepage_stats_today_hours = {
 		this.empty=false;
 		let result = miczThunderStatsCore.db.getResultObject(["Num","Info","mHour"],aResultSet);
 		for (let key in result) {
-			this.data.push(result[key]);
+			this.data[key]=result[key];
 		}
 	},
 
@@ -122,7 +122,7 @@ miczThunderStatsTab.callback.homepage_stats_today_hours = {
 	},
 
 	_data_collected:function(){
-		return (_graph_handle.today_sent==1)&&(_graph_handle.today_rcvd==1)&&(_graph_handle.yesterday_sent==1)&&(_graph_handle.yesterday_rcvd==1);
+		return (this._graph_handle.today_sent==1)&&(this._graph_handle.today_rcvd==1)&&(this._graph_handle.yesterday_sent==1)&&(this._graph_handle.yesterday_rcvd==1);
 	},
 };
 

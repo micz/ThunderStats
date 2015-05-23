@@ -31,6 +31,8 @@ var miczThunderStatsDB = {
 		if(this.mDb.openDatabase(file)){
 			//load messages attributes!
 			this.loadMsgAttributes(false);
+			//init temp table for hours calculation
+			this.initHoursTempTable();
 			return true;
 		}else{
 			miczLogger.log('[miczThunderStatsDB] Error on db open {'+fileName+'}!!!\r\n',2);
@@ -57,6 +59,17 @@ var miczThunderStatsDB = {
 			}
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes this.msgAttributes  '+JSON.stringify(this.msgAttributes)+'\r\n');
 		}
+	},
+	
+	initHoursTempTable:function(){
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab mDB] initHoursTempTable\r\n");
+		let mQueries=new Array();
+		mQueries.push("CREATE TEMP TABLE th_hours(hour INTEGER);");
+		for(let i=0;i<=23;i++){
+			mQueries.push("INSERT INTO th_hours (hour) VALUES ('"+i+"');");
+		}
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab mDB] initHoursTempTable mQueries: "+JSON.stringify(mQueries)+"\r\n");
+		return miczThunderStatsQuery.queryExec(this.mDb,mQueries,null);
 	},
 
 	querySelect:function(mWhat,mFrom,mWhere,mCallback){
@@ -90,36 +103,61 @@ var miczThunderStatsDB = {
 		if(mInfo!=null){
 			mWhat+=", '"+mInfo+"' as Info";
 		}
-		if(mHours!=null){
-			mWhat+=", strftime('%H',m.date/1000000,'unixepoch','localtime') AS mHour";
+		let mFrom="";
+		let mWhere="";
+		if(mHours!=null){	//group messages by hours
+			mWhat+=", h.hour AS mHour";
+			mFrom="th_hours h";
+			mFrom+=" LEFT OUTER JOIN messages m on h.hour=strftime('%H',m.date/1000000,'unixepoch') AND m.date>"+mFromDate+"000 and m.date<"+mToDate+"000";
+			mFrom+=" LEFT JOIN messageattributes ma on ma.messageID=m.id";
+		}else{
+			mFrom="messageattributes ma left join messages m on ma.messageID=m.id AND m.date>"+mFromDate+"000 and m.date<"+mToDate+"000";
+			mWhere="m.folderID not in "+forbiddenFoldersStr+" ";
 		}
-		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
-
-		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		//let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		//
 		//if mType!=0 do not consider custom identities, they do not send emails
 		//Also do not consider custom identities if there are no ones
 		if((mType==1)||(this.identities_custom_ids_mail.length==0)){
-			mWhere+=" and ma.attributeID="+mType_attribute;
+			if(mHours!=null){	//group messages by hours
+				mFrom+=" and ma.attributeID="+mType_attribute;
+			}else{
+				mWhere+=" and ma.attributeID="+mType_attribute;
+			}
 			if(typeof mIdentity == "object"){
 				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 				let identitiesStr="("+mIdentity.ids.join()+")";
-				mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
+				if(mHours!=null){	//group messages by hours
+					mFrom+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
+				}else{
+					mWhere+=" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr;
+				}
 			}
 		}else{		//do consider custom identities
 			if(typeof mIdentity == "object"){
 				mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
 				let identitiesStr="("+mIdentity.ids.join()+")";
 				let identities_customStr="("+mIdentity.ids_custom.join()+")";
-				mWhere+="and ((ma.attributeID="+mType_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+") OR ";
-				mWhere+=" (ma.attributeID="+involves_attribute+" AND ma.value in "+identities_customStr+"))";
+				if(mHours!=null){	//group messages by hours
+					mFrom+="and ((ma.attributeID="+mType_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+") OR ";
+					mFrom+=" (ma.attributeID="+involves_attribute+" AND ma.value in "+identities_customStr+"))";
+				}else{
+					mWhere+="and ((ma.attributeID="+mType_attribute+" AND ma2.attributeID="+involves_attribute+" AND ma2.value in "+identitiesStr+") OR ";
+					mWhere+=" (ma.attributeID="+involves_attribute+" AND ma.value in "+identities_customStr+"))";
+				}
 			}else{	//all identities
 				let identitiesStr="("+this.identities_custom_ids.join()+")";
-				mWhere+="and ((ma.attributeID="+mType_attribute+") OR ";
-				mWhere+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
+				if(mHours!=null){	//group messages by hours
+					mFrom+="and ((ma.attributeID="+mType_attribute+") OR ";
+					mFrom+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
+				}else{
+					mWhere+="and ((ma.attributeID="+mType_attribute+") OR ";
+					mWhere+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
+				}
 			}
 		}
 		if(mHours!=null){	//group messages by hours
-			mWhere+=" GROUP BY mHour";
+			mWhere+="1=1 GROUP BY mHour";
 		}
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},

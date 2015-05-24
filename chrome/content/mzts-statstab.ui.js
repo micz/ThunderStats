@@ -576,7 +576,7 @@ miczThunderStatsTab.ui={
 				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
 					if(!current_data['data'].some(this.utilDrawHoursGraph_CheckRecord,this)){
 						//current_data['data'].push({'hour':this._tmp_i,'value':0});
-						current_data['data'].push({'hour':this._tmp_i,'value':Math.floor(Math.random() * (40 - 0)) + 0});
+						current_data['data'].push({'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
 					};
 				}
 			}
@@ -635,7 +635,6 @@ miczThunderStatsTab.ui={
 		//let parseDate = d3.time.format("%Y%m%d").parse;
 
 		let x = d3.scale.linear().domain([0,23]).range([0, width]);
-
 		let y = d3.scale.linear().range([height, 0]);
 
 		//let color = d3.scale.category10();
@@ -648,10 +647,12 @@ miczThunderStatsTab.ui={
 			.scale(x)
 			.orient("bottom");
 
+		let y_num_ticks = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })})<80 ? 4 : 8;
+
 		let yAxis = d3.svg.axis()
 			.scale(y)
 			.outerTickSize(1)
-			.ticks(4)
+			.ticks(y_num_ticks)
 			.tickFormat(d3.format('0'))
 			.orient("left");
 
@@ -673,14 +674,8 @@ miczThunderStatsTab.ui={
 
 		color.domain(data.map(function (d) { return d.type; }));
 
-		/*data.forEach(function (kv) {
-			kv.data.forEach(function (d) {
-				d.hour = parseDate(d.hour);
-			});
-		});*/
-
 		let minY = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.value; }) });
-		let maxY = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; }) });
+		let maxY = d3.max(data, function (kv) { return Math.ceil((d3.max(kv.data, function (d) { return d.value; })+1)/10)*10 });
 
 		y.domain([minY, maxY]);
 
@@ -715,7 +710,7 @@ miczThunderStatsTab.ui={
 			  	return (i>=2?"0.3":"1");
 			  });
 
-//Legend
+		//Legend
 		let legend = svg.selectAll('.legend')
 			  .data(color.domain())
 			  .enter()

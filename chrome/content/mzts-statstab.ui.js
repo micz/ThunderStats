@@ -575,8 +575,8 @@ miczThunderStatsTab.ui={
 			if(current_data['data'].length<24){
 				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
 					if(!current_data['data'].some(this.utilDrawHoursGraph_CheckRecord,this)){
-						//current_data['data'].push({'hour':this._tmp_i,'value':0});
-						current_data['data'].push({'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
+						current_data['data'].push({'hour':this._tmp_i,'value':0});
+						//current_data['data'].push({'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
 					};
 				}
 			}
@@ -647,7 +647,7 @@ miczThunderStatsTab.ui={
 			.scale(x)
 			.orient("bottom");
 
-		let y_num_ticks = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })})<80 ? 4 : 8;
+		let y_num_ticks = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })})<10?d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })}):d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })})<80 ? 4 : 8;
 
 		let yAxis = d3.svg.axis()
 			.scale(y)
@@ -675,7 +675,7 @@ miczThunderStatsTab.ui={
 		color.domain(data.map(function (d) { return d.type; }));
 
 		let minY = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.value; }) });
-		let maxY = d3.max(data, function (kv) { return Math.ceil((d3.max(kv.data, function (d) { return d.value; })+1)/10)*10 });
+		let maxY = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })<10?d3.max(kv.data, function (d) { return d.value; }):Math.ceil((d3.max(kv.data, function (d) { return d.value; })+1)/10)*10 });
 
 		y.domain([minY, maxY]);
 
@@ -763,12 +763,43 @@ miczThunderStatsTab.ui={
 				return "";
 			 })
 			.attr('transform',
-			function(d,i){
-				let ldt_horz = full_width - legendRectSize - margin.right - 10;
-				let ldt_vert = i * (legendRectSize + legendSpacing) + 10 + (i>=2?15:0);
-				return 'translate(' + ldt_horz + ',' + ldt_vert + ')'
-			}
+				function(d,i){
+					let ldt_horz = full_width - legendRectSize - margin.right - 10;
+					let ldt_vert = i * (legendRectSize + legendSpacing) + 10 + (i>=2?15:0);
+					return 'translate(' + ldt_horz + ',' + ldt_vert + ')'
+				}
 			);
+
+/*		 let focus = svg.append("g")
+					  .attr("class", "focus")
+					  .style("display", "none");
+
+		  focus.append("circle")
+			  .attr("r", 2.5);
+
+		  focus.append("text")
+			  .attr("x", 9)
+			  .attr("dy", ".35em");
+
+		  svg.append("rect")
+			  .attr("class", "overlay")
+			  .attr("width", width)
+			  .attr("height", height)
+			  .on("mouseover", function() { focus.style("display", null); })
+			  .on("mouseout", function() { focus.style("display", "none"); })
+			  .on("mousemove", mousemove);
+
+		let bisectDate = d3.bisector(function(d) { return d.hour; }).left;
+
+		  function mousemove() {
+			let x0 = x.invert(d3.mouse(this)[0]),
+				i = bisectDate(data, x0, 1),
+				d0 = data[i - 1],
+				d1 = data[i],
+				d = x0 - d0.value > d1.value - x0 ? d1 : d0;
+			focus.attr("transform", "translate(" + x(d.data.hour) + "," + y(d.data.value) + ")");
+			focus.select("text").text(d.data.value);
+		  }*/
 
 	},
 

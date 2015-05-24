@@ -69,7 +69,7 @@ font-weight:normal;
 	fill: none;
 }
 
-.chart_hours{overflow:auto;width:100%;height:310px;}
+.chart_hours{overflow:auto;width:100%;height:160px;}
 .chart_hours .axis path, .axis line {
     fill: none;
     stroke: #000;
@@ -104,4 +104,14 @@ font-weight:normal;
 .chart_hours rect.yday_hours{
 	fill-opacity:0.3;
 	stroke-opacity:0.2;
+}
+
+.chart_hours .overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.chart_hours .focus circle {
+  fill: none;
+  stroke: steelblue;
 }

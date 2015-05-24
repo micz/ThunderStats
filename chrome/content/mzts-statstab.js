@@ -125,6 +125,9 @@ var miczThunderStatsTab = {
 		//Get yesterday received messages
 		miczThunderStatsCore.db.getYesterdayMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_rcvd);
 
+		//Get yesterday hours graph
+		miczThunderStatsCore.db.getYesterdayHours(identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_hours);
+
 		//Get yesterday first 10 recipients
 		miczThunderStatsCore.db.getYesterdayInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_recipients);
 

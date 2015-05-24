@@ -168,6 +168,14 @@ miczThunderStatsCore.db = {
 		return true;
 	},
 
+	getYesterdayHours:function(mIdentity,mCallback){
+		let ydate = new Date();
+		ydate.setDate(ydate.getDate() - 1);
+		this.getOneDayMessages({type:1,info:'yesterday_sent',hours:1},ydate,mIdentity,mCallback,'yesterday_sent');	//yesterday sent
+		this.getOneDayMessages({type:0,info:'yesterday_rcvd',hours:1},ydate,mIdentity,mCallback,'yesterday_rcvd');	//yestarday rcvd
+		return true;
+	},
+
 	getYesterdayMessages:function(mType,mIdentity,mCallback){
 		let ydate = new Date();
 		ydate.setDate(ydate.getDate() - 1);

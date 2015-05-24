@@ -551,9 +551,14 @@ miczThunderStatsTab.ui={
 		return pos[1];
 	},
 
-	utilDrawHoursGraph_ArrangeData:function(data_array){
+	utilDrawHoursGraph_ArrangeData:function(data_array,is_today){
 		let data_output=new Array();
-		let _data_handles=['today_sent','today_rcvd','yesterday_sent','yesterday_rcvd'];
+		let _data_handles;
+		if(is_today){
+			_data_handles=['today_sent','today_rcvd','yesterday_sent','yesterday_rcvd'];
+		}else{
+			_data_handles=['yesterday_sent','yesterday_rcvd'];
+		}
 
 		for(let h_el in _data_handles){
 			let current_data={};
@@ -600,7 +605,7 @@ miczThunderStatsTab.ui={
 		return false;
 	},
 
-	drawHoursGraph:function(element_id_txt,data_array){
+	drawHoursGraph:function(element_id_txt,data_array,is_today){
 
 		let margin = {
 			top: 10,
@@ -618,7 +623,7 @@ miczThunderStatsTab.ui={
 
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 
-		let data=this.utilDrawHoursGraph_ArrangeData(data_array);
+		let data=this.utilDrawHoursGraph_ArrangeData(data_array,is_today);
 
 		//let data = [{"type": "today_sent","data": [{"hour": "11","value": "63"},{"hour": "18","value": "18"},{"Date": "21","Value": "53"}]},];
 
@@ -753,10 +758,10 @@ miczThunderStatsTab.ui={
 			.append('text')
 			.text(
 			 function(d, i) {
-				if(i==0){
+				if((i==0)&&is_today){
 					return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.today")
 				}else{
-					if(i==2){
+					if((i==2)||(!is_today&&i==0)){
 						return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.yesterday")
 					}
 				}

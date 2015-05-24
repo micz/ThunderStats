@@ -58,7 +58,7 @@ var miczThunderStatsDB = {
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes this.msgAttributes  '+JSON.stringify(this.msgAttributes)+'\r\n');
 		}
 	},
-
+	
 	querySelect:function(mWhat,mFrom,mWhere,mCallback){
 		return miczThunderStatsQuery.querySelect(this.mDb,mWhat,mFrom,mWhere,mCallback);
 	},
@@ -73,8 +73,10 @@ var miczThunderStatsDB = {
 
 	queryMessages:function(mType,mFromDate,mToDate,mIdentity,mCallback){	//mFromDate,mToDate are in milliseconds
 		let mInfo=null;
+		let mHours=null;
 		if(typeof mType === 'object'){
 			mInfo = mType.info;
+			mHours = mType.hours;
 			mType = mType.type;
 		}
 		let fromMe_attribute=this.msgAttributes['fromMe'];
@@ -87,6 +89,9 @@ var miczThunderStatsDB = {
 		let mWhat="count(distinct m.headerMessageID) as Num";
 		if(mInfo!=null){
 			mWhat+=", '"+mInfo+"' as Info";
+		}
+		if(mHours!=null){
+			mWhat+=", strftime('%H',m.date/1000000,'unixepoch','localtime') AS mHour";
 		}
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
 
@@ -112,6 +117,12 @@ var miczThunderStatsDB = {
 				mWhere+="and ((ma.attributeID="+mType_attribute+") OR ";
 				mWhere+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
 			}
+		}
+		if(mHours!=null){	//group messages by hours
+			mWhere+=" GROUP BY mHour";
+			let mQuery="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
+			mQuery+=" UNION SELECT 0 AS Num, '"+mInfo+"' as Info, -1 AS mHour";
+			return this.queryExec(mQuery,mCallback);
 		}
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},

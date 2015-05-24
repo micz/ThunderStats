@@ -967,3 +967,114 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg = {
 	return false;
 	},
 };
+
+miczThunderStatsTab.callback.homepage_stats_today_hours = {
+	empty:true,
+	data:{},
+	_graph_handle:{today_sent:0,today_rcvd:0,yesterday_sent:0,yesterday_rcvd:0},
+	_graph_data:{today_sent:{},today_rcvd:{},yesterday_sent:{},yesterday_rcvd:{}},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num","Info","mHour"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsTab.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("today_hours_graph_wait");
+				if(!this.empty){
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours handleResult '+JSON.stringify(this.data)+'\r\n');
+					let data_type=this.data[1]["Info"];
+					this._graph_data[data_type]=this.data;
+					this._graph_handle[data_type]=1;
+				}else{
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours handleResult EMPTY '+JSON.stringify(this.data)+'\r\n');
+					miczLogger.log("Today hours graph empty result!",2);
+				}
+				if(this._data_collected()){
+					miczThunderStatsTab.ui.drawHoursGraph("today_hours_graph",this._graph_data,true);
+				}
+				miczLogger.log("Today hours graph loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+
+	_data_collected:function(){
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours _data_collected '+JSON.stringify(this._graph_handle)+'\r\n');
+		return (this._graph_handle.today_sent==1)&&(this._graph_handle.today_rcvd==1)&&(this._graph_handle.yesterday_sent==1)&&(this._graph_handle.yesterday_rcvd==1);
+	},
+};
+
+
+miczThunderStatsTab.callback.homepage_stats_yesterday_hours = {
+	empty:true,
+	data:{},
+	_graph_handle:{yesterday_sent:0,yesterday_rcvd:0},
+	_graph_data:{yesterday_sent:{},yesterday_rcvd:{}},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num","Info","mHour"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsTab.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("yesterday_hours_graph_wait");
+				if(!this.empty){
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_hours handleResult '+JSON.stringify(this.data)+'\r\n');
+					let data_type=this.data[1]["Info"];
+					this._graph_data[data_type]=this.data;
+					this._graph_handle[data_type]=1;
+				}else{
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_hours handleResult EMPTY '+JSON.stringify(this.data)+'\r\n');
+					miczLogger.log("Yesterday hours graph empty result!",2);
+				}
+				if(this._data_collected()){
+					miczThunderStatsTab.ui.drawHoursGraph("yesterday_hours_graph",this._graph_data,false);
+				}
+				miczLogger.log("Yesterday hours graph loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+
+	_data_collected:function(){
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_hours _data_collected '+JSON.stringify(this._graph_handle)+'\r\n');
+		return (this._graph_handle.yesterday_sent==1)&&(this._graph_handle.yesterday_rcvd==1);
+	},
+};

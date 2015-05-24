@@ -145,13 +145,35 @@ miczThunderStatsCore.db = {
 		let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay);
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getManyDaysMessages] mDays.length '+JSON.stringify(mDays.length)+'\r\n');
 		for(let mKey in mDays){
-			this.getOneDayMessages({type:mType,info:mDays[mKey]},mDays[mKey],mIdentity,mCallback);
+			this.getOneDayMessages({type:mType,info:mDays[mKey],hours:null},mDays[mKey],mIdentity,mCallback);
 		}
 		return true;
 	},
 
 	getTodayMessages:function(mType,mIdentity,mCallback){
 		return this.getOneDayMessages(mType,new Date(),mIdentity,mCallback);
+	},
+
+	getTodayMessagesHours:function(mType,mIdentity,mCallback){
+		return this.getOneDayMessages({type:mType,info:null,hours:1},new Date(),mIdentity,mCallback);
+	},
+
+	getTodayHours:function(mIdentity,mCallback){
+		let ydate = new Date();
+		ydate.setDate(ydate.getDate() - 1);
+		this.getOneDayMessages({type:1,info:'today_sent',hours:1},new Date(),mIdentity,mCallback,'today_sent');	//today sent
+		this.getOneDayMessages({type:0,info:'today_rcvd',hours:1},new Date(),mIdentity,mCallback,'today_rcvd');	//today rcvd
+		this.getOneDayMessages({type:1,info:'yesterday_sent',hours:1},ydate,mIdentity,mCallback,'yesterday_sent');	//yesterday sent
+		this.getOneDayMessages({type:0,info:'yesterday_rcvd',hours:1},ydate,mIdentity,mCallback,'yesterday_rcvd');	//yestarday rcvd
+		return true;
+	},
+
+	getYesterdayHours:function(mIdentity,mCallback){
+		let ydate = new Date();
+		ydate.setDate(ydate.getDate() - 1);
+		this.getOneDayMessages({type:1,info:'yesterday_sent',hours:1},ydate,mIdentity,mCallback,'yesterday_sent');	//yesterday sent
+		this.getOneDayMessages({type:0,info:'yesterday_rcvd',hours:1},ydate,mIdentity,mCallback,'yesterday_rcvd');	//yestarday rcvd
+		return true;
 	},
 
 	getYesterdayMessages:function(mType,mIdentity,mCallback){

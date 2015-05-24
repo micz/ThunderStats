@@ -92,6 +92,9 @@ var miczThunderStatsTab = {
 		//Get today first 10 senders
 		miczThunderStatsCore.db.getTodayInvolved(0,identity_id,miczThunderStatsTab.callback.homepage_stats_today_senders);
 
+		//Get today hours graph
+		miczThunderStatsCore.db.getTodayHours(identity_id,miczThunderStatsTab.callback.homepage_stats_today_hours);
+
 		//Inbox 0 Today
 		//Get today mails folder spreading
 		miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
@@ -121,6 +124,9 @@ var miczThunderStatsTab = {
 
 		//Get yesterday received messages
 		miczThunderStatsCore.db.getYesterdayMessages(0,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_rcvd);
+
+		//Get yesterday hours graph
+		miczThunderStatsCore.db.getYesterdayHours(identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_hours);
 
 		//Get yesterday first 10 recipients
 		miczThunderStatsCore.db.getYesterdayInvolved(1,identity_id,miczThunderStatsTab.callback.homepage_stats_yesterday_recipients);

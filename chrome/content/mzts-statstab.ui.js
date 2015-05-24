@@ -7,6 +7,7 @@ miczThunderStatsTab.ui={
 	last_pos0:0,
 	last_pos1:0,
 	label_height:15,
+	_tmp_i:-1,
 
 	showLoadingElement:function(element){
 		$jQ("#"+element).show();
@@ -93,7 +94,7 @@ miczThunderStatsTab.ui={
 
 	openPrefWindow: function () {
 		window.openDialog('chrome://thunderstats/content/mzts-settings.xul','ThunderStats_Settings','non-private,chrome,titlebar,dialog=no,resizable,centerscreen').focus();
-	} ,
+	},
 
 	formatInvolvedTable: function(involvedData){	//data columns ["ID","Name","Mail","Num"]
 		let outString="<table class='mzts-tinvolved'>";
@@ -548,6 +549,232 @@ miczThunderStatsTab.ui={
 		miczThunderStatsTab.ui.last_pos0=pos[0];
 		miczThunderStatsTab.ui.last_pos1=pos[1];
 		return pos[1];
-	}
+	},
+
+	utilDrawHoursGraph_ArrangeData:function(data_array,is_today){
+		let data_output=new Array();
+		let _data_handles;
+		if(is_today){
+			_data_handles=['today_sent','today_rcvd','yesterday_sent','yesterday_rcvd'];
+		}else{
+			_data_handles=['yesterday_sent','yesterday_rcvd'];
+		}
+
+		for(let h_el in _data_handles){
+			let current_data={};
+			current_data['type']=_data_handles[h_el];
+			current_data['data']=new Array();
+			//rearrange actual data
+			for(let el in data_array[_data_handles[h_el]]){
+				if(data_array[_data_handles[h_el]][el]['mHour']>=0){
+					current_data['data'].push({'hour':data_array[_data_handles[h_el]][el]['mHour'],'value':data_array[_data_handles[h_el]][el]['Num']});
+				}
+			}
+
+			//add missing hours
+			if(current_data['data'].length<24){
+				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
+					if(!current_data['data'].some(this.utilDrawHoursGraph_CheckRecord,this)){
+						//current_data['data'].push({'hour':this._tmp_i,'value':0});
+						current_data['data'].push({'hour':this._tmp_i,'value':Math.floor(Math.random() * (40 - 0)) + 0});
+					};
+				}
+			}
+
+			current_data.data.sort(this.utilDrawHoursGraph_ArrayCompare);
+			data_output.push(current_data);
+		}
+
+		return data_output;
+	},
+
+	utilDrawHoursGraph_ArrayCompare:function(a,b){
+		if(a.hour < b.hour){
+			return -1;
+		}
+		if(a.hour > b.hour){
+			return 1;
+		}
+		return 0;
+	},
+
+	utilDrawHoursGraph_CheckRecord:function(currentValue){
+		if(currentValue.hour===this._tmp_i){
+			return true;
+		}
+		return false;
+	},
+
+	drawHoursGraph:function(element_id_txt,data_array,is_today){
+
+		let margin = {
+			top: 10,
+			right: 150,
+			bottom: 40,
+			left: 40
+		};
+		let full_width=550;
+		let full_height=150;
+		let width = full_width - margin.left - margin.right;
+		let height = full_height - margin.top - margin.bottom;
+
+		let legendRectSize = 10;
+		let legendSpacing = 8;
+
+		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+
+		let data=this.utilDrawHoursGraph_ArrangeData(data_array,is_today);
+
+		//let data = [{"type": "today_sent","data": [{"hour": "11","value": "63"},{"hour": "18","value": "18"},{"Date": "21","Value": "53"}]},];
+
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data: "+JSON.stringify(data)+"\r\n");
+
+		//remove old graph
+		$jQ("#"+element_id_txt+"_svg_graph").remove();
+
+		//let parseDate = d3.time.format("%Y%m%d").parse;
+
+		let x = d3.scale.linear().domain([0,23]).range([0, width]);
+
+		let y = d3.scale.linear().range([height, 0]);
+
+		//let color = d3.scale.category10();
+		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#1f77b4','#ff7f0e']);
+
+		let xAxis = d3.svg.axis()
+			.ticks(13)
+			.outerTickSize(1)
+			.tickValues([0,2,4,6,8,10,12,14,16,18,20,22,23])
+			.scale(x)
+			.orient("bottom");
+
+		let yAxis = d3.svg.axis()
+			.scale(y)
+			.outerTickSize(1)
+			.ticks(4)
+			.tickFormat(d3.format('0'))
+			.orient("left");
+
+		let line = d3.svg.line()
+			.interpolate("basis")
+			.x(function (d) {
+			return x(d.hour);
+		})
+			.y(function (d) {
+			return y(d.value);
+		});
+
+		let svg = d3.select("#"+element_id_txt).append("svg")
+			.attr("width", full_width)
+			.attr("height", full_height)
+			.attr("id",element_id_txt+"_svg_graph")
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		color.domain(data.map(function (d) { return d.type; }));
+
+		/*data.forEach(function (kv) {
+			kv.data.forEach(function (d) {
+				d.hour = parseDate(d.hour);
+			});
+		});*/
+
+		let minY = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.value; }) });
+		let maxY = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; }) });
+
+		y.domain([minY, maxY]);
+
+		svg.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis);
+
+		svg.append("g")
+			.attr("class", "y axis")
+			.call(yAxis)
+			.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 6)
+			.attr("dy", ".71em")
+			.style("text-anchor", "end");
+
+		let serie = svg.selectAll(".serie")
+			.data(data)
+			.enter().append("g")
+			.attr("class", "serie");
+
+		serie.append("path")
+			.attr("class", "line")
+			.attr("d", function (d) {
+			return line(d.data);
+		})
+			.style("stroke", function (d) {
+			return color(d.type);
+		})
+		.style('stroke-opacity',function(d,i){
+			  	return (i>=2?"0.3":"1");
+			  });
+
+//Legend
+		let legend = svg.selectAll('.legend')
+			  .data(color.domain())
+			  .enter()
+			  .append('g')
+			  .attr('class', 'legend')
+			  .attr('transform', function(d, i) {
+				let l_height = legendRectSize + legendSpacing;
+				let horz = full_width - legendRectSize - margin.right - 10;
+				let vert = i * l_height + 15 + (i>=2?15:0);
+				return 'translate(' + horz + ',' + vert + ')';
+			  });
+
+		legend.append('rect')
+		  .attr('width', legendRectSize)
+		  .attr('height', legendRectSize)
+		  .style('fill', color)
+		  .style('stroke', color)
+		  .attr('class',function(d,i){
+			  	return (i>=2?"yday_hours":"tday_hours");
+			  });
+
+		legend.append('text')
+		  .text(function(d) {
+				return _bundleCW.GetStringFromName("ThunderStats.HoursGraph."+d);
+			  })
+		  .attr('transform', function(d, i) {
+				let l_height = legendRectSize + legendSpacing;
+				let horz = legendRectSize + 3;
+				let vert = l_height/2;
+				return 'translate(' + horz + ',' + vert + ')';
+			  })
+			.attr('height', legendRectSize);
+
+		//Legend "Today" title
+		let legend_day_title_today=svg.selectAll('.legend_day_title')
+			.data(color.domain())
+			.enter()
+			.append('g')
+			.attr('class', 'legend_day_title')
+			.append('text')
+			.text(
+			 function(d, i) {
+				if((i==0)&&is_today){
+					return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.today")
+				}else{
+					if((i==2)||(!is_today&&i==0)){
+						return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.yesterday")
+					}
+				}
+				return "";
+			 })
+			.attr('transform',
+			function(d,i){
+				let ldt_horz = full_width - legendRectSize - margin.right - 10;
+				let ldt_vert = i * (legendRectSize + legendSpacing) + 10 + (i>=2?15:0);
+				return 'translate(' + ldt_horz + ',' + ldt_vert + ')'
+			}
+			);
+
+	},
 
 };

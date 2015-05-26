@@ -657,7 +657,7 @@ miczThunderStatsTab.ui={
 			.orient("left");
 
 		let line = d3.svg.line()
-			.interpolate("basis")
+			.interpolate("linear")	/*linear basis step-before step-after cardinal monotone*/
 			.x(function (d) {
 			return x(d.hour);
 		})
@@ -707,7 +707,7 @@ miczThunderStatsTab.ui={
 			return color(d.type);
 		})
 		.style('stroke-opacity',function(d,i){
-			  	return (i>=2?"0.3":"1");
+			  	return (i>=2?"0.4":"1");
 			  });
 
 		//Legend

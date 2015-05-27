@@ -560,6 +560,8 @@ miczThunderStatsTab.ui={
 			_data_handles=['yesterday_sent','yesterday_rcvd'];
 		}
 
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data: "+JSON.stringify(data_array)+"\r\n");
+
 		for(let h_el in _data_handles){
 			let current_data={};
 			current_data['type']=_data_handles[h_el];
@@ -575,8 +577,8 @@ miczThunderStatsTab.ui={
 			if(current_data['data'].length<24){
 				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
 					if(!current_data['data'].some(this.utilDrawHoursGraph_CheckRecord,this)){
-						current_data['data'].push({'hour':this._tmp_i,'value':0});
-						//current_data['data'].push({'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
+						//current_data['data'].push({'hour':this._tmp_i,'value':0});
+						current_data['data'].push({'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
 					};
 				}
 			}
@@ -585,7 +587,28 @@ miczThunderStatsTab.ui={
 			data_output.push(current_data);
 		}
 
-		return data_output;
+		//normalize data
+		let final_output=new Array();
+
+		let tmp_h_elements={};
+		for(let ii=0;ii<=23;ii++){
+			tmp_h_elements[ii]={};
+			tmp_h_elements[ii]['hour']=ii;
+			for(let h_el in _data_handles){
+				let tmp_o = data_output.filter(function( obj ) {
+  								return obj.type == _data_handles[h_el];
+							});
+				let tmp_oh = tmp_o[0].data.filter(function( obj ) {
+  								return obj.hour == ii;
+							});
+				tmp_h_elements[ii][_data_handles[h_el]]=tmp_oh[0].value;
+			}
+			final_output.push(tmp_h_elements[ii]);
+		}
+
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph final_output: "+JSON.stringify(final_output)+"\r\n");
+
+		return final_output;
 	},
 
 	utilDrawHoursGraph_ArrayCompare:function(a,b){
@@ -625,7 +648,7 @@ miczThunderStatsTab.ui={
 
 		let data=this.utilDrawHoursGraph_ArrangeData(data_array,is_today);
 
-		//let data = [{"type": "today_sent","data": [{"hour": "11","value": "63"},{"hour": "18","value": "18"},{"Date": "21","Value": "53"}]},];
+		//let data = [{"type": "today_sent","data": [{"hour": "11","value": "63"},{"hour": "18","value": "18"},{"hour": "21","value": "53"}]},];
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data: "+JSON.stringify(data)+"\r\n");
 
@@ -634,17 +657,21 @@ miczThunderStatsTab.ui={
 
 		//let parseDate = d3.time.format("%Y%m%d").parse;
 
-		let x = d3.scale.linear().domain([0,23]).range([0, width]);
+		//let x = d3.scale.linear().domain([0,23]).range([0, width]);
+		let x0 = d3.scale.ordinal().rangeRoundBands([0, width], .1);
+		let x1 = d3.scale.ordinal();
 		let y = d3.scale.linear().range([height, 0]);
 
 		//let color = d3.scale.category10();
-		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#1f77b4','#ff7f0e']);
+		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#1f22b4','#f11f0e']);
+
+		let mail_hours = d3.keys(data[0]).filter(function(key) { return key == "hour"; });
 
 		let xAxis = d3.svg.axis()
 			.ticks(13)
 			.outerTickSize(1)
 			.tickValues([0,2,4,6,8,10,12,14,16,18,20,22,23])
-			.scale(x)
+			.scale(x0)
 			.orient("bottom");
 
 		let y_num_ticks = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })})<10?d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })}):d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })})<80 ? 4 : 8;
@@ -656,14 +683,14 @@ miczThunderStatsTab.ui={
 			.tickFormat(d3.format('0'))
 			.orient("left");
 
-		let line = d3.svg.line()
-			.interpolate("linear")	/*linear basis step-before step-after cardinal monotone*/
+		/*let line = d3.svg.line()
+			.interpolate("linear")	/*linear basis step-before step-after cardinal monotone*//*
 			.x(function (d) {
 			return x(d.hour);
 		})
 			.y(function (d) {
 			return y(d.value);
-		});
+		});*/
 
 		let svg = d3.select("#"+element_id_txt).append("svg")
 			.attr("width", full_width)
@@ -677,6 +704,8 @@ miczThunderStatsTab.ui={
 		let minY = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.value; }) });
 		let maxY = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })<10?d3.max(kv.data, function (d) { return d.value; }):Math.ceil((d3.max(kv.data, function (d) { return d.value; })+1)/10)*10 });
 
+		x0.domain(data.map(function (kv) { return d3.max(kv.data, function (d) { return d.hour; })}));
+		x1.domain(mail_types).rangeRoundBands([0, x0.rangeBand()]);
 		y.domain([minY, maxY]);
 
 		svg.append("g")
@@ -693,7 +722,31 @@ miczThunderStatsTab.ui={
 			.attr("dy", ".71em")
 			.style("text-anchor", "end");
 
-		let serie = svg.selectAll(".serie")
+		  let serie = svg.selectAll(".serie")
+				.data(data)
+				.enter().append("g")
+				.attr("class", "g")
+				.attr("transform", function (kv) { return d3.max(kv.data, function(d) { return "translate(" + x0(d.hour) + ",0)"; })});
+
+			serie.selectAll("rect")
+				.data(data)
+				.enter().append("rect")
+				.attr("width", x1.rangeBand())
+				.attr("x", function(d) { return x1(d.hour); })
+				.attr("y", function(d) { return y(d.value); })
+				.attr("height", function(d) { return height - y(d.value); })
+				.style("fill", function(d) { return color(d.type); })
+
+			/*serie.selectAll("rect")
+				.data(data)
+				.enter().append("rect")
+				.attr("width", x1.rangeBand())
+				.attr("x", function (kv) { return d3.max(kv.data, function(d) { return x1(d.hour); })})
+				.attr("y", function (kv) { return d3.max(kv.data, function(d) { return y(d.value); })})
+				.attr("height", function (kv) { return d3.max(kv.data, function(d) { return height - y(d.value); })})
+				.style("fill", function(d) { return color(d.type); })*/
+
+		/*let serie = svg.selectAll(".serie")
 			.data(data)
 			.enter().append("g")
 			.attr("class", "serie");
@@ -708,7 +761,7 @@ miczThunderStatsTab.ui={
 		})
 		.style('stroke-opacity',function(d,i){
 			  	return (i>=2?"0.4":"1");
-			  });
+			  });*/
 
 		//Legend
 		let legend = svg.selectAll('.legend')

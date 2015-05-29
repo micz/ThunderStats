@@ -567,7 +567,7 @@ miczThunderStatsTab.ui={
 			//rearrange actual data
 			for(let el in data_array[_data_handles[h_el]]){
 				if(data_array[_data_handles[h_el]][el]['mHour']>=0){
-					current_data['data'].push({'hour':data_array[_data_handles[h_el]][el]['mHour'],'value':data_array[_data_handles[h_el]][el]['Num']});
+					current_data['data'].push({'type':_data_handles[h_el],'hour':data_array[_data_handles[h_el]][el]['mHour'],'value':data_array[_data_handles[h_el]][el]['Num']});
 				}
 			}
 
@@ -575,8 +575,8 @@ miczThunderStatsTab.ui={
 			if(current_data['data'].length<24){
 				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
 					if(!current_data['data'].some(this.utilDrawHoursGraph_CheckRecord,this)){
-						current_data['data'].push({'hour':this._tmp_i,'value':0});
-						//current_data['data'].push({'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
+						//current_data['data'].push({'hour':this._tmp_i,'value':0});
+						current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
 					};
 				}
 			}
@@ -624,26 +624,33 @@ miczThunderStatsTab.ui={
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 
 		let data=this.utilDrawHoursGraph_ArrangeData(data_array,is_today);
+		let data_types=new Array();
 
-		//let data = [{"type": "today_sent","data": [{"hour": "11","value": "63"},{"hour": "18","value": "18"},{"Date": "21","Value": "53"}]},];
+		for(let eel in data){
+			data_types.push(data[eel]["type"]);
+		}
+
+		let bar_width=(width/(23*data_types.length));
+
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data_types: "+JSON.stringify(data_types)+"\r\n");
+
+		//let data = [{"type": "today_sent","data": [{"type": "today_sent","hour": "11","value": "63"},{"type": "today_sent","hour": "18","value": "18"},{"type": "today_sent","date": "21","value": "53"}]}];
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data: "+JSON.stringify(data)+"\r\n");
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
 
-		//let parseDate = d3.time.format("%Y%m%d").parse;
-
 		let x = d3.scale.linear().domain([0,23]).range([0, width]);
 		let y = d3.scale.linear().range([height, 0]);
 
 		//let color = d3.scale.category10();
-		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#1f77b4','#ff7f0e']);
+		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#1f773a','#610eff']);
 
 		let xAxis = d3.svg.axis()
 			.ticks(13)
 			.outerTickSize(1)
-			.tickValues([0,2,4,6,8,10,12,14,16,18,20,22,23])
+			.tickValues([0,2,4,6,8,10,12,14,16,18,20,22])
 			.scale(x)
 			.orient("bottom");
 
@@ -656,14 +663,14 @@ miczThunderStatsTab.ui={
 			.tickFormat(d3.format('0'))
 			.orient("left");
 
-		let line = d3.svg.line()
-			.interpolate("linear")	/*linear basis step-before step-after cardinal monotone*/
+		/*let line = d3.svg.line()
+			.interpolate("linear")	/*linear basis step-before step-after cardinal monotone*//*
 			.x(function (d) {
 			return x(d.hour);
 		})
 			.y(function (d) {
 			return y(d.value);
-		});
+		});*/
 
 		let svg = d3.select("#"+element_id_txt).append("svg")
 			.attr("width", full_width)
@@ -682,6 +689,7 @@ miczThunderStatsTab.ui={
 		svg.append("g")
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + height + ")")
+			.attr("dx", bar_width*2)
 			.call(xAxis);
 
 		svg.append("g")
@@ -698,21 +706,22 @@ miczThunderStatsTab.ui={
 			.enter().append("g")
 			.attr("class", "serie");
 
-		serie.append("path")
-			.attr("class", "line")
-			.attr("d", function (d) {
-			return line(d.data);
-		})
-			.style("stroke", function (d) {
-			return color(d.type);
-		})
-		.style('stroke-opacity',function(d,i){
-			  	return (i>=2?"0.4":"1");
-			  });
+		serie.selectAll("rect")
+			.data(function(d) { return d.data; })
+			.enter().append("rect")
+			.attr("width", bar_width)
+			.attr("x", function(d) { return x(d.hour)+(bar_width*data_types.indexOf(d.type)); })
+			.attr("y", function(d) { return y(d.value); })
+			.attr("height", function(d) { return height - y(d.value); })
+			.style("fill", function(d) { return color(d.type); })
+			.attr("class","tooltip")
+			.attr("title",function(d){ return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.Hour")+": "+d.hour+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.HoursGraph."+d.type+"_full")+": "+d.value;});
+
+			$jQ('.serie rect.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false,position:'top'});
 
 		//Legend
 		let legend = svg.selectAll('.legend')
-			  .data(color.domain())
+			  .data(data_types)
 			  .enter()
 			  .append('g')
 			  .attr('class', 'legend')
@@ -728,9 +737,9 @@ miczThunderStatsTab.ui={
 		  .attr('height', legendRectSize)
 		  .style('fill', color)
 		  .style('stroke', color)
-		  .attr('class',function(d,i){
+		  /*.attr('class',function(d,i){
 			  	return (i>=2?"yday_hours":"tday_hours");
-			  });
+			  })*/;
 
 		legend.append('text')
 		  .text(function(d) {

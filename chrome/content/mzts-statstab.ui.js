@@ -715,7 +715,19 @@ miczThunderStatsTab.ui={
 			.attr("height", function(d) { return height - y(d.value); })
 			.style("fill", function(d) { return color(d.type); })
 			.attr("class","tooltip")
-			.attr("title",function(d){ return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.Hour")+": "+d.hour+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.HoursGraph."+d.type+"_full")+": "+d.value;});
+			.attr("title",function(d){ return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.Hour")+": "+d.hour+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.HoursGraph."+d.type+"_full")+": "+d.value;})
+		    .on('mouseover',function() {
+				d3.select(this)
+				  .transition()
+				  .duration(500)
+				  .style('fill','red')
+			  })
+			  .on('mouseout',function () {
+				d3.select(this)
+				  .transition()
+				  .duration(500)
+				  .style("fill", function(d) { return color(d.type); })
+			  });
 
 			$jQ('.serie rect.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false,position:'top'});
 

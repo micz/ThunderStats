@@ -575,8 +575,8 @@ miczThunderStatsTab.ui={
 			if(current_data['data'].length<24){
 				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
 					if(!current_data['data'].some(this.utilDrawTimeGraph_CheckRecord,this)){
-						//current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':0});
-						current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
+						current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':0});
+						//current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
 					};
 				}
 			}

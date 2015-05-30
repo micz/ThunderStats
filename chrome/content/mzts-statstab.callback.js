@@ -997,7 +997,7 @@ miczThunderStatsTab.callback.homepage_stats_today_hours = {
 					miczLogger.log("Today hours graph empty result!",2);
 				}
 				if(this._data_collected()){
-					miczThunderStatsTab.ui.drawHoursGraph("today_hours_graph",this._graph_data,true);
+					miczThunderStatsTab.ui.drawTimeGraph("today_hours_graph",this._graph_data,true);
 				}
 				miczLogger.log("Today hours graph loaded.",0);
 				this.data={};
@@ -1053,7 +1053,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_hours = {
 					miczLogger.log("Yesterday hours graph empty result!",2);
 				}
 				if(this._data_collected()){
-					miczThunderStatsTab.ui.drawHoursGraph("yesterday_hours_graph",this._graph_data,false);
+					miczThunderStatsTab.ui.drawTimeGraph("yesterday_hours_graph",this._graph_data,false);
 				}
 				miczLogger.log("Yesterday hours graph loaded.",0);
 				this.data={};

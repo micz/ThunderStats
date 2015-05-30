@@ -551,7 +551,7 @@ miczThunderStatsTab.ui={
 		return pos[1];
 	},
 
-	utilDrawHoursGraph_ArrangeData:function(data_array,is_today){
+	utilDrawTimeGraph_ArrangeData:function(data_array,is_today){
 		let data_output=new Array();
 		let _data_handles;
 		if(is_today){
@@ -574,21 +574,21 @@ miczThunderStatsTab.ui={
 			//add missing hours
 			if(current_data['data'].length<24){
 				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
-					if(!current_data['data'].some(this.utilDrawHoursGraph_CheckRecord,this)){
-						//current_data['data'].push({'hour':this._tmp_i,'value':0});
+					if(!current_data['data'].some(this.utilDrawTimeGraph_CheckRecord,this)){
+						//current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':0});
 						current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
 					};
 				}
 			}
 
-			current_data.data.sort(this.utilDrawHoursGraph_ArrayCompare);
+			current_data.data.sort(this.utilDrawTimeGraph_ArrayCompare);
 			data_output.push(current_data);
 		}
 
 		return data_output;
 	},
 
-	utilDrawHoursGraph_ArrayCompare:function(a,b){
+	utilDrawTimeGraph_ArrayCompare:function(a,b){
 		if(a.hour < b.hour){
 			return -1;
 		}
@@ -598,14 +598,14 @@ miczThunderStatsTab.ui={
 		return 0;
 	},
 
-	utilDrawHoursGraph_CheckRecord:function(currentValue){
+	utilDrawTimeGraph_CheckRecord:function(currentValue){
 		if(currentValue.hour===this._tmp_i){
 			return true;
 		}
 		return false;
 	},
 
-	drawHoursGraph:function(element_id_txt,data_array,is_today){
+	drawTimeGraph:function(element_id_txt,data_array,is_today){
 
 		let margin = {
 			top: 10,
@@ -613,7 +613,7 @@ miczThunderStatsTab.ui={
 			bottom: 40,
 			left: 40
 		};
-		let full_width=550;
+		let full_width=600;
 		let full_height=150;
 		let width = full_width - margin.left - margin.right;
 		let height = full_height - margin.top - margin.bottom;
@@ -623,7 +623,7 @@ miczThunderStatsTab.ui={
 
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 
-		let data=this.utilDrawHoursGraph_ArrangeData(data_array,is_today);
+		let data=this.utilDrawTimeGraph_ArrangeData(data_array,is_today);
 		let data_types=new Array();
 
 		for(let eel in data){
@@ -632,16 +632,16 @@ miczThunderStatsTab.ui={
 
 		let bar_width=(width/(23*data_types.length));
 
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data_types: "+JSON.stringify(data_types)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawTimeGraph data_types: "+JSON.stringify(data_types)+"\r\n");
 
 		//let data = [{"type": "today_sent","data": [{"type": "today_sent","hour": "11","value": "63"},{"type": "today_sent","hour": "18","value": "18"},{"type": "today_sent","date": "21","value": "53"}]}];
 
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawHoursGraph data: "+JSON.stringify(data)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawTimeGraph data: "+JSON.stringify(data)+"\r\n");
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
 
-		let x = d3.scale.linear().domain([0,23]).range([0, width]);
+		let x = d3.scale.linear().domain([0,24]).range([0, width]);
 		let y = d3.scale.linear().range([height, 0]);
 
 		//let color = d3.scale.category10();
@@ -715,7 +715,21 @@ miczThunderStatsTab.ui={
 			.attr("height", function(d) { return height - y(d.value); })
 			.style("fill", function(d) { return color(d.type); })
 			.attr("class","tooltip")
-			.attr("title",function(d){ return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.Hour")+": "+d.hour+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.HoursGraph."+d.type+"_full")+": "+d.value;})
+			.attr("title",function(d){
+					let mh_from=moment().hours(d.hour).minutes(0).format("LT");
+					let mh_to=moment().hours(d.hour).minutes(59).format("LT");
+					let mh_str=" "+mh_from+" - "+mh_to;
+					let yt_str="";
+					let ii=data_types.indexOf(d.type);
+					if((ii<=1)&&is_today){
+						yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today")
+					}else{
+						if((ii>1)||(!is_today)){
+							yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday")
+						}
+					}
+					return yt_str+mh_str+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.TimeGraph."+d.type)+": "+d.value;
+                })
 		    .on('mouseover',function() {
 				d3.select(this)
 				  .transition()
@@ -755,7 +769,7 @@ miczThunderStatsTab.ui={
 
 		legend.append('text')
 		  .text(function(d) {
-				return _bundleCW.GetStringFromName("ThunderStats.HoursGraph."+d);
+				return _bundleCW.GetStringFromName("ThunderStats.TimeGraph."+d);
 			  })
 		  .attr('transform', function(d, i) {
 				let l_height = legendRectSize + legendSpacing;
@@ -775,10 +789,10 @@ miczThunderStatsTab.ui={
 			.text(
 			 function(d, i) {
 				if((i==0)&&is_today){
-					return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.today")
+					return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.today")
 				}else{
 					if((i==2)||(!is_today&&i==0)){
-						return _bundleCW.GetStringFromName("ThunderStats.HoursGraph.yesterday")
+						return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday")
 					}
 				}
 				return "";

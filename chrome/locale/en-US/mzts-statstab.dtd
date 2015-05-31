@@ -41,9 +41,9 @@
 <!ENTITY ThunderStats.InboxZeroTitle "What is Inbox Zero?">
 <!ENTITY ThunderStats.InboxZeroText_1 "Inbox Zero is a rigorous approach to email management aimed at keeping the inbox empty — or almost empty — at all times.">
 <!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats gives you some insights on how you're managing your inbox.">
-<!ENTITY ThunderStats.OtherInfoTitle "This is a test version!">
-<!ENTITY ThunderStats.OtherInfoText_1 "This is an experimental version, if you find any problem, or if you wish to send a suggestion, please give feedback.">
-<!ENTITY ThunderStats.OtherInfoText_2 "Find what is going to be implemented for the first 1.0 release">
-<!ENTITY ThunderStats.OtherInfoText_3 "Also take a look to the current known issues">
+<!ENTITY ThunderStats.OtherInfoTitle "How does this addons works?">
+<!ENTITY ThunderStats.OtherInfoText_1 "All the statistics are calculated from the internal Thunderbird database and are associated to the mail addresses of the selected account.">
+<!ENTITY ThunderStats.OtherInfoText_2 "In the future will be added more features and kinds of analysis, with also the ability to choose a custom time range.">
+<!ENTITY ThunderStats.OtherInfoText_3 "Take a look to what's going on with the development of this addon">
 <!ENTITY ThunderStats.SubmitNewIssue "Submit a new issue">
 <!ENTITY ThunderStats.DonationsTitle "Donations">

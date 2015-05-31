@@ -2,6 +2,7 @@
 
 ==========
 Version 0.5 - ??/??/2015
+- Italian locale added.
 -
 ==========
 Version 0.4 - 31/05/2015

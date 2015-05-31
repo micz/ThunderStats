@@ -4,8 +4,8 @@ Components.utils.import("resource:///modules/StringBundle.js");
 var micz_thstatsTabType = {
   name: "miczThStatsTab",
   perTabPanel: "vbox",
-  strings:
-    new StringBundle("chrome://thunderstats/locale/mzts-tabtype.properties"),
+  /*strings:
+    new StringBundle("chrome://thunderstats/locale/mzts-tabtype.properties"),*/
   modes: {
     miczThStatsTab: {
       // this is what get exposed on the tab for icon purposes

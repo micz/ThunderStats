@@ -1,0 +1,49 @@
+<!ENTITY ThunderStats.TABTitle "Preferenze di ThunderStats">
+<!ENTITY ThunderStats.DonateLink "Fai una donazione!">
+<!ENTITY ThunderStats.NoSearchWarn "La ricerca globale e l'indicizzazione non sono attive!">
+<!ENTITY ThunderStats.NoSearchWarn2 "Clicca qui per attivarlo">
+<!ENTITY ThunderStats.ChooseAccount "Scegli un Account">
+<!ENTITY ThunderStats.Update "Aggiorna">
+<!ENTITY ThunderStats.Setup "Preferenze">
+<!ENTITY ThunderStats.Today "Oggi">
+<!ENTITY ThunderStats.Yesterday "Ieri">
+<!ENTITY ThunderStats.Last7days "Ultimi 7 giorni">
+<!ENTITY ThunderStats.Info "Informazioni">
+<!ENTITY ThunderStats.TodayMails "Mail di oggi">
+<!ENTITY ThunderStats.Loading "Caricamento">
+<!ENTITY ThunderStats.SentMails "Mail inviate">
+<!ENTITY ThunderStats.ReceivedMails "Mail ricevute">
+<!ENTITY ThunderStats.InboxZeroStatus "Situazione Inbox Zero">
+<!ENTITY ThunderStats.TotalInbox "Mail totali nella posta in arrivo">
+<!ENTITY ThunderStats.TotalInboxUnread "non lette">
+<!ENTITY ThunderStats.YesterdayMails "Mail di ieri">
+<!ENTITY ThunderStats.TodayTop10Recipients "I primi 10 destinatari di oggi">
+<!ENTITY ThunderStats.TodayTop10Senders "I primi 10 mittenti di oggi">
+<!ENTITY ThunderStats.YesterdayThisTime "Ieri a quest'ora">
+<!ENTITY ThunderStats.sent "inviate">
+<!ENTITY ThunderStats.received "ricevute">
+<!ENTITY ThunderStats.TodayFolderLocation "Grafico delle cartelle in cui sono distribuite le mail di oggi">
+<!ENTITY ThunderStats.NoMailsReceivedToday "Nessuna mail ricevuta oggi!">
+<!ENTITY ThunderStats.InboxMailsDateSpreading "Grafico delle date in cui sono state ricevute le mail della posta in arrivo">
+<!ENTITY ThunderStats.NoMailsInbox "Nessuna mail nella posta in arrivo!">
+<!ENTITY ThunderStats.NoMailsReceivedYesterday "Nessuna mail ricevuta ieri!">
+<!ENTITY ThunderStats.YesterdayFolderLocation "Grafico delle cartelle in cui sono distribuite le mail di ieri">
+<!ENTITY ThunderStats.YesterdayTop10Recipients "I primi 10 destinatari di ieri">
+<!ENTITY ThunderStats.YesterdayTop10Senders "I primi 10 mittenti di ieri">
+<!ENTITY ThunderStats.Top10Recipients "I primi 10 destinatari">
+<!ENTITY ThunderStats.Top10Senders "I primi dieci mittenti">
+<!ENTITY ThunderStats.clickhere "clicca qui">
+<!ENTITY ThunderStats.clickheremoreinfo "Clicca qui per maggiori informazioni">
+<!ENTITY ThunderStats.AboutTitle "A proposito di questa estensione">
+<!ENTITY ThunderStats.AboutText_1 "Ti ricordi le belle statistiche che aveva il vecchio Eudora? Ti mancano?">
+<!ENTITY ThunderStats.AboutText_2 "Usando questa estensione, puoi finalmente tenere sotto controllo l'utilizzo che fai del tuo amato Thunderbird!">
+<!ENTITY ThunderStats.AboutText_3 "Molte funzionalità saranno aggiunte in futuro, ma, se hai un'idea, inviala">
+<!ENTITY ThunderStats.InboxZeroTitle "Che cos'è Inbox Zero?">
+<!ENTITY ThunderStats.InboxZeroText_1 "Inbox Zero è un approccio rigoroso alla gestione delle email che punta a tenere sempre la cartella di posta in arrivo vuota.">
+<!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats ti fornisce un'analisi di come gestisci la tua posta in arrivo.">
+<!ENTITY ThunderStats.OtherInfoTitle "Come funziona questa estensione?">
+<!ENTITY ThunderStats.OtherInfoText_1 "Tutte le statistiche sono calcolate utilizzando il database interno di Thunderbird e sono associate all'indirizzo email dell'account selezionato.">
+<!ENTITY ThunderStats.OtherInfoText_2 "Nel futuro saranno aggiunte nuove funzionalità e altri tipi di analisi dei dati, con anche la possibilità di scegliere un intervallo temporale personalizzato.">
+<!ENTITY ThunderStats.OtherInfoText_3 "Dai uno sguardo allo sviluppo di questa estensione">
+<!ENTITY ThunderStats.SubmitNewIssue "Invia una nuova segnalazione">
+<!ENTITY ThunderStats.DonationsTitle "Donazioni">

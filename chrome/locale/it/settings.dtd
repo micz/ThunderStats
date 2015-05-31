@@ -1,0 +1,19 @@
+<!ENTITY ThunderStats.SettingsTitle "Preferenze di ThunderStats">
+<!ENTITY ThunderStats.GlobalDescSettingTab "Usa queste opzioni per personalizzare la tua esperienza con ThunderStats!">
+<!ENTITY ThunderStats.TabSettings.label "Generale">
+<!ENTITY ThunderStats.TabSettingsDebug.label "Debug">
+<!ENTITY ThunderStats.TabCustomIdentities.label "Identità Personalizzate">
+<!ENTITY ThunderStats.TabInfo.label "Informazioni">
+<!ENTITY ThunderStats.InfoMainDesc "Questo componente aggiuntivo è gratuito e sviluppato nel mio tempo libero. Se lo usi tutti i giorni, sentiti libero di supportarlo con una piccola donazione cliccando sul link sottostante. Grazie!!">
+<!ENTITY ThunderStats.DonateLink "Fai una donazione!">
+<!ENTITY ThunderStats.ReopenTabDesc "Devi chiudere e riaprire il tab di ThunderStats per rendere le modifiche attive.">
+<!ENTITY ThunderStats.StartupAccount "Account di partenza">
+<!ENTITY ThunderStats.ChooseAccount "Scegli un account">
+<!ENTITY ThunderStats.ShowIdentitiesAccountsSelector "Mostra le identità nel menu di scelta degli account">
+<!ENTITY ThunderStats.ManageCustomIdentitites "Gestisci qui le tue identità personalizzate.">
+<!ENTITY ThunderStats.ManageCustomIdentititesDesc "Un'identità personalizzata è un indirizzo email, differente da quello principale registrato per l'account, con il quale puoi ricevere mail. Solitamente sono indirizzi email di liste di distribuzione o gruppi (mailing list) ai quali sei iscritto, dove il tuo indirizzo email non compare in nessuno dei campi 'a' o 'cc'.">
+<!ENTITY ThunderStats.Account "Account">
+<!ENTITY ThunderStats.CustomIdentititesAccount "Identità personalizzate per l'Account selezionato">
+<!ENTITY ThunderStats.ChangesSavedWarn "Le modifiche fatte qui sono attive immediatamente.">
+<!ENTITY ThunderStats.DebugDesc "Imposta qui le preferenze di debug.">
+<!ENTITY ThunderStats.ActivateDebug "Attiva il sistema di debug">

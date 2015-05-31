@@ -12,6 +12,16 @@
     <em:creator>Mic (m@micz.it)</em:creator>
     <em:contributor></em:contributor>
     <em:optionsURL>chrome://thunderstats/content/mzts-settings.xul</em:optionsURL>
+    <em:localized>
+      <Description>
+        <em:locale>it</em:locale>
+        <em:name>ThunderStats</em:name>
+        <em:description>Ti ricordi le belle statistiche che aveva il vecchio Eudora? Ti mancano? Usando questa estensione, puoi finalmente tenere sotto controllo l'utilizzo che fai del tuo amato Thunderbird!</em:description>
+        <em:creator>Mic (m@micz.it)</em:creator>
+        <em:contributor></em:contributor>
+        <em:translator>Mic (m@micz.it)</em:translator>
+      </Description>
+    </em:localized>
     <em:targetApplication>
       <Description>
         <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id> <!-- Thunderbird -->

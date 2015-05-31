@@ -17,8 +17,3 @@
 <!ENTITY ThunderStats.ChangesSavedWarn "The changes made here are immediately saved.">
 <!ENTITY ThunderStats.DebugDesc "Set here the debug options.">
 <!ENTITY ThunderStats.ActivateDebug "Activate debug system">
-
-<!ENTITY ThunderStats.TabInfo.label "Info">
-<!ENTITY ThunderStats.TabInfo.label "Info">
-<!ENTITY ThunderStats.TabInfo.label "Info">
-

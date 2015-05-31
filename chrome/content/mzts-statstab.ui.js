@@ -575,8 +575,8 @@ miczThunderStatsTab.ui={
 			if(current_data['data'].length<24){
 				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
 					if(!current_data['data'].some(this.utilDrawTimeGraph_CheckRecord,this)){
-						current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':0});
-						//current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
+						//current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':0});
+						current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
 					};
 				}
 			}
@@ -645,7 +645,7 @@ miczThunderStatsTab.ui={
 		let y = d3.scale.linear().range([height, 0]);
 
 		//let color = d3.scale.category10();
-		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#1f773a','#610eff']);
+		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#64d4e9','#ffc26a']);
 
 		let xAxis = d3.svg.axis()
 			.ticks(13)

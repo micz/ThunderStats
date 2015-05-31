@@ -1,6 +1,9 @@
 -= ThunderStats Thunderbird Addon Release Notes =-
 
 ==========
+Version 0.5 - ??/??/2015
+-
+==========
 Version 0.4 - 31/05/2015
 - Inbox Zero Date Spread graph tooltip's position is now on the left.
 - Inbox Zero added unread mails count.

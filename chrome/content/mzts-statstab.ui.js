@@ -575,8 +575,8 @@ miczThunderStatsTab.ui={
 			if(current_data['data'].length<24){
 				for(this._tmp_i=0;this._tmp_i<=23;this._tmp_i++){
 					if(!current_data['data'].some(this.utilDrawTimeGraph_CheckRecord,this)){
-						//current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':0});
-						current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
+						current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':0});
+						//current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
 					};
 				}
 			}
@@ -690,16 +690,22 @@ miczThunderStatsTab.ui={
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + height + ")")
 			.attr("dx", bar_width*2)
-			.call(xAxis);
+			.call(xAxis)
+			.append("text")
+			  .attr("y", 30)
+			  .attr("x", width/2)
+			  .style("text-anchor", "middle")
+			  .text(_bundleCW.GetStringFromName("ThunderStats.TimeGraph.Time"));
 
 		svg.append("g")
 			.attr("class", "y axis")
 			.call(yAxis)
 			.append("text")
-			.attr("transform", "rotate(-90)")
-			.attr("y", 6)
-			.attr("dy", ".71em")
-			.style("text-anchor", "end");
+			  .attr("transform", "rotate(-90)")
+			  .attr("y", -margin.left/2-4)
+			  .attr("x", -height/2-10)
+			  .style("text-anchor", "start")
+			  .text(_bundleCW.GetStringFromName("ThunderStats.Mails"));
 
 		let serie = svg.selectAll(".serie")
 			.data(data)

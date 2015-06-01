@@ -1,7 +1,12 @@
 .chart_7days{width:100%;}
 .chart_7days{overflow:auto;}
 
-.chart_7days svg,.chart_inbox0_datemsg svg{
+.chart_7days svg{
+display:block;
+margin:50px auto 0 auto;
+}
+
+.chart_inbox0_datemsg svg{
 display:block;
 margin:0 auto;
 }

@@ -609,11 +609,11 @@ miczThunderStatsTab.ui={
 
 		let margin = {
 			top: 10,
-			right: 110,
+			right: 90,
 			bottom: 40,
 			left: 40
 		};
-		let full_width=580;
+		let full_width=560;
 		let full_height=150;
 		let width = full_width - margin.left - margin.right;
 		let height = full_height - margin.top - margin.bottom;
@@ -682,7 +682,7 @@ miczThunderStatsTab.ui={
 		color.domain(data.map(function (d) { return d.type; }));
 
 		let minY = d3.min(data, function (kv) { return d3.min(kv.data, function (d) { return d.value; }) });
-		let maxY = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })<10?d3.max(kv.data, function (d) { return d.value; }):Math.ceil((d3.max(kv.data, function (d) { return d.value; })+1)/10)*10 });
+		let maxY = d3.max(data, function (kv) { return d3.max(kv.data, function (d) { return d.value; })<10?d3.max(kv.data, function (d) { return d.value; }):Math.ceil((d3.max(kv.data, function (d) { return d.value; })+1)/5)*5 });
 
 		y.domain([minY, maxY]);
 

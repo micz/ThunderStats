@@ -31,6 +31,8 @@ var miczLogger = {
 			this.consoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
 		}
 
+		if (!level) level=0;
+
 		if((level==0)&&(this.debug)){
 			this.consoleService.logStringMessage("ThunderStats >>> " + this.logTime() + "\n"+ msg);
 		}else if(level>0){

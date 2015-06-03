@@ -3,6 +3,7 @@
 ==========
 Version 0.5 - ??/??/2015
 - Italian locale added.
+- Inbox mails counting routine bug fixed.
 -
 ==========
 Version 0.4 - 31/05/2015

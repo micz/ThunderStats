@@ -35,10 +35,11 @@ var miczThunderStatsFolderQ = {
 		for each (let [,analyzer] in Iterator(this._analyzers)) {
 		  analyzer.init(this);
 		}
+		let messages=new Array();
 		for (let key in this.folders){
-			 let messages = fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr);
-			 this.processMessages(messages);
+			 messages.push(fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr));
 		}
+		this.processMessages(messages);
 	},
 
   /**
@@ -65,27 +66,31 @@ var miczThunderStatsFolderQ = {
    * @param messageGenerator a generator returning a sequence of messages in the
    *        folder
    */
-  processMessages: function(messageGenerator) {
-    let gen = this._processMessages(messageGenerator);
+  processMessages: function(messageGenerator_array) {
+    let gen = this._processMessages(messageGenerator_array);
     let self = this;
     let then = Date.now();
 
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] CALL\r\n');
+
     function defer(first) {
-      try {
-        gen.next();
-        if (first){
+		try{
+			gen.next();
+		}catch(e){
+			//
+		}
+        if(!self.loading){
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] DONE\r\n');
+			self._timeoutId = null;
+			gen.close();
+		}else{
+			/*dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION\r\n');
+			if (first){
+				dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION - FIRST\r\n');
+				//self._timeoutId = self.win.setTimeout(defer, 10);
+			}*/
 			self._timeoutId = self.win.setTimeout(defer, 10);
 		}
-      }
-      catch(e if e instanceof StopIteration) {
-        self._timeoutId = null;
-        gen.close();
-        //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] processMessages: Stopping...'+JSON.stringify(e)+'\r\n');
-        //dump("  took "+(Date.now() - then)/1000+" seconds\n");
-      }
-      catch(e) {
-        Cu.reportError(e);
-      }
     }
 
     this.cancelProcessing();
@@ -110,7 +115,7 @@ var miczThunderStatsFolderQ = {
    * @param messageGenerator a generator returning a sequence of messages in the
    *        folder
    */
-  _processMessages: function(messageGenerator) {
+  _processMessages: function(messageGenerator_array) {
     // Use microseconds here.
     let maxDate = Date.now() * 1000;
     this.numDays = 30;
@@ -118,31 +123,37 @@ var miczThunderStatsFolderQ = {
     this.loading = true;
 
     let messagesProcessed = 0;
-    let maxMessages = 10000;// Services.prefs.getIntPref("extensions.mailsummaries.max_messages");
+    let maxMessages = 100000;// Services.prefs.getIntPref("extensions.mailsummaries.max_messages");
     let overflowed = false;
 
     /*for each (let [,analyzer] in Iterator(this._analyzers)) {
       analyzer.init(this);
     }*/
 
-    for each (let message in messageGenerator) {
-      messagesProcessed++;
-      //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
-      if (maxMessages != -1 && messagesProcessed > maxMessages) {
-        overflowed = true;
-        break;
-      }
-      if (messagesProcessed % 500 == 0) yield undefined;
-      if (this._processMessage(message)){
-        return;
-	  }
-    }
+    for(let akey in messageGenerator_array){
+		let messageGenerator=messageGenerator_array[akey];
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] akey: '+JSON.stringify(akey)+'\r\n');
 
-/*   // Let the user know if we decided to bail out from processing all the
-    // messages in the folder.
-    document.getElementById("overflow").textContent = overflowed ?
-      this.formatString("overflowNote", [maxMessages.toLocaleString()]) : "";
-*/
+		for each (let message in messageGenerator) {
+		  messagesProcessed++;
+		  //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
+		  if (maxMessages != -1 && messagesProcessed > maxMessages) {
+			overflowed = true;
+			break;
+		  }
+		  if (messagesProcessed % 500 == 0) yield undefined;
+		  if (this._processMessage(message)){
+			return;
+		  }
+		}
+	}
+
+   // Let the user know if we decided to bail out from processing all the
+   // messages in the folder.
+    if(overflowed){
+		miczLogger.log("Too many message in the inbox! More than "+maxMessages+"... We stopped counting...",2);
+	}
+
     for each (let [,analyzer] in Iterator(this._analyzers))
       analyzer.render();
 

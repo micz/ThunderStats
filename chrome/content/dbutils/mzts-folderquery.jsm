@@ -35,9 +35,15 @@ var miczThunderStatsFolderQ = {
 		for each (let [,analyzer] in Iterator(this._analyzers)) {
 		  analyzer.init(this);
 		}
-		let messages=new Array();
+		let messages=new Array(); // actually creates an array of iterators
 		for (let key in this.folders){
-			 messages.push(fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr));
+			messages.push(fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(), Ci.nsIMsgDBHdr));
+			/*let fld = this.folders[key],
+				mails = fixIterator(fld.msgDatabase.ReverseEnumerateMessages(), Ci.nsIMsgDBHdr),
+				l = messages.length;
+				messages.push(mails);
+				miczLogger.log('Iterator ' + l + ' for server ' + fld.server.prettyName + ' ...\n'
+								 + 'Total according to nsIMsgFolder: ' + fld.getTotalMessages(false) , 0);*/
 		}
 		this.processMessages(messages);
 	},
@@ -67,30 +73,36 @@ var miczThunderStatsFolderQ = {
    *        folder
    */
   processMessages: function(messageGenerator_array) {
-    let gen = this._processMessages(messageGenerator_array);
-    let self = this;
-    let then = Date.now();
+    let gen = this._processMessages(messageGenerator_array),
+        self = this,
+        then = Date.now(),
+        iErrors = 0,
+        iGeneratorCalls = 0;
 
     //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] CALL\r\n');
 
     function defer(first) {
-		try{
-			gen.next();
-		}catch(e){
-			//
-		}
-        if(!self.loading){
-			//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] DONE\r\n');
-			self._timeoutId = null;
-			gen.close();
-		}else{
-			/*dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION\r\n');
-			if (first){
-				dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION - FIRST\r\n');
-				//self._timeoutId = self.win.setTimeout(defer, 10);
-			}*/
-			self._timeoutId = self.win.setTimeout(defer, 10);
-		}
+      iGeneratorCalls++;
+      try {
+        gen.next();
+      }
+      catch(e){
+        //
+        iErrors++;
+      }
+      if (!self.loading) {
+        //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] DONE\r\n');
+        self._timeoutId = null;
+        gen.close();
+      }
+      else {
+        /*dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION\r\n');
+        if (first){
+          dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION - FIRST\r\n');
+          //self._timeoutId = self.win.setTimeout(defer, 10);
+        }*/
+        self._timeoutId = self.win.setTimeout(defer, 10);
+      }
     }
 
     this.cancelProcessing();
@@ -130,28 +142,28 @@ var miczThunderStatsFolderQ = {
       analyzer.init(this);
     }*/
 
-    for(let akey in messageGenerator_array){
-		let messageGenerator=messageGenerator_array[akey];
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] akey: '+JSON.stringify(akey)+'\r\n');
+    for (let akey in messageGenerator_array) {
+      let messageGenerator=messageGenerator_array[akey];
+      //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] akey: '+JSON.stringify(akey)+'\r\n');
 
-		for each (let message in messageGenerator) {
-		  messagesProcessed++;
-		  //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
-		  if (maxMessages != -1 && messagesProcessed > maxMessages) {
-			overflowed = true;
-			break;
-		  }
-		  if (messagesProcessed % 500 == 0) yield undefined;
-		  if (this._processMessage(message)){
-			return;
-		  }
-		}
-	}
+      for each (let message in messageGenerator) {
+        messagesProcessed++;
+        //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
+        if (maxMessages != -1 && messagesProcessed > maxMessages) {
+        overflowed = true;
+        break;
+        }
+        if (messagesProcessed % 500 == 0) yield undefined;
+        if (this._processMessage(message)){
+        return;
+        }
+      }
+    }
 
    // Let the user know if we decided to bail out from processing all the
    // messages in the folder.
-    if(overflowed){
-		miczLogger.log("Too many message in the inbox! More than "+maxMessages+"... We stopped counting...",2);
+  if (overflowed){
+		miczLogger.log("Too many message in the inbox! More than " + maxMessages + "... We stopped counting...",2);
 	}
 
     for each (let [,analyzer] in Iterator(this._analyzers))
@@ -212,9 +224,9 @@ var miczThunderStatsFolderQ = {
 		let messages=new Array();
 		for (let key in this.folders){
 			 if (this.isVirtualFolder(this.folders[key])) { continue; }
-			 messages = miczThunderStatsUtils.arrayMerge(messages,fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr));
-       this.processMessages(messages);
-    }
+			 messages.push(fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr));
+    	}
+    	this.processMessages(messages);
   },
 
   /**

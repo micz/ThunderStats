@@ -605,6 +605,7 @@ miczThunderStatsTab.ui={
 		return false;
 	},
 
+
 	drawTimeGraph:function(element_id_txt,data_array,is_today){
 
 		let margin = {
@@ -715,8 +716,8 @@ miczThunderStatsTab.ui={
 		serie.selectAll("rect")
 			.data(function(d) { return d.data; })
 			.enter().append("rect")
-			.attr("width", bar_width)
-			.attr("x", function(d) { return x(d.hour)+(bar_width*data_types.indexOf(d.type)); })
+			.attr("width",function(d) { return bar_width*(data_types.indexOf(d.type)<2?2:1);})
+			.attr("x", function(d) { return x(d.hour)+(bar_width*(data_types.indexOf(d.type)==1?2:data_types.indexOf(d.type)==2?1:data_types.indexOf(d.type))); })
 			.attr("y", function(d) { return y(d.value); })
 			.attr("height", function(d) { return height - y(d.value); })
 			.style("fill", function(d) { return color(d.type); })

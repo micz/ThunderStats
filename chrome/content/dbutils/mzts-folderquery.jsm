@@ -25,8 +25,12 @@ var miczThunderStatsFolderQ = {
 */
 	mailSession: Cc["@mozilla.org/messenger/services/session;1"].getService(Ci.nsIMsgMailSession),
 
-	init:function(mFolders,mIdentityAddresses,mWindow){
-		this.folders=mFolders;
+	init:function(mFolders,mIdentityAddresses,mWindow,mSplitted,mCurrentAccountKey){
+		if(mSplitted){	//go only the selected account's folders
+			this.folders=mFolders[mCurrentAccountKey];
+		}else{			//go in all folders
+			this.folders=mFolders;
+		}
 		this.identityAddresses=mIdentityAddresses;
 		this.win=mWindow;
 	},

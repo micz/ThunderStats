@@ -44,7 +44,7 @@ var miczThunderStatsCore = {
 					identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity.email);
 					identity_item["key"]=identity.key;
 					identity_item["custom"]=false;
-					//identity_item["account_key"]=account.key;
+					identity_item["account_key"]=account.key;
 					//identity_item["account_name"]=account.incomingServer.rootFolder.prettiestName;
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
 					this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity.email));
@@ -63,6 +63,7 @@ var miczThunderStatsCore = {
 						identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity);
 						identity_item["key"]="__custom"+cid_prog;
 						identity_item["custom"]=true;
+						identity_item["account_key"]=account.key;
 						if(identity_item["id"]){
 							cid_prog++;
 							this.identities[miczThunderStatsDB.queryGetIdentityID(identity)]=identity_item;
@@ -76,7 +77,7 @@ var miczThunderStatsCore = {
 			}
 			//If there are custom identities for the custom account, add it and its identities
 			let account_custom_identities=miczThunderStatsPrefs.accountCustomIdentities(this.custom_account_key);
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] account_custom_identities '+JSON.stringify(account_custom_identities)+'\r\n');
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] account_custom_identities '+JSON.stringify(account_custom_identities)+'\r\n');
 			if(account_custom_identities!=''){
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statscore");
 				this.accounts[this.custom_account_key]={};
@@ -93,6 +94,7 @@ var miczThunderStatsCore = {
 					identity_item["id"]=miczThunderStatsDB.queryGetIdentityID(identity);
 					identity_item["key"]="__custom"+cid_prog;
 					identity_item["custom"]=true;
+					identity_item["account_key"]=this.custom_account_key;
 					if(identity_item["id"]){
 						cid_prog++;
 						this.identities[miczThunderStatsDB.queryGetIdentityID(identity)]=identity_item;
@@ -236,10 +238,14 @@ miczThunderStatsCore.db = {
 
 	getInboxMessagesTotal:function(mIdentity,mCallback){
 		let mIdentityAddresses=miczThunderStatsUtils.getIdentitiesArray(mIdentity,miczThunderStatsCore.identities);
+		let mCurrentAccountKey=mIdentity.base_account_key;
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mCurrentAccountKey '+JSON.stringify(mCurrentAccountKey)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] miczThunderStatsCore.custom_account_key '+JSON.stringify(miczThunderStatsCore.custom_account_key)+'\r\n');
+		let mSplitted=(mIdentity!=0)&&(mCurrentAccountKey!=miczThunderStatsCore.custom_account_key)&&miczThunderStatsPrefs.getBoolPref_TS('inbox_search_only_curr_account');
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
 		miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
-		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(),mIdentityAddresses,this.win);
+		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(mSplitted),mIdentityAddresses,this.win,mSplitted,mCurrentAccountKey);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
 		miczThunderStatsFolderQ.run();
 		//miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);

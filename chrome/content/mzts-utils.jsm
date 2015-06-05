@@ -130,12 +130,12 @@ var miczThunderStatsUtils = {
 		let prefsc = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
 		let prefs = prefsc.getBranch("mail.accountmanager.");
 		let default_account=prefs.getCharPref("defaultaccount");
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab getAccountsOrder] default_account '+JSON.stringify(default_account)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtil getAccountsOrder] default_account '+JSON.stringify(default_account)+'\r\n');
 		let accounts_order_array=prefs.getCharPref("accounts").split(",");
 		if(custom_account_key!=''){
 			accounts_order_array.push(custom_account_key);
 		}
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab getAccountsOrder] accounts_order_array '+JSON.stringify(accounts_order_array)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtil getAccountsOrder] accounts_order_array '+JSON.stringify(accounts_order_array)+'\r\n');
 		let def_acc_idx=accounts_order_array.indexOf(default_account);
 		if (def_acc_idx > -1) {
 			accounts_order_array.splice(def_acc_idx, 1);
@@ -149,7 +149,7 @@ var miczThunderStatsUtils = {
 		let isInbox = mFolder.flags & Components.interfaces.nsMsgFolderFlags.Inbox;
 		if (isInbox){
 			arr_inbox.push(mFolder);
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(mFolder.URI)+'\r\n');
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(mFolder.URI)+'\r\n');
 		}
 		if (mFolder.hasSubFolders){
 			for each (let folder in fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){

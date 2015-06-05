@@ -173,7 +173,7 @@ var miczThunderStatsTab = {
 	},
 
 	getCurrentIdentityId:function(){	//returning an identities object or a 0 if none selected
-										//identities object is {ids_merged: array of all ids; ids:array of normal identities ids; ids_custom: array of custom identities ids}}
+										//identities object is {ids_merged: array of all ids; ids:array of normal identities ids; ids_custom: array of custom identities ids; base_account_key: identity account key}}
 		let id_selector_value = $jQ("#identities_selector").val();
 		let output=new Array();
 		let output_obj={};
@@ -181,9 +181,12 @@ var miczThunderStatsTab = {
 			return 0;
 		}
 		if(id_selector_value.indexOf(miczThunderStatsCore._account_selector_prefix)>=0){	//the user selected an account!
-			output=miczThunderStatsCore.accounts[id_selector_value.replace(miczThunderStatsCore._account_selector_prefix,'')].identities;
+			let curr_account=miczThunderStatsCore.accounts[id_selector_value.replace(miczThunderStatsCore._account_selector_prefix,'')];
+			output=curr_account.identities;
+			output_obj.base_account_key=curr_account.key;
 		}else{	//the user selected an identity
 			output.push(id_selector_value);
+			output_obj.base_account_key=miczThunderStatsCore.identities[id_selector_value].account_key;
 		}
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] getCurrentIdentityId '+JSON.stringify(output)+'\r\n');
 		output_obj.ids_merged=output;

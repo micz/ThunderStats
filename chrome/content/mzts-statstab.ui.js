@@ -646,7 +646,12 @@ miczThunderStatsTab.ui={
 		let y = d3.scale.linear().range([height, 0]);
 
 		//let color = d3.scale.category10();
-		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#64d4e9','#ffc26a']);
+		let color;
+		if(data_types.length>2){	//Today
+			color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#64d4e9','#ffc26a']);
+		}else{		//Yestarday
+			color = d3.scale.ordinal().range(['#64d4e9','#ffc26a']);
+		}
 
 		let xAxis = d3.svg.axis()
 			.ticks(13)

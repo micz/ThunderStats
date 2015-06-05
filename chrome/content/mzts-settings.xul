@@ -11,6 +11,9 @@
 		<preference id="ThunderStats.identities_selector"
         name="extensions.ThunderStats.identities_selector"
         type="bool"/>
+        <preference id="ThunderStats.inbox_search_only_curr_account"
+        name="extensions.ThunderStats.inbox_search_only_curr_account"
+        type="bool"/>
       	<preference id="ThunderStats.debug"
         name="extensions.ThunderStats.debug"
         type="bool"/>
@@ -42,6 +45,8 @@
 				<label control="symbol" value=" "/>
 				 <checkbox id="ThunderStats.identities_selector_checkbox" label="&ThunderStats.ShowIdentitiesAccountsSelector; (*)"
             		preference="ThunderStats.identities_selector" />
+            	<checkbox id="ThunderStats.inbox_search_only_curr_account_checkbox" label="&ThunderStats.InboxSearchOnlyCurrAccount;"
+            		preference="ThunderStats.inbox_search_only_curr_account" />
             <label control="symbol" value=" "/>
 			  </rows>
 		</grid>

@@ -17,6 +17,7 @@ var miczThunderStatsDB = {
 	msgAttributes:null,
 	forbiddenFolders:null,
 	inboxFolders:null,
+	inboxFolders_Account:null,
 	identities_custom_ids:new Array(),
 	identities_custom_ids_mail:new Array(),
 
@@ -58,7 +59,7 @@ var miczThunderStatsDB = {
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes this.msgAttributes  '+JSON.stringify(this.msgAttributes)+'\r\n');
 		}
 	},
-	
+
 	querySelect:function(mWhat,mFrom,mWhere,mCallback){
 		return miczThunderStatsQuery.querySelect(this.mDb,mWhat,mFrom,mWhere,mCallback);
 	},
@@ -283,14 +284,22 @@ var miczThunderStatsDB = {
 	},
 
 	//returns an array of nsIMsgFolders of inbox folders for the given identity
-	queryGetInboxFolders:function(){
-		if(this.inboxFolders!==null){
-			return this.inboxFolders;
+	queryGetInboxFolders:function(account_split){
+		if(!account_split) account_split=false;
+		if(!account_split){
+			if(this.inboxFolders!==null){
+				return this.inboxFolders;
+			}
+		}else{
+			if(this.inboxFolders_Account!==null){
+				return this.inboxFolders_Account;
+			}
 		}
 		//get accounts
 		let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
 		let accounts = acctMgr.accounts;
 		let arr_inbox=new Array();
+		let arr_inbox_account={};
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
 		for (let i = 0; i < accounts.length; i++) {
 			let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
@@ -302,9 +311,15 @@ var miczThunderStatsDB = {
 			let folder = server.rootFolder;
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] folder.URI '+JSON.stringify(folder.URI)+'\r\n');
 			arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,miczThunderStatsUtils.getInboxFoldersObjects(folder));
+			arr_inbox_account[account.key]=miczThunderStatsUtils.getInboxFoldersObjects(folder);
 		}
 		this.inboxFolders=arr_inbox;
-		return arr_inbox;
+		this.inboxFolders_Account=arr_inbox_account;
+		if(!account_split){
+			return arr_inbox;
+		}else{
+			return arr_inbox_account;
+		}
 	},
 
 	//returns the id of an identity from its email

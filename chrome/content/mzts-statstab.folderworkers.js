@@ -90,10 +90,12 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 	//inbox total messages
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] document.getElementById("today_inbox0_inboxmsg_wait") '+JSON.stringify(document.getElementById("today_inbox0_inboxmsg_wait"))+'\r\n');
 
-	miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_inboxmsg_wait");
-	$jQ("#today_inbox0_inboxmsg").text(this.inboxmsg);
-	miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_inboxmsg_unread_wait");
-	$jQ("#today_inbox0_inboxmsg_unread").text(this.inboxmsg_unread);
+	let _global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
+
+	miczThunderStatsTab.ui.update_inbox0_inboxmsg("today",this.inboxmsg,this.inboxmsg_unread);
+	if(_global_update){
+		miczThunderStatsTab.ui.update_inbox0_inboxmsg("yesterday",this.inboxmsg,this.inboxmsg_unread);
+	}
 	miczLogger.log("Inbox messages loaded.",0);
 
 	//inbox date spread graph
@@ -108,10 +110,18 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.folderworker.today_inboxmsg render (data_array) '+JSON.stringify(data_array)+'\r\n');
 		$jQ("#today_inbox0_datemsg_nomails").hide();
 		miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_inbox0_datemsg',data_array,true);	//the last parameter is to activate aggregation
+		if(_global_update){
+			$jQ("#yestarday_inbox0_datemsg_nomails").hide();
+			miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('yesterday_inbox0_datemsg',data_array,true);	//the last parameter is to activate aggregation
+		}
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_today_inbox0_datemsg handleCompletion '+JSON.stringify(this.data)+'\r\n');
 	}else{
 		miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_inbox0_datemsg',{},true);	//the last parameter is to activate aggregation
 		$jQ("#today_inbox0_datemsg_nomails").show();
+		if(_global_update){
+			miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('yesterday_inbox0_datemsg',{},true);	//the last parameter is to activate aggregation
+			$jQ("#yesterday_inbox0_datemsg_nomails").show();
+		}
 	}
 	miczLogger.log("Date Inbox Mails data loaded.",0);
 
@@ -207,10 +217,7 @@ miczThunderStatsTab.folderworker.yesterday_inboxmsg = {
 
   render:function() {
 	//inbox total messages
-	miczThunderStatsTab.ui.hideLoadingElement("yesterday_inbox0_inboxmsg_wait");
-	$jQ("#yesterday_inbox0_inboxmsg").text(this.inboxmsg);
-	miczThunderStatsTab.ui.hideLoadingElement("yesterday_inbox0_inboxmsg_unread_wait");
-	$jQ("#yesterday_inbox0_inboxmsg_unread").text(this.inboxmsg_unread);
+	miczThunderStatsTab.ui.update_inbox0_inboxmsg("yesterday",this.inboxmsg,this.inboxmsg_unread);
 	miczLogger.log("Inbox messages loaded.",0);
 
 	//inbox date spread graph

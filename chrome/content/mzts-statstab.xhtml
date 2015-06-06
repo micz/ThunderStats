@@ -45,7 +45,14 @@
 
 			// Show/Hide Tabs
 			//$jQ('.tabs ' + miczThunderStatsTab.currentTab).show().siblings().hide();
-			$jQ('.tabs ' + miczThunderStatsTab.currentTab).fadeIn(400,miczThunderStatsTab.ui.updateTab).siblings().hide();
+			let update_tab_callback;
+			let _global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
+			if(_global_update){
+				update_tab_callback=function(){};
+			}else{
+				update_tab_callback=miczThunderStatsTab.ui.updateTab;
+			}
+			$jQ('.tabs ' + miczThunderStatsTab.currentTab).fadeIn(400,update_tab_callback).siblings().hide();
 
 			// Change/remove current tab to active
 			$jQ(this).parent('li').addClass('active').siblings().removeClass('active');

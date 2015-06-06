@@ -17,6 +17,14 @@ miczThunderStatsTab.ui={
 		$jQ("#"+element).hide();
 	},
 
+	update_inbox0_inboxmsg:function(type,total_msg,unread_msg){	//type is "today" or "yesterday"
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.ui.update_inbox0_inboxmsg] type '+JSON.stringify(type)+'\r\n');
+		miczThunderStatsTab.ui.hideLoadingElement(type+"_inbox0_inboxmsg_wait");
+		$jQ("#"+type+"_inbox0_inboxmsg").text(total_msg);
+		miczThunderStatsTab.ui.hideLoadingElement(type+"_inbox0_inboxmsg_unread_wait");
+		$jQ("#"+type+"_inbox0_inboxmsg_unread").text(unread_msg);
+	},
+
 	loadIdentitiesSelector:function(selector_id,custom_account_key){
 		$jQ("select#"+selector_id).find('option').remove();
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");

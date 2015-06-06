@@ -10,12 +10,15 @@ var $jQ = jQuery.noConflict();
 var miczThunderStatsTab = {
 
 	currentTab:"#tab_today",
+	_global_update:false,
 
 	onLoad: function(){
 
 			miczLogger.setLogger(true,miczThunderStatsPrefs.isDebug);
 
 			miczLogger.log("ThunderStats starting...",0);
+
+			miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');
 
@@ -52,7 +55,13 @@ var miczThunderStatsTab = {
 			miczLogger.log("Identities loaded.",0);
 			miczLogger.log("ThunderStats ready.",0);
 
-			miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
+			let current_id=miczThunderStatsTab.getCurrentIdentityId();
+
+			miczThunderStatsTab.getTodayStats(current_id);
+			if(miczThunderStatsTab._global_update){
+				miczThunderStatsTab.getYesterdayStats(current_id);
+				miczThunderStatsTab.getLast7DaysStats(current_id);
+			}
 			miczThunderStatsTab.getLastIndexedMessage();
 
 			miczThunderStatsDB.close();
@@ -71,6 +80,10 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_inbox0_inboxmsg_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_inbox0_inboxmsg_unread_wait");
+		if(miczThunderStatsTab._global_update){
+			miczThunderStatsTab.ui.showLoadingElement("yesterday_inbox0_inboxmsg_wait");
+			miczThunderStatsTab.ui.showLoadingElement("yesterday_inbox0_inboxmsg_unread_wait");
+		}
 
 		//Print dates
 		$jQ("#today_date").text(miczThunderStatsUtils.getTodayString(moment));
@@ -112,8 +125,10 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_senders_wait");
-		miczThunderStatsTab.ui.showLoadingElement("yesterday_inbox0_inboxmsg_wait");
-		miczThunderStatsTab.ui.showLoadingElement("yesterday_inbox0_inboxmsg_unread_wait");
+		if(!miczThunderStatsTab._global_update){
+			miczThunderStatsTab.ui.showLoadingElement("yesterday_inbox0_inboxmsg_wait");
+			miczThunderStatsTab.ui.showLoadingElement("yesterday_inbox0_inboxmsg_unread_wait");
+		}
 
 		//Print dates
 		$jQ("#yesterday_date").text(miczThunderStatsUtils.getYesterdayString(moment));
@@ -137,10 +152,12 @@ var miczThunderStatsTab = {
 		//Inbox 0 Yesterday
 		//Get yesterday mails folder spreading
 		miczThunderStatsCore.db.getYesterdayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_folder_spread);
-		//Get inbox num mails
-		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.yesterday_inboxmsg);
-		//Get inbox mails date spreading -- disabled we are going to iterate inbox messages only once and get all the info we need
-		//miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg);
+		if(!miczThunderStatsTab._global_update){	//if global_update is true, we are counting the inbox mails only once
+			//Get inbox num mails
+			miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.yesterday_inboxmsg);
+			//Get inbox mails date spreading -- disabled we are going to iterate inbox messages only once and get all the info we need
+			//miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg);
+		}
 	},
 
 	getLast7DaysStats:function(identity_id){
@@ -204,7 +221,18 @@ var miczThunderStatsTab = {
 	},
 
 	updateStats: function(){
-		miczThunderStatsTab.ui.updateTab(miczThunderStatsTab.currentTab);
+		miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
+		if(miczThunderStatsTab._global_update){
+			miczThunderStatsDB.init();
+			let current_id=miczThunderStatsTab.getCurrentIdentityId();
+			miczThunderStatsTab.getTodayStats(current_id);
+			miczThunderStatsTab.getYesterdayStats(current_id);
+			miczThunderStatsTab.getLast7DaysStats(current_id);
+			miczThunderStatsTab.getLastIndexedMessage();
+			miczThunderStatsDB.close();
+		}else{
+			miczThunderStatsTab.ui.updateTab(miczThunderStatsTab.currentTab);
+		}
 	},
 
 	getLastIndexedMessage: function(){

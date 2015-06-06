@@ -18,3 +18,4 @@
 <!ENTITY ThunderStats.DebugDesc "Set here the debug options.">
 <!ENTITY ThunderStats.ActivateDebug "Activate debug system">
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Search for mails in the Inbox folders only in the folders for the selected account.">
+<!ENTITY ThunderStats.GlobalUpdate "Update all tabs at once and not when switching between them.">

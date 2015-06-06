@@ -14,6 +14,9 @@
         <preference id="ThunderStats.inbox_search_only_curr_account"
         name="extensions.ThunderStats.inbox_search_only_curr_account"
         type="bool"/>
+        <preference id="ThunderStats.global_update"
+        name="extensions.ThunderStats.global_update"
+        type="bool"/>
       	<preference id="ThunderStats.debug"
         name="extensions.ThunderStats.debug"
         type="bool"/>
@@ -47,6 +50,8 @@
             		preference="ThunderStats.identities_selector" />
             	<checkbox id="ThunderStats.inbox_search_only_curr_account_checkbox" label="&ThunderStats.InboxSearchOnlyCurrAccount;"
             		preference="ThunderStats.inbox_search_only_curr_account" />
+				<checkbox id="ThunderStats.global_update_checkbox" label="&ThunderStats.GlobalUpdate;"
+            		preference="ThunderStats.global_update" />
             <label control="symbol" value=" "/>
 			  </rows>
 		</grid>

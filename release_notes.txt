@@ -5,6 +5,8 @@ Version 0.5 - ??/??/2015
 - Italian locale added.
 - Inbox mails counting routine bug fixed.
 - Today time graph bars improved.
+- More efficent way to search for inbox mails, searching only in the current account inbox folders. Added an option to activate the old behaviour, searching always in all inbox folders of all accounts.
+- Now the tabs are updated all at once and not at tab switching. Added an option to switch to the old behaviour, updating a tab when switching to it.
 -
 ==========
 Version 0.4 - 31/05/2015

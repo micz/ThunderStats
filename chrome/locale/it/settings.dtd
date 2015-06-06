@@ -17,3 +17,5 @@
 <!ENTITY ThunderStats.ChangesSavedWarn "Le modifiche fatte qui sono attive immediatamente.">
 <!ENTITY ThunderStats.DebugDesc "Imposta qui le preferenze di debug.">
 <!ENTITY ThunderStats.ActivateDebug "Attiva il sistema di debug">
+<!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Ricerca le mail nelle cartelle di Posta in Arrivo dell'Account selezionato.">
+<!ENTITY ThunderStats.GlobalUpdate "Aggiorna tutti i tab contemporaneamente. Se deselezionato i tab vengono aggiornati quando visualizzati.">

@@ -85,29 +85,26 @@ var miczThunderStatsFolderQ = {
 
     //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] CALL\r\n');
 
-    function defer(first) {
-      iGeneratorCalls++;
-      try {
-        gen.next();
-      }
-      catch(e){
-        //
-        iErrors++;
-      }
-      if (!self.loading) {
-        //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] DONE\r\n');
-        self._timeoutId = null;
-        gen.close();
-      }
-      else {
-        /*dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION\r\n');
-        if (first){
-          dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION - FIRST\r\n');
-          //self._timeoutId = self.win.setTimeout(defer, 10);
-        }*/
-        self._timeoutId = self.win.setTimeout(defer, 10);
-      }
-    }
+	function defer(first) {
+		iGeneratorCalls++;
+		try{
+			gen.next();
+		}catch(e){
+			iErrors++;
+		}
+		if(!self.loading){
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] DONE\r\n');
+			self._timeoutId = null;
+			gen.close();
+		}else{
+			/*dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION\r\n');
+			if (first){
+			dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION - FIRST\r\n');
+			//self._timeoutId = self.win.setTimeout(defer, 10);
+			}*/
+			self._timeoutId = self.win.setTimeout(defer, 10);
+		}
+	}
 
     this.cancelProcessing();
     defer(true);

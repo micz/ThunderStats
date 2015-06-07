@@ -560,10 +560,15 @@ miczThunderStatsTab.ui={
 	},
 
 	utilDrawTimeGraph_ArrangeData:function(data_array,is_today){
+		let _show_yesterday=miczThunderStatsPrefs.getBoolPref_TS('today_time_graph_show_yesterday');
 		let data_output=new Array();
 		let _data_handles;
 		if(is_today){
-			_data_handles=['today_sent','today_rcvd','yesterday_sent','yesterday_rcvd'];
+			if(_show_yesterday){
+				_data_handles=['today_sent','today_rcvd','yesterday_sent','yesterday_rcvd'];
+			}else{
+				_data_handles=['today_sent','today_rcvd'];
+			}
 		}else{
 			_data_handles=['yesterday_sent','yesterday_rcvd'];
 		}
@@ -655,7 +660,7 @@ miczThunderStatsTab.ui={
 
 		//let color = d3.scale.category10();
 		let color;
-		if(data_types.length>2){	//Today
+		if(is_today){	//Today
 			color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e','#64d4e9','#ffc26a']);
 		}else{		//Yestarday
 			color = d3.scale.ordinal().range(['#64d4e9','#ffc26a']);

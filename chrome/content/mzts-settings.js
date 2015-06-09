@@ -2,6 +2,8 @@
 Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+Components.utils.import("resource://thunderstats/miczLogger.jsm");
+Components.utils.import("resource://gre/modules/osfile.jsm");
 
 var miczThunderStatsPrefPanel = {
 
@@ -23,6 +25,31 @@ var miczThunderStatsPrefPanel = {
 		}
 
 		strt_acc.selectedIndex=strt_acc_sel_idx;
+
+		//Load release notes
+		/*let decoder = new TextDecoder();        // This decoder can be reused for several reads
+		let promise = OS.File.read("chrome://thunderstats/release_notes.txt"); // Read the complete file as an array
+		promise = promise.then(
+		  function onSuccess(array) {
+			  let relnotes = document.getElementById('mzts-release-notes');
+			  relnotes.value=decoder.decode(array);	// Convert this array to a text
+			  return;
+		  }
+		);*/
+
+		let url = "chrome://tsrl/content/release_notes.txt";// "chrome://thunderstats/release_notes.txt";
+		let request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
+					  .createInstance(Components.interfaces.nsIXMLHttpRequest);
+		request.onload = function(aEvent) {
+			let relnotes = document.getElementById('mzts-release-notes');
+			relnotes.value= aEvent.target.responseText;
+		};
+		request.onerror = function(aEvent) {
+		   miczLogger.log("Error reading release notes file status: " + aEvent.target.status,2);
+		};
+		request.open("GET", url, true);
+		request.responseType = "text";
+		request.send(null);
 
 		//Fixing window height
 		sizeToContent();

@@ -1,4 +1,5 @@
 content		thunderstats				chrome/content/
+content		tsrl						./
 resource	thunderstats				chrome/resource/
 skin		thunderstats	default		chrome/skin/
 locale		thunderstats	en-US		chrome/locale/en-US/

@@ -102,7 +102,7 @@
         <label control="symbol" value=" "/>
 	  	<label value="&ThunderStats.DonateLink;" class="text-link mzts-donate" href="http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/donate/"/>
 		<label control="symbol" value=" "/>
-	  	<textbox id="mzts-release-notes" value="Loading..." multiline="true" readonly="true" rows="7"/>
+	  	<textbox id="mzts-release-notes" class="release-notes-text" value="Loading..." multiline="true" readonly="true" rows="7"/>
         </tabpanel>
       </tabpanels>
     </tabbox>

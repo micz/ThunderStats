@@ -61,7 +61,7 @@
             	<checkbox id="ThunderStats.today_time_graph_show_yesterday_checkbox" label="&ThunderStats.TodayTimeGraphShowYesterday;"
             		preference="ThunderStats.today_time_graph_show_yesterday" />
             	<checkbox id="ThunderStats.today_time_graph_progressive_checkbox" label="&ThunderStats.TodayTimeGraphProgressive;"
-            		preference="ThunderStats.today_time_progressive_yesterday" />
+            		preference="ThunderStats.today_time_graph_progressive" />
             <label control="symbol" value=" "/>
 			  </rows>
 		</grid>

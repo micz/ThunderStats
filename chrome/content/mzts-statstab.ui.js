@@ -595,6 +595,15 @@ miczThunderStatsTab.ui={
 			}
 
 			current_data.data.sort(this.utilDrawTimeGraph_ArrayCompare);
+
+			if(miczThunderStatsPrefs.getBoolPref_TS('today_time_graph_progressive')){	//show progressive data
+				let tmp_prgrss_data=0;
+				for(let eld in current_data.data){
+					current_data.data[eld].value+=tmp_prgrss_data;
+					tmp_prgrss_data=current_data.data[eld].value;
+				}
+			}
+
 			data_output.push(current_data);
 		}
 
@@ -753,7 +762,12 @@ miczThunderStatsTab.ui={
 			.style("fill", function(d) { return color(d.type); })
 			.attr("class","tooltip")
 			.attr("title",function(d){
-					let mh_from=moment().hours(d.hour).minutes(0).format("LT");
+					let mh_from=0;
+					if(miczThunderStatsPrefs.getBoolPref_TS('today_time_graph_progressive')){	//show progressive data
+						mh_from=moment().hours(0).minutes(0).format("LT");
+					}else{
+						mh_from=moment().hours(d.hour).minutes(0).format("LT");
+					}
 					let mh_to=moment().hours(d.hour).minutes(59).format("LT");
 					let mh_str=" "+mh_from+" - "+mh_to;
 					let yt_str="";

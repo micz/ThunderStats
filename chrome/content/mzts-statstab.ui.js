@@ -599,6 +599,7 @@ miczThunderStatsTab.ui={
 			if(miczThunderStatsPrefs.getBoolPref_TS('today_time_graph_progressive')){	//show progressive data
 				let tmp_prgrss_data=0;
 				for(let eld in current_data.data){
+					if((is_today)&&(current_data.data[eld].hour>moment().format("H"))) break;
 					current_data.data[eld].value+=tmp_prgrss_data;
 					tmp_prgrss_data=current_data.data[eld].value;
 				}

@@ -4,6 +4,7 @@
 Version 0.6 - ??/??/2015
 - Release notes added in the preference info tab.
 - Added an option to show the time graphs with progressive data bars.
+- Time graph labels improved.
 -
 ==========
 Version 0.5 - 07/06/2015

@@ -599,9 +599,10 @@ miczThunderStatsTab.ui={
 			if(miczThunderStatsPrefs.getBoolPref_TS('today_time_graph_progressive')){	//show progressive data
 				let tmp_prgrss_data=0;
 				for(let eld in current_data.data){
+					current_data.data[eld].value_h=current_data.data[eld].value;
 					if((is_today)&&(current_data.type.indexOf('yesterday_')==-1)&&(current_data.data[eld].hour>moment().format("H"))) break;
-            current_data.data[eld].value+=tmp_prgrss_data;
-            tmp_prgrss_data=current_data.data[eld].value;
+						current_data.data[eld].value+=tmp_prgrss_data;
+						tmp_prgrss_data=current_data.data[eld].value;
 				}
 			}
 
@@ -646,6 +647,7 @@ miczThunderStatsTab.ui={
 		let legendSpacing = 8;
 
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+		let _go_progressive=miczThunderStatsPrefs.getBoolPref_TS('today_time_graph_progressive');
 
 		let data=this.utilDrawTimeGraph_ArrangeData(data_array,is_today);
 		let data_types=new Array();
@@ -764,13 +766,14 @@ miczThunderStatsTab.ui={
 			.attr("class","tooltip")
 			.attr("title",function(d){
 					let mh_from=0;
-					if(miczThunderStatsPrefs.getBoolPref_TS('today_time_graph_progressive')){	//show progressive data
-						mh_from=moment().hours(0).minutes(0).format("LT");
+					if(_go_progressive){	//show progressive data
+						//mh_from=moment().hours(0).minutes(0).format("LT");
+						mh_from=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.until")+" ";
 					}else{
-						mh_from=moment().hours(d.hour).minutes(0).format("LT");
+						mh_from=moment().hours(d.hour).minutes(0).format("LT")+" - ";
 					}
 					let mh_to=moment().hours(d.hour).minutes(59).format("LT");
-					let mh_str=" "+mh_from+" - "+mh_to;
+					let mh_str=" "+mh_from+mh_to;
 					let yt_str="";
 					let ii=data_types.indexOf(d.type);
 					if((ii<=1)&&is_today){
@@ -780,7 +783,13 @@ miczThunderStatsTab.ui={
 							yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday")
 						}
 					}
-					return yt_str+mh_str+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.TimeGraph."+d.type)+": "+d.value;
+					let value_h_str="";
+					if(_go_progressive){
+						value_h_str=" (";
+						value_h_str+="+"+d.value_h;
+						value_h_str+=")";
+					}
+					return yt_str+mh_str+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.TimeGraph."+d.type)+": "+d.value+value_h_str;
                 })
 		    .on('mouseover',function() {
 				d3.select(this)

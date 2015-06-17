@@ -91,9 +91,6 @@ var miczThunderStatsDB = {
 		if(mInfo!=null){
 			mWhat+=", '"+mInfo+"' as Info";
 		}
-		if(mHours!=null){
-			mWhat+=", strftime('%H',m.date/1000000,'unixepoch','localtime') AS mHour";
-		}
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
 
 		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
@@ -120,9 +117,18 @@ var miczThunderStatsDB = {
 			}
 		}
 		if(mHours!=null){	//group messages by hours
+			mWhat+=", strftime('%H',m.date/1000000,'unixepoch','localtime') AS mHour";
 			mWhere+=" GROUP BY mHour";
 			let mQuery="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
 			mQuery+=" UNION SELECT 0 AS Num, '"+mInfo+"' as Info, -1 AS mHour";
+			return this.queryExec(mQuery,mCallback);
+		}
+		if(mInfo=='aggregate'){		//getting max, min, avg
+			mWhat+="strftime('%j',m.date/1000000,'unixepoch') AS mDay";
+			mWhere+=" GROUP BY mDay";
+			let mQuery='SELECT max(t.Num) as maxNum, min(t.Num) as minNum, avg(t.Num) as avgNum, t.mDay as mDay FROM (';
+			mQuery+="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
+			mQuery+=') t';
 			return this.queryExec(mQuery,mCallback);
 		}
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);

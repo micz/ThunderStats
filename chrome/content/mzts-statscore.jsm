@@ -251,6 +251,12 @@ miczThunderStatsCore.db = {
 		//miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
 	},
 
+	getAggregatePeriodMessages:function(mType,mFromDate,mToDate,mIdentity,mCallback){
+		mFromDate.setHours(0,0,0,0);
+		mToDate.setHours(24,0,0,0);
+		return miczThunderStatsDB.queryMessages({type:mType,info:'aggregate',hours:null},mFromDate.getTime(),mToDate.getTime(),mIdentity,mCallback);
+	},
+
 	/*getInboxMessagesDate:function(mIdentity,mCallback){
 		//miczThunderStatsDB.queryInboxMessagesDate(mIdentity,mCallback);
 	},*/

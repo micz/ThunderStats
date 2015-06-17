@@ -80,6 +80,12 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("yesterday_incremental_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_inbox0_inboxmsg_wait");
 		miczThunderStatsTab.ui.showLoadingElement("today_inbox0_inboxmsg_unread_wait");
+		miczThunderStatsTab.ui.showLoadingElement("aggregate_max_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("aggregate_min_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("aggregate_avg_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("aggregate_max_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("aggregate_min_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("aggregate_avg_rcvd_wait");
 		if(miczThunderStatsTab._global_update){
 			miczThunderStatsTab.ui.showLoadingElement("yesterday_inbox0_inboxmsg_wait");
 			miczThunderStatsTab.ui.showLoadingElement("yesterday_inbox0_inboxmsg_unread_wait");
@@ -115,6 +121,13 @@ var miczThunderStatsTab = {
 		miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
 		//Get inbox mails date spreading -- disabled we are going to iterate inbox messages only once and get all the info we need
 		//miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
+
+		//Get aggregate period messages info
+		let mToDay_aggregate = new Date();
+		let mFromDay_aggregate = new Date();
+		mFromDay_aggregate.setDate(mFromDay_aggregate.getDate() - 6);
+		miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay_aggregate,mToDay_aggregate,identity_id,miczThunderStatsTab.callback.stats_msg_aggregate_sent);
+		miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay_aggregate,mToDay_aggregate,identity_id,miczThunderStatsTab.callback.stats_msg_aggregate_rcvd);
 	},
 
 	getYesterdayStats:function(identity_id){

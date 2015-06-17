@@ -15,7 +15,9 @@ table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:#bae0fa;}
 table.mzts-tinvolved tr.mzts-trow td{padding:2px 4px 2px 2px;color:black;white-space:-moz-pre-wrap !important;word-break: break-all;}
 table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:normal;}
 .circle_wait{text-align:center;width:100%;position:absolute;}
-.yesterday_incremental{color:grey;font-size:0.8em;}
+span.additional_info_text{color:grey;font-size:0.8em;}
+p.additional_info_text{margin-bottom:0px;}
+span.invisible_text{color:white;}
 span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
 .mzts-sel-account{font-weight:bold;}
 .mzts-sel-identity{padding-left:30px;}

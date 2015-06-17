@@ -1095,7 +1095,7 @@ miczThunderStatsTab.callback.stats_msg_aggregate_sent = {
     handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_msg_aggregate_sent handleResult '+JSON.stringify(this.data)+'\r\n');
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_msg_aggregate_sent handleResult '+JSON.stringify(this.data)+'\r\n');
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_max_sent_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_min_sent_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_avg_sent_wait");
@@ -1147,7 +1147,7 @@ miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
     handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_msg_aggregate_rcvd handleResult '+JSON.stringify(this.data)+'\r\n');
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_msg_aggregate_rcvd handleResult '+JSON.stringify(this.data)+'\r\n');
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_max_rcvd_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_min_rcvd_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_avg_rcvd_wait");

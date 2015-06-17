@@ -590,7 +590,7 @@ miczThunderStatsTab.ui={
 					if(!current_data['data'].some(this.utilDrawTimeGraph_CheckRecord,this)){
 						current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':0});
 						//current_data['data'].push({'type':_data_handles[h_el],'hour':this._tmp_i,'value':Math.floor(Math.random() * (42 - 0)) + 0});
-					};
+					}
 				}
 			}
 
@@ -604,6 +604,7 @@ miczThunderStatsTab.ui={
 						current_data.data[eld].value+=tmp_prgrss_data;
 						tmp_prgrss_data=current_data.data[eld].value;
 				}
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] utilDrawTimeGraph_ArrangeData current_data: "+JSON.stringify(current_data)+"\r\n");
 			}
 
 			data_output.push(current_data);
@@ -623,7 +624,7 @@ miczThunderStatsTab.ui={
 	},
 
 	utilDrawTimeGraph_CheckRecord:function(currentValue){
-		if(currentValue.hour===this._tmp_i){
+		if(parseInt(currentValue.hour)===this._tmp_i){
 			return true;
 		}
 		return false;

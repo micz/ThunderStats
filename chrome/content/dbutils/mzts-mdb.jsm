@@ -124,11 +124,14 @@ var miczThunderStatsDB = {
 			return this.queryExec(mQuery,mCallback);
 		}
 		if(mInfo=='aggregate'){		//getting max, min, avg
-			mWhat+=", strftime('%j',m.date/1000000,'unixepoch') AS mDay";
+			mWhat+=", round(strftime('%J',m.date/1000000,'unixepoch')) AS mDay";
 			mWhere+=" GROUP BY mDay";
-			let mQuery='SELECT max(t.Num) as maxNum, min(t.Num) as minNum, avg(t.Num) as avgNum FROM (';
+			let mQuery='SELECT max(t.Num) as maxNum, min(t.Num) as minNum, round(sum(t.Num)*1.0/(max(t.mDay)-min(t.mDay)),3) as avgNum FROM (';
+			mQuery+="SELECT  max(Num) as Num,mDay FROM (";
 			mQuery+="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
-			mQuery+=') t';
+			mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, cast(strftime('%J',"+mFromDate+"000/1000000,'unixepoch') as integer) AS mDay";
+			mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, cast(strftime('%J',"+mToDate+"000/1000000,'unixepoch') as integer) AS mDay";
+			mQuery+=') GROUP BY mDay) t';
 			return this.queryExec(mQuery,mCallback);
 		}
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);

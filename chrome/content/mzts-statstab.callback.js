@@ -444,7 +444,7 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 				miczLogger.log("7 days sent messages loaded day: "+this.data[1]["Info"]+".",0);
 				//if we've collected our 7 days, let's print it!
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent miczThunderStatsTab.data_7days_sent.length '+miczThunderStatsTab.data_7days_sent.length+'\r\n');
-				if(this.data_7days_sent.length==miczThunderStatsPrefs.getIntPref_TS('many_days')){
+				if(this.data_7days_sent.length==miczThunderStatsPrefs.manyDays){
 					//$jQ("#7days_sent").text(JSON.stringify(miczThunderStatsTab.data_7days_sent));
 					//ordering results array
 					this.data_7days_sent.sort(miczThunderStatsUtils.array_7days_compare);
@@ -506,7 +506,7 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 				miczLogger.log("7 days sent messages loaded day: "+this.data[1]["Info"]+".",0);
 				//if we've collected our 7 days, let's print it!
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent miczThunderStatsTab.data_7days_sent.length '+miczThunderStatsTab.data_7days_sent.length+'\r\n');
-				if(this.data_7days_rcvd.length==miczThunderStatsPrefs.getIntPref_TS('many_days')){
+				if(this.data_7days_rcvd.length==miczThunderStatsPrefs.manyDays){
 					//$jQ("#7days_rcvd").text(JSON.stringify(miczThunderStatsTab.data_7days_rcvd));
 					//ordering results array
 					this.data_7days_rcvd.sort(miczThunderStatsUtils.array_7days_compare);

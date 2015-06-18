@@ -22,6 +22,18 @@ var miczThunderStatsPrefs = {
 		return this.getBoolPref_TS("identities_selector");
 	},
 
+	get manyDays() {
+		let output=this.getIntPref_TS('many_days');
+		if(output==0) output=7;
+		return output;
+	},
+
+	get manyDaysMaxLabels() {
+		let output=this.getIntPref_TS('many_days_max_labels');
+		if(output==0) output=7;
+		return output;
+	},
+
 	accountCustomIdentities:function(account_key){
 		let account_pref='acc_cust_ids.'+account_key;
 		if(this.existsCharPref(this.pref_base+account_pref)){

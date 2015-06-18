@@ -25,3 +25,4 @@
 <!ENTITY ThunderStats.ManyDaysGraph "Many Days Graph">
 <!ENTITY ThunderStats.ManyDays "Number of days to be shown.">
 <!ENTITY ThunderStats.ManyDaysSmallLabels "Show small day's labels.">
+<!ENTITY ThunderStats.ManyDaysSmallLabels_2 "It's suggested to use this option when showing more than 10 days.">

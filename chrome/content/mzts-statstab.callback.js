@@ -1103,6 +1103,7 @@ miczThunderStatsTab.callback.stats_msg_aggregate_sent = {
 					let maxNum=this.data[1]["maxNum"]==null?0:this.data[1]["maxNum"];
 					let minNum=this.data[1]["minNum"]==null?0:this.data[1]["minNum"];
 					let avgNum=this.data[1]["avgNum"]==null?0:this.data[1]["avgNum"];
+					if(!miczThunderStatsPrefs.getBoolPref_TS('aggregate_average_not_rounded')) avgNum=Math.round(avgNum);
 					$jQ("#aggregate_max_sent").text(maxNum);
 					$jQ("#aggregate_min_sent").text(minNum);
 					$jQ("#aggregate_avg_sent").text(avgNum);
@@ -1155,6 +1156,7 @@ miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
 					let maxNum=this.data[1]["maxNum"]==null?0:this.data[1]["maxNum"];
 					let minNum=this.data[1]["minNum"]==null?0:this.data[1]["minNum"];
 					let avgNum=this.data[1]["avgNum"]==null?0:this.data[1]["avgNum"];
+					if(!miczThunderStatsPrefs.getBoolPref_TS('aggregate_average_not_rounded')) avgNum=Math.round(avgNum);
 					$jQ("#aggregate_max_rcvd").text(maxNum);
 					$jQ("#aggregate_min_rcvd").text(minNum);
 					$jQ("#aggregate_avg_rcvd").text(avgNum);

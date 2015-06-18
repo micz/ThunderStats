@@ -26,6 +26,9 @@
         <preference id="ThunderStats.today_time_graph_progressive"
         name="extensions.ThunderStats.today_time_graph_progressive"
         type="bool"/>
+        <preference id="ThunderStats.aggregate_average_not_rounded"
+        name="extensions.ThunderStats.aggregate_average_not_rounded"
+        type="bool"/>
     </preferences>
     <tabbox id="ts_tabbox">
       <tabs>
@@ -62,6 +65,8 @@
             		preference="ThunderStats.today_time_graph_show_yesterday" />
             	<checkbox id="ThunderStats.today_time_graph_progressive_checkbox" label="&ThunderStats.TodayTimeGraphProgressive;"
             		preference="ThunderStats.today_time_graph_progressive" />
+            	<checkbox id="ThunderStats.aggregate_average_not_rounded_checkbox" label="&ThunderStats.AggregateAverageNotRounded;"
+            		preference="ThunderStats.aggregate_average_not_rounded" />
             <label control="symbol" value=" "/>
 			  </rows>
 		</grid>

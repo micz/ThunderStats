@@ -113,11 +113,11 @@ var miczThunderStatsPrefs = {
 	},
 
 	getIntPref_TS: function getIntPref_TS(p) {
-		return this.getIntPreference(this.pref_base + p);
+		return this.service.getIntPref(this.pref_base + p);
 	},
 
 	getIntPref: function getIntPref(p) {
-		return this.getIntPreference(p);
+		return this.service.getIntPref(p);
 	},
 
 	setIntPref_TS: function setIntPref_TS(p, v) {

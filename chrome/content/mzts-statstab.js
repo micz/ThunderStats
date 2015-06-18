@@ -11,6 +11,7 @@ var miczThunderStatsTab = {
 
 	currentTab:"#tab_today",
 	_global_update:false,
+	_many_days:7,
 
 	onLoad: function(){
 
@@ -19,6 +20,7 @@ var miczThunderStatsTab = {
 			miczLogger.log("ThunderStats starting...",0);
 
 			miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
+			miczThunderStatsTab._many_days=miczThunderStatsPrefs.getIntPref_TS('many_days');
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');
 
@@ -126,7 +128,7 @@ var miczThunderStatsTab = {
 		let mToDay_aggregate = new Date();
 		mToDay_aggregate.setDate(mToDay_aggregate.getDate() - 1); //do not consider today
 		let mFromDay_aggregate = new Date();
-		mFromDay_aggregate.setDate(mFromDay_aggregate.getDate() - 7); //7 days back from yesterday
+		mFromDay_aggregate.setDate(mFromDay_aggregate.getDate() - miczThunderStatsTab._many_days); //_many_days days back from yesterday
 		miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay_aggregate,mToDay_aggregate,identity_id,miczThunderStatsTab.callback.stats_msg_aggregate_sent);
 		miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay_aggregate,mToDay_aggregate,identity_id,miczThunderStatsTab.callback.stats_msg_aggregate_rcvd);
 	},
@@ -175,7 +177,7 @@ var miczThunderStatsTab = {
 	},
 
 	getLast7DaysStats:function(identity_id){
-		miczLogger.log("Getting last 7 days statistics...",0);
+		miczLogger.log("Getting last "+miczThunderStatsTab._many_days+" days statistics...",0);
 
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingElement("7days_sent_wait");
@@ -188,7 +190,7 @@ var miczThunderStatsTab = {
 
 		let mToDay = new Date();
 		let mFromDay = new Date();
-		mFromDay.setDate(mFromDay.getDate() - 6);
+		mFromDay.setDate(mFromDay.getDate() - miczThunderStatsTab._many_days + 1);
 
 		//Get sent messages
 		miczThunderStatsCore.db.getManyDaysMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_sent);
@@ -236,6 +238,7 @@ var miczThunderStatsTab = {
 
 	updateStats: function(){
 		miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
+		miczThunderStatsTab._many_days=miczThunderStatsPrefs.getIntPref_TS('many_days');
 		if(miczThunderStatsTab._global_update){
 			miczThunderStatsDB.init();
 			let current_id=miczThunderStatsTab.getCurrentIdentityId();

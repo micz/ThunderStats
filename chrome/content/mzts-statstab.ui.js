@@ -147,10 +147,21 @@ miczThunderStatsTab.ui={
 		}
 	},
 
+	util7DaysGraph_getTickValues:function(_many_days){
+		let output=new Array();
+
+		for(let iii=0;iii<_many_days;iii++){
+			output.push(iii+0.4);
+		}
+
+		return output;	//[0.4,1.4,2.4,3.4,4.4,5.4,6.4];
+	},
+
 	draw7DaysGraph:function(element_id_txt,data_array){
+		let _many_days=miczThunderStatsPrefs.getIntPref_TS('many_days');
 		let margin = {top: 5, right: 0, bottom: 40, left: 30};
-		let barWidth = 50;
-		let w = ((barWidth + 15) * 7) - margin.left - margin.right;
+		let barWidth = _many_days<=7?50:_many_days<=14?25:12;
+		let w = ((barWidth + 15) * _many_days) - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;
 
 		//data_array=JSON.parse('[{"day":1425337200,"day_str":"03/03/15","num":11},{"day":1425423600,"day_str":"04/03/15","num":78},{"day":1425510000,"day_str":"05/03/15","num":55},{"day":1425596400,"day_str":"06/03/15","num":2},{"day":1425682800,"day_str":"07/03/15","num":0},{"day":1425769200,"day_str":"08/03/15","num":21},{"day":1425855600,"day_str":"09/03/15","num":5}]');
@@ -208,7 +219,7 @@ miczThunderStatsTab.ui={
 
 		//x axis
 		let xAxis = d3.svg.axis().scale(x).orient("bottom")
-				.tickValues([0.4,1.4,2.4,3.4,4.4,5.4,6.4])
+				.tickValues(miczThunderStatsTab.ui.util7DaysGraph_getTickValues(_many_days))
 				.outerTickSize(0);
 		chart.append("g")
 			.attr("class", "x axis")

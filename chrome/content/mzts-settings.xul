@@ -29,6 +29,12 @@
         <preference id="ThunderStats.aggregate_average_not_rounded"
         name="extensions.ThunderStats.aggregate_average_not_rounded"
         type="bool"/>
+        <preference id="ThunderStats.many_days"
+        name="extensions.ThunderStats.many_days"
+        type="int"/>
+        <preference id="ThunderStats.many_days_max_labels"
+        name="extensions.ThunderStats.many_days_max_labels"
+        type="int"/>
     </preferences>
     <tabbox id="ts_tabbox">
       <tabs>
@@ -67,6 +73,17 @@
             		preference="ThunderStats.today_time_graph_progressive" />
             	<checkbox id="ThunderStats.aggregate_average_not_rounded_checkbox" label="&ThunderStats.AggregateAverageNotRounded;"
             		preference="ThunderStats.aggregate_average_not_rounded" />
+            	<groupbox>
+  				<caption label="&ThunderStats.ManyDaysGraph;"/>
+					<hbox align="center">
+						<textbox id="ThunderStats.many_days_textfield" maxlength="2" class="mzts-tbox" preference="ThunderStats.many_days"/>
+						<label control="symbol" value="&ThunderStats.ManyDays;"/>
+					</hbox>
+					<hbox align="center">
+						<textbox id="ThunderStats.many_days_max_labels_textfield" maxlength="2" class="mzts-tbox" preference="ThunderStats.many_days_max_labels"/>
+						<label control="symbol" value="&ThunderStats.ManyDaysMaxLabels;"/>
+					</hbox>
+				</groupbox>
             <label control="symbol" value=" "/>
 			  </rows>
 		</grid>

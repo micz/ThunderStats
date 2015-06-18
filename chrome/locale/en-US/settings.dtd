@@ -22,3 +22,6 @@
 <!ENTITY ThunderStats.TodayTimeGraphShowYesterday "Show also yesterday mails in the today time graph.">
 <!ENTITY ThunderStats.TodayTimeGraphProgressive "Show progressive data bars in the today and yesterday time graphs.">
 <!ENTITY ThunderStats.AggregateAverageNotRounded "Show two digits in the aggregate average number of mails sent and received.">
+<!ENTITY ThunderStats.ManyDaysGraph "Many Days Graph">
+<!ENTITY ThunderStats.ManyDays "Number of days to be shown.">
+<!ENTITY ThunderStats.ManyDaysMaxLabels "Max number of days to be shown with full day's label.">

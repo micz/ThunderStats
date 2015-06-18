@@ -21,6 +21,7 @@ var miczThunderStatsTab = {
 
 			miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
 			miczThunderStatsTab._many_days=miczThunderStatsPrefs.getIntPref_TS('many_days');
+			$jQ("span._many_days").text(miczThunderStatsTab._many_days);
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');
 
@@ -239,6 +240,7 @@ var miczThunderStatsTab = {
 	updateStats: function(){
 		miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
 		miczThunderStatsTab._many_days=miczThunderStatsPrefs.getIntPref_TS('many_days');
+		$jQ("span._many_days").text(miczThunderStatsTab._many_days);
 		if(miczThunderStatsTab._global_update){
 			miczThunderStatsDB.init();
 			let current_id=miczThunderStatsTab.getCurrentIdentityId();

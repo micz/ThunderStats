@@ -124,8 +124,9 @@ var miczThunderStatsTab = {
 
 		//Get aggregate period messages info
 		let mToDay_aggregate = new Date();
+		mToDay_aggregate.setDate(mToDay_aggregate.getDate() - 1); //do not consider today
 		let mFromDay_aggregate = new Date();
-		mFromDay_aggregate.setDate(mFromDay_aggregate.getDate() - 6);
+		mFromDay_aggregate.setDate(mFromDay_aggregate.getDate() - 7); //7 days back from yesterday
 		miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay_aggregate,mToDay_aggregate,identity_id,miczThunderStatsTab.callback.stats_msg_aggregate_sent);
 		miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay_aggregate,mToDay_aggregate,identity_id,miczThunderStatsTab.callback.stats_msg_aggregate_rcvd);
 	},

@@ -28,10 +28,8 @@ var miczThunderStatsPrefs = {
 		return output;
 	},
 
-	get manyDaysMaxLabels() {
-		let output=this.getIntPref_TS('many_days_max_labels');
-		if(output==0) output=7;
-		return output;
+	get manyDaysSmallLabels() {
+		return this.getBoolPref_TS('many_days_small_labels');
 	},
 
 	accountCustomIdentities:function(account_key){

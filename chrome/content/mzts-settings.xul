@@ -32,9 +32,9 @@
         <preference id="ThunderStats.many_days"
         name="extensions.ThunderStats.many_days"
         type="int"/>
-        <preference id="ThunderStats.many_days_max_labels"
-        name="extensions.ThunderStats.many_days_max_labels"
-        type="int"/>
+        <preference id="ThunderStats.many_days_small_labels"
+        name="extensions.ThunderStats.many_days_small_labels"
+        type="bool"/>
     </preferences>
     <tabbox id="ts_tabbox">
       <tabs>
@@ -79,10 +79,8 @@
 						<textbox id="ThunderStats.many_days_textfield" maxlength="2" class="mzts-tbox" preference="ThunderStats.many_days"/>
 						<label control="symbol" value="&ThunderStats.ManyDays;"/>
 					</hbox>
-					<hbox align="center">
-						<textbox id="ThunderStats.many_days_max_labels_textfield" maxlength="2" class="mzts-tbox" preference="ThunderStats.many_days_max_labels"/>
-						<label control="symbol" value="&ThunderStats.ManyDaysMaxLabels;"/>
-					</hbox>
+					<checkbox id="ThunderStats.many_days_small_labels_checkbox" label="&ThunderStats.ManyDaysSmallLabels;"
+            		preference="ThunderStats.many_days_small_labels" />
 				</groupbox>
             <label control="symbol" value=" "/>
 			  </rows>

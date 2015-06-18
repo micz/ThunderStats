@@ -158,7 +158,7 @@ miczThunderStatsTab.ui={
 
 	draw7DaysGraph:function(element_id_txt,data_array){
 		let _many_days=miczThunderStatsPrefs.manyDays;
-		let _many_days_max_labels=miczThunderStatsPrefs.manyDaysMaxLabels;
+		let _many_days_max_labels=miczThunderStatsPrefs.manyDaysSmallLabels?0:_many_days+1;
 
 		let margin = {top: 5, right: 0, bottom: _many_days<=_many_days_max_labels?40:60, left: 30};
 		let barWidth = _many_days<=_many_days_max_labels?50:12;

@@ -1106,7 +1106,7 @@ miczThunderStatsTab.callback.stats_msg_aggregate_sent = {
 					if(!miczThunderStatsPrefs.getBoolPref_TS('aggregate_average_not_rounded')) avgNum=Math.round(avgNum);
 					$jQ("#aggregate_max_sent").text(maxNum);
 					$jQ("#aggregate_min_sent").text(minNum);
-					$jQ("#aggregate_avg_sent").text(avgNum);
+					$jQ("#aggregate_avg_sent").text(avgNum.toLocaleString(miczThunderStatsUtils.getCurrentSystemLocale()));
 				}else{
 					$jQ("#aggregate_max_sent").text("0");
 					$jQ("#aggregate_min_sent").text("0");
@@ -1159,7 +1159,7 @@ miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
 					if(!miczThunderStatsPrefs.getBoolPref_TS('aggregate_average_not_rounded')) avgNum=Math.round(avgNum);
 					$jQ("#aggregate_max_rcvd").text(maxNum);
 					$jQ("#aggregate_min_rcvd").text(minNum);
-					$jQ("#aggregate_avg_rcvd").text(avgNum);
+					$jQ("#aggregate_avg_rcvd").text(avgNum.toLocaleString(miczThunderStatsUtils.getCurrentSystemLocale()));
 				}else{
 					$jQ("#aggregate_max_rcvd").text("0");
 					$jQ("#aggregate_min_rcvd").text("0");

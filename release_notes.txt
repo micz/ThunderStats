@@ -6,6 +6,7 @@ Version 0.6 - ??/??/2015
 - Added an option to show the time graphs with progressive data bars.
 - Time graph labels improved.
 - Added max, min, average mails sent and received over a period.
+- "Last 7 Days" tab now made dynamic. Choose the number of days to show from the addon option.
 -
 ==========
 Version 0.5 - 07/06/2015

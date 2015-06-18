@@ -150,17 +150,18 @@ miczThunderStatsTab.ui={
 	util7DaysGraph_getTickValues:function(_many_days){
 		let output=new Array();
 
-		for(let iii=0;iii<_many_days;iii++){
-			output.push(iii+0.4);
+		for(let _id=0;_id<_many_days;_id++){
+			output.push(_id+0.4);
 		}
-
 		return output;	//[0.4,1.4,2.4,3.4,4.4,5.4,6.4];
 	},
 
 	draw7DaysGraph:function(element_id_txt,data_array){
 		let _many_days=miczThunderStatsPrefs.getIntPref_TS('many_days');
-		let margin = {top: 5, right: 0, bottom: 40, left: 30};
-		let barWidth = _many_days<=7?50:_many_days<=14?25:12;
+		let _many_days_max_labels=miczThunderStatsPrefs.getIntPref_TS('many_days_max_labels');
+
+		let margin = {top: 5, right: 0, bottom: _many_days<=_many_days_max_labels?40:60, left: 30};
+		let barWidth = _many_days<=_many_days_max_labels?50:12;
 		let w = ((barWidth + 15) * _many_days) - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;
 
@@ -186,7 +187,7 @@ miczThunderStatsTab.ui={
 		  .data(data_array)
 		  .enter()
 		  .append("svg:rect")
-		  .attr("x", function(datum, index) { return x(index); })
+		  .attr("x", function(datum, index) { return _many_days<=_many_days_max_labels?x(index):x(index)+3.5; })
 		  .attr("y", function(datum) { return y(datum.num); })
 		  .attr("height", function(datum) { return y(0) - y(datum.num); })
 		  .attr("width", barWidth)
@@ -199,7 +200,7 @@ miczThunderStatsTab.ui={
 		  .append("svg:text")
 		  .attr("x", function(datum, index) { return x(index) + barWidth; })
 		  .attr("y", function(datum) { return y(datum.num); })
-		  .attr("dx", -barWidth/2)
+		  .attr("dx", _many_days<=_many_days_max_labels?-barWidth/2:(-barWidth/2)+3.5)
 		  .attr("dy", function(datum) { return y(0) - y(datum.num) > 24 ? "1.7em":"-1em"; })
 		  .attr("text-anchor", "middle")
 		  .text(function(datum) { return datum.num;})
@@ -213,8 +214,17 @@ miczThunderStatsTab.ui={
 			.attr("y", h)
 			.attr("dx", -barWidth/2)
 			.attr("text-anchor", "middle")
-			.text(function(datum) { return datum.day_str; })
-			.attr("transform", "translate(0, "+(margin.bottom/2)+")")
+			.text(function(datum) {
+						let output=datum.day_str;
+						if(_many_days>_many_days_max_labels){
+							let splitted=output.split('|');
+							output=splitted[1];
+						}
+						return output;
+					})
+			.attr("transform", function(datum, index) {
+									return "translate("+(_many_days>_many_days_max_labels?"1.5":"0")+", "+(margin.bottom/2)+")"+(_many_days>_many_days_max_labels?' rotate(-90 '+(x(index) + barWidth)+','+h+')':'');
+								})
 			.attr("class", "xAxis");
 
 		//x axis
@@ -226,8 +236,10 @@ miczThunderStatsTab.ui={
 			.attr("transform", "translate(0," + h + ")")
 			.call(xAxis);
 
-		//break x axis labels in new lines
-		chart.selectAll('text.xAxis').each(miczThunderStatsTab.ui.util7DaysGraph_InsertLinebreaks);
+		if(_many_days<=_many_days_max_labels){
+			//break x axis labels in new lines
+			chart.selectAll('text.xAxis').each(miczThunderStatsTab.ui.util7DaysGraph_InsertLinebreaks);
+		}
 
 		//y axis
 		let num_ticks = (d3.max(data_array, function(datum) { return datum.num; })>10 ? 10 : d3.max(data_array, function(datum) { return datum.num; }));

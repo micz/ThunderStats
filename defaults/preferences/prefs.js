@@ -7,3 +7,4 @@ pref("extensions.ThunderStats.today_time_graph_show_yesterday", true);
 pref("extensions.ThunderStats.today_time_graph_progressive", false);
 pref("extensions.ThunderStats.aggregate_average_not_rounded", false);
 pref("extensions.ThunderStats.many_days", 7);
+pref("extensions.ThunderStats.many_days_max_labels", 30);

@@ -21,3 +21,8 @@
 <!ENTITY ThunderStats.GlobalUpdate "Aggiorna tutti i tab contemporaneamente. Se deselezionato i tab vengono aggiornati quando visualizzati.">
 <!ENTITY ThunderStats.TodayTimeGraphShowYesterday "Mostra anche le mail di ieri nel grapfico orario di oggi.">
 <!ENTITY ThunderStats.TodayTimeGraphProgressive "Mostra il totale progressivo nel grafico orario di ieri e oggi.">
+<!ENTITY ThunderStats.AggregateAverageNotRounded "Mostra due decimali nella media aggregata delle mail inviate e ricevute.">
+<!ENTITY ThunderStats.ManyDaysGraph "Grafico di più giorni">
+<!ENTITY ThunderStats.ManyDays "Numero di giorni da mostrare.">
+<!ENTITY ThunderStats.ManyDaysSmallLabels "Mostra le etichette piccole dei giorni.">
+<!ENTITY ThunderStats.ManyDaysSmallLabels_2 "Si suggerisce di utilizzare questa opzione quando si visualizzano più di 10 giorni.">

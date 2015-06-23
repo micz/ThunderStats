@@ -7,7 +7,8 @@
 <!ENTITY ThunderStats.Setup "Preferenze">
 <!ENTITY ThunderStats.Today "Oggi">
 <!ENTITY ThunderStats.Yesterday "Ieri">
-<!ENTITY ThunderStats.Last7days "Ultimi 7 giorni">
+<!ENTITY ThunderStats.Last "Ultimi">
+<!ENTITY ThunderStats.days "giorni">
 <!ENTITY ThunderStats.Info "Informazioni">
 <!ENTITY ThunderStats.TodayMails "Mail di oggi">
 <!ENTITY ThunderStats.Loading "Caricamento">
@@ -47,3 +48,7 @@
 <!ENTITY ThunderStats.OtherInfoText_3 "Dai uno sguardo allo sviluppo di questa estensione">
 <!ENTITY ThunderStats.SubmitNewIssue "Invia una nuova segnalazione">
 <!ENTITY ThunderStats.DonationsTitle "Donazioni">
+<!ENTITY ThunderStats.max "max">
+<!ENTITY ThunderStats.min "min">
+<!ENTITY ThunderStats.average "media">
+<!ENTITY ThunderStats.InTheLast "Negli ultimi">

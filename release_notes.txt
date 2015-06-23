@@ -1,7 +1,7 @@
 -= ThunderStats Thunderbird Addon Release Notes =-
 
 ==========
-Version 0.6 - ??/??/2015
+Version 1.0 - ??/??/2015
 - Release notes added in the preference info tab.
 - Added an option to show the time graphs with progressive data bars.
 - Time graph labels improved.

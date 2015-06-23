@@ -1,0 +1,54 @@
+<!ENTITY ThunderStats.TABTitle "ThunderStats 设置">
+<!ENTITY ThunderStats.DonateLink "捐助！">
+<!ENTITY ThunderStats.NoSearchWarn "全局搜索和索引未激活！">
+<!ENTITY ThunderStats.NoSearchWarn2 "点击这里激活">
+<!ENTITY ThunderStats.ChooseAccount "选择账户">
+<!ENTITY ThunderStats.Update "更新">
+<!ENTITY ThunderStats.Setup "设置">
+<!ENTITY ThunderStats.Today "今天">
+<!ENTITY ThunderStats.Yesterday "昨天">
+<!ENTITY ThunderStats.Last "最后">
+<!ENTITY ThunderStats.days "天">
+<!ENTITY ThunderStats.Info "信息">
+<!ENTITY ThunderStats.TodayMails "今天邮件">
+<!ENTITY ThunderStats.Loading "加载中">
+<!ENTITY ThunderStats.SentMails "已发送邮件">
+<!ENTITY ThunderStats.ReceivedMails "已接收邮件">
+<!ENTITY ThunderStats.InboxZeroStatus "“收件箱 0”状态">
+<!ENTITY ThunderStats.TotalInbox "收件箱邮件总计">
+<!ENTITY ThunderStats.TotalInboxUnread "未读">
+<!ENTITY ThunderStats.YesterdayMails "昨天邮件">
+<!ENTITY ThunderStats.TodayTop10Recipients "今天前十名收件人">
+<!ENTITY ThunderStats.TodayTop10Senders "今天前十名发件人">
+<!ENTITY ThunderStats.YesterdayThisTime "昨天此时">
+<!ENTITY ThunderStats.sent "已发送">
+<!ENTITY ThunderStats.received "已接收">
+<!ENTITY ThunderStats.TodayFolderLocation "今天的邮件文件夹位置图表">
+<!ENTITY ThunderStats.NoMailsReceivedToday "今天还没有收到邮件！">
+<!ENTITY ThunderStats.InboxMailsDateSpreading "收件箱邮件日期范围图表">
+<!ENTITY ThunderStats.NoMailsInbox "收件箱中没有邮件！">
+<!ENTITY ThunderStats.NoMailsReceivedYesterday "昨天没有收到邮件！">
+<!ENTITY ThunderStats.YesterdayFolderLocation "昨天的邮件文件夹位置图表">
+<!ENTITY ThunderStats.YesterdayTop10Recipients "昨天前十名收件人">
+<!ENTITY ThunderStats.YesterdayTop10Senders "昨天前十名发件人">
+<!ENTITY ThunderStats.Top10Recipients "前十名收件人">
+<!ENTITY ThunderStats.Top10Senders "前十名发件人">
+<!ENTITY ThunderStats.clickhere "点击这里">
+<!ENTITY ThunderStats.clickheremoreinfo "点击这里了解更多信息">
+<!ENTITY ThunderStats.AboutTitle "关于本扩展">
+<!ENTITY ThunderStats.AboutText_1 "你还记得好用的 Eudora 统计数据吗？你想念他们吗？">
+<!ENTITY ThunderStats.AboutText_2 "使用此扩展，您就可以继续在你的 Thunderbird 中对那些信息保持关注了。">
+<!ENTITY ThunderStats.AboutText_3 "更多功能将在未来添加，但如果你有一个好点子，快发过来吧">
+<!ENTITY ThunderStats.InboxZeroTitle "什么是“收件箱 0”？">
+<!ENTITY ThunderStats.InboxZeroText_1 "“收件箱 0”是一种严格的电子邮件管理方式，目标是保持收件箱是空的——或者几乎是空的——在任何时候。">
+<!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats 会给你管理收件箱的方式带来一些见解。">
+<!ENTITY ThunderStats.OtherInfoTitle "本扩展如何工作？">
+<!ENTITY ThunderStats.OtherInfoText_1 "所有统计数据都根据 Thunderbird 内部数据库及与选定帐户相关的邮件通讯录计算。">
+<!ENTITY ThunderStats.OtherInfoText_2 "未来还将添加更多功能和分析类别，并带来选择自定义时间范围的功能。">
+<!ENTITY ThunderStats.OtherInfoText_3 "看一看本扩展的开发进展">
+<!ENTITY ThunderStats.SubmitNewIssue "提交新问题">
+<!ENTITY ThunderStats.DonationsTitle "捐助">
+<!ENTITY ThunderStats.max "最大">
+<!ENTITY ThunderStats.min "最小">
+<!ENTITY ThunderStats.average "平均">
+<!ENTITY ThunderStats.InTheLast "最后">

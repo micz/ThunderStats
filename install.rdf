@@ -21,6 +21,14 @@
         <em:contributor></em:contributor>
         <em:translator>Mic (m@micz.it)</em:translator>
       </Description>
+      <Description>
+        <em:locale>zh-CN</em:locale>
+        <em:name>ThunderStats</em:name>
+        <em:description>你还记得好用的 Eudora 统计数据吗？你想念他们吗？使用此扩展，您就可以继续在你的 Thunderbird 中对那些信息保持关注了。</em:description>
+        <em:creator>Mic (m@micz.it)</em:creator>
+        <em:contributor></em:contributor>
+        <em:translator>yfdyh000</em:translator>
+      </Description>
     </em:localized>
     <em:targetApplication>
       <Description>

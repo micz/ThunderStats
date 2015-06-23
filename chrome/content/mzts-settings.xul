@@ -81,7 +81,7 @@
 					</hbox>
 					<checkbox id="ThunderStats.many_days_small_labels_checkbox" label="&ThunderStats.ManyDaysSmallLabels;"
             		preference="ThunderStats.many_days_small_labels" />
-            		<label control="symbol" value="&ThunderStats.ManyDaysSmallLabels_2;"/>
+            		<label control="symbol" value="(&ThunderStats.ManyDaysSmallLabels_2;)"/>
 				</groupbox>
             <label control="symbol" value=" "/>
 			  </rows>

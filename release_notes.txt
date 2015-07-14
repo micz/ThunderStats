@@ -1,7 +1,7 @@
 -= ThunderStats Thunderbird Addon Release Notes =-
 
 ==========
-Version 1.0 - ??/??/2015
+Version 1.0 - 14/07/2015
 - First stable release.
 - Release notes added in the preference info tab.
 - Added an option to show the time graphs with progressive data bars.
@@ -9,7 +9,6 @@ Version 1.0 - ??/??/2015
 - Added max, min, average mails sent and received over a period.
 - "Last 7 Days" tab now made dynamic. Choose the number of days to show from the addon option.
 - Chinese (Simplified) (zh-CN) locale added, thanks to yfdyh000 (from BabelZilla.org).
--
 ==========
 Version 0.5 - 07/06/2015
 - Italian (it) locale added.

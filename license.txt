@@ -1,0 +1,37 @@
+LICENSE
+
+ThunderStats is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/.
+
+Terms:
+The Program - The ThunderStats Add-on (distributed as a XPI file) and all files contained within it
+
+All contents of The Program are subject to the GNU General Public License Version 3
+(the "License"); you may not use the file except in compliance with
+the License.
+
+If you plan to use large portions of the code please contact the author Mic at m@micz.it.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+Creative Commons License for more details.
+
+Addon home page: http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/
+
+
+ATTRIBUTIONS
+
+-= Translations =-
+Thanks to BabelZilla.org.
+
+
+-= Javascript Libraries =-
+jQuery - https://jquery.com/
+D3 - http://d3js.org/
+Tooltipster - http://iamceege.github.io/tooltipster/
+Moment.js - http://momentjs.com/
+
+
+-= Graphics =-
+Addon icon thanks to http://hopstarter.deviantart.com/

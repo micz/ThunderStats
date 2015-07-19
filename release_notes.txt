@@ -2,6 +2,7 @@
 
 ==========
 Version 1.1 - ??/??/2015
+- License file added.
 -
 ==========
 Version 1.0 - 14/07/2015

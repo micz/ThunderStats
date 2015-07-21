@@ -12,10 +12,6 @@ display:block;
 margin:0 auto;
 }
 
-.chart_7days rect {
-  fill: steelblue;
-}
-
 .chart_7days text.data_label {
   fill: white;
   font: 12px sans-serif;

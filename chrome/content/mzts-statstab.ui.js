@@ -157,7 +157,7 @@ miczThunderStatsTab.ui={
 	},
 
 	draw7DaysGraph:function(element_id_txt,data_array){
-		let _many_days=miczThunderStatsPrefs.manyDays;
+		let _many_days=miczThunderStatsPrefs.manyDays+1; //+1 because we are showing the given number of past days AND also today
 		let _many_days_max_labels=miczThunderStatsPrefs.manyDaysSmallLabels?0:_many_days+1;
 
 		let margin = {top: 5, right: 0, bottom: _many_days<=_many_days_max_labels?40:60, left: 30};
@@ -165,7 +165,7 @@ miczThunderStatsTab.ui={
 		let w = ((barWidth + 15) * _many_days) - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;
 
-		//data_array=JSON.parse('[{"day":1425337200,"day_str":"03/03/15","num":11},{"day":1425423600,"day_str":"04/03/15","num":78},{"day":1425510000,"day_str":"05/03/15","num":55},{"day":1425596400,"day_str":"06/03/15","num":2},{"day":1425682800,"day_str":"07/03/15","num":0},{"day":1425769200,"day_str":"08/03/15","num":21},{"day":1425855600,"day_str":"09/03/15","num":5}]');
+		//data_array=JSON.parse('[{"day":1425337200,"day_str":"03/03/15","num":11},{"day":1425423600,"day_str":"04/03/15","num":78},{"day":1425510000,"day_str":"05/03/15","num":55},{"day":1425596400,"day_str":"06/03/15","num":2},{"day":1425682800,"day_str":"07/03/15","num":0},{"day":1425769200,"day_str":"08/03/15","num":21},{"day":1425855600,"day_str":"09/03/15","num":5},{"day":1425772800,"day_str":"10/03/15","num":5}]');
 
 		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);
 		let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function(datum) { return datum.num; })+1)/10)*10]).rangeRound([h, 0]);
@@ -191,7 +191,7 @@ miczThunderStatsTab.ui={
 		  .attr("y", function(datum) { return y(datum.num); })
 		  .attr("height", function(datum) { return y(0) - y(datum.num); })
 		  .attr("width", barWidth)
-		  .attr("fill", "#2d578b");
+		  .attr("fill", function(datum, index) { return index<_many_days-1?"#4682B4":"#5BB4FD"; });
 
 		//data labels
 		chart.selectAll("text")
@@ -214,9 +214,15 @@ miczThunderStatsTab.ui={
 			.attr("y", h)
 			.attr("dx", -barWidth/2)
 			.attr("text-anchor", "middle")
-			.text(function(datum) {
+			.text(function(datum, index) {
 						let output=datum.day_str;
-						if(_many_days>_many_days_max_labels){
+						if(index==_many_days-1){
+							let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+							output+="|["+_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today")+"]";
+							datum.day_str=output;
+						}
+						dump(">>>>> TS: output: "+output+"\r\n");
+						if((_many_days>_many_days_max_labels)&&(index==_many_days-1)){
 							let splitted=output.split('|');
 							output=splitted[1];
 						}

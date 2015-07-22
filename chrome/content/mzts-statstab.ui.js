@@ -221,8 +221,8 @@ miczThunderStatsTab.ui={
 							output+="|["+_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today")+"]";
 							datum.day_str=output;
 						}
-						dump(">>>>> TS: output: "+output+"\r\n");
-						if((_many_days>_many_days_max_labels)&&(index==_many_days-1)){
+						//dump(">>>>> TS: output: "+output+"\r\n");
+						if(_many_days>_many_days_max_labels){
 							let splitted=output.split('|');
 							output=splitted[1];
 						}

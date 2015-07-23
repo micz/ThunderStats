@@ -85,5 +85,90 @@ var miczThunderStatsPrefPanel = {
 	onDefaultAccountChange: function(){
 		let strt_acc = document.getElementById('ts_strt_accnt');
 		miczThunderStatsPrefs.setCharPref_TS('strt_acc',strt_acc.selectedItem.value);
-	}
+	},
+
+	// ======= BUSINESS DAYS FUNCTIONS =======
+	updateButtons: function(win){
+		let doc = win.document;
+		let currlist=doc.getElementById('ThunderStats.NoBusinessDaysList');
+		let numSelected = currlist.selectedItems.length;
+		let oneSelected = (numSelected == 1);
+		if(oneSelected){
+			doc.getElementById("editButton").disabled=true;
+			doc.getElementById("deleteButton").disabled=true;
+		}else{
+			doc.getElementById("editButton").disabled=false;
+			doc.getElementById("deleteButton").disabled=false;
+		}
+	},
+
+	onNewCustomCol: function(win){
+		let doc = win.document;
+		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
+		let args = {"action":"new"};
+
+		window.openDialog("chrome://columnswizard/content/mzcw-settings-customcolseditor.xul", "CustColsEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
+
+		if (("save" in args && args.save)&& ("newcol" in args && args.newcol)){
+			/*miczColumnsWizard_CustCols.addNewCustCol(args.newcol);
+			miczColumnsWizardPref_CustomColsGrid.createOneCustomColRow(doc,container,args.newcol);
+			// Select the new custcols, it is at the end of the list.
+			container.selectedIndex=container.itemCount-1;
+			container.ensureIndexIsVisible(container.selectedIndex);*/
+		}
+
+	},
+
+	onEditCustomCol: function(win){
+		let doc = win.document;
+		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
+
+		if(container.selectedIndex==-1) return;
+		if(doc.getElementById("editButtonBD").disabled) return;
+
+		let args = {"action":"edit","currcol":JSON.stringify(container.selectedItem._customcol)};
+
+		window.openDialog("chrome://columnswizard/content/mzcw-settings-customcolseditor.xul", "CustColsEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
+
+		if (("save" in args && args.save)&& ("newcol" in args && args.newcol)){
+			/*//save the cust col in the pref
+			miczColumnsWizard_CustCols.updateCustCol(args.newcol);
+			//update the cust col in the listbox
+			miczColumnsWizardPref_CustomColsGrid.editOneCustomColRow(doc,container,args.newcol,container.selectedIndex);
+			// Select the editedcustcols
+			container.ensureIndexIsVisible(container.selectedIndex);*/
+		}
+
+	},
+
+	onDeleteCustomCol: function(win){
+		let doc = win.document;
+		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
+
+		if(container.selectedIndex==-1) return;
+		if(doc.getElementById("deleteButtonBD").disabled) return;
+
+		//Are you sure?
+		let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+		let strBundleCW = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+		let _bundleCW = strBundleCW.createBundle("chrome://thunderstats/locale/settings.properties");
+
+		if(!prompts.confirm(null,_bundleCW.GetStringFromName("ThunderStats.deletePromptBD.title"),_bundleCW.GetStringFromName("ThunderStats.deletePromptBD.text"))) return;
+
+		//get the col id
+		/*let col_idx=container.selectedItem._customcol.index;
+		//dump(">>>>>>>>>>>>> miczColumnsWizard: [onDeleteCustomCol] col_idx ["+col_idx+"]\r\n");
+
+		//delete the custom col
+		let ObserverService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+		//miczColumnsWizard_CustCols.removeCustomColumn(col_idx,ObserverService)
+		//miczColumnsWizard_CustCols.deleteCustCol(col_idx);
+		ObserverService.notifyObservers(null,"CW-deleteCustomColumn",col_idx);
+
+		//remove the custom col from the listbox
+		miczColumnsWizardPref_CustomColsGrid.deleteOneCustomColRow(container,container.selectedIndex);*/
+	},
+
+	// ======= BUSINESS DAYS FUNCTIONS ======= END
+
 };

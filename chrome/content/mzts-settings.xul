@@ -39,6 +39,7 @@
     <tabbox id="ts_tabbox">
       <tabs>
         <tab label="&ThunderStats.TabSettings.label;"/>
+        <tab label="&ThunderStats.TabBusinessDays.label;"/>
         <tab label="&ThunderStats.TabCustomIdentities.label;"/>
         <tab label="&ThunderStats.TabSettingsDebug.label;"/>
         <tab label="&ThunderStats.TabInfo.label;"/>
@@ -90,6 +91,49 @@
           <label control="symbol" value=" "/>
           <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>
         </tabpanel>
+        <tabpanel id="tstab_bdays" orient="vertical">
+			<groupbox>
+  				<caption label="&ThunderStats.WeekDays.groupbox;"/>
+  				<label control="symbol" value="&ThunderStats.WeekDays.desc;"/>
+  			<hbox>
+			<vbox>
+				<checkbox id="weekday1" label="&ThunderStats.WeekDayMon;"/>
+				<checkbox id="weekday2" label="&ThunderStats.WeekDayTue;"/>
+				<checkbox id="weekday3" label="&ThunderStats.WeekDayWed;"/>
+			</vbox>
+			<vbox>
+				<checkbox id="weekday4" label="&ThunderStats.WeekDayThu;"/>
+				<checkbox id="weekday5" label="&ThunderStats.WeekDayFri;"/>
+				<checkbox id="weekday6" label="&ThunderStats.WeekDaySat;"/>
+				<checkbox id="weekday0" label="&ThunderStats.WeekDaySun;"/>
+			</vbox>
+			</hbox>
+			</groupbox>
+			<groupbox>
+  				<caption label="&ThunderStats.NoBusinessDaysList.groupbox;"/>
+			 <hbox>
+			<listbox id="ThunderStats.NoBusinessDaysList" flex="1" height="100px" onselect="miczThunderStatsPrefPanel.updateButtonsBD(window);" seltype="single">
+			 <listcols>
+				<listcol flex="1"/>
+			</listcols>
+            <listhead>
+              <listheader id="NoBusinessDayDate" label=" "/>
+            </listhead>
+          </listbox>
+          <vbox>
+			  <button id="newButtonBD"
+                  label="&ThunderStats.newButtonBD.label;"
+                  oncommand="miczThunderStatsPrefPanel.onNewNoBusDayDate(window);"/>
+          <button id="editButtonBD" label="&ThunderStats.editButtonBD.label;"
+                  oncommand="miczThunderStatsPrefPanel.onEditNoBusDayDate(window);" disabled="true"/>
+          <button id="deleteButtonBD"
+                  label="&ThunderStats.deleteButtonBD.label;"
+                  oncommand="miczThunderStatsPrefPanel.onDeleteNoBusDayDate(window);" disabled="true"/>
+          </vbox>
+          </hbox>
+          <checkbox id="ThunderStats.EasterNoBusinessDay" label="&ThunderStats.EasterNoBusinessDay.label;"/>
+          </groupbox>
+		</tabpanel>
         <tabpanel id="tstab_cstmids" orient="vertical">
 		  <label control="symbol" value="&ThunderStats.ManageCustomIdentitites;"/>
           <description class="mzts-desc">&ThunderStats.ManageCustomIdentititesDesc;</description>

@@ -26,3 +26,18 @@
 <!ENTITY ThunderStats.ManyDays "Number of days to be shown.">
 <!ENTITY ThunderStats.ManyDaysSmallLabels "Show small day's labels.">
 <!ENTITY ThunderStats.ManyDaysSmallLabels_2 "It's suggested to use this option when showing more than 10 days.">
+<!ENTITY ThunderStats.TabBusinessDays.label "Business Days">
+<!ENTITY ThunderStats.WeekDaySun "Sunday">
+<!ENTITY ThunderStats.WeekDayMon "Monday">
+<!ENTITY ThunderStats.WeekDayTue "Tuesday">
+<!ENTITY ThunderStats.WeekDayWed "Wednesday">
+<!ENTITY ThunderStats.WeekDayThu "Thursday">
+<!ENTITY ThunderStats.WeekDayFri "Friday">
+<!ENTITY ThunderStats.WeekDaySat "Saturday">
+<!ENTITY ThunderStats.WeekDays.groupbox "Weekdays">
+<!ENTITY ThunderStats.WeekDays.desc "Check which weekdays are business days.">
+<!ENTITY ThunderStats.NoBusinessDaysList.groupbox "No Business Days">
+<!ENTITY ThunderStats.newButtonBD.label "New...">
+<!ENTITY ThunderStats.editButtonBD.label "Edit...">
+<!ENTITY ThunderStats.deleteButtonBD.label "Delete">
+<!ENTITY ThunderStats.EasterNoBusinessDay.label "Easter and Easter Monday are not business days.">

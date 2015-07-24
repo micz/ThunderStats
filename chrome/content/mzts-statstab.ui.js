@@ -100,6 +100,11 @@ miczThunderStatsTab.ui={
 		return true;
 	},
 
+	initDatePickers: function() {
+		document.getElementById('datepicker_from').value=moment().subtract(15,'d').format("YYYY-M-D");
+		document.getElementById('datepicker_to').value=moment().subtract(1,'d').format("YYYY-M-D");
+	},
+
 	openPrefWindow: function () {
 		window.openDialog('chrome://thunderstats/content/mzts-settings.xul','ThunderStats_Settings','non-private,chrome,titlebar,dialog=no,resizable,centerscreen').focus();
 	},

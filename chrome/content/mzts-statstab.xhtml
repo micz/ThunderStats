@@ -21,7 +21,6 @@
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-log.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css"/>
-    <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/datepickr.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css"/>
     <title>&ThunderStats.TABTitle;</title>
 
@@ -29,7 +28,6 @@
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/jquery.tooltipster.min.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/d3.min.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/moment-with-locales.min.js"/>
-    <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/datepickr.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.callback.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.observer.js"/>
@@ -237,7 +235,7 @@
 			</div> <!--tab 7days-->
 
 			<div id="tab_customqry" class="tab">
-				<div id="customqry_dashboard">From <input id="datepicker_from" type="text"/> To <input id="datepicker_to" type="text"/> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button></div>
+				<div id="customqry_dashboard">From <xul:datepicker type="popup" id="datepicker_from"/> To <xul:datepicker type="popup" id="datepicker_to"/> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button></div>
 				<div id="table_customqry">
 				  <div id="tier1_customqry" class="tier1">
 					<div class="chunk" id="top_left_chunk_customqry">

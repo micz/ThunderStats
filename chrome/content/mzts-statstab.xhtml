@@ -95,6 +95,7 @@
 			<li class="active"><a href="#tab_today">&ThunderStats.Today;</a></li>
 			<li><a href="#tab_yesterday">&ThunderStats.Yesterday;</a></li>
 			<li><a href="#tab_7days">&ThunderStats.Last; <span class="_many_days"></span> &ThunderStats.days;</a></li>
+			<li><a href="#tab_customqry">&ThunderStats.CustomQuery;</a></li>
 			<li><a href="#tab_info">&ThunderStats.Info;</a></li>
 		</ul>
 
@@ -230,6 +231,43 @@
 			   </div> <!-- table_7days -->
 			</div> <!--tab 7days-->
 
+			<div id="tab_customqry" class="tab">
+				<div id="table_customqry">
+				  <div id="tier1_customqry" class="tier1">
+					<div class="chunk" id="top_left_chunk_customqry">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">&ThunderStats.SentMails;: <span id="customqry_sent_total"></span></h2>
+					  </div>
+					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="customqry_sent_wait"/></div>
+						<div id="chart_customqry_sent" class="chart_customqry"></div>
+					</div>
+					<div class="chunk" id="top_right_chunk_customqry">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">&ThunderStats.ReceivedMails;: <span id="customqry_rcvd_total"></span></h2>
+					  </div>
+						<div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="customqry_rcvd_wait"/></div>
+						<div id="chart_customqry_rcvd" class="chart_customqry"></div>
+					</div>
+				  </div>
+				  <div id="tier2_customqry" class="tier2">
+					<div class="chunk" id="bottom_left_chunk_customqry">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">&ThunderStats.Top10Recipients;</h2>
+					  </div>
+					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="customqry_recipients_wait"/></div>
+						<div id="customqry_recipients"></div>
+					</div>
+					<div class="chunk" id="bottom_right_chunk_customqry">
+					  <div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">&ThunderStats.Top10Senders;</h2>
+					  </div>
+					  	<div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="customqry_senders_wait"/></div>
+						<div id="customqry_senders"></div>
+					  </div>
+				  </div>
+			   </div> <!-- table_customqry -->
+			</div> <!--tab custom query-->
+
 			<div id="tab_info" class="tab">
 				<div id="table_info">
 				  <div id="tier1_info" class="tier1">
@@ -250,7 +288,7 @@
 						<p><span class="outlink" onclick="miczThunderStatsUtils.openLink('http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/what-is-inbox-0/');">&ThunderStats.clickheremoreinfo;</span></p>
 					</div>
 				  </div>
-				  <div id="tier2_7days" class="tier2">
+				  <div id="tier2_info" class="tier2">
 					<div class="chunk" id="bottom_left_chunk_info">
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">&ThunderStats.OtherInfoTitle;</h2>

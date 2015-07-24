@@ -52,3 +52,4 @@
 <!ENTITY ThunderStats.min "min">
 <!ENTITY ThunderStats.average "average">
 <!ENTITY ThunderStats.InTheLast "In the last">
+<!ENTITY ThunderStats.CustomQuery "Custom Dates">

@@ -258,6 +258,10 @@ var miczThunderStatsTab = {
 		}
 	},
 
+	updateCustomQry: function(){
+		//TODO
+	},
+
 	getLastIndexedMessage: function(){
 		miczThunderStatsDB.queryGetLastMessageDate(miczThunderStatsTab.callback.last_idx_msg);
 		miczThunderStatsDB.getLastIndexUpdate();

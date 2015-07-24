@@ -21,10 +21,12 @@
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-log.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/jquery-ui.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css"/>
     <title>&ThunderStats.TABTitle;</title>
 
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/jquery-2.1.3.min.js"/>
+    <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/jquery-ui.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/jquery.tooltipster.min.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/d3.min.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/moment-with-locales.min.js"/>
@@ -62,6 +64,9 @@
 
 			e.preventDefault();
 		});
+
+		$jQ("#datepicker_from").datepicker();
+		$jQ("#datepicker_to").datepicker();
 	});
 	</script>
 
@@ -95,7 +100,7 @@
 			<li class="active"><a href="#tab_today">&ThunderStats.Today;</a></li>
 			<li><a href="#tab_yesterday">&ThunderStats.Yesterday;</a></li>
 			<li><a href="#tab_7days">&ThunderStats.Last; <span class="_many_days"></span> &ThunderStats.days;</a></li>
-			<li><a href="#tab_customqry">&ThunderStats.CustomQuery;</a></li>
+			<li><a href="#tab_customqry">&ThunderStats.CustomQry;</a></li>
 			<li><a href="#tab_info">&ThunderStats.Info;</a></li>
 		</ul>
 
@@ -232,6 +237,7 @@
 			</div> <!--tab 7days-->
 
 			<div id="tab_customqry" class="tab">
+				<div id="customqry_dashboard"> From <input type="text" id="datepicker_from"/> To <input type="text" id="datepicker_to"/> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button></div>
 				<div id="table_customqry">
 				  <div id="tier1_customqry" class="tier1">
 					<div class="chunk" id="top_left_chunk_customqry">
@@ -312,6 +318,5 @@
 
 </div>
 	 <!--<div id="test_output" class="mzts-desc"></div>-->
-
   </body>
 </html>

@@ -177,3 +177,5 @@ display:none;
 .tab.active {
 display:block;
 }
+
+#customqry_dashboard{width:100%;background-color:#f1f9fd;}

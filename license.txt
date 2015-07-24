@@ -23,8 +23,8 @@ Addon home page: http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird
 ATTRIBUTIONS
 
 -= Translations =-  (Thanks to BabelZilla.org)
-Italian (it) thanks to Mic [http://micz.it].
 Chinese (Simplified) (zh-CN) thanks to yfdyh000.
+Italian (it) thanks to Mic [http://micz.it].
 
 
 -= Javascript Libraries =-

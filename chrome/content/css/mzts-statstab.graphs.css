@@ -1,5 +1,4 @@
-.chart_7days{width:100%;}
-.chart_7days{overflow:auto;}
+.chart_7days{width:100%;overflow:auto;}
 
 .chart_7days svg{
 display:block;

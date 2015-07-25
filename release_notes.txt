@@ -3,6 +3,7 @@
 ==========
 Version 1.1 - ??/??/2015
 - New Tab: Custom query date interval. Choose the dates range you want to calculate the statistics on.
+- Added max, min, average mails sent and received also in the "many days" tab.
 -
 ==========
 Version 1.0.1 - 22/07/2015

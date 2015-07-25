@@ -224,6 +224,7 @@ var miczThunderStatsTab = {
 
 		let mToDay = document.getElementById('datepicker_from').dateValue;
 		let mFromDay = document.getElementById('datepicker_to').dateValue;
+		miczThunderStatsUtils._customqry_num_days=mFromDay-mToDay;
 
 		//Get sent messages
 		miczThunderStatsCore.db.getManyDaysMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);
@@ -287,7 +288,9 @@ var miczThunderStatsTab = {
 	},
 
 	updateCustomQry: function(){
+		miczThunderStatsDB.init();
 		miczThunderStatsTab.getCustomQryStats(miczThunderStatsTab.getCurrentIdentityId());
+		miczThunderStatsDB.close();
 	},
 
 	getLastIndexedMessage: function(){

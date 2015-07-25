@@ -448,7 +448,7 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 					//$jQ("#7days_sent").text(JSON.stringify(miczThunderStatsTab.data_7days_sent));
 					//ordering results array
 					this.data_7days_sent.sort(miczThunderStatsUtils.array_7days_compare);
-					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_sent',this.data_7days_sent);
+					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_sent',this.data_7days_sent,miczThunderStatsPrefs.manyDays+1);
 					$jQ("#7days_sent_total").text(this.total_mail);
 					miczThunderStatsTab.ui.hideLoadingElement("7days_sent_wait");
 				  	miczLogger.log("7 days sent messages chart rendered.",0);
@@ -510,7 +510,7 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 					//$jQ("#7days_rcvd").text(JSON.stringify(miczThunderStatsTab.data_7days_rcvd));
 					//ordering results array
 					this.data_7days_rcvd.sort(miczThunderStatsUtils.array_7days_compare);
-					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_rcvd',this.data_7days_rcvd);
+					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_rcvd',this.data_7days_rcvd,miczThunderStatsPrefs.manyDays+1);
 					$jQ("#7days_rcvd_total").text(this.total_mail);
 				  	miczThunderStatsTab.ui.hideLoadingElement("7days_rcvd_wait");
 				  	miczLogger.log("7 days received messages chart rendered.",0);
@@ -1184,3 +1184,216 @@ miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
 	return false;
 	},
 };
+
+
+miczThunderStatsTab.callback.stats_customqry_sent = {
+	empty:true,
+	data:{},
+	data_customqry_sent:new Array(),
+	total_mail:0,
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num","Info"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsTab.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				let m = moment(this.data[1]["Info"]);
+				if(!this.empty){
+					this.total_mail+=this.data[1]["Num"];
+					this.data_customqry_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]});
+					//$jQ("#customqry_sent").append(this.data[1]["Info"]+": "+this.data[1]["Num"]);
+				}else{
+					this.data_customqry_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:0});
+					//$jQ("#customqry_sent").append(this.data[1]["Info"]+": 0");
+				}
+				miczLogger.log("7 days sent messages loaded day: "+this.data[1]["Info"]+".",0);
+				//if we've collected our 7 days, let's print it!
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_sent miczThunderStatsTab.data_customqry_sent.length '+miczThunderStatsTab.data_customqry_sent.length+'\r\n');
+				if(this.data_customqry_sent.length==miczThunderStatsUtils._customqry_num_days){
+					//$jQ("#customqry_sent").text(JSON.stringify(miczThunderStatsTab.data_customqry_sent));
+					//ordering results array
+					this.data_customqry_sent.sort(miczThunderStatsUtils.array_customqry_compare);
+					miczThunderStatsTab.ui.draw7DaysGraph('chart_customqry_sent',this.data_customqry_sent,miczThunderStatsUtils._customqry_num_days);
+					$jQ("#customqry_sent_total").text(this.total_mail);
+					miczThunderStatsTab.ui.hideLoadingElement("customqry_sent_wait");
+				  	miczLogger.log("Custom query sent messages chart rendered.",0);
+				  	this.total_mail=0;
+				  	this.data_customqry_sent=new Array();
+				}
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				this.total_mail=0;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				this.total_mail=0;
+				return false;
+		}
+	return false;
+	},
+};
+
+miczThunderStatsTab.callback.stats_customqry_rcvd = {
+	empty:true,
+	data:{},
+	data_customqry_rcvd:new Array(),
+	total_mail:0,
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num","Info"],aResultSet);
+		//miczLogger.log("RCVD "+JSON.stringify(result),1);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsTab.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				let m = moment(this.data[1]["Info"]);
+				if(!this.empty){
+					this.total_mail+=this.data[1]["Num"];
+					this.data_customqry_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]});
+					//$jQ("#customqry_rcvd").append(this.data[1]["Info"]+": "+this.data[1]["Num"]);
+				}else{
+					this.data_customqry_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:0});
+					//$jQ("#customqry_rcvd").append(this.data[1]["Info"]+": 0");
+				}
+				miczLogger.log("7 days sent messages loaded day: "+this.data[1]["Info"]+".",0);
+				//if we've collected our 7 days, let's print it!
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_sent miczThunderStatsTab.data_customqry_sent.length '+miczThunderStatsTab.data_customqry_sent.length+'\r\n');
+				if(this.data_customqry_rcvd.length==miczThunderStatsUtils._customqry_num_days){
+					//$jQ("#customqry_rcvd").text(JSON.stringify(miczThunderStatsTab.data_customqry_rcvd));
+					//ordering results array
+					this.data_customqry_rcvd.sort(miczThunderStatsUtils.array_customqry_compare);
+					miczThunderStatsTab.ui.draw7DaysGraph('chart_customqry_rcvd',this.data_customqry_rcvd,miczThunderStatsUtils._customqry_num_days);
+					$jQ("#customqry_rcvd_total").text(this.total_mail);
+				  	miczThunderStatsTab.ui.hideLoadingElement("customqry_rcvd_wait");
+				  	miczLogger.log("Custom query received messages chart rendered.",0);
+				  	this.total_mail=0;
+				  	this.data_customqry_rcvd=new Array();
+				}
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				this.total_mail=0;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				this.total_mail=0;
+				return false;
+		}
+	return false;
+	},
+};
+
+miczThunderStatsTab.callback.stats_customqry_recipients = {
+	empty:true,
+	data:new Array(),
+  handleResult: function(aResultSet) {
+    let result = miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
+    this.empty=false;
+    for (let key in result) {
+		this.data.push(result[key]);
+	}
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_recipients handleResult '+JSON.stringify(this.data)+'\r\n');
+  },
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
+				if(!this.empty){
+					$jQ("#customqry_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
+				}else{
+					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+					$jQ("#customqry_recipients").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));
+				}
+				miczLogger.log("Custom query recipients loaded.",0);
+				this.data=new Array();
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};
+
+miczThunderStatsTab.callback.stats_customqry_senders = {
+	empty:true,
+	data:new Array(),
+  handleResult: function(aResultSet) {
+    let result = miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
+    this.empty=false;
+    for (let key in result) {
+		this.data.push(result[key]);
+	}
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_senders handleResult '+JSON.stringify(this.data)+'\r\n');
+  },
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_senders_wait");
+				if(!this.empty){
+					$jQ("#customqry_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_senders handleCompletion '+JSON.stringify(this.data)+'\r\n');
+				}else{
+					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+					$jQ("#customqry_senders").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsReceived"));
+				}
+				miczLogger.log("Custom query senders loaded.",0);
+				this.data=new Array();
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};
+

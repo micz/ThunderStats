@@ -8,6 +8,8 @@ Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 
 var miczThunderStatsUtils = {
 
+	_customqry_num_days:0,
+
 	escapeHTML: function(s){
 		return s.replace(/&/g, '&amp;')
 				.replace(/"/g, '&quot;')

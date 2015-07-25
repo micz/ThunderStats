@@ -1213,13 +1213,13 @@ miczThunderStatsTab.callback.stats_customqry_sent = {
 					this.data_customqry_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:0});
 					//$jQ("#customqry_sent").append(this.data[1]["Info"]+": 0");
 				}
-				miczLogger.log("7 days sent messages loaded day: "+this.data[1]["Info"]+".",0);
-				//if we've collected our 7 days, let's print it!
+				miczLogger.log("Custom query sent messages loaded day: "+this.data[1]["Info"]+".",0);
+				//if we've collected our days, let's print it!
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_sent miczThunderStatsTab.data_customqry_sent.length '+miczThunderStatsTab.data_customqry_sent.length+'\r\n');
 				if(this.data_customqry_sent.length==miczThunderStatsUtils._customqry_num_days){
 					//$jQ("#customqry_sent").text(JSON.stringify(miczThunderStatsTab.data_customqry_sent));
 					//ordering results array
-					this.data_customqry_sent.sort(miczThunderStatsUtils.array_customqry_compare);
+					this.data_customqry_sent.sort(miczThunderStatsUtils.array_7days_compare);
 					miczThunderStatsTab.ui.draw7DaysGraph('chart_customqry_sent',this.data_customqry_sent,miczThunderStatsUtils._customqry_num_days);
 					$jQ("#customqry_sent_total").text(this.total_mail);
 					miczThunderStatsTab.ui.hideLoadingElement("customqry_sent_wait");
@@ -1275,13 +1275,13 @@ miczThunderStatsTab.callback.stats_customqry_rcvd = {
 					this.data_customqry_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:0});
 					//$jQ("#customqry_rcvd").append(this.data[1]["Info"]+": 0");
 				}
-				miczLogger.log("7 days sent messages loaded day: "+this.data[1]["Info"]+".",0);
+				miczLogger.log("Custom query sent messages loaded day: "+this.data[1]["Info"]+".",0);
 				//if we've collected our 7 days, let's print it!
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_sent miczThunderStatsTab.data_customqry_sent.length '+miczThunderStatsTab.data_customqry_sent.length+'\r\n');
 				if(this.data_customqry_rcvd.length==miczThunderStatsUtils._customqry_num_days){
 					//$jQ("#customqry_rcvd").text(JSON.stringify(miczThunderStatsTab.data_customqry_rcvd));
 					//ordering results array
-					this.data_customqry_rcvd.sort(miczThunderStatsUtils.array_customqry_compare);
+					this.data_customqry_rcvd.sort(miczThunderStatsUtils.array_7days_compare);
 					miczThunderStatsTab.ui.draw7DaysGraph('chart_customqry_rcvd',this.data_customqry_rcvd,miczThunderStatsUtils._customqry_num_days);
 					$jQ("#customqry_rcvd_total").text(this.total_mail);
 				  	miczThunderStatsTab.ui.hideLoadingElement("customqry_rcvd_wait");

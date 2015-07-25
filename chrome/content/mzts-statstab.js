@@ -227,9 +227,11 @@ var miczThunderStatsTab = {
 		this.data_customqry_sent=new Array();
 		this.data_customqry_rcvd=new Array();
 
-		let mToDay = document.getElementById('datepicker_from').dateValue;
-		let mFromDay = document.getElementById('datepicker_to').dateValue;
-		miczThunderStatsUtils._customqry_num_days=mFromDay-mToDay;
+		let mFromDay = document.getElementById('datepicker_from').dateValue;
+		let mToDay = document.getElementById('datepicker_to').dateValue;
+		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000);
+
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] _customqry_num_days: "+miczThunderStatsUtils._customqry_num_days+"\r\n");
 
 		//Get sent messages
 		miczThunderStatsCore.db.getManyDaysMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);

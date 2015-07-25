@@ -73,6 +73,11 @@ var miczThunderStatsTab = {
 
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
+
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_sent_wait");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_rcvd_wait");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_senders_wait");
 		},
 
 	getTodayStats:function(identity_id){

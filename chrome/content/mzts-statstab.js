@@ -131,6 +131,11 @@ var miczThunderStatsTab = {
 		//miczThunderStatsCore.db.getInboxMessagesDate(identity_id,miczThunderStatsTab.callback.stats_today_inbox0_datemsg);
 
 		//Get aggregate period messages info
+		miczThunderStatsTab.getAggregateData(identity_id);
+	},
+
+	getAggregateData:function(identity_id){
+		//Get aggregate period messages info
 		let mToDay_aggregate = new Date();
 		mToDay_aggregate.setDate(mToDay_aggregate.getDate() - 1); //do not consider today
 		let mFromDay_aggregate = new Date();
@@ -190,6 +195,12 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("7days_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("7days_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("7days_senders_wait");
+		miczThunderStatsTab.ui.showLoadingElement("7days_aggregate_max_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("7days_aggregate_min_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("7days_aggregate_avg_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("7days_aggregate_max_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("7days_aggregate_min_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("7days_aggregate_avg_rcvd_wait");
 
 		this.data_7days_sent=new Array();
 		this.data_7days_rcvd=new Array();
@@ -209,6 +220,10 @@ var miczThunderStatsTab = {
 
 		//Get first 10 senders
 		miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_senders);
+
+		if(!miczThunderStatsTab._global_update){	//udpate aggregate data if global update not enabled
+			miczThunderStatsTab.getAggregateData(identity_id);
+		}
 	},
 
 	getCustomQryStats:function(identity_id){

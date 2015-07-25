@@ -1100,6 +1100,9 @@ miczThunderStatsTab.callback.stats_msg_aggregate_sent = {
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_max_sent_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_min_sent_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_avg_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("7days_aggregate_max_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("7days_aggregate_min_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("7days_aggregate_avg_sent_wait");
 				if(!this.empty){
 					let maxNum=this.data[1]["maxNum"]==null?0:this.data[1]["maxNum"];
 					let minNum=this.data[1]["minNum"]==null?0:this.data[1]["minNum"];
@@ -1108,10 +1111,16 @@ miczThunderStatsTab.callback.stats_msg_aggregate_sent = {
 					$jQ("#aggregate_max_sent").text(maxNum);
 					$jQ("#aggregate_min_sent").text(minNum);
 					$jQ("#aggregate_avg_sent").text(avgNum.toLocaleString(miczThunderStatsUtils.getCurrentSystemLocale()));
+					$jQ("#7days_aggregate_max_sent").text(maxNum);
+					$jQ("#7days_aggregate_min_sent").text(minNum);
+					$jQ("#7days_aggregate_avg_sent").text(avgNum.toLocaleString(miczThunderStatsUtils.getCurrentSystemLocale()));
 				}else{
 					$jQ("#aggregate_max_sent").text("0");
 					$jQ("#aggregate_min_sent").text("0");
 					$jQ("#aggregate_avg_sent").text("0");
+					$jQ("#7days_aggregate_max_sent").text("0");
+					$jQ("#7days_aggregate_min_sent").text("0");
+					$jQ("#7days_aggregate_avg_sent").text("0");
 				}
 				miczLogger.log("Aggreate period messages data loaded.",0);
 				this.data={};
@@ -1153,6 +1162,9 @@ miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_max_rcvd_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_min_rcvd_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_avg_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("7days_aggregate_max_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("7days_aggregate_min_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("7days_aggregate_avg_rcvd_wait");
 				if(!this.empty){
 					let maxNum=this.data[1]["maxNum"]==null?0:this.data[1]["maxNum"];
 					let minNum=this.data[1]["minNum"]==null?0:this.data[1]["minNum"];
@@ -1161,10 +1173,16 @@ miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
 					$jQ("#aggregate_max_rcvd").text(maxNum);
 					$jQ("#aggregate_min_rcvd").text(minNum);
 					$jQ("#aggregate_avg_rcvd").text(avgNum.toLocaleString(miczThunderStatsUtils.getCurrentSystemLocale()));
+					$jQ("#7days_aggregate_max_rcvd").text(maxNum);
+					$jQ("#7days_aggregate_min_rcvd").text(minNum);
+					$jQ("#7days_aggregate_avg_rcvd").text(avgNum.toLocaleString(miczThunderStatsUtils.getCurrentSystemLocale()));
 				}else{
 					$jQ("#aggregate_max_rcvd").text("0");
 					$jQ("#aggregate_min_rcvd").text("0");
 					$jQ("#aggregate_avg_rcvd").text("0");
+					$jQ("#7days_aggregate_max_rcvd").text("0");
+					$jQ("#7days_aggregate_min_rcvd").text("0");
+					$jQ("#7days_aggregate_avg_rcvd").text("0");
 				}
 				miczLogger.log("Aggreate period messages data loaded.",0);
 				this.data={};

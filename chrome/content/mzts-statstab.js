@@ -210,6 +210,34 @@ var miczThunderStatsTab = {
 		miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_7days_senders);
 	},
 
+	getCustomQryStats:function(identity_id){
+		miczLogger.log("Getting custom query statistics...",0);
+
+		//Show loading indicators
+		miczThunderStatsTab.ui.showLoadingElement("customqry_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_recipients_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_senders_wait");
+
+		this.data_customqry_sent=new Array();
+		this.data_customqry_rcvd=new Array();
+
+		let mToDay = document.getElementById('datepicker_from').dateValue;
+		let mFromDay = document.getElementById('datepicker_to').dateValue;
+
+		//Get sent messages
+		miczThunderStatsCore.db.getManyDaysMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);
+
+		//Get received messages
+		miczThunderStatsCore.db.getManyDaysMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
+
+		//Get first 10 recipients
+		miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients);
+
+		//Get first 10 senders
+		miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders);
+	},
+
 	getCurrentIdentityId:function(){	//returning an identities object or a 0 if none selected
 										//identities object is {ids_merged: array of all ids; ids:array of normal identities ids; ids_custom: array of custom identities ids; base_account_key: identity account key}}
 		let id_selector_value = $jQ("#identities_selector").val();
@@ -259,7 +287,7 @@ var miczThunderStatsTab = {
 	},
 
 	updateCustomQry: function(){
-		//TODO
+		miczThunderStatsTab.getCustomQryStats(miczThunderStatsTab.getCurrentIdentityId());
 	},
 
 	getLastIndexedMessage: function(){

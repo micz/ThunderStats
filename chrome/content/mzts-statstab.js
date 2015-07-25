@@ -74,10 +74,6 @@ var miczThunderStatsTab = {
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
 
-			miczThunderStatsTab.ui.hideLoadingElement("customqry_sent_wait");
-			miczThunderStatsTab.ui.hideLoadingElement("customqry_rcvd_wait");
-			miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
-			miczThunderStatsTab.ui.hideLoadingElement("customqry_senders_wait");
 		},
 
 	getTodayStats:function(identity_id){
@@ -223,6 +219,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("customqry_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_senders_wait");
+		miczThunderStatsTab.ui.hideLoadingElement("customqry_totaldays_text");
 
 		this.data_customqry_sent=new Array();
 		this.data_customqry_rcvd=new Array();
@@ -230,6 +227,9 @@ var miczThunderStatsTab = {
 		let mFromDay = document.getElementById('datepicker_from').dateValue;
 		let mToDay = document.getElementById('datepicker_to').dateValue;
 		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000);
+
+		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);
+		miczThunderStatsTab.ui.showLoadingElement("customqry_totaldays_text");
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] _customqry_num_days: "+miczThunderStatsUtils._customqry_num_days+"\r\n");
 

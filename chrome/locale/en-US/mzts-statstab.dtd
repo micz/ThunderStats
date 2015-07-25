@@ -8,6 +8,7 @@
 <!ENTITY ThunderStats.Today "Today">
 <!ENTITY ThunderStats.Yesterday "Yesterday">
 <!ENTITY ThunderStats.Last "Last">
+<!ENTITY ThunderStats.TotalDays "Total days">
 <!ENTITY ThunderStats.days "days">
 <!ENTITY ThunderStats.Info "Info">
 <!ENTITY ThunderStats.TodayMails "Today Mails">

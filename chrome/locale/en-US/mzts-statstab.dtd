@@ -8,8 +8,8 @@
 <!ENTITY ThunderStats.Today "Today">
 <!ENTITY ThunderStats.Yesterday "Yesterday">
 <!ENTITY ThunderStats.Last "Last">
-<!ENTITY ThunderStats.TotalDays "Total days">
 <!ENTITY ThunderStats.days "days">
+<!ENTITY ThunderStats.TotalDays "Total days">
 <!ENTITY ThunderStats.Info "Info">
 <!ENTITY ThunderStats.TodayMails "Today Mails">
 <!ENTITY ThunderStats.Loading "Loading">
@@ -55,3 +55,4 @@
 <!ENTITY ThunderStats.InTheLast "In the last">
 <!ENTITY ThunderStats.CustomQry "Custom">
 <!ENTITY ThunderStats.UpdateCustomQry "Get Data">
+<!ENTITY ThunderStats.CustomQryDataMsg "Data extract for">

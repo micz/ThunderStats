@@ -244,6 +244,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000);
 
 		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);
+		$jQ("#customqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
 		miczThunderStatsTab.ui.showLoadingElement("customqry_totaldays_text");
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] _customqry_num_days: "+miczThunderStatsUtils._customqry_num_days+"\r\n");

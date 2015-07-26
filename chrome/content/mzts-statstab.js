@@ -230,11 +230,19 @@ var miczThunderStatsTab = {
 		miczLogger.log("Getting custom query statistics...",0);
 
 		//Show loading indicators
+		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_data_sent");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_data_rcvd");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_senders_wait");
-		miczThunderStatsTab.ui.hideLoadingElement("customqry_totaldays_text");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_totaldays_text");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_max_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_min_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_avg_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_max_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_min_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_avg_rcvd_wait");
 
 		this.data_customqry_sent=new Array();
 		this.data_customqry_rcvd=new Array();
@@ -260,6 +268,10 @@ var miczThunderStatsTab = {
 
 		//Get first 10 senders
 		miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders);
+
+		//Aggregate data
+		miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
+		miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
 	},
 
 	getCurrentIdentityId:function(){	//returning an identities object or a 0 if none selected

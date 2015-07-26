@@ -190,3 +190,5 @@ display:block;
   color:grey;
   float:right;
 }
+
+#customqry_aggregate_data_sent,#customqry_aggregate_data_rcvd{display:none;}

@@ -1141,7 +1141,6 @@ miczThunderStatsTab.callback.stats_msg_aggregate_sent = {
 	},
 };
 
-
 miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
 	empty:true,
 	data:{},
@@ -1202,7 +1201,6 @@ miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
 	return false;
 	},
 };
-
 
 miczThunderStatsTab.callback.stats_customqry_sent = {
 	empty:true,
@@ -1415,3 +1413,106 @@ miczThunderStatsTab.callback.stats_customqry_senders = {
 	},
 };
 
+miczThunderStatsTab.callback.stats_customqry_aggregate_sent = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["maxNum","minNum","avgNum"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsTab.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_msg_aggregate_sent handleResult '+JSON.stringify(this.data)+'\r\n');
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_avg_sent_wait");
+				if(!this.empty){
+					let maxNum=this.data[1]["maxNum"]==null?0:this.data[1]["maxNum"];
+					let minNum=this.data[1]["minNum"]==null?0:this.data[1]["minNum"];
+					let avgNum=this.data[1]["avgNum"]==null?0:this.data[1]["avgNum"];
+					if(!miczThunderStatsPrefs.getBoolPref_TS('aggregate_average_not_rounded')) avgNum=Math.round(avgNum);
+					$jQ("#customqry_aggregate_max_sent").text(maxNum);
+					$jQ("#customqry_aggregate_min_sent").text(minNum);
+					$jQ("#customqry_aggregate_avg_sent").text(avgNum.toLocaleString(miczThunderStatsUtils.getCurrentSystemLocale()));
+				}else{
+					$jQ("#customqry_aggregate_max_sent").text("0");
+					$jQ("#customqry_aggregate_min_sent").text("0");
+					$jQ("#customqry_aggregate_avg_sent").text("0");
+				}
+				miczLogger.log("Custom query aggreate period messages data loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};
+
+miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["maxNum","minNum","avgNum"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsTab.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_msg_aggregate_rcvd handleResult '+JSON.stringify(this.data)+'\r\n');
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_avg_rcvd_wait");
+				if(!this.empty){
+					let maxNum=this.data[1]["maxNum"]==null?0:this.data[1]["maxNum"];
+					let minNum=this.data[1]["minNum"]==null?0:this.data[1]["minNum"];
+					let avgNum=this.data[1]["avgNum"]==null?0:this.data[1]["avgNum"];
+					if(!miczThunderStatsPrefs.getBoolPref_TS('aggregate_average_not_rounded')) avgNum=Math.round(avgNum);
+					$jQ("#customqry_aggregate_max_rcvd").text(maxNum);
+					$jQ("#customqry_aggregate_min_rcvd").text(minNum);
+					$jQ("#customqry_aggregate_avg_rcvd").text(avgNum.toLocaleString(miczThunderStatsUtils.getCurrentSystemLocale()));
+				}else{
+					$jQ("#customqry_aggregate_max_rcvd").text("0");
+					$jQ("#customqry_aggregate_min_rcvd").text("0");
+					$jQ("#customqry_aggregate_avg_rcvd").text("0");
+				}
+				miczLogger.log("Custom query aggreate period messages data loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};

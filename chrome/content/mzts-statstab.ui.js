@@ -161,7 +161,7 @@ miczThunderStatsTab.ui={
 		return output;	//[0.4,1.4,2.4,3.4,4.4,5.4,6.4];
 	},
 
-	draw7DaysGraph:function(element_id_txt,data_array,_many_days){
+	draw7DaysGraph:function(element_id_txt,data_array,_many_days,do_today){
 		let _many_days_max_labels=miczThunderStatsPrefs.manyDaysSmallLabels?0:_many_days+1;
 
 		let margin = {top: 5, right: 0, bottom: _many_days<=_many_days_max_labels?40:60, left: 30};
@@ -195,7 +195,7 @@ miczThunderStatsTab.ui={
 		  .attr("y", function(datum) { return y(datum.num); })
 		  .attr("height", function(datum) { return y(0) - y(datum.num); })
 		  .attr("width", barWidth)
-		  .attr("fill", function(datum, index) { return index<_many_days-1?"#4682B4":"#5BB4FD"; });
+		  .attr("fill", function(datum, index) { return do_today&&(index==_many_days-1)?"#5BB4FD":"#4682B4"; });
 
 		//data labels
 		chart.selectAll("text")
@@ -220,7 +220,7 @@ miczThunderStatsTab.ui={
 			.attr("text-anchor", "middle")
 			.text(function(datum, index) {
 						let output=datum.day_str;
-						if(index==_many_days-1){
+						if(do_today&&(index==_many_days-1)){
 							let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 							output+="|["+_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today")+"]";
 							datum.day_str=output;

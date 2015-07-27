@@ -101,8 +101,10 @@ miczThunderStatsTab.ui={
 	},
 
 	initDatePickers: function() {
-		document.getElementById('datepicker_from').value=moment().subtract(15,'d').format("YYYY-M-D");
-		document.getElementById('datepicker_to').value=moment().subtract(1,'d').format("YYYY-M-D");
+		document.getElementById('datepicker_from').dateValue=moment().utc().subtract(15,'d').toDate();
+		document.getElementById('datepicker_to').dateValue=moment().subtract(1,'d').toDate();
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
 	},
 
 	openPrefWindow: function () {

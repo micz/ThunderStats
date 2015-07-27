@@ -21,7 +21,6 @@ var miczThunderStatsTab = {
 
 			miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
 			miczThunderStatsTab._many_days=miczThunderStatsPrefs.manyDays;
-
 			//sanitizing value
 			if(miczThunderStatsTab._many_days==0) miczThunderStatsTab._many_days=7;
 
@@ -30,6 +29,8 @@ var miczThunderStatsTab = {
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');
 
 			miczThunderStatsCore.db.init(window);
+
+			miczThunderStatsTab.ui.initDatePickers();
 
 			//Initialize observers
 			miczThunderStatsTab.observer.last_idx_update(miczThunderStatsTab.observer.callback.last_idx_update);
@@ -249,7 +250,7 @@ var miczThunderStatsTab = {
 
 		let mFromDay = document.getElementById('datepicker_from').dateValue;
 		let mToDay = document.getElementById('datepicker_to').dateValue;
-		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000);
+		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
 
 		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);
 		$jQ("#customqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);

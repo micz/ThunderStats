@@ -24,6 +24,12 @@ var miczThunderStatsTab = {
 			//sanitizing value
 			if(miczThunderStatsTab._many_days==0) miczThunderStatsTab._many_days=7;
 
+			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale());
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale()+"\r\n");
+			//Setting the correct locale to display dates and times
+			moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentMomentLocale: "+moment.locale()+"\r\n");
+
 			$jQ("span._many_days").text(miczThunderStatsTab._many_days);
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');
@@ -40,12 +46,6 @@ var miczThunderStatsTab = {
 				miczThunderStatsTab.ui.showGlobalIndexingWarning(false);
 				miczLogger.log("Thunderbird Global Indexing is not active!",2);
 			}
-
-			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale());
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale()+"\r\n");
-
-			//Setting the correct locale to display dates and times
-			moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 
 			miczThunderStatsDB.init();
 			//miczThunderStatsStorageDB.init();	// To be enabled in vesion 2.0

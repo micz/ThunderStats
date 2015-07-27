@@ -235,7 +235,8 @@
 			</div> <!--tab 7days-->
 
 			<div id="tab_customqry" class="tab">
-				<div id="customqry_dashboard">From <xul:datepicker type="popup" id="datepicker_from"/> To <xul:datepicker type="popup" id="datepicker_to"/> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>
+				<div id="customqry_dashboard">From <xul:datepicker type="popup" id="datepicker_from" firstdayofweek="javascript:miczThunderStatsTab.ui.initDatePickers_firstweekday();"/> To <xul:datepicker type="popup" id="datepicker_to"/> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>
+				<!--<div id="customqry_dashboard">From <span id="datepicker_from_placeholder"></span> To <span id="datepicker_to_placeholder"></span> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>-->
 				<div id="table_customqry">
 				  <div id="tier1_customqry" class="tier1">
 					<div class="chunk" id="top_left_chunk_customqry">

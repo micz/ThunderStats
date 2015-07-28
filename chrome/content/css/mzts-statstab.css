@@ -77,7 +77,7 @@ span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
   display: table-cell;
   width: 50%;
   min-height:48%;
-  padding: 1ex;
+  padding: 4px;
   vertical-align: top;
   position:relative;
 }

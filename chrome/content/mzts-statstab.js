@@ -256,7 +256,7 @@ var miczThunderStatsTab = {
 		$jQ("#customqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
 		miczThunderStatsTab.ui.showLoadingElement("customqry_totaldays_text");
 
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] _customqry_num_days: "+miczThunderStatsUtils._customqry_num_days+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] mToDay: "+mToDay+"\r\n");
 
 		//Get sent messages
 		miczThunderStatsCore.db.getManyDaysMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);

@@ -3,12 +3,13 @@
 ==========
 Version 1.1 - ??/??/2015
 - New Tab: Custom query date interval. Choose the dates range you want to calculate the statistics on.
-- Added max, min, average mails sent and received also in the "many days" tab.
+- Added max, min, average mails sent and received also in the "Many Days" tab.
+- In the "Many Days" tab the total sent and received mails are now without today, that is shown separately.
 -
 ==========
 Version 1.0.1 - 22/07/2015
 - License file added.
-- In the "many days" tab are printed the stats of the choosen number of days and also today, in a different color.
+- In the "Many Days" tab are printed the stats of the choosen number of days and also today, in a different color.
 ==========
 Version 1.0 - 14/07/2015
 - First stable release.

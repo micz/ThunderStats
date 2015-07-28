@@ -56,3 +56,5 @@
 <!ENTITY ThunderStats.CustomQry "Custom">
 <!ENTITY ThunderStats.UpdateCustomQry "Get Data">
 <!ENTITY ThunderStats.CustomQryDataMsg "Data extract for">
+<!ENTITY ThunderStats.From "From">
+<!ENTITY ThunderStats.To "To">

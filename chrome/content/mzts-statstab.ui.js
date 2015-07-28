@@ -104,33 +104,40 @@ miczThunderStatsTab.ui={
 		//adding datepicker with week start init
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");
 		let locale_firstweekday=moment().startOf("week").format('d');
-		document.getElementById('datepicker_from').setAttribute("firstdayofweek",locale_firstweekday);
-		document.getElementById('datepicker_to').setAttribute("firstdayofweek",locale_firstweekday);
+		//document.getElementById('datepicker_from').setAttribute("firstdayofweek",locale_firstweekday);
+		//document.getElementById('datepicker_to').setAttribute("firstdayofweek",locale_firstweekday);
 		//document.getElementById('datepicker_from')._init();
-		/*let aDatepickerFrom = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
+		let aDatepickerFrom = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
 		aDatepickerFrom.setAttribute("id", "datepicker_from");
 		aDatepickerFrom.setAttribute("type", "popup");
 		aDatepickerFrom.setAttribute("class", "customqry_datepicker");
 		aDatepickerFrom.setAttribute("firstdayofweek", locale_firstweekday);
 		document.getElementById('datepicker_from_placeholder').appendChild(aDatepickerFrom);
-		aDatepickerFrom.dateValue=moment().subtract(15,'d').toDate();
+		/*let mfrom=moment().subtract(15,'d');
+		aDatepickerFrom.date=mfrom.format('DD');
+		aDatepickerFrom.month=mfrom.format('MM')-1;
+		aDatepickerFrom.year=mfrom.format('YYYY');*/
+		//aDatepickerFrom.dateValue=moment().subtract(15,'d').toDate();
 		let aDatepickerTo = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
 		aDatepickerTo.setAttribute("id", "datepicker_to");
 		aDatepickerTo.setAttribute("type", "popup");
 		aDatepickerTo.setAttribute("class", "customqry_datepicker");
 		aDatepickerTo.setAttribute("firstdayofweek", locale_firstweekday);
+		//aDatepickerTo.dateValue=moment().subtract(1,'d').toDate();
+		/*let mto=moment().subtract(1,'d');
+		aDatepickerTo.date=mto.format('DD');
+		aDatepickerTo.month=mto.format('MM')-1;
+		aDatepickerTo.year=mto.format('YYYY');*/
 		document.getElementById('datepicker_to_placeholder').appendChild(aDatepickerTo);
-		aDatepickerTo.dateValue=moment().subtract(1,'d').toDate();*/
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentMomentLocale: "+moment.locale()+"\r\n");
-		//datepicker date init
-		document.getElementById('datepicker_from').dateValue=moment().subtract(15,'d').toDate();
-		document.getElementById('datepicker_to').dateValue=moment().subtract(1,'d').toDate();
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
 	},
 
-	initDatePickers_firstweekday:function(){
-		return moment().startOf("week").format('d');
+	initDatePickers_dates:function(){
+		document.getElementById('datepicker_from').dateValue=moment().subtract(15,'d').toDate();
+		document.getElementById('datepicker_to').dateValue=moment().subtract(1,'d').toDate();
+		alert('done');
 	},
 
 	openPrefWindow: function () {

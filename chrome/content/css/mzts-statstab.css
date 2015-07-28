@@ -193,3 +193,4 @@ display:block;
 
 #customqry_aggregate_data_sent,#customqry_aggregate_data_rcvd{display:none;}
 #_7days_sent_today,#_7days_rcvd_today{display:none;text-transform: lowercase;}
+.customqry_datepicker{display:inline;}

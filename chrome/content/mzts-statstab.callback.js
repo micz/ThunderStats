@@ -419,6 +419,7 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 	data:{},
 	data_7days_sent:new Array(),
 	total_mail:0,
+	today_mail:0,
 	handleResult: function(aResultSet) {
 		this.empty=false;
 		let result = miczThunderStatsCore.db.getResultObject(["Num","Info"],aResultSet);
@@ -433,8 +434,13 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				let m = moment(this.data[1]["Info"]);
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent m.format("L") '+m.format("L")+'\r\n');
 				if(!this.empty){
-					this.total_mail+=this.data[1]["Num"];
+					if(m.format("L")!=moment().format("L")){	//not today
+						this.total_mail+=this.data[1]["Num"];
+					}else{	//today
+						this.today_mail+=this.data[1]["Num"];
+					}
 					this.data_7days_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]});
 					//$jQ("#7days_sent").append(this.data[1]["Info"]+": "+this.data[1]["Num"]);
 				}else{
@@ -450,6 +456,13 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 					this.data_7days_sent.sort(miczThunderStatsUtils.array_7days_compare);
 					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_sent',this.data_7days_sent,miczThunderStatsPrefs.manyDays+1,true);
 					$jQ("#7days_sent_total").text(this.total_mail);
+					if(this.today_mail>0){
+						$jQ("#_7days_sent_today_num").text(this.today_mail);
+						$jQ("#_7days_sent_today").show();
+					}else{
+						$jQ("#_7days_sent_today").hide();
+						$jQ("#_7days_sent_today_num").text(" ");
+					}
 					miczThunderStatsTab.ui.hideLoadingElement("7days_sent_wait");
 				  	miczLogger.log("7 days sent messages chart rendered.",0);
 				  	this.total_mail=0;
@@ -480,6 +493,7 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 	data:{},
 	data_7days_rcvd:new Array(),
 	total_mail:0,
+	today_mail:0,
 	handleResult: function(aResultSet) {
 		this.empty=false;
 		let result = miczThunderStatsCore.db.getResultObject(["Num","Info"],aResultSet);
@@ -496,7 +510,11 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				let m = moment(this.data[1]["Info"]);
 				if(!this.empty){
-					this.total_mail+=this.data[1]["Num"];
+					if(m.format("L")!=moment().format("L")){	//not today
+						this.total_mail+=this.data[1]["Num"];
+					}else{	//today
+						this.today_mail+=this.data[1]["Num"];
+					}
 					this.data_7days_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]});
 					//$jQ("#7days_rcvd").append(this.data[1]["Info"]+": "+this.data[1]["Num"]);
 				}else{
@@ -512,6 +530,13 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 					this.data_7days_rcvd.sort(miczThunderStatsUtils.array_7days_compare);
 					miczThunderStatsTab.ui.draw7DaysGraph('chart_7days_rcvd',this.data_7days_rcvd,miczThunderStatsPrefs.manyDays+1,true);
 					$jQ("#7days_rcvd_total").text(this.total_mail);
+					if(this.today_mail>0){
+						$jQ("#_7days_rcvd_today_num").text(this.today_mail);
+						$jQ("#_7days_rcvd_today").show();
+					}else{
+						$jQ("#_7days_rcvd_today").hide();
+						$jQ("#_7days_rcvd_today_num").text(" ");
+					}
 				  	miczThunderStatsTab.ui.hideLoadingElement("7days_rcvd_wait");
 				  	miczLogger.log("7 days received messages chart rendered.",0);
 				  	this.total_mail=0;

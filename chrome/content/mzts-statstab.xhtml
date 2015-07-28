@@ -21,6 +21,7 @@
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-log.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css"/>
+	<link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-dropdownmenu.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css"/>
     <title>&ThunderStats.TABTitle;</title>
 
@@ -40,6 +41,19 @@
 			debug:false,
 			theme:'tooltipster-light'
 		});
+		$jQ("ul.dropdown li").hover(function(){
+
+        $jQ(this).addClass("hover");
+        $jQ('ul:first',this).css('visibility', 'visible');
+
+    }, function(){
+
+        $jQ(this).removeClass("hover");
+        $jQ('ul:first',this).css('visibility', 'hidden');
+
+    });
+
+    $jQ("ul.dropdown li ul li:has(ul)").find("a:first").append(" &raquo; ");
 		$jQ('.tabs .tab-links a').on('click', function(e)  {
 			miczThunderStatsTab.currentTab = $jQ(this).attr('href');
 
@@ -236,7 +250,14 @@
 
 			<div id="tab_customqry" class="tab">
 				<!--<div id="customqry_dashboard">From <xul:datepicker type="popup" id="datepicker_from"/> To <xul:datepicker type="popup" id="datepicker_to"/> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>-->
-				<div id="customqry_dashboard">&ThunderStats.From; <span id="datepicker_from_placeholder"></span> &ThunderStats.To; <span id="datepicker_to_placeholder"></span> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>
+				<div id="customqry_dashboard"><ul class="dropdown">
+        	<li><a href="#"><img src="chrome://thunderstats/skin/mzts-customqry-bookmark.png"/></a>
+        		<ul class="sub_menu">
+        			 <li><a href="#">Current Month</a></li>
+        			 <li><a href="#">Last Month</a></li>
+        		</ul>
+        	</li>
+        </ul> <span id="datepicker_from_placeholder"></span> &ThunderStats.To; <span id="datepicker_to_placeholder"></span> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>
 				<div id="table_customqry">
 				  <div id="tier1_customqry" class="tier1">
 					<div class="chunk" id="top_left_chunk_customqry">

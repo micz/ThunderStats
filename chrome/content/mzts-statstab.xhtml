@@ -73,6 +73,15 @@
 
 			e.preventDefault();
 		});
+		$jQ('#cssmenu a').on('click', function(e)  {
+			let tscommand=$jQ(this).attr('href');
+
+			if(tscommand!='#nil'){
+				alert('ok. href= '+tscommand);
+			}
+
+			e.preventDefault();
+		});
 
 	});
 	</script>
@@ -248,14 +257,15 @@
 			<div id="tab_customqry" class="tab">
 				<!--<div id="customqry_dashboard">From <xul:datepicker type="popup" id="datepicker_from"/> To <xul:datepicker type="popup" id="datepicker_to"/> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>-->
 				<div id="customqry_dashboard"><div id="cssmenu">
-<ul>
-   <li class="active has-sub"><a href="#"><img src="chrome://thunderstats/skin/mzts-customqry-bookmark.png"/></a>
-      <ul>
-         <li><a href="#"><span>Product 1</span></a></li>
-         <li><a href="#" class="last"><span>Product 2</span></a></li>
-</ul>
-</li></ul>
-</div> <span id="datepicker_from_placeholder"></span> &ThunderStats.To; <span id="datepicker_to_placeholder"></span> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>
+					<ul>
+					   <li class="active has-sub"><a href="#nil"><img src="chrome://thunderstats/skin/mzts-customqry-bookmark.png"/></a>
+						  <ul>
+							 <li><a href="#currentmonth"><span>Current Month</span></a></li>
+							 <li><a href="#lastmonth" class="last"><span>Last Month</span></a></li>
+						  </ul>
+						</li>
+					</ul>
+					</div> <span id="datepicker_from_placeholder"></span> &ThunderStats.To; <span id="datepicker_to_placeholder"></span> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>
 				<div id="table_customqry">
 				  <div id="tier1_customqry" class="tier1">
 					<div class="chunk" id="top_left_chunk_customqry">

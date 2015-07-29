@@ -9,12 +9,14 @@
   font-family: sans-serif;
   z-index:100;
   float:left;
+  height:32px;
 }
 #cssmenu ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: block;
+  height:32px;
 }
 #cssmenu ul:after,
 #cssmenu:after {
@@ -30,11 +32,13 @@
   padding: 0;
   display: block;
   position: relative;
+  height:32px;
 }
 #cssmenu ul li a {
   text-decoration: none;
   display: block;
   margin: 0;
+  padding:0;
   -webkit-transition: color .2s ease;
   -moz-transition: color .2s ease;
   -ms-transition: color .2s ease;
@@ -43,6 +47,7 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  height:32px;
 }
 #cssmenu ul li ul {
   position: absolute;
@@ -101,7 +106,7 @@
   letter-spacing: 0;
   display: block;
   width: 170px;
-  padding: 11px 10px 11px 20px;
+  padding: 11px 10px 11px 0px;
 }
 #cssmenu ul li ul li:hover > a,
 #cssmenu ul li ul li.active > a {
@@ -162,7 +167,7 @@
   transition: height .2s;
 }
 #cssmenu > ul > li.has-sub > a {
-  padding-right: 40px;
+  padding-right: 25px;
 }
 #cssmenu > ul > li.has-sub > a:after {
   display: block;
@@ -189,7 +194,7 @@
 }
 #cssmenu > ul > li > a {
   color: #ffffff;
-  padding: 15px 20px;
+  padding: 5px 20px 0px 10px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -236,6 +241,8 @@
 #cssmenu > ul > li > ul > li {
   width: 170px;
   display: block;
+  padding-left:10px;
+  background:#f1f9fd;
 }
 @media all and (max-width: 800px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
   #cssmenu > ul {

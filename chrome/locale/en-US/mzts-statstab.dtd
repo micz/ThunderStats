@@ -58,3 +58,8 @@
 <!ENTITY ThunderStats.CustomQryDataMsg "Data extract for">
 <!ENTITY ThunderStats.From "From">
 <!ENTITY ThunderStats.To "To">
+<!ENTITY ThunderStats.Bookmarks "Bookmarks">
+<!ENTITY ThunderStats.CurrentWeek "Current Week">
+<!ENTITY ThunderStats.CurrentMonth "Current Month">
+<!ENTITY ThunderStats.LastWeek "Last Week">
+<!ENTITY ThunderStats.LastMonth "Last Month">

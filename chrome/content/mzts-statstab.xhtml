@@ -43,7 +43,7 @@
 		});
 		$jQ('#cssmenu').prepend('<div id="menu-button">Menu</div>');
 		$jQ('#cssmenu #menu-button').on('click', function(){
-			var menu = $(this).next('ul');
+			var menu = $jQ(this).next('ul');
 			if (menu.hasClass('open')) {
 				menu.removeClass('open');
 			}

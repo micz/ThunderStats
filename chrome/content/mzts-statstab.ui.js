@@ -162,6 +162,9 @@ miczThunderStatsTab.ui={
 		switch(bkselected){
 			case '#currentmonth': dfrom.startOf('month');
 				break;
+			case '#lastmonth': dfrom.subtract(1,'month').startOf('month');
+				dto.subtract(1,'month').endOf('month');
+				break;
 			default: return;
 		}
 		document.getElementById('datepicker_from').dateValue=dfrom.toDate();

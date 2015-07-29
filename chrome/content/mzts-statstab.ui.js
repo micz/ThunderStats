@@ -205,6 +205,8 @@ miczThunderStatsTab.ui={
 	},
 
 	util7DaysGraph_getTickValues:function(_many_days){
+		if(_many_days==1) return [0.5];
+
 		let output=new Array();
 
 		for(let _id=0;_id<_many_days;_id++){
@@ -218,6 +220,7 @@ miczThunderStatsTab.ui={
 
 		let margin = {top: 5, right: 0, bottom: _many_days<=_many_days_max_labels?40:60, left: 30};
 		let barWidth = _many_days<=_many_days_max_labels?50:12;
+		if(_many_days==1) barWidth = 100;
 		let w = ((barWidth + 15) * _many_days) - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;
 
@@ -254,7 +257,7 @@ miczThunderStatsTab.ui={
 		  .data(data_array)
 		  .enter()
 		  .append("svg:text")
-		  .attr("x", function(datum, index) { return x(index) + barWidth; })
+		  .attr("x", function(datum, index) { return x(index) + barWidth - (_many_days==1?7:0); })
 		  .attr("y", function(datum) { return y(datum.num); })
 		  .attr("dx", _many_days<=_many_days_max_labels?-barWidth/2:(-barWidth/2)+3.5)
 		  .attr("dy", function(datum) { return y(0) - y(datum.num) > 24 ? "1.7em":"-1em"; })

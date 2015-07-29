@@ -106,7 +106,6 @@ miczThunderStatsTab.ui={
 		let locale_firstweekday=moment().startOf("week").format('d');
 		//document.getElementById('datepicker_from').setAttribute("firstdayofweek",locale_firstweekday);
 		//document.getElementById('datepicker_to').setAttribute("firstdayofweek",locale_firstweekday);
-		//document.getElementById('datepicker_from')._init();
 		let aDatepickerFrom = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
 		aDatepickerFrom.setAttribute("id", "datepicker_from");
 		aDatepickerFrom.setAttribute("type", "popup");
@@ -154,6 +153,21 @@ miczThunderStatsTab.ui={
 		let dfrom=document.getElementById('datepicker_from');
 		if(dto.dateValue<dfrom.dateValue){
 			dto.dateValue=dfrom.dateValue;
+		}
+	},
+
+	customQueryBookmarkSelect:function(bkselected){
+		let dfrom=moment();
+		let dto=moment();
+		switch(bkselected){
+			case '#currentmonth': dfrom.startOf('month');
+				break;
+			default: return;
+		}
+		document.getElementById('datepicker_from').dateValue=dfrom.toDate();
+		document.getElementById('datepicker_to').dateValue=dto.toDate();
+		if(miczThunderStatsPrefs.customQryBookmarkImmediateUpdate){	//update statistics
+			miczThunderStatsTab.updateCustomQry();
 		}
 	},
 

@@ -73,11 +73,11 @@
 
 			e.preventDefault();
 		});
-		$jQ('#cssmenu a').on('click', function(e)  {
+		$jQ('#cssmenu a').on('click', function(e)  {	//custom query bookmark menu command
 			let tscommand=$jQ(this).attr('href');
 
 			if(tscommand!='#nil'){
-				alert('ok. href= '+tscommand);
+				miczThunderStatsTab.ui.customQueryBookmarkSelect(tscommand);
 			}
 
 			e.preventDefault();

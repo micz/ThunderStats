@@ -1308,6 +1308,7 @@ miczThunderStatsTab.callback.stats_customqry_rcvd = {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				let m = moment(this.data[1]["Info"]);
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_sent m: '+m.format()+'\r\n');
 				if(!this.empty){
 					this.total_mail+=this.data[1]["Num"];
 					this.data_customqry_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]});
@@ -1318,10 +1319,11 @@ miczThunderStatsTab.callback.stats_customqry_rcvd = {
 				}
 				miczLogger.log("Custom query sent messages loaded day: "+this.data[1]["Info"]+".",0);
 				//if we've collected our 7 days, let's print it!
-				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_sent miczThunderStatsTab.data_customqry_sent.length '+miczThunderStatsTab.data_customqry_sent.length+'\r\n');
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_rcvd miczThunderStatsTab.data_customqry_rcvd.length '+this.data_customqry_rcvd.length+'\r\n');
 				if(this.data_customqry_rcvd.length==miczThunderStatsUtils._customqry_num_days){
 					//$jQ("#customqry_rcvd").text(JSON.stringify(miczThunderStatsTab.data_customqry_rcvd));
 					//ordering results array
+					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_rcvd this.total_mail '+this.total_mail+'\r\n');
 					this.data_customqry_rcvd.sort(miczThunderStatsUtils.array_7days_compare);
 					miczThunderStatsTab.ui.draw7DaysGraph('chart_customqry_rcvd',this.data_customqry_rcvd,miczThunderStatsUtils._customqry_num_days,false);
 					$jQ("#customqry_rcvd_total").text(this.total_mail);

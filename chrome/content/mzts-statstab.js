@@ -324,6 +324,8 @@ var miczThunderStatsTab = {
 	},
 
 	updateCustomQry: function(){
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry datepicker_from: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry datepicker_to: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
 		miczThunderStatsDB.init();
 		miczThunderStatsTab.getCustomQryStats(miczThunderStatsTab.getCurrentIdentityId());
 		miczThunderStatsDB.close();

@@ -112,17 +112,19 @@ miczThunderStatsTab.ui={
 		aDatepickerFrom.setAttribute("type", "popup");
 		aDatepickerFrom.setAttribute("class", "customqry_datepicker");
 		aDatepickerFrom.setAttribute("firstdayofweek", locale_firstweekday);
-		document.getElementById('datepicker_from_placeholder').appendChild(aDatepickerFrom);
+		aDatepickerFrom.onchange=miczThunderStatsTab.ui.checkDatePickers_From;
+		//aDatepickerFrom.dateValue=moment().subtract(15,'d').toDate();
 		/*let mfrom=moment().subtract(15,'d');
 		aDatepickerFrom.date=mfrom.format('DD');
 		aDatepickerFrom.month=mfrom.format('MM')-1;
 		aDatepickerFrom.year=mfrom.format('YYYY');*/
-		//aDatepickerFrom.dateValue=moment().subtract(15,'d').toDate();
+		document.getElementById('datepicker_from_placeholder').appendChild(aDatepickerFrom);
 		let aDatepickerTo = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
 		aDatepickerTo.setAttribute("id", "datepicker_to");
 		aDatepickerTo.setAttribute("type", "popup");
 		aDatepickerTo.setAttribute("class", "customqry_datepicker");
 		aDatepickerTo.setAttribute("firstdayofweek", locale_firstweekday);
+		aDatepickerTo.onchange=miczThunderStatsTab.ui.checkDatePickers_To;
 		//aDatepickerTo.dateValue=moment().subtract(1,'d').toDate();
 		/*let mto=moment().subtract(1,'d');
 		aDatepickerTo.date=mto.format('DD');
@@ -137,7 +139,22 @@ miczThunderStatsTab.ui={
 	initDatePickers_dates:function(){
 		document.getElementById('datepicker_from').dateValue=moment().subtract(15,'d').toDate();
 		document.getElementById('datepicker_to').dateValue=moment().subtract(1,'d').toDate();
-		alert('done');
+	},
+
+	checkDatePickers_To:function(event){
+		let dto=document.getElementById('datepicker_to');
+		let dfrom=document.getElementById('datepicker_from');
+		if(dto.dateValue<dfrom.dateValue){
+			dfrom.dateValue=dto.dateValue;
+		}
+	},
+
+	checkDatePickers_From:function(event){
+		let dto=document.getElementById('datepicker_to');
+		let dfrom=document.getElementById('datepicker_from');
+		if(dto.dateValue<dfrom.dateValue){
+			dto.dateValue=dfrom.dateValue;
+		}
 	},
 
 	openPrefWindow: function () {

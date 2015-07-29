@@ -1,5 +1,5 @@
 #cssmenu {
-  background: #4cb6ea;
+  background:#f1f9fd;
   margin: 0;
   width: auto;
   padding: 0;
@@ -63,6 +63,7 @@
   -o-transition: max-height 0.4s ease-out;
   transition: max-height 0.4s ease-out;
   background: #ffffff;
+  box-shadow:1px 1px 3px rgba(0, 0, 0, 0.25);
 }
 #cssmenu ul li ul li.has-sub:after {
   display: block;
@@ -107,6 +108,7 @@
   display: block;
   width: 170px;
   padding: 11px 10px 11px 0px;
+  background:white;
 }
 #cssmenu ul li ul li:hover > a,
 #cssmenu ul li ul li.active > a {
@@ -114,7 +116,7 @@
 }
 #cssmenu ul li ul li:hover:after,
 #cssmenu ul li ul li.active:after {
-  background: #4cb6ea;
+  background:#f1f9fd;
 }
 #cssmenu ul li ul li:hover > ul {
   left: 100%;
@@ -242,7 +244,7 @@
   width: 170px;
   display: block;
   padding-left:10px;
-  background:#f1f9fd;
+  background:white;
 }
 @media all and (max-width: 800px), only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px), only screen and (min-resolution: 192dpi) and (max-width: 1024px), only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
   #cssmenu > ul {
@@ -322,7 +324,7 @@
   #cssmenu ul li:hover > ul > li {
     max-height: 999px;
     position: relative;
-    background: none;
+    background: white;
   }
   #cssmenu ul li ul li a {
     padding: 8px 20px 8px 35px;

@@ -83,6 +83,8 @@
 			e.preventDefault();
 		});
 
+		$jQ('img.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false,position:'top'});
+
 	});
 	</script>
 
@@ -258,7 +260,7 @@
 				<!--<div id="customqry_dashboard">From <xul:datepicker type="popup" id="datepicker_from"/> To <xul:datepicker type="popup" id="datepicker_to"/> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>-->
 				<div id="customqry_dashboard"><div id="cssmenu">
 					<ul>
-					   <li class="active has-sub"><a href="#nil"><img src="chrome://thunderstats/skin/mzts-customqry-bookmark.png"/></a>
+					   <li class="active has-sub"><a href="#nil"><img src="chrome://thunderstats/skin/mzts-customqry-bookmark.png" title="Bookmarks" class="tooltip"/></a>
 						  <ul>
 							 <li><a href="#currentweek"><span>Current Week</span></a></li>
 							 <li><a href="#currentmonth"><span>Current Month</span></a></li>

@@ -201,4 +201,17 @@ var miczThunderStatsUtils = {
 		return mIdentityAddresses;
 	},
 
+	checkBusinessDay:function(mDate){
+		//check business weekday
+		let business_weekday=miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay());
+
+		//check easter
+		//TODO
+
+		//check no business day list
+		//TODO
+
+		return business_weekday;
+	},
+
 };

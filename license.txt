@@ -31,6 +31,7 @@ jQuery - https://jquery.com/
 D3 - http://d3js.org/
 Tooltipster - http://iamceege.github.io/tooltipster/
 Moment.js - http://momentjs.com/
+jQuery replaceText - http://benalman.com/projects/jquery-replacetext-plugin/
 
 
 -= Graphics =-

@@ -31,13 +31,16 @@ var miczThunderStatsTab = {
 			ydate.setDate(ydate.getDate() - 1);
 			if(miczThunderStatsUtils.isBusinessDay(ydate)){		//Yesterday is not a business day
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
 				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");
-				$jQ("body").each(function(){
+				let re = new RegExp('('+yesterday_string+')(?![^<]*>|[^<>]*<\/)','gi'); // /(yesterday)(?![^<]*>|[^<>]*<\/)/gi
+				$jQ("body *").replaceText(re,lbd_string);
+				/*$jQ("body").each(function(){
 												let $this = $jQ(this);
 												let tmp_output=$this.html().replace(/(yesterday)(?![^<]*>|[^<>]*<\/)/gi, lbd_string);
 												dump(tmp_output);
 												$this.html(tmp_output);
-											});
+											});*/
 			}
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');

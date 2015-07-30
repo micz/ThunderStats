@@ -466,6 +466,7 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 					miczThunderStatsTab.ui.hideLoadingElement("7days_sent_wait");
 				  	miczLogger.log("7 days sent messages chart rendered.",0);
 				  	this.total_mail=0;
+				  	this.today_mail=0
 				  	this.data_7days_sent=new Array();
 				}
 				this.data={};
@@ -476,12 +477,14 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 				this.data={};
 				this.empty=true;
 				this.total_mail=0;
+				this.today_mail=0
 				return false;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
 				this.total_mail=0;
+				this.today_mail=0
 				return false;
 		}
 	return false;
@@ -540,6 +543,7 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 				  	miczThunderStatsTab.ui.hideLoadingElement("7days_rcvd_wait");
 				  	miczLogger.log("7 days received messages chart rendered.",0);
 				  	this.total_mail=0;
+				  	this.today_mail=0
 				  	this.data_7days_rcvd=new Array();
 				}
 				this.data={};
@@ -550,12 +554,14 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 				this.data={};
 				this.empty=true;
 				this.total_mail=0;
+				this.today_mail=0
 				return false;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
 				this.total_mail=0;
+				this.today_mail=0
 				return false;
 		}
 	return false;

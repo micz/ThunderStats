@@ -35,6 +35,9 @@
         <preference id="ThunderStats.many_days_small_labels"
         name="extensions.ThunderStats.many_days_small_labels"
         type="bool"/>
+        <preference id="ThunderStats.bday.easter"
+        name="extensions.ThunderStats.bday.easter"
+        type="bool"/>
     </preferences>
     <tabbox id="ts_tabbox">
       <tabs>
@@ -131,7 +134,7 @@
                   oncommand="miczThunderStatsPrefPanel.onDeleteNoBusDayDate(window);" disabled="true"/>
           </vbox>
           </hbox>
-          <checkbox id="ThunderStats.EasterNoBusinessDay" label="&ThunderStats.EasterNoBusinessDay.label;"/>
+          <checkbox id="ThunderStats.EasterNoBusinessDay" preference="ThunderStats.bday.easter" label="&ThunderStats.EasterNoBusinessDay.label;"/>
           </groupbox>
 		</tabpanel>
         <tabpanel id="tstab_cstmids" orient="vertical">

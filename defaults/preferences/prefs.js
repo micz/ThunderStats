@@ -8,3 +8,4 @@ pref("extensions.ThunderStats.today_time_graph_progressive", false);
 pref("extensions.ThunderStats.aggregate_average_not_rounded", false);
 pref("extensions.ThunderStats.many_days", 7);
 pref("extensions.ThunderStats.many_days_small_labels", false);
+pref("extensions.ThunderStats.bday.easter", true);

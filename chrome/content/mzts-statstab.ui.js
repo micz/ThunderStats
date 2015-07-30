@@ -168,7 +168,8 @@ miczThunderStatsTab.ui={
 				dto.weekday(0).subtract(1,'day').weekday(6);
 				break;
 			case '#lastmonth': dfrom.subtract(1,'month').subtract(dfrom.format('D'),'day').add(1,'day');
-				dto.subtract(1,'month').endOf('month');
+        dto.subtract(dto.format('D'),'day');
+				//dto.subtract(1,'month').endOf('month');
 				break;
 			default: return;
 		}
@@ -177,8 +178,8 @@ miczThunderStatsTab.ui={
 		if(miczThunderStatsPrefs.customQryBookmarkImmediateUpdate){	//update statistics
 			miczThunderStatsTab.updateCustomQry();
 		}
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
 	},
 
 	openPrefWindow: function () {

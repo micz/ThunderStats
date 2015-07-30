@@ -40,7 +40,7 @@ span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
                                          rgba(242,242,240,.25)); /*#78a3d1*/
   background-color: Highlight;
   color: HighlightText; /*white*/
-  z-index: 2;
+  z-index: 101;
   padding:2px;
   top:0px;
   height:24px;

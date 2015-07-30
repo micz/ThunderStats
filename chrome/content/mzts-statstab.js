@@ -27,6 +27,17 @@ var miczThunderStatsTab = {
 
 			$jQ("span._many_days").text(miczThunderStatsTab._many_days);
 
+			let ydate = new Date();
+			ydate.setDate(ydate.getDate() - 1);
+			if(miczThunderStatsUtils.isBusinessDay(ydate)){		//Yesterday is not a business day
+				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");
+				$jQ("div#content_wrapper").each(function(){
+												let $this = $jQ(this);
+												$this.html($this.html().replace(/yesterday(?=<|\s)/gi, lbd_string));
+											});
+			}
+
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');
 
 			miczThunderStatsCore.db.init(window);

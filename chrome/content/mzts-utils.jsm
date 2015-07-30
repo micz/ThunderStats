@@ -201,7 +201,7 @@ var miczThunderStatsUtils = {
 		return mIdentityAddresses;
 	},
 
-	checkBusinessDay:function(mDate){
+	isBusinessDay:function(mDate){
 		//check business weekday
 		let business_weekday=miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay());
 

@@ -38,6 +38,27 @@
         <preference id="ThunderStats.bday.easter"
         name="extensions.ThunderStats.bday.easter"
         type="bool"/>
+        <preference id="ThunderStats.bday.weekday0"
+        name="extensions.ThunderStats.bday.weekday0"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday1"
+        name="extensions.ThunderStats.bday.weekday1"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday2"
+        name="extensions.ThunderStats.bday.weekday2"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday3"
+        name="extensions.ThunderStats.bday.weekday3"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday4"
+        name="extensions.ThunderStats.bday.weekday4"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday5"
+        name="extensions.ThunderStats.bday.weekday5"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday6"
+        name="extensions.ThunderStats.bday.weekday6"
+        type="bool"/>
     </preferences>
     <tabbox id="ts_tabbox">
       <tabs>
@@ -100,15 +121,15 @@
   				<label control="symbol" value="&ThunderStats.WeekDays.desc;"/>
   			<hbox>
 			<vbox>
-				<checkbox id="weekday1" label="&ThunderStats.WeekDayMon;"/>
-				<checkbox id="weekday2" label="&ThunderStats.WeekDayTue;"/>
-				<checkbox id="weekday3" label="&ThunderStats.WeekDayWed;"/>
+				<checkbox id="weekday1" preference="ThunderStats.bday.weekday1" label="&ThunderStats.WeekDayMon;"/>
+				<checkbox id="weekday2" preference="ThunderStats.bday.weekday2" label="&ThunderStats.WeekDayTue;"/>
+				<checkbox id="weekday3" preference="ThunderStats.bday.weekday3" label="&ThunderStats.WeekDayWed;"/>
 			</vbox>
 			<vbox>
-				<checkbox id="weekday4" label="&ThunderStats.WeekDayThu;"/>
-				<checkbox id="weekday5" label="&ThunderStats.WeekDayFri;"/>
-				<checkbox id="weekday6" label="&ThunderStats.WeekDaySat;"/>
-				<checkbox id="weekday0" label="&ThunderStats.WeekDaySun;"/>
+				<checkbox id="weekday4" preference="ThunderStats.bday.weekday4" label="&ThunderStats.WeekDayThu;"/>
+				<checkbox id="weekday5" preference="ThunderStats.bday.weekday5" label="&ThunderStats.WeekDayFri;"/>
+				<checkbox id="weekday6" preference="ThunderStats.bday.weekday6" label="&ThunderStats.WeekDaySat;"/>
+				<checkbox id="weekday0" preference="ThunderStats.bday.weekday0" label="&ThunderStats.WeekDaySun;"/>
 			</vbox>
 			</hbox>
 			</groupbox>

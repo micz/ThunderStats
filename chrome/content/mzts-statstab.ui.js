@@ -240,8 +240,8 @@ miczThunderStatsTab.ui={
 		return output;	//[0.4,1.4,2.4,3.4,4.4,5.4,6.4];
 	},
 
-	draw7DaysGraph:function(element_id_txt,data_array,_many_days,do_today){
-		let _many_days_max_labels=(miczThunderStatsPrefs.manyDaysSmallLabels&&_many_days>1)?0:_many_days+1;
+	draw7DaysGraph:function(element_id_txt,data_array,_many_days,do_today,_small_labels){
+		let _many_days_max_labels=(_small_labels&&_many_days>1)?0:_many_days+1;
 
 		let margin = {top: 5, right: 0, bottom: _many_days<=_many_days_max_labels?40:60, left: 30};
 		let barWidth = _many_days<=_many_days_max_labels?50:12;

@@ -29,7 +29,7 @@ var miczThunderStatsTab = {
 
 			let ydate = new Date();
 			ydate.setDate(ydate.getDate() - 1);
-			if(miczThunderStatsUtils.isBusinessDay(ydate)){		//Yesterday is not a business day
+			if(!miczThunderStatsUtils.isBusinessDay(ydate)){		//Yesterday is not a business day
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
 				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");

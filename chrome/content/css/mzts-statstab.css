@@ -177,3 +177,7 @@ display:none;
 .tab.active {
 display:block;
 }
+ul.tab-links li a,
+h2.list_heading{text-transform:capitalize;}
+p.chart_info_nomail{text-transform:lowercase;}
+p.chart_info_nomail::first-letter{text-transform:uppercase;}

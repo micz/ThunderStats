@@ -32,9 +32,11 @@ var miczThunderStatsTab = {
 			if(miczThunderStatsUtils.isBusinessDay(ydate)){		//Yesterday is not a business day
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");
-				$jQ("div#content_wrapper").each(function(){
+				$jQ("body").each(function(){
 												let $this = $jQ(this);
-												$this.html($this.html().replace(/yesterday(?=<|\s)/gi, lbd_string));
+												let tmp_output=$this.html().replace(/(yesterday)(?![^<]*>|[^<>]*<\/)/gi, lbd_string);
+												dump(tmp_output);
+												$this.html(tmp_output);
 											});
 			}
 

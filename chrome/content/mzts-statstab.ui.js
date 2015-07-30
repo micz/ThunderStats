@@ -296,7 +296,7 @@ miczThunderStatsTab.ui={
 			.enter().append("svg:text")
 			.attr("x", function(datum, index) { return x(index) + barWidth; })
 			.attr("y", h)
-			.attr("dx", -barWidth/2)
+			.attr("dx", -barWidth/2-(_many_days==1?7:0))
 			.attr("text-anchor", "middle")
 			.text(function(datum, index) {
 						let output=datum.day_str;

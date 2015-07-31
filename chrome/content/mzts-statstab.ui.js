@@ -285,10 +285,10 @@ miczThunderStatsTab.ui={
 		  .attr("x", function(datum, index) { return x(index) + barWidth - (_many_days==1?7:0); })
 		  .attr("y", function(datum) { return y(datum.num); })
 		  .attr("dx", _many_days<=_many_days_max_labels?-barWidth/2:(-barWidth/2)+3.5)
-		  .attr("dy", function(datum) { return y(0) - y(datum.num) > 24 ? "1.7em":"-1em"; })
+		  .attr("dy", function(datum) { return (y(0) - y(datum.num) > 24)&&!_small_labels ? "1.7em":"-1em"; })
 		  .attr("text-anchor", "middle")
 		  .text(function(datum) { return datum.num;})
-		  .attr("class", function(datum) { return y(0) - y(datum.num) > 24 ? "data_label":"zero_data_label"; });
+		  .attr("class", function(datum) { return (y(0) - y(datum.num) > 24)&&!_small_labels ? "data_label":"zero_data_label"; });
 
 		//x axis labels
 		chart.selectAll("text.xAxis")

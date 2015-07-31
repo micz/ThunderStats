@@ -204,9 +204,12 @@ var miczThunderStatsUtils = {
 	isBusinessDay:function(mDate){
 		//check easter
 		if(miczThunderStatsPrefs.noBusinessEaster){
-			let easter_day=miczThunderStatsUtils.getEasterDay();
+			let easter_day=miczThunderStatsUtils.getEasterDay(moment().year());
 			let easter_monday=new Date(easter_day);
 			easter_monday.setDate(easter_monday.getDate() + 1);
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] easter_day: "+JSON.stringify(easter_day)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] easter_monday: "+JSON.stringify(easter_monday)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] mDate: "+JSON.stringify(mDate)+"\r\n");
 			if((easter_day.toDateString()==mDate.toDateString())||(easter_monday.toDateString()==mDate.toDateString())){
 				return false;	//if today is easter day or easter monday, return false (today is not a business day!)
 			}
@@ -235,9 +238,9 @@ var miczThunderStatsUtils = {
 		let J = Y + Math.floor(Y/4) + I + 2 - C + Math.floor(C/4);
 		J = J - 7*Math.floor(J/7);
 		let L = I - J;
-		let M = 3 + Math.floor((L + 40)/44);
+		let M = (3 + Math.floor((L + 40)/44))-1;
 		let D = L + 28 - 31*Math.floor(M/4);
-		return new Date(Y,M,G);
+		return new Date(Y,M,D);
 	},
 
 };

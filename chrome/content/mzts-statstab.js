@@ -27,8 +27,7 @@ var miczThunderStatsTab = {
 
 			$jQ("span._many_days").text(miczThunderStatsTab._many_days);
 
-			let ydate = new Date();
-			ydate.setDate(ydate.getDate() - 1);
+			let ydate = miczThunderStatsUtils.getYesterdayDate();
 			if(!miczThunderStatsUtils.isBusinessDay(ydate)){		//Yesterday is not a business day
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");

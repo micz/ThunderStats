@@ -202,16 +202,22 @@ var miczThunderStatsUtils = {
 	},
 
 	isBusinessDay:function(mDate){
-		//check business weekday
-		let business_weekday=miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay());
 
 		//check easter
-		//TODO
+		if(miczThunderStatsPrefs.noBusinessEaster){
+			let easter_day=miczThunderStatsUtils.getEasterDay();
+			let easter_monday=new Date(easter_day);
+			easter_monday.setDate(easter_monday.getDate() + 1);
+			if((easter_day.toDateString()==mDate.toDateString())||(easter_monday.toDateString()==mDate.toDateString())){
+				return false;	//if today is easter day or easter monday, return false (today is not a business day!)
+			}
+		}
 
 		//check no business day list
 		//TODO
 
-		return business_weekday;
+		//if we are not on a special day, check the business weekday
+		return miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay());
 	},
 
 	getYesterdayDate:function(){
@@ -220,7 +226,7 @@ var miczThunderStatsUtils = {
 		return ydate;
 	},
 
-	getEasterDay:function(Y) {		//tahnks to http://www.irt.org/articles/js052/index.htm
+	getEasterDay:function(Y) {		//thanks to http://www.irt.org/articles/js052/index.htm
 		let C = Math.floor(Y/100);
 		let N = Y - 19*Math.floor(Y/19);
 		let K = Math.floor((C - 17)/25);
@@ -233,7 +239,7 @@ var miczThunderStatsUtils = {
 		let M = 3 + Math.floor((L + 40)/44);
 		let D = L + 28 - 31*Math.floor(M/4);
 
-		return padout(M) + '.' + padout(D);
+		return new Date(Y,M,G);
 	},
 
 };

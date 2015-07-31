@@ -35,12 +35,6 @@ var miczThunderStatsTab = {
 				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");
 				let re = new RegExp('('+yesterday_string+')(?![^<]*>|[^<>]*<\/)','gi'); // /(yesterday)(?![^<]*>|[^<>]*<\/)/gi
 				$jQ("body *").replaceText(re,lbd_string);
-				/*$jQ("body").each(function(){
-												let $this = $jQ(this);
-												let tmp_output=$this.html().replace(/(yesterday)(?![^<]*>|[^<>]*<\/)/gi, lbd_string);
-												dump(tmp_output);
-												$this.html(tmp_output);
-											});*/
 			}
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');

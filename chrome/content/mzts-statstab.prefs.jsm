@@ -55,7 +55,7 @@ var miczThunderStatsPrefs = {
 
 	get noBusinessEaster() {	//true if easter is not a business day
 		return this.getBoolPref_TS("bday.easter");
-	}
+	},
 
 	/*isDebugOption: function(option) { // granular debugging
 		if(!this.isDebug) return false;

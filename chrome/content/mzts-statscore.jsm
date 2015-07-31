@@ -161,8 +161,7 @@ miczThunderStatsCore.db = {
 	},
 
 	getTodayHours:function(mIdentity,mCallback){
-		let ydate = new Date();
-		ydate.setDate(ydate.getDate() - 1);
+		let ydate = miczThunderStatsUtils.getYesterdayDate();
 		this.getOneDayMessages({type:1,info:'today_sent',hours:1},new Date(),mIdentity,mCallback,'today_sent');	//today sent
 		this.getOneDayMessages({type:0,info:'today_rcvd',hours:1},new Date(),mIdentity,mCallback,'today_rcvd');	//today rcvd
 		this.getOneDayMessages({type:1,info:'yesterday_sent',hours:1},ydate,mIdentity,mCallback,'yesterday_sent');	//yesterday sent
@@ -171,22 +170,18 @@ miczThunderStatsCore.db = {
 	},
 
 	getYesterdayHours:function(mIdentity,mCallback){
-		let ydate = new Date();
-		ydate.setDate(ydate.getDate() - 1);
+		let ydate = miczThunderStatsUtils.getYesterdayDate();
 		this.getOneDayMessages({type:1,info:'yesterday_sent',hours:1},ydate,mIdentity,mCallback,'yesterday_sent');	//yesterday sent
 		this.getOneDayMessages({type:0,info:'yesterday_rcvd',hours:1},ydate,mIdentity,mCallback,'yesterday_rcvd');	//yestarday rcvd
 		return true;
 	},
 
 	getYesterdayMessages:function(mType,mIdentity,mCallback){
-		let ydate = new Date();
-		ydate.setDate(ydate.getDate() - 1);
-		return this.getOneDayMessages(mType,ydate,mIdentity,mCallback);
+		return this.getOneDayMessages(mType,miczThunderStatsUtils.getYesterdayDate(),mIdentity,mCallback);
 	},
 
 	getYesterdayIncrementalMessages:function(mType,mIdentity,mCallback){	//get the messages received yesterday until the actual hour
-		let ydate = new Date();
-		ydate.setDate(ydate.getDate() - 1);
+		let ydate = miczThunderStatsUtils.getYesterdayDate();
 		let mFromDate=new Date(ydate);
 		mFromDate.setHours(0,0,0,0);
 		return miczThunderStatsDB.queryMessages(mType,mFromDate.getTime(),ydate.getTime(),mIdentity,mCallback);
@@ -206,9 +201,7 @@ miczThunderStatsCore.db = {
 	},
 
 	getYesterdayInvolved:function(mType,mIdentity,mCallback){
-		let ydate = new Date();
-		ydate.setDate(ydate.getDate() - 1);
-		return this.getOneDayInvolved(mType,ydate,mIdentity,mCallback);
+		return this.getOneDayInvolved(mType,miczThunderStatsUtils.getYesterdayDate(),mIdentity,mCallback);
 	},
 
 	getManyDaysInvolved:function(mType,mFromDate,mToDate,mIdentity,mCallback){
@@ -231,9 +224,7 @@ miczThunderStatsCore.db = {
 	},
 
 	getYesterdayMessagesFolders:function(mType,mIdentity,mCallback){
-		let ydate = new Date();
-		ydate.setDate(ydate.getDate() - 1);
-		return this.getOneDayMessagesFolders(mType,ydate,mIdentity,mCallback);
+		return this.getOneDayMessagesFolders(mType,miczThunderStatsUtils.getYesterdayDate(),mIdentity,mCallback);
 	},
 
 	getInboxMessagesTotal:function(mIdentity,mCallback){

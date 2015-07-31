@@ -214,4 +214,10 @@ var miczThunderStatsUtils = {
 		return business_weekday;
 	},
 
+	getYesterdayDate:function(){
+		let ydate = new Date();
+		ydate.setDate(ydate.getDate() - 1);
+		return ydate;
+	},
+
 };

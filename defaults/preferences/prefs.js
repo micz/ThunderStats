@@ -16,3 +16,4 @@ pref("extensions.ThunderStats.bday.weekday3", true);
 pref("extensions.ThunderStats.bday.weekday4", true);
 pref("extensions.ThunderStats.bday.weekday5", true);
 pref("extensions.ThunderStats.bday.weekday6", false);
+pref("extensions.ThunderStats.bday.use_last_business_day", false);

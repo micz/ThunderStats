@@ -41,3 +41,4 @@
 <!ENTITY ThunderStats.editButtonBD.label "Edit...">
 <!ENTITY ThunderStats.deleteButtonBD.label "Delete">
 <!ENTITY ThunderStats.EasterNoBusinessDay.label "Easter and Easter Monday are not business days.">
+<!ENTITY ThunderStats.UseLastBusinessDay "If yesterday is not a business day, show the last business day instead.">

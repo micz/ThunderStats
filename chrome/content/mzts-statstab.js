@@ -27,18 +27,7 @@ var miczThunderStatsTab = {
 
 			$jQ("span._many_days").text(miczThunderStatsTab._many_days);
 
-			if(miczThunderStatsPrefs.useLastBusinessDay){
-				let ydate = new Date();
-				ydate.setDate(ydate.getDate() - 1);
-				miczThunderStatsUtils._y_is_last_business_day=miczThunderStatsUtils.isBusinessDay(ydate);
-				if(!miczThunderStatsUtils._y_is_last_business_day){		//Yesterday is not a business day
-					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
-					let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
-					let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");
-					let re = new RegExp('('+yesterday_string+')(?![^<]*>|[^<>]*<\/)','gi'); // /(yesterday)(?![^<]*>|[^<>]*<\/)/gi
-					$jQ("body *").replaceText(re,lbd_string);
-				}
-			}
+			miczThunderStatsTab.checkLastBusinessDay();
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');
 
@@ -257,9 +246,7 @@ var miczThunderStatsTab = {
 	updateStats: function(){
 		miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
 		miczThunderStatsTab._many_days=miczThunderStatsPrefs.manyDays;
-		let ydate = new Date();
-		ydate.setDate(ydate.getDate() - 1);
-		miczThunderStatsUtils._y_is_last_business_day=miczThunderStatsUtils.isBusinessDay(ydate);
+		miczThunderStatsTab.checkLastBusinessDay();
 		$jQ("span._many_days").text(miczThunderStatsTab._many_days);
 		if(miczThunderStatsTab._global_update){
 			miczThunderStatsDB.init();
@@ -277,6 +264,20 @@ var miczThunderStatsTab = {
 	getLastIndexedMessage: function(){
 		miczThunderStatsDB.queryGetLastMessageDate(miczThunderStatsTab.callback.last_idx_msg);
 		miczThunderStatsDB.getLastIndexUpdate();
+	},
+
+	checkLastBusinessDay:function(){
+		let ydate = new Date();
+			ydate.setDate(ydate.getDate() - 1);
+			miczThunderStatsUtils._y_is_last_business_day=miczThunderStatsUtils.isBusinessDay(ydate);
+
+			if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
+					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+					let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
+					let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");
+					let re = new RegExp('('+yesterday_string+')(?![^<]*>|[^<>]*<\/)','gi'); // /(yesterday)(?![^<]*>|[^<>]*<\/)/gi
+					$jQ("body *").replaceText(re,lbd_string);
+			}
 	},
 
 };

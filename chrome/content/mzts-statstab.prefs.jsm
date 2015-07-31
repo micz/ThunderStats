@@ -57,6 +57,10 @@ var miczThunderStatsPrefs = {
 		return this.getBoolPref_TS("bday.easter");
 	},
 
+	get useLastBusinessDay() {
+		return this.getBoolPref_TS("bday.use_last_business_day");
+	},
+
 	/*isDebugOption: function(option) { // granular debugging
 		if(!this.isDebug) return false;
 		try {return this.getBoolPref_TS("debug." + option);}

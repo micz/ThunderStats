@@ -661,7 +661,6 @@ miczThunderStatsTab.ui={
 
 
 	drawTimeGraph:function(element_id_txt,data_array,is_today){
-
 		let margin = {
 			top: 10,
 			right: 90,

@@ -8,6 +8,8 @@ Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 
 var miczThunderStatsUtils = {
 
+	_y_is_last_business_day:false,
+
 	escapeHTML: function(s){
 		return s.replace(/&/g, '&amp;')
 				.replace(/"/g, '&quot;')
@@ -224,7 +226,11 @@ var miczThunderStatsUtils = {
 
 	getYesterdayDate:function(){
 		let ydate = new Date();
-		ydate.setDate(ydate.getDate() - 1);
+		if(miczThunderStatsPrefs.useLastBusinessDay){
+			ydate.setDate(ydate.getDate() - 1);		//TODO Last Business Day calc
+		}else{
+			ydate.setDate(ydate.getDate() - 1);
+		}
 		return ydate;
 	},
 

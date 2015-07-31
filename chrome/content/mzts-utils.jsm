@@ -202,7 +202,6 @@ var miczThunderStatsUtils = {
 	},
 
 	isBusinessDay:function(mDate){
-
 		//check easter
 		if(miczThunderStatsPrefs.noBusinessEaster){
 			let easter_day=miczThunderStatsUtils.getEasterDay();
@@ -216,7 +215,7 @@ var miczThunderStatsUtils = {
 		//check no business day list
 		//TODO
 
-		//if we are not on a special day, check the business weekday
+		//if we are not on a special day, return the business weekday
 		return miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay());
 	},
 
@@ -238,7 +237,6 @@ var miczThunderStatsUtils = {
 		let L = I - J;
 		let M = 3 + Math.floor((L + 40)/44);
 		let D = L + 28 - 31*Math.floor(M/4);
-
 		return new Date(Y,M,G);
 	},
 

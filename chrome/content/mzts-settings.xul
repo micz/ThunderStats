@@ -152,12 +152,12 @@
           <vbox>
 			  <button id="newButtonBD"
                   label="&ThunderStats.newButtonBD.label;"
-                  oncommand="miczThunderStatsPrefPanel.onNewNoBusDayDate(window);"/>
+                  oncommand="miczThunderStatsPrefPanel.onNewNBDDate(window);"/>
           <button id="editButtonBD" label="&ThunderStats.editButtonBD.label;"
-                  oncommand="miczThunderStatsPrefPanel.onEditNoBusDayDate(window);" disabled="true"/>
+                  oncommand="miczThunderStatsPrefPanel.onEditNBDDate(window);" disabled="true"/>
           <button id="deleteButtonBD"
                   label="&ThunderStats.deleteButtonBD.label;"
-                  oncommand="miczThunderStatsPrefPanel.onDeleteNoBusDayDate(window);" disabled="true"/>
+                  oncommand="miczThunderStatsPrefPanel.onDeleteNBDDate(window);" disabled="true"/>
           </vbox>
           </hbox>
           <checkbox id="ThunderStats.EasterNoBusinessDay" preference="ThunderStats.bday.easter" label="&ThunderStats.EasterNoBusinessDay.label;"/>

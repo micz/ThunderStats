@@ -102,12 +102,12 @@ var miczThunderStatsPrefPanel = {
 		}
 	},
 
-	onNewCustomCol: function(win){
+	onNewNBDDate: function(win){
 		let doc = win.document;
 		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
 		let args = {"action":"new"};
 
-		window.openDialog("chrome://columnswizard/content/mzcw-settings-customcolseditor.xul", "CustColsEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
+		window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
 
 		if (("save" in args && args.save)&& ("newcol" in args && args.newcol)){
 			/*miczColumnsWizard_CustCols.addNewCustCol(args.newcol);
@@ -119,7 +119,7 @@ var miczThunderStatsPrefPanel = {
 
 	},
 
-	onEditCustomCol: function(win){
+	onEditNBDDate: function(win){
 		let doc = win.document;
 		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
 
@@ -141,7 +141,7 @@ var miczThunderStatsPrefPanel = {
 
 	},
 
-	onDeleteCustomCol: function(win){
+	onDeleteNBDDate: function(win){
 		let doc = win.document;
 		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
 

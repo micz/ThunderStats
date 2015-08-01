@@ -46,7 +46,7 @@ var miczThunderStatsUtils = {
 	},
 
 	getYesterdayString:function(moment){
-		return this.getDateString(moment().subtract(1,'d'));
+		return this.getDateString(moment(miczThunderStatsUtils.getYesterdayDate()));
 	},
 
 	getDaysFromRange: function(mFromDate,mToDate){
@@ -206,7 +206,7 @@ var miczThunderStatsUtils = {
 	isBusinessDay:function(mDate){
 		//check easter
 		if(miczThunderStatsPrefs.noBusinessEaster){
-			let easter_day=miczThunderStatsUtils.getEasterDay(moment().year());
+			let easter_day=miczThunderStatsUtils.getEasterDay(mDate.getFullYear());
 			let easter_monday=new Date(easter_day);
 			easter_monday.setDate(easter_monday.getDate() + 1);
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] easter_day: "+JSON.stringify(easter_day)+"\r\n");
@@ -227,10 +227,21 @@ var miczThunderStatsUtils = {
 
 	getYesterdayDate:function(){
 		let ydate = new Date();
+		ydate.setDate(ydate.getDate() - 1);
 		if(miczThunderStatsPrefs.useLastBusinessDay){
-			ydate.setDate(ydate.getDate() - 1);		//TODO Last Business Day calc
-		}else{
-			ydate.setDate(ydate.getDate() - 1);
+			//dump('>>>>>>>> TS: day: '+ydate+' is_business: '+miczThunderStatsUtils.isBusinessDay(ydate)+"\r\n");
+			if(!miczThunderStatsUtils.isBusinessDay(ydate)){		//Last Business Day Calc
+				//loop for 5 days. if we found no business day, go on with yesterday
+				let tmp_date=new Date(ydate);
+				for(let idd=0;idd<5;idd++){
+					tmp_date.setDate(tmp_date.getDate() - 1);
+					//dump('>>>>>>>> TS: idd: '+idd+' tmp_date: '+tmp_date.toDateString()+"\r\n");
+					if(miczThunderStatsUtils.isBusinessDay(tmp_date)){
+						ydate=new Date(tmp_date);
+						break;
+					}
+				}
+			}
 		}
 		return ydate;
 	},

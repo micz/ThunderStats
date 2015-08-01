@@ -1,4 +1,5 @@
 "use strict";
+Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 
 var miczThunderStatsPrefPanel_NBDEditor = {
 
@@ -12,7 +13,7 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 
 			if ("action" in args){
 				switch (args.action){
-					//case "new": 
+					//case "new":
 					//break;
 					case "edit":
 					/*	let currcol=JSON.parse(args.currcol);
@@ -124,11 +125,12 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 
 	checkFields:function(){
 		//The fields must be filled!!
-		
+
 		return true;
 	},
-	
+
 	initDatePicker: function() {
+		moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 		//adding datepicker with week start init
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");
 		let locale_firstweekday=moment().startOf("week").format('d');

@@ -11,7 +11,7 @@
   windowtype="mailnews:tsnobusinessday"
   persist="screenX screenY"
   buttons="accept,cancel"
-  onload="miczColumnsWizardPref_CustColEditor.onLoad();"
+  onload="miczThunderStatsPrefPanel_NBDEditor.onLoad();"
   onunload=""
   ondialogaccept="return miczColumnsWizardPref_CustColEditor.onAccept();">
 
@@ -19,7 +19,7 @@
   <stringbundle id="ThunderStats-string-bundle" src="chrome://thunderstats/locale/mzts-settings-nobusinessday.properties" />
 </stringbundleset>
 
-  <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-nobusinessday.js"/>
+  <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.js"/>
   <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/moment-with-locales.min.js"/>
 
   <vbox id="ts_vbox" flex="1">

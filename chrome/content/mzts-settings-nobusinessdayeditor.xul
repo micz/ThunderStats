@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 <!DOCTYPE dialog SYSTEM "chrome://thunderstats/locale/mzts-settings-nobusinessdayeditor.dtd">
-<?xml-stylesheet href="mzcw-settings-customcolseditor.css" type="text/css"?>
+<?xml-stylesheet href="css/mzcw-settings-customcolseditor.css" type="text/css"?>
 
 <dialog id="TSNoBusinessDayEditor"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"

@@ -155,7 +155,7 @@ var miczThunderStatsUtils = {
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(mFolder.URI)+'\r\n');
 		}
 		if (mFolder.hasSubFolders){
-			for each (let folder in fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){
+			for (let folder of fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){
 				let tmp_inbox=miczThunderStatsUtils.getInboxFoldersObjects(folder);
 				if(tmp_inbox.length > 0){
 					arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,tmp_inbox);

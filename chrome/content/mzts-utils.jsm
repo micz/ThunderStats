@@ -221,6 +221,7 @@ var miczThunderStatsUtils = {
 		//TODO
 
 		//if we are not on a special day, return the business weekday
+		//dump('>>>>>>>> TS: weekday: '+mDate.getUTCDay()+' is_business: '+miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay())+"\r\n");
 		return miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay());
 	},
 

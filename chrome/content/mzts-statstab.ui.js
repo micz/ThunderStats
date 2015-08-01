@@ -167,6 +167,8 @@ miczThunderStatsTab.ui={
 			case '#lastweek': dfrom.weekday(0).subtract(1,'day').weekday(0);
 				dto.weekday(0).subtract(1,'day').weekday(6);
 				break;
+			case '#last2week': dfrom.weekday(0).subtract(1,'day').weekday(0);
+				break;
 			case '#lastmonth': dfrom.subtract(1,'month').subtract(dfrom.format('D'),'day').add(1,'day');
         dto.subtract(dto.format('D'),'day');
 				//dto.subtract(1,'month').endOf('month');

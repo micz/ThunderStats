@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
-<!DOCTYPE dialog SYSTEM "chrome://thunderstats/locale/mzts-settings-nobusinessday.dtd">
+<!DOCTYPE dialog SYSTEM "chrome://thunderstats/locale/mzts-settings-nobusinessdayeditor.dtd">
 <?xml-stylesheet href="mzcw-settings-customcolseditor.css" type="text/css"?>
 
 <dialog id="TSNoBusinessDayEditor"
@@ -16,7 +16,7 @@
   ondialogaccept="return miczColumnsWizardPref_CustColEditor.onAccept();">
 
 <stringbundleset id="stringbundleset">
-  <stringbundle id="ColumnsWizard-string-bundle" src="chrome://thunderstats/locale/mzts-settings-nobusinessday.properties" />
+  <stringbundle id="ThunderStats-string-bundle" src="chrome://thunderstats/locale/mzts-settings-nobusinessday.properties" />
 </stringbundleset>
 
   <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-nobusinessday.js"/>
@@ -43,7 +43,7 @@
 			<label value="&ThunderStats.date.label;"/>
 			<vbox>
 				<vbox id="ThunderStats.date_placeholder"></vbox>
-				<description class="ts_field_label">&ColumnsWizard.date.desc;</description>
+				<description class="ts_field_label">&ThunderStats.date.desc;</description>
 			</vbox>
           </row>
           <row>

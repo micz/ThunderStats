@@ -9,6 +9,7 @@
 <!ENTITY ThunderStats.Yesterday "Ieri">
 <!ENTITY ThunderStats.Last "Ultimi">
 <!ENTITY ThunderStats.days "giorni">
+<!ENTITY ThunderStats.TotalDays "Giorni totali">
 <!ENTITY ThunderStats.Info "Informazioni">
 <!ENTITY ThunderStats.TodayMails "Mail di oggi">
 <!ENTITY ThunderStats.Loading "Caricamento">
@@ -52,3 +53,14 @@
 <!ENTITY ThunderStats.min "min">
 <!ENTITY ThunderStats.average "media">
 <!ENTITY ThunderStats.InTheLast "Negli ultimi">
+<!ENTITY ThunderStats.CustomQry "Personalizzato">
+<!ENTITY ThunderStats.UpdateCustomQry "Elabora">
+<!ENTITY ThunderStats.CustomQryDataMsg "Dati estratti per">
+<!ENTITY ThunderStats.From "Da">
+<!ENTITY ThunderStats.To "A">
+<!ENTITY ThunderStats.Bookmarks "Preferiti">
+<!ENTITY ThunderStats.CurrentWeek "Settimana Corrente">
+<!ENTITY ThunderStats.CurrentMonth "Mese Corrente">
+<!ENTITY ThunderStats.LastWeek "Settimana Scorsa">
+<!ENTITY ThunderStats.LastMonth "Mese Scorso">
+<!ENTITY ThunderStats.Last2Week "Ultime due Settimane">

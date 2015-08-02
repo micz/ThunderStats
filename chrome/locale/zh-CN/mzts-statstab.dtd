@@ -9,6 +9,7 @@
 <!ENTITY ThunderStats.Yesterday "昨天">
 <!ENTITY ThunderStats.Last "最后">
 <!ENTITY ThunderStats.days "天">
+<!ENTITY ThunderStats.TotalDays "总天数">
 <!ENTITY ThunderStats.Info "信息">
 <!ENTITY ThunderStats.TodayMails "今天邮件">
 <!ENTITY ThunderStats.Loading "加载中">
@@ -52,3 +53,14 @@
 <!ENTITY ThunderStats.min "最小">
 <!ENTITY ThunderStats.average "平均">
 <!ENTITY ThunderStats.InTheLast "最后">
+<!ENTITY ThunderStats.CustomQry "自定义">
+<!ENTITY ThunderStats.UpdateCustomQry "获取数据">
+<!ENTITY ThunderStats.CustomQryDataMsg "数据提取对">
+<!ENTITY ThunderStats.From "从">
+<!ENTITY ThunderStats.To "至">
+<!ENTITY ThunderStats.Bookmarks "书签">
+<!ENTITY ThunderStats.CurrentWeek "本周">
+<!ENTITY ThunderStats.CurrentMonth "本月">
+<!ENTITY ThunderStats.LastWeek "过去一周">
+<!ENTITY ThunderStats.LastMonth "过去一月">
+<!ENTITY ThunderStats.Last2Week "过去两周">

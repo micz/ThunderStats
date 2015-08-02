@@ -26,3 +26,4 @@
 <!ENTITY ThunderStats.ManyDays "Numero di giorni da mostrare.">
 <!ENTITY ThunderStats.ManyDaysSmallLabels "Mostra le etichette piccole dei giorni.">
 <!ENTITY ThunderStats.ManyDaysSmallLabels_2 "Si suggerisce di utilizzare questa opzione quando si visualizzano più di 10 giorni.">
+<!ENTITY ThunderStats.CustomQueryBookmarkImmediateUpdate "Quando selezioni un preferito nella ricerca personalizzata, aggiorna immediatamente le statistiche.">

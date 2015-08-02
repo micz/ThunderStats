@@ -18,7 +18,7 @@
 <!ENTITY ThunderStats.DebugDesc "在这里设置调试选项。">
 <!ENTITY ThunderStats.ActivateDebug "激活调试系统">
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "对于选定的账户文件夹，只搜索收件箱文件夹中的邮件。">
-<!ENTITY ThunderStats.GlobalUpdate "Update all tabs at once. If deselected the tabs are updated when switching between them.">
+<!ENTITY ThunderStats.GlobalUpdate "一次更新所有标签页。切换之时，未选中的标签页将被更新。">
 <!ENTITY ThunderStats.TodayTimeGraphShowYesterday "在今天的时间图表中也显示昨天的邮件。">
 <!ENTITY ThunderStats.TodayTimeGraphProgressive "在今天和昨天的时间图表中显示渐进式数据条。">
 <!ENTITY ThunderStats.AggregateAverageNotRounded "在已发送和已接收邮件的合计平均数上显示两个数字。">
@@ -26,3 +26,4 @@
 <!ENTITY ThunderStats.ManyDays "要显示几天。">
 <!ENTITY ThunderStats.ManyDaysSmallLabels "显示较小的“日”标签。">
 <!ENTITY ThunderStats.ManyDaysSmallLabels_2 "建议在显示超过10天时使用此选项。">
+<!ENTITY ThunderStats.CustomQueryBookmarkImmediateUpdate "在选择一个自定义的查询书签时，立即更新统计数据。">

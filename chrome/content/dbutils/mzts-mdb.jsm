@@ -18,6 +18,7 @@ var miczThunderStatsDB = {
 	forbiddenFolders:null,
 	inboxFolders:null,
 	inboxFolders_Account:null,
+	inboxFolderURLs:null,
 	identities_custom_ids:new Array(),
 	identities_custom_ids_mail:new Array(),
 
@@ -215,7 +216,7 @@ var miczThunderStatsDB = {
 		let involves_attribute=this.msgAttributes['involves'];
 		let forbiddenFolders=this.queryGetForbiddenFolders();
 		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
-		let mWhat="f.name as Folder, count(distinct m.headerMessageID) as Num";
+		let mWhat="f.name as Folder, f.folderURI as FolderURI, count(distinct m.headerMessageID) as Num";
 		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join folderLocations f on f.id=m.folderID";
 		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
 		//if mType!=0 do not consider custom identities, they do not send emails
@@ -240,7 +241,7 @@ var miczThunderStatsDB = {
 				mWhere+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
 			}
 		}
-		mWhere+=" GROUP BY f.name";
+		mWhere+=" GROUP BY f.name, f.folderURI";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
@@ -329,6 +330,18 @@ var miczThunderStatsDB = {
 		}else{
 			return arr_inbox_account;
 		}
+	},
+
+	queryGetInboxFolderURLs:function(){
+		if(this.inboxFolderURLs!==null){
+			return this.inboxFolderURLs;
+		}
+		let inboxFolders=miczThunderStatsDB.queryGetInboxFolders(false);
+		let output=new Array();
+		for (let inboxfs of inboxFolders){
+			output.push(inboxfs.folderURL);
+		}
+		return output;
 	},
 
 	//returns the id of an identity from its email

@@ -477,6 +477,9 @@ miczThunderStatsTab.ui={
 
 	drawInbox0FolderSpreadGraph:function(element_id_txt,data_array){
 
+		let inboxFolderURLs=miczThunderStatsDB.queryGetInboxFolderURLs();
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] inboxFolderURLs: "+JSON.stringify(inboxFolderURLs)+"\r\n");
+
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
 		miczThunderStatsTab.ui.last_pos0=0;
@@ -516,6 +519,7 @@ miczThunderStatsTab.ui={
 			let element={};
 			element.value=data_array[key].Num;
 			element.label=data_array[key].Folder;
+			element.folder_url=data_array[key].FolderURI;
 			element.normalized=data_array[key].Num/data_sum;
 			norm_data.push(element);
 		}
@@ -568,7 +572,6 @@ miczThunderStatsTab.ui={
 			  $jQ('path.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false});
 
 			/* ------- TEXT LABELS -------*/
-
 			let text = svg.select(".labels").selectAll("text")
 				.data(pie(norm_data), key);
 
@@ -580,7 +583,14 @@ miczThunderStatsTab.ui={
 				.text(function(d) {
 					return d.data.label+" ("+d.data.value+")";
 				})
-				.attr("class","tooltip")
+				.attr("class",function(d){
+									//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] d.data.folder_url: "+JSON.stringify(d.data.folder_url)+"\r\n");
+									if(inboxFolderURLs.indexOf(d.data.folder_url)>-1){
+										return "tooltip inbox_label";
+									}else{
+										return "tooltip";
+									}
+								})
 				.attr("title",function(d){ return d.data.label+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.Mails")+": "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
 
 			  $jQ('text.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false});

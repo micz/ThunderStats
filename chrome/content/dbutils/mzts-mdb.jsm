@@ -125,13 +125,13 @@ var miczThunderStatsDB = {
 			return this.queryExec(mQuery,mCallback);
 		}
 		if(mInfo=='aggregate'){		//getting max, min, avg
-			mWhat+=", round(strftime('%J',m.date/1000000,'unixepoch')) AS mDay";
+			mWhat+=", round(strftime('%J',m.date/1000000,'unixepoch','localtime')) AS mDay";
 			mWhere+=" GROUP BY mDay";
-			let mQuery='SELECT max(t.Num) as maxNum, min(t.Num) as minNum, round(sum(t.Num)*1.0/(max(t.mDay)-min(t.mDay)),2) as avgNum FROM (';
+			let mQuery='SELECT max(t.Num) as maxNum, min(t.Num) as minNum, round(sum(t.Num)*1.0/(max(t.mDay)-min(t.mDay)+1),2) as avgNum FROM (';
 			mQuery+="SELECT  max(Num) as Num,mDay FROM (";
 			mQuery+="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
-			mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, cast(strftime('%J',"+mFromDate+"000/1000000,'unixepoch') as integer) AS mDay";
-			mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, cast(strftime('%J',"+mToDate+"000/1000000,'unixepoch') as integer) AS mDay";
+			mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, round(strftime('%J',"+mFromDate+"000/1000000,'unixepoch','localtime')) AS mDay";
+			mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, round(strftime('%J',"+mToDate+"000/1000000,'unixepoch','localtime')) AS mDay";
 			mQuery+=') GROUP BY mDay) t';
 			return this.queryExec(mQuery,mCallback);
 		}

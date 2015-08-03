@@ -255,7 +255,7 @@ miczThunderStatsCore.db = {
 
 	getAggregatePeriodMessages:function(mType,mFromDate,mToDate,mIdentity,mCallback){
 		mFromDate.setHours(0,0,0,0);
-		mToDate.setHours(23,59,59,0);
+		mToDate.setHours(23,59,59,59);
 		return miczThunderStatsDB.queryMessages({type:mType,info:'aggregate',hours:null},mFromDate.getTime(),mToDate.getTime(),mIdentity,mCallback);
 	},
 

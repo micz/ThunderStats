@@ -130,8 +130,16 @@ var miczThunderStatsDB = {
 			let mQuery='SELECT max(t.Num) as maxNum, min(t.Num) as minNum, round(sum(t.Num)*1.0/(max(t.mDay)-min(t.mDay)+1),2) as avgNum FROM (';
 			mQuery+="SELECT  max(Num) as Num,mDay FROM (";
 			mQuery+="SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
-			mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, round(strftime('%J',"+mFromDate+"000/1000000,'unixepoch','localtime')) AS mDay";
-			mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, round(strftime('%J',"+mToDate+"000/1000000,'unixepoch','localtime')) AS mDay";
+			let mFromJD=miczThunderStatsUtils.getJulianDate(new Date(mFromDate))+1;
+			let mToJD=miczThunderStatsUtils.getJulianDate(new Date(mToDate));
+			let days_iterator=mToJD-mFromJD;
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes mFromJD: '+mFromJD+' - mFromDate: '+mFromDate+'\r\n');
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes mToJD: '+mToJD+' - mToDate: '+mToDate+'\r\n');
+			//mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, round(strftime('%J',"+mFromDate+"000/1000000,'unixepoch','localtime')) AS mDay";
+			//mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, round(strftime('%J',"+mToDate+"000/1000000,'unixepoch','localtime')) AS mDay";
+			for(let jd=mFromJD;jd<=mToJD;jd++){
+				mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, "+jd+" AS mDay";
+			}
 			mQuery+=') GROUP BY mDay) t';
 			return this.queryExec(mQuery,mCallback);
 		}

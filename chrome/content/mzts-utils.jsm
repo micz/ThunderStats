@@ -73,6 +73,10 @@ var miczThunderStatsUtils = {
 		return dOutput;		//returns a Date() array
 	},
 
+	getJulianDate: function(mDate) {
+    	return Math.floor((mDate.getTime() / 86400000) - (mDate.getTimezoneOffset()/1440) + 2440587.5);
+	},
+
 	array_7days_compare:function(a,b){
 		if(a.day < b.day){
 			return -1;

@@ -133,8 +133,8 @@ var miczThunderStatsDB = {
 			let mFromJD=miczThunderStatsUtils.getJulianDate(new Date(mFromDate))+1;
 			let mToJD=miczThunderStatsUtils.getJulianDate(new Date(mToDate));
 			let days_iterator=mToJD-mFromJD;
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes mFromJD: '+mFromJD+' - mFromDate: '+mFromDate+'\r\n');
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes mToJD: '+mToJD+' - mToDate: '+mToDate+'\r\n');
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes mFromJD: '+mFromJD+' - mFromDate: '+mFromDate+'\r\n');
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab mDB] loadMsgAttributes mToJD: '+mToJD+' - mToDate: '+mToDate+'\r\n');
 			//mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, round(strftime('%J',"+mFromDate+"000/1000000,'unixepoch','localtime')) AS mDay";
 			//mQuery+=" UNION SELECT 0 as Num, '"+mInfo+"' as Info, round(strftime('%J',"+mToDate+"000/1000000,'unixepoch','localtime')) AS mDay";
 			for(let jd=mFromJD;jd<=mToJD;jd++){

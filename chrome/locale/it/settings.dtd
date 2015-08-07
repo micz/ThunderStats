@@ -20,7 +20,7 @@
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Ricerca le mail nelle cartelle di Posta in Arrivo dell'Account selezionato.">
 <!ENTITY ThunderStats.GlobalUpdate "Aggiorna tutti i tab contemporaneamente. Se deselezionato i tab vengono aggiornati quando visualizzati.">
 <!ENTITY ThunderStats.TodayTimeGraphShowYesterday "Mostra anche le mail di ieri nel grapfico orario di oggi.">
-<!ENTITY ThunderStats.TodayTimeGraphProgressive "Mostra il totale progressivo nel grafico orario di ieri e oggi.">
+<!ENTITY ThunderStats.TodayTimeGraphProgressive "Mostra il totale cumulativo nel grafico orario di ieri e oggi.">
 <!ENTITY ThunderStats.AggregateAverageNotRounded "Mostra due decimali nella media aggregata delle mail inviate e ricevute.">
 <!ENTITY ThunderStats.ManyDaysGraph "Grafico di più giorni">
 <!ENTITY ThunderStats.ManyDays "Numero di giorni da mostrare.">

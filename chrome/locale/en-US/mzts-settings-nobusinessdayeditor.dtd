@@ -5,4 +5,4 @@
 <!ENTITY ThunderStats.date.label "Date">
 <!ENTITY ThunderStats.date.desc "Set here the date of the no business day.">
 <!ENTITY ThunderStats.every_year.label "Set this day for every year">
-<!ENTITY ThunderStats.every_year.desc "Check this if you want this day to be no business day on every year.">
+<!ENTITY ThunderStats.every_year.desc "Check this if you want this day to be a no business day on every year.">

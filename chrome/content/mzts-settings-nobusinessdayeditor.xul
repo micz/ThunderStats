@@ -33,7 +33,8 @@
         </columns>
         <rows>
           <row>
-			<label value="&ThunderStats.desc.label;"/>
+			<vbox><label value="&ThunderStats.desc.label;"/>
+			<label value="(&ThunderStats.optional.label;)"/></vbox>
 			<vbox>
 				<textbox id="ThunderStats.desc"/>
 				<description class="ts_field_label">&ThunderStats.desc.desc;</description>

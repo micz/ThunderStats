@@ -2,11 +2,15 @@
 Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
 Components.utils.import("resource://gre/modules/osfile.jsm");
 
 var miczThunderStatsPrefPanel = {
+	
+	nbd_pref_name:'nbd_list',
+	nbd_objs:new Array(),
 
 	onLoad: function(){
 
@@ -115,6 +119,7 @@ var miczThunderStatsPrefPanel = {
 
 		if (("save" in args && args.save)&& ("newnbd" in args && args.newnbd)){
 			miczThunderStatsPrefPanel.createOneNBDRow(doc,container,args.newnbd);
+			miczThunderStatsPrefPanel.saveNBDList();
 			// Select the new nbd, it is at the end of the list.
 			container.selectedIndex=container.itemCount-1;
 			container.ensureIndexIsVisible(container.selectedIndex);
@@ -275,6 +280,14 @@ var miczThunderStatsPrefPanel = {
 		}
 		
 		return output;
+	},
+	
+	saveNBDList:function(){
+		miczThunderStatsNDB.saveToPref(this.nbd_pref_name,this.nbd_objs);
+	},
+	
+	loadNDBList:function(list_el){
+		//TODO
 	},
 
 	// ======= BUSINESS DAYS FUNCTIONS ======= END

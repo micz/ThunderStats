@@ -14,6 +14,7 @@
 <!ENTITY ThunderStats.ManageCustomIdentititesDesc "A custom identity is an email address, different from the ones registered for the account, with you receive mails. Usually are email addresses of mailing lists that you're subcribed to, where your email address is not used in any 'to' or 'cc' fields.">
 <!ENTITY ThunderStats.Account "Account">
 <!ENTITY ThunderStats.CustomIdentititesAccount "Custom Identitites for the selected Account">
+<!ENTITY ThunderStats.CustomIdentititesAccount.Info "Add an email address per line.">
 <!ENTITY ThunderStats.ChangesSavedWarn "The changes made here are immediately saved.">
 <!ENTITY ThunderStats.DebugDesc "Set here the debug options.">
 <!ENTITY ThunderStats.ActivateDebug "Activate debug system">

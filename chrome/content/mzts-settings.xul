@@ -115,6 +115,7 @@
 				</row>
 			<vbox><label control="symbol" value="&ThunderStats.CustomIdentititesAccount;"/>
 		  		<textbox id="ts_cstmids" value="" multiline="true" rows="5" onblur="miczThunderStatsPrefPanel.onCIAccountTextbox();"/>
+		  		<label control="symbol" value="&ThunderStats.CustomIdentititesAccount.Info;"/>
 		  	</vbox>
 			  </rows>
 		</grid>

@@ -15,7 +15,7 @@
 <!ENTITY ThunderStats.Account "Account">
 <!ENTITY ThunderStats.CustomIdentititesAccount "Custom Identitites for the selected Account">
 <!ENTITY ThunderStats.CustomIdentititesAccount.Info "Add an email address per line.">
-<!ENTITY ThunderStats.ChangesSavedWarn "The changes made here are immediately saved.">
+<!ENTITY ThunderStats.ChangesSavedWarn "The changes made here are saved immediately.">
 <!ENTITY ThunderStats.DebugDesc "Set here the debug options.">
 <!ENTITY ThunderStats.ActivateDebug "Activate debug system">
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Search for mails in the Inbox folders only in the folders for the selected account.">

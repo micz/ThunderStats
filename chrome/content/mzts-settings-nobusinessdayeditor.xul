@@ -50,7 +50,7 @@
           <row>
 			<label value="&ThunderStats.every_year.label;"/>
 			<vbox>
-				<checkbox id="ThunderStats.every_year"/>
+				<checkbox id="ThunderStats.every_year" checked="true"/>
 				<description class="ts_field_label">&ThunderStats.every_year.desc;</description>
 			</vbox>
           </row>

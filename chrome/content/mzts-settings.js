@@ -268,7 +268,7 @@ var miczThunderStatsPrefPanel = {
 		
 		if(every_year){	//this NBD is valid every year
 			let year=nbd_moment.format("YYYY");
-			let characters="-\//";
+			//let characters="-\//";
 			let _bundleCW = miczThunderStatsI18n.createBundle("settings");
 			output=output.replace(year,_bundleCW.GetStringFromName("ThunderStats.NBD.year"));
 			//output=output.replace(new RegExp("^[" + characters + "]+|[" + characters + "]+$", "gi"), '');

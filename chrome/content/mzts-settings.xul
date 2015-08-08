@@ -144,9 +144,11 @@
 			<listbox id="ThunderStats.NoBusinessDaysList" flex="1" height="100px" onselect="miczThunderStatsPrefPanel.updateButtonsBD(window);" seltype="single">
 			 <listcols>
 				<listcol flex="1"/>
+				<listcol flex="1"/>
 			</listcols>
             <listhead>
-              <listheader id="NoBusinessDayDate" label=" "/>
+              <listheader id="NoBusinessDayDate" label="&ThunderStats.ListHeader.Date;"/>
+              <listheader id="NoBusinessDayDesc" label="&ThunderStats.ListHeader.Desc;"/>
             </listhead>
           </listbox>
           <vbox>

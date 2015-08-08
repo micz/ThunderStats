@@ -43,56 +43,18 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 
 		if ("arguments" in window && window.arguments[0]){
 			let args = window.arguments[0];
-			let newcol={};
+			let newnbd={};
 
 			if ("action" in args){
 				switch (args.action){
-					case "new":  //Save new custom column
-						//fixed val
-						/*newcol.isBundled=false;
-						newcol.isCustom=true;
-						newcol.def="";
+					case "new":  //Save new NBD
 						//get userinput val
-						if(document.getElementById("ColumnsWizard.id").value.match(re_id)!=null){
-							newcol.index=document.getElementById("ColumnsWizard.id").value.match(re_id).join('').toLowerCase();
-						}else{
-							newcol.index=document.getElementById("ColumnsWizard.id").value.toLowerCase();
-						}
-						//Check if the custom column is already present
-						let prefsc = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-						let prefs = prefsc.getBranch("extensions.ColumnsWizard.CustCols.");
-						let CustColIndexStr=prefs.getCharPref("index");
-						let CustColIndex=new Array();
-						if(CustColIndexStr!=''){
-							CustColIndex=JSON.parse(CustColIndexStr);
-							//dump(">>>>>>>>>>>>> miczColumnsWizard->onAccept: [newcol.index] "+JSON.stringify(newcol.index)+"\r\n");
-							if(CustColIndex.indexOf(newcol.index)!=-1){
-								//custom column already present
-								//dump(">>>>>>>>>>>>> miczColumnsWizard->onAccept: [CustColIndex] "+JSON.stringify(CustColIndex)+"\r\n");
-								let strBundleCW = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
-								let _bundleCW = strBundleCW.createBundle("chrome://columnswizard/locale/mzcw-settings-customcolseditor.properties");
-								let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-								prompts.alert(window,
-											  _bundleCW.GetStringFromName("ColumnsWizard.emptyFields.title"),
-											  _bundleCW.GetStringFromName("ColumnsWizard.duplicatedID.text"));
-								return false;
-							}
-						}
-
-						if(document.getElementById("ColumnsWizard.dbHeader").value.match(re_dbh)!=null){
-							newcol.dbHeader=document.getElementById("ColumnsWizard.dbHeader").value.match(re_dbh).join('').replace(':','').toLowerCase();
-						}else{
-							newcol.dbHeader=document.getElementById("ColumnsWizard.dbHeader").value.toLowerCase();
-						}
-						newcol.labelImagePath=miczColumnsWizardPref_CustColEditor.saveIcon(document.getElementById("ColumnsWizard.iconString").value,newcol.index);
-						newcol.labelString=document.getElementById("ColumnsWizard.labelString").value;
-						newcol.tooltipString=document.getElementById("ColumnsWizard.tooltipString").value;
-						newcol.sortnumber=document.getElementById("ColumnsWizard.sortnumber").checked;
-						newcol.enabled=document.getElementById("ColumnsWizard.enabled").checked;
-						//dump(">>>>>>>>>>>>> miczColumnsWizard->onAccept: [newcol] "+JSON.stringify(newcol)+"\r\n");
-						//miczColumnsWizard_CustCols.addNewCustCol(newcol);
+						newnbd.desc=document.getElementById("ThunderStats.desc").value;
+						newnbd.date=document.getElementById("ThunderStats.date").dateValue;
+						newnbd.every_year=document.getElementById("ThunderStats.every_year").checked;
+						//dump(">>>>>>>>>>>>> miczThunderStats->onAccept: [newnbd] "+JSON.stringify(newnbd)+"\r\n");
 						window.arguments[0].save=true;
-						window.arguments[0].newcol=newcol;*/
+						window.arguments[0].newnbd=newnbd;
 					break;
 					case "edit":	//Modify the custom column
 						/*let currcol=JSON.parse(args.currcol);

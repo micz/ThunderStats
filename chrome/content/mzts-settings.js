@@ -109,12 +109,11 @@ var miczThunderStatsPrefPanel = {
 
 		window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
 
-		if (("save" in args && args.save)&& ("newcol" in args && args.newcol)){
-			/*miczColumnsWizard_CustCols.addNewCustCol(args.newcol);
-			miczColumnsWizardPref_CustomColsGrid.createOneCustomColRow(doc,container,args.newcol);
-			// Select the new custcols, it is at the end of the list.
+		if (("save" in args && args.save)&& ("newnbd" in args && args.newnbd)){
+			miczThunderStatsPrefPanel.createOneNBDRow(doc,container,args.newnbd);
+			// Select the new nbd, it is at the end of the list.
 			container.selectedIndex=container.itemCount-1;
-			container.ensureIndexIsVisible(container.selectedIndex);*/
+			container.ensureIndexIsVisible(container.selectedIndex);
 		}
 
 	},
@@ -126,7 +125,7 @@ var miczThunderStatsPrefPanel = {
 		if(container.selectedIndex==-1) return;
 		if(doc.getElementById("editButtonBD").disabled) return;
 
-		let args = {"action":"edit","currcol":JSON.stringify(container.selectedItem._customcol)};
+		let args = {"action":"edit","currcol":JSON.stringify(container.selectedItem._nbd)};
 
 		window.openDialog("chrome://columnswizard/content/mzcw-settings-customcolseditor.xul", "CustColsEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
 
@@ -167,6 +166,96 @@ var miczThunderStatsPrefPanel = {
 
 		//remove the custom col from the listbox
 		miczColumnsWizardPref_CustomColsGrid.deleteOneCustomColRow(container,container.selectedIndex);*/
+	},
+
+
+	createOneNBDRow:function(doc,container,currcol){
+
+		if (!container) return;
+		let listitem = doc.createElement("listitem");
+
+		//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol {"+JSON.stringify(currcol)+"}\r\n");
+
+		let dateCell = doc.createElement("listcell");
+		dateCell.setAttribute("label",currcol.date);
+		listitem.appendChild(dateCell);
+
+		let descCell = doc.createElement("listcell");
+		descCell.setAttribute("label",currcol.desc);
+		listitem.appendChild(descCell);
+
+		listitem._nbd=currcol;
+
+		container.appendChild(listitem);
+		// We have to attach this listener to the listitem, even though we only care
+		// about clicks on the enabledCell. However, attaching to that item doesn't
+		// result in any events actually getting received.
+		listitem.addEventListener("click", this.onNBDItemClick, true);
+		listitem.addEventListener("dblclick", this.onNBDItemDoubleClick, true);
+		return listitem;
+	},
+
+	editOneNBDRow:function(doc,container,currcol,idx_col){
+		/*let strBundleCW = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+		let _bundleCW = strBundleCW.createBundle("chrome://columnswizard/locale/overlay.properties");
+
+		if (!container) return;
+		let listitem = container.getItemAtIndex(idx_col);
+		if(!listitem) return;
+
+		//dump(">>>>>>>>>>>>> miczColumnsWizard: [editOneCustomColRow] listitem "+JSON.stringify(listitem)+"\r\n");
+
+		let activeCell = listitem.childNodes[0];
+		activeCell.setAttribute("enabled",currcol.enabled);
+		if(currcol.isCustom){
+			activeCell.setAttribute("label","*");
+		}
+
+		let idCell = listitem.childNodes[1];
+		idCell.setAttribute("label",currcol.index);
+
+		let mailheaderCell = listitem.childNodes[2];
+		mailheaderCell.setAttribute("label",currcol.dbHeader);
+
+		let labelString = '';
+		let tooltipString = '';
+		if(currcol.isBundled){
+			labelString = _bundleCW.GetStringFromName("ColumnsWizard"+currcol.index+".label");
+			tooltipString = _bundleCW.GetStringFromName("ColumnsWizard"+currcol.index+"Desc.label");
+		}else{
+			labelString = currcol.labelString;
+			tooltipString = currcol.tooltipString;
+		}
+
+		let titleCell = listitem.childNodes[3];
+		titleCell.setAttribute("label",labelString);
+		if((!currcol.labelImagePath)||(currcol.labelImagePath=="")){	//no image for this cust col
+			titleCell.setAttribute("image","");
+		}else{
+			titleCell.setAttribute("image","file://"+currcol.labelImagePath);
+			titleCell.setAttribute("class", "listcell-iconic cw_col_icon");
+		}
+
+		let tooltipCell = listitem.childNodes[4];
+		tooltipCell.setAttribute("label",tooltipString);
+
+		listitem._customcol=currcol;
+
+		return listitem;*/
+	},
+
+	onNBDItemClick: function(event)
+	{
+		//do nothing special
+		return;
+	},
+
+	onNBDItemDoubleClick:function(event){
+		// we only care about button 0 (left click) events
+		if (event.button != 0)
+		  return;
+
+		miczThunderStatsPrefPanel.editOneNBDRow(win);
 	},
 
 	// ======= BUSINESS DAYS FUNCTIONS ======= END

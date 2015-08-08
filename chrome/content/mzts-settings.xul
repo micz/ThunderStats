@@ -209,4 +209,5 @@
     </tabbox>
   </prefpane>
   <script type="application/x-javascript" src="chrome://thunderstats/content/mzts-settings.js" />
+  <script type="application/x-javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.min.js" />
 </prefwindow>

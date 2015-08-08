@@ -2,12 +2,16 @@
 Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
 Components.utils.import("resource://gre/modules/osfile.jsm");
 
 var miczThunderStatsPrefPanel = {
 
 	onLoad: function(){
+
+		//Setting the correct locale to display dates and times
+		moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 
 		//Loading accounts
 		let chosen_strt_acc=miczThunderStatsPrefs.getCharPref_TS('strt_acc');
@@ -88,7 +92,7 @@ var miczThunderStatsPrefPanel = {
 	},
 
 	// ======= BUSINESS DAYS FUNCTIONS =======
-	updateButtons: function(win){
+	updateNBDButtons: function(win){
 		let doc = win.document;
 		let currlist=doc.getElementById('ThunderStats.NoBusinessDaysList');
 		let numSelected = currlist.selectedItems.length;
@@ -177,7 +181,7 @@ var miczThunderStatsPrefPanel = {
 		//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol {"+JSON.stringify(currcol)+"}\r\n");
 
 		let dateCell = doc.createElement("listcell");
-		dateCell.setAttribute("label",currcol.date);
+		dateCell.setAttribute("label",miczThunderStatsPrefPanel.formatNBDDateString(currcol.date,currcol.every_year));
 		listitem.appendChild(dateCell);
 
 		let descCell = doc.createElement("listcell");
@@ -256,6 +260,21 @@ var miczThunderStatsPrefPanel = {
 		  return;
 
 		miczThunderStatsPrefPanel.editOneNBDRow(win);
+	},
+	
+	formatNBDDateString:function(nbd_date,every_year){	//nbd_date is a Date object
+		let nbd_moment=moment(nbd_date);
+		let output=nbd_moment.format("L");
+		
+		if(every_year){	//this NBD is valid every year
+			let year=nbd_moment.format("YYYY");
+			let characters="-\//";
+			let _bundleCW = miczThunderStatsI18n.createBundle("settings");
+			output=output.replace(year,_bundleCW.GetStringFromName("ThunderStats.NBD.year"));
+			//output=output.replace(new RegExp("^[" + characters + "]+|[" + characters + "]+$", "gi"), '');
+		}
+		
+		return output;
 	},
 
 	// ======= BUSINESS DAYS FUNCTIONS ======= END

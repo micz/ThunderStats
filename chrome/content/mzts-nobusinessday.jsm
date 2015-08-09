@@ -11,7 +11,7 @@ var miczThunderStatsNBD = {
 	},
 
 	saveToPref:function(pref_name,nbd_objs){
-		return miczThunderStatsPrefs.setCharPref_TS(pref_name,JSON.stringify(ndb_objs));
+		return miczThunderStatsPrefs.setCharPref_TS(pref_name,JSON.stringify(nbd_objs));
 	},
 
 }

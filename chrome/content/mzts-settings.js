@@ -186,6 +186,7 @@ var miczThunderStatsPrefPanel = {
 		//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol {"+JSON.stringify(currcol)+"}\r\n");
 
 		let nbd_date_string = miczThunderStatsNBD.formatNBDDateString(currcol,moment);
+		currcol.date_string=nbd_date_string;
 		let dateCell = doc.createElement("listcell");
 		dateCell.setAttribute("label",nbd_date_string);
 		listitem.appendChild(dateCell);

@@ -8,7 +8,7 @@ Components.utils.import("resource://thunderstats/miczLogger.jsm");
 Components.utils.import("resource://gre/modules/osfile.jsm");
 
 var miczThunderStatsPrefPanel = {
-	
+
 	nbd_pref_name:'nbd_list',
 	nbd_objs:new Array(),
 
@@ -266,11 +266,11 @@ var miczThunderStatsPrefPanel = {
 
 		miczThunderStatsPrefPanel.editOneNBDRow(win);
 	},
-	
+
 	formatNBDDateString:function(nbd_date,every_year){	//nbd_date is a Date object
 		let nbd_moment=moment(nbd_date);
 		let output=nbd_moment.format("L");
-		
+
 		if(every_year){	//this NBD is valid every year
 			let year=nbd_moment.format("YYYY");
 			//let characters="-\//";
@@ -278,14 +278,14 @@ var miczThunderStatsPrefPanel = {
 			output=output.replace(year,_bundleCW.GetStringFromName("ThunderStats.NBD.year"));
 			//output=output.replace(new RegExp("^[" + characters + "]+|[" + characters + "]+$", "gi"), '');
 		}
-		
+
 		return output;
 	},
-	
+
 	saveNBDList:function(){
-		miczThunderStatsNDB.saveToPref(this.nbd_pref_name,this.nbd_objs);
+		miczThunderStatsNBD.saveToPref(this.nbd_pref_name,this.nbd_objs);
 	},
-	
+
 	loadNDBList:function(list_el){
 		//TODO
 	},

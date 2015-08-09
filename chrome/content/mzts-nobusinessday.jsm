@@ -9,7 +9,7 @@ var miczThunderStatsNBD = {
 		let nbds_str=miczThunderStatsPrefs.getCharPref_TS(pref_name);
 		return JSON.parse(nbds_str);
 	},
-	
+
 	saveToPref:function(pref_name,nbd_objs){
 		return miczThunderStatsPrefs.setCharPref_TS(pref_name,JSON.stringify(ndb_objs));
 	},

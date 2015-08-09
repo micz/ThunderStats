@@ -43,7 +43,6 @@
       <tabs>
         <tab label="&ThunderStats.TabSettings.label;"/>
         <tab label="&ThunderStats.TabCustomIdentities.label;"/>
-        <tab label="&ThunderStats.TabSettingsDebug.label;"/>
         <tab label="&ThunderStats.TabInfo.label;"/>
       </tabs>
       <tabpanels>
@@ -91,6 +90,8 @@
             <label control="symbol" value=" "/>
 			  </rows>
 		</grid>
+		    <checkbox id="ThunderStats.debug_checkbox" label="&ThunderStats.ActivateDebug;"
+            preference="ThunderStats.debug" />
           <label control="symbol" value=" "/>
           <label control="symbol" value=" "/>
           <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>
@@ -121,13 +122,6 @@
 		</grid>
 		  <label control="symbol" value="&ThunderStats.ChangesSavedWarn;"/>
           <label control="symbol" value="&ThunderStats.ReopenTabDesc;"/>
-        </tabpanel>
-        <tabpanel id="tstab_debug" orient="vertical">
-		  <label control="symbol" value="&ThunderStats.DebugDesc;"/>
-          <label control="symbol" value=" "/>
-          <checkbox id="ThunderStats.debug_checkbox" label="&ThunderStats.ActivateDebug;"
-            preference="ThunderStats.debug" />
-          <label control="symbol" value=" "/>
         </tabpanel>
         <tabpanel id="tstab_info" orient="vertical">
 	  <description class="mzts-desc-big">&ThunderStats.InfoMainDesc;</description>

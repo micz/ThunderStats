@@ -1,7 +1,6 @@
 <!ENTITY ThunderStats.SettingsTitle "ThunderStats Settings">
 <!ENTITY ThunderStats.GlobalDescSettingTab "Use these options to customize your ThunderStats experience!">
 <!ENTITY ThunderStats.TabSettings.label "General">
-<!ENTITY ThunderStats.TabSettingsDebug.label "Debug">
 <!ENTITY ThunderStats.TabCustomIdentities.label "Custom Identities">
 <!ENTITY ThunderStats.TabInfo.label "Info">
 <!ENTITY ThunderStats.InfoMainDesc "This addon is free and developed in my spare time. If you're using it in your every day routine, feel free to support it with a little donation clicking on the link below. Thanks!!">
@@ -16,7 +15,6 @@
 <!ENTITY ThunderStats.CustomIdentititesAccount "Custom Identitites for the selected Account">
 <!ENTITY ThunderStats.CustomIdentititesAccount.Info "Add an email address per line.">
 <!ENTITY ThunderStats.ChangesSavedWarn "The changes made here are saved immediately.">
-<!ENTITY ThunderStats.DebugDesc "Set here the debug options.">
 <!ENTITY ThunderStats.ActivateDebug "Activate debug system">
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Search for mails in the Inbox folders only in the folders for the selected account.">
 <!ENTITY ThunderStats.GlobalUpdate "Update all tabs at once. If deselected the tabs are updated when switching between them.">

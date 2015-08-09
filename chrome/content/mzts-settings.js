@@ -9,7 +9,7 @@ Components.utils.import("resource://gre/modules/osfile.jsm");
 
 var miczThunderStatsPrefPanel = {
 
-	nbd_pref_name:'nbd_list',
+	nbd_pref_name:'bday.nbd_list',
 	nbd_objs:new Array(),
 
 	onLoad: function(){

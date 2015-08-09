@@ -10,7 +10,7 @@ Components.utils.import("resource://gre/modules/osfile.jsm");
 var miczThunderStatsPrefPanel = {
 
 	nbd_pref_name:'bday.nbd_list',
-	nbd_objs:new Array(),
+	nbd_objs:{},
 
 	onLoad: function(){
 
@@ -185,8 +185,9 @@ var miczThunderStatsPrefPanel = {
 
 		//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol {"+JSON.stringify(currcol)+"}\r\n");
 
+		let nbd_date_string = miczThunderStatsNBD.formatNBDDateString(currcol,moment);
 		let dateCell = doc.createElement("listcell");
-		dateCell.setAttribute("label",miczThunderStatsPrefPanel.formatNBDDateString(currcol.date,currcol.every_year));
+		dateCell.setAttribute("label",nbd_date_string);
 		listitem.appendChild(dateCell);
 
 		let descCell = doc.createElement("listcell");
@@ -194,6 +195,7 @@ var miczThunderStatsPrefPanel = {
 		listitem.appendChild(descCell);
 
 		listitem._nbd=currcol;
+		this.nbd_objs[nbd_date_string]=currcol;
 
 		container.appendChild(listitem);
 		// We have to attach this listener to the listitem, even though we only care
@@ -265,21 +267,6 @@ var miczThunderStatsPrefPanel = {
 		  return;
 
 		miczThunderStatsPrefPanel.editOneNBDRow(win);
-	},
-
-	formatNBDDateString:function(nbd_date,every_year){	//nbd_date is a Date object
-		let nbd_moment=moment(nbd_date);
-		let output=nbd_moment.format("L");
-
-		if(every_year){	//this NBD is valid every year
-			let year=nbd_moment.format("YYYY");
-			//let characters="-\//";
-			let _bundleCW = miczThunderStatsI18n.createBundle("settings");
-			output=output.replace(year,_bundleCW.GetStringFromName("ThunderStats.NBD.year"));
-			//output=output.replace(new RegExp("^[" + characters + "]+|[" + characters + "]+$", "gi"), '');
-		}
-
-		return output;
 	},
 
 	saveNBDList:function(){

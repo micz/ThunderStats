@@ -104,23 +104,23 @@ var miczThunderStatsPrefPanel = {
 		let numSelected = currlist.selectedItems.length;
 		let oneSelected = (numSelected == 1);
 		if(oneSelected){
-			doc.getElementById("editButton").disabled=true;
-			doc.getElementById("deleteButton").disabled=true;
+			doc.getElementById("editButtonNBD").disabled=false;
+			doc.getElementById("deleteButtonNBD").disabled=false;
 		}else{
-			doc.getElementById("editButton").disabled=false;
-			doc.getElementById("deleteButton").disabled=false;
+			doc.getElementById("editButtonNBD").disabled=true;
+			doc.getElementById("deleteButtonNBD").disabled=true;
 		}
 	},
 
-	onNewNBDDate: function(win){
-		let doc = win.document;
+	onNewNBDDate: function(){
+		let doc = document;
 		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
 		let args = {"action":"new"};
 
 		window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
 
 		if (("save" in args && args.save)&& ("newnbd" in args && args.newnbd)){
-			miczThunderStatsPrefPanel.createOneNBDRow(doc,container,args.newnbd);
+			miczThunderStatsPrefPanel.createOneNBDRow(doc,container,args.newnbd,true);
 			miczThunderStatsPrefPanel.saveNBDList();
 			// Select the new nbd, it is at the end of the list.
 			container.selectedIndex=container.itemCount-1;
@@ -129,30 +129,28 @@ var miczThunderStatsPrefPanel = {
 
 	},
 
-	onEditNBDDate: function(win){
-		let doc = win.document;
-		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
+	onEditNBDDate: function(){
+		let container = document.getElementById('ThunderStats.NoBusinessDaysList');
 
 		if(container.selectedIndex==-1) return;
-		if(doc.getElementById("editButtonBD").disabled) return;
+		if(document.getElementById("editButtonNBD").disabled) return;
 
-		let args = {"action":"edit","currcol":JSON.stringify(container.selectedItem._nbd)};
+		let args = {"action":"edit","nbd":JSON.stringify(container.selectedItem._nbd)};
 
-		window.openDialog("chrome://columnswizard/content/mzcw-settings-customcolseditor.xul", "CustColsEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
+		window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
 
-		if (("save" in args && args.save)&& ("newcol" in args && args.newcol)){
-			/*//save the cust col in the pref
-			miczColumnsWizard_CustCols.updateCustCol(args.newcol);
+		if (("save" in args && args.save)&& ("newnbd" in args && args.newnbd)){
 			//update the cust col in the listbox
-			miczColumnsWizardPref_CustomColsGrid.editOneCustomColRow(doc,container,args.newcol,container.selectedIndex);
-			// Select the editedcustcols
-			container.ensureIndexIsVisible(container.selectedIndex);*/
+			miczThunderStatsPrefPanel.editOneNBDRow(document,container,args.newnbd,container.selectedIndex);
+			miczThunderStatsPrefPanel.saveNBDList();
+			// Select the edited nbd
+			container.ensureIndexIsVisible(container.selectedIndex);
 		}
 
 	},
 
-	onDeleteNBDDate: function(win){
-		let doc = win.document;
+	onDeleteNBDDate: function(){
+		let doc = document;
 		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
 
 		if(container.selectedIndex==-1) return;
@@ -181,12 +179,11 @@ var miczThunderStatsPrefPanel = {
 	
 	createNBDRows:function(doc,container){
 		for(let nbdr in this.nbd_objs){
-			this.createOneNBDRow(doc,container,this.nbd_objs[nbdr]);
+			this.createOneNBDRow(doc,container,this.nbd_objs[nbdr],false);
 		}
 	},
 
-	createOneNBDRow:function(doc,container,currcol){
-
+	createOneNBDRow:function(doc,container,currcol,force_save_obj){
 		if (!container) return;
 		let listitem = doc.createElement("listitem");
 
@@ -203,7 +200,9 @@ var miczThunderStatsPrefPanel = {
 		listitem.appendChild(descCell);
 
 		listitem._nbd=currcol;
-		this.nbd_objs[nbd_date_string]=currcol;
+		if(force_save_obj){
+			this.nbd_objs[nbd_date_string]=currcol;
+		}
 
 		container.appendChild(listitem);
 		// We have to attach this listener to the listitem, even though we only care
@@ -215,52 +214,26 @@ var miczThunderStatsPrefPanel = {
 	},
 
 	editOneNBDRow:function(doc,container,currcol,idx_col){
-		/*let strBundleCW = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
-		let _bundleCW = strBundleCW.createBundle("chrome://columnswizard/locale/overlay.properties");
-
 		if (!container) return;
 		let listitem = container.getItemAtIndex(idx_col);
 		if(!listitem) return;
 
-		//dump(">>>>>>>>>>>>> miczColumnsWizard: [editOneCustomColRow] listitem "+JSON.stringify(listitem)+"\r\n");
+		//dump(">>>>>>>>>>>>> miczThunderStats: [editOneNBDRow] listitem "+JSON.stringify(listitem)+"\r\n");
 
 		let activeCell = listitem.childNodes[0];
-		activeCell.setAttribute("enabled",currcol.enabled);
-		if(currcol.isCustom){
-			activeCell.setAttribute("label","*");
-		}
 
-		let idCell = listitem.childNodes[1];
-		idCell.setAttribute("label",currcol.index);
+		let nbd_date_string = miczThunderStatsNBD.formatNBDDateString(currcol,moment);
+		currcol.date_string=nbd_date_string;
+		let dateCell = listitem.childNodes[1];
+		dateCell.setAttribute("label",nbd_date_string);
 
-		let mailheaderCell = listitem.childNodes[2];
-		mailheaderCell.setAttribute("label",currcol.dbHeader);
+		let descCell = listitem.childNodes[2];
+		descCell.setAttribute("label",currcol.desc);
 
-		let labelString = '';
-		let tooltipString = '';
-		if(currcol.isBundled){
-			labelString = _bundleCW.GetStringFromName("ColumnsWizard"+currcol.index+".label");
-			tooltipString = _bundleCW.GetStringFromName("ColumnsWizard"+currcol.index+"Desc.label");
-		}else{
-			labelString = currcol.labelString;
-			tooltipString = currcol.tooltipString;
-		}
-
-		let titleCell = listitem.childNodes[3];
-		titleCell.setAttribute("label",labelString);
-		if((!currcol.labelImagePath)||(currcol.labelImagePath=="")){	//no image for this cust col
-			titleCell.setAttribute("image","");
-		}else{
-			titleCell.setAttribute("image","file://"+currcol.labelImagePath);
-			titleCell.setAttribute("class", "listcell-iconic cw_col_icon");
-		}
-
-		let tooltipCell = listitem.childNodes[4];
-		tooltipCell.setAttribute("label",tooltipString);
-
-		listitem._customcol=currcol;
-
-		return listitem;*/
+		listitem._nbd=currcol;
+		this.nbd_objs[nbd_date_string]=currcol;
+		
+		return listitem;
 	},
 
 	onNBDItemClick: function(event)
@@ -274,7 +247,7 @@ var miczThunderStatsPrefPanel = {
 		if (event.button != 0)
 		  return;
 
-		miczThunderStatsPrefPanel.editOneNBDRow(win);
+		miczThunderStatsPrefPanel.onEditNBDDate();
 	},
 
 	saveNBDList:function(){

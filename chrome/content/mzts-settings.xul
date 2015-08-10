@@ -141,7 +141,7 @@
 			<groupbox>
   				<caption label="&ThunderStats.NoBusinessDaysList.groupbox;"/>
 			 <hbox>
-			<listbox id="ThunderStats.NoBusinessDaysList" flex="1" height="100px" onselect="miczThunderStatsPrefPanel.updateButtonsBD(window);" seltype="single">
+			<listbox id="ThunderStats.NoBusinessDaysList" flex="1" height="100px" onselect="miczThunderStatsPrefPanel.updateNBDButtons(window);" seltype="single">
 			 <listcols>
 				<listcol flex="1"/>
 				<listcol flex="1"/>
@@ -152,14 +152,14 @@
             </listhead>
           </listbox>
           <vbox>
-			  <button id="newButtonBD"
-                  label="&ThunderStats.newButtonBD.label;"
-                  oncommand="miczThunderStatsPrefPanel.onNewNBDDate(window);"/>
-          <button id="editButtonBD" label="&ThunderStats.editButtonBD.label;"
-                  oncommand="miczThunderStatsPrefPanel.onEditNBDDate(window);" disabled="true"/>
-          <button id="deleteButtonBD"
-                  label="&ThunderStats.deleteButtonBD.label;"
-                  oncommand="miczThunderStatsPrefPanel.onDeleteNBDDate(window);" disabled="true"/>
+			  <button id="newButtonNBD"
+                  label="&ThunderStats.newButtonNBD.label;"
+                  oncommand="miczThunderStatsPrefPanel.onNewNBDDate();"/>
+          <button id="editButtonNBD" label="&ThunderStats.editButtonNBD.label;"
+                  oncommand="miczThunderStatsPrefPanel.onEditNBDDate();" disabled="true"/>
+          <button id="deleteButtonNBD"
+                  label="&ThunderStats.deleteButtonNBD.label;"
+                  oncommand="miczThunderStatsPrefPanel.onDeleteNBDDate();" disabled="true"/>
           </vbox>
           </hbox>
           <checkbox id="ThunderStats.EasterNoBusinessDay" preference="ThunderStats.bday.easter" label="&ThunderStats.EasterNoBusinessDay.label;"/>

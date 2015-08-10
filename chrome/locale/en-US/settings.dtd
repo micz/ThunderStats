@@ -37,9 +37,9 @@
 <!ENTITY ThunderStats.WeekDays.groupbox "Weekdays">
 <!ENTITY ThunderStats.WeekDays.desc "Check which weekdays are business days.">
 <!ENTITY ThunderStats.NoBusinessDaysList.groupbox "No Business Days">
-<!ENTITY ThunderStats.newButtonBD.label "New...">
-<!ENTITY ThunderStats.editButtonBD.label "Edit...">
-<!ENTITY ThunderStats.deleteButtonBD.label "Delete">
+<!ENTITY ThunderStats.newButtonNBD.label "New...">
+<!ENTITY ThunderStats.editButtonNBD.label "Edit...">
+<!ENTITY ThunderStats.deleteButtonNBD.label "Delete">
 <!ENTITY ThunderStats.EasterNoBusinessDay.label "Easter and Easter Monday are not business days.">
 <!ENTITY ThunderStats.UseLastBusinessDay "If yesterday is not a business day, show the last business day instead.">
 <!ENTITY ThunderStats.ListHeader.Desc "Description">

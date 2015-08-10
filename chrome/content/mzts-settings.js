@@ -154,27 +154,22 @@ var miczThunderStatsPrefPanel = {
 		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
 
 		if(container.selectedIndex==-1) return;
-		if(doc.getElementById("deleteButtonBD").disabled) return;
+		if(doc.getElementById("deleteButtonNBD").disabled) return;
 
 		//Are you sure?
 		let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-		let strBundleCW = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
-		let _bundleCW = strBundleCW.createBundle("chrome://thunderstats/locale/settings.properties");
+		let _bundleCW = miczThunderStatsI18n.createBundle("settings");
 
-		if(!prompts.confirm(null,_bundleCW.GetStringFromName("ThunderStats.deletePromptBD.title"),_bundleCW.GetStringFromName("ThunderStats.deletePromptBD.text"))) return;
+		if(!prompts.confirm(null,_bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.title"),_bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.text"))) return;
 
 		//get the col id
-		/*let col_idx=container.selectedItem._customcol.index;
+		let nbd_idx=container.selectedItem._nbd.tmp_id;
 		//dump(">>>>>>>>>>>>> miczColumnsWizard: [onDeleteCustomCol] col_idx ["+col_idx+"]\r\n");
 
-		//delete the custom col
-		let ObserverService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
-		//miczColumnsWizard_CustCols.removeCustomColumn(col_idx,ObserverService)
-		//miczColumnsWizard_CustCols.deleteCustCol(col_idx);
-		ObserverService.notifyObservers(null,"CW-deleteCustomColumn",col_idx);
-
-		//remove the custom col from the listbox
-		miczColumnsWizardPref_CustomColsGrid.deleteOneCustomColRow(container,container.selectedIndex);*/
+		//remove the nbd from the listbox and save the list to the prefs
+		miczThunderStatsPrefPanel.deleteOneNBDRow(container,container.selectedIndex);
+		delete this.nbd_objs[nbd_idx];
+		miczThunderStatsPrefPanel.saveNBDList();
 	},
 	
 	createNBDRows:function(doc,container){
@@ -235,6 +230,10 @@ var miczThunderStatsPrefPanel = {
 		this.nbd_objs[currcol.tmp_id]=currcol;
 		
 		return listitem;
+	},
+	
+	deleteOneNBDRow: function(container,col_idx){
+		container.removeItemAt(col_idx);
 	},
 
 	onNBDItemClick: function(event)

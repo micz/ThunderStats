@@ -91,6 +91,16 @@ var miczThunderStatsUtils = {
 		}
 		return 0;
 	},
+	
+	array_nbd_date_compare:function(a,b){
+		if(a.date < b.date){
+			return 1;
+		}
+		if(a.date > b.date){
+			return -1;
+		}
+		return 0;
+	},
 
 	arrayMerge:function(dest,src){
 	  for(let n = 0; n < src.length; ++n){

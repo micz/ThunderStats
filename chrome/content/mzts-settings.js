@@ -265,8 +265,13 @@ var miczThunderStatsPrefPanel = {
 	},
 	
 	reindexNBDArray:function(){
-		dump(">>>>>>>>>>>>> miczThunderStats: [reindexNBDArray] this.nbd_objs BEFORE "+JSON.stringify(this.nbd_objs)+"\r\n");
-		let tmp_array=this.nbd_objs;
+		//dump(">>>>>>>>>>>>> miczThunderStats: [reindexNBDArray] this.nbd_objs BEFORE "+JSON.stringify(this.nbd_objs)+"\r\n");
+		let tmp_array=new Array();
+		for(let nn in this.nbd_objs){
+			tmp_array.push(this.nbd_objs[nn]);
+		}
+		//sort data
+		tmp_array.sort(miczThunderStatsUtils.array_nbd_date_compare);
 		this.nbd_objs={};
 		let ri=1;
 		for(let nbdr in tmp_array){
@@ -274,7 +279,7 @@ var miczThunderStatsPrefPanel = {
 			this.nbd_objs[ri]=tmp_array[nbdr];
 			ri++;
 		}
-		dump(">>>>>>>>>>>>> miczThunderStats: [reindexNBDArray] this.nbd_objs AFTER "+JSON.stringify(this.nbd_objs)+"\r\n");
+		//dump(">>>>>>>>>>>>> miczThunderStats: [reindexNBDArray] this.nbd_objs AFTER "+JSON.stringify(this.nbd_objs)+"\r\n");
 	},
 
 	// ======= BUSINESS DAYS FUNCTIONS ======= END

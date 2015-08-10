@@ -255,7 +255,7 @@ var miczThunderStatsPrefPanel = {
 
 	loadNBDList:function(list_el){
 		let container = document.getElementById(list_el);
-		this.nbd_objs=miczThunderStatsNBD.loadFromPref(miczThunderStatsNBD.nbd_pref_name);
+		this.nbd_objs=miczThunderStatsNBD.readFromPref(miczThunderStatsNBD.nbd_pref_name);
 		//reorder array
 		this.reindexNBDArray();
 		//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] this.nbd_objs {"+JSON.stringify(this.nbd_objs)+"}\r\n");

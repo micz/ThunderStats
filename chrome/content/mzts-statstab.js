@@ -268,16 +268,17 @@ var miczThunderStatsTab = {
 
 	checkLastBusinessDay:function(){
 		let ydate = new Date();
-			ydate.setDate(ydate.getDate() - 1);
-			miczThunderStatsUtils._y_is_last_business_day=miczThunderStatsUtils.isBusinessDay(ydate);
+		ydate.setDate(ydate.getDate() - 1);
+		miczThunderStatsNBD.loadFromPref();
+		miczThunderStatsUtils._y_is_last_business_day=miczThunderStatsUtils.isBusinessDay(ydate);
 
-			if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
-					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
-					let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
-					let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");
-					let re = new RegExp('('+yesterday_string+')(?![^<]*>|[^<>]*<\/)','gi'); // /(yesterday)(?![^<]*>|[^<>]*<\/)/gi
-					$jQ("body *").replaceText(re,lbd_string);
-			}
+		if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
+				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
+				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");
+				let re = new RegExp('('+yesterday_string+')(?![^<]*>|[^<>]*<\/)','gi'); // /(yesterday)(?![^<]*>|[^<>]*<\/)/gi
+				$jQ("body *").replaceText(re,lbd_string);
+		}
 	},
 
 };

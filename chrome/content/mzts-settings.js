@@ -59,7 +59,7 @@ var miczThunderStatsPrefPanel = {
 		request.responseType = "text";
 		request.send(null);
 		
-		this.loadNDBList('ThunderStats.NoBusinessDaysList');
+		this.loadNBDList('ThunderStats.NoBusinessDaysList');
 
 		//Fixing window height
 		sizeToContent();
@@ -135,7 +135,7 @@ var miczThunderStatsPrefPanel = {
 		if(container.selectedIndex==-1) return;
 		if(document.getElementById("editButtonNBD").disabled) return;
 
-		let args = {"action":"edit","nbd":JSON.stringify(container.selectedItem._nbd)};
+		let args = {"action":"edit","newnbd":JSON.stringify(container.selectedItem._nbd)};
 
 		window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
 
@@ -199,10 +199,13 @@ var miczThunderStatsPrefPanel = {
 		descCell.setAttribute("label",currcol.desc);
 		listitem.appendChild(descCell);
 
-		listitem._nbd=currcol;
 		if(force_save_obj){
-			this.nbd_objs[nbd_date_string]=currcol;
+			let nbd_tmp_id=this.nbd_objs.length+1;
+			currcol.tmp_id=nbd_tmp_id;
+			this.nbd_objs[nbd_tmp_id]=currcol;
 		}
+
+		listitem._nbd=currcol;
 
 		container.appendChild(listitem);
 		// We have to attach this listener to the listitem, even though we only care
@@ -220,18 +223,16 @@ var miczThunderStatsPrefPanel = {
 
 		//dump(">>>>>>>>>>>>> miczThunderStats: [editOneNBDRow] listitem "+JSON.stringify(listitem)+"\r\n");
 
-		let activeCell = listitem.childNodes[0];
-
 		let nbd_date_string = miczThunderStatsNBD.formatNBDDateString(currcol,moment);
 		currcol.date_string=nbd_date_string;
-		let dateCell = listitem.childNodes[1];
+		let dateCell = listitem.childNodes[0];
 		dateCell.setAttribute("label",nbd_date_string);
 
-		let descCell = listitem.childNodes[2];
+		let descCell = listitem.childNodes[1];
 		descCell.setAttribute("label",currcol.desc);
 
 		listitem._nbd=currcol;
-		this.nbd_objs[nbd_date_string]=currcol;
+		this.nbd_objs[currcol.tmp_id]=currcol;
 		
 		return listitem;
 	},
@@ -254,11 +255,26 @@ var miczThunderStatsPrefPanel = {
 		miczThunderStatsNBD.saveToPref(this.nbd_pref_name,this.nbd_objs);
 	},
 
-	loadNDBList:function(list_el){
+	loadNBDList:function(list_el){
 		let container = document.getElementById(list_el);
 		this.nbd_objs=miczThunderStatsNBD.loadFromPref(this.nbd_pref_name);
+		//reorder array
+		this.reindexNBDArray();
 		//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] this.nbd_objs {"+JSON.stringify(this.nbd_objs)+"}\r\n");
 		this.createNBDRows(document,container);
+	},
+	
+	reindexNBDArray:function(){
+		dump(">>>>>>>>>>>>> miczThunderStats: [reindexNBDArray] this.nbd_objs BEFORE "+JSON.stringify(this.nbd_objs)+"\r\n");
+		let tmp_array=this.nbd_objs;
+		this.nbd_objs={};
+		let ri=1;
+		for(let nbdr in tmp_array){
+			tmp_array[nbdr].tmp_id=ri;
+			this.nbd_objs[ri]=tmp_array[nbdr];
+			ri++;
+		}
+		dump(">>>>>>>>>>>>> miczThunderStats: [reindexNBDArray] this.nbd_objs AFTER "+JSON.stringify(this.nbd_objs)+"\r\n");
 	},
 
 	// ======= BUSINESS DAYS FUNCTIONS ======= END

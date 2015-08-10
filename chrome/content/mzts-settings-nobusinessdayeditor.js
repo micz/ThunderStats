@@ -16,10 +16,11 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 					//case "new":
 					//break;
 					case "edit":
-						let nbd=JSON.parse(args.nbd);
+						let nbd=JSON.parse(args.newnbd);
+						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] nbd: "+JSON.stringify(nbd)+"\r\n");
 						//fill the fields
 						document.getElementById("ThunderStats.desc").setAttribute("value",nbd.desc);
-						document.getElementById("ThunderStats.date").dateValue=nbd.date;
+						document.getElementById("ThunderStats.date").dateValue=new Date(nbd.date);
 						document.getElementById("ThunderStats.every_year").setAttribute("checked",nbd.every_year);
 						document.getElementById("ThunderStats.desc").focus();
 					break;

@@ -141,7 +141,7 @@
 			<groupbox>
   				<caption label="&ThunderStats.NoBusinessDaysList.groupbox;"/>
 			 <hbox>
-			<listbox id="ThunderStats.NoBusinessDaysList" flex="1" height="100px" onselect="miczThunderStatsPrefPanel.updateNBDButtons(window);" seltype="single">
+			<listbox id="ThunderStats.NoBusinessDaysList" flex="1" height="200px" onselect="miczThunderStatsPrefPanel.updateNBDButtons(window);" seltype="single">
 			 <listcols>
 				<listcol flex="1"/>
 				<listcol flex="1"/>

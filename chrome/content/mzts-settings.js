@@ -58,6 +58,8 @@ var miczThunderStatsPrefPanel = {
 		request.open("GET", url, true);
 		request.responseType = "text";
 		request.send(null);
+		
+		this.loadNDBList('ThunderStats.NoBusinessDaysList');
 
 		//Fixing window height
 		sizeToContent();
@@ -176,7 +178,12 @@ var miczThunderStatsPrefPanel = {
 		//remove the custom col from the listbox
 		miczColumnsWizardPref_CustomColsGrid.deleteOneCustomColRow(container,container.selectedIndex);*/
 	},
-
+	
+	createNBDRows:function(doc,container){
+		for(let nbdr in this.nbd_objs){
+			this.createOneNBDRow(doc,container,this.nbd_objs[nbdr]);
+		}
+	},
 
 	createOneNBDRow:function(doc,container,currcol){
 
@@ -275,7 +282,10 @@ var miczThunderStatsPrefPanel = {
 	},
 
 	loadNDBList:function(list_el){
-		//TODO
+		let container = document.getElementById(list_el);
+		this.nbd_objs=miczThunderStatsNBD.loadFromPref(this.nbd_pref_name);
+		//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] this.nbd_objs {"+JSON.stringify(this.nbd_objs)+"}\r\n");
+		this.createNBDRows(document,container);
 	},
 
 	// ======= BUSINESS DAYS FUNCTIONS ======= END

@@ -5,6 +5,7 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsUtils"];
 Components.utils.import("resource:///modules/iteratorUtils.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 
 var miczThunderStatsUtils = {
 
@@ -228,7 +229,9 @@ var miczThunderStatsUtils = {
 		}
 
 		//check no business day list
-		//TODO
+		if(miczThunderStatsNBD.checkNoBusinessDay(mDate)){
+			return false;
+		}
 
 		//if we are not on a special day, return the business weekday
 		//dump('>>>>>>>> TS: weekday: '+mDate.getUTCDay()+' is_business: '+miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay())+"\r\n");

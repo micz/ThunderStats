@@ -9,7 +9,6 @@ Components.utils.import("resource://gre/modules/osfile.jsm");
 
 var miczThunderStatsPrefPanel = {
 
-	nbd_pref_name:'bday.nbd_list',
 	nbd_objs:{},
 
 	onLoad: function(){
@@ -251,12 +250,12 @@ var miczThunderStatsPrefPanel = {
 	},
 
 	saveNBDList:function(){
-		miczThunderStatsNBD.saveToPref(this.nbd_pref_name,this.nbd_objs);
+		miczThunderStatsNBD.saveToPref(miczThunderStatsNBD.nbd_pref_name,this.nbd_objs);
 	},
 
 	loadNBDList:function(list_el){
 		let container = document.getElementById(list_el);
-		this.nbd_objs=miczThunderStatsNBD.loadFromPref(this.nbd_pref_name);
+		this.nbd_objs=miczThunderStatsNBD.loadFromPref(miczThunderStatsNBD.nbd_pref_name);
 		//reorder array
 		this.reindexNBDArray();
 		//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] this.nbd_objs {"+JSON.stringify(this.nbd_objs)+"}\r\n");

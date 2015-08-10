@@ -5,6 +5,8 @@ Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 let EXPORTED_SYMBOLS = ["miczThunderStatsNBD"];
 
 var miczThunderStatsNBD = {
+	
+	nbd_pref_name:'bday.nbd_list',
 
 	loadFromPref:function(pref_name){  //return nbd_objs
 		let nbds_str=miczThunderStatsPrefs.getCharPref_TS(pref_name);
@@ -29,5 +31,27 @@ var miczThunderStatsNBD = {
 
 		return output;
 	},
+	
+	checkNoBusinessDay:function(mDate){ //mDate is a Date object
+		let nbd_objs=miczThunderStatsNBD.loadFromPref(miczThunderStatsNBD.nbd_pref_name);
+		let date_array=new Array();
+		
+		//Prepare Date array
+		for(let nn in nbd_objs){
+			let tmpDate=new Date(nbd_objs.date);
+			if(nbd_objs.every_year){
+				tmpDate.setFullYear(Date().getFullYear());
+			}
+			date_array.push(tmpDate);
+		}
+		
+		for(let dd of date_array){
+			if(dd.toDateString()==mDate.toDateString()){
+				return true;
+			}
+		}
+		
+		return false;		
+	},
 
-}
+};

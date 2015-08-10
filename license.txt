@@ -1,4 +1,4 @@
--= LICENSE =-
+LICENSE
 
 ThunderStats is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/.
@@ -32,6 +32,7 @@ jQuery - https://jquery.org/ - Provided under the MIT license: https://jquery.or
 D3 - http://d3js.org/ - Provided under the BSD license: http://opensource.org/licenses/BSD-3-Clause
 Tooltipster - http://iamceege.github.io/tooltipster/ - Provided under the MIT license: http://opensource.org/licenses/MIT
 Moment.js - http://momentjs.com/ - Provided under the MIT license: http://opensource.org/licenses/MIT
+jQuery replaceText - http://benalman.com/projects/jquery-replacetext-plugin/ - Provided under the MIT license: http://opensource.org/licenses/MIT
 
 
 -= Graphics =-

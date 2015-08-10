@@ -757,14 +757,13 @@ miczThunderStatsTab.ui={
 
 
 	drawTimeGraph:function(element_id_txt,data_array,is_today){
-
 		let margin = {
 			top: 10,
-			right: 90,
+			right: 92,
 			bottom: 40,
 			left: 40
 		};
-		let full_width=560;
+		let full_width=562;
 		let full_height=150;
 		let width = full_width - margin.left - margin.right;
 		let height = full_height - margin.top - margin.bottom;
@@ -903,10 +902,14 @@ miczThunderStatsTab.ui={
 					let yt_str="";
 					let ii=data_types.indexOf(d.type);
 					if((ii<=1)&&is_today){
-						yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today")
+						yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today");
 					}else{
 						if((ii>1)||(!is_today)){
-							yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday")
+							if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
+								yt_str=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay_short");
+							}else{
+								yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
+							}
 						}
 					}
 					let value_h_str="";
@@ -976,10 +979,14 @@ miczThunderStatsTab.ui={
 			.text(
 			 function(d, i) {
 				if((i==0)&&is_today){
-					return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.today")
+					return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.today");
 				}else{
 					if((i==2)||(!is_today&&i==0)){
-						return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday")
+						if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
+								return _bundleCW.GetStringFromName("ThunderStats.LastBusinessDay_short");
+							}else{
+								return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
+							}
 					}
 				}
 				return "";

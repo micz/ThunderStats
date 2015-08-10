@@ -35,13 +35,41 @@
         <preference id="ThunderStats.many_days_small_labels"
         name="extensions.ThunderStats.many_days_small_labels"
         type="bool"/>
-        <preference id="ThunderStats.customquery_bookmark_immediate_update"
+        <preference id="ThunderStats.bday.use_last_business_day"
+        name="extensions.ThunderStats.bday.use_last_business_day"
+        type="bool"/>
+        <preference id="ThunderStats.bday.easter"
+        name="extensions.ThunderStats.bday.easter"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday0"
+        name="extensions.ThunderStats.bday.weekday0"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday1"
+        name="extensions.ThunderStats.bday.weekday1"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday2"
+        name="extensions.ThunderStats.bday.weekday2"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday3"
+        name="extensions.ThunderStats.bday.weekday3"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday4"
+        name="extensions.ThunderStats.bday.weekday4"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday5"
+        name="extensions.ThunderStats.bday.weekday5"
+        type="bool"/>
+        <preference id="ThunderStats.bday.weekday6"
+        name="extensions.ThunderStats.bday.weekday6"
+        type="bool"/>
+	<preference id="ThunderStats.customquery_bookmark_immediate_update"
         name="extensions.ThunderStats.customquery_bookmark_immediate_update"
         type="bool"/>
     </preferences>
     <tabbox id="ts_tabbox">
       <tabs>
         <tab label="&ThunderStats.TabSettings.label;"/>
+        <tab label="&ThunderStats.TabBusinessDays.label;"/>
         <tab label="&ThunderStats.TabCustomIdentities.label;"/>
         <tab label="&ThunderStats.TabInfo.label;"/>
       </tabs>
@@ -96,6 +124,53 @@
           <label control="symbol" value=" "/>
           <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>
         </tabpanel>
+        <tabpanel id="tstab_bdays" orient="vertical">
+			<checkbox id="ThunderStats.bday.use_last_business_day_checkbox" preference="ThunderStats.bday.use_last_business_day" label="&ThunderStats.UseLastBusinessDay;"/>
+			<label control="symbol" value=" "/>
+			<groupbox>
+  				<caption label="&ThunderStats.WeekDays.groupbox;"/>
+  				<label control="symbol" value="&ThunderStats.WeekDays.desc;"/>
+  			<hbox>
+			<vbox>
+				<checkbox id="weekday1" preference="ThunderStats.bday.weekday1" label="&ThunderStats.WeekDayMon;"/>
+				<checkbox id="weekday2" preference="ThunderStats.bday.weekday2" label="&ThunderStats.WeekDayTue;"/>
+				<checkbox id="weekday3" preference="ThunderStats.bday.weekday3" label="&ThunderStats.WeekDayWed;"/>
+			</vbox>
+			<vbox>
+				<checkbox id="weekday4" preference="ThunderStats.bday.weekday4" label="&ThunderStats.WeekDayThu;"/>
+				<checkbox id="weekday5" preference="ThunderStats.bday.weekday5" label="&ThunderStats.WeekDayFri;"/>
+				<checkbox id="weekday6" preference="ThunderStats.bday.weekday6" label="&ThunderStats.WeekDaySat;"/>
+				<checkbox id="weekday0" preference="ThunderStats.bday.weekday0" label="&ThunderStats.WeekDaySun;"/>
+			</vbox>
+			</hbox>
+			</groupbox>
+			<groupbox>
+  				<caption label="&ThunderStats.NoBusinessDaysList.groupbox;"/>
+			 <hbox>
+			<listbox id="ThunderStats.NoBusinessDaysList" flex="1" height="200px" onselect="miczThunderStatsPrefPanel.updateNBDButtons(window);" seltype="single">
+			 <listcols>
+				<listcol flex="1"/>
+				<listcol flex="1"/>
+			</listcols>
+            <listhead>
+              <listheader id="NoBusinessDayDate" label="&ThunderStats.ListHeader.Date;"/>
+              <listheader id="NoBusinessDayDesc" label="&ThunderStats.ListHeader.Desc;"/>
+            </listhead>
+          </listbox>
+          <vbox>
+			  <button id="newButtonNBD"
+                  label="&ThunderStats.newButtonNBD.label;"
+                  oncommand="miczThunderStatsPrefPanel.onNewNBDDate();"/>
+          <button id="editButtonNBD" label="&ThunderStats.editButtonNBD.label;"
+                  oncommand="miczThunderStatsPrefPanel.onEditNBDDate();" disabled="true"/>
+          <button id="deleteButtonNBD"
+                  label="&ThunderStats.deleteButtonNBD.label;"
+                  oncommand="miczThunderStatsPrefPanel.onDeleteNBDDate();" disabled="true"/>
+          </vbox>
+          </hbox>
+          <checkbox id="ThunderStats.EasterNoBusinessDay" preference="ThunderStats.bday.easter" label="&ThunderStats.EasterNoBusinessDay.label;"/>
+          </groupbox>
+		</tabpanel>
         <tabpanel id="tstab_cstmids" orient="vertical">
 		  <label control="symbol" value="&ThunderStats.ManageCustomIdentitites;"/>
           <description class="mzts-desc">&ThunderStats.ManageCustomIdentititesDesc;</description>

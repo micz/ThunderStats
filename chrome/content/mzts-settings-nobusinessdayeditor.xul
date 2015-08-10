@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://thunderstats/locale/mzts-settings-nobusinessdayeditor.dtd">
+<?xml-stylesheet href="css/mzts-settings-nobusinessdayeditor.css" type="text/css"?>
+
+<dialog id="TSNoBusinessDayEditor"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  title="&ThunderStats.NBDEditor.window.title;"
+  style=""
+  windowtype="mailnews:tsnobusinessday"
+  persist="screenX screenY"
+  buttons="accept,cancel"
+  onload="miczThunderStatsPrefPanel_NBDEditor.onLoad();"
+  onunload=""
+  ondialogaccept="miczThunderStatsPrefPanel_NBDEditor.onAccept();">
+
+<stringbundleset id="stringbundleset">
+  <stringbundle id="ThunderStats-string-bundle" src="chrome://thunderstats/locale/mzts-settings-nobusinessday.properties" />
+</stringbundleset>
+
+  <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.js"/>
+  <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/moment-with-locales.min.js"/>
+
+  <vbox id="ts_vbox" flex="1">
+    <groupbox>
+      <caption id="ts_desc.label" label="&ThunderStats.NBDEditor.Desc;"/>
+      <separator class="thin"/>
+      <grid>
+        <columns>
+          <column/>
+          <column/>
+        </columns>
+        <rows>
+          <row>
+			<vbox><label value="&ThunderStats.desc.label;"/>
+			<label value="(&ThunderStats.optional.label;)"/></vbox>
+			<vbox>
+				<textbox id="ThunderStats.desc"/>
+				<description class="ts_field_label">&ThunderStats.desc.desc;</description>
+			</vbox>
+          </row>
+          <row>
+			<label value="&ThunderStats.date.label;"/>
+			<vbox>
+				<vbox id="ThunderStats.date_placeholder"></vbox>
+				<description class="ts_field_label">&ThunderStats.date.desc;</description>
+			</vbox>
+          </row>
+          <row>
+			<label value="&ThunderStats.every_year.label;"/>
+			<vbox>
+				<checkbox id="ThunderStats.every_year" checked="true"/>
+				<description class="ts_field_label">&ThunderStats.every_year.desc;</description>
+			</vbox>
+          </row>
+        </rows>
+      </grid>
+    </groupbox>
+  </vbox>
+</dialog>

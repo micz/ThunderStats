@@ -50,6 +50,21 @@ var miczThunderStatsPrefs = {
 		return this.setCharPref_TS(account_pref,pref_value);
 	},
 
+	checkWeekdayBusiness:function(weekday){	//use an isoweekday
+		if(isNaN(weekday)||(weekday>6)||weekday<0){
+			return undefined;
+		}
+		return this.getBoolPref_TS('bday.weekday'+weekday);
+	},
+
+	get noBusinessEaster() {	//true if easter is not a business day
+		return this.getBoolPref_TS("bday.easter");
+	},
+
+	get useLastBusinessDay() {
+		return this.getBoolPref_TS("bday.use_last_business_day");
+	},
+
 	/*isDebugOption: function(option) { // granular debugging
 		if(!this.isDebug) return false;
 		try {return this.getBoolPref_TS("debug." + option);}

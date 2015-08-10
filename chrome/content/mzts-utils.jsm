@@ -5,9 +5,11 @@ let EXPORTED_SYMBOLS = ["miczThunderStatsUtils"];
 Components.utils.import("resource:///modules/iteratorUtils.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 
 var miczThunderStatsUtils = {
 
+	_y_is_last_business_day:false,
 	_customqry_num_days:0,
 	_customqry_num_days_small_labels:15,
 
@@ -47,7 +49,7 @@ var miczThunderStatsUtils = {
 	},
 
 	getYesterdayString:function(moment){
-		return this.getDateString(moment().subtract(1,'d'));
+		return this.getDateString(moment(miczThunderStatsUtils.getYesterdayDate()));
 	},
 
 	getDaysFromRange: function(mFromDate,mToDate){
@@ -93,6 +95,16 @@ var miczThunderStatsUtils = {
 		}
 		if(a.Date > b.Date){
 			return 1;
+		}
+		return 0;
+	},
+	
+	array_nbd_date_compare:function(a,b){
+		if(a.date < b.date){
+			return 1;
+		}
+		if(a.date > b.date){
+			return -1;
 		}
 		return 0;
 	},
@@ -206,6 +218,66 @@ var miczThunderStatsUtils = {
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] mIdentity: "+JSON.stringify(mIdentity)+"\r\n");
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] mIdentityAddresses: "+JSON.stringify(mIdentityAddresses)+"\r\n");
 		return mIdentityAddresses;
+	},
+
+	isBusinessDay:function(mDate){
+		//check easter
+		if(miczThunderStatsPrefs.noBusinessEaster){
+			let easter_day=miczThunderStatsUtils.getEasterDay(mDate.getFullYear());
+			let easter_monday=new Date(easter_day);
+			easter_monday.setDate(easter_monday.getDate() + 1);
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] easter_day: "+JSON.stringify(easter_day)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] easter_monday: "+JSON.stringify(easter_monday)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsUtils] mDate: "+JSON.stringify(mDate)+"\r\n");
+			if((easter_day.toDateString()==mDate.toDateString())||(easter_monday.toDateString()==mDate.toDateString())){
+				return false;	//if today is easter day or easter monday, return false (today is not a business day!)
+			}
+		}
+
+		//check no business day list
+		if(miczThunderStatsNBD.checkNoBusinessDay(mDate)){
+			return false;
+		}
+
+		//if we are not on a special day, return the business weekday
+		//dump('>>>>>>>> TS: weekday: '+mDate.getUTCDay()+' is_business: '+miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay())+"\r\n");
+		return miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay());
+	},
+
+	getYesterdayDate:function(){
+		let ydate = new Date();
+		ydate.setDate(ydate.getDate() - 1);
+		if(miczThunderStatsPrefs.useLastBusinessDay){
+			//dump('>>>>>>>> TS: day: '+ydate+' is_business: '+miczThunderStatsUtils.isBusinessDay(ydate)+"\r\n");
+			if(!miczThunderStatsUtils.isBusinessDay(ydate)){		//Last Business Day Calc
+				//loop for 5 days. if we found no business day, go on with yesterday
+				let tmp_date=new Date(ydate);
+				for(let idd=0;idd<5;idd++){
+					tmp_date.setDate(tmp_date.getDate() - 1);
+					//dump('>>>>>>>> TS: idd: '+idd+' tmp_date: '+tmp_date.toDateString()+"\r\n");
+					if(miczThunderStatsUtils.isBusinessDay(tmp_date)){
+						ydate=new Date(tmp_date);
+						break;
+					}
+				}
+			}
+		}
+		return ydate;
+	},
+
+	getEasterDay:function(Y) {		//thanks to http://www.irt.org/articles/js052/index.htm
+		let C = Math.floor(Y/100);
+		let N = Y - 19*Math.floor(Y/19);
+		let K = Math.floor((C - 17)/25);
+		let I = C - Math.floor(C/4) - Math.floor((C - K)/3) + 19*N + 15;
+		I = I - 30*Math.floor((I/30));
+		I = I - Math.floor(I/28)*(1 - Math.floor(I/28)*Math.floor(29/(I + 1))*Math.floor((21 - N)/11));
+		let J = Y + Math.floor(Y/4) + I + 2 - C + Math.floor(C/4);
+		J = J - 7*Math.floor(J/7);
+		let L = I - J;
+		let M = (3 + Math.floor((L + 40)/44))-1;
+		let D = L + 28 - 31*Math.floor(M/4);
+		return new Date(Y,M,D);
 	},
 
 };

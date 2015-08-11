@@ -1,6 +1,10 @@
 -= ThunderStats Thunderbird Addon Release Notes =-
 
 ==========
+Version 1.2 - ??/??/2015
+- Added an option to set the Business Days and to show the last business days instead of yesterday.
+-
+==========
 Version 1.1 - 06/08/2015
 - New Tab: Custom query date interval. Choose the dates range you want to calculate the statistics on.
 - Added max, min, average mails sent and received also in the "Many Days" tab.

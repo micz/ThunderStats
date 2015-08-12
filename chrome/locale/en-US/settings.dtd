@@ -45,3 +45,5 @@
 <!ENTITY ThunderStats.UseLastBusinessDay "If yesterday is not a business day, show the last business day instead.">
 <!ENTITY ThunderStats.ListHeader.Desc "Description">
 <!ENTITY ThunderStats.ListHeader.Date "Date">
+<!ENTITY ThunderStats.ReleaseNotes "Release Notes">
+<!ENTITY ThunderStats.License "License">

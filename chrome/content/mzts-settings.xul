@@ -203,7 +203,7 @@
         <label control="symbol" value=" "/>
 	  	<label value="&ThunderStats.DonateLink;" class="text-link mzts-donate" href="http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/donate/"/>
 	  	<label control="symbol" value=" "/>
-		<hbox align="right"><button label="Release notes" oncommand="miczThunderStatsPrefPanel.loadInfoFile('release_notes');" type="radio" group="btn_info_tab" checked="true"/> <button label="License" oncommand="miczThunderStatsPrefPanel.loadInfoFile('license');" type="radio" group="btn_info_tab"/></hbox>
+		<hbox align="right"><button label="&ThunderStats.ReleaseNotes;" oncommand="miczThunderStatsPrefPanel.loadInfoFile('release_notes');" type="radio" group="btn_info_tab" checked="true"/> <button label="&ThunderStats.License;" oncommand="miczThunderStatsPrefPanel.loadInfoFile('license');" type="radio" group="btn_info_tab"/></hbox>
 	  	<textbox id="mzts-release-notes" class="release-notes-text" value="Loading..." multiline="true" readonly="true" flex="7"/>
         </tabpanel>
       </tabpanels>

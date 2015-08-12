@@ -7,14 +7,14 @@ Version 1.2 - ??/??/2015
 ==========
 Version 1.1 - 06/08/2015
 - New Tab: Custom query date interval. Choose the dates range you want to calculate the statistics on.
-- Added max, min, average mails sent and received also in the "Many Days" tab.
-- In the "Many Days" tab the total sent and received mails are now without today mails, that are shown separately.
+- Added max, min, average mails sent and received also in the "Multiple Days" tab.
+- In the "Multiple Days" tab the total sent and received mails are now without today mails, that are shown separately.
 - In the Inbox Zero folder spread graph the inbox folders have now a label with bold text.
 - Fixed a bug in max, min, average mails sent and received over a period elaboration.
 ==========
 Version 1.0.1 - 22/07/2015
 - License file added.
-- In the "Many Days" tab are printed the stats of the choosen number of days and also today, in a different color.
+- In the "Multiple Days" tab are printed the stats of the choosen number of days and also today, in a different color.
 ==========
 Version 1.0 - 14/07/2015
 - First stable release.

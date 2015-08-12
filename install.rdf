@@ -29,6 +29,14 @@
         <em:contributor></em:contributor>
         <em:translator>yfdyh000</em:translator>
       </Description>
+      <Description>
+        <em:locale>it</em:locale>
+        <em:name>ThunderStats</em:name>
+        <em:description>Erinnern Sie sich an die guten alten Statistiken von Eudora? Vermissen Sie sie? Mit dieser Erweiterung können Sie endlich die Benutzung Ihres geliebten Thunderbird im Auge behalten!</em:description>
+        <em:creator>Mic (m@micz.it)</em:creator>
+        <em:contributor></em:contributor>
+        <em:translator>Axel Grude</em:translator>
+      </Description>
     </em:localized>
     <em:targetApplication>
       <Description>

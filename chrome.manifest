@@ -5,6 +5,7 @@ skin		thunderstats	default		chrome/skin/
 locale		thunderstats	en-US		chrome/locale/en-US/
 locale		thunderstats	it			chrome/locale/it/
 locale		thunderstats	zh-CN		chrome/locale/zh-CN/
+locale		thunderstats	de			chrome/locale/de/
 
 style chrome://global/content/customizeToolbar.xul chrome://thunderstats/content/css/mzts-button.css
 overlay	chrome://messenger/content/messenger.xul chrome://thunderstats/content/mzts-overlay.xul

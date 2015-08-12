@@ -9,8 +9,8 @@
 <!ENTITY ThunderStats.StartupAccount "Startup Account">
 <!ENTITY ThunderStats.ChooseAccount "Choose an account">
 <!ENTITY ThunderStats.ShowIdentitiesAccountsSelector "Show identities in the accounts selector">
-<!ENTITY ThunderStats.ManageCustomIdentitites "Manage here your custom identitites.">
-<!ENTITY ThunderStats.ManageCustomIdentititesDesc "A custom identity is an email address, different from the ones registered for the account, with you receive mails. Usually are email addresses of mailing lists that you're subcribed to, where your email address is not used in any 'to' or 'cc' fields.">
+<!ENTITY ThunderStats.ManageCustomIdentitites "Manage your custom identitites here.">
+<!ENTITY ThunderStats.ManageCustomIdentititesDesc "A custom identity is an email address, different from the ones registered for the account, with which you receive mails. Usually these are email addresses of mailing lists that you're subscribed to, where your email address is not used in any 'to' or 'cc' fields.">
 <!ENTITY ThunderStats.Account "Account">
 <!ENTITY ThunderStats.CustomIdentititesAccount "Custom Identitites for the selected Account">
 <!ENTITY ThunderStats.CustomIdentititesAccount.Info "Add an email address per line.">
@@ -18,13 +18,14 @@
 <!ENTITY ThunderStats.ActivateDebug "Activate debug system">
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Search for mails in the Inbox folders only in the folders for the selected account.">
 <!ENTITY ThunderStats.GlobalUpdate "Update all tabs at once. If deselected the tabs are updated when switching between them.">
-<!ENTITY ThunderStats.TodayTimeGraphShowYesterday "Show also yesterday mails in the today time graph.">
+<!ENTITY ThunderStats.TodayTimeGraphShowYesterday "Show also yesterday's mails in the today time graph.">
 <!ENTITY ThunderStats.TodayTimeGraphProgressive "Show cumulative data bars in the today and yesterday time graphs.">
 <!ENTITY ThunderStats.AggregateAverageNotRounded "Show two digits in the aggregate average number of sent and received mails.">
-<!ENTITY ThunderStats.ManyDaysGraph "Many Days Graph">
+<!ENTITY ThunderStats.ManyDaysGraph "Multiple Days Graph">
+<!ENTITY ThunderStats.ManyDaysGraph "Multiple Days Graph">
 <!ENTITY ThunderStats.ManyDays "Number of days to be shown.">
 <!ENTITY ThunderStats.ManyDaysSmallLabels "Show small day's labels.">
-<!ENTITY ThunderStats.ManyDaysSmallLabels_2 "It's suggested to use this option when showing more than 10 days.">
+<!ENTITY ThunderStats.ManyDaysSmallLabels_2 "It's recommended to use this option when showing more than 10 days.">
 <!ENTITY ThunderStats.CustomQueryBookmarkImmediateUpdate "When selecting a custom query bookmark, update the statistics immediately.">
 <!ENTITY ThunderStats.TabBusinessDays.label "Business Days">
 <!ENTITY ThunderStats.WeekDaySun "Sunday">

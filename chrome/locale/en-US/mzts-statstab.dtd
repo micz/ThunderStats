@@ -11,27 +11,27 @@
 <!ENTITY ThunderStats.days "days">
 <!ENTITY ThunderStats.TotalDays "Total days">
 <!ENTITY ThunderStats.Info "Info">
-<!ENTITY ThunderStats.TodayMails "Today Mails">
+<!ENTITY ThunderStats.TodayMails "Today's Mails">
 <!ENTITY ThunderStats.Loading "Loading">
 <!ENTITY ThunderStats.SentMails "Sent mails">
 <!ENTITY ThunderStats.ReceivedMails "Received mails">
 <!ENTITY ThunderStats.InboxZeroStatus "Inbox Zero Status">
 <!ENTITY ThunderStats.TotalInbox "Total mails in the inbox">
 <!ENTITY ThunderStats.TotalInboxUnread "unread">
-<!ENTITY ThunderStats.YesterdayMails "Yesterday Mails">
-<!ENTITY ThunderStats.TodayTop10Recipients "Today Top 10 Recipients">
-<!ENTITY ThunderStats.TodayTop10Senders "Today Top 10 Senders">
+<!ENTITY ThunderStats.YesterdayMails "Yesterday's Mails">
+<!ENTITY ThunderStats.TodayTop10Recipients "Today's Top 10 Recipients">
+<!ENTITY ThunderStats.TodayTop10Senders "Today's Top 10 Senders">
 <!ENTITY ThunderStats.YesterdayThisTime "Yesterday at this time">
 <!ENTITY ThunderStats.sent "sent">
 <!ENTITY ThunderStats.received "received">
-<!ENTITY ThunderStats.TodayFolderLocation "Today mails folder locations chart">
+<!ENTITY ThunderStats.TodayFolderLocation "Today's mails folder locations chart">
 <!ENTITY ThunderStats.NoMailsReceivedToday "No mails received today!">
 <!ENTITY ThunderStats.InboxMailsDateSpreading "Inbox mails date spreading chart">
 <!ENTITY ThunderStats.NoMailsInbox "No mails in the Inbox!">
 <!ENTITY ThunderStats.NoMailsReceivedYesterday "No mails received yesterday!">
-<!ENTITY ThunderStats.YesterdayFolderLocation "Yesterday mails folder locations chart">
-<!ENTITY ThunderStats.YesterdayTop10Recipients "Yesterday Top 10 Recipients">
-<!ENTITY ThunderStats.YesterdayTop10Senders "Yesterday Top 10 Senders">
+<!ENTITY ThunderStats.YesterdayFolderLocation "Yesterday's mails folder locations chart">
+<!ENTITY ThunderStats.YesterdayTop10Recipients "Yesterday's Top 10 Recipients">
+<!ENTITY ThunderStats.YesterdayTop10Senders "Yesterday's Top 10 Senders">
 <!ENTITY ThunderStats.Top10Recipients "Top 10 Recipients">
 <!ENTITY ThunderStats.Top10Senders "Top 10 Senders">
 <!ENTITY ThunderStats.clickhere "click here">
@@ -44,9 +44,9 @@
 <!ENTITY ThunderStats.InboxZeroText_1 "Inbox Zero is a rigorous approach to email management aimed at keeping the inbox empty — or almost empty — at all times.">
 <!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats gives you some insights on how you're managing your inbox.">
 <!ENTITY ThunderStats.OtherInfoTitle "How does this addon works?">
-<!ENTITY ThunderStats.OtherInfoText_1 "All the statistics are calculated from the internal Thunderbird database and are associated to the mail addresses of the selected account.">
-<!ENTITY ThunderStats.OtherInfoText_2 "In the future will be added more features and kinds of analysis, with also the ability to choose a custom time range.">
-<!ENTITY ThunderStats.OtherInfoText_3 "Take a look to what's going on with the development of this addon">
+<!ENTITY ThunderStats.OtherInfoText_1 "All the statistics are calculated from the internal Thunderbird database and are associated with the mail addresses of the selected account.">
+<!ENTITY ThunderStats.OtherInfoText_2 "In the future will be added more features and kinds of analysis, including the ability to choose a custom time range.">
+<!ENTITY ThunderStats.OtherInfoText_3 "Take a look at what's going on with the development of this addon">
 <!ENTITY ThunderStats.SubmitNewIssue "Submit a new issue">
 <!ENTITY ThunderStats.DonationsTitle "Donations">
 <!ENTITY ThunderStats.max "max">

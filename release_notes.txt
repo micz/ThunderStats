@@ -3,7 +3,8 @@
 ==========
 Version 1.2 - ??/??/2015
 - Added an option to set the Business Days and to show the last business days instead of yesterday.
--
+- German (de) locale added. Thanks to Axel Grude (from BabelZilla.org).
+- 
 ==========
 Version 1.1 - 06/08/2015
 - New Tab: Custom query date interval. Choose the dates range you want to calculate the statistics on.

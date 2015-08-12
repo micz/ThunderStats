@@ -1,2 +1,2 @@
 #mzts-button {list-style-image: url("chrome://thunderstats/skin/mzts-button.png");}
-toolbar[iconsize="small"] #mzts-button{list-style-image: url("chrome://thunderstats/skin/mzts-button-small.png");}
+toolbar[iconsize="small"] #mzts-button{list-style-image: url("chrome://thunderstats/skin/mzts-button-small.png"); !important}

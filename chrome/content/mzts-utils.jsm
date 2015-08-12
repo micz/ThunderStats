@@ -10,6 +10,7 @@ Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 var miczThunderStatsUtils = {
 
 	_y_is_last_business_day:false,
+	_y_ui_strings_update_needed:true,
 	_customqry_num_days:0,
 	_customqry_num_days_small_labels:15,
 

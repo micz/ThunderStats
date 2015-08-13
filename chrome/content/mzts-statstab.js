@@ -353,7 +353,7 @@ var miczThunderStatsTab = {
 				let re = new RegExp('('+yesterday_string+')(?![^<]*>|[^<>]*<\/)','gi'); // /(yesterday)(?![^<]*>|[^<>]*<\/)/gi
 				$jQ("body *").replaceText(re,lbd_string);
 				miczThunderStatsUtils._y_ui_strings_update_needed=false;
-				dump(">>>>>>>>>>>>>> [miczThunderStatsTab] checkLastBusinessDay: Strings replaced to ldb!\r\n");
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] checkLastBusinessDay: Strings replaced to ldb!\r\n");
 			}else{	//set it back to yesterday!
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
@@ -361,7 +361,7 @@ var miczThunderStatsTab = {
 				let re = new RegExp('('+lbd_string+')(?![^<]*>|[^<>]*<\/)','gi');
 				$jQ("body *").replaceText(re,yesterday_string);
 				miczThunderStatsUtils._y_ui_strings_update_needed=false;
-				dump(">>>>>>>>>>>>>> [miczThunderStatsTab] checkLastBusinessDay: Strings replaced to y!\r\n");
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] checkLastBusinessDay: Strings replaced to y!\r\n");
 			}
 		}
 	},

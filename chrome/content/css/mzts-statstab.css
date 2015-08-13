@@ -183,7 +183,7 @@ display:none;
 display:block;
 }
 
-#customqry_dashboard{width:100%;background-color:#f1f9fd;}
+#customqry_dashboard{width:100%;background-color:#f1f9fd;font-size:0.9em;}
 ._7days_aggregate_data{
   font-size:0.9em;
   font-weight:normal;

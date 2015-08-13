@@ -259,20 +259,12 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("customqry_totaldays_text");
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] mToDay: "+mToDay+"\r\n");
-		
-		let mInfoSent=1;
-		let mInfoReceived=0;
-		
-		if(document.getElementById('customqry_only_bd').checked){	//we want only business days
-			mInfoSent={type:1,info:1};
-			mInfoReceived={type:0,info:1};
-		}
 
 		//Get sent messages
-		miczThunderStatsCore.db.getManyDaysMessages(mInfoSent,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);
+		miczThunderStatsCore.db.getManyDaysMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);
 
 		//Get received messages
-		miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
+		miczThunderStatsCore.db.getManyDaysMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
 
 		//Get first 10 recipients
 		miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients);
@@ -361,7 +353,7 @@ var miczThunderStatsTab = {
 				let re = new RegExp('('+yesterday_string+')(?![^<]*>|[^<>]*<\/)','gi'); // /(yesterday)(?![^<]*>|[^<>]*<\/)/gi
 				$jQ("body *").replaceText(re,lbd_string);
 				miczThunderStatsUtils._y_ui_strings_update_needed=false;
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] checkLastBusinessDay: Strings replaced to ldb!\r\n");
+				dump(">>>>>>>>>>>>>> [miczThunderStatsTab] checkLastBusinessDay: Strings replaced to ldb!\r\n");
 			}else{	//set it back to yesterday!
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
@@ -369,7 +361,7 @@ var miczThunderStatsTab = {
 				let re = new RegExp('('+lbd_string+')(?![^<]*>|[^<>]*<\/)','gi');
 				$jQ("body *").replaceText(re,yesterday_string);
 				miczThunderStatsUtils._y_ui_strings_update_needed=false;
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] checkLastBusinessDay: Strings replaced to y!\r\n");
+				dump(">>>>>>>>>>>>>> [miczThunderStatsTab] checkLastBusinessDay: Strings replaced to y!\r\n");
 			}
 		}
 	},

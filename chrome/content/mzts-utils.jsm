@@ -53,8 +53,7 @@ var miczThunderStatsUtils = {
 		return this.getDateString(moment(miczThunderStatsUtils.getYesterdayDate()));
 	},
 
-	getDaysFromRange: function(mFromDate,mToDate,mOnlyBD){
-		if(!mOnlyBD) mOnlyBD=false;
+	getDaysFromRange: function(mFromDate,mToDate){
 		let dOutput=new Array();
 		// Calculate days between dates
 		let millisecondsPerDay = 86400 * 1000;	// Day in milliseconds
@@ -71,16 +70,7 @@ var miczThunderStatsUtils = {
 			dTmp.setDate(mFromDate.getDate()+ii);
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dTmp)+'\r\n');
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp.getDate() '+JSON.stringify(dTmp.getDate())+'\r\n');
-			if(mOnlyBD){	//we want only business days
-				if(miczThunderStatsUtils.isBusinessDay(dTmp)){	//add this day only if it's a business day
-					dOutput.push(dTmp);
-					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp ADDED '+JSON.stringify(dTmp)+'\r\n');
-				}else{
-					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp NOT ADDED '+JSON.stringify(dTmp)+'\r\n');
-				}
-			}else{	//we want all days
-				dOutput.push(dTmp);
-			}
+			dOutput.push(dTmp);
 		}
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
 		return dOutput;		//returns a Date() array

@@ -46,7 +46,7 @@ miczThunderStatsTab.TSListener = new miczThunderStatsTab.PrefListener(
   "extensions.ThunderStats.bday.",
   function(branch, name) {//dump("PrefListener call: "+name+"\n\r");
 		miczThunderStatsUtils._y_ui_strings_update_needed=true;
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.TSListener: Prefs modified!\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.TSListener: Prefs modified!\r\n");
   }
 );
 miczThunderStatsTab.TSListener.register(false);

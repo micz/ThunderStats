@@ -74,6 +74,9 @@ var miczThunderStatsUtils = {
 			if(mOnlyBD){	//we want only business days
 				if(miczThunderStatsUtils.isBusinessDay(dTmp)){	//add this day only if it's a business day
 					dOutput.push(dTmp);
+					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp ADDED '+JSON.stringify(dTmp)+'\r\n');
+				}else{
+					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp NOT ADDED '+JSON.stringify(dTmp)+'\r\n');
 				}
 			}else{	//we want all days
 				dOutput.push(dTmp);

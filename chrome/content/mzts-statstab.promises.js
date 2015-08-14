@@ -10,16 +10,20 @@ miczThunderStatsTab.promises.customqry = {
 	
 	setAnalyzer:function(){
 		this._current_analyzer=new Promise(
-			function(resolve, reject) {
+			function(resolve, reject){
 				//TO DO
 			});
+			
+		},
+	
+	doAnalyzer:function(){
 		this._current_analyzer.then(
 			function(val){
 				
 			})
 		.catch(
-			function(reason) {
-				miczLogger.log('Handle rejected promise ('+reason+') here.');
+			function(reason){
+				miczLogger.log('[miczThunderStatsTab.promises.customqry] Handle rejected promise ('+reason+') here.');
 			});
 
 	},

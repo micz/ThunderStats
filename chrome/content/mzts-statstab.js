@@ -254,8 +254,6 @@ var miczThunderStatsTab = {
 		let mToDay = document.getElementById('datepicker_to').dateValue;
 		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
 
-		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);
-		$jQ("#customqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
 		miczThunderStatsTab.ui.showLoadingElement("customqry_totaldays_text");
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] mToDay: "+mToDay+"\r\n");
@@ -283,6 +281,9 @@ var miczThunderStatsTab = {
 		//Aggregate data
 		miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
 		miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
+
+		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);
+		$jQ("#customqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
 	},
 
 	getCurrentIdentityId:function(){	//returning an identities object or a 0 if none selected

@@ -57,32 +57,34 @@ var miczThunderStatsUtils = {
 		if(!mOnlyBD) mOnlyBD=false;
 		let dOutput=new Array();
 		// Calculate days between dates
-		let millisecondsPerDay = 86400 * 1000;	// Day in milliseconds
-		mFromDate.setHours(0,0,0,0);			// Start just after midnight
-		mToDate.setHours(23,59,59,59);			// End just before midnight
-		let diffDate = mToDate - mFromDate;		// Milliseconds between datetime objects
+		let millisecondsPerDay = 86400000;	// Day in milliseconds
+		let mFromDateInternal=new Date(mFromDate);
+		let mToDateInternal=new Date(mToDate);
+		mFromDateInternal.setHours(0,0,0,0);			// Start just after midnight
+		mToDateInternal.setHours(23,59,59,59);			// End just before midnight
+		let diffDate = mToDateInternal - mFromDateInternal;		// Milliseconds between datetime objects
 		let diffDays = Math.ceil(diffDate / millisecondsPerDay);
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] mFromDate '+mFromDate.toLocaleString()+'\r\n');
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] mToDate '+mToDate.toLocaleString()+'\r\n');
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] diffDays '+diffDays+'\r\n');
+		dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] mFromDate '+mFromDate.toLocaleString()+'\r\n');
+		dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] mToDate '+mToDate.toLocaleString()+'\r\n');
+		dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] diffDays '+diffDays+'\r\n');
 
 		for(let ii = 0; ii < diffDays; ii++){
-			let dTmp = new Date(mFromDate);
-			dTmp.setDate(mFromDate.getDate()+ii);
+			let dTmp = new Date(mFromDateInternal);
+			dTmp.setDate(mFromDateInternal.getDate()+ii);
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dTmp)+'\r\n');
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp.getDate() '+JSON.stringify(dTmp.getDate())+'\r\n');
 			if(mOnlyBD){	//we want only business days
 				if(miczThunderStatsUtils.isBusinessDay(dTmp)){	//add this day only if it's a business day
 					dOutput.push(dTmp);
-					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp ADDED '+JSON.stringify(dTmp)+'\r\n');
+					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
 				}else{
-					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp NOT ADDED '+JSON.stringify(dTmp)+'\r\n');
+					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp NOT ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
 				}
 			}else{	//we want all days
 				dOutput.push(dTmp);
 			}
 		}
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
+		dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
 		return dOutput;		//returns a Date() array
 	},
 
@@ -252,7 +254,7 @@ var miczThunderStatsUtils = {
 
 		//if we are not on a special day, return the business weekday
 		//dump('>>>>>>>> TS: weekday: '+mDate.getUTCDay()+' is_business: '+miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay())+"\r\n");
-		return miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay());
+		return miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getDay());
 	},
 
 	getYesterdayDate:function(){

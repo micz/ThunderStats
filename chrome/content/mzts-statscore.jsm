@@ -140,6 +140,8 @@ miczThunderStatsCore.db = {
 		mFromDate.setHours(0,0,0,0);
 		let mToDate=new Date(mGivenDay);
 		mToDate.setHours(24,0,0,0);
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getOneDayMessages] mToDate '+JSON.stringify(mToDate)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getOneDayMessages] mFromDate '+JSON.stringify(mFromDate)+'\r\n');
 		return miczThunderStatsDB.queryMessages(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity,mCallback);
 	},
 
@@ -152,7 +154,7 @@ miczThunderStatsCore.db = {
 		let mOnlyBD=(mInfo!=null);	//if mInfo is set we want only business days
 		let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,mOnlyBD);
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getManyDaysMessages] mDays.length '+JSON.stringify(mDays.length)+'\r\n');
-		miczThunderStatsUtils._customqry_num_days=mDays.length;
+		miczThunderStatsUtils._customqry_num_days=mDays.length;		//update the total number of days, we may have used only the business days
 		for(let mKey in mDays){
 			this.getOneDayMessages({type:mType,info:mDays[mKey],hours:null},mDays[mKey],mIdentity,mCallback);
 		}

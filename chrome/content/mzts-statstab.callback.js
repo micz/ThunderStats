@@ -1271,6 +1271,8 @@ miczThunderStatsTab.callback.stats_customqry_sent = {
 					$jQ("#customqry_sent_total").text(this.total_mail);
 					miczThunderStatsTab.ui.hideLoadingElement("customqry_sent_wait");
 				  	miczLogger.log("Custom query sent messages chart rendered.",0);
+				  	miczThunderStatsTab.promises.customqry.setAnalyzer(1,this.data_customqry_sent);
+				  	miczThunderStatsTab.promises.customqry.doAnalyzer();
 				  	this.total_mail=0;
 				  	this.data_customqry_sent=new Array();
 				}

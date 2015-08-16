@@ -7,12 +7,12 @@ Components.utils.import("resource://thunderstats/miczLogger.jsm");
 miczThunderStatsTab.promises={};
 
 miczThunderStatsTab.promises.customqry = {
-	
-	_current_analyzer:null,
+
+	_analyzers:{},
 	_analyzer_data:{},
-	
+
 	setAnalyzer:function(type,data){	//type: 1 sent, 0 received
-		this._current_analyzer=new Promise(
+		this._analyzers[type]=new Promise(
 			function(resolve, reject){
 				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: type: '+type+'\r\n');
 				this._analyzer_data[type]={};
@@ -31,17 +31,17 @@ miczThunderStatsTab.promises.customqry = {
 				resolve(type);
 			});
 		},
-		
-	resetAnalyzer:function(){
-		this._current_analyzer=null;
+
+	resetAnalyzers:function(){
+		this._analyzers={};
 		this._analyzer_data={};
 	},
-	
-	doAnalyzer:function(){
-		this._current_analyzer.then(
-			function(type){
+
+	doAnalyzer:function(type){
+		this._analyzers[type].then(
+			function(val){
 				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.doAnalyzer: type: '+type+'\r\n');
-				switch(type){
+				switch(val){
 					case 1: //sent
 						miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_sent_wait");
 						miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_sent_wait");

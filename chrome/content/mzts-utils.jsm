@@ -13,6 +13,7 @@ var miczThunderStatsUtils = {
 	_y_ui_strings_update_needed:true,
 	_customqry_num_days:0,
 	_customqry_num_days_small_labels:15,
+	_customqry_analyzer_data:{},
 
 	escapeHTML: function(s){
 		return s.replace(/&/g, '&amp;')

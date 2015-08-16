@@ -9,35 +9,28 @@ miczThunderStatsTab.promises={};
 miczThunderStatsTab.promises.customqry = {
 
 	_analyzers:{},
-	_analyzer_data:{},
 
 	setAnalyzer:function(type,data){	//type: 1 sent, 0 received
 		this._analyzers[type]=new Promise(
 			function(resolve, reject){
 				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: type: '+type+'\r\n');
-				this._analyzer_data[type]={};
-				this._analyzer_data[type]['max']=0;
-				this._analyzer_data[type]['min']=0;
-				this._analyzer_data[type]['avg']=0;
+				miczThunderStatsUtils._customqry_analyzer_data[type]={};
+				miczThunderStatsUtils._customqry_analyzer_data[type]['max']=0;
+				miczThunderStatsUtils._customqry_analyzer_data[type]['min']=0;
+				miczThunderStatsUtils._customqry_analyzer_data[type]['avg']=0;
 				// data structure, from mzts-statstab.ui.js
 				// {day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]}
 				// do aggregate functions (max, min, avg)
+				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: data: '+JSON.stringify(data)+'\r\n');
 				for (let ai in data){
-					this._analyzer_data[type]['max']=data[ai]['num']>this._analyzer_data[type]['max']?data[ai]['num']:this._analyzer_data[type]['max'];
-					this._analyzer_data[type]['min']=data[ai]['num']<this._analyzer_data[type]['min']?data[ai]['num']:this._analyzer_data[type]['min'];
-					this._analyzer_data[type]['avg']+=data[ai]['num'];
+					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: miczThunderStatsUtils._customqry_analyzer_data[type]: '+JSON.stringify(miczThunderStatsUtils._customqry_analyzer_data[type])+'\r\n');
+					miczThunderStatsUtils._customqry_analyzer_data[type]['max']=data[ai]['num']>miczThunderStatsUtils._customqry_analyzer_data[type]['max']?data[ai]['num']:miczThunderStatsUtils._customqry_analyzer_data[type]['max'];
+					miczThunderStatsUtils._customqry_analyzer_data[type]['min']=data[ai]['num']<miczThunderStatsUtils._customqry_analyzer_data[type]['min']?data[ai]['num']:miczThunderStatsUtils._customqry_analyzer_data[type]['min'];
+					miczThunderStatsUtils._customqry_analyzer_data[type]['avg']+=data[ai]['num'];
 				}
-				this._analyzer_data[type]['avg']=this._analyzer_data[type]['avg']/data.length;
+				miczThunderStatsUtils._customqry_analyzer_data[type]['avg']=miczThunderStatsUtils._customqry_analyzer_data[type]['avg']/data.length;
 				resolve(type);
 			});
-		},
-
-	resetAnalyzers:function(){
-		this._analyzers={};
-		this._analyzer_data={};
-	},
-
-	doAnalyzer:function(type){
 		this._analyzers[type].then(
 			function(val){
 				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.doAnalyzer: type: '+type+'\r\n');
@@ -46,9 +39,10 @@ miczThunderStatsTab.promises.customqry = {
 						miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_sent_wait");
 						miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_sent_wait");
 						miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_avg_sent_wait");
-						if(!miczThunderStatsPrefs.getBoolPref_TS('aggregate_average_not_rounded')) avgNum=Math.round(avgNum);
-						$jQ("#customqry_aggregate_max_sent").text(maxNum);
-						$jQ("#customqry_aggregate_min_sent").text(minNum);
+						let avgNum=miczThunderStatsUtils._customqry_analyzer_data[type]['avg'];
+						if(!miczThunderStatsPrefs.getBoolPref_TS('aggregate_average_not_rounded')) avgNum=Math.round(miczThunderStatsUtils._customqry_analyzer_data[type]['avg']);
+						$jQ("#customqry_aggregate_max_sent").text(miczThunderStatsUtils._customqry_analyzer_data[type]['max']);
+						$jQ("#customqry_aggregate_min_sent").text(miczThunderStatsUtils._customqry_analyzer_data[type]['min']);
 						$jQ("#customqry_aggregate_avg_sent").text(avgNum.toLocaleString(miczThunderStatsUtils.getCurrentSystemLocale()));
 						break;
 					case 0: //received
@@ -59,7 +53,11 @@ miczThunderStatsTab.promises.customqry = {
 			function(reason){
 				miczLogger.log('[miczThunderStatsTab.promises.customqry] Handle rejected promise ('+reason+') here.');
 			});
+		},
 
+	resetAnalyzers:function(){
+		this._analyzers={};
+		miczThunderStatsUtils._customqry_analyzer_data={};
 	},
 
 };

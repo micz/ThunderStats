@@ -1336,6 +1336,7 @@ miczThunderStatsTab.callback.stats_customqry_rcvd = {
 					$jQ("#customqry_rcvd_total").text(this.total_mail);
 				  	miczThunderStatsTab.ui.hideLoadingElement("customqry_rcvd_wait");
 				  	miczLogger.log("Custom query received messages chart rendered.",0);
+				  	miczThunderStatsTab.promises.customqry.setAnalyzer(0,this.data_customqry_rcvd);
 				  	this.total_mail=0;
 				  	this.data_customqry_rcvd=new Array();
 				}
@@ -1447,7 +1448,7 @@ miczThunderStatsTab.callback.stats_customqry_senders = {
 	},
 };
 
-miczThunderStatsTab.callback.stats_customqry_aggregate_sent = {
+/*miczThunderStatsTab.callback.stats_customqry_aggregate_sent = {
 	empty:true,
 	data:{},
 	handleResult: function(aResultSet) {
@@ -1497,7 +1498,7 @@ miczThunderStatsTab.callback.stats_customqry_aggregate_sent = {
 		}
 	return false;
 	},
-};
+};*/
 
 miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd = {
 	empty:true,

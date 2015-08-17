@@ -189,6 +189,7 @@ miczThunderStatsTab.ui={
 	},
 
 	formatInvolvedTable: function(involvedData){	//data columns ["ID","Name","Mail","Num"]
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] formatInvolvedTable involvedData: "+JSON.stringify(involvedData)+"\r\n");
 		let outString="<table class='mzts-tinvolved'>";
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 		outString+="<tr class='mzts-thead'><td class='mzts-row-num'>#</td><td>"+_bundleCW.GetStringFromName("ThunderStats.Name")+"</td><td>"+_bundleCW.GetStringFromName("ThunderStats.Mail")+"</td><td>"+_bundleCW.GetStringFromName("ThunderStats.Total")+"</td></tr>";

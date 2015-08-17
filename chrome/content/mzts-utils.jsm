@@ -13,6 +13,9 @@ var miczThunderStatsUtils = {
 	_y_ui_strings_update_needed:true,
 	_customqry_num_days:0,
 	_customqry_num_days_small_labels:15,
+	_customqry_analyzer_data:{},
+	_customqry_only_bd:false,
+	_customqry_days_range:null,
 
 	escapeHTML: function(s){
 		return s.replace(/&/g, '&amp;')
@@ -53,26 +56,44 @@ var miczThunderStatsUtils = {
 		return this.getDateString(moment(miczThunderStatsUtils.getYesterdayDate()));
 	},
 
-	getDaysFromRange: function(mFromDate,mToDate){
+	getDaysFromRange: function(mFromDate,mToDate,mOnlyBD){
+		if(!mOnlyBD) mOnlyBD=false;
+		if(mOnlyBD&&miczThunderStatsUtils._customqry_days_range!=null){	//do not get bd days range many time for one data extract
+			return miczThunderStatsUtils._customqry_days_range;
+		}
 		let dOutput=new Array();
 		// Calculate days between dates
-		let millisecondsPerDay = 86400 * 1000;	// Day in milliseconds
-		mFromDate.setHours(0,0,0,0);			// Start just after midnight
-		mToDate.setHours(23,59,59,59);			// End just before midnight
-		let diffDate = mToDate - mFromDate;		// Milliseconds between datetime objects
+		let millisecondsPerDay = 86400000;	// Day in milliseconds
+		let mFromDateInternal=new Date(mFromDate);
+		let mToDateInternal=new Date(mToDate);
+		mFromDateInternal.setHours(0,0,0,0);			// Start just after midnight
+		mToDateInternal.setHours(23,59,59,59);			// End just before midnight
+		let diffDate = mToDateInternal - mFromDateInternal;		// Milliseconds between datetime objects
 		let diffDays = Math.ceil(diffDate / millisecondsPerDay);
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] mFromDate '+mFromDate.toLocaleString()+'\r\n');
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] mToDate '+mToDate.toLocaleString()+'\r\n');
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] diffDays '+diffDays+'\r\n');
 
 		for(let ii = 0; ii < diffDays; ii++){
-			let dTmp = new Date(mFromDate);
-			dTmp.setDate(mFromDate.getDate()+ii);
+			let dTmp = new Date(mFromDateInternal);
+			dTmp.setDate(mFromDateInternal.getDate()+ii);
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dTmp)+'\r\n');
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp.getDate() '+JSON.stringify(dTmp.getDate())+'\r\n');
-			dOutput.push(dTmp);
+			if(mOnlyBD){	//we want only business days
+				if(miczThunderStatsUtils.isBusinessDay(dTmp)){	//add this day only if it's a business day
+					dOutput.push(dTmp);
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
+				}else{
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp NOT ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
+				}
+			}else{	//we want all days
+				dOutput.push(dTmp);
+			}
 		}
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
+		if(mOnlyBD){
+			miczThunderStatsUtils._customqry_days_range=dOutput;
+		}
 		return dOutput;		//returns a Date() array
 	},
 
@@ -99,7 +120,7 @@ var miczThunderStatsUtils = {
 		}
 		return 0;
 	},
-	
+
 	array_nbd_date_compare:function(a,b){
 		if(a.date < b.date){
 			return 1;
@@ -172,7 +193,7 @@ var miczThunderStatsUtils = {
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(mFolder.URI)+'\r\n');
 		}
 		if (mFolder.hasSubFolders){
-			for (let folder of fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){
+			for (let folder in fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){
 				let tmp_inbox=miczThunderStatsUtils.getInboxFoldersObjects(folder);
 				if(tmp_inbox.length > 0){
 					arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,tmp_inbox);
@@ -242,7 +263,7 @@ var miczThunderStatsUtils = {
 
 		//if we are not on a special day, return the business weekday
 		//dump('>>>>>>>> TS: weekday: '+mDate.getUTCDay()+' is_business: '+miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay())+"\r\n");
-		return miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getUTCDay());
+		return miczThunderStatsPrefs.checkWeekdayBusiness(mDate.getDay());
 	},
 
 	getYesterdayDate:function(){
@@ -279,6 +300,38 @@ var miczThunderStatsUtils = {
 		let M = (3 + Math.floor((L + 40)/44))-1;
 		let D = L + 28 - 31*Math.floor(M/4);
 		return new Date(Y,M,D);
+	},
+
+	aggregateCustomQueryInvolved:function(data){
+		//input data columns [key]["ID","Name","Mail","Num"]
+		//output data columns ["ID","Name","Mail","Num"]
+		let output={};
+		let output_array=new Array();
+		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data: '+JSON.stringify(data)+"\r\n");
+
+		for(let ii in data){
+			for(let jj in data[ii]){
+				if(data[ii][jj]["ID"] in output){
+					//dump(">>>>>>>> TS: [aggregateCustomQueryInvolved] adding.\r\n");
+					//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data[ii]: '+JSON.stringify(data[ii][jj])+"\r\n");
+					output[data[ii][jj]["ID"]]["Num"]+=data[ii][jj]["Num"];
+				}else{
+					//dump(">>>>>>>> TS: [aggregateCustomQueryInvolved] new.\r\n");
+					//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data[ii][jj]: '+JSON.stringify(data[ii][jj])+"\r\n");
+					//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data[ii][jj]["ID"]: '+JSON.stringify(data[ii][jj]["ID"])+"\r\n");
+					output[data[ii][jj]["ID"]]=data[ii][jj];
+				}
+			}
+		}
+		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output: '+JSON.stringify(output)+"\r\n");
+		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output.length: '+JSON.stringify(output.length)+"\r\n");
+
+		for(let ff in output){
+			output_array.push(output[ff]);
+		}
+		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output_array: '+JSON.stringify(output_array)+"\r\n");
+		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output_array.length: '+JSON.stringify(output_array.length)+"\r\n");
+		return output_array;
 	},
 
 };

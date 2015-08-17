@@ -260,21 +260,40 @@ var miczThunderStatsTab = {
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] mToDay: "+mToDay+"\r\n");
 
+		let mInfoSent=1;
+		let mInfoReceived=0;
+
+		if(miczThunderStatsUtils._customqry_only_bd){	//we want only business days
+			mInfoSent={type:1,info:1};
+			mInfoReceived={type:0,info:1};
+		}
+
 		//Get sent messages
-		miczThunderStatsCore.db.getManyDaysMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);
+		miczThunderStatsCore.db.getManyDaysMessages(mInfoSent,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);
 
 		//Get received messages
-		miczThunderStatsCore.db.getManyDaysMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
+		miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
 
-		//Get first 10 recipients
-		miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients);
+		//== If we are using only business days, everything is calculated in the two callbacks above
+		if(!miczThunderStatsUtils._customqry_only_bd){
+			//Get first 10 recipients
+			miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients);
 
-		//Get first 10 senders
-		miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders);
+			//Get first 10 senders
+			miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders);
 
-		//Aggregate data
-		miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
-		miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
+			//Aggregate data
+			miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
+			miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
+		}else{	//with only business days
+			//Get first 10 recipients
+			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients_only_bd);
+			//Get first 10 senders
+			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
+		}
+
+		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);
+		$jQ("#customqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
 	},
 
 	getCurrentIdentityId:function(){	//returning an identities object or a 0 if none selected
@@ -329,6 +348,8 @@ var miczThunderStatsTab = {
 	updateCustomQry: function(){
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry datepicker_from: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry datepicker_to: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
+		miczThunderStatsUtils._customqry_only_bd=document.getElementById('customqry_only_bd').checked;
+		miczThunderStatsUtils._customqry_days_range=null;	//reset days range for this extract
 		miczThunderStatsDB.init();
 		miczThunderStatsTab.getCustomQryStats(miczThunderStatsTab.getCurrentIdentityId());
 		miczThunderStatsDB.close();
@@ -344,7 +365,7 @@ var miczThunderStatsTab = {
 		ydate.setDate(ydate.getDate() - 1);
 		miczThunderStatsNBD.loadFromPref();
 		miczThunderStatsUtils._y_is_last_business_day=miczThunderStatsUtils.isBusinessDay(ydate);
-		
+
 		if(miczThunderStatsUtils._y_ui_strings_update_needed){
 			if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");

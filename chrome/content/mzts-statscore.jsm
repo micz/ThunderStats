@@ -221,6 +221,15 @@ miczThunderStatsCore.db = {
 		let mMax=10;
 		return miczThunderStatsDB.queryGetNumInvolved(mType,mFromDateInternal.getTime(),mToDateInternal.getTime(),mIdentity,mMax,mCallback);
 	},
+	
+	getManyDaysInvolved_OnlyBD:function(mType,mFromDay,mToDay,mIdentity,mCallback){	//mFromDay and mToDay are a Date objects
+		let mOnlyBD=true;
+		let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,mOnlyBD);
+		for(let mKey in mDays){
+			this.getOneDayInvolved(mType,mDays[mKey],mIdentity,mCallback);
+		}
+		return true;
+	},
 
 	getOneDayMessagesFolders:function(mType,mGivenDay,mIdentity,mCallback){
 		let mFromDate=new Date(mGivenDay);

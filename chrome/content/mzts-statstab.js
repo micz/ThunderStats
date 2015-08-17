@@ -257,10 +257,10 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("customqry_totaldays_text");
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] mToDay: "+mToDay+"\r\n");
-		
+
 		let mInfoSent=1;
 		let mInfoReceived=0;
-		
+
 		if(miczThunderStatsUtils._customqry_only_bd){	//we want only business days
 			mInfoSent={type:1,info:1};
 			mInfoReceived={type:0,info:1};
@@ -283,11 +283,11 @@ var miczThunderStatsTab = {
 			//Aggregate data
 			miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
 			miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
-		}else{
+		}else{	//with only business days
 			//Get first 10 recipients
 			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients_only_bd);
 			//Get first 10 senders
-			//miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
+			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
 		}
 
 		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);
@@ -363,7 +363,7 @@ var miczThunderStatsTab = {
 		ydate.setDate(ydate.getDate() - 1);
 		miczThunderStatsNBD.loadFromPref();
 		miczThunderStatsUtils._y_is_last_business_day=miczThunderStatsUtils.isBusinessDay(ydate);
-		
+
 		if(miczThunderStatsUtils._y_ui_strings_update_needed){
 			if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");

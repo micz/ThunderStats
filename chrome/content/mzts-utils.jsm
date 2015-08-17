@@ -15,6 +15,7 @@ var miczThunderStatsUtils = {
 	_customqry_num_days_small_labels:15,
 	_customqry_analyzer_data:{},
 	_customqry_only_bd:false,
+	_customqry_days_range:null,
 
 	escapeHTML: function(s){
 		return s.replace(/&/g, '&amp;')
@@ -57,6 +58,9 @@ var miczThunderStatsUtils = {
 
 	getDaysFromRange: function(mFromDate,mToDate,mOnlyBD){
 		if(!mOnlyBD) mOnlyBD=false;
+		if(mOnlyBD&&miczThunderStatsUtils._customqry_days_range!=null){	//do not get bd days range many time for one data extract
+			return miczThunderStatsUtils._customqry_days_range;
+		}
 		let dOutput=new Array();
 		// Calculate days between dates
 		let millisecondsPerDay = 86400000;	// Day in milliseconds
@@ -87,6 +91,9 @@ var miczThunderStatsUtils = {
 			}
 		}
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
+		if(mOnlyBD){
+			miczThunderStatsUtils._customqry_days_range=dOutput;
+		}
 		return dOutput;		//returns a Date() array
 	},
 

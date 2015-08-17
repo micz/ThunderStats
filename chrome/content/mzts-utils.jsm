@@ -14,6 +14,7 @@ var miczThunderStatsUtils = {
 	_customqry_num_days:0,
 	_customqry_num_days_small_labels:15,
 	_customqry_analyzer_data:{},
+	_customqry_only_bd:false,
 
 	escapeHTML: function(s){
 		return s.replace(/&/g, '&amp;')

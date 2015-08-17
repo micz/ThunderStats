@@ -261,7 +261,7 @@ var miczThunderStatsTab = {
 		let mInfoSent=1;
 		let mInfoReceived=0;
 		
-		if(document.getElementById('customqry_only_bd').checked){	//we want only business days
+		if(miczThunderStatsUtils._customqry_only_bd){	//we want only business days
 			mInfoSent={type:1,info:1};
 			mInfoReceived={type:0,info:1};
 		}
@@ -339,6 +339,7 @@ var miczThunderStatsTab = {
 	updateCustomQry: function(){
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry datepicker_from: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry datepicker_to: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
+		miczThunderStatsUtils._customqry_only_bd=document.getElementById('customqry_only_bd').checked;
 		miczThunderStatsDB.init();
 		miczThunderStatsTab.getCustomQryStats(miczThunderStatsTab.getCurrentIdentityId());
 		miczThunderStatsDB.close();

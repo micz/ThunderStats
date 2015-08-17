@@ -247,6 +247,9 @@ miczThunderStatsTab.ui={
 		let _many_days_max_labels=(_small_labels&&_many_days>1)?0:_many_days+1;
 
 		let margin = {top: 5, right: 0, bottom: _many_days<=_many_days_max_labels?40:60, left: 30};
+		if(_small_labels){
+			margin.top=20;
+		}
 		let barWidth = _many_days<=_many_days_max_labels?50:12;
 		if(_many_days==1) barWidth = 100;
 		let w = ((barWidth + 15) * _many_days) - margin.left - margin.right;

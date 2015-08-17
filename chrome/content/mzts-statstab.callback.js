@@ -1271,7 +1271,9 @@ miczThunderStatsTab.callback.stats_customqry_sent = {
 					$jQ("#customqry_sent_total").text(this.total_mail);
 					miczThunderStatsTab.ui.hideLoadingElement("customqry_sent_wait");
 				  	miczLogger.log("Custom query sent messages chart rendered.",0);
-				  	miczThunderStatsTab.promises.customqry.setAnalyzer(1,this.data_customqry_sent);
+				  	if(miczThunderStatsUtils._customqry_only_bd){	//getting only business day
+						miczThunderStatsTab.promises.customqry.setAnalyzer(1,this.data_customqry_sent);
+					}
 				  	this.total_mail=0;
 				  	this.data_customqry_sent=new Array();
 				}
@@ -1336,7 +1338,9 @@ miczThunderStatsTab.callback.stats_customqry_rcvd = {
 					$jQ("#customqry_rcvd_total").text(this.total_mail);
 				  	miczThunderStatsTab.ui.hideLoadingElement("customqry_rcvd_wait");
 				  	miczLogger.log("Custom query received messages chart rendered.",0);
-				  	miczThunderStatsTab.promises.customqry.setAnalyzer(0,this.data_customqry_rcvd);
+				  	if(miczThunderStatsUtils._customqry_only_bd){	//getting only business day
+						miczThunderStatsTab.promises.customqry.setAnalyzer(0,this.data_customqry_rcvd);
+					}
 				  	this.total_mail=0;
 				  	this.data_customqry_rcvd=new Array();
 				}

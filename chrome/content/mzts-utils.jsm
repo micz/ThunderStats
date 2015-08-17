@@ -301,30 +301,37 @@ var miczThunderStatsUtils = {
 		let D = L + 28 - 31*Math.floor(M/4);
 		return new Date(Y,M,D);
 	},
-	
+
 	aggregateCustomQueryInvolved:function(data){
 		//input data columns [key]["ID","Name","Mail","Num"]
 		//output data columns ["ID","Name","Mail","Num"]
 		let output={};
-		dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data'+JSON.stringify(data)+"\r\n");
-		
+		let output_array=new Array();
+		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data: '+JSON.stringify(data)+"\r\n");
+
 		for(let ii in data){
 			for(let jj in data[ii]){
 				if(data[ii][jj]["ID"] in output){
-					dump(">>>>>>>> TS: [aggregateCustomQueryInvolved] adding.\r\n");
-					dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data[ii]'+JSON.stringify(data[ii][jj])+"\r\n");
+					//dump(">>>>>>>> TS: [aggregateCustomQueryInvolved] adding.\r\n");
+					//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data[ii]: '+JSON.stringify(data[ii][jj])+"\r\n");
 					output[data[ii][jj]["ID"]]["Num"]+=data[ii][jj]["Num"];
 				}else{
-					dump(">>>>>>>> TS: [aggregateCustomQueryInvolved] new.\r\n");
-					dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data[ii][jj]'+JSON.stringify(data[ii][jj])+"\r\n");
-					dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data[ii][jj]["ID"]: '+JSON.stringify(data[ii][jj]["ID"])+"\r\n");
+					//dump(">>>>>>>> TS: [aggregateCustomQueryInvolved] new.\r\n");
+					//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data[ii][jj]: '+JSON.stringify(data[ii][jj])+"\r\n");
+					//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] data[ii][jj]["ID"]: '+JSON.stringify(data[ii][jj]["ID"])+"\r\n");
 					output[data[ii][jj]["ID"]]=data[ii][jj];
 				}
 			}
 		}
-		dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output'+JSON.stringify(output)+"\r\n");
-		
-		return output;
+		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output: '+JSON.stringify(output)+"\r\n");
+		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output.length: '+JSON.stringify(output.length)+"\r\n");
+
+		for(let ff in output){
+			output_array.push(output[ff]);
+		}
+		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output_array: '+JSON.stringify(output_array)+"\r\n");
+		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output_array.length: '+JSON.stringify(output_array.length)+"\r\n");
+		return output_array;
 	},
 
 };

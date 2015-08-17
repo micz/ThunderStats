@@ -1476,7 +1476,7 @@ miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
 					let tmp_array=new Array();
 					for(let kk in this.data){
 						tmp_array.push(this.data[kk]);
-						dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_recipients_only_bd handleCompletion '+JSON.stringify(this.data[kk])+'\r\n');
+						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_recipients_only_bd handleCompletion '+JSON.stringify(this.data[kk])+'\r\n');
 						this.data_customqry_senders_count++;
 					}
 					this.data_customqry_senders.push(tmp_array);
@@ -1489,12 +1489,12 @@ miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
 					if(final_data.length>0){
 						$jQ("#customqry_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(final_data));
 						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
-					}else{					
+					}else{
 						let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 						$jQ("#customqry_recipients").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));
 					}
 				}
-				
+
 				miczLogger.log("Custom query recipients loaded.",0);
 				this.data=new Array();
 				this.empty=true;

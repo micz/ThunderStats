@@ -1452,7 +1452,7 @@ miczThunderStatsTab.callback.stats_customqry_senders = {
 	},
 };
 
-/*miczThunderStatsTab.callback.stats_customqry_aggregate_sent = {
+miczThunderStatsTab.callback.stats_customqry_aggregate_sent = {
 	empty:true,
 	data:{},
 	handleResult: function(aResultSet) {
@@ -1502,7 +1502,7 @@ miczThunderStatsTab.callback.stats_customqry_senders = {
 		}
 	return false;
 	},
-};*/
+};
 
 miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd = {
 	empty:true,

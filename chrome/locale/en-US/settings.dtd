@@ -47,3 +47,5 @@
 <!ENTITY ThunderStats.ListHeader.Date "Date">
 <!ENTITY ThunderStats.ReleaseNotes "Release Notes">
 <!ENTITY ThunderStats.License "License">
+<!ENTITY ThunderStats.CustomQryTabGroupbox "Custom Range Statistics">
+<!ENTITY ThunderStats.CustomQueryDefaultOnlyBD "Always check &quot;Business Days Only&quot; option at startup.">

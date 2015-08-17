@@ -65,6 +65,9 @@
 	<preference id="ThunderStats.customquery_bookmark_immediate_update"
         name="extensions.ThunderStats.customquery_bookmark_immediate_update"
         type="bool"/>
+    <preference id="ThunderStats.customquery_default_only_bd"
+        name="extensions.ThunderStats.customquery_default_only_bd"
+        type="bool"/>
     </preferences>
     <tabbox id="ts_tabbox">
       <tabs>
@@ -103,8 +106,6 @@
             		preference="ThunderStats.today_time_graph_progressive" />
             	<checkbox id="ThunderStats.aggregate_average_not_rounded_checkbox" label="&ThunderStats.AggregateAverageNotRounded;"
             		preference="ThunderStats.aggregate_average_not_rounded" />
-            	<checkbox id="ThunderStats.customquery_bookmark_immediate_update" label="&ThunderStats.CustomQueryBookmarkImmediateUpdate;"
-            		preference="ThunderStats.customquery_bookmark_immediate_update" />
             	<groupbox>
   				<caption label="&ThunderStats.ManyDaysGraph;"/>
 					<hbox align="center">
@@ -114,6 +115,13 @@
 					<checkbox id="ThunderStats.many_days_small_labels_checkbox" label="&ThunderStats.ManyDaysSmallLabels;"
             		preference="ThunderStats.many_days_small_labels" />
             		<label control="symbol" value="(&ThunderStats.ManyDaysSmallLabels_2;)"/>
+				</groupbox>
+				<groupbox>
+  				<caption label="&ThunderStats.CustomQryTabGroupbox;"/>
+					<checkbox id="ThunderStats.customquery_default_only_bd" label="&ThunderStats.CustomQueryDefaultOnlyBD;"
+            		preference="ThunderStats.customquery_default_only_bd" />
+            		<checkbox id="ThunderStats.customquery_bookmark_immediate_update" label="&ThunderStats.CustomQueryBookmarkImmediateUpdate;"
+            		preference="ThunderStats.customquery_bookmark_immediate_update" />
 				</groupbox>
             <label control="symbol" value=" "/>
 			  </rows>

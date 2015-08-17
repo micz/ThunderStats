@@ -65,6 +65,10 @@ var miczThunderStatsPrefs = {
 		return this.getBoolPref_TS("bday.use_last_business_day");
 	},
 
+	get customqryBusinessDayOnlyDefault() {
+		return this.getBoolPref_TS("customquery_default_only_bd");
+	},
+
 	/*isDebugOption: function(option) { // granular debugging
 		if(!this.isDebug) return false;
 		try {return this.getBoolPref_TS("debug." + option);}

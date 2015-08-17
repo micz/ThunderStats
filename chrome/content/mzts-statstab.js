@@ -24,6 +24,10 @@ var miczThunderStatsTab = {
 			//sanitizing value
 			if(miczThunderStatsTab._many_days==0) miczThunderStatsTab._many_days=7;
 
+			if(miczThunderStatsPrefs.customqryBusinessDayOnlyDefault){
+				document.getElementById('customqry_only_bd').checked=true;
+			}
+
 			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale());
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale()+"\r\n");
 			//Setting the correct locale to display dates and times

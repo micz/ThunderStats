@@ -283,6 +283,11 @@ var miczThunderStatsTab = {
 			//Aggregate data
 			miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
 			miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
+		}else{
+			//Get first 10 recipients
+			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients_only_bd);
+			//Get first 10 senders
+			//miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
 		}
 
 		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);

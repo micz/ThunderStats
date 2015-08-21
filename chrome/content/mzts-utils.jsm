@@ -336,11 +336,11 @@ var miczThunderStatsUtils = {
 	},
 
 	get HostSystem(){
-		if (null==this.mHost){
+		if (null==miczThunderStatsUtils.mHost){
 			let osString = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS;
-			this.mHost = osString.toLowerCase();
+			miczThunderStatsUtils.mHost = osString.toLowerCase();
 		}
-		return this.mHost; // linux - winnt - darwin
+		return miczThunderStatsUtils.mHost; // linux - winnt - darwin
 	},
 
 };

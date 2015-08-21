@@ -184,8 +184,11 @@ miczThunderStatsTab.ui={
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
 	},
 
-	openPrefWindow: function () {
-		window.openDialog('chrome://thunderstats/content/mzts-settings.xul','ThunderStats_Settings','non-private,chrome,titlebar,dialog=no,resizable,centerscreen').focus();
+	openPrefWindow:function(){
+		let features = (miczThunderStatsUtils.HostSystem == 'linux') ?
+          'chrome,titlebar,centerscreen,resizable,dependent,instantApply' :
+          'chrome,titlebar,centerscreen,resizable,alwaysRaised,instantApply';
+		window.openDialog('chrome://thunderstats/content/mzts-settings.xul','ThunderStats_Settings',features).focus();
 	},
 
 	formatInvolvedTable: function(involvedData){	//data columns ["ID","Name","Mail","Num"]

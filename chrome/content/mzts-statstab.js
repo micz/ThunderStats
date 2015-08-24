@@ -19,6 +19,8 @@ var miczThunderStatsTab = {
 
 			miczLogger.log("ThunderStats starting...",0);
 
+			miczThunderStatsUtils._y_ui_strings_update_needed=true;
+
 			miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
 			miczThunderStatsTab._many_days=miczThunderStatsPrefs.manyDays;
 			//sanitizing value

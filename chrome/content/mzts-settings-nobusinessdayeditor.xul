@@ -19,8 +19,8 @@
   <stringbundle id="ThunderStats-string-bundle" src="chrome://thunderstats/locale/mzts-settings-nobusinessday.properties" />
 </stringbundleset>
 
+  <script type="application/javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js"/>
   <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.js"/>
-  <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/moment-with-locales.min.js"/>
 
   <vbox id="ts_vbox" flex="1">
     <groupbox>

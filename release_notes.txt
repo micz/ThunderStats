@@ -5,6 +5,8 @@ Version 1.2 - ??/??/2015
 - Added an option to set the Business Days and to show the last business day instead of yesterday.
 - German (de) locale added. Thanks to Real Raven (from BabelZilla.org).
 - In the custom query date interval is now possible to get the data considering only the business days.
+- Fixed a bug in the "Folder Spread Graph" when displaying more folders with the same name.
+- In the "Folder Spread Graph" Inbox folders have colors in the shades of red.
 -
 ==========
 Version 1.1 - 06/08/2015

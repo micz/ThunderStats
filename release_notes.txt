@@ -2,21 +2,21 @@
 
 ==========
 Version 1.2 - ??/??/2015
-- Added an option to set the Business Days and to show the last business days instead of yesterday.
-- German (de) locale added. Thanks to Axel Grude (from BabelZilla.org).
-- In the custom query date interval is now possible to get data considering only business days.
+- Added an option to set the Business Days and to show the last business day instead of yesterday.
+- German (de) locale added. Thanks to Real Raven (from BabelZilla.org).
+- In the custom query date interval is now possible to get the data considering only the business days.
 -
 ==========
 Version 1.1 - 06/08/2015
-- New Tab: Custom query date interval. Choose the dates range you want to calculate the statistics on.
+- New Tab: Custom query date interval. Choose the dates range you want to get the statistics on.
 - Added max, min, average mails sent and received also in the "Multiple Days" tab.
-- In the "Multiple Days" tab the total sent and received mails are now without today mails, that are shown separately.
-- In the Inbox Zero folder spread graph the inbox folders have now a label with bold text.
+- In the "Multiple Days" tab the total sent and received mails are now shown without the today mails, that are shown separately.
+- In the "Inbox Zero" folder spread graph the inbox folders have now a label with bold text.
 - Fixed a bug in max, min, average mails sent and received over a period elaboration.
 ==========
 Version 1.0.1 - 22/07/2015
 - License file added.
-- In the "Multiple Days" tab are printed the stats of the choosen number of days and also today, in a different color.
+- In the "Multiple Days" tab the stats of the choosen number of days are printed. Also today is printed in a different color.
 ==========
 Version 1.0 - 14/07/2015
 - First stable release.

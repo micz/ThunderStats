@@ -71,7 +71,7 @@ font-weight:normal;
 	fill: none;
 }
 
-.chart_hours{overflow:auto;width:100%;height:160px;}
+.chart_hours{overflow:auto;width:100%;height:175px;}
 .chart_hours .axis path, .axis line {
     fill: none;
     stroke: #000;

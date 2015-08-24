@@ -770,7 +770,7 @@ miczThunderStatsTab.ui={
 			bottom: 40,
 			left: 40
 		};
-		let full_width=562;
+		let full_width=560;
 		let full_height=150;
 		let width = full_width - margin.left - margin.right;
 		let height = full_height - margin.top - margin.bottom;

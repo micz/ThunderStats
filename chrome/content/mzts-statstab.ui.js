@@ -482,6 +482,47 @@ miczThunderStatsTab.ui={
 			.call(yAxis);
 	},
 
+	utilDrawInbox0FolderSpreadGraph_getInboxColors:function(num_elements){
+		let output=new Array();
+		let step=Math.floor(255/num_elements);
+		for(let cc=255;cc>127;cc=cc-step){	//darker colors
+			output.push('#'+cc.toString(16)+"0000");
+		}
+		for(let cc=step;cc<127;cc=cc+step){	//ligther colors
+			output.push('#'+parseInt(255).toString(16)+cc.toString(16)+cc.toString(16));
+		}
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getInboxColors] num_elements: "+JSON.stringify(num_elements)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getInboxColors] step: "+JSON.stringify(step)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getInboxColors] output: "+JSON.stringify(output)+"\r\n");
+		return output;
+	},
+
+	utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors:function(num_elements){
+		let output;
+		let output1=["#3182bd","#6baed6","#9ecae1","#c6dbef",
+					  "#e6550d","#fd8d3c","#fdae6b","#fdd0a2",
+					  "#31a354","#74c476","#a1d99b","#c7e9c0",
+					  "#756bb1","#9e9ac8","#bcbddc","#dadaeb",
+					  "#636363","#969696","#bdbdbd","#d9d9d9"];
+		let output2=["#393b79","#5254a3","#6b6ecf","#9c9ede",
+  						"#637939","#8ca252","#b5cf6b","#cedb9c",
+  						"#8c6d31","#bd9e39","#e7ba52","#e7cb94",
+  						"#843c39","#ad494a","#d6616b","#e7969c",
+  						"#7b4173","#a55194","#ce6dbd","#de9ed6"];
+  		if(num_elements<=output1.length){
+			return output1;
+		}else{
+			output=output1.concat(output2);
+		}
+		while(output.length<num_elements){
+			output=output.concat(output1,output2);
+		}
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] num_elements: "+JSON.stringify(num_elements)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] step: "+JSON.stringify(step)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] output: "+JSON.stringify(output)+"\r\n");
+		return output;
+	},
+
 	drawInbox0FolderSpreadGraph:function(element_id_txt,data_array){
 
 		let inboxFolderURLs=miczThunderStatsDB.queryGetInboxFolderURLs();
@@ -547,9 +588,12 @@ miczThunderStatsTab.ui={
 
 		svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-		let key = function(d){ return d.data.label; };
+		let key = function(d){ return d.data.folder_url; };
 
-		let color = d3.scale.category20();
+		//let color = d3.scale.category20c();
+		let color = d3.scale.ordinal().range(miczThunderStatsTab.ui.utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors(norm_data.length));
+		let color_inbox = d3.scale.ordinal().range(miczThunderStatsTab.ui.utilDrawInbox0FolderSpreadGraph_getInboxColors(inboxFolderURLs.length));
+
 
 			/* ------- PIE SLICES -------*/
 			let slice = svg.select(".slices").selectAll("path.slice")
@@ -557,7 +601,8 @@ miczThunderStatsTab.ui={
 
 			slice.enter()
 				.insert("path")
-				.style("fill", function(d) { return color(d.data.label); })
+				.style("fill", function(d) { return inboxFolderURLs.indexOf(d.data.folder_url)>-1?color_inbox(d.data.folder_url):color(d.data.folder_url); })
+				//.style("fill", function(d) { return color(d.data.folder_url); })
 				.attr("class", "slice")
 				.attr("class","tooltip")
 				.attr("title",function(d){ return d.data.label+"<br/>Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});

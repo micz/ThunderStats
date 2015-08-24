@@ -55,7 +55,7 @@ miczThunderStatsTab.ui={
 				$jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key);
 				$jQ("#"+selector_id).change();
 			}else{	//choose the chosen startup account from prefs
-				let strt_acc=miczThunderStatsPrefs.getCharPref_TS('strt_acc');
+				let strt_acc=miczThunderStatsPrefs.startupAccount;
 				if(strt_acc!=0){
 					$jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[strt_acc].key);
 					$jQ("#"+selector_id).change();

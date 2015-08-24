@@ -14,12 +14,20 @@ var miczThunderStatsPrefs = {
 		return this.getBoolPref_TS("debug");
 	},
 
+	get globalUpdate() {
+		return this.getBoolPref_TS('global_update');
+	},
+
 	get showLogPanelStartup() {
 		return this.getBoolPref_TS("log_panel_startup");
 	},
 
 	get showIdentitiesSelector() {
 		return this.getBoolPref_TS("identities_selector");
+	},
+
+	get startupAccount() {
+		return this.getCharPref_TS('strt_acc');
 	},
 
 	get manyDays() {

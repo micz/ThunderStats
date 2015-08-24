@@ -21,7 +21,7 @@ var miczThunderStatsTab = {
 
 			miczThunderStatsUtils._y_ui_strings_update_needed=true;
 
-			miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
+			miczThunderStatsTab._global_update=miczThunderStatsPrefs.globalUpdate;
 			miczThunderStatsTab._many_days=miczThunderStatsPrefs.manyDays;
 			//sanitizing value
 			if(miczThunderStatsTab._many_days==0) miczThunderStatsTab._many_days=7;
@@ -334,7 +334,7 @@ var miczThunderStatsTab = {
 	},
 
 	updateStats: function(){
-		miczThunderStatsTab._global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
+		miczThunderStatsTab._global_update=miczThunderStatsPrefs.globalUpdate;
 		miczThunderStatsTab._many_days=miczThunderStatsPrefs.manyDays;
 		miczThunderStatsTab.checkLastBusinessDay();
 		$jQ("span._many_days").text(miczThunderStatsTab._many_days);

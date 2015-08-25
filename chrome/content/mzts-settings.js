@@ -118,7 +118,11 @@ var miczThunderStatsPrefPanel = {
 		let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
 		let args = {"action":"new"};
 
-		window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
+		let features = (miczThunderStatsUtils.HostSystem == 'linux') ?
+          'chrome,modal,titlebar,centerscreen,resizable,dependent,instantApply' :
+          'chrome,modal,titlebar,centerscreen,resizable,alwaysRaised,instantApply';
+
+		window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", features, args);
 
 		if (("save" in args && args.save)&& ("newnbd" in args && args.newnbd)){
 			miczThunderStatsPrefPanel.createOneNBDRow(doc,container,args.newnbd,true);
@@ -172,7 +176,7 @@ var miczThunderStatsPrefPanel = {
 		delete this.nbd_objs[nbd_idx];
 		miczThunderStatsPrefPanel.saveNBDList();
 	},
-	
+
 	createNBDRows:function(doc,container){
 		for(let nbdr in this.nbd_objs){
 			this.createOneNBDRow(doc,container,this.nbd_objs[nbdr],false);
@@ -229,10 +233,10 @@ var miczThunderStatsPrefPanel = {
 
 		listitem._nbd=currcol;
 		this.nbd_objs[currcol.tmp_id]=currcol;
-		
+
 		return listitem;
 	},
-	
+
 	deleteOneNBDRow: function(container,col_idx){
 		container.removeItemAt(col_idx);
 	},
@@ -263,7 +267,7 @@ var miczThunderStatsPrefPanel = {
 		//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] this.nbd_objs {"+JSON.stringify(this.nbd_objs)+"}\r\n");
 		this.createNBDRows(document,container);
 	},
-	
+
 	reindexNBDArray:function(){
 		//dump(">>>>>>>>>>>>> miczThunderStats: [reindexNBDArray] this.nbd_objs BEFORE "+JSON.stringify(this.nbd_objs)+"\r\n");
 		let tmp_array=new Array();

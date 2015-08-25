@@ -354,6 +354,7 @@ var miczThunderStatsTab = {
 	updateCustomQry: function(){
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry datepicker_from: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry datepicker_to: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
+		miczThunderStatsNBD.loadFromPref();
 		miczThunderStatsUtils._customqry_only_bd=document.getElementById('customqry_only_bd').checked;
 		miczThunderStatsUtils._customqry_days_range=null;	//reset days range for this extract
 		miczThunderStatsDB.init();

@@ -1488,7 +1488,7 @@ miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
 					let final_data=miczThunderStatsUtils.aggregateCustomQueryInvolved(this.data_customqry_recipients);
 					if(final_data.length>0){
 						$jQ("#customqry_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(final_data));
-						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
+						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion '+JSON.stringify(this.data)+'\r\n');
 					}else{
 						let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 						$jQ("#customqry_recipients").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));

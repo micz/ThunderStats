@@ -357,6 +357,20 @@ var miczThunderStatsTab = {
 		miczThunderStatsNBD.loadFromPref();
 		miczThunderStatsUtils._customqry_only_bd=document.getElementById('customqry_only_bd').checked;
 		miczThunderStatsUtils._customqry_days_range=null;	//reset days range for this extract
+
+		//if only bd, check if the selected range has some valid day
+		if(miczThunderStatsUtils._customqry_only_bd){
+			let mFromDay = document.getElementById('datepicker_from').dateValue;
+			let mToDay = document.getElementById('datepicker_to').dateValue;
+			let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,true);
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mDays: "+JSON.stringify(mDays)+"\r\n");
+			if(mDays.length==0){	//we have no valid business days, so tell the user
+				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+				alert(_bundleCW.GetStringFromName("ThunderStats.NoValidBusinessDays"));
+				return;
+			}
+		}
+
 		miczThunderStatsDB.init();
 		miczThunderStatsTab.getCustomQryStats(miczThunderStatsTab.getCurrentIdentityId());
 		miczThunderStatsDB.close();

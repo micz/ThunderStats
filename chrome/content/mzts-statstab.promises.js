@@ -16,7 +16,7 @@ miczThunderStatsTab.promises.customqry = {
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: type: '+type+'\r\n');
 				miczThunderStatsUtils._customqry_analyzer_data[type]={};
 				miczThunderStatsUtils._customqry_analyzer_data[type]['max']=0;
-				miczThunderStatsUtils._customqry_analyzer_data[type]['min']=0;
+				miczThunderStatsUtils._customqry_analyzer_data[type]['min']=data[0]['num'];
 				miczThunderStatsUtils._customqry_analyzer_data[type]['avg']=0;
 				// data structure, from mzts-statstab.ui.js
 				// {day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]}
@@ -25,10 +25,12 @@ miczThunderStatsTab.promises.customqry = {
 				for (let ai in data){
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: miczThunderStatsUtils._customqry_analyzer_data[type]: '+JSON.stringify(miczThunderStatsUtils._customqry_analyzer_data[type])+'\r\n');
 					miczThunderStatsUtils._customqry_analyzer_data[type]['max']=data[ai]['num']>miczThunderStatsUtils._customqry_analyzer_data[type]['max']?data[ai]['num']:miczThunderStatsUtils._customqry_analyzer_data[type]['max'];
-					miczThunderStatsUtils._customqry_analyzer_data[type]['min']=data[ai]['num']<miczThunderStatsUtils._customqry_analyzer_data[type]['min']?data[ai]['num']:miczThunderStatsUtils._customqry_analyzer_data[type]['min'];
+					miczThunderStatsUtils._customqry_analyzer_data[type]['min']=data[ai]['num']<=miczThunderStatsUtils._customqry_analyzer_data[type]['min']?data[ai]['num']:miczThunderStatsUtils._customqry_analyzer_data[type]['min'];
 					miczThunderStatsUtils._customqry_analyzer_data[type]['avg']+=data[ai]['num'];
 				}
 				miczThunderStatsUtils._customqry_analyzer_data[type]['avg']=miczThunderStatsUtils._customqry_analyzer_data[type]['avg']/data.length;
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: avg: '+JSON.stringify(miczThunderStatsUtils._customqry_analyzer_data[type]['avg'])+'\r\n');
+				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: min: '+JSON.stringify(miczThunderStatsUtils._customqry_analyzer_data[type]['min'])+'\r\n');
 				resolve(type);
 			});
 		this._analyzers[type].then(

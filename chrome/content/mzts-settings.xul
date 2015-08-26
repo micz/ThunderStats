@@ -20,6 +20,9 @@
       	<preference id="ThunderStats.debug"
         name="extensions.ThunderStats.debug"
         type="bool"/>
+        <preference id="ThunderStats.folderspreadgraph_openinfirsttab"
+        name="extensions.ThunderStats.folderspreadgraph_openinfirsttab"
+        type="bool"/>
         <preference id="ThunderStats.today_time_graph_show_yesterday"
         name="extensions.ThunderStats.today_time_graph_show_yesterday"
         type="bool"/>
@@ -106,6 +109,8 @@
             		preference="ThunderStats.today_time_graph_progressive" />
             	<checkbox id="ThunderStats.aggregate_average_not_rounded_checkbox" label="&ThunderStats.AggregateAverageNotRounded;"
             		preference="ThunderStats.aggregate_average_not_rounded" />
+            	<checkbox id="ThunderStats.folderspreadgraph_openinfirsttab" label="&ThunderStats.folderspreadgraph_openinfirsttab;"
+            preference="ThunderStats.folderspreadgraph_openinfirsttab" />
             	<groupbox>
   				<caption label="&ThunderStats.ManyDaysGraph;"/>
 					<hbox align="center">

@@ -44,6 +44,10 @@ var miczThunderStatsPrefs = {
 		return this.getBoolPref_TS("customquery_bookmark_immediate_update");
 	},
 
+	get openFolderInFirstTab(){
+		return this.getBoolPref_TS("folderspreadgraph_openinfirsttab");
+	},
+
 	accountCustomIdentities:function(account_key){
 		let account_pref='acc_cust_ids.'+account_key;
 		if(this.existsCharPref(this.pref_base+account_pref)){

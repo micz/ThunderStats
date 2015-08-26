@@ -1,6 +1,7 @@
 "use strict";
 
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+Components.utils.import("resource:///modules/MailUtils.js");
 
 miczThunderStatsTab.ui={
 
@@ -525,6 +526,9 @@ miczThunderStatsTab.ui={
 
 		let inboxFolderURLs=miczThunderStatsDB.queryGetInboxFolderURLs();
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] inboxFolderURLs: "+JSON.stringify(inboxFolderURLs)+"\r\n");
+		let mwin=miczThunderStatsUtils.getMail3PaneWindow();
+		//let mtabcontainer=mwin.document.getElementById('tabmail').tabContainer;
+		let mdoc=mwin.document;
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
@@ -636,9 +640,18 @@ miczThunderStatsTab.ui={
 				.attr("class",function(d){
 									//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] d.data.folder_url: "+JSON.stringify(d.data.folder_url)+"\r\n");
 									if(inboxFolderURLs.indexOf(d.data.folder_url)>-1){
-										return "tooltip inbox_label";
+										return "tooltip inbox_label pointer";
 									}else{
-										return "tooltip";
+										return "tooltip pointer";
+									}
+								})
+				.on('click',function(d){
+									if(!miczThunderStatsPrefs.openFolderInFirstTab){
+										mdoc.getElementById("tabmail").openTab("folder",{folder:MailUtils.getFolderForURI(d.data.folder_url)});
+									}else{
+										let tabmail = mdoc.getElementById("tabmail");
+										tabmail.selectTabByIndex(null,0);
+										mwin.gFolderTreeView.selectFolder(MailUtils.getFolderForURI(d.data.folder_url));
 									}
 								})
 				.attr("title",function(d){ return d.data.label+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.Mails")+": "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});

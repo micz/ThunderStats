@@ -343,4 +343,11 @@ var miczThunderStatsUtils = {
 		return miczThunderStatsUtils.mHost; // linux - winnt - darwin
 	},
 
+	getMail3PaneWindow:function getMail3PaneWindow(){
+		let windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1']
+				.getService(Components.interfaces.nsIWindowMediator),
+		    win3pane = windowManager.getMostRecentWindow("mail:3pane");
+		return win3pane;
+	},
+
 };

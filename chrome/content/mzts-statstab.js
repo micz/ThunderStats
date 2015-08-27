@@ -36,7 +36,9 @@ var miczThunderStatsTab = {
 			moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentMomentLocale: "+moment.locale()+"\r\n");
 
-			$jQ("span._many_days").text(miczThunderStatsTab._many_days);
+			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+			$jQ("span._many_days").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.InTheLastNumDays",miczThunderStatsTab._many_days));
+			$jQ("span._many_days_tab").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.LastNumDays",miczThunderStatsTab._many_days));
 
 			miczThunderStatsTab.checkLastBusinessDay();
 
@@ -337,7 +339,9 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab._global_update=miczThunderStatsPrefs.globalUpdate;
 		miczThunderStatsTab._many_days=miczThunderStatsPrefs.manyDays;
 		miczThunderStatsTab.checkLastBusinessDay();
-		$jQ("span._many_days").text(miczThunderStatsTab._many_days);
+		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+		$jQ("span._many_days").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.InTheLastNumDays",miczThunderStatsTab._many_days));
+		$jQ("span._many_days_tab").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.LastNumDays",miczThunderStatsTab._many_days));
 		if(miczThunderStatsTab._global_update){
 			miczThunderStatsDB.init();
 			let current_id=miczThunderStatsTab.getCurrentIdentityId();

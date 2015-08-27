@@ -30,7 +30,7 @@ miczThunderStatsTab.promises.customqry = {
 				}
 				miczThunderStatsUtils._customqry_analyzer_data[type]['avg']=miczThunderStatsUtils._customqry_analyzer_data[type]['avg']/data.length;
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: avg: '+JSON.stringify(miczThunderStatsUtils._customqry_analyzer_data[type]['avg'])+'\r\n');
-				dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: min: '+JSON.stringify(miczThunderStatsUtils._customqry_analyzer_data[type]['min'])+'\r\n');
+				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] promises.customqry.setAnalyzer: min: '+JSON.stringify(miczThunderStatsUtils._customqry_analyzer_data[type]['min'])+'\r\n');
 				resolve(type);
 			});
 		this._analyzers[type].then(

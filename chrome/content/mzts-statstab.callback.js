@@ -660,7 +660,7 @@ miczThunderStatsTab.callback.stats_today_inbox0_folder_spread = {
 	empty:true,
 	data:new Array(),
   handleResult: function(aResultSet) {
-    let result = miczThunderStatsCore.db.getResultObject(["Folder","FolderURI","Num","mKey"],aResultSet);
+    let result = miczThunderStatsCore.db.getResultObject(["Folder","FolderURI","Num"],aResultSet);
     this.empty=false;
     for (let key in result) {
 		this.data.push(result[key]);
@@ -875,7 +875,7 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_folder_spread = {
 	empty:true,
 	data:new Array(),
   handleResult: function(aResultSet) {
-    let result = miczThunderStatsCore.db.getResultObject(["Folder","FolderURI","Num","mKey"],aResultSet);
+    let result = miczThunderStatsCore.db.getResultObject(["Folder","FolderURI","Num"],aResultSet);
     this.empty=false;
     for (let key in result) {
 		this.data.push(result[key]);

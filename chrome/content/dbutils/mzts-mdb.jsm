@@ -224,8 +224,8 @@ var miczThunderStatsDB = {
 		let involves_attribute=this.msgAttributes['involves'];
 		let forbiddenFolders=this.queryGetForbiddenFolders();
 		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
-		let mWhat="f.name as Folder, f.folderURI as FolderURI, count(distinct m.headerMessageID) as Num, max(m.messageKey) as mKey";
-		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left outer join messages m2 on (m2.id=m2.id and m.date<m2.date and m2.folderID=m.folderID) left join folderLocations f on f.id=m.folderID";
+		let mWhat="f.name as Folder, f.folderURI as FolderURI, count(distinct m.headerMessageID) as Num";
+		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id left join folderLocations f on f.id=m.folderID";
 		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
 		//if mType!=0 do not consider custom identities, they do not send emails
 		//Also do not consider custom identities if there are no ones
@@ -249,7 +249,7 @@ var miczThunderStatsDB = {
 				mWhere+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
 			}
 		}
-		mWhere+=" and (m2.id is null) GROUP BY f.name, f.folderURI";
+		mWhere+=" GROUP BY f.name, f.folderURI";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 

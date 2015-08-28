@@ -570,7 +570,6 @@ miczThunderStatsTab.ui={
 			element.value=data_array[key].Num;
 			element.label=data_array[key].Folder;
 			element.folder_url=data_array[key].FolderURI;
-			element.mKey=data_array[key].mKey;
 			element.normalized=data_array[key].Num/data_sum;
 			norm_data.push(element);
 		}
@@ -652,11 +651,11 @@ miczThunderStatsTab.ui={
 									}else{
 										let tabmail = mdoc.getElementById("tabmail");
 										tabmail.selectTabByIndex(null,0);
-										dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mKey: "+JSON.stringify(d.data.mKey)+"\r\n");
+										//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mKey: "+JSON.stringify(d.data.mKey)+"\r\n");
 										mwin.gFolderTreeView.selectFolder(MailUtils.getFolderForURI(d.data.folder_url));
-										try{
-											mwin.gFolderDisplay.selectMessage(mwin.gFolderDisplay.displayedFolder.GetMessageHeader(d.data.mKey));
-										}catch(e){}
+										/*try{
+											mwin.gFolderDisplay.selectMessage();
+										}catch(e){}*/
 									}
 								})
 				.attr("title",function(d){ return d.data.label+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.Mails")+": "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});

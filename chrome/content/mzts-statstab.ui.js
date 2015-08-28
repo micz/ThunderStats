@@ -2,6 +2,7 @@
 
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 Components.utils.import("resource:///modules/MailUtils.js");
+Components.utils.import("resource:///modules/iteratorUtils.jsm");
 
 miczThunderStatsTab.ui={
 
@@ -652,10 +653,18 @@ miczThunderStatsTab.ui={
 										let tabmail = mdoc.getElementById("tabmail");
 										tabmail.selectTabByIndex(null,0);
 										//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mKey: "+JSON.stringify(d.data.mKey)+"\r\n");
-										mwin.gFolderTreeView.selectFolder(MailUtils.getFolderForURI(d.data.folder_url));
-										/*try{
-											mwin.gFolderDisplay.selectMessage();
-										}catch(e){}*/
+										let curr_folder = MailUtils.getFolderForURI(d.data.folder_url);
+										mwin.gFolderTreeView.selectFolder(curr_folder);
+										try{
+											let folder_msg_iterator = fixIterator(curr_folder.msgDatabase.ReverseEnumerateMessages(), Components.interfaces.nsIMsgDBHdr);
+											for each (let fmsg in folder_msg_iterator){
+												mwin.gFolderDisplay.selectMessage(fmsg);
+												//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] subject: "+JSON.stringify(fmsg.subject)+"\r\n");
+												break;
+											}
+										}catch(e){
+											dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] error: "+e.message+"\r\n");
+										}
 									}
 								})
 				.attr("title",function(d){ return d.data.label+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.Mails")+": "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});

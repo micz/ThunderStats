@@ -654,16 +654,23 @@ miczThunderStatsTab.ui={
 										tabmail.selectTabByIndex(null,0);
 										//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mKey: "+JSON.stringify(d.data.mKey)+"\r\n");
 										let curr_folder = MailUtils.getFolderForURI(d.data.folder_url);
-										mwin.gFolderTreeView.selectFolder(curr_folder);
-										try{
-											let folder_msg_iterator = fixIterator(curr_folder.msgDatabase.ReverseEnumerateMessages(), Components.interfaces.nsIMsgDBHdr);
-											for each (let fmsg in folder_msg_iterator){
-												mwin.gFolderDisplay.selectMessage(fmsg);
-												//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] subject: "+JSON.stringify(fmsg.subject)+"\r\n");
-												break;
+										let do_select_message=(mwin.gFolderDisplay.displayedFolder!=curr_folder);	//the selected folder is the same
+										if(do_select_message){
+											mwin.gFolderTreeView.selectFolder(curr_folder);
+										}
+										do_select_message=do_select_message&&(mwin.gFolderDisplay.selectedCount==0);	//there is already a selected folder
+										//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mwin.gFolderDisplay.selectedCount: "+mwin.gFolderDisplay.selectedCount+"\r\n");
+										if(do_select_message){
+											try{
+												let folder_msg_iterator = fixIterator(curr_folder.msgDatabase.ReverseEnumerateMessages(), Components.interfaces.nsIMsgDBHdr);
+												for each (let fmsg in folder_msg_iterator){
+													mwin.gFolderDisplay.selectMessage(fmsg);
+													//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] subject: "+JSON.stringify(fmsg.subject)+"\r\n");
+													break;
+												}
+											}catch(e){
+												dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] error: "+e.message+"\r\n");
 											}
-										}catch(e){
-											dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] error: "+e.message+"\r\n");
 										}
 									}
 								})

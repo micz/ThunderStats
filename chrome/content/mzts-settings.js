@@ -10,6 +10,7 @@ Components.utils.import("resource://gre/modules/osfile.jsm");
 var miczThunderStatsPrefPanel = {
 
 	nbd_objs:{},
+	nbd_objs_length:0,
 
 	onLoad: function(){
 
@@ -200,9 +201,12 @@ var miczThunderStatsPrefPanel = {
 		listitem.appendChild(descCell);
 
 		if(force_save_obj){
-			let nbd_tmp_id=this.nbd_objs.length+1;
+			this.nbd_objs_length++;
+			let nbd_tmp_id=this.nbd_objs_length;
 			currcol.tmp_id=nbd_tmp_id;
 			this.nbd_objs[nbd_tmp_id]=currcol;
+			//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] nbd_tmp_id {"+JSON.stringify(nbd_tmp_id)+"}\r\n");
+			//dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol.desc {"+JSON.stringify(currcol.desc)+"}\r\n");
 		}
 
 		listitem._nbd=currcol;
@@ -238,6 +242,7 @@ var miczThunderStatsPrefPanel = {
 	},
 
 	deleteOneNBDRow: function(container,col_idx){
+		this.nbd_objs_length--;
 		container.removeItemAt(col_idx);
 	},
 
@@ -277,10 +282,12 @@ var miczThunderStatsPrefPanel = {
 		//sort data
 		tmp_array.sort(miczThunderStatsUtils.array_nbd_date_compare);
 		this.nbd_objs={};
+		this.nbd_objs_length=0;
 		let ri=1;
 		for(let nbdr in tmp_array){
 			tmp_array[nbdr].tmp_id=ri;
 			this.nbd_objs[ri]=tmp_array[nbdr];
+			this.nbd_objs_length++;
 			ri++;
 		}
 		//dump(">>>>>>>>>>>>> miczThunderStats: [reindexNBDArray] this.nbd_objs AFTER "+JSON.stringify(this.nbd_objs)+"\r\n");

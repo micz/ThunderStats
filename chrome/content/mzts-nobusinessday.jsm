@@ -5,7 +5,7 @@ Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 let EXPORTED_SYMBOLS = ["miczThunderStatsNBD"];
 
 var miczThunderStatsNBD = {
-	
+
 	nbd_pref_name:'bday.nbd_list',
 	nbd_objs:{},
 
@@ -13,13 +13,14 @@ var miczThunderStatsNBD = {
 		let nbds_str=miczThunderStatsPrefs.getCharPref_TS(pref_name);
 		return JSON.parse(nbds_str);
 	},
-	
+
 	loadFromPref:function(){  //loads this.nbd_objs
 		let nbds_str=miczThunderStatsPrefs.getCharPref_TS(miczThunderStatsNBD.nbd_pref_name);
 		miczThunderStatsNBD.nbd_objs=JSON.parse(nbds_str);
 	},
 
 	saveToPref:function(pref_name,nbd_objs){
+		miczThunderStatsNBD.nbd_objs=nbd_objs;
 		return miczThunderStatsPrefs.setCharPref_TS(pref_name,JSON.stringify(nbd_objs));
 	},
 
@@ -37,11 +38,11 @@ var miczThunderStatsNBD = {
 
 		return output;
 	},
-	
+
 	checkNoBusinessDay:function(mDate){ //mDate is a Date object
 		let date_array=new Array();
 		//dump(">>>>>>>>>>>>> miczThunderStatsNBD: [checkNoBusinessDay] nbd_objs "+JSON.stringify(nbd_objs)+"\r\n");
-		
+
 		//Prepare Date array
 		for(let nn in this.nbd_objs){
 			let tmpDate=new Date(this.nbd_objs[nn].date);
@@ -52,14 +53,14 @@ var miczThunderStatsNBD = {
 			date_array.push(tmpDate);
 		}
 		//dump(">>>>>>>>>>>>> miczThunderStatsNBD: [checkNoBusinessDay] date_array "+JSON.stringify(date_array)+"\r\n");
-		
+
 		for(let dd of date_array){
 			if(dd.toDateString()==mDate.toDateString()){
 				return true;
 			}
 		}
-		
-		return false;		
+
+		return false;
 	},
 
 };

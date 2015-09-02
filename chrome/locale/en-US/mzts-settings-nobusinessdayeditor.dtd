@@ -1,4 +1,4 @@
-<!ENTITY ThunderStats.NBDEditor.window.title "ThunderStats No Business Day Editor">
+<!ENTITY ThunderStats.NBDEditor.window.title "No Business Day Editor">
 <!ENTITY ThunderStats.NBDEditor.Desc "Define here the No Business Day.">
 <!ENTITY ThunderStats.desc.label "No Business Day Description">
 <!ENTITY ThunderStats.desc.desc "Write here a short description of this No Business Day.">

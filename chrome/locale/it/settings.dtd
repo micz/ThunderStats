@@ -1,7 +1,6 @@
 <!ENTITY ThunderStats.SettingsTitle "Preferenze di ThunderStats">
 <!ENTITY ThunderStats.GlobalDescSettingTab "Usa queste opzioni per personalizzare la tua esperienza con ThunderStats!">
 <!ENTITY ThunderStats.TabSettings.label "Generale">
-<!ENTITY ThunderStats.TabSettingsDebug.label "Debug">
 <!ENTITY ThunderStats.TabCustomIdentities.label "Identità Personalizzate">
 <!ENTITY ThunderStats.TabInfo.label "Informazioni">
 <!ENTITY ThunderStats.InfoMainDesc "Questo componente aggiuntivo è gratuito e sviluppato nel mio tempo libero. Se lo usi tutti i giorni, sentiti libero di supportarlo con una piccola donazione cliccando sul link sottostante. Grazie!!">
@@ -14,8 +13,8 @@
 <!ENTITY ThunderStats.ManageCustomIdentititesDesc "Un'identità personalizzata è un indirizzo email, differente da quello principale registrato per l'account, con il quale puoi ricevere mail. Solitamente sono indirizzi email di liste di distribuzione o gruppi (mailing list) ai quali sei iscritto, dove il tuo indirizzo email non compare in nessuno dei campi 'a' o 'cc'.">
 <!ENTITY ThunderStats.Account "Account">
 <!ENTITY ThunderStats.CustomIdentititesAccount "Identità personalizzate per l'Account selezionato">
+<!ENTITY ThunderStats.CustomIdentititesAccount.Info "Inserisci un indirizzo mail per riga.">
 <!ENTITY ThunderStats.ChangesSavedWarn "Le modifiche fatte qui sono attive immediatamente.">
-<!ENTITY ThunderStats.DebugDesc "Imposta qui le preferenze di debug.">
 <!ENTITY ThunderStats.ActivateDebug "Attiva il sistema di debug">
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Ricerca le mail nelle cartelle di Posta in Arrivo dell'Account selezionato.">
 <!ENTITY ThunderStats.GlobalUpdate "Aggiorna tutti i tab contemporaneamente. Se deselezionato i tab vengono aggiornati quando visualizzati.">
@@ -27,3 +26,26 @@
 <!ENTITY ThunderStats.ManyDaysSmallLabels "Mostra le etichette piccole dei giorni.">
 <!ENTITY ThunderStats.ManyDaysSmallLabels_2 "Si suggerisce di utilizzare questa opzione quando si visualizzano più di 10 giorni.">
 <!ENTITY ThunderStats.CustomQueryBookmarkImmediateUpdate "Quando selezioni un preferito nella ricerca personalizzata, aggiorna immediatamente le statistiche.">
+<!ENTITY ThunderStats.TabBusinessDays.label "Giorni Lavorativi">
+<!ENTITY ThunderStats.WeekDaySun "Domenica">
+<!ENTITY ThunderStats.WeekDayMon "Lunedì">
+<!ENTITY ThunderStats.WeekDayTue "Martedì">
+<!ENTITY ThunderStats.WeekDayWed "Mercoledì">
+<!ENTITY ThunderStats.WeekDayThu "Giovedì">
+<!ENTITY ThunderStats.WeekDayFri "Venerdì">
+<!ENTITY ThunderStats.WeekDaySat "Sabato">
+<!ENTITY ThunderStats.WeekDays.groupbox "Giorni della Settimana">
+<!ENTITY ThunderStats.WeekDays.desc "Imposta quali giorni della settimana sono lavorativi.">
+<!ENTITY ThunderStats.NoBusinessDaysList.groupbox "Giorni Non Lavorativi">
+<!ENTITY ThunderStats.newButtonNBD.label "Nuovo...">
+<!ENTITY ThunderStats.editButtonNBD.label "Modifica...">
+<!ENTITY ThunderStats.deleteButtonNBD.label "Cancella">
+<!ENTITY ThunderStats.EasterNoBusinessDay.label "I giorni di Pasqua e Pasquetta sono giorni non lavorativi.">
+<!ENTITY ThunderStats.UseLastBusinessDay "Se ieri non è un giorno lavorativo, mostra invece l'ultimo giorno lavorativo.">
+<!ENTITY ThunderStats.ListHeader.Desc "Descrizione">
+<!ENTITY ThunderStats.ListHeader.Date "Data">
+<!ENTITY ThunderStats.ReleaseNotes "Note di Rilascio">
+<!ENTITY ThunderStats.License "Licenza">
+<!ENTITY ThunderStats.CustomQryTabGroupbox "Statistiche su un Intervallo Personalizzato">
+<!ENTITY ThunderStats.CustomQueryDefaultOnlyBD "Imposta sempre l'opzione &quot;Solo Giorni Lavorativi&quot; all'avvio.">
+<!ENTITY ThunderStats.folderspreadgraph_openinfirsttab "Dal grafico della distribuzione delle mail nelle cartelle, apri sempre la cartella nel primo tab.">

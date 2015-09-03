@@ -21,7 +21,7 @@ span.invisible_text{color:rgba(242,242,240,0);}
 span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
 .mzts-sel-account{font-weight:bold;}
 .mzts-sel-identity{padding-left:30px;}
-#mzts-updates{float:right;font-size:0.75em;margin-right:10px;align-items:center;height:28px;text-align:right;margin-top:-1px}
+#mzts-updates{float:right;font-size:0.75em;margin-right:10px;align-items:center;height:28px;text-align:right;margin-top:-1px;position:absolute;right:24px;}
 #mzts-idx_update{float:left;width:100%;}
 #mzts-last_msg{float:left;width:100%;margin-top:-3px;}
 .inbox0_inboxmsg_unread{color:grey;}

@@ -16,6 +16,7 @@ table.mzts-tinvolved tr.mzts-trow td{padding:2px 4px 2px 2px;color:black;white-s
 table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:normal;}
 .circle_wait{text-align:center;width:100%;position:absolute;}
 span.additional_info_text{color:grey;font-size:0.8em;}
+p.additional_info_text::first-letter{text-transform:uppercase;}
 p.additional_info_text{margin-bottom:0px;}
 span.invisible_text{color:rgba(242,242,240,0);}
 span.outlink{color:blue;text-decoration:underline;cursor:pointer;}

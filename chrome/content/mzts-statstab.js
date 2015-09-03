@@ -394,16 +394,16 @@ var miczThunderStatsTab = {
 		if(miczThunderStatsUtils._y_ui_strings_update_needed){
 			if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
-				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
-				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");
+				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday").toLowerCase();
+				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay").toLowerCase();
 				let re = new RegExp('('+yesterday_string+')(?![^<]*>|[^<>]*<\/)','gi'); // /(yesterday)(?![^<]*>|[^<>]*<\/)/gi
 				$jQ("body *").replaceText(re,lbd_string);
 				miczThunderStatsUtils._y_ui_strings_update_needed=false;
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] checkLastBusinessDay: Strings replaced to ldb!\r\n");
 			}else{	//set it back to yesterday!
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
-				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
-				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay");
+				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday").toLowerCase();
+				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay").toLowerCase();
 				let re = new RegExp('('+lbd_string+')(?![^<]*>|[^<>]*<\/)','gi');
 				$jQ("body *").replaceText(re,yesterday_string);
 				miczThunderStatsUtils._y_ui_strings_update_needed=false;

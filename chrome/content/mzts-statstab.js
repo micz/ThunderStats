@@ -400,7 +400,6 @@ var miczThunderStatsTab = {
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday").toLowerCase();
 				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay").toLowerCase();
-				$jQ("#yesterday_folder_location_string").text(_bundleCW.GetStringFromName("ThunderStats.LBDFolderLocation"));
 				let re = new RegExp('('+yesterday_string+')(?![^<]*>|[^<>]*<\/)','gi'); // /(yesterday)(?![^<]*>|[^<>]*<\/)/gi
 				$jQ("body *").replaceText(re,lbd_string);
 				miczThunderStatsUtils._y_ui_strings_update_needed=false;
@@ -409,7 +408,6 @@ var miczThunderStatsTab = {
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 				let yesterday_string=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday").toLowerCase();
 				let lbd_string=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay").toLowerCase();
-				$jQ("#yesterday_folder_location_string").text(_bundleCW.GetStringFromName("ThunderStats.YesterdayFolderLocation"));
 				let re = new RegExp('('+lbd_string+')(?![^<]*>|[^<>]*<\/)','gi');
 				$jQ("body *").replaceText(re,yesterday_string);
 				miczThunderStatsUtils._y_ui_strings_update_needed=false;

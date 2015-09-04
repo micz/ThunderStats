@@ -1474,7 +1474,6 @@ miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
   handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
 				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data: '+JSON.stringify(this.data),0);
 				if(!this.empty){
 					let tmp_array=new Array();
@@ -1491,6 +1490,7 @@ miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
 				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion check ready to go!',0);
 				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data_customqry_recipients_count - miczThunderStatsUtils._customqry_num_days: '+this.data_customqry_recipients_count+' - '+miczThunderStatsUtils._customqry_num_days,0);
 				if(this.data_customqry_recipients_count==miczThunderStatsUtils._customqry_num_days){
+					miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
 					//do data aggregation
 					let final_data=miczThunderStatsUtils.aggregateCustomQueryInvolved(this.data_customqry_recipients);
 					//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion final_data: '+JSON.stringify(final_data),0);
@@ -1547,7 +1547,6 @@ miczThunderStatsTab.callback.stats_customqry_senders_only_bd = {
   handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				miczThunderStatsTab.ui.hideLoadingElement("customqry_senders_wait");
 				if(!this.empty){
 					let tmp_array=new Array();
 					for(let kk in this.data){
@@ -1560,6 +1559,7 @@ miczThunderStatsTab.callback.stats_customqry_senders_only_bd = {
 					this.data_customqry_senders_count++;
 				}
 				if(this.data_customqry_senders_count==miczThunderStatsUtils._customqry_num_days){
+					miczThunderStatsTab.ui.hideLoadingElement("customqry_senders_wait");
 					//do data aggregation
 					let final_data=miczThunderStatsUtils.aggregateCustomQueryInvolved(this.data_customqry_senders);
 					if(final_data.length>0){

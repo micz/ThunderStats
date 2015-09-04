@@ -8,6 +8,7 @@ Version 1.2 - ??/??/2015
 - Fixed a bug in the "Folder Spread Graph" when displaying more folders with the same name.
 - In the "Folder Spread Graph" Inbox folders have colors in the shades of red.
 - Open the folder clicking on its name in the "Folder Spread Graph". There is also an option to choose between opening the folder always in the first tab or in a new tab.
+- Chinese (Simplified) (zh-CN) locale removed.
 -
 ==========
 Version 1.1 - 06/08/2015

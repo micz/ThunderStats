@@ -6,6 +6,7 @@ Components.utils.import("resource:///modules/iteratorUtils.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
+//Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
 var miczThunderStatsUtils = {
 
@@ -59,6 +60,7 @@ var miczThunderStatsUtils = {
 
 	getDaysFromRange: function(mFromDate,mToDate,mOnlyBD){
 		if(!mOnlyBD) mOnlyBD=false;
+		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] begin',0);
 		if(mOnlyBD&&miczThunderStatsUtils._customqry_days_range!=null){	//do not get bd days range many time for one data extract
 			return miczThunderStatsUtils._customqry_days_range;
 		}
@@ -92,6 +94,7 @@ var miczThunderStatsUtils = {
 			}
 		}
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
+		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput),0);
 		if(mOnlyBD){
 			miczThunderStatsUtils._customqry_days_range=dOutput;
 		}
@@ -303,6 +306,16 @@ var miczThunderStatsUtils = {
 		return new Date(Y,M,D);
 	},
 
+	customQueryInvolved_compare:function(a,b){
+		if(a.Num > b.Num){
+			return -1;
+		}
+		if(a.Num < b.Num){
+			return 1;
+		}
+		return 0;
+	},
+
 	aggregateCustomQueryInvolved:function(data){
 		//input data columns [key]["ID","Name","Mail","Num"]
 		//output data columns ["ID","Name","Mail","Num"]
@@ -332,6 +345,7 @@ var miczThunderStatsUtils = {
 		}
 		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output_array: '+JSON.stringify(output_array)+"\r\n");
 		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output_array.length: '+JSON.stringify(output_array.length)+"\r\n");
+		output_array.sort(miczThunderStatsUtils.customQueryInvolved_compare);
 		return output_array;
 	},
 

@@ -1383,9 +1383,11 @@ miczThunderStatsTab.callback.stats_customqry_recipients = {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
 				if(!this.empty){
+					//miczLogger.log("Custom query recipients loaded: "+JSON.stringify(this.data),0);
 					$jQ("#customqry_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
 				}else{
+					//miczLogger.log("Custom query recipients loaded empty!",0);
 					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 					$jQ("#customqry_recipients").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));
 				}
@@ -1454,14 +1456,15 @@ miczThunderStatsTab.callback.stats_customqry_senders = {
 
 miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
 	empty:true,
-	data:{},
+	data:new Array(),
 	data_customqry_recipients:new Array(),
 	data_customqry_recipients_count:0,
   handleResult: function(aResultSet) {
     let result = miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
+    //miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion result: '+JSON.stringify(result),0);
     this.empty=false;
-    for (let key in result) {
-		this.data[key]=result[key];
+   for (let key in result) {
+		this.data.push(result[key]);
 	}
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_recipients handleResult '+JSON.stringify(this.data)+'\r\n');
   },
@@ -1472,30 +1475,37 @@ miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
+				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data: '+JSON.stringify(this.data),0);
 				if(!this.empty){
 					let tmp_array=new Array();
 					for(let kk in this.data){
 						tmp_array.push(this.data[kk]);
 						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_recipients_only_bd handleCompletion '+JSON.stringify(this.data[kk])+'\r\n');
-						this.data_customqry_recipients_count++;
+						//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data[kk]: '+JSON.stringify(this.data[kk]),0);
 					}
+					this.data_customqry_recipients_count++;
 					this.data_customqry_recipients.push(tmp_array);
 				}else{
 					this.data_customqry_recipients_count++;
 				}
+				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion check ready to go!',0);
+				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data_customqry_recipients_count - miczThunderStatsUtils._customqry_num_days: '+this.data_customqry_recipients_count+' - '+miczThunderStatsUtils._customqry_num_days,0);
 				if(this.data_customqry_recipients_count==miczThunderStatsUtils._customqry_num_days){
 					//do data aggregation
 					let final_data=miczThunderStatsUtils.aggregateCustomQueryInvolved(this.data_customqry_recipients);
+					//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion final_data: '+JSON.stringify(final_data),0);
 					if(final_data.length>0){
 						$jQ("#customqry_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(final_data));
 						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion '+JSON.stringify(this.data)+'\r\n');
 					}else{
+						$jQ("#customqry_recipients").html('');
 						let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 						$jQ("#customqry_recipients").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));
 					}
+					//miczLogger.log("Custom query recipients loaded.",0);
+					//this.data_customqry_recipients=new Array();
+					//this.data_customqry_recipients_count=0;
 				}
-
-				miczLogger.log("Custom query recipients loaded.",0);
 				this.data=new Array();
 				this.empty=true;
 				return true;
@@ -1503,27 +1513,31 @@ miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
+				this.data_customqry_recipients=new Array();
+				this.data_customqry_recipients_count=0;
 				return false;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
+				this.data_customqry_recipients=new Array();
+				this.data_customqry_recipients_count=0;
 				return false;
 		}
-	return false;
+		return false;
 	},
 };
 
-miczThunderStatsTab.callback.stats_customqry_senders_only_bd = {	//TODO
+miczThunderStatsTab.callback.stats_customqry_senders_only_bd = {
 	empty:true,
-	data:{},
+	data:new Array(),
 	data_customqry_senders:new Array(),
 	data_customqry_senders_count:0,
   handleResult: function(aResultSet) {
     let result = miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
     this.empty=false;
     for (let key in result) {
-		this.data[key]=result[key];
+		this.data.push(result[key]);
 	}
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_senders handleResult '+JSON.stringify(this.data)+'\r\n');
   },
@@ -1539,8 +1553,8 @@ miczThunderStatsTab.callback.stats_customqry_senders_only_bd = {	//TODO
 					for(let kk in this.data){
 						tmp_array.push(this.data[kk]);
 						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_senders_only_bd handleCompletion '+JSON.stringify(this.data[kk])+'\r\n');
-						this.data_customqry_senders_count++;
 					}
+					this.data_customqry_senders_count++;
 					this.data_customqry_senders.push(tmp_array);
 				}else{
 					this.data_customqry_senders_count++;
@@ -1552,12 +1566,14 @@ miczThunderStatsTab.callback.stats_customqry_senders_only_bd = {	//TODO
 						$jQ("#customqry_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(final_data));
 						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_senders handleCompletion '+JSON.stringify(this.data)+'\r\n');
 					}else{
+						$jQ("#customqry_senders").html('');
 						let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 						$jQ("#customqry_senders").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));
 					}
+					miczLogger.log("Custom query senders loaded.",0);
+					//this.data_customqry_senders=new Array();
+					//this.data_customqry_senders_count=0;
 				}
-
-				miczLogger.log("Custom query senders loaded.",0);
 				this.data=new Array();
 				this.empty=true;
 				return true;
@@ -1565,11 +1581,15 @@ miczThunderStatsTab.callback.stats_customqry_senders_only_bd = {	//TODO
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
+				this.data_customqry_senders=new Array();
+				this.data_customqry_senders_count=0;
 				return false;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
+				this.data_customqry_senders=new Array();
+				this.data_customqry_senders_count=0;
 				return false;
 		}
 	return false;

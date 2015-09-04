@@ -295,8 +295,12 @@ var miczThunderStatsTab = {
 			miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
 		}else{	//with only business days
 			//Get first 10 recipients
+			miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients=new Array();
+			miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients_count=0;
 			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients_only_bd);
 			//Get first 10 senders
+			miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders=new Array();
+			miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders_count=0;
 			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
 		}
 

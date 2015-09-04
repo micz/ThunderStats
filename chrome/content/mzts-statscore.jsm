@@ -196,21 +196,22 @@ miczThunderStatsCore.db = {
 		return miczThunderStatsDB.queryMessages(mType,mFromDate.getTime(),ydate.getTime(),mIdentity,mCallback);
 	},
 
-	getOneDayInvolved:function(mType,mGivenDay,mIdentity,mCallback){	//mGivenDay is a Date object
+	getOneDayInvolved:function(mType,mGivenDay,mIdentity,mMax,mCallback){	//mGivenDay is a Date object
 		let mFromDate=new Date(mGivenDay);
 		mFromDate.setHours(0,0,0,0);
 		let mToDate=new Date(mGivenDay);
 		mToDate.setHours(24,0,0,0);
-		let mMax=10;
 		return miczThunderStatsDB.queryGetNumInvolved(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity,mMax,mCallback);
 	},
 
 	getTodayInvolved:function(mType,mIdentity,mCallback){
-		return this.getOneDayInvolved(mType,new Date(),mIdentity,mCallback);
+		let mMax=10;
+		return this.getOneDayInvolved(mType,new Date(),mIdentity,mMax,mCallback);
 	},
 
 	getYesterdayInvolved:function(mType,mIdentity,mCallback){
-		return this.getOneDayInvolved(mType,miczThunderStatsUtils.getYesterdayDate(),mIdentity,mCallback);
+		let mMax=10;
+		return this.getOneDayInvolved(mType,miczThunderStatsUtils.getYesterdayDate(),mIdentity,mMax,mCallback);
 	},
 
 	getManyDaysInvolved:function(mType,mFromDate,mToDate,mIdentity,mCallback){
@@ -221,12 +222,12 @@ miczThunderStatsCore.db = {
 		let mMax=10;
 		return miczThunderStatsDB.queryGetNumInvolved(mType,mFromDateInternal.getTime(),mToDateInternal.getTime(),mIdentity,mMax,mCallback);
 	},
-	
+
 	getManyDaysInvolved_OnlyBD:function(mType,mFromDay,mToDay,mIdentity,mCallback){	//mFromDay and mToDay are a Date objects
 		let mOnlyBD=true;
 		let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,mOnlyBD);
 		for(let mKey in mDays){
-			this.getOneDayInvolved(mType,mDays[mKey],mIdentity,mCallback);
+			this.getOneDayInvolved(mType,mDays[mKey],mIdentity,0,mCallback);
 		}
 		return true;
 	},

@@ -1,9 +1,9 @@
-<!ENTITY ThunderStats.NBDEditor.window.title "No Business Day Editor">
-<!ENTITY ThunderStats.NBDEditor.Desc "Define here the No Business Day.">
-<!ENTITY ThunderStats.desc.label "No Business Day Description">
-<!ENTITY ThunderStats.desc.desc "Write here a short description of this No Business Day.">
+<!ENTITY ThunderStats.NBDEditor.window.title "Non-Business Day Editor">
+<!ENTITY ThunderStats.NBDEditor.Desc "Define here the non-business day.">
+<!ENTITY ThunderStats.desc.label "Non-Business Day Description">
+<!ENTITY ThunderStats.desc.desc "Write here a short description of this non-business day.">
 <!ENTITY ThunderStats.date.label "Date">
-<!ENTITY ThunderStats.date.desc "Set here the date of the No Business Day.">
+<!ENTITY ThunderStats.date.desc "Set here the date of the non-business-day.">
 <!ENTITY ThunderStats.every_year.label "Set this day for every year">
-<!ENTITY ThunderStats.every_year.desc "Check this if you want this day to be a No Business Day on every year.">
+<!ENTITY ThunderStats.every_year.desc "Check this if you want this day to be a non-business day on every year.">
 <!ENTITY ThunderStats.optional.label "Optional">

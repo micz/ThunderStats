@@ -23,9 +23,7 @@
   <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.js"/>
 
   <vbox id="ts_vbox" flex="1">
-    <groupbox>
-      <caption id="ts_desc.label" label="&ThunderStats.NBDEditor.Desc;"/>
-      <separator class="thin"/>
+     <separator class="thin"/>
       <grid>
         <columns>
           <column/>
@@ -33,29 +31,25 @@
         </columns>
         <rows>
           <row>
-			<vbox><label value="&ThunderStats.desc.label;"/>
+			<vbox><label value="&ThunderStats.desc.label;:"/>
 			<label value="(&ThunderStats.optional.label;)"/></vbox>
 			<vbox>
 				<textbox id="ThunderStats.desc"/>
-				<description class="ts_field_label">&ThunderStats.desc.desc;</description>
 			</vbox>
           </row>
           <row>
-			<label value="&ThunderStats.date.label;"/>
+			<label value="&ThunderStats.date.label;:"/>
 			<vbox>
 				<vbox id="ThunderStats.date_placeholder"></vbox>
-				<description class="ts_field_label">&ThunderStats.date.desc;</description>
 			</vbox>
           </row>
           <row>
-			<label value="&ThunderStats.every_year.label;"/>
+			<label value="&ThunderStats.every_year.label;:"/>
 			<vbox>
-				<checkbox id="ThunderStats.every_year" checked="true"/>
-				<description class="ts_field_label">&ThunderStats.every_year.desc;</description>
+				<checkbox id="ThunderStats.every_year" checked="true" label="&ThunderStats.every_year.desc;"/>
 			</vbox>
           </row>
         </rows>
       </grid>
-    </groupbox>
   </vbox>
 </dialog>

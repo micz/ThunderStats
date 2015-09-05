@@ -10,6 +10,7 @@ miczThunderStatsTab.ui={
 	last_pos1:0,
 	label_height:15,
 	_tmp_i:-1,
+	mwin:null,
 
 	showLoadingElement:function(element){
 		$jQ("#"+element).show();
@@ -522,14 +523,43 @@ miczThunderStatsTab.ui={
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] output: "+JSON.stringify(output)+"\r\n");
 		return output;
 	},
+	
+	utilDrawInbox0FolderSpreadGraph_getFolderClick:function(d){
+		let mdoc=miczThunderStatsTab.ui.mwin.document;
+		if(!miczThunderStatsPrefs.openFolderInFirstTab){
+			mdoc.getElementById("tabmail").openTab("folder",{folder:MailUtils.getFolderForURI(d.data.folder_url)});
+		}else{
+			let tabmail = mdoc.getElementById("tabmail");
+			tabmail.selectTabByIndex(null,0);
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mKey: "+JSON.stringify(d.data.mKey)+"\r\n");
+			let curr_folder = MailUtils.getFolderForURI(d.data.folder_url);
+			let do_select_message=(mwin.gFolderDisplay.displayedFolder!=curr_folder);	//the selected folder is the same
+			if(do_select_message){
+				mwin.gFolderTreeView.selectFolder(curr_folder);
+			}
+			do_select_message=do_select_message&&(mwin.gFolderDisplay.selectedCount==0);	//there is already a selected folder
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mwin.gFolderDisplay.selectedCount: "+mwin.gFolderDisplay.selectedCount+"\r\n");
+			if(do_select_message){
+				try{
+					let folder_msg_iterator = fixIterator(curr_folder.msgDatabase.ReverseEnumerateMessages(), Components.interfaces.nsIMsgDBHdr);
+					for each (let fmsg in folder_msg_iterator){
+						mwin.gFolderDisplay.selectMessage(fmsg);
+						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] subject: "+JSON.stringify(fmsg.subject)+"\r\n");
+						break;
+					}
+				}catch(e){
+					dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] error: "+e.message+"\r\n");
+				}
+			}
+		}
+	},
 
 	drawInbox0FolderSpreadGraph:function(element_id_txt,data_array){
-
 		let inboxFolderURLs=miczThunderStatsDB.queryGetInboxFolderURLs();
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] inboxFolderURLs: "+JSON.stringify(inboxFolderURLs)+"\r\n");
-		let mwin=miczThunderStatsUtils.getMail3PaneWindow();
+		miczThunderStatsTab.ui.mwin=miczThunderStatsUtils.getMail3PaneWindow();
 		//let mtabcontainer=mwin.document.getElementById('tabmail').tabContainer;
-		let mdoc=mwin.document;
+		//let mdoc=mwin.document;
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
@@ -606,8 +636,8 @@ miczThunderStatsTab.ui={
 				.insert("path")
 				.style("fill", function(d) { return inboxFolderURLs.indexOf(d.data.folder_url)>-1?color_inbox(d.data.folder_url):color(d.data.folder_url); })
 				//.style("fill", function(d) { return color(d.data.folder_url); })
-				.attr("class", "slice")
-				.attr("class","tooltip")
+				.attr("class","slice tooltip")
+				.on('click',miczThunderStatsTab.ui.utilDrawInbox0FolderSpreadGraph_getFolderClick)
 				.attr("title",function(d){ return d.data.label+"<br/>Mails: "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
 
 			slice
@@ -646,34 +676,7 @@ miczThunderStatsTab.ui={
 										return "tooltip pointer";
 									}
 								})
-				.on('click',function(d){
-									if(!miczThunderStatsPrefs.openFolderInFirstTab){
-										mdoc.getElementById("tabmail").openTab("folder",{folder:MailUtils.getFolderForURI(d.data.folder_url)});
-									}else{
-										let tabmail = mdoc.getElementById("tabmail");
-										tabmail.selectTabByIndex(null,0);
-										//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mKey: "+JSON.stringify(d.data.mKey)+"\r\n");
-										let curr_folder = MailUtils.getFolderForURI(d.data.folder_url);
-										let do_select_message=(mwin.gFolderDisplay.displayedFolder!=curr_folder);	//the selected folder is the same
-										if(do_select_message){
-											mwin.gFolderTreeView.selectFolder(curr_folder);
-										}
-										do_select_message=do_select_message&&(mwin.gFolderDisplay.selectedCount==0);	//there is already a selected folder
-										//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mwin.gFolderDisplay.selectedCount: "+mwin.gFolderDisplay.selectedCount+"\r\n");
-										if(do_select_message){
-											try{
-												let folder_msg_iterator = fixIterator(curr_folder.msgDatabase.ReverseEnumerateMessages(), Components.interfaces.nsIMsgDBHdr);
-												for each (let fmsg in folder_msg_iterator){
-													mwin.gFolderDisplay.selectMessage(fmsg);
-													//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] subject: "+JSON.stringify(fmsg.subject)+"\r\n");
-													break;
-												}
-											}catch(e){
-												dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] error: "+e.message+"\r\n");
-											}
-										}
-									}
-								})
+				.on('click',miczThunderStatsTab.ui.utilDrawInbox0FolderSpreadGraph_getFolderClick)
 				.attr("title",function(d){ return d.data.label+"<br/>"+_bundleCW.GetStringFromName("ThunderStats.Mails")+": "+d.data.value+" ("+(d.data.normalized*100).toFixed(0)+"%)";});
 
 			  $jQ('text.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false});

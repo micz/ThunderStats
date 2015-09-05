@@ -63,6 +63,7 @@ font-weight:normal;
 
 .chart_inbox0_folder_spread path.slice{
 	stroke-width:2px;
+	cursor:pointer;
 }
 
 .chart_inbox0_folder_spread polyline{

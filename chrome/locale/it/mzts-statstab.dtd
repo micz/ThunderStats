@@ -11,27 +11,21 @@
 <!ENTITY ThunderStats.days "giorni">
 <!ENTITY ThunderStats.TotalDays "Giorni totali">
 <!ENTITY ThunderStats.Info "Informazioni">
-<!ENTITY ThunderStats.TodayMails "Mail">
+<!ENTITY ThunderStats.Mails "Mail">
 <!ENTITY ThunderStats.Loading "Caricamento">
 <!ENTITY ThunderStats.SentMails "Mail inviate">
 <!ENTITY ThunderStats.ReceivedMails "Mail ricevute">
 <!ENTITY ThunderStats.InboxZeroStatus "Situazione Inbox Zero">
 <!ENTITY ThunderStats.TotalInbox "Mail totali nella posta in arrivo">
 <!ENTITY ThunderStats.TotalInboxUnread "non lette">
-<!ENTITY ThunderStats.YesterdayMails "Mail">
-<!ENTITY ThunderStats.TodayTop10Recipients "I primi 10 destinatari">
-<!ENTITY ThunderStats.TodayTop10Senders "I primi 10 mittenti">
 <!ENTITY ThunderStats.YesterdayThisTime "Ieri a quest'ora">
 <!ENTITY ThunderStats.sent "inviate">
 <!ENTITY ThunderStats.received "ricevute">
-<!ENTITY ThunderStats.TodayFolderLocation "Grafico delle cartelle in cui sono distribuite le mail di oggi">
+<!ENTITY ThunderStats.FolderLocation "Grafico delle cartelle in cui sono distribuite le mail">
 <!ENTITY ThunderStats.NoMailsReceivedToday "Nessuna mail ricevuta oggi!">
 <!ENTITY ThunderStats.InboxMailsDateSpreading "Grafico delle date in cui sono state ricevute le mail della posta in arrivo">
 <!ENTITY ThunderStats.NoMailsInbox "Nessuna mail nella posta in arrivo!">
 <!ENTITY ThunderStats.NoMailsReceivedYesterday "Nessuna mail ricevuta!">
-<!ENTITY ThunderStats.YesterdayFolderLocation "Grafico delle cartelle in cui sono distribuite le mail di ieri">
-<!ENTITY ThunderStats.YesterdayTop10Recipients "I primi 10 destinatari">
-<!ENTITY ThunderStats.YesterdayTop10Senders "I primi 10 mittenti">
 <!ENTITY ThunderStats.Top10Recipients "I primi 10 destinatari">
 <!ENTITY ThunderStats.Top10Senders "I primi dieci mittenti">
 <!ENTITY ThunderStats.clickhere "clicca qui">

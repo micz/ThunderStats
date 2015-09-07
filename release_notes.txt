@@ -8,11 +8,13 @@ Version 1.2 - ??/??/2015
 - Fixed a bug in the "Folder Spread Graph" when displaying more folders with the same name.
 - In the "Folder Spread Graph" Inbox folders have colors in the shades of red.
 - Open the folder clicking on its name in the "Folder Spread Graph". There is also an option to choose between opening the folder always in the first tab or in a new tab.
-- Chinese (Simplified) (zh-CN) locale removed.
--
+- Chinese (Simplified) (zh-CN) locale removed, because it's no more maintained.
+- "Custom" tab is now renamed to "Custom View" tab, in the default english locale.
+- Some graphical improvements.
+- 
 ==========
 Version 1.1 - 06/08/2015
-- New Tab: Custom query date interval. Choose the dates range you want to get the statistics on.
+- New Tab: Custom range date interval. Choose the dates range you want to get the statistics on.
 - Added max, min, average mails sent and received also in the "Multiple Days" tab.
 - In the "Multiple Days" tab the total sent and received mails are now shown without the today mails, that are shown separately.
 - In the "Inbox Zero" folder spread graph the inbox folders have now a label with bold text.

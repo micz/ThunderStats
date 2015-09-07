@@ -1,2 +1,2 @@
-#mzts-button {list-style-image: url("chrome://thunderstats/skin/mzts-button.png");}
-toolbar[iconsize="small"] #mzts-button{list-style-image: url("chrome://thunderstats/skin/mzts-button-small.png") !important;}
+#mzts-button,#mail-toolbox > toolbar[brighttext] #mzts-button.toolbarbutton-1{list-style-image: url("chrome://thunderstats/skin/mzts-button.png");}
+toolbar[iconsize="small"] #mzts-button,#mail-toolbox > toolbar[brighttext][iconsize="small"] #mzts-button.toolbarbutton-1{list-style-image: url("chrome://thunderstats/skin/mzts-button-small.png") !important;}

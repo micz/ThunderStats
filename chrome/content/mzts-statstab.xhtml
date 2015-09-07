@@ -76,11 +76,11 @@
 
 			e.preventDefault();
 		});
-		$jQ('#cssmenu a').on('click', function(e)  {	//custom query bookmark menu command
+		$jQ('#cssmenu a').on('click', function(e)  {	//custom query view menu command
 			let tscommand=$jQ(this).attr('href');
 
 			if(tscommand!='#nil'){
-				miczThunderStatsTab.ui.customQueryBookmarkSelect(tscommand);
+				miczThunderStatsTab.ui.customQueryViewSelect(tscommand);
 			}
 
 			e.preventDefault();
@@ -263,7 +263,7 @@
 				<!--<div id="customqry_dashboard">From <xul:datepicker type="popup" id="datepicker_from"/> To <xul:datepicker type="popup" id="datepicker_to"/> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>-->
 				<div id="customqry_dashboard"><div id="cssmenu">
 					<ul>
-					   <li class="active has-sub"><a href="#nil"><img src="chrome://thunderstats/skin/mzts-customqry-bookmark.png" title="&ThunderStats.Bookmarks;" class="tooltip"/></a>
+					   <li class="active has-sub"><a href="#nil"><img src="chrome://thunderstats/skin/mzts-customqry-view.png" title="&ThunderStats.Views;" class="tooltip"/></a>
 						  <ul>
 							 <li><a href="#currentweek"><span>&ThunderStats.CurrentWeek;</span></a></li>
 							 <li><a href="#lastweek"><span>&ThunderStats.LastWeek;</span></a></li>

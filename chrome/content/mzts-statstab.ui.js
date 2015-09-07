@@ -159,7 +159,7 @@ miczThunderStatsTab.ui={
 		}
 	},
 
-	customQueryBookmarkSelect:function(bkselected){
+	customQueryViewSelect:function(bkselected){
 		let dfrom=moment();
 		let dto=moment();
 		switch(bkselected){

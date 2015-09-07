@@ -28,7 +28,7 @@ span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
 #mzts-idx_update{float:left;width:100%;}
 #mzts-last_msg{float:left;width:100%;margin-top:-3px;}
 .inbox0_inboxmsg_unread{color:grey;}
-#customqry_totaldays_text{display:none;margin-left:30px;font-size:0.90em;}
+#customqry_totaldays_text{display:none;margin-left:30px;font-size:0.90em;color:gray;}
 #customqry_sent_wait{display:none;}
 #customqry_rcvd_wait{display:none;}
 #customqry_recipients_wait{display:none;}
@@ -186,7 +186,7 @@ display:none;
 display:block;
 }
 
-#customqry_dashboard{width:100%;background-color:#f1f9fd;font-size:0.9em;height:32px;}
+#customqry_dashboard{width:100%;background-color:#f1f9fd;font-size:0.9em;height:32px;vertical-align:middle;padding-top:3px;}
 ._7days_aggregate_data{
   font-size:0.9em;
   font-weight:normal;

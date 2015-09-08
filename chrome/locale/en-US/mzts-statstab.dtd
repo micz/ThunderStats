@@ -39,7 +39,7 @@
 <!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats gives you some insights on how you're managing your inbox.">
 <!ENTITY ThunderStats.OtherInfoTitle "How does this addon works?">
 <!ENTITY ThunderStats.OtherInfoText_1 "All the statistics are calculated from the internal Thunderbird database and are associated with the mail addresses of the selected account.">
-<!ENTITY ThunderStats.OtherInfoText_2b "You need to wait for the Thunderbird Indexer to index all the new messages to get updated statistics. Check the last indexed message date and last index update on the top right of the page to see how up-to-date the statistics are.">
+<!ENTITY ThunderStats.OtherInfoText_2b "The statistics will be updated as soon as the [Thunderbird] Indexer has processed all new messages. The dates in the top right corner show how up-to-date the statistics are.">
 <!ENTITY ThunderStats.OtherInfoText_3 "Take a look at what's going on with the development of this addon">
 <!ENTITY ThunderStats.SubmitNewIssue "Submit a new issue">
 <!ENTITY ThunderStats.DonationsTitle "Donations">

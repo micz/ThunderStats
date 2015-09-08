@@ -39,7 +39,7 @@
 <!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats ti fornisce un'analisi di come gestisci la tua posta in arrivo.">
 <!ENTITY ThunderStats.OtherInfoTitle "Come funziona questa estensione?">
 <!ENTITY ThunderStats.OtherInfoText_1 "Tutte le statistiche sono calcolate utilizzando il database interno di Thunderbird e sono associate all'indirizzo email dell'account selezionato.">
-<!ENTITY ThunderStats.OtherInfoText_2b "Devi attendere che l'indicizzazione di Thunderbird registri tutti i nuovi messaggi per avere delle statistiche aggiornate. Verifica la data dell'ultimo messaggio indicizzato e dell'ultimo aggiornamento dell'indice in alto a destra per verificare quanto siano aggiornate le statistiche.">
+<!ENTITY ThunderStats.OtherInfoText_2b "Le statistiche saranno aggiornate non appena l'indicizzazione di Thunderbird registrerà tutti i nuovi messaggi. Le date in alto a destra mostrano quanto le statistiche sono aggiornate.">
 <!ENTITY ThunderStats.OtherInfoText_3 "Dai uno sguardo allo sviluppo di questa estensione">
 <!ENTITY ThunderStats.SubmitNewIssue "Invia una nuova segnalazione">
 <!ENTITY ThunderStats.DonationsTitle "Donazioni">

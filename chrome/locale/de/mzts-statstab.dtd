@@ -9,30 +9,24 @@
 <!ENTITY ThunderStats.Yesterday "Gestern">
 <!ENTITY ThunderStats.Last "Letzte">
 <!ENTITY ThunderStats.days "Tage">
-<!ENTITY ThunderStats.TotalDays "Gesamt Tage">
+<!ENTITY ThunderStats.TotalDays "Tage gesamt">
 <!ENTITY ThunderStats.Info "Info">
-<!ENTITY ThunderStats.TodayMails "Heutige Mails">
+<!ENTITY ThunderStats.Mails "Emails">
 <!ENTITY ThunderStats.Loading "Lade">
 <!ENTITY ThunderStats.SentMails "Gesendete Mails">
 <!ENTITY ThunderStats.ReceivedMails "Empfangene Mails">
 <!ENTITY ThunderStats.InboxZeroStatus "'Inbox Zero' Status">
 <!ENTITY ThunderStats.TotalInbox "Gesamte Mails Posteingang">
 <!ENTITY ThunderStats.TotalInboxUnread "ungelesen">
-<!ENTITY ThunderStats.YesterdayMails "Gestrige Mails">
-<!ENTITY ThunderStats.TodayTop10Recipients "Heutige Top 10 Empfänger">
-<!ENTITY ThunderStats.TodayTop10Senders "Heutige Top 10 Absender">
 <!ENTITY ThunderStats.YesterdayThisTime "Gestern um diese Zeit">
 <!ENTITY ThunderStats.sent "gesendet">
 <!ENTITY ThunderStats.received "empfangen">
-<!ENTITY ThunderStats.TodayFolderLocation "Orts-Diagram der heutigen Mail">
+<!ENTITY ThunderStats.FolderLocation "Verzeichnis-Diagram">
 <!ENTITY ThunderStats.NoMailsReceivedToday "Heute wurden keine Mails empfangen!">
 <!ENTITY ThunderStats.InboxMailsDateSpreading "Zeit-Verteilung der empfangenen Mails">
 <!ENTITY ThunderStats.NoMailsInbox "Keine Mails im Eingangsordner!">
 <!ENTITY ThunderStats.NoMailsReceivedYesterday "Gestern wurden keine Mails empfangen!">
-<!ENTITY ThunderStats.YesterdayFolderLocation "Orts-Diagram der gestrigen Mail">
-<!ENTITY ThunderStats.YesterdayTop10Recipients "Gestrige Top 10 Empfänger">
-<!ENTITY ThunderStats.YesterdayTop10Senders "Gestrige Top 10 Absender">
-<!ENTITY ThunderStats.Top10Recipients "Gestrige Top 10 Empfänger">
+<!ENTITY ThunderStats.Top10Recipients "Top 10 Empfänger">
 <!ENTITY ThunderStats.Top10Senders "Top 10 Absender">
 <!ENTITY ThunderStats.clickhere "hier klicken">
 <!ENTITY ThunderStats.clickheremoreinfo "Für mehr Info hier klicken">
@@ -45,22 +39,22 @@
 <!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats gibt Ihnen Einblicke darin wie Sie ihren Posteingang verwalten.">
 <!ENTITY ThunderStats.OtherInfoTitle "Wie funktioniert diese Erweiterung?">
 <!ENTITY ThunderStats.OtherInfoText_1 "Alle Statistiken werden mit Hilfe der internen Datenbank von Thunderbird errechnet und sind mit den EMail Adressen des gewählten Kontos verbunden.">
-<!ENTITY ThunderStats.OtherInfoText_2 "In Zukunft werden mehr Funktionen und Analysemethoden hinzugefügt, wie z.B. die Möglichkeit einen spezifischen Zeitraum zu wählen.">
+<!ENTITY ThunderStats.OtherInfoText_2b "Warten Sie bis der Indexer alle neuen Mails verarbeitet hat um die Statistik zu aktualisieren. Das Datum in der oberen rechten Ecke zeigt, wie aktuell die Daten sind.">
 <!ENTITY ThunderStats.OtherInfoText_3 "Schauen Sie nach was zur Zeit für diese Erweiterung entwickelt wird">
 <!ENTITY ThunderStats.SubmitNewIssue "Neues Problem einreichen">
 <!ENTITY ThunderStats.DonationsTitle "Spenden">
 <!ENTITY ThunderStats.max "max">
 <!ENTITY ThunderStats.min "min">
 <!ENTITY ThunderStats.average "Durchschnitt">
-<!ENTITY ThunderStats.InTheLast "In den letzten">
 <!ENTITY ThunderStats.CustomQry "Benutzerdefiniert">
-<!ENTITY ThunderStats.UpdateCustomQry "Daten holen">
+<!ENTITY ThunderStats.UpdateCustomQry "Daten ermitteln">
 <!ENTITY ThunderStats.CustomQryDataMsg "Daten extrahieren für">
-<!ENTITY ThunderStats.From "Von">
-<!ENTITY ThunderStats.To "An">
-<!ENTITY ThunderStats.Bookmarks "Lesezeichen">
+<!ENTITY ThunderStats.From "von">
+<!ENTITY ThunderStats.To "bis">
+<!ENTITY ThunderStats.Views "Szenarien">
 <!ENTITY ThunderStats.CurrentWeek "Aktuelle Woche">
 <!ENTITY ThunderStats.CurrentMonth "Aktueller Monat">
 <!ENTITY ThunderStats.LastWeek "Letzte Woche">
 <!ENTITY ThunderStats.LastMonth "Letzter Monat">
 <!ENTITY ThunderStats.Last2Week "Letzte zwei Wochen">
+<!ENTITY ThunderStats.OnlyBDCustomQry "Nur Werktage berücksichtigen">

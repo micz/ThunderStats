@@ -523,8 +523,9 @@ miczThunderStatsTab.ui={
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] output: "+JSON.stringify(output)+"\r\n");
 		return output;
 	},
-	
+
 	utilDrawInbox0FolderSpreadGraph_getFolderClick:function(d){
+		let mwin=miczThunderStatsTab.ui.mwin;
 		let mdoc=miczThunderStatsTab.ui.mwin.document;
 		if(!miczThunderStatsPrefs.openFolderInFirstTab){
 			mdoc.getElementById("tabmail").openTab("folder",{folder:MailUtils.getFolderForURI(d.data.folder_url)});

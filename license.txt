@@ -26,19 +26,19 @@ Italian (it) thanks to Mic [http://micz.it].
 Axel Grude, developer of QuickFolders addon, for his help in testing and brainstorming new features.
 
 -= Javascript Libraries =-
-jQuery - https://jquery.org/
+- jQuery - https://jquery.org/
 Provided under the MIT license: https://jquery.org/license/
 
-D3 - http://d3js.org/
+- D3 - http://d3js.org/
 Provided under the BSD license: http://opensource.org/licenses/BSD-3-Clause
 
-Tooltipster - http://iamceege.github.io/tooltipster/
+- Tooltipster - http://iamceege.github.io/tooltipster/
 Provided under the MIT license: http://opensource.org/licenses/MIT
 
-Moment.js - http://momentjs.com/
+- Moment.js - http://momentjs.com/
 Provided under the MIT license: http://opensource.org/licenses/MIT
 
-jQuery replaceText - http://benalman.com/projects/jquery-replacetext-plugin/
+- jQuery replaceText - http://benalman.com/projects/jquery-replacetext-plugin/
 Provided under the MIT license: http://opensource.org/licenses/MIT
 
 

@@ -19,10 +19,11 @@ Addon home page: http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird
 ATTRIBUTIONS
 
 -= Translations =-  (Thanks to BabelZilla.org)
-Chinese (Simplified) (zh-CN) thanks to YFdyh000.
 German (de) thanks to RealRaven [http://quickfolders.mozdev.org/].
 Italian (it) thanks to Mic [http://micz.it].
 
+-= Thanks to... =-
+Axel Grude, developer of QuickFolders addon, for his help in testing and brainstorming new features.
 
 -= Javascript Libraries =-
 jQuery - https://jquery.org/

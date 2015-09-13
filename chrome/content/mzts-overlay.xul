@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="chrome://thunderstats/content/css/mzts-button.css"?>
 
-<!DOCTYPE overlay>
+<!DOCTYPE overlay SYSTEM "chrome://thunderstats/locale/overlay.dtd">
+
 <overlay id="mzts-button-overlay"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -18,7 +19,7 @@
 <toolbarpalette id="MailToolbarPalette">
 	<toolbarbutton id="mzts-button"
 	  label="ThunderStats"
-	  tooltiptext="Open ThunderStats Tab"
+	  tooltiptext="&ThunderStats.Button.tooltip;"
 	  oncommand="miczThunderStatsButton.onCommand();"
 	  class="toolbarbutton-1 chromeclass-toolbar-additional"/>
 </toolbarpalette>

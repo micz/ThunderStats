@@ -60,7 +60,7 @@ span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
   text-overflow: ellipsis;
 }
 
-#table_today,#table_yesterday,#table_7days,#table_info,#table_customqry {
+#table_today,#table_yesterday,#table_7days,#table_info,#table_customqry,#table_folder{
   display: table;
   width: 100%;
   table-layout: fixed;
@@ -85,15 +85,15 @@ span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
   position:relative;
 }
 
-#tier1_today .chunk,#tier1_yesterday .chunk,#tier1_7days .chunk,#tier1_info .chunk,#tier1_customqry .chunk {
+#tier1_today .chunk,#tier1_yesterday .chunk,#tier1_7days .chunk,#tier1_info .chunk,#tier1_customqry .chunk,#tier1_folder .chunk{
   padding-top: 0;
 }
 
-#top_left_chunk_today,#top_left_chunk_yesterday,#top_left_chunk_7days,#top_left_chunk_info,#top_left_chunk_customqry {
+#top_left_chunk_today,#top_left_chunk_yesterday,#top_left_chunk_7days,#top_left_chunk_info,#top_left_chunk_customqry,#top_left_chunk_folder{
   background-color: #f1f9fd; /*#f2f2f0*/
 }
 
-#bottom_right_chunk_today,#bottom_right_chunk_yesterday,#bottom_right_chunk_7days,#bottom_right_chunk_info,#bottom_right_chunk_customqry {
+#bottom_right_chunk_today,#bottom_right_chunk_yesterday,#bottom_right_chunk_7days,#bottom_right_chunk_info,#bottom_right_chunk_customqry,#bottom_right_chunk_folder{
   background-image: -moz-linear-gradient(#f1f9fd 75%, #ffffff); /*242,242,240,1), rgba(242,242,240,0)*/
 }
 

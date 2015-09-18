@@ -21,7 +21,7 @@
 	  label="ThunderStats"
 	  tooltiptext="&ThunderStats.Button.tooltip;"
 	  oncommand="miczThunderStatsButton.onCommand();"
-	  class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+	  class="toolbarbutton-1"/>
 </toolbarpalette>
 
 <!-- tools menu item -->

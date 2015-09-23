@@ -125,6 +125,29 @@ var miczThunderStatsCore = {
 		return this.identities[identity_id]["custom"];
 	},
 
+	// iterate all folders
+	// writable - if this is set, exclude folders that do not accept mail from move/copy (e.g. newsgroups)
+	allFoldersIterator: function allFoldersIterator(writable) {
+		let Ci = Components.interfaces,
+			Cc = Components.classes,
+				acctMgr = Cc["@mozilla.org/messenger/account-manager;1"].getService(Ci.nsIMsgAccountManager),
+			FoldersArray, allFolders;
+
+	  FoldersArray = Cc["@mozilla.org/array;1"].createInstance(Ci.nsIMutableArray);
+	  allFolders = acctMgr.allFolders;
+	  for each (let aFolder in fixIterator(allFolders, Ci.nsIMsgFolder)) {
+		// filter out non-filable folders (newsgroups...)
+		if (writable &&
+			 (!aFolder.canFileMessages ||
+			 (aFolder.flags & util.FolderFlags.MSG_FOLDER_FLAG_NEWSGROUP) ||
+			 (aFolder.flags & util.FolderFlags.MSG_FOLDER_FLAG_NEWSHOST))) {
+			continue;
+		}
+		FoldersArray.appendElement(aFolder, false);
+	  }
+	  return fixIterator(FoldersArray, Ci.nsIMsgFolder);
+	},
+
 };
 
 miczThunderStatsCore.db = {

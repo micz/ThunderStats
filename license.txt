@@ -41,6 +41,9 @@ Provided under the MIT license: http://opensource.org/licenses/MIT
 - jQuery replaceText - http://benalman.com/projects/jquery-replacetext-plugin/
 Provided under the MIT license: http://opensource.org/licenses/MIT
 
+- Select2 - https://select2.github.io/
+Provided under the MIT license: https://github.com/select2/select2/blob/master/LICENSE.md
+
 
 -= Graphics =-
 Addon icon thanks to http://hopstarter.deviantart.com/

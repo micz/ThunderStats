@@ -1119,4 +1119,58 @@ miczThunderStatsTab.ui={
 
 	},
 
+	addFolderSearchList:function(all_folders){
+		let output=new Array();
+		let ii=0;
+		for each(let folder in all_folders){
+			//$jQ('#'+container_id).append('<div class="ts_folder_item">'+fold.prettyName.toLocaleLowerCase()+'</div>');
+			//TODO add optgroup
+			output.push({ id: 0, text: miczThunderStatsTab.ui.folderPathLabel(2, folder, 4) });
+			ii++;
+		}
+		return output;
+	},
+
+	// show a reusable label representing a folder path (for quickMove, quickJump and recent folders).
+  // 0 - just folder.prettyName
+  // 1 - folder.prettyName - Account  (default)
+  // 2 - account - folder path
+  // 3 - folder path
+  // 4 - folder.URI  [for debugging]
+  folderPathLabel : function folderPathLabel(detailType, folder, maxPathItems) {
+    function folderPath(folder, maxAtoms, includeServer) {
+      let pathComponents = '',
+          chevron = ' ' + "\u00BB".toString() + ' ';
+      while (folder && maxAtoms) {
+        if (folder.isServer && !includeServer)
+          return pathComponents;
+        pathComponents = folder.prettyName
+                       + (pathComponents ? chevron  : '')
+                       + pathComponents;
+        if (folder.isServer)
+          break;
+        maxAtoms--;
+        folder = folder.parent;
+      }
+      return pathComponents;
+    }
+
+    let hostString;
+    switch (detailType) {
+      case 0: // folder name
+        return folder.name;
+      case 1: // folder name - account name
+        hostString = folder.rootFolder.name;
+        return folder.name + ' - ' + hostString;
+      case 2: // account name - folder path (max[n])
+        hostString = folder.rootFolder.name;
+        let f = folder.URI.indexOf('://'),
+            fullPath = f ? folder.URI.substr(f+3) : folder.URI;
+        return hostString + ' - ' + folderPath(folder,  maxPathItems, false);
+      case 3:
+        return folderPath(folder,  maxPathItems, false);
+      case 4: // for debugging
+        return folder.URI;
+    }
+  },
 };

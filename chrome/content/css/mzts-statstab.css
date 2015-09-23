@@ -33,6 +33,7 @@ span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
 #customqry_rcvd_wait{display:none;}
 #customqry_recipients_wait{display:none;}
 #customqry_senders_wait{display:none;}
+.ts_folder_item{display:none;}
 
 #heading_wrapper {
   display: table;

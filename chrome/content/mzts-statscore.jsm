@@ -5,6 +5,7 @@ Components.utils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+Components.utils.import("resource:///modules/iteratorUtils.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -132,15 +133,14 @@ var miczThunderStatsCore = {
 			Cc = Components.classes,
 				acctMgr = Cc["@mozilla.org/messenger/account-manager;1"].getService(Ci.nsIMsgAccountManager),
 			FoldersArray, allFolders;
-
 	  FoldersArray = Cc["@mozilla.org/array;1"].createInstance(Ci.nsIMutableArray);
 	  allFolders = acctMgr.allFolders;
 	  for each (let aFolder in fixIterator(allFolders, Ci.nsIMsgFolder)) {
 		// filter out non-filable folders (newsgroups...)
 		if (writable &&
 			 (!aFolder.canFileMessages ||
-			 (aFolder.flags & util.FolderFlags.MSG_FOLDER_FLAG_NEWSGROUP) ||
-			 (aFolder.flags & util.FolderFlags.MSG_FOLDER_FLAG_NEWSHOST))) {
+			 (aFolder.flags & miczThunderStatsUtils.MSG_FOLDER_FLAG_NEWSGROUP) ||
+			 (aFolder.flags & miczThunderStatsUtils.MSG_FOLDER_FLAG_NEWSHOST))) {
 			continue;
 		}
 		FoldersArray.appendElement(aFolder, false);

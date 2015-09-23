@@ -23,6 +23,7 @@
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css"/>
 	<link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-dropdownmenu.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/select2.css"/>
     <title>&ThunderStats.TABTitle;</title>
 
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/jquery-2.1.4.min.js"/>
@@ -30,6 +31,7 @@
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/jquery.ba-replacetext.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/d3.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/moment-with-locales.js"/>
+    <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/jslib/select2.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.callback.js"/>
     <script type="application/javascript;version=1.8" src="chrome://thunderstats/content/mzts-statstab.observer.js"/>
@@ -76,6 +78,7 @@
 
 			e.preventDefault();
 		});
+
 		$jQ('#cssmenu a').on('click', function(e)  {	//custom query view menu command
 			let tscommand=$jQ(this).attr('href');
 
@@ -87,6 +90,11 @@
 		});
 
 		$jQ('img.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false,position:'top'});
+
+		$jQ('#ts_folder_search').select2({
+			placeholder: "Select a folder",
+			data:miczThunderStatsTab.ui.addFolderSearchList(miczThunderStatsCore.allFoldersIterator(true)),
+		});
 
 	});
 	</script>
@@ -320,6 +328,7 @@
 					  <div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">Title1</h2>
 					  </div>
+					  <select id="ts_folder_search" style="width:100%"><option></option></select>
 						<!--content-->
 					</div>
 					<div class="chunk" id="top_right_chunk_folder">

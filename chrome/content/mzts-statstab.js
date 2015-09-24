@@ -384,6 +384,13 @@ var miczThunderStatsTab = {
 		miczThunderStatsDB.close();
 	},
 
+	updateFolderQry: function(){
+		let currentval=$jQ('#ts_folder_search option:selected').val();
+		let data_array=$jQ('#ts_folder_search').select2('data');
+		let result = data_array.filter(function(v){return v.id === currentval;})[0].uri;	//TODO Multiple folder selection
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry: '+result+'\r\n');
+	},
+
 	getLastIndexedMessage: function(){
 		miczThunderStatsDB.queryGetLastMessageDate(miczThunderStatsTab.callback.last_idx_msg);
 		miczThunderStatsDB.getLastIndexUpdate();

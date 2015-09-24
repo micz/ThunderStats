@@ -1125,7 +1125,7 @@ miczThunderStatsTab.ui={
 		for each(let folder in all_folders){
 			//$jQ('#'+container_id).append('<div class="ts_folder_item">'+fold.prettyName.toLocaleLowerCase()+'</div>');
 			//TODO add optgroup
-			output.push({ id: 0, text: miczThunderStatsTab.ui.folderPathLabel(2, folder, 4) });
+			output.push({id:ii, text:miczThunderStatsTab.ui.folderPathLabel(2,folder,4), uri:folder.URI});
 			ii++;
 		}
 		return output;

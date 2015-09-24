@@ -385,10 +385,14 @@ var miczThunderStatsTab = {
 	},
 
 	updateFolderQry: function(){
+		let identity_id=miczThunderStatsTab.getCurrentIdentityId();
 		let currentval=$jQ('#ts_folder_search option:selected').val();
 		let data_array=$jQ('#ts_folder_search').select2('data');
-		let result = data_array.filter(function(v){return v.id === currentval;})[0].uri;	//TODO Multiple folder selection
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry: '+result+'\r\n');
+		let folder_uri = data_array.filter(function(v){return v.id === currentval;})[0].uri;	//TODO Multiple folder selection
+		let folders_uri=new Array();
+		folders_uri.push(folder_uri);
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry: '+folder_uri+'\r\n');
+		miczThunderStatsCore.db.getFolderStats(identity_id,folders_uri,miczThunderStatsTab.folderworker.folder_stats);
 	},
 
 	getLastIndexedMessage: function(){

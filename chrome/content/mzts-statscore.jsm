@@ -6,6 +6,7 @@ Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm")
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 Components.utils.import("resource:///modules/iteratorUtils.jsm");
+Components.utils.import("resource:///modules/MailUtils.js");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -295,6 +296,18 @@ miczThunderStatsCore.db = {
 	/*getInboxMessagesDate:function(mIdentity,mCallback){
 		//miczThunderStatsDB.queryInboxMessagesDate(mIdentity,mCallback);
 	},*/
+
+	getFolderStats:function(mIdentity,mFoldersURI,mCallback){
+		let mIdentityAddresses=miczThunderStatsUtils.getIdentitiesArray(mIdentity,miczThunderStatsCore.identities);
+		miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
+		let mFolders=new Array();
+		for each(let folder_uri in mFoldersURI){
+			mFolders.push(MailUtils.getFolderForURI(folder_uri));
+		}
+		miczThunderStatsFolderQ.init(mFolders,mIdentityAddresses,this.win,false,null);
+		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
+		miczThunderStatsFolderQ.run();
+	},
 
 	getResultObject:function(aFields,aResultSet){
 		let oOutput={};

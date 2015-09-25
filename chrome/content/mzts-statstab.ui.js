@@ -107,6 +107,7 @@ miczThunderStatsTab.ui={
 		//adding datepicker with week start init
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");
 		let locale_firstweekday=moment().startOf("week").format('d');
+		//==== CUSTOM QRY DATEPICKERS =====
 		//document.getElementById('datepicker_from').setAttribute("firstdayofweek",locale_firstweekday);
 		//document.getElementById('datepicker_to').setAttribute("firstdayofweek",locale_firstweekday);
 		let aDatepickerFrom = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
@@ -136,6 +137,24 @@ miczThunderStatsTab.ui={
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentMomentLocale: "+moment.locale()+"\r\n");
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
+		//==== CUSTOM QRY DATEPICKERS ===== END
+		//==== FOLDER QRY DATEPICKERS =====
+		let aDatepickerFrom_FQry = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
+		aDatepickerFrom_FQry.setAttribute("id", "folderqry_datepicker_from");
+		aDatepickerFrom_FQry.setAttribute("type", "popup");
+		aDatepickerFrom_FQry.setAttribute("class", "customqry_datepicker");
+		aDatepickerFrom_FQry.setAttribute("firstdayofweek", locale_firstweekday);
+		aDatepickerFrom_FQry.onchange=miczThunderStatsTab.ui.checkDatePickers_From_FQry;
+		//TODO: set the datepicker from to 7 days in the past
+		document.getElementById('folderqry_datepicker_from_placeholder').appendChild(aDatepickerFrom_FQry);
+		let aDatepickerTo_FQry = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
+		aDatepickerTo_FQry.setAttribute("id", "folderqry_datepicker_to");
+		aDatepickerTo_FQry.setAttribute("type", "popup");
+		aDatepickerTo_FQry.setAttribute("class", "customqry_datepicker");
+		aDatepickerTo_FQry.setAttribute("firstdayofweek", locale_firstweekday);
+		aDatepickerTo_FQry.onchange=miczThunderStatsTab.ui.checkDatePickers_To_FQry;
+		document.getElementById('folderqry_datepicker_to_placeholder').appendChild(aDatepickerTo_FQry);
+		//==== FOLDER QRY DATEPICKERS ===== END
 	},
 
 	initDatePickers_dates:function(){
@@ -154,6 +173,22 @@ miczThunderStatsTab.ui={
 	checkDatePickers_From:function(event){
 		let dto=document.getElementById('datepicker_to');
 		let dfrom=document.getElementById('datepicker_from');
+		if(dto.dateValue<dfrom.dateValue){
+			dto.dateValue=dfrom.dateValue;
+		}
+	},
+
+	checkDatePickers_To_FQry:function(event){
+		let dto=document.getElementById('folderqry_datepicker_to');
+		let dfrom=document.getElementById('folderqry_datepicker_from');
+		if(dto.dateValue<dfrom.dateValue){
+			dfrom.dateValue=dto.dateValue;
+		}
+	},
+
+	checkDatePickers_From_FQry:function(event){
+		let dto=document.getElementById('folderqry_datepicker_to');
+		let dfrom=document.getElementById('folderqry_datepicker_from');
 		if(dto.dateValue<dfrom.dateValue){
 			dto.dateValue=dfrom.dateValue;
 		}

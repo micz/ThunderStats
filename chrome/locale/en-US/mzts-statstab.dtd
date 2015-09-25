@@ -59,3 +59,4 @@
 <!ENTITY ThunderStats.Last2Week "Last two Week">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Consider business days only">
 <!ENTITY ThunderStats.FolderStats "Folder">
+<!ENTITY ThunderStats.FolderQryAlsoSubfolders "Also Subfolders">

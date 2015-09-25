@@ -75,6 +75,7 @@
     <tabbox id="ts_tabbox">
       <tabs>
         <tab label="&ThunderStats.TabSettings.label;"/>
+        <tab label="&ThunderStats.TabAdvanced.label;"/>
         <tab label="&ThunderStats.TabBusinessDays.label;"/>
         <tab label="&ThunderStats.TabCustomIdentities.label;"/>
         <tab label="&ThunderStats.TabInfo.label;"/>
@@ -111,6 +112,19 @@
             		preference="ThunderStats.aggregate_average_not_rounded" />
             	<checkbox id="ThunderStats.folderspreadgraph_openinfirsttab" label="&ThunderStats.folderspreadgraph_openinfirsttab;"
             preference="ThunderStats.folderspreadgraph_openinfirsttab" />
+			  </rows>
+		</grid>
+          <label control="symbol" value=" "/>
+          <label control="symbol" value=" "/>
+          <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>
+        </tabpanel>
+        <tabpanel id="tstab_advanced" orient="vertical">
+            <grid flex="1">
+			  <columns>
+				<column flex="1"/>
+				<column flex="10"/>
+			  </columns>
+			  <rows>
             	<groupbox>
   				<caption label="&ThunderStats.ManyDaysGraph;"/>
 					<hbox align="center">
@@ -133,9 +147,6 @@
 		</grid>
 		    <checkbox id="ThunderStats.debug_checkbox" label="&ThunderStats.ActivateDebug;"
             preference="ThunderStats.debug" />
-          <label control="symbol" value=" "/>
-          <label control="symbol" value=" "/>
-          <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>
         </tabpanel>
         <tabpanel id="tstab_bdays" orient="vertical">
 			<checkbox id="ThunderStats.bday.use_last_business_day_checkbox" preference="ThunderStats.bday.use_last_business_day" label="&ThunderStats.UseLastBusinessDay;"/>

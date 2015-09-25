@@ -51,3 +51,5 @@
 <!ENTITY ThunderStats.CustomQryTabGroupbox "Custom Range Statistics">
 <!ENTITY ThunderStats.CustomQueryDefaultOnlyBD "Always check &quot;Business Days Only&quot; option at startup.">
 <!ENTITY ThunderStats.folderspreadgraph_openinfirsttab "From the mails folder locations chart, open the folder always in the first tab.">
+<!ENTITY ThunderStats.FolderQryTabGroupbox "Folder Statistics">
+<!ENTITY ThunderStats.FolderQueryDefaultAlsoSubfolders "Always check &quot;Also Subfolders&quot; option at startup.">

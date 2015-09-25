@@ -71,6 +71,9 @@
     <preference id="ThunderStats.customquery_default_only_bd"
         name="extensions.ThunderStats.customquery_default_only_bd"
         type="bool"/>
+    <preference id="ThunderStats.folderquery_also_subfolders"
+        name="extensions.ThunderStats.folderquery_also_subfolders"
+        type="bool"/>
     </preferences>
     <tabbox id="ts_tabbox">
       <tabs>
@@ -137,10 +140,15 @@
 				</groupbox>
 				<groupbox>
   				<caption label="&ThunderStats.CustomQryTabGroupbox;"/>
-					<checkbox id="ThunderStats.customquery_default_only_bd" label="&ThunderStats.CustomQueryDefaultOnlyBD;"
+					<checkbox id="ThunderStats.customquery_default_only_bd_checkbox" label="&ThunderStats.CustomQueryDefaultOnlyBD;"
             		preference="ThunderStats.customquery_default_only_bd" />
             		<checkbox id="ThunderStats.customquery_bookmark_immediate_update" label="&ThunderStats.CustomQueryBookmarkImmediateUpdate;"
             		preference="ThunderStats.customquery_bookmark_immediate_update" />
+				</groupbox>
+				<groupbox>
+  				<caption label="&ThunderStats.FolderQryTabGroupbox;"/>
+					<checkbox id="ThunderStats.folderquery_also_subfolders_checkbox" label="&ThunderStats.FolderQueryDefaultAlsoSubfolders;"
+            		preference="ThunderStats.folderquery_also_subfolders" />
 				</groupbox>
             <label control="symbol" value=" "/>
 			  </rows>

@@ -81,6 +81,10 @@ var miczThunderStatsPrefs = {
 		return this.getBoolPref_TS("customquery_default_only_bd");
 	},
 
+	get folderqryAlsoSubfoldersDefault() {
+		return this.getBoolPref_TS("folderquery_also_subfolders");
+	},
+
 	/*isDebugOption: function(option) { // granular debugging
 		if(!this.isDebug) return false;
 		try {return this.getBoolPref_TS("debug." + option);}

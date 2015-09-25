@@ -30,6 +30,10 @@ var miczThunderStatsTab = {
 				document.getElementById('customqry_only_bd').checked=true;
 			}
 
+			if(miczThunderStatsPrefs.folderqryAlsoSubfoldersDefault){
+				document.getElementById('folderqry_also_subfolders').checked=true;
+			}
+
 			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale());
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale()+"\r\n");
 			//Setting the correct locale to display dates and times

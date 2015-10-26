@@ -167,8 +167,7 @@ miczThunderStatsTab.ui={
 				break;
 			case '#currentmonth': dfrom.subtract(dfrom.format('D'),'day').add(1,'day');
 				break;
-			case '#currentyear': //dfrom.subtract(dfrom.format('D'),'day').subtract(dfrom.format('M'),'month').add(1,'day');
-				dfrom.set({'month':0,'date':1});
+			case '#currentyear': dfrom.set({'month':0,'date':1});
 				break;
 			case '#lastweek': dfrom.weekday(0).subtract(1,'day').weekday(0);
 				dto.weekday(0).subtract(1,'day').weekday(6);
@@ -179,8 +178,7 @@ miczThunderStatsTab.ui={
         		dto.subtract(dto.format('D'),'day');
 				//dto.subtract(1,'month').endOf('month');
 				break;
-			case '#lastyear': //dfrom.subtract(1,'month').subtract(dfrom.format('D'),'day').add(1,'day');
-				dfrom.set({'date':1,'month':0}).subtract(1,'year');
+			case '#lastyear': dfrom.set({'date':1,'month':0}).subtract(1,'year');
         		dto.set({'date':1,'month':0}).subtract(1,'day');
 				break;
 			default: return;

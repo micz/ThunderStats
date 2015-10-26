@@ -205,12 +205,12 @@ miczThunderStatsCore.db = {
 	},
 
 	getTodayInvolved:function(mType,mIdentity,mCallback){
-		let mMax=10;
+		let mMax=miczThunderStatsPrefs.involvedNum;
 		return this.getOneDayInvolved(mType,new Date(),mIdentity,mMax,mCallback);
 	},
 
 	getYesterdayInvolved:function(mType,mIdentity,mCallback){
-		let mMax=10;
+		let mMax=miczThunderStatsPrefs.involvedNum;
 		return this.getOneDayInvolved(mType,miczThunderStatsUtils.getYesterdayDate(),mIdentity,mMax,mCallback);
 	},
 
@@ -219,7 +219,7 @@ miczThunderStatsCore.db = {
 		let mToDateInternal=new Date(mToDate);
 		mFromDateInternal.setHours(0,0,0,0);
 		mToDateInternal.setHours(24,0,0,0);
-		let mMax=10;
+		let mMax=miczThunderStatsPrefs.involvedNum;
 		return miczThunderStatsDB.queryGetNumInvolved(mType,mFromDateInternal.getTime(),mToDateInternal.getTime(),mIdentity,mMax,mCallback);
 	},
 

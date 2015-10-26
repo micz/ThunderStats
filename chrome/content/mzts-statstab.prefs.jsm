@@ -36,6 +36,12 @@ var miczThunderStatsPrefs = {
 		return output;
 	},
 
+	get involvedNum() {
+		let output=this.getIntPref_TS('involved_num');
+		if(output==0) output=10;
+		return output;
+	},
+
 	get manyDaysSmallLabels() {
 		return this.getBoolPref_TS('many_days_small_labels');
 	},

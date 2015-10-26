@@ -4,6 +4,7 @@
 Version 1.2.1 - ??/??/2015
 - Daylight Saving Time bug fixed in CustomView query.
 - Added the new "Last Year" and "Current Year" bookmarked views.
+- Added a warning in the CustomView query if the date interval is more than 99 days long.
 -
 ==========
 Version 1.2 - 10/09/2015

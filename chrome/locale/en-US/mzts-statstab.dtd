@@ -26,8 +26,8 @@
 <!ENTITY ThunderStats.InboxMailsDateSpreading "Inbox mails date spreading chart">
 <!ENTITY ThunderStats.NoMailsInbox "No mails in the Inbox!">
 <!ENTITY ThunderStats.NoMailsReceivedYesterday "No mails received yesterday!">
-<!ENTITY ThunderStats.Top10Recipients "Top 10 Recipients">
-<!ENTITY ThunderStats.Top10Senders "Top 10 Senders">
+<!ENTITY ThunderStats.TopRecipients "Top Recipients">
+<!ENTITY ThunderStats.TopSenders "Top Senders">
 <!ENTITY ThunderStats.clickhere "click here">
 <!ENTITY ThunderStats.clickheremoreinfo "Click here for more info">
 <!ENTITY ThunderStats.AboutTitle "About this addon">

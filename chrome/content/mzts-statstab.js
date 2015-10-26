@@ -262,6 +262,30 @@ var miczThunderStatsTab = {
 		let mToDay = document.getElementById('datepicker_to').dateValue;
 		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
 
+		//if there are too much days, warn the user...
+		if(miczThunderStatsUtils._customqry_num_days > 99){
+			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+			let promptService_numd = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+			if(!promptService_numd.confirm(null,miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.Warning"),miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.CustomViewTooMuchDays",miczThunderStatsUtils._customqry_num_days))){
+				//The user aborted the action...
+				//... so hide the loading indicators
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_data_sent");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_data_rcvd");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_senders_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_totaldays_text");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_avg_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_avg_rcvd_wait");
+				return;
+			}
+		}
+
 		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);
 		$jQ("#customqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
 		miczThunderStatsTab.ui.showLoadingElement("customqry_totaldays_text");

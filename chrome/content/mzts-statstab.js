@@ -247,7 +247,6 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("customqry_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_senders_wait");
-		miczThunderStatsTab.ui.showLoadingElement("customqry_totaldays_text");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_max_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_min_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_avg_sent_wait");
@@ -275,7 +274,6 @@ var miczThunderStatsTab = {
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_rcvd_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_senders_wait");
-				miczThunderStatsTab.ui.hideLoadingElement("customqry_totaldays_text");
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_sent_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_sent_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_avg_sent_wait");

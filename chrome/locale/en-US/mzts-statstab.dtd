@@ -54,7 +54,9 @@
 <!ENTITY ThunderStats.Views "Views">
 <!ENTITY ThunderStats.CurrentWeek "Current Week">
 <!ENTITY ThunderStats.CurrentMonth "Current Month">
+<!ENTITY ThunderStats.CurrentYear "Current Year">
 <!ENTITY ThunderStats.LastWeek "Last Week">
 <!ENTITY ThunderStats.LastMonth "Last Month">
+<!ENTITY ThunderStats.LastYear "Last Year">
 <!ENTITY ThunderStats.Last2Week "Last two Week">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Consider business days only">

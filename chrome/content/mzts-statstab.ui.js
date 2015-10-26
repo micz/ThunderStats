@@ -169,15 +169,25 @@ miczThunderStatsTab.ui={
 				break;
 			case '#lastweek': dfrom.weekday(0).subtract(1,'day').weekday(0);
 				dto.weekday(0).subtract(1,'day').weekday(6);
+				//dto.weekday(0).subtract(1,'day').weekday(6).set({'hour':1,'minute':0,'second':0});
 				break;
 			case '#last2week': dfrom.weekday(0).subtract(1,'day').weekday(0);
 				break;
 			case '#lastmonth': dfrom.subtract(1,'month').subtract(dfrom.format('D'),'day').add(1,'day');
-        dto.subtract(dto.format('D'),'day');
+        		dto.subtract(dto.format('D'),'day');
 				//dto.subtract(1,'month').endOf('month');
 				break;
 			default: return;
 		}
+		//DST fix
+		/*if(!dfrom.isDST()){
+			//dump(">>>>>>>>>>>>>> [customQueryViewSelect] dfrom isDST fix.\r\n");
+			dfrom.subtract(1,'hour');
+		}
+		if(!dto.isDST()){
+			//dump(">>>>>>>>>>>>>> [customQueryViewSelect] dto isDST fix.\r\n");
+			dto.subtract(1,'hour');
+		}*/
 		document.getElementById('datepicker_from').dateValue=dfrom.toDate();
 		document.getElementById('datepicker_to').dateValue=dto.toDate();
 		if(miczThunderStatsPrefs.customQryBookmarkImmediateUpdate){	//update statistics

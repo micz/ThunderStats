@@ -371,6 +371,8 @@ var miczThunderStatsTab = {
 			let mFromDay = document.getElementById('datepicker_from').dateValue;
 			let mToDay = document.getElementById('datepicker_to').dateValue;
 			let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,true);
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mFromDay: "+JSON.stringify(mFromDay)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mToDay: "+JSON.stringify(mToDay)+"\r\n");
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mDays: "+JSON.stringify(mDays)+"\r\n");
 			if(mDays.length==0){	//we have no valid business days, so tell the user
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");

@@ -2,6 +2,8 @@
 
 ==========
 Version 1.2.1 - ??/??/2015
+- Daylight Saving Time bug fixed in CustomView query.
+- Added the new "Last Year" and "Current Year" bookmarked views.
 -
 ==========
 Version 1.2 - 10/09/2015

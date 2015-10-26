@@ -361,7 +361,7 @@ var miczThunderStatsUtils = {
 		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output_array: '+JSON.stringify(output_array)+"\r\n");
 		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output_array.length: '+JSON.stringify(output_array.length)+"\r\n");
 		output_array.sort(miczThunderStatsUtils.customQueryInvolved_compare);
-		output_array=output_array.slice(0,10);	//keep only the first 10 elements
+		output_array=output_array.slice(0,miczThunderStatsPrefs.involvedNum);	//keep only the first elements defined in the involved_num pref
 		return output_array;
 	},
 

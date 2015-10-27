@@ -26,8 +26,8 @@
 <!ENTITY ThunderStats.InboxMailsDateSpreading "Zeit-Verteilung der empfangenen Mails">
 <!ENTITY ThunderStats.NoMailsInbox "Keine Mails im Eingangsordner!">
 <!ENTITY ThunderStats.NoMailsReceivedYesterday "Gestern wurden keine Mails empfangen!">
-<!ENTITY ThunderStats.Top10Recipients "Top 10 Empfänger">
-<!ENTITY ThunderStats.Top10Senders "Top 10 Absender">
+<!ENTITY ThunderStats.TopRecipients "Top Empfänger">
+<!ENTITY ThunderStats.TopSenders "Top Absender">
 <!ENTITY ThunderStats.clickhere "hier klicken">
 <!ENTITY ThunderStats.clickheremoreinfo "Für mehr Info hier klicken">
 <!ENTITY ThunderStats.AboutTitle "Über dieses Addon">
@@ -54,7 +54,9 @@
 <!ENTITY ThunderStats.Views "Szenarien">
 <!ENTITY ThunderStats.CurrentWeek "Aktuelle Woche">
 <!ENTITY ThunderStats.CurrentMonth "Aktueller Monat">
+<!ENTITY ThunderStats.CurrentYear "Laufendes Jahr">
 <!ENTITY ThunderStats.LastWeek "Letzte Woche">
 <!ENTITY ThunderStats.LastMonth "Letzter Monat">
+<!ENTITY ThunderStats.LastYear "Letztes Jahr">
 <!ENTITY ThunderStats.Last2Week "Letzte zwei Wochen">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Nur Werktage berücksichtigen">

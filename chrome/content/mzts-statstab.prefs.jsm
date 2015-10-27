@@ -93,6 +93,14 @@ var miczThunderStatsPrefs = {
 		catch(e) {return false;}
 	},*/
 
+	get firstRun() {
+		return this.getBoolPref_TS("firstRun");
+	},
+
+	firstRunDone:function(){
+		this.setBoolPref_TS('firstRun',false);
+	},
+
 	existsCharPref: function existsCharPref(pref) {
 		try {
 			if(this.service.prefHasUserValue(pref))

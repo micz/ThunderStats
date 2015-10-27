@@ -26,8 +26,8 @@
 <!ENTITY ThunderStats.InboxMailsDateSpreading "Grafico delle date in cui sono state ricevute le mail della posta in arrivo">
 <!ENTITY ThunderStats.NoMailsInbox "Nessuna mail nella posta in arrivo!">
 <!ENTITY ThunderStats.NoMailsReceivedYesterday "Nessuna mail ricevuta!">
-<!ENTITY ThunderStats.Top10Recipients "I primi 10 destinatari">
-<!ENTITY ThunderStats.Top10Senders "I primi dieci mittenti">
+<!ENTITY ThunderStats.TopRecipients "Destinatari più frequenti">
+<!ENTITY ThunderStats.TopSenders "Mittenti più frequenti">
 <!ENTITY ThunderStats.clickhere "clicca qui">
 <!ENTITY ThunderStats.clickheremoreinfo "Clicca qui per maggiori informazioni">
 <!ENTITY ThunderStats.AboutTitle "A proposito di questa estensione">
@@ -54,7 +54,9 @@
 <!ENTITY ThunderStats.Views "Viste preferite">
 <!ENTITY ThunderStats.CurrentWeek "Settimana Corrente">
 <!ENTITY ThunderStats.CurrentMonth "Mese Corrente">
+<!ENTITY ThunderStats.CurrentYear "Anno Scorso">
 <!ENTITY ThunderStats.LastWeek "Settimana Scorsa">
 <!ENTITY ThunderStats.LastMonth "Mese Scorso">
+<!ENTITY ThunderStats.LastYear "Anno Corrente">
 <!ENTITY ThunderStats.Last2Week "Ultime due Settimane">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Considera solo i giorni lavorativi">

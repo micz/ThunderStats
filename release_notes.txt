@@ -1,7 +1,7 @@
 -= ThunderStats Thunderbird Addon Release Notes =-
 
 ==========
-Version 1.2.1 - ??/??/2015
+Version 1.2.1 - 28/10/2015
 - Daylight Saving Time bug fixed in CustomView query.
 - Added the new "Last Year" and "Current Year" bookmarked views.
 - Added a warning in the CustomView query if the date interval is more than 99 days long.

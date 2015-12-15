@@ -298,9 +298,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 
     let tmpAddresses = {};
     let tmpFullAddresses = {};
-    MailServices.headerParser
-                .parseHeadersWithArray(headerValue, tmpAddresses, {},
-                                       tmpFullAddresses);
+    MailServices.headerParser.parseHeadersWithArray(headerValue,tmpAddresses,{},tmpFullAddresses);
     addresses = tmpAddresses.value;
     fullAddresses = tmpFullAddresses.value;
 

@@ -736,7 +736,6 @@ miczThunderStatsTab.ui={
 	},
 
 	utilInbox0FolderSpreadGraph_LabelPosition:function(pos){
-
 		if((miczThunderStatsTab.ui.last_pos0==0)||(miczThunderStatsTab.ui.last_pos1==0)){
 			miczThunderStatsTab.ui.last_pos0=pos[0];
 			miczThunderStatsTab.ui.last_pos1=pos[1];
@@ -748,13 +747,15 @@ miczThunderStatsTab.ui={
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first quarter\r\n");
 				let label_diff=pos[1]-miczThunderStatsTab.ui.last_pos1;
 				if(label_diff<miczThunderStatsTab.ui.label_height){
-					pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
+					//pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
+					pos[1]=miczThunderStatsTab.ui.last_pos1+miczThunderStatsTab.ui.label_height;
 				}
 			}else{	//second quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] second quarter\r\n");
 				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1);
 				if(label_diff<miczThunderStatsTab.ui.label_height){
-					pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
+					//pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
+					pos[1]=miczThunderStatsTab.ui.last_pos1+miczThunderStatsTab.ui.label_height;
 				}
 			}
 		}else{	//second half
@@ -768,7 +769,8 @@ miczThunderStatsTab.ui={
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] third quarter\r\n");
 				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1);
 				if(label_diff<miczThunderStatsTab.ui.label_height){
-					pos[1]-=miczThunderStatsTab.ui.label_height+label_diff;
+					//pos[1]-=miczThunderStatsTab.ui.label_height+label_diff;
+					pos[1]=miczThunderStatsTab.ui.last_pos1+miczThunderStatsTab.ui.label_height;
 				}
 			}else{	//fourth quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fourth quarter\r\n");
@@ -776,7 +778,8 @@ miczThunderStatsTab.ui={
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] label_diff: "+label_diff+"\r\n");
 				if(label_diff<miczThunderStatsTab.ui.label_height){
 					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fixing position\r\n");
-					pos[1]-=miczThunderStatsTab.ui.label_height+label_diff;
+					//pos[1]-=miczThunderStatsTab.ui.label_height+label_diff;
+					pos[1]=miczThunderStatsTab.ui.last_pos1+miczThunderStatsTab.ui.label_height;
 				}
 			}
 		}

@@ -3,7 +3,7 @@
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 Components.utils.import("resource:///modules/MailUtils.js");
 Components.utils.import("resource:///modules/iteratorUtils.jsm");
-Components.utils.import("resource://thunderstats/miczLogger.jsm");
+//Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
 miczThunderStatsTab.ui={
 
@@ -571,7 +571,7 @@ miczThunderStatsTab.ui={
 	},
 
 	drawInbox0FolderSpreadGraph:function(element_id_txt,data_array){
-	miczLogger.log(">>>>>>>>>>>>>> Inbox0FolderSpreadGraph start ["+element_id_txt+"]",0);
+		//miczLogger.log(">>>>>>>>>>>>>> Inbox0FolderSpreadGraph start ["+element_id_txt+"]",0);
 		let inboxFolderURLs=miczThunderStatsDB.queryGetInboxFolderURLs();
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] inboxFolderURLs: "+JSON.stringify(inboxFolderURLs)+"\r\n");
 		miczThunderStatsTab.ui.mwin=miczThunderStatsUtils.getMail3PaneWindow();
@@ -750,108 +750,108 @@ miczThunderStatsTab.ui={
 			polyline.exit()
 				.remove();
 
-		 miczLogger.log(">>>>>>>>>>>>>> Inbox0FolderSpreadGraph done ["+element_id_txt+"]",0);
+		 //miczLogger.log(">>>>>>>>>>>>>> Inbox0FolderSpreadGraph done ["+element_id_txt+"]",0);
 	},
 
 	utilInbox0FolderSpreadGraph_LabelPosition:function(pos,namespace){
     let offset_labelpos=5;
-    miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"]",0);
+    //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"]",0);
 
-    miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] miczThunderStatsTab.ui.last_pos0: "+miczThunderStatsTab.ui.last_pos0[namespace],0);
-    miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] miczThunderStatsTab.ui.last_pos1: "+miczThunderStatsTab.ui.last_pos1[namespace],0);
+    //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] miczThunderStatsTab.ui.last_pos0: "+miczThunderStatsTab.ui.last_pos0[namespace],0);
+    //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] miczThunderStatsTab.ui.last_pos1: "+miczThunderStatsTab.ui.last_pos1[namespace],0);
 
 		if((miczThunderStatsTab.ui.last_pos0[namespace]==0)||(miczThunderStatsTab.ui.last_pos1[namespace]==0)){
 			miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
 			miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label\r\n");
-			miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first label",0);
+			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first label",0);
 			return pos[1];
 		}	//first label
 		if(pos[0]>0){	//starting from 12 hours CW...
 			if(pos[1]<0){ //first quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first quarter\r\n");
-				miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first quarter",0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first quarter",0);
 				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1[namespace]);
 				if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]<miczThunderStatsTab.ui.last_pos1[namespace])){
-          label_diff=-1;
+          			label_diff=-1;
 				}
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
-        miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
-				miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
+        		//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
 				if(label_diff<miczThunderStatsTab.ui.label_height+offset_labelpos){
 					//pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
 					pos[1]=miczThunderStatsTab.ui.last_pos1[namespace]+miczThunderStatsTab.ui.label_height+offset_labelpos;
-					miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
 					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
-        miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+        			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				}
 			}else{	//second quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] second quarter\r\n");
-				miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] second quarter",0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] second quarter",0);
 				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1[namespace]);
 				if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]<miczThunderStatsTab.ui.last_pos1[namespace])){
-          label_diff=-1;
+		          label_diff=-1;
 				}
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
-        miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
-				miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
+        		//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
 				if(label_diff<miczThunderStatsTab.ui.label_height+offset_labelpos){
 					//pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
 					pos[1]=miczThunderStatsTab.ui.last_pos1[namespace]+miczThunderStatsTab.ui.label_height+offset_labelpos;
-					miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
 					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
-        miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+        			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				}
 			}
 		}else{	//second half
 			if(miczThunderStatsTab.ui.last_pos0[namespace]>0){	//first label in the second half
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label in the second half\r\n");
-				miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first label in second half",0);
-				miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
-				miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first label in second half",0);
+				//miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
+				//miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
 				return pos[1];
 			}
 			if(pos[1]>0){ //third quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] third quarter\r\n");
-				miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] third quarter",0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] third quarter",0);
 				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1[namespace]);
 				if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]>miczThunderStatsTab.ui.last_pos1[namespace])){
-          label_diff=-1;
+         		 label_diff=-1;
 				}
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
-        miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
-				miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
+		        //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
 				if(label_diff<miczThunderStatsTab.ui.label_height+offset_labelpos){
 					//pos[1]-=miczThunderStatsTab.ui.label_height+label_diff;
-					miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
 					pos[1]=miczThunderStatsTab.ui.last_pos1[namespace]-miczThunderStatsTab.ui.label_height-offset_labelpos;
 					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
-        miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+        			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				}
 			}else{	//fourth quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fourth quarter\r\n");
 				miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fourth quarter",0);
 				let label_diff=miczThunderStatsTab.ui.last_pos1[namespace]-pos[1];
 				if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]>miczThunderStatsTab.ui.last_pos1[namespace])){
-          label_diff=-1;
+          			label_diff=-1;
 				}
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
-        miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
-				miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
+        		//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] label_diff: "+label_diff+"\r\n");
 				if(label_diff<miczThunderStatsTab.ui.label_height+offset_labelpos){
 					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fixing position\r\n");
-					miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
 					//pos[1]-=miczThunderStatsTab.ui.label_height+label_diff;
 					pos[1]=miczThunderStatsTab.ui.last_pos1[namespace]-miczThunderStatsTab.ui.label_height-offset_labelpos;
 					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
-        miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+        			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				}
 			}
 		}
 		miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
 		miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
-		miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos (0 - 1): ["+pos[0]+"] - ["+pos[1]+"]",0);
+		//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos (0 - 1): ["+pos[0]+"] - ["+pos[1]+"]",0);
 		return pos[1];
 	},
 

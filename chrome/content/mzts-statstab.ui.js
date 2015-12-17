@@ -624,9 +624,14 @@ miczThunderStatsTab.ui={
 		for(let key in data_array){
 			let element={};
 			element.value=data_array[key].Num;
-			element.label=data_array[key].Folder;
+			let tmp_folder=MailUtils.getFolderForURI(data_array[key].FolderURI);
+			element.label=tmp_folder.prettyName;
+			//element.label=data_array[key].Folder;
 			element.folder_url=data_array[key].FolderURI;
 			element.normalized=data_array[key].Num/data_sum;
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] FolderURI "+data_array[key].FolderURI+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] Folder "+data_array[key].Folder+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] prettyName "+tmp_folder.prettyName+"\r\n");
 			norm_data.push(element);
 		}
 
@@ -744,17 +749,17 @@ miczThunderStatsTab.ui={
 
 			polyline.exit()
 				.remove();
-				
+
 		 miczLogger.log(">>>>>>>>>>>>>> Inbox0FolderSpreadGraph done ["+element_id_txt+"]",0);
 	},
 
 	utilInbox0FolderSpreadGraph_LabelPosition:function(pos,namespace){
     let offset_labelpos=5;
     miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"]",0);
-    
+
     miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] miczThunderStatsTab.ui.last_pos0: "+miczThunderStatsTab.ui.last_pos0[namespace],0);
     miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] miczThunderStatsTab.ui.last_pos1: "+miczThunderStatsTab.ui.last_pos1[namespace],0);
-	
+
 		if((miczThunderStatsTab.ui.last_pos0[namespace]==0)||(miczThunderStatsTab.ui.last_pos1[namespace]==0)){
 			miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
 			miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];

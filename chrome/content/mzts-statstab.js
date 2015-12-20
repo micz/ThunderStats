@@ -293,37 +293,62 @@ var miczThunderStatsTab = {
 		let mInfoSent=1;
 		let mInfoReceived=0;
 
-		if(miczThunderStatsUtils._customqry_only_bd){	//we want only business days
-			mInfoSent={type:1,info:1};
-			mInfoReceived={type:0,info:1};
-		}
+		if(miczThunderStatsUtils._customqry_num_days>1){	//more than one day
 
-		//Get sent messages
-		miczThunderStatsCore.db.getManyDaysMessages(mInfoSent,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);
+			if(miczThunderStatsUtils._customqry_only_bd){	//we want only business days
+				mInfoSent={type:1,info:1};
+				mInfoReceived={type:0,info:1};
+			}
 
-		//Get received messages
-		miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
+			//Get sent messages
+			miczThunderStatsCore.db.getManyDaysMessages(mInfoSent,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);
 
-		//== If we are using only business days, everything is calculated in the two callbacks above
-		if(!miczThunderStatsUtils._customqry_only_bd){
+			//Get received messages
+			miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
+
+			//== If we are using only business days, everything is calculated in the two callbacks above
+			if(!miczThunderStatsUtils._customqry_only_bd){
+				//Get first 10 recipients
+				miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients);
+				//Get first 10 senders
+				miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders);
+
+				//Aggregate data
+				miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
+				miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
+			}else{	//with only business days
+				//Get first 10 recipients
+				miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients=new Array();
+				miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients_count=0;
+				miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients_only_bd);
+				//Get first 10 senders
+				miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders=new Array();
+				miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders_count=0;
+				miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
+			}
+		}else{	//gettin only one day  -- todo new callbacks
+			//Get day sent messages
+			miczThunderStatsCore.db.getOneDayMessages(1,identity_id,mFromDay,miczThunderStatsTab.callback.homepage_stats_today_sent);
+
+			//Get day received messages
+			miczThunderStatsCore.db.getOneDayMessages(0,identity_id,mFromDay,miczThunderStatsTab.callback.homepage_stats_today_rcvd);
+
+			//Get day hours graph
+			miczThunderStatsCore.db.getTodayHours(identity_id,miczThunderStatsTab.callback.homepage_stats_today_hours);
+
+			//Inbox 0 Today
+			//Get day mails folder spreading
+			miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
+			//Get inbox num mails
+			miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
+
+			//Get aggregate period messages info
+			miczThunderStatsTab.getAggregateData(identity_id);
+
 			//Get first 10 recipients
 			miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients);
-
 			//Get first 10 senders
 			miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders);
-
-			//Aggregate data
-			miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
-			miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
-		}else{	//with only business days
-			//Get first 10 recipients
-			miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients=new Array();
-			miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients_count=0;
-			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients_only_bd);
-			//Get first 10 senders
-			miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders=new Array();
-			miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders_count=0;
-			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
 		}
 
 		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);

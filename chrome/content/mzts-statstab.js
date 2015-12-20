@@ -326,7 +326,7 @@ var miczThunderStatsTab = {
 				miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders_count=0;
 				miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
 			}
-		}else{	//gettin only one day  -- todo new callbacks
+		}else{	//gettin only one day  -- TODO new callbacks
 			//Get day sent messages
 			miczThunderStatsCore.db.getOneDayMessages(1,identity_id,mFromDay,miczThunderStatsTab.callback.homepage_stats_today_sent);
 

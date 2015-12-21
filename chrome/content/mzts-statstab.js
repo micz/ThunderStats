@@ -353,7 +353,8 @@ var miczThunderStatsTab = {
 				miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
 			}
 		}else{	//getting only one day
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] getCustomQryStats identity_id: "+JSON.stringify(identity_id)+"\r\n");
+			//Print dates
+			$jQ("#customqry_oneday_date").text(miczThunderStatsUtils.getDateString(moment(mFromDay)));
 
 			//Get day sent messages
 			miczThunderStatsCore.db.getOneDayMessages(1,mFromDay,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_sent);

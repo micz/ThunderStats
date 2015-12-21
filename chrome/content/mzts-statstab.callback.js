@@ -1809,10 +1809,10 @@ miczThunderStatsTab.callback.customqry_stats_oneday_hours = {
 					this._graph_handle[data_type]=1;
 				}else{
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.customqry_stats_oneday_hours handleResult EMPTY '+JSON.stringify(this.data)+'\r\n');
-					miczLogger.log("Today hours graph empty result!",2);
+					miczLogger.log("One day hours graph empty result!",2);
 				}
 				if(this._data_collected()){
-					miczThunderStatsTab.ui.drawTimeGraph("customqry_oneday_hours_graph",this._graph_data,true);
+					miczThunderStatsTab.ui.drawTimeGraph("customqry_oneday_hours_graph",this._graph_data,false,true);
 				}
 				miczLogger.log("Custom Qry one day hours graph loaded.",0);
 				this.data={};
@@ -1834,7 +1834,7 @@ miczThunderStatsTab.callback.customqry_stats_oneday_hours = {
 
 	_data_collected:function(){
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.customqry_stats_oneday_hours _data_collected '+JSON.stringify(this._graph_handle)+'\r\n');
-		return (this._graph_handle.today_sent==1)&&(this._graph_handle.today_rcvd==1)&&(this._graph_handle.yesterday_sent==1)&&(this._graph_handle.yesterday_rcvd==1);
+		return (this._graph_handle.yesterday_sent==1)&&(this._graph_handle.yesterday_rcvd==1);
 	},
 };
 

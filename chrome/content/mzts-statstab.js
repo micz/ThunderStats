@@ -363,7 +363,7 @@ var miczThunderStatsTab = {
 			miczThunderStatsCore.db.getOneDayMessages(0,mFromDay,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_rcvd);
 
 			//Get day hours graph
-			miczThunderStatsCore.db.getTodayHours(identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_hours);
+			miczThunderStatsCore.db.getOneDayHours(mFromDay,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_hours);
 
 			//Inbox 0 Today
 			//Get day mails folder spreading

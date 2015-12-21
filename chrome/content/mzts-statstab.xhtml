@@ -279,21 +279,46 @@
 				<div id="table_customqry">
 				  <div id="tier1_customqry" class="tier1">
 					<div class="chunk" id="top_left_chunk_customqry">
-					  <div class="list_heading_wrapper">
-						<div id="customqry_aggregate_data_sent" class="_7days_aggregate_data">[<span id="customqry_aggregate_max_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_aggregate_max_sent_wait"/> &ThunderStats.max; / <span id="customqry_aggregate_min_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_aggregate_min_sent_wait"/> &ThunderStats.min; / <span id="customqry_aggregate_avg_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_aggregate_avg_sent_wait"/> &ThunderStats.average;]</div>
-						<h2 class="list_heading cropped">&ThunderStats.SentMails;: <span id="customqry_sent_total"></span></h2>
-					  </div>
-					  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="customqry_sent_wait"/></div>
-						<div id="chart_customqry_sent" class="chart_7days"></div>
+					   <div id="customqry_multidays_1">
+						  <div class="list_heading_wrapper">
+							<div id="customqry_aggregate_data_sent" class="_7days_aggregate_data">[<span id="customqry_aggregate_max_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_aggregate_max_sent_wait"/> &ThunderStats.max; / <span id="customqry_aggregate_min_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_aggregate_min_sent_wait"/> &ThunderStats.min; / <span id="customqry_aggregate_avg_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_aggregate_avg_sent_wait"/> &ThunderStats.average;]</div>
+							<h2 class="list_heading cropped">&ThunderStats.SentMails;: <span id="customqry_sent_total"></span></h2>
+						  </div>
+						  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="customqry_sent_wait"/></div>
+							<div id="chart_customqry_sent" class="chart_7days"></div>
+						</div> <!-- div customqry_multidays end -->
+						<div id="customqry_oneday_1" style="display:none;">
+								<div class="list_heading_wrapper">
+								<h2 class="list_heading cropped">&ThunderStats.Mails;</h2>
+								<span id="customqry_oneday_date" class="list_heading_date"></span>
+							  </div>
+							<p><span>&ThunderStats.SentMails;: </span><span id="customqry_oneday_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_oneday_sent_wait"/></p>
+							<p><span>&ThunderStats.ReceivedMails;: </span><span id="customqry_oneday_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_oneday_rcvd_wait"/></p>
+							<div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="customqry_oneday_hours_graph_wait"/></div>
+							<div id="customqry_oneday_hours_graph" class="chart_hours"></div>
+						</div><!-- div customqry_oneday end -->
 					</div>
 					<div class="chunk" id="top_right_chunk_customqry">
+						<div id="customqry_multidays_2">
 					  <div class="list_heading_wrapper">
 						<div id="customqry_aggregate_data_rcvd" class="_7days_aggregate_data">[<span id="customqry_aggregate_max_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_aggregate_max_rcvd_wait"/> &ThunderStats.max; / <span id="customqry_aggregate_min_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_aggregate_min_rcvd_wait"/> &ThunderStats.min; / <span id="customqry_aggregate_avg_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_aggregate_avg_rcvd_wait"/> &ThunderStats.average;]</div>
 						<h2 class="list_heading cropped">&ThunderStats.ReceivedMails;: <span id="customqry_rcvd_total"></span></h2>
 					  </div>
 						<div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="customqry_rcvd_wait"/></div>
 						<div id="chart_customqry_rcvd" class="chart_7days"></div>
-					</div>
+					 </div> <!-- div customqry_multidays end -->
+					 <div id="customqry_oneday_2" style="display:none;">
+						<div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">&ThunderStats.InboxZeroStatus;</h2>
+					  </div>
+					  <div class="chart_inbox0">
+						  <div class="circle_wait"><img src="chrome://thunderstats/skin/mzts-wait_circle.gif" alt="&ThunderStats.Loading;..." id="customqry_oneday_inbox0_wait"/></div>
+						  <div>&ThunderStats.TotalInbox;: <span id="today_inbox0_inboxmsg"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_oneday_inbox0_inboxmsg_wait"/><span class="inbox0_inboxmsg_unread">&nbsp;&nbsp;&nbsp;&nbsp;&ThunderStats.TotalInboxUnread;: <span id="customqry_oneday_inbox0_inboxmsg_unread"></span></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="customqry_oneday_inbox0_inboxmsg_unread_wait"/></div>
+						  <div id="customqry_oneday_inbox0_folder_spread" class="chart_inbox0_folder_spread"><p class="chart_info">&ThunderStats.FolderLocation;</p><p class="chart_info_nomail" id="customqry_oneday_inbox0_folder_spread_nomails">&ThunderStats.NoMailsReceivedToday;</p></div>
+						  <div id="customqry_oneday_inbox0_datemsg" class="chart_inbox0_datemsg"><p class="chart_info">&ThunderStats.InboxMailsDateSpreading;</p><p class="chart_info_nomail" id="customqry_oneday_inbox0_datemsg_nomails">&ThunderStats.NoMailsInbox;</p></div>
+					  </div>
+					 </div><!-- div customqry_oneday end -->
+				  	</div>
 				  </div>
 				  <div id="tier2_customqry" class="tier2">
 					<div class="chunk" id="bottom_left_chunk_customqry">

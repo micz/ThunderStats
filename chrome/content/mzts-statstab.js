@@ -240,6 +240,18 @@ var miczThunderStatsTab = {
 	getCustomQryStats:function(identity_id){
 		miczLogger.log("Getting custom query statistics...",0);
 
+		if(miczThunderStatsUtils._customqry_num_days == 1){	//only one day
+			miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_1");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_multidays_1");
+			miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_2");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_multidays_2");
+		}else{	//multiple days
+			miczThunderStatsTab.ui.showLoadingElement("customqry_multidays_1");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_1");
+			miczThunderStatsTab.ui.showLoadingElement("customqry_multidays_2");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_2");
+		}
+
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_data_sent");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_data_rcvd");
@@ -253,6 +265,12 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_max_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_min_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_avg_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_hours_graph_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_inbox0_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_inbox0_inboxmsg_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_inbox0_inboxmsg_unread_wait");
 
 		this.data_customqry_sent=new Array();
 		this.data_customqry_rcvd=new Array();
@@ -280,6 +298,12 @@ var miczThunderStatsTab = {
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_rcvd_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_rcvd_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_avg_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_hours_graph_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_inbox0_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_inbox0_inboxmsg_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_inbox0_inboxmsg_unread_wait");
 				return;
 			}
 		}

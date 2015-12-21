@@ -21,7 +21,7 @@ miczThunderStatsTab.ui={
 		$jQ("#"+element).hide();
 	},
 
-	update_inbox0_inboxmsg:function(type,total_msg,unread_msg){	//type is "today" or "yesterday"
+	update_inbox0_inboxmsg:function(type,total_msg,unread_msg){	//type is "today" or "yesterday" or "customqry_oneday"
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.ui.update_inbox0_inboxmsg] type '+JSON.stringify(type)+'\r\n');
 		miczThunderStatsTab.ui.hideLoadingElement(type+"_inbox0_inboxmsg_wait");
 		$jQ("#"+type+"_inbox0_inboxmsg").text(total_msg);

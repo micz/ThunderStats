@@ -368,7 +368,7 @@ var miczThunderStatsTab = {
 			//Get day mails folder spreading
 			miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_inbox0_folder_spread);
 			//Get inbox num mails
-			//miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
+			miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
 
 			//Get first 10 recipients
 			miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients);

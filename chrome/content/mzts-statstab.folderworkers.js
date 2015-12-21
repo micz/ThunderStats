@@ -93,6 +93,7 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 	let _global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
 
 	miczThunderStatsTab.ui.update_inbox0_inboxmsg("today",this.inboxmsg,this.inboxmsg_unread);
+	miczThunderStatsTab.ui.update_inbox0_inboxmsg("customqry_oneday",this.inboxmsg,this.inboxmsg_unread);
 	if(_global_update){
 		miczThunderStatsTab.ui.update_inbox0_inboxmsg("yesterday",this.inboxmsg,this.inboxmsg_unread);
 	}

@@ -367,7 +367,7 @@ var miczThunderStatsTab = {
 
 			//Inbox 0 Today
 			//Get day mails folder spreading
-			miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_inbox0_folder_spread);
+			miczThunderStatsCore.db.getOneDayMessagesFolders(0,mFromDay,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_inbox0_folder_spread);
 			//Get inbox num mails
 			miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
 

@@ -240,17 +240,7 @@ var miczThunderStatsTab = {
 	getCustomQryStats:function(identity_id){
 		miczLogger.log("Getting custom query statistics...",0);
 
-		if(miczThunderStatsUtils._customqry_num_days == 1){	//only one day
-			miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_1");
-			miczThunderStatsTab.ui.hideLoadingElement("customqry_multidays_1");
-			miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_2");
-			miczThunderStatsTab.ui.hideLoadingElement("customqry_multidays_2");
-		}else{	//multiple days
-			miczThunderStatsTab.ui.showLoadingElement("customqry_multidays_1");
-			miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_1");
-			miczThunderStatsTab.ui.showLoadingElement("customqry_multidays_2");
-			miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_2");
-		}
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] getCustomQryStats identity_id: "+JSON.stringify(identity_id)+"\r\n");
 
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_data_sent");
@@ -278,6 +268,18 @@ var miczThunderStatsTab = {
 		let mFromDay = document.getElementById('datepicker_from').dateValue;
 		let mToDay = document.getElementById('datepicker_to').dateValue;
 		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
+
+		if(miczThunderStatsUtils._customqry_num_days == 1){	//only one day
+			miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_1");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_multidays_1");
+			miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_2");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_multidays_2");
+		}else{	//multiple days
+			miczThunderStatsTab.ui.showLoadingElement("customqry_multidays_1");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_1");
+			miczThunderStatsTab.ui.showLoadingElement("customqry_multidays_2");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_2");
+		}
 
 		//if there are too much days, warn the user...
 		if(miczThunderStatsUtils._customqry_num_days > 99){
@@ -350,24 +352,23 @@ var miczThunderStatsTab = {
 				miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders_count=0;
 				miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
 			}
-		}else{	//gettin only one day  -- TODO new callbacks
+		}else{	//getting only one day
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] getCustomQryStats identity_id: "+JSON.stringify(identity_id)+"\r\n");
+
 			//Get day sent messages
-			miczThunderStatsCore.db.getOneDayMessages(1,identity_id,mFromDay,miczThunderStatsTab.callback.homepage_stats_today_sent);
+			miczThunderStatsCore.db.getOneDayMessages(1,mFromDay,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_sent);
 
 			//Get day received messages
-			miczThunderStatsCore.db.getOneDayMessages(0,identity_id,mFromDay,miczThunderStatsTab.callback.homepage_stats_today_rcvd);
+			miczThunderStatsCore.db.getOneDayMessages(0,mFromDay,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_rcvd);
 
 			//Get day hours graph
-			miczThunderStatsCore.db.getTodayHours(identity_id,miczThunderStatsTab.callback.homepage_stats_today_hours);
+			miczThunderStatsCore.db.getTodayHours(identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_hours);
 
 			//Inbox 0 Today
 			//Get day mails folder spreading
-			miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.stats_today_inbox0_folder_spread);
+			miczThunderStatsCore.db.getTodayMessagesFolders(0,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_inbox0_folder_spread);
 			//Get inbox num mails
-			miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
-
-			//Get aggregate period messages info
-			miczThunderStatsTab.getAggregateData(identity_id);
+			//miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
 
 			//Get first 10 recipients
 			miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients);

@@ -754,8 +754,8 @@ miczThunderStatsTab.ui={
 	},
 
 	utilInbox0FolderSpreadGraph_LabelPosition:function(pos,namespace){
-    let offset_labelpos=5;
-    //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"]",0);
+    let offset_labelpos=0;
+    miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"]",0);
 
     //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] miczThunderStatsTab.ui.last_pos0: "+miczThunderStatsTab.ui.last_pos0[namespace],0);
     //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] miczThunderStatsTab.ui.last_pos1: "+miczThunderStatsTab.ui.last_pos1[namespace],0);
@@ -769,7 +769,7 @@ miczThunderStatsTab.ui={
 		}	//first label
 		if(pos[0]>0){	//starting from 12 hours CW...
 			if(pos[1]<0){ //first quarter
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first quarter\r\n");
+				dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first quarter\r\n");
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first quarter",0);
 				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1[namespace]);
 				if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]<miczThunderStatsTab.ui.last_pos1[namespace])){
@@ -807,8 +807,8 @@ miczThunderStatsTab.ui={
 			if(miczThunderStatsTab.ui.last_pos0[namespace]>0){	//first label in the second half
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label in the second half\r\n");
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first label in second half",0);
-				//miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
-				//miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
+				miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
+				miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
 				return pos[1];
 			}
 			if(pos[1]>0){ //third quarter
@@ -830,7 +830,7 @@ miczThunderStatsTab.ui={
 				}
 			}else{	//fourth quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fourth quarter\r\n");
-				miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fourth quarter",0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fourth quarter",0);
 				let label_diff=miczThunderStatsTab.ui.last_pos1[namespace]-pos[1];
 				if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]>miczThunderStatsTab.ui.last_pos1[namespace])){
           			label_diff=-1;

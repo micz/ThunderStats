@@ -21,7 +21,7 @@ miczThunderStatsTab.ui={
 		$jQ("#"+element).hide();
 	},
 
-	update_inbox0_inboxmsg:function(type,total_msg,unread_msg){	//type is "today" or "yesterday"
+	update_inbox0_inboxmsg:function(type,total_msg,unread_msg){	//type is "today" or "yesterday" or "customqry_oneday"
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.ui.update_inbox0_inboxmsg] type '+JSON.stringify(type)+'\r\n');
 		miczThunderStatsTab.ui.hideLoadingElement(type+"_inbox0_inboxmsg_wait");
 		$jQ("#"+type+"_inbox0_inboxmsg").text(total_msg);
@@ -931,7 +931,7 @@ miczThunderStatsTab.ui={
 	},
 
 
-	drawTimeGraph:function(element_id_txt,data_array,is_today){
+	drawTimeGraph:function(element_id_txt,data_array,is_today,is_oneday){
 		let margin = {
 			top: 10,
 			right: 92,
@@ -1076,14 +1076,16 @@ miczThunderStatsTab.ui={
 					let mh_str=" "+mh_from+mh_to;
 					let yt_str="";
 					let ii=data_types.indexOf(d.type);
-					if((ii<=1)&&is_today){
-						yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today");
-					}else{
-						if((ii>1)||(!is_today)){
-							if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
-								yt_str=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay_short");
-							}else{
-								yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
+					if(!is_oneday){
+						if((ii<=1)&&is_today){
+							yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today");
+						}else{
+							if((ii>1)||(!is_today)){
+								if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
+									yt_str=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay_short");
+								}else{
+									yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
+								}
 							}
 						}
 					}
@@ -1153,15 +1155,17 @@ miczThunderStatsTab.ui={
 			.append('text')
 			.text(
 			 function(d, i) {
-				if((i==0)&&is_today){
-					return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.today");
-				}else{
-					if((i==2)||(!is_today&&i==0)){
-						if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
-								return _bundleCW.GetStringFromName("ThunderStats.LastBusinessDay_short");
-							}else{
-								return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
-							}
+				 if(!is_oneday){
+					if((i==0)&&is_today){
+						return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.today");
+					}else{
+						if((i==2)||(!is_today&&i==0)){
+							if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
+									return _bundleCW.GetStringFromName("ThunderStats.LastBusinessDay_short");
+								}else{
+									return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
+								}
+						}
 					}
 				}
 				return "";

@@ -22,10 +22,9 @@
 <!ENTITY ThunderStats.sent "sent">
 <!ENTITY ThunderStats.received "received">
 <!ENTITY ThunderStats.FolderLocation "Mails folder locations chart">
-<!ENTITY ThunderStats.NoMailsReceivedToday "No mails received today!">
+<!ENTITY ThunderStats.NoMailsReceived "No mails received!">
 <!ENTITY ThunderStats.InboxMailsDateSpreading "Inbox mails date spreading chart">
 <!ENTITY ThunderStats.NoMailsInbox "No mails in the Inbox!">
-<!ENTITY ThunderStats.NoMailsReceivedYesterday "No mails received yesterday!">
 <!ENTITY ThunderStats.TopRecipients "Top Recipients">
 <!ENTITY ThunderStats.TopSenders "Top Senders">
 <!ENTITY ThunderStats.clickhere "click here">

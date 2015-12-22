@@ -22,10 +22,9 @@
 <!ENTITY ThunderStats.sent "inviate">
 <!ENTITY ThunderStats.received "ricevute">
 <!ENTITY ThunderStats.FolderLocation "Grafico delle cartelle in cui sono distribuite le mail">
-<!ENTITY ThunderStats.NoMailsReceivedToday "Nessuna mail ricevuta oggi!">
+<!ENTITY ThunderStats.NoMailsReceived "Nessuna mail ricevuta!">
 <!ENTITY ThunderStats.InboxMailsDateSpreading "Grafico delle date in cui sono state ricevute le mail della posta in arrivo">
 <!ENTITY ThunderStats.NoMailsInbox "Nessuna mail nella posta in arrivo!">
-<!ENTITY ThunderStats.NoMailsReceivedYesterday "Nessuna mail ricevuta!">
 <!ENTITY ThunderStats.TopRecipients "Destinatari più frequenti">
 <!ENTITY ThunderStats.TopSenders "Mittenti più frequenti">
 <!ENTITY ThunderStats.clickhere "clicca qui">

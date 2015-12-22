@@ -185,6 +185,12 @@ miczThunderStatsCore.db = {
 		return true;
 	},
 
+	getOneDayHours:function(mDay,mIdentity,mCallback){
+		this.getOneDayMessages({type:1,info:'yesterday_sent',hours:1},mDay,mIdentity,mCallback,'yesterday_sent');	//one day sent
+		this.getOneDayMessages({type:0,info:'yesterday_rcvd',hours:1},mDay,mIdentity,mCallback,'yesterday_rcvd');	//one day rcvd
+		return true;
+	},
+
 	getYesterdayMessages:function(mType,mIdentity,mCallback){
 		return this.getOneDayMessages(mType,miczThunderStatsUtils.getYesterdayDate(),mIdentity,mCallback);
 	},

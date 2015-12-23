@@ -1,7 +1,7 @@
 -= ThunderStats Thunderbird Addon Release Notes =-
 
 ==========
-Version 1.2.2 - ??/??/2015
+Version 1.2.2 - 23/12/2015
 - Inbox Zero Folder Spread Graph label positioning fixed.
 - Inbox Zero Folder Spread Graph label lines are now colored.
 - Inbox Zero Folder Spread Graph labels now handles special chars with no errors.

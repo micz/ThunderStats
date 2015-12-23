@@ -22,10 +22,9 @@
 <!ENTITY ThunderStats.sent "gesendet">
 <!ENTITY ThunderStats.received "empfangen">
 <!ENTITY ThunderStats.FolderLocation "Verzeichnis-Diagram">
-<!ENTITY ThunderStats.NoMailsReceivedToday "Heute wurden keine Mails empfangen!">
+<!ENTITY ThunderStats.NoMailsReceived "Keine Emails empfangen!">
 <!ENTITY ThunderStats.InboxMailsDateSpreading "Zeit-Verteilung der empfangenen Mails">
 <!ENTITY ThunderStats.NoMailsInbox "Keine Mails im Eingangsordner!">
-<!ENTITY ThunderStats.NoMailsReceivedYesterday "Gestern wurden keine Mails empfangen!">
 <!ENTITY ThunderStats.TopRecipients "Top Empfänger">
 <!ENTITY ThunderStats.TopSenders "Top Absender">
 <!ENTITY ThunderStats.clickhere "hier klicken">

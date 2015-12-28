@@ -260,8 +260,9 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     this.context = context;
     this.foldermsg = 0;
     this.foldermsg_unread = 0;
-    this.folder_msgdate_sent = 0;
-    this.folder_msgdate_rcvd = 0;
+    this.folder_msgdate_sent = {};
+    this.folder_msgdate_rcvd = {};
+    this.folder_msgdate_empty=true;
     this.msg_crunched=new Array();
     this.stale = true;
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] init done [inboxmsg: '+this.inboxmsg +'.\r\n');
@@ -273,6 +274,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     delete this.foldermsg_unread;
     delete this.folder_msgdate_sent;
     delete this.folder_msgdate_rcvd;
+    delete this.folder_msgdate_empty;
     delete this.msg_crunched;
   },
 
@@ -309,13 +311,15 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	let msg_date=moment.unix(message.dateInSeconds).format("YYYY-MM-DD");
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.dateInSeconds '+JSON.stringify(message.dateInSeconds)+'\r\n');
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date '+JSON.stringify(msg_date)+'\r\n');
-    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] addresses '+JSON.stringify(addresses)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] addresses '+JSON.stringify(addresses)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] fullAddresses '+JSON.stringify(fullAddresses)+'\r\n');
 
     if (!deleted) {
       for (let i = 0; i < addresses.length; i++) {
-		  if(identity_addresses.indexOf(addresses[i])>=0){	//There is an identity we're considering	
+		  if(identity_addresses.indexOf(addresses[i])>=0){	//There is an identity we're considering
 			  if(this.msg_crunched.indexOf(message.messageId)>-1)continue;	//msg already considered
 			  this.msg_crunched.push(message.messageId);
+			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] [1] crunching message '+message.messageId+'\r\n');
 			  //TODO -- currently not considering the date as a filter
 			  //TODO -- when considering the date as a filter get different layout per single day (premerge with trunk before)
 			  //incrementing msg num
@@ -324,24 +328,28 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 				 //incrementing unread msg num
 				this.foldermsg_unread++;
 			  }
+			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] [2] crunching message '+message.messageId+'\r\n');
 			  this.folder_msgdate_empty=false;
 			  //getting sent msg num per day
-			  //getting rcvd msg num per day
-			  if(msg_date in this.folder_msgdate){
+			  if(msg_date in this.folder_msgdate_sent){
 				this.folder_msgdate_sent[msg_date]++;
-				this.folder_msgdate_rcvd[msg_date]++;
 			  }else{
 				this.folder_msgdate_sent[msg_date]=1;
+			  }
+			  //getting rcvd msg num per day
+			  if(msg_date in this.folder_msgdate_rcvd){
+				this.folder_msgdate_rcvd[msg_date]++;
+			  }else{
 				this.folder_msgdate_rcvd[msg_date]=1;
 			  }
-			  
+
 			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_sent '+this.folder_msgdate_sent[msg_date]+'\r\n');
 			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_rcvd '+this.folder_msgdate_rcvd[msg_date]+'\r\n');
 			  //getting top recipients
-			  
+
 			  //getting top senders
-			  
-			  
+
+
 			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.inboxmsg '+this.inboxmsg+'\r\n');
 			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerValue '+JSON.stringify(headerValue)+'\r\n');
 			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.date '+JSON.stringify(message.date)+'\r\n');
@@ -384,7 +392,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 			$jQ("#yesterday_inbox0_datemsg_nomails").show();
 		}
 	}*/
-	
+
 	miczLogger.log("Date Inbox Mails data loaded.",0);
 
     this.stale = false;

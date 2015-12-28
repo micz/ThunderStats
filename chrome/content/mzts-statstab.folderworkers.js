@@ -292,12 +292,12 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     let headerRecipients = message.recipients.toLowerCase()+','+message.ccList.toLowerCase();
     let headerValue= headerAuthor+','+headerRecipients;
     let identity_addresses=this.context.identityAddresses.join(',');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerAuthor '+JSON.stringify(headerAuthor)+'\r\n');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerRecipients '+JSON.stringify(headerRecipients)+'\r\n');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerValue '+JSON.stringify(headerValue)+'\r\n');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] message.recipients '+JSON.stringify(message.recipients)+'\r\n');
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] ccList '+JSON.stringify(message.getStringProperty("ccList"))+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerAuthor '+JSON.stringify(headerAuthor)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerRecipients '+JSON.stringify(headerRecipients)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerValue '+JSON.stringify(headerValue)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.recipients '+JSON.stringify(message.recipients)+'\r\n');
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] ccList '+JSON.stringify(message.getStringProperty("ccList"))+'\r\n');
 
     let tmpAddresses = {};
     let tmpFullAddresses = {};
@@ -307,9 +307,9 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 
 	//message date
 	let msg_date=moment.unix(message.dateInSeconds).format("YYYY-MM-DD");
-	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] message.dateInSeconds '+JSON.stringify(message.dateInSeconds)+'\r\n');
-	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] msg_date '+JSON.stringify(msg_date)+'\r\n');
-    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] addresses '+JSON.stringify(addresses)+'\r\n');
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.dateInSeconds '+JSON.stringify(message.dateInSeconds)+'\r\n');
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date '+JSON.stringify(msg_date)+'\r\n');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] addresses '+JSON.stringify(addresses)+'\r\n');
 
     if (!deleted) {
       for (let i = 0; i < addresses.length; i++) {
@@ -334,16 +334,19 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 				this.folder_msgdate_sent[msg_date]=1;
 				this.folder_msgdate_rcvd[msg_date]=1;
 			  }
+			  
+			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_sent '+this.folder_msgdate_sent[msg_date]+'\r\n');
+			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_rcvd '+this.folder_msgdate_rcvd[msg_date]+'\r\n');
 			  //getting top recipients
 			  
 			  //getting top senders
 			  
 			  
-			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] this.inboxmsg '+this.inboxmsg+'\r\n');
-			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerValue '+JSON.stringify(headerValue)+'\r\n');
-			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] message.date '+JSON.stringify(message.date)+'\r\n');
-			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] message.messageId'+JSON.stringify(message.messageId)+'\r\n');
-			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] message.recipients '+JSON.stringify(message.recipients)+'\r\n');
+			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.inboxmsg '+this.inboxmsg+'\r\n');
+			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerValue '+JSON.stringify(headerValue)+'\r\n');
+			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.date '+JSON.stringify(message.date)+'\r\n');
+			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.messageId'+JSON.stringify(message.messageId)+'\r\n');
+			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.recipients '+JSON.stringify(message.recipients)+'\r\n');
 		  }
       }
     }
@@ -354,8 +357,10 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 
 	miczLogger.log("Folder messages loaded.",0);
 
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] this.inboxmsg '+this.inboxmsg+'\r\n');
+
 	//inbox date spread graph
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.folderworker.folder_stats render (this.inbox0_msgdate) '+JSON.stringify(this.folder_msgdate)+'\r\n');
+	/*dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.folderworker.folder_stats render (this.inbox0_msgdate) '+JSON.stringify(this.folder_msgdate)+'\r\n');
 	if(!this.folder_msgdate_empty){
 		let data_array=new Array();
 		for (let key in this.folder_msgdate){
@@ -378,7 +383,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 			miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('yesterday_inbox0_datemsg',{},true);	//the last parameter is to activate aggregation
 			$jQ("#yesterday_inbox0_datemsg_nomails").show();
 		}
-	}
+	}*/
+	
 	miczLogger.log("Date Inbox Mails data loaded.",0);
 
     this.stale = false;

@@ -319,7 +319,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 		  if(identity_addresses.indexOf(addresses[i])>=0){	//There is an identity we're considering
 			  if(this.msg_crunched.indexOf(message.messageId)>-1)continue;	//msg already considered
 			  this.msg_crunched.push(message.messageId);
-			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] [1] crunching message '+message.messageId+'\r\n');
+			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] crunching... '+message.messageId+'\r\n');
 			  //TODO -- currently not considering the date as a filter
 			  //TODO -- when considering the date as a filter get different layout per single day (premerge with trunk before)
 			  //incrementing msg num
@@ -328,7 +328,6 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 				 //incrementing unread msg num
 				this.foldermsg_unread++;
 			  }
-			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] [2] crunching message '+message.messageId+'\r\n');
 			  this.folder_msgdate_empty=false;
 			  //getting sent msg num per day
 			  if(msg_date in this.folder_msgdate_sent){
@@ -343,14 +342,12 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 				this.folder_msgdate_rcvd[msg_date]=1;
 			  }
 
-			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_sent '+this.folder_msgdate_sent[msg_date]+'\r\n');
-			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_rcvd '+this.folder_msgdate_rcvd[msg_date]+'\r\n');
 			  //getting top recipients
 
 			  //getting top senders
 
 
-			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.inboxmsg '+this.inboxmsg+'\r\n');
+			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+this.foldermsg+'\r\n');
 			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerValue '+JSON.stringify(headerValue)+'\r\n');
 			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.date '+JSON.stringify(message.date)+'\r\n');
 			  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.messageId'+JSON.stringify(message.messageId)+'\r\n');
@@ -361,9 +358,13 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
   },
 
   render:function() {
-	miczThunderStatsTab.ui.update_folder_msgcount("today",this.foldermsg,this.foldermsg_unread);
+	//miczThunderStatsTab.ui.update_folder_msgcount("today",this.foldermsg,this.foldermsg_unread);
 
 	miczLogger.log("Folder messages loaded.",0);
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] rendering...\r\n');
+
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_sent '+JSON.stringify(this.folder_msgdate_sent)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_rcvd '+JSON.stringify(this.folder_msgdate_rcvd)+'\r\n');
 
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] this.inboxmsg '+this.inboxmsg+'\r\n');
 

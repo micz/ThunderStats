@@ -260,6 +260,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     this.context = context;
     this.foldermsg = 0;
     this.foldermsg_unread = 0;
+    this.folder_msgdate_sent = 0;
+    this.folder_msgdate_rcvd = 0;
     this.msg_crunched=new Array();
     this.stale = true;
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] init done [inboxmsg: '+this.inboxmsg +'.\r\n');
@@ -269,6 +271,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     this._clear();
     delete this.foldermsg;
     delete this.foldermsg_unread;
+    delete this.folder_msgdate_sent;
+    delete this.folder_msgdate_rcvd;
     delete this.msg_crunched;
   },
 
@@ -284,10 +288,13 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     let addresses;
     let fullAddresses;
 
-    //let headerValue = message.mime2DecodedAuthor;
-    let headerValue = message.recipients.toLowerCase()+','+message.ccList.toLowerCase();
+    let headerAuthor = message.mime2DecodedAuthor;
+    let headerRecipients = message.recipients.toLowerCase()+','+message.ccList.toLowerCase();
+    let headerValue= headerAuthor+','+headerRecipients;
     let identity_addresses=this.context.identityAddresses.join(',');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerAuthor '+JSON.stringify(headerAuthor)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerRecipients '+JSON.stringify(headerRecipients)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] headerValue '+JSON.stringify(headerValue)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] message.recipients '+JSON.stringify(message.recipients)+'\r\n');
 	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] ccList '+JSON.stringify(message.getStringProperty("ccList"))+'\r\n');
@@ -306,10 +313,11 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 
     if (!deleted) {
       for (let i = 0; i < addresses.length; i++) {
-		  if(identity_addresses.indexOf(addresses[i])>=0){	//It's an identity we're considering	
+		  if(identity_addresses.indexOf(addresses[i])>=0){	//There is an identity we're considering	
 			  if(this.msg_crunched.indexOf(message.messageId)>-1)continue;	//msg already considered
 			  this.msg_crunched.push(message.messageId);
 			  //TODO -- currently not considering the date as a filter
+			  //TODO -- when considering the date as a filter get different layout per single day (premerge with trunk before)
 			  //incrementing msg num
 			  this.foldermsg++;
 			  if(!message.isRead){
@@ -317,15 +325,15 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 				this.foldermsg_unread++;
 			  }
 			  this.folder_msgdate_empty=false;
-			  if(msg_date in this.folder_msgdate){
-				this.folder_msgdate[msg_date]++;
-			  }else{
-				this.folder_msgdate[msg_date]=1;
-			  }
 			  //getting sent msg num per day
-			  
-			  //getting received msg num per day
-			  
+			  //getting rcvd msg num per day
+			  if(msg_date in this.folder_msgdate){
+				this.folder_msgdate_sent[msg_date]++;
+				this.folder_msgdate_rcvd[msg_date]++;
+			  }else{
+				this.folder_msgdate_sent[msg_date]=1;
+				this.folder_msgdate_rcvd[msg_date]=1;
+			  }
 			  //getting top recipients
 			  
 			  //getting top senders

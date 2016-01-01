@@ -287,8 +287,12 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
   processMessage: function(message,deleted) {
     this.stale = true;
 
-    let addresses;
+    let allAddresses;
     let fullAddresses;
+    let authorsAddresses;
+    let fullAuthorsAddresses;
+    let recipientsAddresses;
+    let fullRecipientsAddresses;
 
     let headerAuthor = message.mime2DecodedAuthor;
     let headerRecipients = message.recipients.toLowerCase()+','+message.ccList.toLowerCase();
@@ -303,20 +307,33 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 
     let tmpAddresses = {};
     let tmpFullAddresses = {};
+    let tmpAuthors = {};
+    let tmpFullAuthors = {};
+    let tmpRecipients = {};
+    let tmpFullRecipients = {};
+	//all mails
     MailServices.headerParser.parseHeadersWithArray(headerValue,tmpAddresses,{},tmpFullAddresses);
-    addresses = tmpAddresses.value;
-    fullAddresses = tmpFullAddresses.value;
+    allAddresses = tmpAddresses.value;	//only mail for all
+    fullAddresses = tmpFullAddresses.value;	//mail and name for all
+    //authors mails
+	MailServices.headerParser.parseHeadersWithArray(headerValue,tmpAuthors,{},tmpFullAuthors);
+    authorsAddresses = tmpAuthors.value;	//only mail for authors
+    fullAuthorsAddresses = tmpFullAuthors.value;	//mail and name for authors
+    //recipients mails
+	MailServices.headerParser.parseHeadersWithArray(headerValue,tmpRecipients,{},tmpFullRecipients);
+    recipientsAddresses = tmpRecipients.value;	//only mail for recipeints
+    fullRecipientsAddresses = tmpFullRecipients.value;	//mail and name for recipients
 
 	//message date
 	let msg_date=moment.unix(message.dateInSeconds).format("YYYY-MM-DD");
-	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.dateInSeconds '+JSON.stringify(message.dateInSeconds)+'\r\n');
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.dateInSeconds '+JSON.stringify(message.dateInSeconds)+'\r\n');
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date '+JSON.stringify(msg_date)+'\r\n');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] addresses '+JSON.stringify(addresses)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] allAddresses '+JSON.stringify(allAddresses)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] fullAddresses '+JSON.stringify(fullAddresses)+'\r\n');
 
     if (!deleted) {
       for (let i = 0; i < addresses.length; i++) {
-		  if(identity_addresses.indexOf(addresses[i])>=0){	//There is an identity we're considering
+		  if(identity_addresses.indexOf(allAddresses[i])>=0){	//There is an identity we're considering
 			  if(this.msg_crunched.indexOf(message.messageId)>-1)continue;	//msg already considered
 			  this.msg_crunched.push(message.messageId);
 			  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] crunching... '+message.messageId+'\r\n');

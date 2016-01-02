@@ -316,17 +316,17 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     allAddresses = tmpAddresses.value;	//only mail for all
     fullAddresses = tmpFullAddresses.value;	//mail and name for all
     //authors mails
-	MailServices.headerParser.parseHeadersWithArray(headerValue,tmpAuthors,{},tmpFullAuthors);
+	MailServices.headerParser.parseHeadersWithArray(headerAuthor,tmpAuthors,{},tmpFullAuthors);
     authorsAddresses = tmpAuthors.value;	//only mail for authors
     fullAuthorsAddresses = tmpFullAuthors.value;	//mail and name for authors
     //recipients mails
-	MailServices.headerParser.parseHeadersWithArray(headerValue,tmpRecipients,{},tmpFullRecipients);
+	MailServices.headerParser.parseHeadersWithArray(headerRecipients,tmpRecipients,{},tmpFullRecipients);
     recipientsAddresses = tmpRecipients.value;	//only mail for recipeints
     fullRecipientsAddresses = tmpFullRecipients.value;	//mail and name for recipients
 
 	//message date
 	let msg_date=moment.unix(message.dateInSeconds).format("YYYY-MM-DD");
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.dateInSeconds '+JSON.stringify(message.dateInSeconds)+'\r\n');
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date '+JSON.stringify(msg_date)+'\r\n');
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date '+JSON.stringify(msg_date)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] allAddresses '+JSON.stringify(allAddresses)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] fullAddresses '+JSON.stringify(fullAddresses)+'\r\n');
@@ -347,16 +347,20 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 			  }
 			  this.folder_msgdate_empty=false;
 			  //getting sent msg num per day
-			  if(msg_date in this.folder_msgdate_sent){
-				this.folder_msgdate_sent[msg_date]++;
-			  }else{
-				this.folder_msgdate_sent[msg_date]=1;
+			  if(identity_addresses.indexOf(authorsAddresses[i])>=0){
+				  if(msg_date in this.folder_msgdate_sent){
+					this.folder_msgdate_sent[msg_date]++;
+				  }else{
+					this.folder_msgdate_sent[msg_date]=1;
+				  }
 			  }
 			  //getting rcvd msg num per day
-			  if(msg_date in this.folder_msgdate_rcvd){
-				this.folder_msgdate_rcvd[msg_date]++;
-			  }else{
-				this.folder_msgdate_rcvd[msg_date]=1;
+			  if(identity_addresses.indexOf(recipientsAddresses[i])>=0){
+				  if(msg_date in this.folder_msgdate_rcvd){
+					this.folder_msgdate_rcvd[msg_date]++;
+				  }else{
+					this.folder_msgdate_rcvd[msg_date]=1;
+				  }
 			  }
 
 			  //getting top recipients

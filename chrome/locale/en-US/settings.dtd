@@ -17,6 +17,7 @@
 <!ENTITY ThunderStats.ChangesSavedWarn "The changes made here are saved immediately.">
 <!ENTITY ThunderStats.ActivateDebug "Activate debug system">
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Search for mails in the Inbox folders only in the folders for the selected account.">
+<!ENTITY ThunderStats.InboxSearchOnlyCurrAccount.GlobaInboxWarn "You need to UNCHECK this option if you're using the Global Inbox for your mails.">
 <!ENTITY ThunderStats.GlobalUpdate "Update all tabs at once. If deselected the tabs are updated when switching between them.">
 <!ENTITY ThunderStats.TodayTimeGraphShowYesterday "Show also yesterday's mails in the today time graph.">
 <!ENTITY ThunderStats.TodayTimeGraphProgressive "Show cumulative data bars in the today and yesterday time graphs.">

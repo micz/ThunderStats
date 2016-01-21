@@ -52,3 +52,4 @@
 <!ENTITY ThunderStats.CustomQueryDefaultOnlyBD "Always check &quot;Business Days Only&quot; option at startup.">
 <!ENTITY ThunderStats.folderspreadgraph_openinfirsttab "From the mails folder locations chart, open the folder always in the first tab.">
 <!ENTITY ThunderStats.InvolvedNum "Number of recipients or senders to be shown in &quot;Top&quot; tables.">
+<!ENTITY ThunderStats.involvedtable_forceidentityname "Always show the account name in the top senders and recipient tables when the shown mail is associated with a Thunderbird account.">

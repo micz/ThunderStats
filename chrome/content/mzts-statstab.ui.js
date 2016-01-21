@@ -217,6 +217,10 @@ miczThunderStatsTab.ui={
 
 		let ind=1;
 		for (let key in involvedData){
+			//fix identity name if it's an user account identity
+			if((miczThunderStatsPrefs.involvedTableForceIdentityName)&&(involvedData[key]["Mail"] in miczThunderStatsCore.identities_email_name)){
+				involvedData[key]["Name"]=miczThunderStatsCore.identities_email_name[involvedData[key]["Mail"]];
+			}
 			outString+="<tr class='mzts-trow'><td class='mzts-row-num'>"+ind+"</td><td>"+involvedData[key]["Name"]+"</td><td>"+involvedData[key]["Mail"]+"</td><td>"+involvedData[key]["Num"]+"</td></tr>";
 			ind++;
 		}

@@ -54,6 +54,10 @@ var miczThunderStatsPrefs = {
 		return this.getBoolPref_TS("folderspreadgraph_openinfirsttab");
 	},
 
+	get involvedTableForceIdentityName(){
+		return this.getBoolPref_TS("involvedtable_forceidentityname")
+	},
+
 	accountCustomIdentities:function(account_key){
 		let account_pref='acc_cust_ids.'+account_key;
 		if(this.existsCharPref(this.pref_base+account_pref)){

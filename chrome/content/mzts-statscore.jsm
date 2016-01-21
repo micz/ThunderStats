@@ -14,6 +14,7 @@ var miczThunderStatsCore = {
 
 	accounts:{},
 	identities:{},
+	identities_email_name:{},
 	_account_selector_prefix:'_account:',
 	custom_account_key:'cstm_accnt',
 
@@ -49,6 +50,7 @@ var miczThunderStatsCore = {
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
 					this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity.email));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+					this.identities_email_name[identity.email]=identity.fullName;
 				}
 				//enumerate custom identities for this account
 				let account_custom_identities=miczThunderStatsPrefs.accountCustomIdentities(account.key);

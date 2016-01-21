@@ -23,3 +23,4 @@ pref("extensions.ThunderStats.folderspreadgraph_openinfirsttab", true);
 pref("extensions.ThunderStats.bday.nbd_list", "{}");
 pref("extensions.ThunderStats.involved_num", 10);
 pref("extensions.ThunderStats.firstRun", true);
+pref("extensions.ThunderStats.involvedtable_forceidentityname", true);

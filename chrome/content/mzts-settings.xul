@@ -116,9 +116,9 @@
             		preference="ThunderStats.today_time_graph_progressive" />
             	<checkbox id="ThunderStats.aggregate_average_not_rounded_checkbox" label="&ThunderStats.AggregateAverageNotRounded;"
             		preference="ThunderStats.aggregate_average_not_rounded" />
-            	<checkbox id="ThunderStats.folderspreadgraph_openinfirsttab" label="&ThunderStats.folderspreadgraph_openinfirsttab;"
+            	<checkbox id="ThunderStats.folderspreadgraph_openinfirsttab_checkbox" label="&ThunderStats.folderspreadgraph_openinfirsttab;"
             		preference="ThunderStats.folderspreadgraph_openinfirsttab" />
-            	<checkbox id="ThunderStats.involvedtable_forceidentityname" label="&ThunderStats.involvedtable_forceidentityname;"
+            	<checkbox id="ThunderStats.involvedtable_forceidentityname_checkbox" label="&ThunderStats.involvedtable_forceidentityname;"
             		preference="ThunderStats.involvedtable_forceidentityname" />
             	<groupbox>
   				<caption label="&ThunderStats.ManyDaysGraph;"/>

@@ -297,8 +297,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     let headerAuthor = message.mime2DecodedAuthor;
     let headerRecipients = message.recipients.toLowerCase()+','+message.ccList.toLowerCase();
     let headerValue= headerAuthor+','+headerRecipients;
-    //let identity_addresses=this.context.identityAddresses.join(',');
-    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
+    let identity_addresses=this.context.identityAddresses.join(',');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
     /*dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerAuthor '+JSON.stringify(headerAuthor)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerRecipients '+JSON.stringify(headerRecipients)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerValue '+JSON.stringify(headerValue)+'\r\n');
@@ -309,15 +309,15 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	//message date
 	let moment_msg_date=moment.unix(message.dateInSeconds);
 	let msg_date=moment_msg_date.format("YYYY-MM-DD");
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date '+JSON.stringify(msg_date)+'\r\n');
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date '+JSON.stringify(msg_date)+'\r\n');
     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] allAddresses '+JSON.stringify(allAddresses)+'\r\n');
     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] fullAddresses '+JSON.stringify(fullAddresses)+'\r\n');
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date from '+JSON.stringify(miczThunderStatsUtils._folderqry_from_date)+'\r\n');
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date to '+JSON.stringify(miczThunderStatsUtils._folderqry_to_date)+'\r\n');
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date from '+JSON.stringify(miczThunderStatsUtils._folderqry_from_date)+'\r\n');
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date to '+JSON.stringify(miczThunderStatsUtils._folderqry_to_date)+'\r\n');
 
 	//checking message date
 	if(!((moment_msg_date.isSame(miczThunderStatsUtils._folderqry_from_date,'day'))||(moment_msg_date.isSame(miczThunderStatsUtils._folderqry_to_date,'day'))||(moment_msg_date.isAfter(miczThunderStatsUtils._folderqry_from_date,'day') && moment_msg_date.isBefore(miczThunderStatsUtils._folderqry_to_date,'day')))){
-		//message date out of considered interval
+		//message date out of the considered interval
 		return;
 	}
 

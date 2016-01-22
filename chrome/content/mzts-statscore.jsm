@@ -297,13 +297,19 @@ miczThunderStatsCore.db = {
 		//miczThunderStatsDB.queryInboxMessagesDate(mIdentity,mCallback);
 	},*/
 
-	getFolderStats:function(mIdentity,mFoldersURI,mCallback){
+	getFolderStats:function(mFromDate,mToDate,mIdentity,mFoldersURI,mCallback){
 		let mIdentityAddresses=miczThunderStatsUtils.getIdentitiesArray(mIdentity,miczThunderStatsCore.identities);
 		miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
 		let mFolders=new Array();
 		for each(let folder_uri in mFoldersURI){
 			mFolders.push(MailUtils.getFolderForURI(folder_uri));
 		}
+		let mFromDateInternal=new Date(mFromDate);
+		let mToDateInternal=new Date(mToDate);
+		mFromDateInternal.setHours(0,0,0,0);
+		mToDateInternal.setHours(24,0,0,0);
+		miczThunderStatsUtils._folderqry_from_date=mFromDateInternal;
+		miczThunderStatsUtils._folderqry_to_date=mToDateInternal;
 		miczThunderStatsFolderQ.init(mFolders,mIdentityAddresses,this.win,false,null);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);
 		miczThunderStatsFolderQ.run();

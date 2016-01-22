@@ -297,14 +297,30 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     let headerAuthor = message.mime2DecodedAuthor;
     let headerRecipients = message.recipients.toLowerCase()+','+message.ccList.toLowerCase();
     let headerValue= headerAuthor+','+headerRecipients;
-    let identity_addresses=this.context.identityAddresses.join(',');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
+    //let identity_addresses=this.context.identityAddresses.join(',');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
     /*dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerAuthor '+JSON.stringify(headerAuthor)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerRecipients '+JSON.stringify(headerRecipients)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerValue '+JSON.stringify(headerValue)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.recipients '+JSON.stringify(message.recipients)+'\r\n');
 	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] ccList '+JSON.stringify(message.getStringProperty("ccList"))+'\r\n');
 */
+
+	//message date
+	let moment_msg_date=moment.unix(message.dateInSeconds);
+	let msg_date=moment_msg_date.format("YYYY-MM-DD");
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date '+JSON.stringify(msg_date)+'\r\n');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] allAddresses '+JSON.stringify(allAddresses)+'\r\n');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] fullAddresses '+JSON.stringify(fullAddresses)+'\r\n');
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date from '+JSON.stringify(miczThunderStatsUtils._folderqry_from_date)+'\r\n');
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date to '+JSON.stringify(miczThunderStatsUtils._folderqry_to_date)+'\r\n');
+
+	//checking message date
+	if(!((moment_msg_date.isSame(miczThunderStatsUtils._folderqry_from_date,'day'))||(moment_msg_date.isSame(miczThunderStatsUtils._folderqry_to_date,'day'))||(moment_msg_date.isAfter(miczThunderStatsUtils._folderqry_from_date,'day') && moment_msg_date.isBefore(miczThunderStatsUtils._folderqry_to_date,'day')))){
+		//message date out of considered interval
+		return;
+	}
+
     let tmpAddresses = {};
     let tmpFullAddresses = {};
     let tmpAuthors = {};
@@ -327,16 +343,9 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] authorsAddresses '+JSON.stringify(authorsAddresses)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] recipientsAddresses '+JSON.stringify(recipientsAddresses)+'\r\n');
 
-	//message date
-	let msg_date=moment.unix(message.dateInSeconds).format("YYYY-MM-DD");
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date '+JSON.stringify(msg_date)+'\r\n');
-    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] allAddresses '+JSON.stringify(allAddresses)+'\r\n');
-    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] fullAddresses '+JSON.stringify(fullAddresses)+'\r\n');
-
     if (!deleted) {
 	  if(miczThunderStatsUtils.arrayIntersectCheck(this.context.identityAddresses,allAddresses)){	//There is an identity we're considering
 		  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] crunching... '+message.messageId+'\r\n');
-		  //TODO -- currently not considering the date as a filter
 		  //TODO -- when considering the date as a filter get different layout per single day (premerge with trunk before)
 		  //incrementing msg num
 		  this.foldermsg++;

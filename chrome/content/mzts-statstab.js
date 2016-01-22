@@ -389,14 +389,23 @@ var miczThunderStatsTab = {
 	},
 
 	updateFolderQry: function(){
+		//get identity
 		let identity_id=miczThunderStatsTab.getCurrentIdentityId();
+
+		//get folders
 		let currentval=$jQ('#ts_folder_search option:selected').val();
 		let data_array=$jQ('#ts_folder_search').select2('data');
 		let folder_uri = data_array.filter(function(v){return v.id === currentval;})[0].uri;	//TODO Multiple folder selection
 		let folders_uri=new Array();
 		folders_uri.push(folder_uri);
 		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry: '+folder_uri+'\r\n');
-		miczThunderStatsCore.db.getFolderStats(identity_id,folders_uri,miczThunderStatsTab.folderworker.folder_stats);
+
+		//get date
+		let mFromDay = document.getElementById('folderqry_datepicker_from').dateValue;
+		let mToDay = document.getElementById('folderqry_datepicker_to').dateValue;
+		//miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
+
+		miczThunderStatsCore.db.getFolderStats(mFromDay,mToDay,identity_id,folders_uri,miczThunderStatsTab.folderworker.folder_stats);
 	},
 
 	getLastIndexedMessage: function(){

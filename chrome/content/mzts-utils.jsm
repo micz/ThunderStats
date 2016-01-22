@@ -144,6 +144,37 @@ var miczThunderStatsUtils = {
 	  return dest;
 	},
 
+	arrayIntersect:function(x,y){	//returns an array made by the intersection of the two input arrays
+		let ret = [],
+			xLen = x.length,
+			yLen = y.length;
+		for (let i = 0; i < xLen; i++) {
+			for (let z = 0; z < yLen; z++) {
+				if (x[i] == y[z]) {
+					ret.push(i);
+					break;
+				}
+			}
+		}
+		return ret;
+	},
+
+	arrayIntersectCheck:function(x,y){	//returns true if there is an intersection between the two input arrays
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTabUtils.arrayIntersectCheck] x '+JSON.stringify(x)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTabUtils.arrayIntersectCheck] y '+JSON.stringify(y)+'\r\n');
+		let xLen = x.length,
+			yLen = y.length;
+		for (let i = 0; i < xLen; i++) {
+			for (let z = 0; z < yLen; z++) {
+				if (x[i] == y[z]) {
+					return true;
+				}
+			}
+		}
+		return false;
+	},
+
+
 	 getCurrentSystemLocale:function(){
 		let th_locale = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
           .getService(Components.interfaces.nsILocaleService)

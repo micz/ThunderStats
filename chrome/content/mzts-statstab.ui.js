@@ -1166,6 +1166,11 @@ miczThunderStatsTab.ui={
 		return output;
 	},
 
+	folderSearchList_PlaceholderText:function(){
+		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+		return _bundleCW.GetStringFromName("ThunderStats.folderSearchList_PlaceholderText");
+	},
+
 	// show a reusable label representing a folder path (for quickMove, quickJump and recent folders).
   // 0 - just folder.prettyName
   // 1 - folder.prettyName - Account  (default)

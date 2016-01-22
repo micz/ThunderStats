@@ -92,7 +92,7 @@
 		$jQ('img.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false,position:'top'});
 
 		$jQ('#ts_folder_search').select2({
-			placeholder: "Select a folder",
+			placeholder: miczThunderStatsTab.ui.folderSearchList_PlaceholderText(),
 			data:miczThunderStatsTab.ui.addFolderSearchList(miczThunderStatsCore.allFoldersIterator(true)),
 		});
 

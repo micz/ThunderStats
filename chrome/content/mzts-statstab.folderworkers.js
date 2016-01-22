@@ -346,7 +346,6 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     if (!deleted) {
 	  if(miczThunderStatsUtils.arrayIntersectCheck(this.context.identityAddresses,allAddresses)){	//There is an identity we're considering
 		  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] crunching... '+message.messageId+'\r\n');
-		  //TODO -- when considering the date as a filter get different layout per single day (premerge with trunk before)
 		  //incrementing msg num
 		  this.foldermsg++;
 		  if(!message.isRead){
@@ -371,9 +370,9 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 			  }
 		  }
 
-		  //getting top recipients
+		  //getting top recipients -- TODO
 
-		  //getting top senders
+		  //getting top senders -- TODO
 
 
 		  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+this.foldermsg+'\r\n');
@@ -386,7 +385,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 
   render:function() {
 	//miczThunderStatsTab.ui.update_folder_msgcount("today",this.foldermsg,this.foldermsg_unread);
-
+	//TODO -- when considering the date as a filter get different layout per single day (premerge with trunk before)
 	miczLogger.log("Folder messages loaded.",0);
 	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] rendering...\r\n');
 

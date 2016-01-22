@@ -395,6 +395,7 @@ var miczThunderStatsTab = {
 		//get folders
 		let currentval=$jQ('#ts_folder_search option:selected').val();
 		let data_array=$jQ('#ts_folder_search').select2('data');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry currentval: '+JSON.stringify(currentval)+'\r\n');
 		let folder_uri = data_array.filter(function(v){return v.id === currentval;})[0].uri;	//TODO Multiple folder selection
 		let folders_uri=new Array();
 		folders_uri.push(folder_uri);

@@ -335,9 +335,6 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 
     if (!deleted) {
 	  if(miczThunderStatsUtils.arrayIntersectCheck(this.context.identityAddresses,allAddresses)){	//There is an identity we're considering
-		  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] CURRENT IDENTITY '+JSON.stringify(allAddresses[i])+'\r\n');
-		  //if(this.msg_crunched.indexOf(message.messageId)>-1)continue;	//msg already considered
-		  //this.msg_crunched.push(message.messageId);
 		  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] crunching... '+message.messageId+'\r\n');
 		  //TODO -- currently not considering the date as a filter
 		  //TODO -- when considering the date as a filter get different layout per single day (premerge with trunk before)
@@ -384,7 +381,9 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	miczLogger.log("Folder messages loaded.",0);
 	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] rendering...\r\n');
 
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_sent '+JSON.stringify(this.folder_msgdate_sent)+'\r\n');
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+JSON.stringify(this.foldermsg)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg_unread '+JSON.stringify(this.foldermsg_unread)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_sent '+JSON.stringify(this.folder_msgdate_sent)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_rcvd '+JSON.stringify(this.folder_msgdate_rcvd)+'\r\n');
 
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] this.inboxmsg '+this.inboxmsg+'\r\n');

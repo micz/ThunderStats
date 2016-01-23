@@ -49,3 +49,4 @@
 <!ENTITY ThunderStats.CustomQryTabGroupbox "Statistiche su un Intervallo Personalizzato">
 <!ENTITY ThunderStats.CustomQueryDefaultOnlyBD "Imposta sempre l'opzione &quot;Solo Giorni Lavorativi&quot; all'avvio.">
 <!ENTITY ThunderStats.folderspreadgraph_openinfirsttab "Dal grafico della distribuzione delle mail nelle cartelle, apri sempre la cartella nel primo tab.">
+<!ENTITY ThunderStats.InvolvedNum "Numero di destinatari o mittenti da mostrare nelle tabelle.">

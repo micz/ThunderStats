@@ -49,3 +49,4 @@
 <!ENTITY ThunderStats.CustomQryTabGroupbox "Statistik mit benutzerdefiniertes Datumsbereich">
 <!ENTITY ThunderStats.CustomQueryDefaultOnlyBD "Beim Starten immer die Option 'Nur Werktage' aktivieren.">
 <!ENTITY ThunderStats.folderspreadgraph_openinfirsttab "Von der Verzeichnis-Grafik aus Ordner immer im vordersten Thunderbird Tab öffnen (linker Tab).">
+<!ENTITY ThunderStats.InvolvedNum "Anzahl der Empfänger / Absender die in den &quot;Top&quot; Tabellen angezeigt werden sollen.">

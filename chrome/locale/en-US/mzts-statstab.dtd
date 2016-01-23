@@ -22,12 +22,11 @@
 <!ENTITY ThunderStats.sent "sent">
 <!ENTITY ThunderStats.received "received">
 <!ENTITY ThunderStats.FolderLocation "Mails folder locations chart">
-<!ENTITY ThunderStats.NoMailsReceivedToday "No mails received today!">
+<!ENTITY ThunderStats.NoMailsReceived "No mails received!">
 <!ENTITY ThunderStats.InboxMailsDateSpreading "Inbox mails date spreading chart">
 <!ENTITY ThunderStats.NoMailsInbox "No mails in the Inbox!">
-<!ENTITY ThunderStats.NoMailsReceivedYesterday "No mails received yesterday!">
-<!ENTITY ThunderStats.Top10Recipients "Top 10 Recipients">
-<!ENTITY ThunderStats.Top10Senders "Top 10 Senders">
+<!ENTITY ThunderStats.TopRecipients "Top Recipients">
+<!ENTITY ThunderStats.TopSenders "Top Senders">
 <!ENTITY ThunderStats.clickhere "click here">
 <!ENTITY ThunderStats.clickheremoreinfo "Click here for more info">
 <!ENTITY ThunderStats.AboutTitle "About this addon">
@@ -54,8 +53,10 @@
 <!ENTITY ThunderStats.Views "Views">
 <!ENTITY ThunderStats.CurrentWeek "Current Week">
 <!ENTITY ThunderStats.CurrentMonth "Current Month">
+<!ENTITY ThunderStats.CurrentYear "Current Year">
 <!ENTITY ThunderStats.LastWeek "Last Week">
 <!ENTITY ThunderStats.LastMonth "Last Month">
+<!ENTITY ThunderStats.LastYear "Last Year">
 <!ENTITY ThunderStats.Last2Week "Last two Week">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Consider business days only">
 <!ENTITY ThunderStats.FolderStats "Folder">

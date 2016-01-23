@@ -3,6 +3,7 @@
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 Components.utils.import("resource:///modules/MailUtils.js");
 Components.utils.import("resource:///modules/iteratorUtils.jsm");
+//Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
 miczThunderStatsTab.ui={
 
@@ -20,7 +21,7 @@ miczThunderStatsTab.ui={
 		$jQ("#"+element).hide();
 	},
 
-	update_inbox0_inboxmsg:function(type,total_msg,unread_msg){	//type is "today" or "yesterday"
+	update_inbox0_inboxmsg:function(type,total_msg,unread_msg){	//type is "today" or "yesterday" or "customqry_oneday"
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.ui.update_inbox0_inboxmsg] type '+JSON.stringify(type)+'\r\n');
 		miczThunderStatsTab.ui.hideLoadingElement(type+"_inbox0_inboxmsg_wait");
 		$jQ("#"+type+"_inbox0_inboxmsg").text(total_msg);
@@ -202,17 +203,31 @@ miczThunderStatsTab.ui={
 				break;
 			case '#currentmonth': dfrom.subtract(dfrom.format('D'),'day').add(1,'day');
 				break;
+			case '#currentyear': dfrom.set({'month':0,'date':1});
+				break;
 			case '#lastweek': dfrom.weekday(0).subtract(1,'day').weekday(0);
 				dto.weekday(0).subtract(1,'day').weekday(6);
 				break;
 			case '#last2week': dfrom.weekday(0).subtract(1,'day').weekday(0);
 				break;
 			case '#lastmonth': dfrom.subtract(1,'month').subtract(dfrom.format('D'),'day').add(1,'day');
-        dto.subtract(dto.format('D'),'day');
+        		dto.subtract(dto.format('D'),'day');
 				//dto.subtract(1,'month').endOf('month');
+				break;
+			case '#lastyear': dfrom.set({'date':1,'month':0}).subtract(1,'year');
+        		dto.set({'date':1,'month':0}).subtract(1,'day');
 				break;
 			default: return;
 		}
+		//DST fix
+		/*if(!dfrom.isDST()){
+			//dump(">>>>>>>>>>>>>> [customQueryViewSelect] dfrom isDST fix.\r\n");
+			dfrom.subtract(1,'hour');
+		}
+		if(!dto.isDST()){
+			//dump(">>>>>>>>>>>>>> [customQueryViewSelect] dto isDST fix.\r\n");
+			dto.subtract(1,'hour');
+		}*/
 		document.getElementById('datepicker_from').dateValue=dfrom.toDate();
 		document.getElementById('datepicker_to').dateValue=dto.toDate();
 		if(miczThunderStatsPrefs.customQryBookmarkImmediateUpdate){	//update statistics
@@ -237,6 +252,10 @@ miczThunderStatsTab.ui={
 
 		let ind=1;
 		for (let key in involvedData){
+			//fix identity name if it's an user account identity
+			if((miczThunderStatsPrefs.involvedTableForceIdentityName)&&(involvedData[key]["Mail"] in miczThunderStatsCore.identities_email_name)){
+				involvedData[key]["Name"]=miczThunderStatsCore.identities_email_name[involvedData[key]["Mail"]];
+			}
 			outString+="<tr class='mzts-trow'><td class='mzts-row-num'>"+ind+"</td><td>"+involvedData[key]["Name"]+"</td><td>"+involvedData[key]["Mail"]+"</td><td>"+involvedData[key]["Num"]+"</td></tr>";
 			ind++;
 		}
@@ -591,6 +610,7 @@ miczThunderStatsTab.ui={
 	},
 
 	drawInbox0FolderSpreadGraph:function(element_id_txt,data_array){
+		//miczLogger.log(">>>>>>>>>>>>>> Inbox0FolderSpreadGraph start ["+element_id_txt+"]",0);
 		let inboxFolderURLs=miczThunderStatsDB.queryGetInboxFolderURLs();
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] inboxFolderURLs: "+JSON.stringify(inboxFolderURLs)+"\r\n");
 		miczThunderStatsTab.ui.mwin=miczThunderStatsUtils.getMail3PaneWindow();
@@ -599,9 +619,17 @@ miczThunderStatsTab.ui={
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
-		miczThunderStatsTab.ui.last_pos0=0;
-		miczThunderStatsTab.ui.last_pos1=0;
-
+		miczThunderStatsTab.ui.last_pos0=[];
+		miczThunderStatsTab.ui.last_pos1=[];
+		miczThunderStatsTab.ui.last_pos0['text_'+element_id_txt]=0;
+		miczThunderStatsTab.ui.last_pos1['text_'+element_id_txt]=0;
+		miczThunderStatsTab.ui.last_pos0['poly_'+element_id_txt]=0;
+		miczThunderStatsTab.ui.last_pos1['poly_'+element_id_txt]=0;
+		/*miczLogger.log(">>>>>>>>>>>>>> drawInbox0FolderSpreadGraph miczThunderStatsTab.ui.last_pos0[text_"+element_id_txt+": "+miczThunderStatsTab.ui.last_pos0['text_'+element_id_txt],0);
+    miczLogger.log(">>>>>>>>>>>>>> drawInbox0FolderSpreadGraph miczThunderStatsTab.ui.last_pos1[text_"+element_id_txt+": "+miczThunderStatsTab.ui.last_pos1['text_'+element_id_txt],0);
+    miczLogger.log(">>>>>>>>>>>>>> drawInbox0FolderSpreadGraph miczThunderStatsTab.ui.last_pos0[poly_"+element_id_txt+": "+miczThunderStatsTab.ui.last_pos0['poly_'+element_id_txt],0);
+    miczLogger.log(">>>>>>>>>>>>>> drawInbox0FolderSpreadGraph miczThunderStatsTab.ui.last_pos1[poly_"+element_id_txt+": "+miczThunderStatsTab.ui.last_pos1['poly_'+element_id_txt],0);
+*/
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 
 		//data_array=JSON.parse('[{"Folder":"All Mail","Num":10},{"Folder":"Inbox","Num":21},{"Folder":"test1","Num":21},{"Folder":"test2","Num":21},{"Folder":"test3","Num":21},{"Folder":"test4","Num":21},{"Folder":"test5","Num":21},{"Folder":"test6","Num":21},{"Folder":"test7","Num":2},{"Folder":"test8","Num":3},{"Folder":"test________________9","Num":14},{"Folder":"test_____________10","Num":14},{"Folder":"test11","Num":14},{"Folder":"test12","Num":14}]');
@@ -635,9 +663,14 @@ miczThunderStatsTab.ui={
 		for(let key in data_array){
 			let element={};
 			element.value=data_array[key].Num;
-			element.label=data_array[key].Folder;
+			let tmp_folder=MailUtils.getFolderForURI(data_array[key].FolderURI);
+			element.label=tmp_folder.prettyName;
+			//element.label=data_array[key].Folder;
 			element.folder_url=data_array[key].FolderURI;
 			element.normalized=data_array[key].Num/data_sum;
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] FolderURI "+data_array[key].FolderURI+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] Folder "+data_array[key].Folder+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] prettyName "+tmp_folder.prettyName+"\r\n");
 			norm_data.push(element);
 		}
 
@@ -724,7 +757,7 @@ miczThunderStatsTab.ui={
 			text.attr("transform", function(d) {
 						let pos = outerArc.centroid(d);
 						pos[0] = radius * (midAngle(d) < Math.PI ? 1 : -1);
-						pos[1] = miczThunderStatsTab.ui.utilInbox0FolderSpreadGraph_LabelPosition(pos);
+						pos[1] = miczThunderStatsTab.ui.utilInbox0FolderSpreadGraph_LabelPosition(pos,'text_'+element_id_txt);
 						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] "+d.data.label+" "+JSON.stringify(pos)+"\r\n");
 						return "translate("+ pos +")";
 				})
@@ -736,8 +769,6 @@ miczThunderStatsTab.ui={
 				.remove();
 
 			/* ------- SLICE TO TEXT POLYLINES -------*/
-			miczThunderStatsTab.ui.last_pos0=0;
-			miczThunderStatsTab.ui.last_pos1=0;
 
 			var polyline = svg.select(".lines").selectAll("polyline")
 				.data(pie(norm_data), key);
@@ -748,61 +779,122 @@ miczThunderStatsTab.ui={
 			polyline.attr("points", function(d){
 					let pos = outerArc.centroid(d);
 					pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
-					pos[1] = miczThunderStatsTab.ui.utilInbox0FolderSpreadGraph_LabelPosition(pos);
+					pos[1] = miczThunderStatsTab.ui.utilInbox0FolderSpreadGraph_LabelPosition(pos,'poly_'+element_id_txt);
 					return [arc.centroid(d), outerArc.centroid(d), pos];
-				});
+				})
+				.style("stroke", function(d) { return inboxFolderURLs.indexOf(d.data.folder_url)>-1?color_inbox(d.data.folder_url):color(d.data.folder_url); })
+				.style("stroke-width",2)
+				.style("opacity",1);
 
 			polyline.exit()
 				.remove();
+
+		 //miczLogger.log(">>>>>>>>>>>>>> Inbox0FolderSpreadGraph done ["+element_id_txt+"]",0);
 	},
 
-	utilInbox0FolderSpreadGraph_LabelPosition:function(pos){
+	utilInbox0FolderSpreadGraph_LabelPosition:function(pos,namespace){
+    let offset_labelpos=0;
+    //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"]",0);
 
-		if((miczThunderStatsTab.ui.last_pos0==0)||(miczThunderStatsTab.ui.last_pos1==0)){
-			miczThunderStatsTab.ui.last_pos0=pos[0];
-			miczThunderStatsTab.ui.last_pos1=pos[1];
+    //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] miczThunderStatsTab.ui.last_pos0: "+miczThunderStatsTab.ui.last_pos0[namespace],0);
+    //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] miczThunderStatsTab.ui.last_pos1: "+miczThunderStatsTab.ui.last_pos1[namespace],0);
+
+		if((miczThunderStatsTab.ui.last_pos0[namespace]==0)||(miczThunderStatsTab.ui.last_pos1[namespace]==0)){
+			miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
+			miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first label",0);
 			return pos[1];
 		}	//first label
 		if(pos[0]>0){	//starting from 12 hours CW...
 			if(pos[1]<0){ //first quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first quarter\r\n");
-				let label_diff=pos[1]-miczThunderStatsTab.ui.last_pos1;
-				if(label_diff<miczThunderStatsTab.ui.label_height){
-					pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first quarter",0);
+				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1[namespace]);
+				//if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]<miczThunderStatsTab.ui.last_pos1[namespace])){
+				if(pos[1]<miczThunderStatsTab.ui.last_pos1[namespace]){
+          			label_diff=-1;
+				}
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
+        		//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
+				if(label_diff<miczThunderStatsTab.ui.label_height+offset_labelpos){
+					//pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
+					pos[1]=miczThunderStatsTab.ui.last_pos1[namespace]+miczThunderStatsTab.ui.label_height+offset_labelpos;
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
+        			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				}
 			}else{	//second quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] second quarter\r\n");
-				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1);
-				if(label_diff<miczThunderStatsTab.ui.label_height){
-					pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] second quarter",0);
+				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1[namespace]);
+				//if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]<miczThunderStatsTab.ui.last_pos1[namespace])){
+				if(pos[1]<miczThunderStatsTab.ui.last_pos1[namespace]){
+		          label_diff=-1;
+				}
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
+        		//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
+				if(label_diff<miczThunderStatsTab.ui.label_height+offset_labelpos){
+					//pos[1]+=miczThunderStatsTab.ui.label_height-label_diff;
+					pos[1]=miczThunderStatsTab.ui.last_pos1[namespace]+miczThunderStatsTab.ui.label_height+offset_labelpos;
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
+        			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				}
 			}
 		}else{	//second half
-			if(miczThunderStatsTab.ui.last_pos0>0){	//first label in the second half
+			if(miczThunderStatsTab.ui.last_pos0[namespace]>0){	//first label in the second half
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label in the second half\r\n");
-				miczThunderStatsTab.ui.last_pos0=pos[0];
-				miczThunderStatsTab.ui.last_pos1=pos[1];
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first label in second half",0);
+				miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
+				miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
 				return pos[1];
 			}
 			if(pos[1]>0){ //third quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] third quarter\r\n");
-				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1);
-				if(label_diff<miczThunderStatsTab.ui.label_height){
-					pos[1]-=miczThunderStatsTab.ui.label_height-label_diff;
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] third quarter",0);
+				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1[namespace]);
+				//if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]>miczThunderStatsTab.ui.last_pos1[namespace])){
+				if(pos[1]>miczThunderStatsTab.ui.last_pos1[namespace]){
+         		 label_diff=-1;
+				}
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
+		        //miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
+				if(label_diff<miczThunderStatsTab.ui.label_height+offset_labelpos){
+					//pos[1]-=miczThunderStatsTab.ui.label_height+label_diff;
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
+					pos[1]=miczThunderStatsTab.ui.last_pos1[namespace]-miczThunderStatsTab.ui.label_height-offset_labelpos;
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
+        			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				}
 			}else{	//fourth quarter
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fourth quarter\r\n");
-				let label_diff=miczThunderStatsTab.ui.last_pos1-pos[1];
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fourth quarter",0);
+				let label_diff=miczThunderStatsTab.ui.last_pos1[namespace]-pos[1];
+				//if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]>miczThunderStatsTab.ui.last_pos1[namespace])){
+				if(pos[1]>miczThunderStatsTab.ui.last_pos1[namespace]){
+          			label_diff=-1;
+				}
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
+        		//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
+				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] label_diff: "+label_diff+"\r\n");
-				if(label_diff<miczThunderStatsTab.ui.label_height){
+				if(label_diff<miczThunderStatsTab.ui.label_height+offset_labelpos){
 					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fixing position\r\n");
-					pos[1]-=miczThunderStatsTab.ui.label_height-label_diff;
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
+					//pos[1]-=miczThunderStatsTab.ui.label_height+label_diff;
+					pos[1]=miczThunderStatsTab.ui.last_pos1[namespace]-miczThunderStatsTab.ui.label_height-offset_labelpos;
+					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
+        			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				}
 			}
 		}
-		miczThunderStatsTab.ui.last_pos0=pos[0];
-		miczThunderStatsTab.ui.last_pos1=pos[1];
+		miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
+		miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
+		//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos (0 - 1): ["+pos[0]+"] - ["+pos[1]+"]",0);
 		return pos[1];
 	},
 
@@ -878,7 +970,7 @@ miczThunderStatsTab.ui={
 	},
 
 
-	drawTimeGraph:function(element_id_txt,data_array,is_today){
+	drawTimeGraph:function(element_id_txt,data_array,is_today,is_oneday){
 		let margin = {
 			top: 10,
 			right: 92,
@@ -1023,14 +1115,16 @@ miczThunderStatsTab.ui={
 					let mh_str=" "+mh_from+mh_to;
 					let yt_str="";
 					let ii=data_types.indexOf(d.type);
-					if((ii<=1)&&is_today){
-						yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today");
-					}else{
-						if((ii>1)||(!is_today)){
-							if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
-								yt_str=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay_short");
-							}else{
-								yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
+					if(!is_oneday){
+						if((ii<=1)&&is_today){
+							yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today");
+						}else{
+							if((ii>1)||(!is_today)){
+								if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
+									yt_str=_bundleCW.GetStringFromName("ThunderStats.LastBusinessDay_short");
+								}else{
+									yt_str=_bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
+								}
 							}
 						}
 					}
@@ -1100,15 +1194,17 @@ miczThunderStatsTab.ui={
 			.append('text')
 			.text(
 			 function(d, i) {
-				if((i==0)&&is_today){
-					return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.today");
-				}else{
-					if((i==2)||(!is_today&&i==0)){
-						if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
-								return _bundleCW.GetStringFromName("ThunderStats.LastBusinessDay_short");
-							}else{
-								return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
-							}
+				 if(!is_oneday){
+					if((i==0)&&is_today){
+						return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.today");
+					}else{
+						if((i==2)||(!is_today&&i==0)){
+							if((miczThunderStatsPrefs.useLastBusinessDay)&&(!miczThunderStatsUtils._y_is_last_business_day)){
+									return _bundleCW.GetStringFromName("ThunderStats.LastBusinessDay_short");
+								}else{
+									return _bundleCW.GetStringFromName("ThunderStats.TimeGraph.yesterday");
+								}
+						}
 					}
 				}
 				return "";

@@ -75,6 +75,15 @@ var miczThunderStatsUtils = {
 		let mToDateInternal=new Date(mToDate);
 		mFromDateInternal.setHours(0,0,0,0);			// Start just after midnight
 		mToDateInternal.setHours(23,59,59,59);			// End just before midnight
+		//DST fix
+		/*if((!miczThunderStatsUtils.isDST(mFromDateInternal))&&(miczThunderStatsUtils.isDST(mToDateInternal))){	//Not needed we're doing ceil() to found the number of days
+			//dump(">>>>>>>>>>>>>> [getDaysFromRange] mFromDateInternal isDST fix.\r\n");
+			mFromDateInternal.setHours(mFromDateInternal.getHours()-1);
+		}*/
+		if((miczThunderStatsUtils.isDST(mFromDateInternal))&&(!miczThunderStatsUtils.isDST(mToDateInternal))){
+			//dump(">>>>>>>>>>>>>> [getDaysFromRange] mToDateInternal isDST fix.\r\n");
+			mToDateInternal.setHours(mToDateInternal.getHours()-1);
+		}
 		let diffDate = mToDateInternal - mFromDateInternal;		// Milliseconds between datetime objects
 		let diffDays = Math.ceil(diffDate / millisecondsPerDay);
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] mFromDate '+mFromDate.toLocaleString()+'\r\n');
@@ -107,6 +116,12 @@ var miczThunderStatsUtils = {
 
 	getJulianDate: function(mDate) {
     	return Math.floor((mDate.getTime() / 86400000) - (mDate.getTimezoneOffset()/1440) + 2440587.5);
+	},
+
+	isDST: function(t) { //t is the date object to check, returns true if daylight saving time is in effect.
+		let jan = new Date(t.getFullYear(),0,1);
+		let jul = new Date(t.getFullYear(),6,1);
+		return Math.min(jan.getTimezoneOffset(),jul.getTimezoneOffset()) == t.getTimezoneOffset();
 	},
 
 	array_7days_compare:function(a,b){
@@ -384,7 +399,7 @@ var miczThunderStatsUtils = {
 		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output_array: '+JSON.stringify(output_array)+"\r\n");
 		//dump('>>>>>>>> TS: [aggregateCustomQueryInvolved] output_array.length: '+JSON.stringify(output_array.length)+"\r\n");
 		output_array.sort(miczThunderStatsUtils.customQueryInvolved_compare);
-		output_array=output_array.slice(0,10);	//keep only the first 10 elements
+		output_array=output_array.slice(0,miczThunderStatsPrefs.involvedNum);	//keep only the first elements defined in the involved_num pref
 		return output_array;
 	},
 

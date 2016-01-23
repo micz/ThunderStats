@@ -245,6 +245,8 @@ var miczThunderStatsTab = {
 	getCustomQryStats:function(identity_id){
 		miczLogger.log("Getting custom query statistics...",0);
 
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] getCustomQryStats identity_id: "+JSON.stringify(identity_id)+"\r\n");
+
 		//Show loading indicators
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_data_sent");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_data_rcvd");
@@ -252,13 +254,18 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("customqry_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_senders_wait");
-		miczThunderStatsTab.ui.showLoadingElement("customqry_totaldays_text");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_max_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_min_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_avg_sent_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_max_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_min_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("customqry_aggregate_avg_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_rcvd_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_hours_graph_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_inbox0_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_inbox0_inboxmsg_wait");
+		miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_inbox0_inboxmsg_unread_wait");
 
 		this.data_customqry_sent=new Array();
 		this.data_customqry_rcvd=new Array();
@@ -266,6 +273,47 @@ var miczThunderStatsTab = {
 		let mFromDay = document.getElementById('datepicker_from').dateValue;
 		let mToDay = document.getElementById('datepicker_to').dateValue;
 		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
+
+		if(miczThunderStatsUtils._customqry_num_days == 1){	//only one day
+			miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_1");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_multidays_1");
+			miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_2");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_multidays_2");
+		}else{	//multiple days
+			miczThunderStatsTab.ui.showLoadingElement("customqry_multidays_1");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_1");
+			miczThunderStatsTab.ui.showLoadingElement("customqry_multidays_2");
+			miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_2");
+		}
+
+		//if there are too much days, warn the user...
+		if(miczThunderStatsUtils._customqry_num_days > 99){
+			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
+			let promptService_numd = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+			if(!promptService_numd.confirm(null,miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.Warning"),miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.CustomViewTooMuchDays",miczThunderStatsUtils._customqry_num_days))){
+				//The user aborted the action...
+				//... so hide the loading indicators
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_data_sent");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_data_rcvd");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_senders_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_avg_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_avg_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_sent_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_rcvd_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_hours_graph_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_inbox0_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_inbox0_inboxmsg_wait");
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_inbox0_inboxmsg_unread_wait");
+				return;
+			}
+		}
 
 		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);
 		$jQ("#customqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
@@ -276,37 +324,62 @@ var miczThunderStatsTab = {
 		let mInfoSent=1;
 		let mInfoReceived=0;
 
-		if(miczThunderStatsUtils._customqry_only_bd){	//we want only business days
-			mInfoSent={type:1,info:1};
-			mInfoReceived={type:0,info:1};
-		}
+		if(miczThunderStatsUtils._customqry_num_days>1){	//more than one day
 
-		//Get sent messages
-		miczThunderStatsCore.db.getManyDaysMessages(mInfoSent,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);
+			if(miczThunderStatsUtils._customqry_only_bd){	//we want only business days
+				mInfoSent={type:1,info:1};
+				mInfoReceived={type:0,info:1};
+			}
 
-		//Get received messages
-		miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
+			//Get sent messages
+			miczThunderStatsCore.db.getManyDaysMessages(mInfoSent,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_sent);
 
-		//== If we are using only business days, everything is calculated in the two callbacks above
-		if(!miczThunderStatsUtils._customqry_only_bd){
+			//Get received messages
+			miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
+
+			//== If we are using only business days, everything is calculated in the two callbacks above
+			if(!miczThunderStatsUtils._customqry_only_bd){
+				//Get first 10 recipients
+				miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients);
+				//Get first 10 senders
+				miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders);
+
+				//Aggregate data
+				miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
+				miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
+			}else{	//with only business days
+				//Get first 10 recipients
+				miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients=new Array();
+				miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients_count=0;
+				miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients_only_bd);
+				//Get first 10 senders
+				miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders=new Array();
+				miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders_count=0;
+				miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
+			}
+		}else{	//getting only one day
+			//Print dates
+			$jQ("#customqry_oneday_date").text(miczThunderStatsUtils.getDateString(moment(mFromDay)));
+
+			//Get day sent messages
+			miczThunderStatsCore.db.getOneDayMessages(1,mFromDay,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_sent);
+
+			//Get day received messages
+			miczThunderStatsCore.db.getOneDayMessages(0,mFromDay,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_rcvd);
+
+			//Get day hours graph
+			miczThunderStatsCore.db.getOneDayHours(mFromDay,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_hours);
+
+			//Inbox 0 Today
+			//Get day mails folder spreading
+			miczThunderStatsCore.db.getOneDayMessagesFolders(0,mFromDay,identity_id,miczThunderStatsTab.callback.customqry_stats_oneday_inbox0_folder_spread);
+			//Get inbox num mails
+			miczThunderStatsCore.db.getInboxMessagesTotal(identity_id,miczThunderStatsTab.folderworker.today_inboxmsg);
+
 			//Get first 10 recipients
 			miczThunderStatsCore.db.getManyDaysInvolved(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients);
-
 			//Get first 10 senders
 			miczThunderStatsCore.db.getManyDaysInvolved(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders);
-
-			//Aggregate data
-			miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
-			miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
-		}else{	//with only business days
-			//Get first 10 recipients
-			miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients=new Array();
-			miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients_count=0;
-			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_recipients_only_bd);
-			//Get first 10 senders
-			miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders=new Array();
-			miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders_count=0;
-			miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
 		}
 
 		$jQ("#customqry_totaldays_num").text(miczThunderStatsUtils._customqry_num_days);
@@ -376,6 +449,8 @@ var miczThunderStatsTab = {
 			let mFromDay = document.getElementById('datepicker_from').dateValue;
 			let mToDay = document.getElementById('datepicker_to').dateValue;
 			let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,true);
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mFromDay: "+JSON.stringify(mFromDay)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mToDay: "+JSON.stringify(mToDay)+"\r\n");
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mDays: "+JSON.stringify(mDays)+"\r\n");
 			if(mDays.length==0){	//we have no valid business days, so tell the user
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");

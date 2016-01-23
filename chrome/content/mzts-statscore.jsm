@@ -16,6 +16,7 @@ var miczThunderStatsCore = {
 
 	accounts:{},
 	identities:{},
+	identities_email_name:{},
 	_account_selector_prefix:'_account:',
 	custom_account_key:'cstm_accnt',
 
@@ -51,6 +52,7 @@ var miczThunderStatsCore = {
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
 					this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity.email));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+					this.identities_email_name[identity.email]=identity.fullName;
 				}
 				//enumerate custom identities for this account
 				let account_custom_identities=miczThunderStatsPrefs.accountCustomIdentities(account.key);
@@ -209,6 +211,12 @@ miczThunderStatsCore.db = {
 		return true;
 	},
 
+	getOneDayHours:function(mDay,mIdentity,mCallback){
+		this.getOneDayMessages({type:1,info:'yesterday_sent',hours:1},mDay,mIdentity,mCallback,'yesterday_sent');	//one day sent
+		this.getOneDayMessages({type:0,info:'yesterday_rcvd',hours:1},mDay,mIdentity,mCallback,'yesterday_rcvd');	//one day rcvd
+		return true;
+	},
+
 	getYesterdayMessages:function(mType,mIdentity,mCallback){
 		return this.getOneDayMessages(mType,miczThunderStatsUtils.getYesterdayDate(),mIdentity,mCallback);
 	},
@@ -229,12 +237,12 @@ miczThunderStatsCore.db = {
 	},
 
 	getTodayInvolved:function(mType,mIdentity,mCallback){
-		let mMax=10;
+		let mMax=miczThunderStatsPrefs.involvedNum;
 		return this.getOneDayInvolved(mType,new Date(),mIdentity,mMax,mCallback);
 	},
 
 	getYesterdayInvolved:function(mType,mIdentity,mCallback){
-		let mMax=10;
+		let mMax=miczThunderStatsPrefs.involvedNum;
 		return this.getOneDayInvolved(mType,miczThunderStatsUtils.getYesterdayDate(),mIdentity,mMax,mCallback);
 	},
 
@@ -243,7 +251,7 @@ miczThunderStatsCore.db = {
 		let mToDateInternal=new Date(mToDate);
 		mFromDateInternal.setHours(0,0,0,0);
 		mToDateInternal.setHours(24,0,0,0);
-		let mMax=10;
+		let mMax=miczThunderStatsPrefs.involvedNum;
 		return miczThunderStatsDB.queryGetNumInvolved(mType,mFromDateInternal.getTime(),mToDateInternal.getTime(),mIdentity,mMax,mCallback);
 	},
 

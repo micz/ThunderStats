@@ -21,4 +21,7 @@ pref("extensions.ThunderStats.bday.use_last_business_day", false);
 pref("extensions.ThunderStats.customquery_default_only_bd", false);
 pref("extensions.ThunderStats.folderspreadgraph_openinfirsttab", true);
 pref("extensions.ThunderStats.bday.nbd_list", "{}");
+pref("extensions.ThunderStats.involved_num", 10);
+pref("extensions.ThunderStats.firstRun", true);
+pref("extensions.ThunderStats.involvedtable_forceidentityname", true);
 pref("extensions.ThunderStats.folderquery_also_subfolders", true);

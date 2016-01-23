@@ -1699,3 +1699,188 @@ miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd = {
 	return false;
 	},
 };
+
+miczThunderStatsTab.callback.customqry_stats_oneday_sent = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsTab.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_sent_wait");
+				if(!this.empty){
+					$jQ("#customqry_oneday_sent").text(this.data[1]["Num"]);
+				}else{
+					$jQ("#customqry_oneday_sent").text("0");
+				}
+				miczLogger.log("Custom Qry one day sent messages loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};
+
+miczThunderStatsTab.callback.customqry_stats_oneday_rcvd = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_rcvd_wait");
+				if(!this.empty){
+					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab customqry_one_day_rcvd] this.data "+JSON.stringify(this.data)+"\r\n");
+					$jQ("#customqry_oneday_rcvd").text(this.data[1]["Num"]);
+				}else{
+					$jQ("#customqry_oneday_rcvd").text("0");
+				}
+				miczLogger.log("Custom qry one day received messages loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};
+
+miczThunderStatsTab.callback.customqry_stats_oneday_hours = {
+	empty:true,
+	data:{},
+	_graph_handle:{yesterday_sent:0,yesterday_rcvd:0},
+	_graph_data:{yesterday_sent:{},yesterday_rcvd:{}},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num","Info","mHour"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsTab.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_hours_graph_wait");
+				if(!this.empty){
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.customqry_stats_oneday_hours handleResult '+JSON.stringify(this.data)+'\r\n');
+					let data_type=this.data[1]["Info"];
+					this._graph_data[data_type]=this.data;
+					this._graph_handle[data_type]=1;
+				}else{
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.customqry_stats_oneday_hours handleResult EMPTY '+JSON.stringify(this.data)+'\r\n');
+					miczLogger.log("One day hours graph empty result!",2);
+				}
+				if(this._data_collected()){
+					miczThunderStatsTab.ui.drawTimeGraph("customqry_oneday_hours_graph",this._graph_data,false,true);
+				}
+				miczLogger.log("Custom Qry one day hours graph loaded.",0);
+				this.data={};
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+
+	_data_collected:function(){
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.customqry_stats_oneday_hours _data_collected '+JSON.stringify(this._graph_handle)+'\r\n');
+		return (this._graph_handle.yesterday_sent==1)&&(this._graph_handle.yesterday_rcvd==1);
+	},
+};
+
+miczThunderStatsTab.callback.customqry_stats_oneday_inbox0_folder_spread = {
+	empty:true,
+	data:new Array(),
+  handleResult: function(aResultSet) {
+    let result = miczThunderStatsCore.db.getResultObject(["Folder","FolderURI","Num"],aResultSet);
+    this.empty=false;
+    for (let key in result) {
+		this.data.push(result[key]);
+	}
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.customqry_stats_oneday_inbox0_folder_spread handleResult '+JSON.stringify(this.data)+'\r\n');
+  },
+
+  handleError: miczThunderStatsTab.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_inbox0_wait");
+				if(!this.empty){
+					//$jQ("#customqry_onedayinbox0_folder_spread").text(JSON.stringify(this.data));
+					$jQ("#customqry_oneday_inbox0_folder_spread_nomails").hide();
+					miczThunderStatsTab.ui.drawInbox0FolderSpreadGraph('customqry_oneday_inbox0_folder_spread',this.data);
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.customqry_stats_oneday_inbox0_folder_spread handleCompletion '+JSON.stringify(this.data)+'\r\n');
+				}else{
+					$jQ("#customqry_oneday_inbox0_folder_spread_nomails").show();
+					miczThunderStatsTab.ui.drawInbox0FolderSpreadGraph('customqry_oneday_inbox0_folder_spread',{});
+					$jQ("#customqry_oneday_inbox0_folder_spread_svg_graph").hide();
+				}
+				miczLogger.log("Custom Qry one day Inbox 0 data loaded.",0);
+				this.data=new Array();
+				this.empty=true;
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};

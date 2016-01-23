@@ -2,3 +2,6 @@
 .mzts-donate{text-align:center;font-size:1.4em;max-width:550px;}
 .release-notes-text{font-family:"courier new";}
 .mzts-tbox{width:50px;}
+.mzts-label_no_border{-moz-margin-start:0px;}
+.mzts-checkbox_no_border{border-right-width:0px;margin-right:0px;}
+.mzts-warn{color:#0B0B61;font-style:italic;background:white;}

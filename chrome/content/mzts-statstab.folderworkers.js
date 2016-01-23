@@ -93,6 +93,7 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 	let _global_update=miczThunderStatsPrefs.getBoolPref_TS('global_update');
 
 	miczThunderStatsTab.ui.update_inbox0_inboxmsg("today",this.inboxmsg,this.inboxmsg_unread);
+	miczThunderStatsTab.ui.update_inbox0_inboxmsg("customqry_oneday",this.inboxmsg,this.inboxmsg_unread);
 	if(_global_update){
 		miczThunderStatsTab.ui.update_inbox0_inboxmsg("yesterday",this.inboxmsg,this.inboxmsg_unread);
 	}
@@ -109,7 +110,9 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 		data_array.sort(miczThunderStatsUtils.array_inbox0_date_compare);
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.folderworker.today_inboxmsg render (data_array) '+JSON.stringify(data_array)+'\r\n');
 		$jQ("#today_inbox0_datemsg_nomails").hide();
+		$jQ("#customqry_oneday_inbox0_datemsg_nomails").hide();
 		miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_inbox0_datemsg',data_array,true);	//the last parameter is to activate aggregation
+		miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('customqry_oneday_inbox0_datemsg',data_array,true);	//the last parameter is to activate aggregation
 		if(_global_update){
 			$jQ("#yestarday_inbox0_datemsg_nomails").hide();
 			miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('yesterday_inbox0_datemsg',data_array,true);	//the last parameter is to activate aggregation
@@ -117,7 +120,9 @@ miczThunderStatsTab.folderworker.today_inboxmsg = {
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_today_inbox0_datemsg handleCompletion '+JSON.stringify(this.data)+'\r\n');
 	}else{
 		miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_inbox0_datemsg',{},true);	//the last parameter is to activate aggregation
+		miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('customqry_oneday_inbox0_datemsg',{},true);	//the last parameter is to activate aggregation
 		$jQ("#today_inbox0_datemsg_nomails").show();
+		$jQ("#customqry_oneday_inbox0_datemsg_nomails").show();
 		if(_global_update){
 			miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('yesterday_inbox0_datemsg',{},true);	//the last parameter is to activate aggregation
 			$jQ("#yesterday_inbox0_datemsg_nomails").show();

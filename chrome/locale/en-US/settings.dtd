@@ -18,6 +18,7 @@
 <!ENTITY ThunderStats.ChangesSavedWarn "The changes made here are saved immediately.">
 <!ENTITY ThunderStats.ActivateDebug "Activate debug system">
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Search for mails in the Inbox folders only in the folders for the selected account.">
+<!ENTITY ThunderStats.InboxSearchOnlyCurrAccount.GlobaInboxWarn "You need to UNCHECK this option if you're using the Global Inbox for your mails.">
 <!ENTITY ThunderStats.GlobalUpdate "Update all tabs at once. If deselected the tabs are updated when switching between them.">
 <!ENTITY ThunderStats.TodayTimeGraphShowYesterday "Show also yesterday's mails in the today time graph.">
 <!ENTITY ThunderStats.TodayTimeGraphProgressive "Show cumulative data bars in the today and yesterday time graphs.">
@@ -53,3 +54,5 @@
 <!ENTITY ThunderStats.folderspreadgraph_openinfirsttab "From the mails folder locations chart, open the folder always in the first tab.">
 <!ENTITY ThunderStats.FolderQryTabGroupbox "Folder Statistics">
 <!ENTITY ThunderStats.FolderQueryDefaultAlsoSubfolders "Always check &quot;Also Subfolders&quot; option at startup.">
+<!ENTITY ThunderStats.InvolvedNum "Number of recipients or senders to be shown in &quot;Top&quot; tables.">
+<!ENTITY ThunderStats.involvedtable_forceidentityname "Always show the account name in the top senders and recipient tables when the shown mail is associated with a Thunderbird account.">

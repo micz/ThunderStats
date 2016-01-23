@@ -4,6 +4,7 @@ Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
+Components.utils.import("resource:///modules/MailUtils.js");
 
 var $jQ = jQuery.noConflict();
 
@@ -391,15 +392,29 @@ var miczThunderStatsTab = {
 	updateFolderQry: function(){
 		//get identity
 		let identity_id=miczThunderStatsTab.getCurrentIdentityId();
-
+		
 		//get folders
 		let currentval=$jQ('#ts_folder_search option:selected').val();
 		let data_array=$jQ('#ts_folder_search').select2('data');
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry currentval: '+JSON.stringify(currentval)+'\r\n');
 		let folder_uri = data_array.filter(function(v){return v.id === currentval;})[0].uri;	//TODO Multiple folder selection
+		let main_folder= MailUtils.getFolderForURI(folder_uri);
 		let folders_uri=new Array();
 		folders_uri.push(folder_uri);
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry: '+folder_uri+'\r\n');
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry folder_uri: '+folder_uri+'\r\n');
+
+		//get subfolders
+		if(document.getElementById('folderqry_also_subfolders').checked){
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry go subfolders...\r\n');
+			 if (main_folder.hasSubFolders){
+				 dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry there are subfolders...\r\n');
+				for each (let curr_subfolder in fixIterator(main_folder.subFolders, Components.interfaces.nsIMsgFolder)){
+					let subfolder_uri=curr_subfolder.URI;
+					folders_uri.push(subfolder_uri);
+					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry subfolder_uri: '+subfolder_uri+'\r\n');
+				}
+			}
+		}
 
 		//get date
 		let mFromDay = document.getElementById('folderqry_datepicker_from').dateValue;

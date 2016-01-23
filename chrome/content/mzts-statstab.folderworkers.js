@@ -297,8 +297,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     let headerAuthor = message.mime2DecodedAuthor;
     let headerRecipients = message.recipients.toLowerCase()+','+message.ccList.toLowerCase();
     let headerValue= headerAuthor+','+headerRecipients;
-    let identity_addresses=this.context.identityAddresses.join(',');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
+    //let identity_addresses=this.context.identityAddresses.join(',');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] identity_addresses '+JSON.stringify(identity_addresses)+'\r\n');
     /*dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerAuthor '+JSON.stringify(headerAuthor)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerRecipients '+JSON.stringify(headerRecipients)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] headerValue '+JSON.stringify(headerValue)+'\r\n');
@@ -340,12 +340,12 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     recipientsAddresses = tmpRecipients.value;	//only mail for recipeints
     fullRecipientsAddresses = tmpFullRecipients.value;	//mail and name for recipients
 
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] authorsAddresses '+JSON.stringify(authorsAddresses)+'\r\n');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] recipientsAddresses '+JSON.stringify(recipientsAddresses)+'\r\n');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] authorsAddresses '+JSON.stringify(authorsAddresses)+'\r\n');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] recipientsAddresses '+JSON.stringify(recipientsAddresses)+'\r\n');
 
     if (!deleted) {
 	  if(miczThunderStatsUtils.arrayIntersectCheck(this.context.identityAddresses,allAddresses)){	//There is an identity we're considering
-		  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] crunching... '+message.messageId+'\r\n');
+		  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] crunching... '+message.messageId+'\r\n');
 		  //incrementing msg num
 		  this.foldermsg++;
 		  if(!message.isRead){
@@ -375,7 +375,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 		  //getting top senders -- TODO
 
 
-		  dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+this.foldermsg+'\r\n');
+		  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+this.foldermsg+'\r\n');
 		  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.date '+JSON.stringify(message.date)+'\r\n');
 		  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.messageId'+JSON.stringify(message.messageId)+'\r\n');
 		  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.recipients '+JSON.stringify(message.recipients)+'\r\n');

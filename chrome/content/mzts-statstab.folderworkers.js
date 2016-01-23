@@ -394,7 +394,6 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 			  }
 		  }
 
-
 		  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+this.foldermsg+'\r\n');
 		  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.date '+JSON.stringify(message.date)+'\r\n');
 		  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] message.messageId'+JSON.stringify(message.messageId)+'\r\n');

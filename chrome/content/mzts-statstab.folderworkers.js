@@ -415,35 +415,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_recipient '+JSON.stringify(this.folder_recipients)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_senders '+JSON.stringify(this.folder_senders)+'\r\n');
 
-	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] this.inboxmsg '+this.inboxmsg+'\r\n');
-
-	//inbox date spread graph
-	/*dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.folderworker.folder_stats render (this.inbox0_msgdate) '+JSON.stringify(this.folder_msgdate)+'\r\n');
-	if(!this.folder_msgdate_empty){
-		let data_array=new Array();
-		for (let key in this.folder_msgdate){
-			data_array.push({"Date":key,"Num":this.folder_msgdate[key]});
-		}
-		//sort data
-		data_array.sort(miczThunderStatsUtils.array_folder_date_compare);
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.folderworker.folder_stats render (data_array) '+JSON.stringify(data_array)+'\r\n');
-		$jQ("#today_folder_datemsg_nomails").hide();
-		miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_folder_datemsg',data_array,true);	//the last parameter is to activate aggregation
-		if(_global_update){
-			$jQ("#yestarday_folder_datemsg_nomails").hide();
-			miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('yesterday_folder_datemsg',data_array,true);	//the last parameter is to activate aggregation
-		}
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.folder_stats handleCompletion '+JSON.stringify(this.data)+'\r\n');
-	}else{
-		miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('today_inbox0_datemsg',{},true);	//the last parameter is to activate aggregation
-		$jQ("#today_inbox0_datemsg_nomails").show();
-		if(_global_update){
-			miczThunderStatsTab.ui.drawInbox0DateSpreadGraph('yesterday_inbox0_datemsg',{},true);	//the last parameter is to activate aggregation
-			$jQ("#yesterday_inbox0_datemsg_nomails").show();
-		}
-	}*/
-
-	miczLogger.log("Date Inbox Mails data loaded.",0);
+	miczLogger.log("Folder Mails data loaded.",0);
 
     this.stale = false;
   },

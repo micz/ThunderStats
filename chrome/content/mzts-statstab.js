@@ -390,6 +390,9 @@ var miczThunderStatsTab = {
 	},
 
 	updateFolderQry: function(){
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_recipients_wait");
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_senders_wait");
+		
 		//get identity
 		let identity_id=miczThunderStatsTab.getCurrentIdentityId();
 		

@@ -31,8 +31,7 @@ span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
 #customqry_totaldays_text{display:none;margin-left:30px;font-size:0.90em;color:gray;}
 #customqry_sent_wait{display:none;}
 #customqry_rcvd_wait{display:none;}
-#customqry_recipients_wait{display:none;}
-#customqry_senders_wait{display:none;}
+#customqry_recipients_wait,#customqry_senders_wait,#folderqry_recipients_wait,#folderqry_senders_wait{display:none;}
 .ts_folder_item{display:none;}
 
 #heading_wrapper {

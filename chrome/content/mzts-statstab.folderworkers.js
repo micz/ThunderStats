@@ -298,8 +298,10 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     let allAddresses;
     let fullAddresses;
     let authorsAddresses;
+    let authorsNames;
     let fullAuthorsAddresses;
     let recipientsAddresses;
+    let recipientsNames;
     let fullRecipientsAddresses;
 
     let headerAuthor = message.mime2DecodedAuthor;
@@ -332,20 +334,24 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     let tmpAddresses = {};
     let tmpFullAddresses = {};
     let tmpAuthors = {};
+    let tmpAuthorsNames = {};
     let tmpFullAuthors = {};
     let tmpRecipients = {};
+    let tmpRecipientsNames = {};
     let tmpFullRecipients = {};
 	//all mails
     MailServices.headerParser.parseHeadersWithArray(headerValue,tmpAddresses,{},tmpFullAddresses);
     allAddresses = tmpAddresses.value;	//only mail for all
     fullAddresses = tmpFullAddresses.value;	//mail and name for all
     //authors mails
-	MailServices.headerParser.parseHeadersWithArray(headerAuthor,tmpAuthors,{},tmpFullAuthors);
+	MailServices.headerParser.parseHeadersWithArray(headerAuthor,tmpAuthors,tmpAuthorsNames,tmpFullAuthors);
     authorsAddresses = tmpAuthors.value;	//only mail for authors
+    authorsNames = tmpAuthorsNames.value;	//only name for authors
     fullAuthorsAddresses = tmpFullAuthors.value;	//mail and name for authors
     //recipients mails
-	MailServices.headerParser.parseHeadersWithArray(headerRecipients,tmpRecipients,{},tmpFullRecipients);
+	MailServices.headerParser.parseHeadersWithArray(headerRecipients,tmpRecipients,tmpRecipientsNames,tmpFullRecipients);
     recipientsAddresses = tmpRecipients.value;	//only mail for recipeints
+    recipientsNames = tmpRecipientsNames.value;	//only mail for recipeints
     fullRecipientsAddresses = tmpFullRecipients.value;	//mail and name for recipients
 
     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] authorsAddresses '+JSON.stringify(authorsAddresses)+'\r\n');
@@ -370,20 +376,21 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 				this.folder_msgdate_sent[msg_date]=1;
 			  }
 			  //getting top recipients
-			  let f_recipients=miczThunderStatsUtils.arrayDifference(recipientsAddresses,this.context.identityAddresses);
+			  let f_recipients=recipientsAddresses;
 			  for (let el in f_recipients){
+				  if(this.context.identityAddresses.indexOf(f_recipients[el])>0)continue;
 				  if(f_recipients[el] in this.folder_recipients){
 					this.folder_recipients[f_recipients[el]].Num++;
 				  }else{
 					this.folder_recipients_empty=false;
 					this.folder_recipients[f_recipients[el]]={};
-					this.folder_recipients[f_recipients[el]].Name=f_recipients[el];	//TODO
+					this.folder_recipients[f_recipients[el]].Name=recipientsNames[el];
 					this.folder_recipients[f_recipients[el]].Mail=f_recipients[el];
 					this.folder_recipients[f_recipients[el]].Num=1;
 				  }
 			  }
 		  }
-		  
+
 		  if(miczThunderStatsUtils.arrayIntersectCheck(this.context.identityAddresses,recipientsAddresses)){
 			  //getting rcvd msg num per day
 			  if(msg_date in this.folder_msgdate_rcvd){
@@ -392,14 +399,15 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 				this.folder_msgdate_rcvd[msg_date]=1;
 			  }
 			  //getting top senders
-			  let f_senders=miczThunderStatsUtils.arrayDifference(authorsAddresses,this.context.identityAddresses);
+			  let f_senders=authorsAddresses;
 			  for (let el in f_senders){
+				  if(this.context.identityAddresses.indexOf(f_senders[el])>0)continue;
 				  if(f_senders[el] in this.folder_senders){
 					this.folder_senders[f_senders[el]].Num++;
 				  }else{
 					this.folder_senders_empty=false;
 					this.folder_senders[f_senders[el]]={};
-					this.folder_senders[f_senders[el]].Name=f_senders[el]; //TODO
+					this.folder_senders[f_senders[el]].Name=authorsNames[el];
 					this.folder_senders[f_senders[el]].Mail=f_senders[el];
 					this.folder_senders[f_senders[el]].Num=1;
 				  }
@@ -419,7 +427,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	//TODO -- when considering the date as a filter get different layout per single day (premerge with trunk before)
 	miczLogger.log("Folder messages loaded.",0);
 	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] rendering...\r\n');
-	
+
 	miczThunderStatsTab.ui.hideLoadingElement("folderqry_recipients_wait");
 	miczThunderStatsTab.ui.hideLoadingElement("folderqry_senders_wait");
 	if(!this.folder_recipients_empty){

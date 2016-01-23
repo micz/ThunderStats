@@ -263,6 +263,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     this.folder_msgdate_sent = {};
     this.folder_msgdate_rcvd = {};
     this.folder_msgdate_empty=true;
+    this.folder_recipients = {};
+    this.folder_senders = {};
     this.msg_crunched=new Array();
     this.stale = true;
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] init done [inboxmsg: '+this.inboxmsg +'.\r\n');
@@ -275,6 +277,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     delete this.folder_msgdate_sent;
     delete this.folder_msgdate_rcvd;
     delete this.folder_msgdate_empty;
+    delete this.folder_recipients;
+    delete this.folder_senders;
     delete this.msg_crunched;
   },
 
@@ -353,26 +357,42 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 			this.foldermsg_unread++;
 		  }
 		  this.folder_msgdate_empty=false;
-		  //getting sent msg num per day
+
 		  if(miczThunderStatsUtils.arrayIntersectCheck(this.context.identityAddresses,authorsAddresses)){
+			  //getting sent msg num per day
 			  if(msg_date in this.folder_msgdate_sent){
 				this.folder_msgdate_sent[msg_date]++;
 			  }else{
 				this.folder_msgdate_sent[msg_date]=1;
 			  }
+			  //getting top recipients
+			  let f_recipients=miczThunderStatsUtils.arrayDifference(recipientsAddresses,this.context.identityAddresses);
+			  for (let el in f_recipients){
+				  if(f_recipients[el] in this.folder_recipients){
+					this.folder_recipients[f_recipients[el]]++;
+				  }else{
+					this.folder_recipients[f_recipients[el]]=1;
+				  }
+			  }
 		  }
-		  //getting rcvd msg num per day
+		  
 		  if(miczThunderStatsUtils.arrayIntersectCheck(this.context.identityAddresses,recipientsAddresses)){
+			  //getting rcvd msg num per day
 			  if(msg_date in this.folder_msgdate_rcvd){
 				this.folder_msgdate_rcvd[msg_date]++;
 			  }else{
 				this.folder_msgdate_rcvd[msg_date]=1;
 			  }
+			  //getting top senders
+			  let f_senders=miczThunderStatsUtils.arrayDifference(authorsAddresses,this.context.identityAddresses);
+			  for (let el in f_senders){
+				  if(f_senders[el] in this.folder_senders){
+					this.folder_senders[f_senders[el]]++;
+				  }else{
+					this.folder_senders[f_senders[el]]=1;
+				  }
+			  }
 		  }
-
-		  //getting top recipients -- TODO
-
-		  //getting top senders -- TODO
 
 
 		  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+this.foldermsg+'\r\n');
@@ -393,6 +413,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg_unread '+JSON.stringify(this.foldermsg_unread)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_sent '+JSON.stringify(this.folder_msgdate_sent)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_rcvd '+JSON.stringify(this.folder_msgdate_rcvd)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_recipient '+JSON.stringify(this.folder_recipients)+'\r\n');
+    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_senders '+JSON.stringify(this.folder_senders)+'\r\n');
 
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.today_inboxmsg] this.inboxmsg '+this.inboxmsg+'\r\n');
 

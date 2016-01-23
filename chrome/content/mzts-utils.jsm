@@ -175,7 +175,10 @@ var miczThunderStatsUtils = {
 		}
 		return false;
 	},
-
+	
+	arrayDifference:function(A,B){	// A - B
+		return A.filter(function(x){return B.indexOf(x)<0});
+	},
 
 	 getCurrentSystemLocale:function(){
 		let th_locale = Components.classes["@mozilla.org/intl/nslocaleservice;1"]

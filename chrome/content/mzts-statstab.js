@@ -475,6 +475,13 @@ var miczThunderStatsTab = {
 		
 		//get folders
 		let currentval=$jQ('#ts_folder_search option:selected').val();
+		
+		if(currentval==''){	//we have no valid folder, so tell the user
+			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+			alert(_bundleCW.GetStringFromName("ThunderStats.NoFolderSelected"));
+			return;
+		}
+		
 		let data_array=$jQ('#ts_folder_search').select2('data');
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry currentval: '+JSON.stringify(currentval)+'\r\n');
 		let folder_uri = data_array.filter(function(v){return v.id === currentval;})[0].uri;	//TODO Multiple folder selection

@@ -429,7 +429,6 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 
   render:function() {
 	//miczThunderStatsTab.ui.update_folder_msgcount("today",this.foldermsg,this.foldermsg_unread);
-	//TODO -- when considering the date as a filter get different layout per single day (premerge with trunk before)
 	miczLogger.log("Folder messages loaded.",0);
 	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] rendering...\r\n');
 

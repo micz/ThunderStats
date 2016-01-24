@@ -331,7 +331,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date to '+JSON.stringify(miczThunderStatsUtils._folderqry_to_date)+'\r\n');
 
 	//checking message date
-	if(!((moment_msg_date.isSame(miczThunderStatsUtils._folderqry_from_date,'day'))||(moment_msg_date.isSame(miczThunderStatsUtils._folderqry_to_date,'day'))||(moment_msg_date.isAfter(miczThunderStatsUtils._folderqry_from_date,'day') && moment_msg_date.isBefore(miczThunderStatsUtils._folderqry_to_date,'day')))){
+	if((!miczThunderStatsUtils._folderqry_no_date_filter)&&(!((moment_msg_date.isSame(miczThunderStatsUtils._folderqry_from_date,'day'))||(moment_msg_date.isSame(miczThunderStatsUtils._folderqry_to_date,'day'))||(moment_msg_date.isAfter(miczThunderStatsUtils._folderqry_from_date,'day') && moment_msg_date.isBefore(miczThunderStatsUtils._folderqry_to_date,'day'))))){
 		//message date out of the considered interval
 		return;
 	}

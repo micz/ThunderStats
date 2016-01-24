@@ -20,6 +20,7 @@ var miczThunderStatsUtils = {
 	_customqry_days_range:null,
 	_folderqry_from_date:null,
 	_folderqry_to_date:null,
+	_folderqry_no_date_filter:true,
 	MSG_FOLDER_FLAG_NEWSGROUP: 0x0001,
 	MSG_FOLDER_FLAG_NEWSHOST: 0x0002,
 

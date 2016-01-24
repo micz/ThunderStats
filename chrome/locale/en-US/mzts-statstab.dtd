@@ -61,3 +61,4 @@
 <!ENTITY ThunderStats.OnlyBDCustomQry "Consider business days only">
 <!ENTITY ThunderStats.FolderStats "Folder">
 <!ENTITY ThunderStats.FolderQryAlsoSubfolders "Also Subfolders">
+<!ENTITY ThunderStats.FolderQryNoDateFilter "Do not filter mails by date">

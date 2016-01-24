@@ -468,6 +468,8 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_senders_wait");
 		
+		miczThunderStatsUtils._folderqry_no_date_filter=document.getElementById('folderqry_no_date_filter').checked;
+		
 		//get identity
 		let identity_id=miczThunderStatsTab.getCurrentIdentityId();
 		

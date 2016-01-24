@@ -490,6 +490,9 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_senders_wait");
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_older_wait");
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_newer_wait");
+
 		$jQ("#folderqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_totaldays_text");
 

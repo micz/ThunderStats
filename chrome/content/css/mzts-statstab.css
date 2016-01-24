@@ -29,8 +29,7 @@ span.outlink{color:blue;text-decoration:underline;cursor:pointer;}
 #mzts-last_msg{float:left;width:100%;margin-top:-3px;}
 .inbox0_inboxmsg_unread{color:grey;}
 #customqry_totaldays_text,#folderqry_totaldays_text{display:none;margin-left:30px;font-size:0.90em;color:gray;}
-#customqry_sent_wait{display:none;}
-#customqry_rcvd_wait{display:none;}
+.waiting_element,#customqry_sent_wait,#customqry_rcvd_wait{display:none;}
 #customqry_recipients_wait,#customqry_senders_wait,#folderqry_recipients_wait,#folderqry_senders_wait{display:none;}
 .ts_folder_item{display:none;}
 
@@ -206,3 +205,4 @@ ul.tab-links li a,
 h2.list_heading{text-transform:capitalize;}
 p.chart_info_nomail{text-transform:lowercase;}
 p.chart_info_nomail::first-letter{text-transform:uppercase;}
+.firstupper{text-transform:capitalize;}

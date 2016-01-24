@@ -267,6 +267,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     this.foldermsg_unread = 0;
     this.foldermsg_sent = 0;
     this.foldermsg_rcvd = 0;
+    this.foldermsg_older = 32503679999;	//unix timestamp
+    this.foldermsg_newer = 0;	//unix timestamp
     this.folder_msgdate_sent = {};
     this.folder_msgdate_rcvd = {};
     this.folder_msgdate_empty=true;
@@ -285,6 +287,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     delete this.foldermsg_unread;
     delete this.foldermsg_sent;
     delete this.foldermsg_rcvd;
+    delete this.foldermsg_older;
+    delete this.foldermsg_newer;
     delete this.folder_msgdate_sent;
     delete this.folder_msgdate_rcvd;
     delete this.folder_msgdate_empty;
@@ -328,6 +332,15 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	//message date
 	let moment_msg_date=moment.unix(message.dateInSeconds);
 	let msg_date=moment_msg_date.format("YYYY-MM-DD");
+
+	if(message.dateInSeconds<this.foldermsg_older){
+		this.foldermsg_older=message.dateInSeconds;
+	}
+
+	if(message.dateInSeconds>this.foldermsg_newer){
+		this.foldermsg_newer=message.dateInSeconds;
+	}
+
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] msg_date '+JSON.stringify(msg_date)+'\r\n');
     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] allAddresses '+JSON.stringify(allAddresses)+'\r\n');
     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] fullAddresses '+JSON.stringify(fullAddresses)+'\r\n');
@@ -480,16 +493,26 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	}
 
 	miczThunderStatsTab.ui.hideLoadingElement("folderqry_tot_wait");
-	$jQ("#folderqry_tot").text(this.foldermsg);
+	$jQ("#folderqry_tot").text(this.foldermsg+" ["+f_tot_msg+" with no filters]");
 
 	miczThunderStatsTab.ui.hideLoadingElement("folderqry_tot_unread_wait");
-	$jQ("#folderqry_tot_unread").text(this.foldermsg_unread);
+	$jQ("#folderqry_tot_unread").text(this.foldermsg_unread+" ["+f_tot_unread_msg+" with no filters]");
 
 	miczThunderStatsTab.ui.hideLoadingElement("folderqry_sent_wait");
 	$jQ("#folderqry_sent").text(this.foldermsg_sent);
 
 	miczThunderStatsTab.ui.hideLoadingElement("folderqry_rcvd_wait");
 	$jQ("#folderqry_rcvd").text(this.foldermsg_rcvd);
+
+	miczThunderStatsTab.ui.hideLoadingElement("folderqry_older_wait");
+	let older_txt=miczThunderStatsUtils.getDateTimeString(moment.unix(this.foldermsg_older));
+	if(this.foldermsg==0) older_txt='';
+	$jQ("#folderqry_older").text(older_txt);
+
+	miczThunderStatsTab.ui.hideLoadingElement("folderqry_newer_wait");
+	let newer_txt=miczThunderStatsUtils.getDateTimeString(moment.unix(this.foldermsg_newer));
+	if(this.foldermsg==0) newer_txt='';
+	$jQ("#folderqry_newer").text(newer_txt);
 
 
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+JSON.stringify(this.foldermsg)+'\r\n');

@@ -482,6 +482,12 @@ var miczThunderStatsTab = {
 			return;
 		}
 
+		//we're ok... go!
+
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_tot_wait");
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_tot_unread_wait");
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_sent_wait");
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_rcvd_wait");
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_recipients_wait");
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_senders_wait");
 		$jQ("#folderqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
@@ -491,12 +497,18 @@ var miczThunderStatsTab = {
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry currentval: '+JSON.stringify(currentval)+'\r\n');
 		let folder_uri = data_array.filter(function(v){return v.id === currentval;})[0].uri;	//TODO Multiple folder selection
 		let main_folder= MailUtils.getFolderForURI(folder_uri);
+
+		miczThunderStatsUtils._folderqry_current_folder=new Array();
+		miczThunderStatsUtils._folderqry_current_folder.push(main_folder);
+
 		let folders_uri=new Array();
 		folders_uri.push(folder_uri);
 		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry folder_uri: '+folder_uri+'\r\n');
 
+		miczThunderStatsUtils._folderqry_also_subfolders=document.getElementById('folderqry_also_subfolders').checked;
+
 		//get subfolders
-		if(document.getElementById('folderqry_also_subfolders').checked){
+		if(miczThunderStatsUtils._folderqry_also_subfolders){
 			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry go subfolders...\r\n');
 			 if (main_folder.hasSubFolders){
 				 dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry there are subfolders...\r\n');

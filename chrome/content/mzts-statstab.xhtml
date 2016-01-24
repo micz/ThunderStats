@@ -360,13 +360,18 @@
 				  <div id="tier1_folder" class="tier1">
 					<div class="chunk" id="top_left_chunk_folder">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">&ThunderStats.SentMails;: <span id="folderqry_sent_total"></span></h2>
+						<h2 class="list_heading cropped">&ThunderStats.FolderInfo;</h2>
 					  </div>
-						<!--content-->
+						<p><span>&ThunderStats.TotalMails;: </span><span id="folderqry_tot"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="folderqry_tot_wait"/></p>
+						<p><span>&ThunderStats.UnreadMails;: </span><span id="folderqry_tot_unread"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="folderqry_tot_unread_wait"/></p>
+						<p>&nbsp;</p>
+						<p><span>&ThunderStats.SentMails;: </span><span id="folderqry_sent"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="folderqry_sent_wait"/></p>
+						<p><span>&ThunderStats.ReceivedMails;: </span><span id="folderqry_rcvd"></span><img src="chrome://thunderstats/skin/mzts-wait_line.gif" alt="&ThunderStats.Loading;..." id="folderqry_rcvd_wait"/></p>
+						<p>&nbsp;</p>
 					</div>
 					<div class="chunk" id="top_right_chunk_folder">
 					  <div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">&ThunderStats.ReceivedMails;: <span id="folderqry_rcvd_total"></span></h2>
+						<h2 class="list_heading cropped">&ThunderStats.ReceivedMails;</h2>
 					  </div>
 						<!--content-->
 					</div>

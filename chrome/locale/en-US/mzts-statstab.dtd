@@ -62,3 +62,6 @@
 <!ENTITY ThunderStats.FolderStats "Folder">
 <!ENTITY ThunderStats.FolderQryAlsoSubfolders "Also Subfolders">
 <!ENTITY ThunderStats.FolderQryNoDateFilter "Do not filter mails by date">
+<!ENTITY ThunderStats.FolderInfo "Folder Info">
+<!ENTITY ThunderStats.TotalMails "Total">
+<!ENTITY ThunderStats.UnreadMails "Unread">

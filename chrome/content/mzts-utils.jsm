@@ -21,6 +21,8 @@ var miczThunderStatsUtils = {
 	_folderqry_from_date:null,
 	_folderqry_to_date:null,
 	_folderqry_no_date_filter:true,
+	_folderqry_current_folder:null,
+	_folderqry_also_subfolders:true,
 	MSG_FOLDER_FLAG_NEWSGROUP: 0x0001,
 	MSG_FOLDER_FLAG_NEWSHOST: 0x0002,
 
@@ -154,7 +156,7 @@ var miczThunderStatsUtils = {
 		}
 		return 0;
 	},
-	
+
 	array_folderqry_involved_compare:function(a,b){
 		if(a.Num < b.Num){
 			return 1;
@@ -201,18 +203,18 @@ var miczThunderStatsUtils = {
 		}
 		return false;
 	},
-	
+
 	arrayDifference:function(A,B){	// A - B
 		return A.filter(function(x){return B.indexOf(x)<0});
 	},
-	
+
 	objToArray:function(obj_el){
 		let out_array=new Array();
-		
+
 		for (let el in obj_el){
 			out_array.push(obj_el[el]);
 		}
-		
+
 		return out_array;
 	},
 

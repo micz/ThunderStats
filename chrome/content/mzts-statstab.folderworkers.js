@@ -265,6 +265,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     this.context = context;
     this.foldermsg = 0;
     this.foldermsg_unread = 0;
+    this.foldermsg_sent = 0;
+    this.foldermsg_rcvd = 0;
     this.folder_msgdate_sent = {};
     this.folder_msgdate_rcvd = {};
     this.folder_msgdate_empty=true;
@@ -281,6 +283,8 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
     this._clear();
     delete this.foldermsg;
     delete this.foldermsg_unread;
+    delete this.foldermsg_sent;
+    delete this.foldermsg_rcvd;
     delete this.folder_msgdate_sent;
     delete this.folder_msgdate_rcvd;
     delete this.folder_msgdate_empty;
@@ -374,6 +378,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 		  this.folder_msgdate_empty=false;
 
 		  if(miczThunderStatsUtils.arrayIntersectCheck(this.context.identityAddresses,authorsAddresses)){
+			  this.foldermsg_sent++;
 			  //getting sent msg num per day
 			  if(msg_date in this.folder_msgdate_sent){
 				this.folder_msgdate_sent[msg_date]++;
@@ -397,6 +402,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 		  }
 
 		  if(miczThunderStatsUtils.arrayIntersectCheck(this.context.identityAddresses,recipientsAddresses)){
+			  this.foldermsg_rcvd++;
 			  //getting rcvd msg num per day
 			  if(msg_date in this.folder_msgdate_rcvd){
 				this.folder_msgdate_rcvd[msg_date]++;
@@ -432,8 +438,6 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	miczLogger.log("Folder messages loaded.",0);
 	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] rendering...\r\n');
 
-	miczThunderStatsTab.ui.hideLoadingElement("folderqry_recipients_wait");
-	miczThunderStatsTab.ui.hideLoadingElement("folderqry_senders_wait");
 	if(!this.folder_recipients_empty){
 		let tmp_folder_recipients=miczThunderStatsUtils.objToArray(this.folder_recipients);
 		tmp_folder_recipients.sort(miczThunderStatsUtils.array_folderqry_involved_compare);
@@ -441,8 +445,10 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 			tmp_folder_recipients.length=miczThunderStatsPrefs.involvedNum;
 		}
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_recipients '+JSON.stringify(tmp_folder_recipients)+'\r\n');
+		miczThunderStatsTab.ui.hideLoadingElement("folderqry_recipients_wait");
 		$jQ("#folderqry_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(tmp_folder_recipients));
 	}else{
+		miczThunderStatsTab.ui.hideLoadingElement("folderqry_recipients_wait");
 		$jQ("#folderqry_recipients").html('');
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 		$jQ("#folderqry_recipients").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));
@@ -454,12 +460,37 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 			tmp_folder_senders.length=miczThunderStatsPrefs.involvedNum;
 		}
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_senders '+JSON.stringify(tmp_folder_senders)+'\r\n');
+		miczThunderStatsTab.ui.hideLoadingElement("folderqry_senders_wait");
 		$jQ("#folderqry_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(tmp_folder_senders));
 	}else{
+		miczThunderStatsTab.ui.hideLoadingElement("folderqry_senders_wait");
 		$jQ("#folderqry_senders").html('');
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 		$jQ("#folderqry_senders").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsReceived"));
 	}
+
+	//get folders info
+	let f_tot_msg=0;
+	let f_tot_unread_msg=0;
+
+	for (let elf in miczThunderStatsUtils._folderqry_current_folder){
+		let currf=miczThunderStatsUtils._folderqry_current_folder[elf];
+		f_tot_msg+=currf.getTotalMessages(miczThunderStatsUtils._folderqry_also_subfolders);
+		f_tot_unread_msg+=currf.getNumUnread(miczThunderStatsUtils._folderqry_also_subfolders);
+	}
+
+	miczThunderStatsTab.ui.hideLoadingElement("folderqry_tot_wait");
+	$jQ("#folderqry_tot").text(this.foldermsg);
+
+	miczThunderStatsTab.ui.hideLoadingElement("folderqry_tot_unread_wait");
+	$jQ("#folderqry_tot_unread").text(this.foldermsg_unread);
+
+	miczThunderStatsTab.ui.hideLoadingElement("folderqry_sent_wait");
+	$jQ("#folderqry_sent").text(this.foldermsg_sent);
+
+	miczThunderStatsTab.ui.hideLoadingElement("folderqry_rcvd_wait");
+	$jQ("#folderqry_rcvd").text(this.foldermsg_rcvd);
+
 
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+JSON.stringify(this.foldermsg)+'\r\n');
     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg_unread '+JSON.stringify(this.foldermsg_unread)+'\r\n');

@@ -91,6 +91,7 @@ var miczThunderStatsFolderQ = {
 			gen.next();
 		}catch(e){
 			iErrors++;
+		//	dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ERROR ('+iErrors+'): '+e.message+'\r\n');
 		}
 		if(!self.loading){
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] DONE\r\n');

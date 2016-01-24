@@ -154,6 +154,16 @@ var miczThunderStatsUtils = {
 		}
 		return 0;
 	},
+	
+	array_folderqry_involved_compare:function(a,b){
+		if(a.Num < b.Num){
+			return 1;
+		}
+		if(a.Num > b.Num){
+			return -1;
+		}
+		return 0;
+	},
 
 	arrayMerge:function(dest,src){
 	  for(let n = 0; n < src.length; ++n){
@@ -194,6 +204,16 @@ var miczThunderStatsUtils = {
 	
 	arrayDifference:function(A,B){	// A - B
 		return A.filter(function(x){return B.indexOf(x)<0});
+	},
+	
+	objToArray:function(obj_el){
+		let out_array=new Array();
+		
+		for (let el in obj_el){
+			out_array.push(obj_el[el]);
+		}
+		
+		return out_array;
 	},
 
 	 getCurrentSystemLocale:function(){

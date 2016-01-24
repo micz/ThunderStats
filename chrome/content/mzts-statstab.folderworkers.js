@@ -389,7 +389,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 				  }else{
 					this.folder_recipients_empty=false;
 					this.folder_recipients[f_recipients[el]]={};
-					this.folder_recipients[f_recipients[el]].Name=recipientsNames[el];
+					this.folder_recipients[f_recipients[el]].Name=recipientsNames[el]==null?f_recipients[el]:recipientsNames[el];
 					this.folder_recipients[f_recipients[el]].Mail=f_recipients[el];
 					this.folder_recipients[f_recipients[el]].Num=1;
 				  }
@@ -412,7 +412,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 				  }else{
 					this.folder_senders_empty=false;
 					this.folder_senders[f_senders[el]]={};
-					this.folder_senders[f_senders[el]].Name=authorsNames[el];
+					this.folder_senders[f_senders[el]].Name=authorsNames[el]==null?f_senders[el]:authorsNames[el];
 					this.folder_senders[f_senders[el]].Mail=f_senders[el];
 					this.folder_senders[f_senders[el]].Num=1;
 				  }
@@ -435,25 +435,37 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	miczThunderStatsTab.ui.hideLoadingElement("folderqry_recipients_wait");
 	miczThunderStatsTab.ui.hideLoadingElement("folderqry_senders_wait");
 	if(!this.folder_recipients_empty){
-		$jQ("#folderqry_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.folder_recipients));
+		let tmp_folder_recipients=miczThunderStatsUtils.objToArray(this.folder_recipients);
+		tmp_folder_recipients.sort(miczThunderStatsUtils.array_folderqry_involved_compare);
+		if(tmp_folder_recipients.length>miczThunderStatsPrefs.involvedNum){
+			tmp_folder_recipients.length=miczThunderStatsPrefs.involvedNum;
+		}
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_recipients '+JSON.stringify(tmp_folder_recipients)+'\r\n');
+		$jQ("#folderqry_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(tmp_folder_recipients));
 	}else{
 		$jQ("#folderqry_recipients").html('');
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 		$jQ("#folderqry_recipients").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsSent"));
 	}
 	if(!this.folder_senders_empty){
-		$jQ("#folderqry_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.folder_senders));
+		let tmp_folder_senders=miczThunderStatsUtils.objToArray(this.folder_senders);
+		tmp_folder_senders.sort(miczThunderStatsUtils.array_folderqry_involved_compare);
+		if(tmp_folder_senders.length>miczThunderStatsPrefs.involvedNum){
+			tmp_folder_senders.length=miczThunderStatsPrefs.involvedNum;
+		}
+		dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_senders '+JSON.stringify(tmp_folder_senders)+'\r\n');
+		$jQ("#folderqry_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(tmp_folder_senders));
 	}else{
 		$jQ("#folderqry_senders").html('');
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 		$jQ("#folderqry_senders").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsReceived"));
 	}
 
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+JSON.stringify(this.foldermsg)+'\r\n');
+	/*dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+JSON.stringify(this.foldermsg)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg_unread '+JSON.stringify(this.foldermsg_unread)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_sent '+JSON.stringify(this.folder_msgdate_sent)+'\r\n');
     dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_rcvd '+JSON.stringify(this.folder_msgdate_rcvd)+'\r\n');
-    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_recipients '+JSON.stringify(this.folder_recipients)+'\r\n');
+  */  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_recipients '+JSON.stringify(this.folder_recipients)+'\r\n');
     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_senders '+JSON.stringify(this.folder_senders)+'\r\n');
 
 	miczLogger.log("Folder Mails data loaded.",0);

@@ -506,19 +506,19 @@ var miczThunderStatsTab = {
 
 		let folders_uri=new Array();
 		folders_uri.push(folder_uri);
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry folder_uri: '+folder_uri+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry folder_uri: '+folder_uri+'\r\n');
 
 		miczThunderStatsUtils._folderqry_also_subfolders=document.getElementById('folderqry_also_subfolders').checked;
 
 		//get subfolders
 		if(miczThunderStatsUtils._folderqry_also_subfolders){
-			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry go subfolders...\r\n');
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry go subfolders...\r\n');
 			 if (main_folder.hasSubFolders){
-				 dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry there are subfolders...\r\n');
+				 //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry there are subfolders...\r\n');
 				for each (let curr_subfolder in fixIterator(main_folder.subFolders, Components.interfaces.nsIMsgFolder)){
 					let subfolder_uri=curr_subfolder.URI;
 					folders_uri.push(subfolder_uri);
-					dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry subfolder_uri: '+subfolder_uri+'\r\n');
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry subfolder_uri: '+subfolder_uri+'\r\n');
 				}
 			}
 		}

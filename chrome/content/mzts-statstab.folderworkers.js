@@ -449,7 +449,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
   render:function() {
 	//miczThunderStatsTab.ui.update_folder_msgcount("today",this.foldermsg,this.foldermsg_unread);
 	miczLogger.log("Folder messages loaded.",0);
-	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] rendering...\r\n');
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] rendering...\r\n');
 
 	if(!this.folder_recipients_empty){
 		let tmp_folder_recipients=miczThunderStatsUtils.objToArray(this.folder_recipients);

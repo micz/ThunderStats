@@ -56,3 +56,4 @@
 <!ENTITY ThunderStats.FolderQueryDefaultAlsoSubfolders "Always check &quot;Also Subfolders&quot; option at startup.">
 <!ENTITY ThunderStats.InvolvedNum "Number of recipients or senders to be shown in &quot;Top&quot; tables.">
 <!ENTITY ThunderStats.involvedtable_forceidentityname "Always show the account name in the top senders and recipient tables when the shown mail is associated with a Thunderbird account.">
+<!ENTITY ThunderStats.FolderQueryNoDateFilterDefault "Exclude date filter at startup.">

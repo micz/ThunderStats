@@ -25,3 +25,4 @@ pref("extensions.ThunderStats.involved_num", 10);
 pref("extensions.ThunderStats.firstRun", true);
 pref("extensions.ThunderStats.involvedtable_forceidentityname", true);
 pref("extensions.ThunderStats.folderquery_also_subfolders", true);
+pref("extensions.ThunderStats.folderquery_no_date_filter", true);

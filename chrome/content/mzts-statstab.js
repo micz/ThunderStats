@@ -34,6 +34,9 @@ var miczThunderStatsTab = {
 			if(miczThunderStatsPrefs.folderqryAlsoSubfoldersDefault){
 				document.getElementById('folderqry_also_subfolders').checked=true;
 			}
+			if(miczThunderStatsPrefs.folderqryNoDateFilterDefault){
+				document.getElementById('folderqry_no_date_filter').checked=true;
+			}
 
 			miczLogger.log("CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale());
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentGlobalLocale: "+miczThunderStatsUtils.getCurrentSystemLocale()+"\r\n");

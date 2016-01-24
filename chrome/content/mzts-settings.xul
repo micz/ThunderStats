@@ -80,6 +80,9 @@
     <preference id="ThunderStats.folderquery_also_subfolders"
         name="extensions.ThunderStats.folderquery_also_subfolders"
         type="bool"/>
+    <preference id="ThunderStats.folderquery_no_date_filter"
+        name="extensions.ThunderStats.folderquery_no_date_filter"
+        type="bool"/>
     </preferences>
     <tabbox id="ts_tabbox">
       <tabs>
@@ -162,6 +165,8 @@
   				<caption label="&ThunderStats.FolderQryTabGroupbox;"/>
 					<checkbox id="ThunderStats.folderquery_also_subfolders_checkbox" label="&ThunderStats.FolderQueryDefaultAlsoSubfolders;"
             		preference="ThunderStats.folderquery_also_subfolders" />
+            		<checkbox id="ThunderStats.folderquery_no_date_filter_checkbox" label="&ThunderStats.FolderQueryNoDateFilterDefault;"
+            		preference="ThunderStats.folderquery_no_date_filter" />
 				</groupbox>
             <label control="symbol" value=" "/>
 			  </rows>

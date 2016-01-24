@@ -94,6 +94,10 @@ var miczThunderStatsPrefs = {
 	get folderqryAlsoSubfoldersDefault() {
 		return this.getBoolPref_TS("folderquery_also_subfolders");
 	},
+	
+	get folderqryNoDateFilterDefault() {
+		return this.getBoolPref_TS("folderquery_no_date_filter");
+	},
 
 	/*isDebugOption: function(option) { // granular debugging
 		if(!this.isDebug) return false;

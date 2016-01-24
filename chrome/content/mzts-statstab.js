@@ -468,23 +468,25 @@ var miczThunderStatsTab = {
 	},
 
 	updateFolderQry: function(){
-		miczThunderStatsTab.ui.showLoadingElement("folderqry_recipients_wait");
-		miczThunderStatsTab.ui.showLoadingElement("folderqry_senders_wait");
-		
 		miczThunderStatsUtils._folderqry_no_date_filter=document.getElementById('folderqry_no_date_filter').checked;
-		
+
 		//get identity
 		let identity_id=miczThunderStatsTab.getCurrentIdentityId();
-		
+
 		//get folders
 		let currentval=$jQ('#ts_folder_search option:selected').val();
-		
+
 		if(currentval==''){	//we have no valid folder, so tell the user
 			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 			alert(_bundleCW.GetStringFromName("ThunderStats.NoFolderSelected"));
 			return;
 		}
-		
+
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_recipients_wait");
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_senders_wait");
+		$jQ("#folderqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_totaldays_text");
+
 		let data_array=$jQ('#ts_folder_search').select2('data');
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] updateFolderQry currentval: '+JSON.stringify(currentval)+'\r\n');
 		let folder_uri = data_array.filter(function(v){return v.id === currentval;})[0].uri;	//TODO Multiple folder selection

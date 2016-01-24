@@ -440,7 +440,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 		if(tmp_folder_recipients.length>miczThunderStatsPrefs.involvedNum){
 			tmp_folder_recipients.length=miczThunderStatsPrefs.involvedNum;
 		}
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_recipients '+JSON.stringify(tmp_folder_recipients)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_recipients '+JSON.stringify(tmp_folder_recipients)+'\r\n');
 		$jQ("#folderqry_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(tmp_folder_recipients));
 	}else{
 		$jQ("#folderqry_recipients").html('');
@@ -453,7 +453,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 		if(tmp_folder_senders.length>miczThunderStatsPrefs.involvedNum){
 			tmp_folder_senders.length=miczThunderStatsPrefs.involvedNum;
 		}
-		dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_senders '+JSON.stringify(tmp_folder_senders)+'\r\n');
+		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_senders '+JSON.stringify(tmp_folder_senders)+'\r\n');
 		$jQ("#folderqry_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(tmp_folder_senders));
 	}else{
 		$jQ("#folderqry_senders").html('');

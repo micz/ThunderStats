@@ -155,6 +155,7 @@ miczThunderStatsTab.ui={
 		aDatepickerTo_FQry.setAttribute("firstdayofweek", locale_firstweekday);
 		aDatepickerTo_FQry.onchange=miczThunderStatsTab.ui.checkDatePickers_To_FQry;
 		document.getElementById('folderqry_datepicker_to_placeholder').appendChild(aDatepickerTo_FQry);
+		miczThunderStatsTab.ui.folderqryNoDateFilterCheckboxClick(document);
 		//==== FOLDER QRY DATEPICKERS ===== END
 	},
 
@@ -1309,4 +1310,11 @@ miczThunderStatsTab.ui={
         return folder.URI;
     }
   },
+  
+  folderqryNoDateFilterCheckboxClick:function(doc){
+		let tmp_en=doc.getElementById('folderqry_no_date_filter').checked;
+		doc.getElementById('folderqry_datepicker_from').setAttribute("disabled",tmp_en);
+		doc.getElementById('folderqry_datepicker_to').setAttribute("disabled",tmp_en);
+  },
+
 };

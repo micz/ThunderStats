@@ -461,14 +461,14 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 		$jQ("#folderqry_senders").text(_bundleCW.GetStringFromName("ThunderStats.NoMailsReceived"));
 	}
 
-	/*dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+JSON.stringify(this.foldermsg)+'\r\n');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg_unread '+JSON.stringify(this.foldermsg_unread)+'\r\n');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_sent '+JSON.stringify(this.folder_msgdate_sent)+'\r\n');
-    dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_rcvd '+JSON.stringify(this.folder_msgdate_rcvd)+'\r\n');
-  */  //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_recipients '+JSON.stringify(this.folder_recipients)+'\r\n');
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+JSON.stringify(this.foldermsg)+'\r\n');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg_unread '+JSON.stringify(this.foldermsg_unread)+'\r\n');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_sent '+JSON.stringify(this.folder_msgdate_sent)+'\r\n');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_msgdate_rcvd '+JSON.stringify(this.folder_msgdate_rcvd)+'\r\n');
+    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_recipients '+JSON.stringify(this.folder_recipients)+'\r\n');
     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.folder_senders '+JSON.stringify(this.folder_senders)+'\r\n');
 
-	miczLogger.log("Folder Mails data loaded.",0);
+	miczLogger.log("Folder mails data loaded.",0);
 
     this.stale = false;
   },

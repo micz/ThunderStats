@@ -494,6 +494,12 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_newer_wait");
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_sentrcvd_graph_wait");
 
+		//get date
+		let mFromDay = document.getElementById('folderqry_datepicker_from').dateValue;
+		let mToDay = document.getElementById('folderqry_datepicker_to').dateValue;
+		//miczThunderStatsUtils._folderqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
+		//$jQ("#folderqry_totaldays_num").text(miczThunderStatsUtils._folderqry_num_days);
+
 		$jQ("#folderqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_totaldays_text");
 
@@ -523,11 +529,6 @@ var miczThunderStatsTab = {
 				}
 			}
 		}
-
-		//get date
-		let mFromDay = document.getElementById('folderqry_datepicker_from').dateValue;
-		let mToDay = document.getElementById('folderqry_datepicker_to').dateValue;
-		//miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
 
 		miczThunderStatsCore.db.getFolderStats(mFromDay,mToDay,identity_id,folders_uri,miczThunderStatsTab.folderworker.folder_stats);
 	},

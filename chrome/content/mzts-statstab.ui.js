@@ -515,7 +515,7 @@ miczThunderStatsTab.ui={
 		  .data(function(d) { return d.data; })
 		  .enter()
 		  .append("svg:rect")
-		  .attr("x", function(d, index) {dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] graph bars: d("+JSON.stringify(d)+") index("+JSON.stringify(index)+")\r\n");
+		  .attr("x", function(d, index) {//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] graph bars: d("+JSON.stringify(d)+") index("+JSON.stringify(index)+")\r\n");
 			  return (_many_days<=_many_days_max_labels?x(index):x(index)+3.5)*data_types.indexOf(d.type); })
 		  .attr("y", function(d) { return y(d.num); })
 		  .attr("height", function(d) { return y(0) - y(d.num); })

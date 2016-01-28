@@ -530,7 +530,12 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	//input_data_array['second']['type']='second';
 	//input_data_array['second']['data']=this.folder_msgdate_rcvd;
 
-	let tot_days=moment(this.foldermsg_newer).diff(moment(this.foldermsg_older), 'days');
+	let tot_days=moment.unix(this.foldermsg_newer).diff(moment.unix(this.foldermsg_older), 'days');
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg_newer '+JSON.stringify(this.foldermsg_newer)+'\r\n');
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg_older '+JSON.stringify(this.foldermsg_older)+'\r\n');
+	dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] tot_days '+JSON.stringify(tot_days)+'\r\n');
+
+	$jQ("#folderqry_totaldays_num").text(tot_days);
 
 	miczThunderStatsTab.ui.hideLoadingElement("folderqry_sentrcvd_graph_wait");
 	miczThunderStatsTab.ui.draw7DaysGraph2('folderqry_sentrcvd_graph',input_data_array,miczThunderStatsPrefs.manyDays+1,false,true,true,tot_days);

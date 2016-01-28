@@ -492,6 +492,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_senders_wait");
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_older_wait");
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_newer_wait");
+		miczThunderStatsTab.ui.showLoadingElement("folderqry_sentrcvd_graph_wait");
 
 		$jQ("#folderqry_account").text(document.getElementById('identities_selector').options[document.getElementById('identities_selector').selectedIndex].innerHTML);
 		miczThunderStatsTab.ui.showLoadingElement("folderqry_totaldays_text");

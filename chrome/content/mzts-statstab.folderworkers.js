@@ -332,6 +332,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	//message date
 	let moment_msg_date=moment.unix(message.dateInSeconds);
 	let msg_date=moment_msg_date.format("YYYY-MM-DD");
+	let msg_date_timestamp=moment(msg_date).unix();
 
 	if(message.dateInSeconds<this.foldermsg_older){
 		this.foldermsg_older=message.dateInSeconds;
@@ -394,9 +395,12 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 			  this.foldermsg_sent++;
 			  //getting sent msg num per day
 			  if(msg_date in this.folder_msgdate_sent){
-				this.folder_msgdate_sent[msg_date]++;
+				this.folder_msgdate_sent[msg_date].num++;
 			  }else{
-				this.folder_msgdate_sent[msg_date]=1;
+				this.folder_msgdate_sent[msg_date]={};
+				this.folder_msgdate_sent[msg_date].day=msg_date_timestamp;
+				this.folder_msgdate_sent[msg_date].day_str=msg_date;
+				this.folder_msgdate_sent[msg_date].num=1;
 			  }
 			  //getting top recipients
 			  let f_recipients=recipientsAddresses;
@@ -418,9 +422,12 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 			  this.foldermsg_rcvd++;
 			  //getting rcvd msg num per day
 			  if(msg_date in this.folder_msgdate_rcvd){
-				this.folder_msgdate_rcvd[msg_date]++;
+				this.folder_msgdate_rcvd[msg_date].num++;
 			  }else{
-				this.folder_msgdate_rcvd[msg_date]=1;
+				this.folder_msgdate_rcvd[msg_date]={};
+				this.folder_msgdate_rcvd[msg_date].day=msg_date_timestamp;
+				this.folder_msgdate_rcvd[msg_date].day_str=msg_date
+				this.folder_msgdate_rcvd[msg_date].num=1;
 			  }
 			  //getting top senders
 			  let f_senders=authorsAddresses;
@@ -513,6 +520,20 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	let newer_txt=miczThunderStatsUtils.getDateTimeString(moment.unix(this.foldermsg_newer));
 	if(this.foldermsg==0) newer_txt='';
 	$jQ("#folderqry_newer").text(newer_txt);
+
+	//sent and received graph
+	let input_data_array={};
+	input_data_array['first']=this.folder_msgdate_sent;
+	//input_data_array['first']['type']='first';
+	//input_data_array['first']['data']=this.folder_msgdate_sent;
+	input_data_array['second']=this.folder_msgdate_rcvd;
+	//input_data_array['second']['type']='second';
+	//input_data_array['second']['data']=this.folder_msgdate_rcvd;
+
+	let tot_days=moment(this.foldermsg_newer).diff(moment(this.foldermsg_older), 'days');
+
+	miczThunderStatsTab.ui.hideLoadingElement("folderqry_sentrcvd_graph_wait");
+	miczThunderStatsTab.ui.draw7DaysGraph2('folderqry_sentrcvd_graph',input_data_array,miczThunderStatsPrefs.manyDays+1,false,true,true,tot_days);
 
 
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+JSON.stringify(this.foldermsg)+'\r\n');

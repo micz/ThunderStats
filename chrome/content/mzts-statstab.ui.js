@@ -406,6 +406,184 @@ miczThunderStatsTab.ui={
 			.call(yAxis);
 	},
 
+	draw7DaysGraph2_ArrangeData:function(data_array,do_double){
+		if(!do_double){
+			do_double=false;
+		}
+
+		let data_output=new Array();
+		let data_input={};
+		let _data_handles;
+		if(do_double){
+			_data_handles=['first','second'];
+			data_input=data_array;
+		}else{
+			_data_handles=['first'];
+			data_input['first']=data_array;
+		}
+
+		for(let h_el in _data_handles){
+			let current_data={};
+			current_data['type']=_data_handles[h_el];
+			current_data['data']=new Array();
+			//rearrange actual data
+			for(let el in data_input[_data_handles[h_el]]){
+				current_data['data'].push({'type':_data_handles[h_el],'day':data_input[_data_handles[h_el]][el]['day'],'day_str':data_input[_data_handles[h_el]][el]['day_str'],'num':data_input[_data_handles[h_el]][el]['num']});
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_input[_data_handles[h_el]][el]: "+JSON.stringify(data_input[_data_handles[h_el]][el])+"\r\n");
+			}
+
+			current_data.data.sort(this.draw7DaysGraph2_ArrayCompare);
+
+			data_output.push(current_data);
+		}
+
+		return data_output;
+	},
+
+	draw7DaysGraph2_GetDataElements:function(data_array){
+		let output=new Array();
+		for (let el in data_array[0]['data']){
+			output.push(data_array[0]['data'][el].day_str);
+		}
+		return output;
+	},
+
+	draw7DaysGraph2_ArrayCompare:function(a,b){
+		if(a.day < b.day){
+			return -1;
+		}
+		if(a.day > b.day){
+			return 1;
+		}
+		return 0;
+	},
+
+	draw7DaysGraph2:function(element_id_txt,input_data_array,_many_days,do_today,_small_labels,do_double,tot_days){
+		let _many_days_max_labels=(_small_labels&&_many_days>1)?0:_many_days+1;
+		let data_types=[];
+
+		if(!do_double){
+			do_double=false;
+			tot_days=0;
+			data_types=['first'];
+		}else{
+			data_types=['first','second'];
+		}
+
+		let margin = {top: 5, right: 0, bottom: _many_days<=_many_days_max_labels?40:60, left: 30};
+		if(_small_labels){
+			margin.top=20;
+		}
+		let barWidth = _many_days<=_many_days_max_labels?50:12;
+		if(_many_days==1) barWidth = 100;
+		if(do_double)barWidth=barWidth/2;
+		let w = ((barWidth + 15) * _many_days) - margin.left - margin.right;
+		let h = 220 - margin.top - margin.bottom;
+
+		//data_array=JSON.parse('[{"day":1425337200,"day_str":"03/03/15","num":11},{"day":1425423600,"day_str":"04/03/15","num":78},{"day":1425510000,"day_str":"05/03/15","num":55},{"day":1425596400,"day_str":"06/03/15","num":2},{"day":1425682800,"day_str":"07/03/15","num":0},{"day":1425769200,"day_str":"08/03/15","num":21},{"day":1425855600,"day_str":"09/03/15","num":5},{"day":1425772800,"day_str":"10/03/15","num":5}]');
+
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] input_data_array: "+JSON.stringify(input_data_array)+"\r\n");
+
+		let data_array=this.draw7DaysGraph2_ArrangeData(input_data_array,do_double);
+		let data_elements=this.draw7DaysGraph2_GetDataElements(data_array);
+
+		let x = d3.scale.linear().domain([0, data_elements.length]).range([0, w]);
+		let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function (kv) { return d3.max(kv.data, function(d) { return d.num; })})+1)/10)*10]).rangeRound([h, 0]);
+
+		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e']);
+		color.domain(data_array.map(function (d) { return d.type; }));
+
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+
+		//remove old graph
+		$jQ("#"+element_id_txt+"_svg_graph").remove();
+
+		let chart = d3.select("#"+element_id_txt)
+			.append("svg:svg")
+			.attr("id",element_id_txt+"_svg_graph")
+			.attr("width", w + margin.left + margin.right)
+			.attr("height", h + margin.top + margin.bottom)
+			.attr("transform", "translate("+margin.left+","+margin.top+")");
+
+		let serie = chart.selectAll(".serie")
+			.data(data_array)
+			.enter().append("g")
+			.attr("class", "serie");
+
+		//graph bars
+		serie.selectAll("rect")
+		  .data(function(d) { return d.data; })
+		  .enter()
+		  .append("svg:rect")
+		  .attr("x", function(d, index) {dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] graph bars: d("+JSON.stringify(d)+") index("+JSON.stringify(index)+")\r\n");
+			  return (_many_days<=_many_days_max_labels?x(index):x(index)+3.5)*data_types.indexOf(d.type); })
+		  .attr("y", function(d) { return y(d.num); })
+		  .attr("height", function(d) { return y(0) - y(d.num); })
+		  .attr("width", barWidth)
+		  .attr("fill", function(d, index) { return d.type=='first'?"#1f77b4":"#ff7f0e";});
+
+		//data labels
+		serie.selectAll("text")
+		  .data(function(d) { return d.data; })
+		  .enter()
+		  .append("svg:text")
+		  .attr("x", function(datum, index) { return x(index) + barWidth - (_many_days==1?7:0); })
+		  .attr("y", function(datum) { return y(datum.num); })
+		  .attr("dx", _many_days<=_many_days_max_labels?-barWidth/2:(-barWidth/2)+3.5)
+		  .attr("dy", function(datum) { return (y(0) - y(datum.num) > 24)&&!_small_labels ? "1.7em":"-1em"; })
+		  .attr("text-anchor", "middle")
+		  .text(function(datum) { return datum.type+": "+datum.num;})
+		  .attr("class", function(datum) { return (y(0) - y(datum.num) > 24)&&!_small_labels ? "data_label":"zero_data_label"; });
+
+		//x axis labels
+		/*chart.selectAll("text.xAxis")
+			.data(function(d) { return d.data; })
+			.enter().append("svg:text")
+			.attr("x", function(datum, index) { return x(index) + barWidth; })
+			.attr("y", h)
+			.attr("dx", -barWidth/2-(_many_days==1?7:0))
+			.attr("text-anchor", "middle")
+			.text(function(d, index) {
+						let output=d.day_str;
+						if(do_today&&(index==_many_days-1)){
+							let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+							output+="|["+_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today")+"]";
+							d.day_str=output;
+						}
+						//dump(">>>>> TS: output: "+output+"\r\n");
+						if(_many_days>_many_days_max_labels){
+							let splitted=output.split('|');
+							output=splitted[1];
+						}
+						return output;
+					})
+			.attr("transform", function(datum, index) {
+									return "translate("+(_many_days>_many_days_max_labels?"1.5":"0")+", "+(margin.bottom/2)+")"+(_many_days>_many_days_max_labels?' rotate(-90 '+(x(index) + barWidth)+','+h+')':'');
+								})
+			.attr("class", "xAxis");*/
+
+		//x axis
+		let xAxis = d3.svg.axis().scale(x).orient("bottom")
+				.tickValues(miczThunderStatsTab.ui.util7DaysGraph_getTickValues(_many_days))
+				.outerTickSize(0);
+		chart.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + h + ")")
+			.call(xAxis);
+
+		if(_many_days<=_many_days_max_labels){
+			//break x axis labels in new lines
+			chart.selectAll('text.xAxis').each(miczThunderStatsTab.ui.util7DaysGraph_InsertLinebreaks);
+		}
+
+		//y axis
+		let num_ticks = (d3.max(data_array, function (kv) { return d3.max(kv.data, function(d) { return d.num; })>10 ? 10 : d3.max(kv.data, function(d) { return d.num; })}));
+		let yAxis = d3.svg.axis().tickFormat(d3.format('0:d')).ticks(num_ticks).scale(y).orient("left");
+		chart.append("g")
+			.attr("class", "y axis")
+			.call(yAxis);
+	},
+
 	drawInbox0DateSpreadGraph:function(element_id_txt,data_array,aggregate){
 		let margin = {top: 5, right: 0, bottom: 5, left: 43};
 		let barWidth = 40;
@@ -1310,7 +1488,7 @@ miczThunderStatsTab.ui={
         return folder.URI;
     }
   },
-  
+
   folderqryNoDateFilterCheckboxClick:function(doc){
 		let tmp_en=doc.getElementById('folderqry_no_date_filter').checked;
 		doc.getElementById('folderqry_datepicker_from').setAttribute("disabled",tmp_en);

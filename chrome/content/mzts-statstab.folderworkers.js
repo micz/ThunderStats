@@ -538,7 +538,7 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 	$jQ("#folderqry_totaldays_num").text(tot_days);
 
 	miczThunderStatsTab.ui.hideLoadingElement("folderqry_sentrcvd_graph_wait");
-	miczThunderStatsTab.ui.draw7DaysGraph2('folderqry_sentrcvd_graph',input_data_array,miczThunderStatsPrefs.manyDays+1,false,true,true,tot_days);
+	miczThunderStatsTab.ui.draw7DaysGraph2('folderqry_sentrcvd_graph',input_data_array,miczThunderStatsPrefs.manyDays+1,false,false,true,tot_days);
 
 
 	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.folderworker.folder_stats] this.foldermsg '+JSON.stringify(this.foldermsg)+'\r\n');

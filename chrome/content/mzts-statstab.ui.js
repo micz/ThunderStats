@@ -490,8 +490,8 @@ miczThunderStatsTab.ui={
 		let x = d3.scale.linear().domain([0, data_elements.length]).range([0, w]);
 		let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function (kv) { return d3.max(kv.data, function(d) { return d.num; })})+1)/10)*10]).rangeRound([h, 0]);
 
-		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e']);
-		color.domain(data_array.map(function (d) { return d.type; }));
+		/*let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e']);
+		color.domain(data_array.map(function (d) { return d.type; }));*/
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 
@@ -516,7 +516,7 @@ miczThunderStatsTab.ui={
 		  .enter()
 		  .append("svg:rect")
 		  .attr("x", function(d, index) {//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] graph bars: d("+JSON.stringify(d)+") index("+JSON.stringify(index)+")\r\n");
-			  return (_many_days<=_many_days_max_labels?x(index):x(index)+3.5)*data_types.indexOf(d.type); })
+			  return (_many_days<=_many_days_max_labels?x(index):x(index)+3.5)+(barWidth*data_types.indexOf(d.type)); })
 		  .attr("y", function(d) { return y(d.num); })
 		  .attr("height", function(d) { return y(0) - y(d.num); })
 		  .attr("width", barWidth)
@@ -532,7 +532,7 @@ miczThunderStatsTab.ui={
 		  .attr("dx", _many_days<=_many_days_max_labels?-barWidth/2:(-barWidth/2)+3.5)
 		  .attr("dy", function(datum) { return (y(0) - y(datum.num) > 24)&&!_small_labels ? "1.7em":"-1em"; })
 		  .attr("text-anchor", "middle")
-		  .text(function(datum) { return datum.type+": "+datum.num;})
+		  .text(function(datum) { return datum.num;})
 		  .attr("class", function(datum) { return (y(0) - y(datum.num) > 24)&&!_small_labels ? "data_label":"zero_data_label"; });
 
 		//x axis labels

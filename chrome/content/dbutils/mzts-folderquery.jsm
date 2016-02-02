@@ -87,12 +87,12 @@ var miczThunderStatsFolderQ = {
 
 	function defer(first) {
 		iGeneratorCalls++;
-		//try{
+		try{
 			gen.next();
-		//}catch(e){
-		//	iErrors++;
-		//	dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ERROR ('+iErrors+'): '+e.message+'\r\n');
-		//}
+		}catch(e){
+			iErrors++;
+			//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ERROR ('+iErrors+'): '+e.message+'\r\n');
+		}
 		if(!self.loading){
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] DONE\r\n');
 			self._timeoutId = null;

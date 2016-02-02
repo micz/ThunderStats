@@ -493,12 +493,17 @@ miczThunderStatsTab.ui={
 
 			current_data.data.sort(this.draw7DaysGraph2_ArrayCompare);
 
-			current_data.data_norm={};
+			current_data.data_norm=[];
 
 			for (let i=0;i<w;i++){
-				current_data.data_norm[i]={};
+				/*current_data.data_norm[i]={};
 				current_data.data_norm[i].num=0;
-				current_data.data_norm[i].day=i;
+				current_data.data_norm[i].day=i;*/
+				let current_element={};
+				current_element.day=i;
+				current_element.num=0;
+				current_element.type=_data_handles[h_el];
+				current_data.data_norm.push(current_element);
 			}
 
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] current_data.data_norm: "+JSON.stringify(current_data.data_norm)+"\r\n");
@@ -515,23 +520,25 @@ miczThunderStatsTab.ui={
 				}
 			}
 
+			current_data.data_norm.sort(this.draw7DaysGraph2_ArrayCompare);
+
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] current_data.data_norm: "+JSON.stringify(current_data.data_norm)+"\r\n");
 
 			data_output.push(current_data);
 		}
 
 		//normalize data for line graph
-		let max_x_norm=max_x-min_x;
+		//let max_x_norm=max_x-min_x;
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3_ArrangeData] min_x: "+JSON.stringify(min_x)+"\r\n");
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3_ArrangeData] max_x: "+JSON.stringify(max_x)+"\r\n");
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3_ArrangeData] max_x_norm: "+JSON.stringify(max_x_norm)+"\r\n");
 
-		for(let n_el in data_output){
+		/*for(let n_el in data_output){
 			for(let el in data_output[n_el].data){
 				data_output[n_el].data[el].day=(data_output[n_el].data[el].day-min_x)*w/max_x_norm;
 			}
-		}
+		}*/
 
 		return data_output;
 	},
@@ -692,7 +699,7 @@ miczThunderStatsTab.ui={
 
 		let margin = {top: 5, right: 0, bottom: 40, left: 30};
 
-		let w = 220 - margin.left - margin.right;
+		let w = 320 - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;
 
 		//data_array=JSON.parse('[{"day":1425337200,"day_str":"03/03/15","num":11},{"day":1425423600,"day_str":"04/03/15","num":78},{"day":1425510000,"day_str":"05/03/15","num":55},{"day":1425596400,"day_str":"06/03/15","num":2},{"day":1425682800,"day_str":"07/03/15","num":0},{"day":1425769200,"day_str":"08/03/15","num":21},{"day":1425855600,"day_str":"09/03/15","num":5},{"day":1425772800,"day_str":"10/03/15","num":5}]');
@@ -703,14 +710,14 @@ miczThunderStatsTab.ui={
 		//let data_elements=this.draw7DaysGraph2_GetDataElements(data_array);
 
 		//let x = d3.scale.linear().domain([0, data_elements.length]).range([0, w]);
-		let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function (kv) { return d3.max(kv.data_norm, function(d) { return d.num; })})+1)/10)*10]).rangeRound([h, 0]);
 		let x = d3.scale.linear().range([0, w]);
+		let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function (kv) { return d3.max(kv.data_norm, function(d) { return d.num; })})+1)/10)*10]).rangeRound([h, 0]);
 		//let y = d3.scale.linear().range([h, 0]);
 
 		let color = d3.scale.ordinal().range(['#ff7f0e','#1f77b4']);
 		//color.domain(data_array.map(function (d) { return d.type; }));
 
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
@@ -728,28 +735,27 @@ miczThunderStatsTab.ui={
 			.attr("class", "serie");*/
 
 		let line = d3.svg.line()
-                         .x(function(d) {dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] x(d.day) - d.day "+JSON.stringify(x(d.day)+" - "+d.day)+"\r\n");
-							 return x(d.day); })
-                         .y(function(d) {dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] y(d.num) - d.num "+JSON.stringify(y(d.num)+" - "+d.num)+"\r\n");
-							 return y(d.num); })
-                         .interpolate("linear");
-
-          // Nest the entries by symbol
-    	/*let dataNest = d3.nest()
-        	.key(function(d) {return d;})
-        	.entries(data_array);*/
+				.x(function(d) { return x(d.day); })
+				.y(function(d) { return y(d.num); })
+				 .interpolate("linear");
 
 
-        	 // Loop through each symbol / key
+       	 // Loop through each data array
 		data_array.forEach(function(d) {
-			d.data_norm.forEach(function(kv){
-			dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] kv "+JSON.stringify(kv)+"\r\n");
+			chart.append("path")
+			   .attr("d", line(d.data_norm))
+			   .style("stroke", color(d.type))
+			  	.style('stroke-width', 2)
+			  	.style('fill', 'none');
+			/*d.data_norm.forEach(function(kv){
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] kv "+JSON.stringify(kv)+"\r\n");
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] line(kv) "+JSON.stringify(line(kv))+"\r\n");
 			chart.append("path")
 				.attr("d", line(kv))
-			  	//.style("stroke", color(d.type))
-			  	.attr('stroke-width', 2)
-			  	.attr('fill', 'none');
-			});
+			  	.style("stroke", color(kv.type))
+			  	.style('stroke-width', 2)
+			  	.style('fill', 'none');
+			});*/
 		});
 
 		/*serie.append("path")

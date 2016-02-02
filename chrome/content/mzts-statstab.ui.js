@@ -428,7 +428,7 @@ miczThunderStatsTab.ui={
 			current_data['data']=new Array();
 			//rearrange actual data
 			for(let el in data_input[_data_handles[h_el]]){
-				current_data['data'].push({'type':_data_handles[h_el],'day':data_input[_data_handles[h_el]][el]['day'],'day_str':data_input[_data_handles[h_el]][el]['day_str'],'num':data_input[_data_handles[h_el]][el]['num']});
+				current_data['data'].push({'type':_data_handles[h_el],'day': Math.floor(data_input[_data_handles[h_el]][el]['day']/86400)*86400,'day_str':data_input[_data_handles[h_el]][el]['day_str'],'num':data_input[_data_handles[h_el]][el]['num']});
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_input[_data_handles[h_el]][el]: "+JSON.stringify(data_input[_data_handles[h_el]][el])+"\r\n");
 			}
 
@@ -440,7 +440,7 @@ miczThunderStatsTab.ui={
 		return data_output;
 	},
 
-	draw7DaysGraph3_ArrangeData:function(data_array,w,h,tot_days,do_double){
+	draw7DaysGraph3_ArrangeData:function(data_array,w,tot_days,do_double){
 		if(!do_double){
 			do_double=false;
 		}
@@ -459,25 +459,63 @@ miczThunderStatsTab.ui={
 		let max_x=0;
 		let min_x=32503679999;
 
-		let max_y=0;
-		//let min_y=Infinite;
+		//step in days
+		let step = Math.floor(tot_days/w);
+		if(step < 1) step = 1;
+		//step in seconds
+		step=step*86400;
+
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] step: "+JSON.stringify(step)+"\r\n");
+
+		//find min and max day
+		for(let h_el in _data_handles){
+			for(let el in data_input[_data_handles[h_el]]){
+				if(max_x<data_input[_data_handles[h_el]][el]['day'])max_x=data_input[_data_handles[h_el]][el]['day'];
+				if(min_x>data_input[_data_handles[h_el]][el]['day'])min_x=data_input[_data_handles[h_el]][el]['day'];
+			}
+		}
 
 		//rearrange data
 		for(let h_el in _data_handles){
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] _data_handles[h_el]: "+JSON.stringify(_data_handles[h_el])+"\r\n");
 			let current_data={};
 			current_data['type']=_data_handles[h_el];
 			current_data['data']=new Array();
+			current_data['graph_data']={};
 			//rearrange actual data
 			for(let el in data_input[_data_handles[h_el]]){
 				current_data['data'].push({'type':_data_handles[h_el],'day':data_input[_data_handles[h_el]][el]['day'],'day_str':data_input[_data_handles[h_el]][el]['day_str'],'num':data_input[_data_handles[h_el]][el]['num']});
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_input[_data_handles[h_el]][el]: "+JSON.stringify(data_input[_data_handles[h_el]][el])+"\r\n");
-				if(max_x<data_input[_data_handles[h_el]][el]['day'])max_x=data_input[_data_handles[h_el]][el]['day'];
-				if(min_x>data_input[_data_handles[h_el]][el]['day'])min_x=data_input[_data_handles[h_el]][el]['day'];
-				if(max_y<data_input[_data_handles[h_el]][el]['num'])max_y=data_input[_data_handles[h_el]][el]['num'];
-				//if(min_y>data_input[_data_handles[h_el]][el]['num'])min_y=data_input[_data_handles[h_el]][el]['num'];
+				current_data['graph_data'][data_input[_data_handles[h_el]][el]['day']]=data_input[_data_handles[h_el]][el]['num'];
+				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] data_input[_data_handles[h_el]][el]: "+JSON.stringify(data_input[_data_handles[h_el]][el])+"\r\n");
+				//if(max_x<data_input[_data_handles[h_el]][el]['day'])max_x=data_input[_data_handles[h_el]][el]['day'];
+				//if(min_x>data_input[_data_handles[h_el]][el]['day'])min_x=data_input[_data_handles[h_el]][el]['day'];
 			}
 
 			current_data.data.sort(this.draw7DaysGraph2_ArrayCompare);
+
+			current_data.data_norm={};
+
+			for (let i=0;i<w;i++){
+				current_data.data_norm[i]={};
+				current_data.data_norm[i].num=0;
+				current_data.data_norm[i].day=i;
+			}
+
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] current_data.data_norm: "+JSON.stringify(current_data.data_norm)+"\r\n");
+
+			for (let i2=0;i2<w;i2++){
+				for (let dd=(i2*step);dd<((i2+1)*step);dd=dd+86400){
+					let reld=dd+min_x;
+					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] reld: "+JSON.stringify(reld)+"\r\n");
+					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] i2: "+JSON.stringify(i2)+"\r\n");
+					if(reld in current_data.graph_data){
+						current_data.data_norm[i2].num+=current_data.graph_data[reld];
+					}
+					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] current_data.data_norm[i2].num: "+JSON.stringify(current_data.data_norm[i2].num)+"\r\n");
+				}
+			}
+
+			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] current_data.data_norm: "+JSON.stringify(current_data.data_norm)+"\r\n");
 
 			data_output.push(current_data);
 		}
@@ -485,15 +523,13 @@ miczThunderStatsTab.ui={
 		//normalize data for line graph
 		let max_x_norm=max_x-min_x;
 
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3_ArrangeData] min_x: "+JSON.stringify(min_x)+"\r\n");
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3_ArrangeData] max_x: "+JSON.stringify(max_x)+"\r\n");
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3_ArrangeData] max_x_norm: "+JSON.stringify(max_x_norm)+"\r\n");
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3_ArrangeData] max_y: "+JSON.stringify(max_y)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3_ArrangeData] min_x: "+JSON.stringify(min_x)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3_ArrangeData] max_x: "+JSON.stringify(max_x)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3_ArrangeData] max_x_norm: "+JSON.stringify(max_x_norm)+"\r\n");
 
 		for(let n_el in data_output){
 			for(let el in data_output[n_el].data){
-				data_output[n_el].data[el].num=data_output[n_el].data[el].num*w/max_y;
-				data_output[n_el].data[el].day=(data_output[n_el].data[el].day-min_x)*h/max_x_norm;
+				data_output[n_el].data[el].day=(data_output[n_el].data[el].day-min_x)*w/max_x_norm;
 			}
 		}
 
@@ -663,18 +699,18 @@ miczThunderStatsTab.ui={
 
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] input_data_array: "+JSON.stringify(input_data_array)+"\r\n");
 
-		let data_array=this.draw7DaysGraph3_ArrangeData(input_data_array,w,h,tot_days,do_double);
+		let data_array=this.draw7DaysGraph3_ArrangeData(input_data_array,w,tot_days,do_double);
 		//let data_elements=this.draw7DaysGraph2_GetDataElements(data_array);
 
 		//let x = d3.scale.linear().domain([0, data_elements.length]).range([0, w]);
-		//let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function (kv) { return d3.max(kv.data, function(d) { return d.num; })})+1)/10)*10]).rangeRound([h, 0]);
+		let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function (kv) { return d3.max(kv.data_norm, function(d) { return d.num; })})+1)/10)*10]).rangeRound([h, 0]);
 		let x = d3.scale.linear().range([0, w]);
-		let y = d3.scale.linear().range([h, 0]);
+		//let y = d3.scale.linear().range([h, 0]);
 
-		let color = d3.scale.ordinal().range(['#1f77b4','#ff7f0e']);
+		let color = d3.scale.ordinal().range(['#ff7f0e','#1f77b4']);
 		//color.domain(data_array.map(function (d) { return d.type; }));
 
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
@@ -686,20 +722,42 @@ miczThunderStatsTab.ui={
 			.attr("height", h + margin.top + margin.bottom)
 			.attr("transform", "translate("+margin.left+","+margin.top+")");
 
-		let serie = chart.selectAll(".serie")
+		/*let serie = chart.selectAll(".serie")
 			.data(data_array)
 			.enter().append("g")
-			.attr("class", "serie");
+			.attr("class", "serie");*/
 
 		let line = d3.svg.line()
-                         .x(function(d) { return x(d.day); })
-                         .y(function(d) { return y(d.num); })
+                         .x(function(d) {dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] x(d.day) - d.day "+JSON.stringify(x(d.day)+" - "+d.day)+"\r\n");
+							 return x(d.day); })
+                         .y(function(d) {dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] y(d.num) - d.num "+JSON.stringify(y(d.num)+" - "+d.num)+"\r\n");
+							 return y(d.num); })
                          .interpolate("linear");
 
-		serie.append("path")
-			  .attr("class", "line")
-			  .attr("d", function(d) { return line(d.data); })
-			  .style("stroke", function(d) { return color(d.type); });
+          // Nest the entries by symbol
+    	/*let dataNest = d3.nest()
+        	.key(function(d) {return d;})
+        	.entries(data_array);*/
+
+
+        	 // Loop through each symbol / key
+		data_array.forEach(function(d) {
+			d.data_norm.forEach(function(kv){
+			dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] kv "+JSON.stringify(kv)+"\r\n");
+			chart.append("path")
+				.attr("d", line(kv))
+			  	//.style("stroke", color(d.type))
+			  	.attr('stroke-width', 2)
+			  	.attr('fill', 'none');
+			});
+		});
+
+		/*serie.append("path")
+			  //.attr("class", "line")
+			  .attr("d", function(d) { return line(d.data_norm); })
+			  .style("stroke", function(d) { return color(d.type); })
+			  .attr('stroke-width', 2)
+			  .attr('fill', 'none');
 
 		//graph bars
 	/*	serie.selectAll("path")

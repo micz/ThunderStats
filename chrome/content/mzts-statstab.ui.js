@@ -422,7 +422,7 @@ miczThunderStatsTab.ui={
 			data_input['sent']=data_array;
 		}
 
-		let max_x=0;
+		//let max_x=0;
 		let min_x=32503679999;
 
 		//step in days
@@ -431,13 +431,14 @@ miczThunderStatsTab.ui={
 		//step in seconds
 		step=step*86400;
 
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] step: "+JSON.stringify(step)+"\r\n");
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] step: "+JSON.stringify(step)+"\r\n");
 
 		//find min and max day
 		for(let h_el in _data_handles){
 			for(let el in data_input[_data_handles[h_el]]){
-				if(max_x<data_input[_data_handles[h_el]][el]['day'])max_x=data_input[_data_handles[h_el]][el]['day'];
+				//if(max_x<data_input[_data_handles[h_el]][el]['day'])max_x=data_input[_data_handles[h_el]][el]['day'];
 				if(min_x>data_input[_data_handles[h_el]][el]['day'])min_x=data_input[_data_handles[h_el]][el]['day'];
+				if(miczThunderStatsUtils._folderqry_max_num<data_input[_data_handles[h_el]][el]['num'])miczThunderStatsUtils._folderqry_max_num=data_input[_data_handles[h_el]][el]['num'];
 			}
 		}
 
@@ -531,7 +532,7 @@ miczThunderStatsTab.ui={
 
 		let margin = {top: 5, right: 0, bottom: 40, left: 30};
 
-		let w = 320 - margin.left - margin.right;
+		let w = 420 - margin.left - margin.right;
 		let h = 220 - margin.top - margin.bottom;
 
 		//data_array=JSON.parse('[{"day":1425337200,"day_str":"03/03/15","num":11},{"day":1425423600,"day_str":"04/03/15","num":78},{"day":1425510000,"day_str":"05/03/15","num":55},{"day":1425596400,"day_str":"06/03/15","num":2},{"day":1425682800,"day_str":"07/03/15","num":0},{"day":1425769200,"day_str":"08/03/15","num":21},{"day":1425855600,"day_str":"09/03/15","num":5},{"day":1425772800,"day_str":"10/03/15","num":5}]');
@@ -541,12 +542,15 @@ miczThunderStatsTab.ui={
 		let data_array=this.draw7DaysGraph3_ArrangeData(input_data_array,w,tot_days,do_double);
 
 		//let x = d3.scale.linear().domain([0, data_elements.length]).range([0, w]);
-		let x = d3.scale.linear().range([0, w]);
-		let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function (kv) { return d3.max(kv.data_norm, function(d) { return d.num; })})+1)/10)*10]).rangeRound([h, 0]);
+		let x = d3.scale.linear().domain([0,w]).range([0, w]);
+		//let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function (kv) { return d3.max(kv.data_norm, function(d) { return d.num; })})+1)/10)*10]).rangeRound([h, 0]);
+		let y = d3.scale.linear().domain([0, Math.ceil((miczThunderStatsUtils._folderqry_max_num+1)/5)*5]).rangeRound([h, 0]);
 		//let y = d3.scale.linear().range([h, 0]);
 
 		let color = d3.scale.ordinal().range(['#ff7f0e','#1f77b4']);
 		//color.domain(data_array.map(function (d) { return d.type; }));
+
+		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] miczThunderStatsUtils._folderqry_max_num: "+JSON.stringify(miczThunderStatsUtils._folderqry_max_num)+"\r\n");
 
 		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 

@@ -530,10 +530,16 @@ miczThunderStatsTab.ui={
 			data_types=['sent','rcvd'];
 		}
 
-		let margin = {top: 5, right: 0, bottom: 40, left: 30};
+		let margin = {top: 25, right: 0, bottom: 40, left: 30};
 
-		let w = 420 - margin.left - margin.right;
-		let h = 220 - margin.top - margin.bottom;
+		let full_w = 420;
+		let full_h = 245;
+
+		let legendHSize = 10;
+		let legendWSize = 50;
+
+		let w = full_w - margin.left - margin.right;
+		let h = full_h - margin.top - margin.bottom;
 
 		//data_array=JSON.parse('[{"day":1425337200,"day_str":"03/03/15","num":11},{"day":1425423600,"day_str":"04/03/15","num":78},{"day":1425510000,"day_str":"05/03/15","num":55},{"day":1425596400,"day_str":"06/03/15","num":2},{"day":1425682800,"day_str":"07/03/15","num":0},{"day":1425769200,"day_str":"08/03/15","num":21},{"day":1425855600,"day_str":"09/03/15","num":5},{"day":1425772800,"day_str":"10/03/15","num":5}]');
 
@@ -550,16 +556,16 @@ miczThunderStatsTab.ui={
 		let color = d3.scale.ordinal().range(['#ff7f0e','#1f77b4']);
 		//color.domain(data_array.map(function (d) { return d.type; }));
 
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] miczThunderStatsUtils._folderqry_max_num: "+JSON.stringify(miczThunderStatsUtils._folderqry_max_num)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] miczThunderStatsUtils._folderqry_max_num: "+JSON.stringify(miczThunderStatsUtils._folderqry_max_num)+"\r\n");
 
-		dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
 
 		let chart = d3.select("#"+element_id_txt)
 			.append("svg:svg")
-			.attr("id",element_id_txt+"_svg_graph")
+			.attr("id",element_id_txt+"_svg_graph")//.style('stroke', 'black')
 			.attr("width", w + margin.left + margin.right)
 			.attr("height", h + margin.top + margin.bottom)
 			.attr("transform", "translate("+margin.left+","+margin.top+")");
@@ -658,6 +664,11 @@ miczThunderStatsTab.ui={
 				"translate(" + w * -1 + "," +
 							   y(d_b.num) + ")")
 					 .attr("x2", w + w);
+
+	 legend.select("text.y1")
+		    .text('sent: '+d_a.num);
+	 legend.select("text.y2")
+		    .text('rcvd: '+d_b.num);
     }
 
        // append the x line
@@ -686,7 +697,41 @@ miczThunderStatsTab.ui={
         .attr("x1", w)
         .attr("x2", w);
 
+		//Legend
+		let legend = chart.append('g')
+			  .attr('class', 'legend')
+			  .attr('transform', function() {
+				let horz = (full_w/2) - legendWSize;
+				//let vert = full_h - legendHSize;
+				let vert = -5;
+				return 'translate(' + horz + ',' + vert + ')';
+			  });
 
+		legend.append('rect')
+		  .attr('width', legendWSize)
+		  .attr('height', legendHSize)
+		  .style('fill', 'white')
+		  .style('stroke', 'none');
+
+		/*legend.append('text')
+		  .text(function(d) {
+				return 'test';
+			  })
+			.attr('height', legendHSize);*/
+
+		legend.append("text")
+			.attr("class", "y1 folderqry_legend")
+			.style("stroke", "#ff7f0e")
+			.style("stroke-width", "1px")
+			.attr("dx", 8)
+			.attr("dy", 0);
+
+    	legend.append("text")
+			.attr("class", "y2 folderqry_legend")
+			.style("stroke", "#1f77b4")
+			.style("stroke-width", "1px")
+			.attr("dx", 8)
+			.attr("dy", "1em");
 
 		//x axis labels
 		/*chart.selectAll("text.xAxis")

@@ -523,10 +523,10 @@ miczThunderStatsTab.folderworker.folder_stats = {	//TODO
 
 	//sent and received graph
 	let input_data_array={};
-	input_data_array['first']=this.folder_msgdate_sent;
+	input_data_array['sent']=this.folder_msgdate_sent;
 	//input_data_array['first']['type']='first';
 	//input_data_array['first']['data']=this.folder_msgdate_sent;
-	input_data_array['second']=this.folder_msgdate_rcvd;
+	input_data_array['rcvd']=this.folder_msgdate_rcvd;
 	//input_data_array['second']['type']='second';
 	//input_data_array['second']['data']=this.folder_msgdate_rcvd;
 

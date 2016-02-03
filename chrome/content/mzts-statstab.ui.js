@@ -593,37 +593,100 @@ miczThunderStatsTab.ui={
 			});*/
 		});
 
-		/*serie.append("path")
-			  //.attr("class", "line")
-			  .attr("d", function(d) { return line(d.data_norm); })
-			  .style("stroke", function(d) { return color(d.type); })
-			  .attr('stroke-width', 2)
-			  .attr('fill', 'none');
+		let focus = chart.append("g")
+    		.style("display", "none");
 
-		//graph bars
-	/*	serie.selectAll("path")
-		  .data(function(d) { return d.data; })
-		  .enter()
-		  .append("svg:rect")
-		  .attr("x", function(d, index) {//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] graph bars: d("+JSON.stringify(d)+") index("+JSON.stringify(index)+")\r\n");
-			  return (_many_days<=_many_days_max_labels?x(index):x(index)+3.5)+(barWidth*data_types.indexOf(d.type)); })
-		  .attr("y", function(d) { return y(d.num); })
-		  .attr("height", function(d) { return y(0) - y(d.num); })
-		  .attr("width", barWidth)
-		  .attr("fill", function(d, index) { return d.type=='first'?"#1f77b4":"#ff7f0e";});
+    	 // append the circles at the intersections
+    focus.append("circle")
+        .attr("class", "y1")
+        .style("fill", "none")
+        .style("stroke", "#ff7f0e")
+        .attr("r", 4);
 
-		//data labels
-		serie.selectAll("text")
-		  .data(function(d) { return d.data; })
-		  .enter()
-		  .append("svg:text")
-		  .attr("x", function(datum, index) { return x(index) + barWidth - (_many_days==1?7:0); })
-		  .attr("y", function(datum) { return y(datum.num); })
-		  .attr("dx", _many_days<=_many_days_max_labels?-barWidth/2:(-barWidth/2)+3.5)
-		  .attr("dy", function(datum) { return (y(0) - y(datum.num) > 24)&&!_small_labels ? "1.7em":"-1em"; })
-		  .attr("text-anchor", "middle")
-		  .text(function(datum) { return datum.num;})
-		  .attr("class", function(datum) { return (y(0) - y(datum.num) > 24)&&!_small_labels ? "data_label":"zero_data_label"; });
+    focus.append("circle")
+        .attr("class", "y2")
+        .style("fill", "none")
+        .style("stroke", "#1f77b4")
+        .attr("r", 4);
+
+
+    // append the rectangle to capture mouse
+    chart.append("rect")
+        .attr("width", w)
+        .attr("height", h)
+        .style("fill", "none")
+        .style("pointer-events", "all")
+        .on("mouseover", function() { focus.style("display", null); })
+        .on("mouseout", function() { focus.style("display", "none"); })
+        .on("mousemove", mousemove);
+
+     let bisectDate = d3.bisector(function(d) { return d.day; }).left;
+
+    function mousemove(){
+        let x0 = x.invert(d3.mouse(this)[0]),
+            i = bisectDate(data_array[0].data_norm, x0, 1),
+            d0_a = data_array[0].data_norm[i - 1],
+            d1_a = data_array[0].data_norm[i],
+            d_a = x0 - d0_a.day > d1_a.day - x0 ? d1_a : d0_a,
+            d0_b = data_array[1].data_norm[i - 1],
+            d1_b = data_array[1].data_norm[i],
+            d_b = x0 - d0_b.day > d1_b.day - x0 ? d1_b : d0_b;
+
+        focus.select("circle.y1")
+            .attr("transform",
+                  "translate(" + x(d_a.day) + "," +
+                                 y(d_a.num) + ")");
+		focus.select("circle.y2")
+            .attr("transform",
+                  "translate(" + x(d_b.day) + "," +
+                                 y(d_b.num) + ")");
+
+	  focus.select("line.x")
+		  .attr("transform",
+				"translate(" + x(d_b.day) + "," +
+							   y(d_b.num) + ")")
+					 .attr("y2", h - y(d_b.num));
+
+	  focus.select("line.y1")
+		  .attr("transform",
+				"translate(" + w * -1 + "," +
+							   y(d_a.num) + ")")
+					 .attr("x2", w + w);
+
+	  focus.select("line.y2")
+		  .attr("transform",
+				"translate(" + w * -1 + "," +
+							   y(d_b.num) + ")")
+					 .attr("x2", w + w);
+    }
+
+       // append the x line
+    focus.append("line")
+        .attr("class", "x")
+        .style("stroke", "#ff7f0e")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("y1", 0)
+        .attr("y2", h);
+
+    // append the y lines
+    focus.append("line")
+        .attr("class", "y1")
+        .style("stroke", "#ff7f0e")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("x1", w)
+        .attr("x2", w);
+
+    focus.append("line")
+        .attr("class", "y2")
+        .style("stroke", "#1f77b4")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("x1", w)
+        .attr("x2", w);
+
+
 
 		//x axis labels
 		/*chart.selectAll("text.xAxis")

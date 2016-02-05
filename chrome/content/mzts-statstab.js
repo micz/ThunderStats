@@ -469,6 +469,8 @@ var miczThunderStatsTab = {
 
 	updateFolderQry: function(){
 		miczThunderStatsUtils._folderqry_no_date_filter=document.getElementById('folderqry_no_date_filter').checked;
+		miczThunderStatsUtils._folderqry_num_days=0;
+		miczThunderStatsUtils._folderqry_max_num=0;
 
 		//get identity
 		let identity_id=miczThunderStatsTab.getCurrentIdentityId();

@@ -453,7 +453,10 @@ miczThunderStatsTab.ui={
 			//rearrange actual data
 			for(let el in data_input[_data_handles[h_el]]){
 				current_data['data'].push({'type':_data_handles[h_el],'day':data_input[_data_handles[h_el]][el]['day'],'day_str':data_input[_data_handles[h_el]][el]['day_str'],'num':data_input[_data_handles[h_el]][el]['num']});
-				current_data['graph_data'][data_input[_data_handles[h_el]][el]['day']]=data_input[_data_handles[h_el]][el]['num'];
+				current_data['graph_data'][data_input[_data_handles[h_el]][el]['day']]={};
+				current_data['graph_data'][data_input[_data_handles[h_el]][el]['day']]['num']=data_input[_data_handles[h_el]][el]['num'];
+				current_data['graph_data'][data_input[_data_handles[h_el]][el]['day']]['day']=data_input[_data_handles[h_el]][el]['day'];
+				current_data['graph_data'][data_input[_data_handles[h_el]][el]['day']]['day_str']=data_input[_data_handles[h_el]][el]['day_str'];
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] data_input[_data_handles[h_el]][el]: "+JSON.stringify(data_input[_data_handles[h_el]][el])+"\r\n");
 				//if(max_x<data_input[_data_handles[h_el]][el]['day'])max_x=data_input[_data_handles[h_el]][el]['day'];
 				//if(min_x>data_input[_data_handles[h_el]][el]['day'])min_x=data_input[_data_handles[h_el]][el]['day'];
@@ -469,6 +472,10 @@ miczThunderStatsTab.ui={
 				current_data.data_norm[i].day=i;*/
 				let current_element={};
 				current_element.day=i;
+				current_element.min_day=0;
+				current_element.max_day=0;
+				current_element.min_day_str='';
+				current_element.max_day_str='';
 				current_element.num=0;
 				current_element.type=_data_handles[h_el];
 				current_data.data_norm.push(current_element);
@@ -482,8 +489,25 @@ miczThunderStatsTab.ui={
 					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] reld: "+JSON.stringify(reld)+"\r\n");
 					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] i2: "+JSON.stringify(i2)+"\r\n");
 					if(reld in current_data.graph_data){
-						current_data.data_norm[i2].num+=current_data.graph_data[reld];
+						current_data.data_norm[i2].num+=current_data.graph_data[reld].num;
+						//if((current_data.data_norm[i2].min_day==0)||(current_data.data_norm[i2].min_day>current_data.graph_data[reld].day)){
+						if(current_data.data_norm[i2].min_day==0){
+							current_data.data_norm[i2].min_day=current_data.graph_data[reld].day;
+							current_data.data_norm[i2].min_day_str=current_data.graph_data[reld].day_str;
+						}
+						if((current_data.data_norm[i2].max_day==0)||(current_data.data_norm[i2].max_day<current_data.graph_data[reld].day)){
+							current_data.data_norm[i2].max_day=current_data.graph_data[reld].day;
+							current_data.data_norm[i2].max_day_str=current_data.graph_data[reld].day_str;
+						}
 						if(miczThunderStatsUtils._folderqry_max_num<current_data.data_norm[i2].num)miczThunderStatsUtils._folderqry_max_num=current_data.data_norm[i2].num;
+					}else{
+						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] no reld in current_data.graph_data - reld: "+JSON.stringify(reld)+"\r\n");
+						if(current_data.data_norm[i2].min_day==0){
+							current_data.data_norm[i2].min_day=reld;
+							current_data.data_norm[i2].min_day_str=moment.unix(reld).format("YYYY-MM-DD");
+						}
+						current_data.data_norm[i2].max_day=reld;
+						current_data.data_norm[i2].max_day_str=moment.unix(reld).format("YYYY-MM-DD");
 					}
 					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph3] current_data.data_norm[i2].num: "+JSON.stringify(current_data.data_norm[i2].num)+"\r\n");
 				}
@@ -676,6 +700,8 @@ miczThunderStatsTab.ui={
 							   y(d_b.num) + ")")
 					 .attr("x2", w + w);
 
+	legend.select("text.y0")
+		    .text('day: '+d_b.min_day_str+" - "+d_b.max_day_str);
 	 legend.select("text.y1")
 		    .text('sent: '+d_a.num);
 	 legend.select("text.y2")
@@ -731,18 +757,28 @@ miczThunderStatsTab.ui={
 			.attr('height', legendHSize);*/
 
 		legend.append("text")
+			.attr("class", "y0 folderqry_legend")
+			.style("stroke", "black")
+			.style("stroke-width", "1px")
+			.style("opacity", 0.8)
+			.attr("dx", 8)
+			.attr("dy", 0);
+
+		legend.append("text")
 			.attr("class", "y1 folderqry_legend")
 			.style("stroke", "#ff7f0e")
 			.style("stroke-width", "1px")
+			.style("opacity", 0.8)
 			.attr("dx", 8)
-			.attr("dy", 0);
+			.attr("dy", "1em");
 
     	legend.append("text")
 			.attr("class", "y2 folderqry_legend")
 			.style("stroke", "#1f77b4")
 			.style("stroke-width", "1px")
+			.style("opacity", 0.8)
 			.attr("dx", 8)
-			.attr("dy", "1em");
+			.attr("dy", "2em");
 
 		//x axis labels
 		/*chart.selectAll("text.xAxis")

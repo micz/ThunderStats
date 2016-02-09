@@ -260,7 +260,7 @@ miczThunderStatsTab.folderworker.yesterday_inboxmsg = {
 
 };
 
-miczThunderStatsTab.folderworker.folder_stats = {	//TODO
+miczThunderStatsTab.folderworker.folder_stats = {
   init: function(context) {
     this.context = context;
     this.foldermsg = 0;

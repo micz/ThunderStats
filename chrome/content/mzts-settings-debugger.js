@@ -59,7 +59,6 @@ var miczThunderStatsDebugger = {
 		let ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 		let aURI = ioService.newURI(sURL, null, null);
 		//window.close();
-		// open new message
 		MessageComposer.OpenComposeWindowWithURI (null, aURI);
 	},
 
@@ -96,7 +95,7 @@ var miczThunderStatsDebugger = {
 			case 3: //get total messages from gloda
 				miczThunderStatsDB.getTotalMessages(miczThunderStatsDebugger.callback.tot_msg);
 			break;
-			case 4:
+			case 4:	//get total messageAttributes
 				miczThunderStatsDebugger.getThunderStatsData(99);
 			break;
 

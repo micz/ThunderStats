@@ -295,4 +295,11 @@ var miczThunderStatsPrefPanel = {
 
 	// ======= BUSINESS DAYS FUNCTIONS ======= END
 
+	runDebugger:function(){
+		let features = (miczThunderStatsUtils.HostSystem == 'linux') ?
+          'chrome,modal,titlebar,centerscreen,resizable,dependent,instantApply' :
+          'chrome,modal,titlebar,centerscreen,resizable,alwaysRaised,instantApply';
+
+		window.openDialog("chrome://thunderstats/content/mzts-settings-debugger.xul", "TSDebugger", features);
+	}
 };

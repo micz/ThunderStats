@@ -144,8 +144,10 @@
             <label control="symbol" value=" "/>
 			  </rows>
 		</grid>
-		    <checkbox id="ThunderStats.debug_checkbox" label="&ThunderStats.ActivateDebug;"
-            preference="ThunderStats.debug" />
+		    <checkbox id="ThunderStats.debug_checkbox" label="&ThunderStats.ActivateDebug;" preference="ThunderStats.debug" />
+		     <button id="runDebuggerBtn"
+                  label="&ThunderStats.runDebuggerBtn.label;"
+                  oncommand="miczThunderStatsPrefPanel.runDebugger();"/>
           <label control="symbol" value=" "/>
           <label control="symbol" value=" "/>
           <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>

@@ -42,7 +42,7 @@ var miczThunderStatsDebugger = {
 		output+="Operative System: "+miczThunderStatsUtils.HostSystem+"\r\n";
 		output+="System Locale: "+miczThunderStatsUtils.getCurrentSystemLocale()+"\r\n";
 		output+="Thunderbird Version: "+miczThunderStatsUtils.TBVersion+"\r\n";
-		//to get th addon version https://github.com/RealRaven2000/QuickFolders/blob/master/chrome/content/quickfolders-util.js#L250
+		output+="ThunderStats Version: "+miczThunderStatsUtils.TSVersion+"\r\n";
 		return output;
 	},
 

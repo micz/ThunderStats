@@ -10,6 +10,7 @@ Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 
 var miczThunderStatsUtils = {
 
+	ThunderStatsVersion:'1.3alpha',
 	mHost:null,
 	_y_is_last_business_day:false,
 	_y_ui_strings_update_needed:true,
@@ -376,6 +377,10 @@ var miczThunderStatsUtils = {
 	get TBVersion() {
 		let appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
 		return appInfo.version;
+	},
+
+	get TSVersion() {
+		return miczThunderStatsUtils.ThunderStatsVersion;
 	},
 
 	getMail3PaneWindow:function getMail3PaneWindow(){

@@ -43,13 +43,13 @@ var miczThunderStatsDebugger = {
 		output+="System Locale: "+miczThunderStatsUtils.getCurrentSystemLocale()+"\r\n";
 		output+="Thunderbird Version: "+miczThunderStatsUtils.TBVersion+"\r\n";
 		output+="ThunderStats Version: "+miczThunderStatsUtils.TSVersion+"\r\n";
-		return output;
+		return output.trim();
 	},
 
 	getTBConf:function(){
 		let output='';
 		output+="Global Indexing: "+(miczThunderStatsUtils.checkGlobalIndexing?'enabled':'disabled')+"\r\n";
-		return output;
+		return output.trim();
 	},
 
 	addLogLines:function(text){

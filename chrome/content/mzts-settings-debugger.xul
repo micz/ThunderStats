@@ -26,7 +26,7 @@
         </columns>
         <rows>
           <row>
-			<vbox>Debugger output</vbox>
+			<vbox><label control="symbol" value="Working..." id="mzts_status_label"/></vbox>
           </row>
           <row>
           	<textbox id="mzts-debugger-log" class="mzts-debugger-log" value="Loading..." multiline="true" readonly="true" flex="7"/>

@@ -24,6 +24,7 @@ var miczThunderStatsDebugger = {
 	},
 
 	run:function(){
+		miczThunderStatsDebugger.started();
 		this.clearLog();
 		this.addLogLines('-====================================-');
 		this.addLogLines('-==  ThunderStats Debugger Output  ==-');
@@ -44,7 +45,7 @@ var miczThunderStatsDebugger = {
 		this.addLogLines('-====================================-');
 		this.addLogLines(' ');
 		this.addLogLines('--------------------------------------');
-		this.addLogLines('-==       ThunderStats Debug       ==-');
+		this.addLogLines('-==     ThunderStats Debug Data    ==-');
 		this.addLogLines('--------------------------------------');
 		this.getThunderStatsData(0);
 	},
@@ -80,6 +81,7 @@ var miczThunderStatsDebugger = {
 				miczThunderStatsDebugger.addLogLines(' ');
 				miczThunderStatsDebugger.addLogLines('-====================================-');
 				miczThunderStatsDebugger.addLogLines('-====================================-');
+				miczThunderStatsDebugger.completed();
 			break;
 		}
 	},
@@ -92,6 +94,14 @@ var miczThunderStatsDebugger = {
 	clearLog:function(){
 		let debug_log = document.getElementById('mzts-debugger-log');
 		debug_log.value="";
+	},
+
+	started:function(){
+		document.getElementById('mzts_status_label').value="Started...";
+	},
+
+	completed:function(){
+		document.getElementById('mzts_status_label').value="Completed!";
 	},
 
 };

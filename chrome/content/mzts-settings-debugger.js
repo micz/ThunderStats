@@ -29,7 +29,7 @@ var miczThunderStatsDebugger = {
 		miczThunderStatsDebugger.started();
 		this.clearLog();
 		this.addLogLines('-====================================-');
-		this.addLogLines('-==  ThunderStats Debugger Output  ==-');
+		this.addLogLines('-==  ThunderStats Debugger Report  ==-');
 		this.addLogLines('-====================================-');
 		let today = new Date();
 		this.addLogLines('['+today+']');
@@ -50,6 +50,17 @@ var miczThunderStatsDebugger = {
 		this.addLogLines('-==     ThunderStats Debug Data    ==-');
 		this.addLogLines('--------------------------------------');
 		this.getThunderStatsData(0);
+	},
+
+	sendReport:function(){
+		let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+	    let sURL="mailto:" + miczThunderStatsUtils.mailto + "?subject=[ThunderStats] Debugger Report&body=" + encodeURI(" " + document.getElementById('mzts-debugger-log').value); // urlencode
+		let MessageComposer=Components.classes["@mozilla.org/messengercompose;1"].getService(Components.interfaces.nsIMsgComposeService);
+		let ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+		let aURI = ioService.newURI(sURL, null, null);
+		//window.close();
+		// open new message
+		MessageComposer.OpenComposeWindowWithURI (null, aURI);
 	},
 
 	getSystemInfo:function(){
@@ -76,10 +87,20 @@ var miczThunderStatsDebugger = {
 			case 1:	//get last index update
 				miczThunderStatsDB.getLastIndexUpdate();
 			break;
-			case 2:
-				miczThunderStatsDebugger.getThunderStatsData(10);
+			case 2:	//get total accounts and identities
+				miczThunderStatsCore.loadIdentities();
+				miczThunderStatsDebugger.addLogLines('Total accounts: '+Object.keys(miczThunderStatsCore.accounts).length);
+				miczThunderStatsDebugger.addLogLines('Total identities: '+Object.keys(miczThunderStatsCore.identities).length);
+				miczThunderStatsDebugger.getThunderStatsData(3);
 			break;
-			case 10:	//last step
+			case 3: //get total messages from gloda
+				miczThunderStatsDB.getTotalMessages(miczThunderStatsDebugger.callback.tot_msg);
+			break;
+			case 4:
+				miczThunderStatsDebugger.getThunderStatsData(99);
+			break;
+
+			default:	//last step
 				miczThunderStatsDB.close();
 				miczThunderStatsDebugger.addLogLines('-====================================-');
 				miczThunderStatsDebugger.addLogLines(' ');

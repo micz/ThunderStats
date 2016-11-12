@@ -24,14 +24,18 @@
       <grid>
         <columns>
           <column/>
-          <column/>
         </columns>
         <rows>
           <row>
-			<vbox><label control="symbol" value="Working..." id="mzts_status_label"/></vbox>
-          </row>
+			<label control="symbol" value="Working..." id="mzts_status_label"/>
+		  </row>
           <row>
           	<textbox id="mzts-debugger-log" class="mzts-debugger-log" value="Loading..." multiline="true" readonly="true" flex="7"/>
+          </row>
+          <row>
+			 <button id="SendReportBtn"
+                  label="Send Report"
+                  oncommand="miczThunderStatsDebugger.sendReport();"/>
           </row>
         </rows>
       </grid>

@@ -13,6 +13,8 @@ var miczThunderStatsDebugger = {
 		this.fixWinHeight();
 
 		moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
+		miczThunderStatsDebugger.observer.last_idx_update(miczThunderStatsDebugger.observer.callback.last_idx_update);
+
 		this.run();
 	},
 
@@ -72,7 +74,9 @@ var miczThunderStatsDebugger = {
 				miczThunderStatsDB.queryGetLastMessageDate(miczThunderStatsDebugger.callback.last_idx_msg);
 			break;
 			case 1:	//get last index update
-				//miczThunderStatsDB.getLastIndexUpdate();
+				miczThunderStatsDB.getLastIndexUpdate();
+			break;
+			case 2:
 				miczThunderStatsDebugger.getThunderStatsData(10);
 			break;
 			case 10:	//last step
@@ -104,72 +108,4 @@ var miczThunderStatsDebugger = {
 		document.getElementById('mzts_status_label').value="Completed!";
 	},
 
-};
-
-
-//callbacks
-miczThunderStatsDebugger.callback={};
-
-miczThunderStatsDebugger.callback.base={
-
-	handleError: function(aError) {
-		miczLogger.log("Error in executeAsync: " + aError.message,2);
-	},
-
-	handleCompletion: function(aReason) {
-		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				//miczLogger.log("Query completed successfully.");
-				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
-				miczLogger.log("Query canceled by the user!",1);
-				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
-				miczLogger.log("Query aborted!",2);
-				return false;
-		}
-	return false;
-	},
-};
-
-miczThunderStatsDebugger.callback.last_idx_msg = {
-	empty:true,
-	data:{},
-	handleResult: function(aResultSet) {
-		this.empty=false;
-		let result = miczThunderStatsCore.db.getResultObject(["last_msg_date"],aResultSet);
-		for (let key in result) {
-			this.data[key]=result[key];
-		}
-	},
-
-  handleError: miczThunderStatsDebugger.callback.base.handleError,
-
-  handleCompletion: function(aReason) {
-		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				if(!this.empty){
-					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
-					miczThunderStatsDebugger.addLogLines(_bundleCW.GetStringFromName("ThunderStats.LastIndexedMessage")+": "+miczThunderStatsUtils.getDateTimeString(moment(this.data[1]["last_msg_date"]/1000)));
-				}else{
-					miczThunderStatsDebugger.addLogLines(_bundleCW.GetStringFromName("ThunderStats.LastIndexedMessage")+": not found.");
-				}
-				miczLogger.log("Last indexed message loaded.",0);
-				this.data={};
-				this.empty=true;
-				miczThunderStatsDebugger.getThunderStatsData(1);
-				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
-				miczLogger.log("Query canceled by the user!",1);
-				this.data={};
-				this.empty=true;
-				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
-				miczLogger.log("Query aborted!",2);
-				this.data={};
-				this.empty=true;
-				return false;
-		}
-	return false;
-	},
 };

@@ -16,6 +16,8 @@
 
   <script type="application/javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js"/>
   <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-debugger.js"/>
+  <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-debugger.callback.js"/>
+  <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-debugger.observer.js"/>
 
   <vbox id="ts_vbox" flex="1">
      <separator class="thin"/>

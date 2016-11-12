@@ -1,6 +1,0 @@
-<!ENTITY ThunderStats.NBDEditor.window.title "Werktage-Editor">
-<!ENTITY ThunderStats.desc.label "Titel">
-<!ENTITY ThunderStats.date.label "Datum">
-<!ENTITY ThunderStats.every_year.label "Jährlich">
-<!ENTITY ThunderStats.every_year.desc "Aktivieren wenn dieser Feiertag jährlich wiederkehrt.">
-<!ENTITY ThunderStats.optional.label "Optional">

@@ -26,7 +26,10 @@
         </columns>
         <rows>
           <row>
-			<vbox>Test</vbox>
+			<vbox>Debugger output</vbox>
+          </row>
+          <row>
+          	<textbox id="mzts-debugger-log" class="mzts-debugger-log" value="Loading..." multiline="true" readonly="true" flex="7"/>
           </row>
         </rows>
       </grid>

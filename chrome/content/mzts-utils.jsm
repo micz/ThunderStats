@@ -373,6 +373,11 @@ var miczThunderStatsUtils = {
 		return miczThunderStatsUtils.mHost; // linux - winnt - darwin
 	},
 
+	get TBVersion() {
+		let appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
+		return appInfo.version;
+	},
+
 	getMail3PaneWindow:function getMail3PaneWindow(){
 		let windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1']
 				.getService(Components.interfaces.nsIWindowMediator),

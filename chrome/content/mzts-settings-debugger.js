@@ -129,7 +129,7 @@ var miczThunderStatsDebugger = {
 			case 3: //get total messages from gloda
 				miczThunderStatsDB.getTotalMessages(miczThunderStatsDebugger.callback.tot_msg);
 			break;
-			case 4:	//get total messageAttributes
+			case 4:	//get total messageAttributes TODO
 				miczThunderStatsDebugger.getThunderStatsData(99);
 			break;
 

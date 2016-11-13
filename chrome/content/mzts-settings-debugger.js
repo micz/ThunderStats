@@ -47,6 +47,12 @@ var miczThunderStatsDebugger = {
 		this.addLogLines('-====================================-');
 		this.addLogLines(' ');
 		this.addLogLines('--------------------------------------');
+		this.addLogLines('-==  ThunderStats Configuration    ==-');
+		this.addLogLines('--------------------------------------');
+		this.addLogLines(this.getThunderStatsConf());
+		this.addLogLines('-====================================-');
+		this.addLogLines(' ');
+		this.addLogLines('--------------------------------------');
 		this.addLogLines('-==     ThunderStats Debug Data    ==-');
 		this.addLogLines('--------------------------------------');
 		this.getThunderStatsData(0);
@@ -74,6 +80,34 @@ var miczThunderStatsDebugger = {
 	getThunderbirdConf:function(){
 		let output='';
 		output+="Global Indexing: "+(miczThunderStatsUtils.checkGlobalIndexing?'enabled':'disabled')+"\r\n";
+		return output.trim();
+	},
+
+	getThunderStatsConf:function(){
+		let output='';
+		let pref_branch_count={};
+		let pref_branch_array={};
+		let pref_branch_key=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch(miczThunderStatsPrefs.pref_base).getChildList("",pref_branch_count,pref_branch_array);
+		output+="Count "+JSON.stringify(pref_branch_count)+"\r\n";
+		for (let ii in pref_branch_key){
+			output+=pref_branch_key[ii]+": ";
+			try{
+				try{
+					output+=miczThunderStatsPrefs.getCharPref_TS(pref_branch_key[ii]);
+				}finally{
+					try{
+						output+=miczThunderStatsPrefs.getIntPref_TS(pref_branch_key[ii]);
+					}finally{
+						try{
+							output+=miczThunderStatsPrefs.getBoolPref_TS(pref_branch_key[ii]);
+						}finally{
+							//output+="error";
+						}
+					}
+				}
+			}catch(e){ }
+			output+="\r\n";
+		}
 		return output.trim();
 	},
 

@@ -1,0 +1,61 @@
+<!ENTITY ThunderStats.TABTitle "ThunderStats Einstellungen">
+<!ENTITY ThunderStats.DonateLink "Spenden Sie!">
+<!ENTITY ThunderStats.NoSearchWarn "Globaler Suchindex ist deaktiviert!">
+<!ENTITY ThunderStats.NoSearchWarn2 "Klicken Sie hier um die Indizierung zu aktivieren">
+<!ENTITY ThunderStats.ChooseAccount "Konto auswählen">
+<!ENTITY ThunderStats.Update "Aktualisieren">
+<!ENTITY ThunderStats.Setup "Konfiguration">
+<!ENTITY ThunderStats.Today "Heute">
+<!ENTITY ThunderStats.Yesterday "Gestern">
+<!ENTITY ThunderStats.Last "Letzte">
+<!ENTITY ThunderStats.days "Tage">
+<!ENTITY ThunderStats.TotalDays "Tage gesamt">
+<!ENTITY ThunderStats.Info "Info">
+<!ENTITY ThunderStats.Mails "Emails">
+<!ENTITY ThunderStats.Loading "Lade">
+<!ENTITY ThunderStats.SentMails "Gesendete Mails">
+<!ENTITY ThunderStats.ReceivedMails "Empfangene Mails">
+<!ENTITY ThunderStats.InboxZeroStatus "'Inbox Zero' Status">
+<!ENTITY ThunderStats.TotalInbox "Gesamte Mails Posteingang">
+<!ENTITY ThunderStats.TotalInboxUnread "ungelesen">
+<!ENTITY ThunderStats.YesterdayThisTime "Gestern um diese Zeit">
+<!ENTITY ThunderStats.sent "gesendet">
+<!ENTITY ThunderStats.received "empfangen">
+<!ENTITY ThunderStats.FolderLocation "Verzeichnis-Diagram">
+<!ENTITY ThunderStats.NoMailsReceived "Keine Emails empfangen!">
+<!ENTITY ThunderStats.InboxMailsDateSpreading "Zeit-Verteilung der empfangenen Mails">
+<!ENTITY ThunderStats.NoMailsInbox "Keine Mails im Eingangsordner!">
+<!ENTITY ThunderStats.TopRecipients "Top Empfänger">
+<!ENTITY ThunderStats.TopSenders "Top Absender">
+<!ENTITY ThunderStats.clickhere "hier klicken">
+<!ENTITY ThunderStats.clickheremoreinfo "Für mehr Info hier klicken">
+<!ENTITY ThunderStats.AboutTitle "Über dieses Addon">
+<!ENTITY ThunderStats.AboutText_1 "Erinnern Sie sich an die guten alten Eudora Statistiken? Vermissen Sie sie?">
+<!ENTITY ThunderStats.AboutText_2 "Mit dieser Erweiterung können Sie endlich die Benutzung Ihres geliebten Thunderbird im Auge behalten!">
+<!ENTITY ThunderStats.AboutText_3 "Weitere Funktionen werden in Zukunft hinzugefügt werden, falls Sie eine Idee haben, bitte schicken Sie mir diese">
+<!ENTITY ThunderStats.InboxZeroTitle "Was ist 'Inbox Zero'?">
+<!ENTITY ThunderStats.InboxZeroText_1 "'Inbox Zero' ist ein gründlicher Ansatz für das Mail Management dessen Ziel ein permanent leerer (oder fast leerer) Eingangsordner ist.">
+<!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats gibt Ihnen Einblicke darin wie Sie ihren Posteingang verwalten.">
+<!ENTITY ThunderStats.OtherInfoTitle "Wie funktioniert diese Erweiterung?">
+<!ENTITY ThunderStats.OtherInfoText_1 "Alle Statistiken werden mit Hilfe der internen Datenbank von Thunderbird errechnet und sind mit den EMail Adressen des gewählten Kontos verbunden.">
+<!ENTITY ThunderStats.OtherInfoText_2b "Warten Sie bis der Indexer alle neuen Mails verarbeitet hat um die Statistik zu aktualisieren. Das Datum in der oberen rechten Ecke zeigt, wie aktuell die Daten sind.">
+<!ENTITY ThunderStats.OtherInfoText_3 "Schauen Sie nach was zur Zeit für diese Erweiterung entwickelt wird">
+<!ENTITY ThunderStats.SubmitNewIssue "Neues Problem einreichen">
+<!ENTITY ThunderStats.DonationsTitle "Spenden">
+<!ENTITY ThunderStats.max "max">
+<!ENTITY ThunderStats.min "min">
+<!ENTITY ThunderStats.average "Durchschnitt">
+<!ENTITY ThunderStats.CustomQry "Benutzerdefiniert">
+<!ENTITY ThunderStats.UpdateCustomQry "Daten ermitteln">
+<!ENTITY ThunderStats.CustomQryDataMsg "Daten extrahieren für">
+<!ENTITY ThunderStats.From "von">
+<!ENTITY ThunderStats.To "bis">
+<!ENTITY ThunderStats.Views "Szenarien">
+<!ENTITY ThunderStats.CurrentWeek "Aktuelle Woche">
+<!ENTITY ThunderStats.CurrentMonth "Aktueller Monat">
+<!ENTITY ThunderStats.CurrentYear "Laufendes Jahr">
+<!ENTITY ThunderStats.LastWeek "Letzte Woche">
+<!ENTITY ThunderStats.LastMonth "Letzter Monat">
+<!ENTITY ThunderStats.LastYear "Letztes Jahr">
+<!ENTITY ThunderStats.Last2Week "Letzte zwei Wochen">
+<!ENTITY ThunderStats.OnlyBDCustomQry "Nur Werktage berücksichtigen">

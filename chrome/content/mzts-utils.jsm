@@ -390,5 +390,13 @@ var miczThunderStatsUtils = {
 		    win3pane = windowManager.getMostRecentWindow("mail:3pane");
 		return win3pane;
 	},
+	
+	runDebugger:function(win){
+		let features = (miczThunderStatsUtils.HostSystem == 'linux') ?
+          'chrome,modal,titlebar,centerscreen,resizable,dependent,instantApply' :
+          'chrome,modal,titlebar,centerscreen,resizable,alwaysRaised,instantApply';
+
+		win.openDialog("chrome://thunderstats/content/mzts-debugger.xul", "TSDebugger", features);
+	}
 
 };

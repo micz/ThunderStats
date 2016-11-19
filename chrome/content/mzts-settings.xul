@@ -147,7 +147,7 @@
 		    <checkbox id="ThunderStats.debug_checkbox" label="&ThunderStats.ActivateDebug;" preference="ThunderStats.debug" />
 		     <button id="runDebuggerBtn"
                   label="&ThunderStats.runDebuggerBtn.label;"
-                  oncommand="miczThunderStatsPrefPanel.runDebugger();"/>
+                  oncommand="miczThunderStatsUtils.runDebugger(window);"/>
           <label control="symbol" value=" "/>
           <label control="symbol" value=" "/>
           <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>

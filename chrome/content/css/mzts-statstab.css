@@ -202,3 +202,25 @@ ul.tab-links li a,
 h2.list_heading{text-transform:capitalize;}
 p.chart_info_nomail{text-transform:lowercase;}
 p.chart_info_nomail::first-letter{text-transform:uppercase;}
+
+p.mzts-bold{font-weight:bold;text-align:center;}
+
+#mzts-debugger-warn{
+position:absolute;
+top:2px;
+right:2px;
+font-size:80%;
+width:50%;
+color:white;
+padding:4px;
+background-color:#E30000;
+-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;-webkit-box-shadow:#B3B3B3 5px 5px 5px;-moz-box-shadow:#B3B3B3 5px 5px 5px;box-shadow: #B3B3B3 5px 5px 5px;
+}
+
+#mzts-debugger-warn-btn{
+width:100%;
+text-align:center;
+}
+
+#mzts-debugger-warn-close{position:absolute;top:0px;right:5px;font-weight:bold}
+

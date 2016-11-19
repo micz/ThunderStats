@@ -415,6 +415,13 @@ var miczThunderStatsDB = {
 		let mWhere="";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns tot_msg
 	},
+	
+	getTotalMessageAttributes:function(mCallback){
+		let mWhat="count(*) as tot_msg_att";
+		let mFrom="messageAttributes";
+		let mWhere="";
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns tot_msg_att
+	},
 
 };
 

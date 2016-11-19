@@ -114,3 +114,45 @@ miczThunderStatsDebugger.callback.tot_msg = {
 	return false;
 	},
 };
+
+
+miczThunderStatsDebugger.callback.tot_msg_att = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["tot_msg_att"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+  handleError: miczThunderStatsDebugger.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				if(!this.empty){
+					miczThunderStatsDebugger.addLogLines("Total message attributes from gloda: "+this.data[1]["tot_msg_att"]);
+				}else{
+					miczThunderStatsDebugger.addLogLines("Total message attributes from gloda: not found.");
+				}
+				miczLogger.log("Total message attributes loaded.",0);
+				this.data={};
+				this.empty=true;
+				miczThunderStatsDebugger.getThunderStatsData(5);
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};

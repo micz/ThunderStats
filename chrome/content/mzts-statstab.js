@@ -12,6 +12,10 @@ var miczThunderStatsTab = {
 	currentTab:"#tab_today",
 	_global_update:false,
 	_many_days:7,
+	_check_today_sent_empty:false,
+	_check_today_rcvd_empty:false,
+	_check_today_sent_running:true,
+	_check_today_rcvd_running:true,
 
 	onLoad: function(){
 
@@ -114,6 +118,8 @@ var miczThunderStatsTab = {
 		$jQ("#today_date").text(miczThunderStatsUtils.getTodayString(moment));
 
 		//Today
+		miczThunderStatsTab._check_today_sent_running=true;
+		miczThunderStatsTab._check_today_rcvd_running=true;
 		//Get today sent messages
 		miczThunderStatsCore.db.getTodayMessages(1,identity_id,miczThunderStatsTab.callback.homepage_stats_today_sent);
 		//Yesterday incremental
@@ -487,6 +493,14 @@ var miczThunderStatsTab = {
 				$jQ("body *").replaceText(re,yesterday_string);
 				miczThunderStatsUtils._y_ui_strings_update_needed=false;
 				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] checkLastBusinessDay: Strings replaced to y!\r\n");
+			}
+		}
+	},
+	
+	showDebuggerWarning:function(){
+		if(!miczThunderStatsTab._check_today_sent_running&&!miczThunderStatsTab._check_today_rcvd_running){
+			if(miczThunderStatsTab._check_today_sent_empty&&miczThunderStatsTab._check_today_rcvd_empty){
+				miczThunderStatsTab.ui.showLoadingElement('mzts-debugger-warn');
 			}
 		}
 	},

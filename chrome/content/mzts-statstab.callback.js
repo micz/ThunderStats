@@ -51,12 +51,16 @@ miczThunderStatsTab.callback.homepage_stats_today_sent = {
 				miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
 				if(!this.empty){
 					$jQ("#today_sent").text(this.data[1]["Num"]);
+					miczThunderStatsTab._check_today_sent_empty=(this.data[1]["Num"]==0);
 				}else{
 					$jQ("#today_sent").text("0");
+					miczThunderStatsTab._check_today_sent_empty=true;
 				}
 				miczLogger.log("Today sent messages loaded.",0);
 				this.data={};
 				this.empty=true;
+				miczThunderStatsTab._check_today_sent_running=false;
+				miczThunderStatsTab.showDebuggerWarning();
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
@@ -93,12 +97,16 @@ miczThunderStatsTab.callback.homepage_stats_today_rcvd = {
 				if(!this.empty){
 					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab today_rcvd] this.data "+JSON.stringify(this.data)+"\r\n");
 					$jQ("#today_rcvd").text(this.data[1]["Num"]);
+					miczThunderStatsTab._check_today_rcvd_empty=(this.data[1]["Num"]==0);
 				}else{
 					$jQ("#today_rcvd").text("0");
+					miczThunderStatsTab._check_today_rcvd_empty=true;
 				}
 				miczLogger.log("Today received messages loaded.",0);
 				this.data={};
 				this.empty=true;
+				miczThunderStatsTab._check_today_rcvd_running=false;
+				miczThunderStatsTab.showDebuggerWarning();
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);

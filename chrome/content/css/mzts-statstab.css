@@ -206,6 +206,7 @@ p.chart_info_nomail::first-letter{text-transform:uppercase;}
 p.mzts-bold{font-weight:bold;text-align:center;}
 
 #mzts-debugger-warn{
+display:none;
 position:absolute;
 top:2px;
 right:2px;

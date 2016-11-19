@@ -3,7 +3,8 @@
 ==========
 Version 1.3 - ??/??/2016
 - Added an option to always show the account name in the top senders and recipients tables when the mail is associated with a Thunderbird account.
--
+- Added a debugger tool to create a report to be sent by email.
+- 
 ==========
 Version 1.2.2 - 23/12/2015
 - Inbox Zero Folder Spread Graph label positioning fixed.

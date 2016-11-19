@@ -20,6 +20,9 @@
       	<preference id="ThunderStats.debug"
         name="extensions.ThunderStats.debug"
         type="bool"/>
+        <preference id="ThunderStats.debug_warn_show"
+        name="extensions.ThunderStats.debug_warn_show"
+        type="bool"/>
         <preference id="ThunderStats.folderspreadgraph_openinfirsttab"
         name="extensions.ThunderStats.folderspreadgraph_openinfirsttab"
         type="bool"/>
@@ -145,6 +148,7 @@
 			  </rows>
 		</grid>
 		    <checkbox id="ThunderStats.debug_checkbox" label="&ThunderStats.ActivateDebug;" preference="ThunderStats.debug" />
+		    <checkbox id="ThunderStats.debug_warn_show_checkbox" label="&ThunderStats.DebugWarnShow;" preference="ThunderStats.debug_warn_show" />
 		     <button id="runDebuggerBtn"
                   label="&ThunderStats.runDebuggerBtn.label;"
                   oncommand="miczThunderStatsUtils.runDebugger(window);"/>

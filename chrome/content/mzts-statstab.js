@@ -16,6 +16,7 @@ var miczThunderStatsTab = {
 	_check_today_rcvd_empty:false,
 	_check_today_sent_running:true,
 	_check_today_rcvd_running:true,
+	_debug_warn_temp_hide:false,
 
 	onLoad: function(){
 
@@ -422,6 +423,7 @@ var miczThunderStatsTab = {
 		miczThunderStatsTab._global_update=miczThunderStatsPrefs.globalUpdate;
 		miczThunderStatsTab._many_days=miczThunderStatsPrefs.manyDays;
 		miczThunderStatsTab.checkLastBusinessDay();
+		miczThunderStatsTab.ui.hideLoadingElement('mzts-debugger-warn');
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 		$jQ("span._many_days").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.InTheLastNumDays",miczThunderStatsTab._many_days));
 		$jQ("span._many_days_tab").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.LastNumDays",miczThunderStatsTab._many_days));
@@ -498,6 +500,9 @@ var miczThunderStatsTab = {
 	},
 	
 	showDebuggerWarning:function(){
+		if(!miczThunderStatsPrefs.showDebugWarnMsg||miczThunderStatsTab._debug_warn_temp_hide){
+			return;
+		}
 		if(!miczThunderStatsTab._check_today_sent_running&&!miczThunderStatsTab._check_today_rcvd_running){
 			if(miczThunderStatsTab._check_today_sent_empty&&miczThunderStatsTab._check_today_rcvd_empty){
 				miczThunderStatsTab.ui.showLoadingElement('mzts-debugger-warn');

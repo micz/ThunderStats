@@ -13,6 +13,10 @@ var miczThunderStatsPrefs = {
 	get isDebug() {
 		return this.getBoolPref_TS("debug");
 	},
+	
+	get showDebugWarnMsg() {
+		return this.getBoolPref_TS("debug_warn_show");
+	},
 
 	get globalUpdate() {
 		return this.getBoolPref_TS('global_update');

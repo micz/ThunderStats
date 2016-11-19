@@ -7,10 +7,14 @@ Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 
 var miczThunderStatsDebugger = {
+	
+	_bundleCW:null,
 
 	onLoad: function(){
 		//Fixing window height
 		this.fixWinHeight();
+		
+		this._bundleCW = miczThunderStatsI18n.createBundle("mzts-settings-debugger");
 
 		moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 		miczThunderStatsDebugger.observer.last_idx_update(miczThunderStatsDebugger.observer.callback.last_idx_update);
@@ -158,11 +162,11 @@ var miczThunderStatsDebugger = {
 	},
 
 	started:function(){
-		document.getElementById('mzts_status_label').value="Started...";
+		document.getElementById('mzts_status_label').value=miczThunderStatsI18n.getBundleString(this._bundleCW,"ThunderStats.Debugger.Started");
 	},
 
 	completed:function(){
-		document.getElementById('mzts_status_label').value="Completed!";
+		document.getElementById('mzts_status_label').value=miczThunderStatsI18n.getBundleString(this._bundleCW,"ThunderStats.Debugger.Completed");
 	},
 
 };

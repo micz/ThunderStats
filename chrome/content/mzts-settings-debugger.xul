@@ -27,14 +27,14 @@
         </columns>
         <rows>
           <row>
-			<label control="symbol" value="Working..." id="mzts_status_label"/>
+			<label control="symbol" value="&ThunderStats.Debugger.Working;" id="mzts_status_label"/>
 		  </row>
           <row>
-          	<textbox id="mzts-debugger-log" class="mzts-debugger-log" value="Loading..." multiline="true" readonly="true" flex="7"/>
+          	<textbox id="mzts-debugger-log" class="mzts-debugger-log" value="&ThunderStats.Debugger.Loading;" multiline="true" readonly="true" flex="7"/>
           </row>
           <row>
 			 <button id="SendReportBtn"
-                  label="Send Report"
+                  label="&ThunderStats.Debugger.SendReport;"
                   oncommand="miczThunderStatsDebugger.sendReport();"/>
           </row>
         </rows>

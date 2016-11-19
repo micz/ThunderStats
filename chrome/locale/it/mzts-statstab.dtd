@@ -33,6 +33,8 @@
 <!ENTITY ThunderStats.AboutText_1 "Ti ricordi le belle statistiche che aveva il vecchio Eudora? Ti mancano?">
 <!ENTITY ThunderStats.AboutText_2 "Usando questa estensione, puoi finalmente tenere sotto controllo l'utilizzo che fai del tuo amato Thunderbird!">
 <!ENTITY ThunderStats.AboutText_3 "Molte funzionalità saranno aggiunte in futuro, ma, se hai un'idea, inviala">
+<!ENTITY ThunderStats.AboutText_DebugMessage_1 "Stai avendo problemi a usare questo componente aggiuntivo?">
+<!ENTITY ThunderStats.AboutText_DebugMessage_2 "Utilizza il Debugger e invia il report, ci aiuterai a scoprire come risolvere il tuo problema. Grazie!">
 <!ENTITY ThunderStats.InboxZeroTitle "Che cos'è Inbox Zero?">
 <!ENTITY ThunderStats.InboxZeroText_1 "Inbox Zero è un approccio rigoroso alla gestione delle email che punta a tenere sempre la cartella di posta in arrivo vuota.">
 <!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats ti fornisce un'analisi di come gestisci la tua posta in arrivo.">
@@ -59,3 +61,7 @@
 <!ENTITY ThunderStats.LastYear "Anno Corrente">
 <!ENTITY ThunderStats.Last2Week "Ultime due Settimane">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Considera solo i giorni lavorativi">
+<!ENTITY ThunderStats.Debugger.Run "Avvia il Debugger">
+<!ENTITY ThunderStats.Debugger.WarnTitle "Nessun messaggio trovato per oggi!">
+<!ENTITY ThunderStats.Debugger.WarnDesc "Se pensi che sia un errore, utilizza il Debugger e invia il report per aiutarci a risolvere il problema.">
+<!ENTITY ThunderStats.Debugger.ThankYou "Grazie!">

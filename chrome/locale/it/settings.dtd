@@ -16,7 +16,10 @@
 <!ENTITY ThunderStats.CustomIdentititesAccount.Info "Inserisci un indirizzo mail per riga.">
 <!ENTITY ThunderStats.ChangesSavedWarn "Le modifiche fatte qui sono attive immediatamente.">
 <!ENTITY ThunderStats.ActivateDebug "Attiva il sistema di debug">
+<!ENTITY ThunderStats.runDebuggerBtn.label "Avvia il Debugger">
+<!ENTITY ThunderStats.DebugWarnShow "Mostra un messaggio di avviso se non ci sono mail inviate o ricevute oggi.">
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Ricerca le mail nelle cartelle di Posta in Arrivo dell'Account selezionato.">
+<!ENTITY ThunderStats.InboxSearchOnlyCurrAccount.GlobaInboxWarn "Devi DISATTIVARE questa opzione se utilizzi la Inbox Globale per le tue mail.">
 <!ENTITY ThunderStats.GlobalUpdate "Aggiorna tutti i tab contemporaneamente. Se deselezionato i tab vengono aggiornati quando visualizzati.">
 <!ENTITY ThunderStats.TodayTimeGraphShowYesterday "Mostra anche le mail di ieri nel grapfico orario di oggi.">
 <!ENTITY ThunderStats.TodayTimeGraphProgressive "Mostra il totale cumulativo nel grafico orario di ieri e oggi.">
@@ -50,3 +53,4 @@
 <!ENTITY ThunderStats.CustomQueryDefaultOnlyBD "Imposta sempre l'opzione &quot;Solo Giorni Lavorativi&quot; all'avvio.">
 <!ENTITY ThunderStats.folderspreadgraph_openinfirsttab "Dal grafico della distribuzione delle mail nelle cartelle, apri sempre la cartella nel primo tab.">
 <!ENTITY ThunderStats.InvolvedNum "Numero di destinatari o mittenti da mostrare nelle tabelle.">
+<!ENTITY ThunderStats.involvedtable_forceidentityname "Mostra sempre il nome dell'account nella lista dei mittenti e destinatari più frequenti quando la mail mostrata è associata a un account di Thunderbird.">

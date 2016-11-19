@@ -64,7 +64,7 @@ var miczThunderStatsDebugger = {
 		let MessageComposer=Components.classes["@mozilla.org/messengercompose;1"].getService(Components.interfaces.nsIMsgComposeService);
 		let ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 		let aURI = ioService.newURI(sURL, null, null);
-		//window.close();
+		window.close();
 		MessageComposer.OpenComposeWindowWithURI (null, aURI);
 	},
 

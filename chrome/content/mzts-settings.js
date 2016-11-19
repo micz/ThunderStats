@@ -300,6 +300,6 @@ var miczThunderStatsPrefPanel = {
           'chrome,modal,titlebar,centerscreen,resizable,dependent,instantApply' :
           'chrome,modal,titlebar,centerscreen,resizable,alwaysRaised,instantApply';
 
-		window.openDialog("chrome://thunderstats/content/mzts-settings-debugger.xul", "TSDebugger", features);
+		window.openDialog("chrome://thunderstats/content/mzts-debugger.xul", "TSDebugger", features);
 	}
 };

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
-<!DOCTYPE dialog SYSTEM "chrome://thunderstats/locale/mzts-settings-debugger.dtd">
+<!DOCTYPE dialog SYSTEM "chrome://thunderstats/locale/mzts-debugger.dtd">
 <?xml-stylesheet href="css/mzts-settings-debugger.css" type="text/css"?>
 
 <dialog id="TSDebugger"
@@ -15,9 +15,9 @@
   onunload="">
 
   <script type="application/javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js"/>
-  <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-debugger.js"/>
-  <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-debugger.callback.js"/>
-  <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-debugger.observer.js"/>
+  <script type="application/javascript" src="chrome://thunderstats/content/mzts-debugger.js"/>
+  <script type="application/javascript" src="chrome://thunderstats/content/mzts-debugger.callback.js"/>
+  <script type="application/javascript" src="chrome://thunderstats/content/mzts-debugger.observer.js"/>
 
   <vbox id="ts_vbox" flex="1">
      <separator class="thin"/>

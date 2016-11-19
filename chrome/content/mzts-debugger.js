@@ -14,7 +14,7 @@ var miczThunderStatsDebugger = {
 		//Fixing window height
 		this.fixWinHeight();
 		
-		this._bundleCW = miczThunderStatsI18n.createBundle("mzts-settings-debugger");
+		this._bundleCW = miczThunderStatsI18n.createBundle("mzts-debugger");
 
 		moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 		miczThunderStatsDebugger.observer.last_idx_update(miczThunderStatsDebugger.observer.callback.last_idx_update);

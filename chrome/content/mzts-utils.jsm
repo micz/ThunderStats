@@ -10,7 +10,7 @@ Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 
 var miczThunderStatsUtils = {
 
-	ThunderStatsVersion:'1.3alpha2',
+	ThunderStatsVersion:'1.3',
 	mailto:'m@micz.it',
 	mHost:null,
 	_y_is_last_business_day:false,
@@ -390,7 +390,7 @@ var miczThunderStatsUtils = {
 		    win3pane = windowManager.getMostRecentWindow("mail:3pane");
 		return win3pane;
 	},
-	
+
 	runDebugger:function(win){
 		let features = (miczThunderStatsUtils.HostSystem == 'linux') ?
           'chrome,modal,titlebar,centerscreen,resizable,dependent,instantApply' :

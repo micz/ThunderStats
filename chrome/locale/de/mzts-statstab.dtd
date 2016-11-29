@@ -33,6 +33,8 @@
 <!ENTITY ThunderStats.AboutText_1 "Erinnern Sie sich an die guten alten Eudora Statistiken? Vermissen Sie sie?">
 <!ENTITY ThunderStats.AboutText_2 "Mit dieser Erweiterung können Sie endlich die Benutzung Ihres geliebten Thunderbird im Auge behalten!">
 <!ENTITY ThunderStats.AboutText_3 "Weitere Funktionen werden in Zukunft hinzugefügt werden, falls Sie eine Idee haben, bitte schicken Sie mir diese">
+<!ENTITY ThunderStats.AboutText_DebugMessage_1 "Haben Sie Probleme mit diesem Addon?">
+<!ENTITY ThunderStats.AboutText_DebugMessage_2 "Starten sie die Diagnose und senden uns den erzeugten Report, wir prüfen dann was zu verbessern ist. Vielen Dank!">
 <!ENTITY ThunderStats.InboxZeroTitle "Was ist 'Inbox Zero'?">
 <!ENTITY ThunderStats.InboxZeroText_1 "'Inbox Zero' ist ein gründlicher Ansatz für das Mail Management dessen Ziel ein permanent leerer (oder fast leerer) Eingangsordner ist.">
 <!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats gibt Ihnen Einblicke darin wie Sie ihren Posteingang verwalten.">
@@ -59,3 +61,7 @@
 <!ENTITY ThunderStats.LastYear "Letztes Jahr">
 <!ENTITY ThunderStats.Last2Week "Letzte zwei Wochen">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Nur Werktage berücksichtigen">
+<!ENTITY ThunderStats.Debugger.Run "Debugger starten.">
+<!ENTITY ThunderStats.Debugger.WarnTitle "Keine Meldungen gefunden!">
+<!ENTITY ThunderStats.Debugger.WarnDesc "Falls Sie einen Fehler vermuten, starten sie den Debugger und schicken uns den Report damit wir das Problem beheben können.">
+<!ENTITY ThunderStats.Debugger.ThankYou "Danke!">

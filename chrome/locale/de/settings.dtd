@@ -15,8 +15,11 @@
 <!ENTITY ThunderStats.CustomIdentititesAccount "Zusätzliche Identitäten für das selektierte Konto">
 <!ENTITY ThunderStats.CustomIdentititesAccount.Info "Eine Emailadresse pro Zeile hinzufügen.">
 <!ENTITY ThunderStats.ChangesSavedWarn "Änderungen werden sofort gespeichert.">
-<!ENTITY ThunderStats.ActivateDebug "Debug System aktivieren.">
+<!ENTITY ThunderStats.ActivateDebug "Diagnose System aktivieren.">
+<!ENTITY ThunderStats.runDebuggerBtn.label "Diagnose starten">
+<!ENTITY ThunderStats.DebugWarnShow "Diagnose-Warnungen anzeigen falls heute keine Mails verschickt / empfangen wurden.">
 <!ENTITY ThunderStats.InboxSearchOnlyCurrAccount "Eingangsordner ausschliesslich für das selektiere Konto durchsuchen.">
+<!ENTITY ThunderStats.InboxSearchOnlyCurrAccount.GlobaInboxWarn "Diese Option muss abgeschaltet werden falls Sie die Globale Inbox benutzen.">
 <!ENTITY ThunderStats.GlobalUpdate "Alle Tabs gleichzeitig aktualisieren. Andernfalls werden die Tabs jeweils beim anklicken aktualisiert.">
 <!ENTITY ThunderStats.TodayTimeGraphShowYesterday "Im Zeit-Diagram 'Heutige Emails' gestrige Mails mit anzeigen.">
 <!ENTITY ThunderStats.TodayTimeGraphProgressive "Balken in den Zeit-Diagrammen für heutige und gestrige Daten akumuliert anzeigen.">
@@ -50,3 +53,4 @@
 <!ENTITY ThunderStats.CustomQueryDefaultOnlyBD "Beim Starten immer die Option 'Nur Werktage' aktivieren.">
 <!ENTITY ThunderStats.folderspreadgraph_openinfirsttab "Von der Verzeichnis-Grafik aus Ordner immer im vordersten Thunderbird Tab öffnen (linker Tab).">
 <!ENTITY ThunderStats.InvolvedNum "Anzahl der Empfänger / Absender die in den &quot;Top&quot; Tabellen angezeigt werden sollen.">
+<!ENTITY ThunderStats.involvedtable_forceidentityname "Immer den Namen des Kontos in den Top-Sendern und Empfängern anzeigen wenn die angezeigte Email mit einem Thunderbird Konto verbunden ist.">

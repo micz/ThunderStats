@@ -115,7 +115,6 @@ miczThunderStatsDebugger.callback.tot_msg = {
 	},
 };
 
-
 miczThunderStatsDebugger.callback.tot_msg_att = {
 	empty:true,
 	data:{},
@@ -141,6 +140,170 @@ miczThunderStatsDebugger.callback.tot_msg_att = {
 				this.data={};
 				this.empty=true;
 				miczThunderStatsDebugger.getThunderStatsData(5);
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};
+
+miczThunderStatsDebugger.callback.stats_today_sent = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsDebugger.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				if(!this.empty){
+					miczThunderStatsDebugger.addLogLines("Today: total messages sent: "+this.data[1]["Num"]);
+				}else{
+					miczThunderStatsDebugger.addLogLines("Today: total messages sent: not found");
+				}
+				miczLogger.log("Today sent messages loaded.",0);
+				this.data={};
+				this.empty=true;
+				miczThunderStatsDebugger.getThunderStatsData(6);
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};
+
+miczThunderStatsDebugger.callback.stats_today_rcvd = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsDebugger.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				if(!this.empty){
+					miczThunderStatsDebugger.addLogLines("Today: total messages received: "+this.data[1]["Num"]);
+				}else{
+					miczThunderStatsDebugger.addLogLines("Today: total messages received: not found");
+				}
+				miczLogger.log("Today sent messages loaded.",0);
+				this.data={};
+				this.empty=true;
+				miczThunderStatsDebugger.getThunderStatsData(7);
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};
+
+miczThunderStatsDebugger.callback.stats_yesterday_sent = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsDebugger.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				if(!this.empty){
+					miczThunderStatsDebugger.addLogLines("Yesterday: total messages sent: "+this.data[1]["Num"]);
+				}else{
+					miczThunderStatsDebugger.addLogLines("Yesterday: total messages sent: not found");
+				}
+				miczLogger.log("Today sent messages loaded.",0);
+				this.data={};
+				this.empty=true;
+				miczThunderStatsDebugger.getThunderStatsData(8);
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data={};
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data={};
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};
+
+miczThunderStatsDebugger.callback.stats_yesterday_rcvd = {
+	empty:true,
+	data:{},
+	handleResult: function(aResultSet) {
+		this.empty=false;
+		let result = miczThunderStatsCore.db.getResultObject(["Num"],aResultSet);
+		for (let key in result) {
+			this.data[key]=result[key];
+		}
+	},
+
+	handleError: miczThunderStatsDebugger.callback.base.handleError,
+
+    handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				if(!this.empty){
+					miczThunderStatsDebugger.addLogLines("Yesterday: total messages received: "+this.data[1]["Num"]);
+				}else{
+					miczThunderStatsDebugger.addLogLines("Yesterday: total messages received: not found");
+				}
+				miczLogger.log("Today sent messages loaded.",0);
+				this.data={};
+				this.empty=true;
+				miczThunderStatsDebugger.getThunderStatsData(9);
 				return true;
 			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);

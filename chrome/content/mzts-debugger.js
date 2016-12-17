@@ -7,13 +7,13 @@ Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 
 var miczThunderStatsDebugger = {
-	
+
 	_bundleCW:null,
 
 	onLoad: function(){
 		//Fixing window height
 		this.fixWinHeight();
-		
+
 		this._bundleCW = miczThunderStatsI18n.createBundle("mzts-debugger");
 
 		moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
@@ -136,7 +136,19 @@ var miczThunderStatsDebugger = {
 			case 4:	//get total messageAttributes
 				miczThunderStatsDB.getTotalMessageAttributes(miczThunderStatsDebugger.callback.tot_msg_att);
 			break;
-			case 5:
+			case 5: //get today sent messages
+				miczThunderStatsCore.db.getTodayMessages(1,0,miczThunderStatsDebugger.callback.stats_today_sent);
+			break;
+			case 6: //get today rcvd messages
+				miczThunderStatsCore.db.getTodayMessages(0,0,miczThunderStatsDebugger.callback.stats_today_rcvd);
+			break;
+			case 7: //get yesterday sent messages
+				miczThunderStatsCore.db.getYesterdayMessages(1,0,miczThunderStatsDebugger.callback.stats_yesterday_sent);
+			break;
+			case 8: //get yesterday rcvd messages
+				miczThunderStatsCore.db.getYesterdayMessages(0,0,miczThunderStatsDebugger.callback.stats_yesterday_rcvd);
+			break;
+			case 9:
 				miczThunderStatsDebugger.getThunderStatsData(99);
 			break;
 

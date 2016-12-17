@@ -116,6 +116,10 @@ var miczThunderStatsDebugger = {
 	},
 
 	getThunderStatsData:function(step){
+		let mToDay = new Date();
+		let mFromDay = new Date();
+		let mDays = 0;
+
 		switch(step){
 			case 0:	//get last indexed message
 				miczThunderStatsDB.init();
@@ -148,7 +152,27 @@ var miczThunderStatsDebugger = {
 			case 8: //get yesterday rcvd messages
 				miczThunderStatsCore.db.getYesterdayMessages(0,0,miczThunderStatsDebugger.callback.stats_yesterday_rcvd);
 			break;
-			case 9:
+			case 9: //get last 7 days sent (no business days, to force per folder stats)
+				let mInfoSent={type:1,info:1};
+				//let mInfoReceived={type:0,info:1};
+				mToDay = new Date();
+				mFromDay = new Date();
+				mFromDay.setDate(mFromDay.getDate() - 7);
+				mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,1);
+				miczThunderStatsUtils._customqry_num_days=mDays.length;
+				miczThunderStatsCore.db.getManyDaysMessages(mInfoSent,mFromDay,mToDay,0,miczThunderStatsDebugger.callback.stats_customqry_sent);
+			break;
+			case 10: //get last 7 days sent (no business days, to force per folder stats)
+				let mInfoReceived={type:0,info:1};
+				//let mInfoReceived={type:0,info:1};
+				mToDay = new Date();
+				mFromDay = new Date();
+				mFromDay.setDate(mFromDay.getDate() - 7);
+				mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,1);
+				miczThunderStatsUtils._customqry_num_days=mDays.length;
+				miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,0,miczThunderStatsDebugger.callback.stats_customqry_rcvd);
+			break;
+			case 11:
 				miczThunderStatsDebugger.getThunderStatsData(99);
 			break;
 

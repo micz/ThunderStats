@@ -35,7 +35,8 @@
           <row>
 			 <button id="SendReportBtn"
                   label="&ThunderStats.Debugger.SendReport;"
-                  oncommand="miczThunderStatsDebugger.sendReport();"/>
+                  oncommand="miczThunderStatsDebugger.sendReport();"
+                  disabled="true"/>
           </row>
         </rows>
       </grid>

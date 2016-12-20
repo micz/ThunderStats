@@ -179,7 +179,7 @@ var miczThunderStatsDebugger = {
 			default:	//last step
 				miczThunderStatsDB.close();
 				miczThunderStatsDebugger.addLogLines('-====================================-');
-				miczThunderStatsDebugger.addLogLines(' ');
+				miczThunderStatsDebugger.addLogLines('-==           Completed!           ==-');
 				miczThunderStatsDebugger.addLogLines('-====================================-');
 				miczThunderStatsDebugger.addLogLines('-====================================-');
 				miczThunderStatsDebugger.completed();
@@ -203,6 +203,7 @@ var miczThunderStatsDebugger = {
 
 	completed:function(){
 		document.getElementById('mzts_status_label').value=miczThunderStatsI18n.getBundleString(this._bundleCW,"ThunderStats.Debugger.Completed");
+		document.getElementById('SendReportBtn').disabled=false;
 	},
 
 };

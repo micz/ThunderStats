@@ -33,7 +33,13 @@
           	<textbox id="mzts-debugger-log" class="mzts-debugger-log" value="&ThunderStats.Debugger.Loading;" multiline="true" readonly="true" flex="7"/>
           </row>
           <row>
-          	<textbox id="mzts-debugger-user-msg" class="mzts-debugger-log" value="" multiline="true" readonly="false" flex="2"/>
+			<label control="symbol" value=" " />
+		  </row>
+		  <row>
+			<label control="symbol" value="&ThunderStats.Debugger.UserMsgTitle;" id="mzts_user_msg_label"/>
+		  </row>
+          <row>
+          	<textbox id="mzts-debugger-user-msg" class="mzts-debugger-user-msg" value="" multiline="true" flex="2"/>
           </row>
           <row>
 			 <button id="SendReportBtn"

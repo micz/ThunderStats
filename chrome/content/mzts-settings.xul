@@ -84,6 +84,7 @@
     <tabbox id="ts_tabbox">
       <tabs>
         <tab label="&ThunderStats.TabSettings.label;"/>
+        <tab label="&ThunderStats.TabAdvanced.label;"/>
         <tab label="&ThunderStats.TabBusinessDays.label;"/>
         <tab label="&ThunderStats.TabCustomIdentities.label;"/>
         <tab label="&ThunderStats.TabInfo.label;"/>
@@ -123,6 +124,21 @@
             		preference="ThunderStats.folderspreadgraph_openinfirsttab" />
             	<checkbox id="ThunderStats.involvedtable_forceidentityname_checkbox" label="&ThunderStats.involvedtable_forceidentityname;"
             		preference="ThunderStats.involvedtable_forceidentityname" />
+			  </rows>
+		</grid>
+          <label control="symbol" value=" "/>
+          <label control="symbol" value=" "/>
+          <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>
+        </tabpanel>
+		<tabpanel id="tstab_advanced" orient="vertical">
+          <label control="symbol" value="&ThunderStats.GlobalDescSettingTab;"/>
+          <label control="symbol" value=" "/>
+            <grid flex="1">
+			  <columns>
+				<column flex="1"/>
+				<column flex="10"/>
+			  </columns>
+			  <rows>
             	<groupbox>
   				<caption label="&ThunderStats.ManyDaysGraph;"/>
 					<hbox align="center">

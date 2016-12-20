@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 <!DOCTYPE dialog SYSTEM "chrome://thunderstats/locale/mzts-debugger.dtd">
-<?xml-stylesheet href="css/mzts-settings-debugger.css" type="text/css"?>
+<?xml-stylesheet href="css/mzts-debugger.css" type="text/css"?>
 
 <dialog id="TSDebugger"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -31,6 +31,9 @@
 		  </row>
           <row>
           	<textbox id="mzts-debugger-log" class="mzts-debugger-log" value="&ThunderStats.Debugger.Loading;" multiline="true" readonly="true" flex="7"/>
+          </row>
+          <row>
+          	<textbox id="mzts-debugger-user-msg" class="mzts-debugger-log" value="" multiline="true" readonly="false" flex="2"/>
           </row>
           <row>
 			 <button id="SendReportBtn"

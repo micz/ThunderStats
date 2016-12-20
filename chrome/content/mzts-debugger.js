@@ -9,6 +9,7 @@ Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm")
 var miczThunderStatsDebugger = {
 
 	_bundleCW:null,
+	_source:'',
 
 	onLoad: function(){
 		//Fixing window height
@@ -18,6 +19,11 @@ var miczThunderStatsDebugger = {
 
 		moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 		miczThunderStatsDebugger.observer.last_idx_update(miczThunderStatsDebugger.observer.callback.last_idx_update);
+
+		if ("arguments" in window && window.arguments[0]){
+			let args = window.arguments[0];
+			this._source=args.source;
+		}
 
 		this.run();
 	},
@@ -122,6 +128,7 @@ var miczThunderStatsDebugger = {
 
 		switch(step){
 			case 0:	//get last indexed message
+				miczThunderStatsDebugger.addLogLines('Debugger _source: '+this._source);
 				miczThunderStatsDB.init();
 				miczThunderStatsDB.queryGetLastMessageDate(miczThunderStatsDebugger.callback.last_idx_msg);
 			break;

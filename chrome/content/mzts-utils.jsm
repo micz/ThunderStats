@@ -391,12 +391,13 @@ var miczThunderStatsUtils = {
 		return win3pane;
 	},
 
-	runDebugger:function(win){
+	runDebugger:function(win,source){
 		let features = (miczThunderStatsUtils.HostSystem == 'linux') ?
           'chrome,modal,titlebar,centerscreen,resizable,dependent,instantApply' :
           'chrome,modal,titlebar,centerscreen,resizable,alwaysRaised,instantApply';
+        let args = {"source":source};
 
-		win.openDialog("chrome://thunderstats/content/mzts-debugger.xul", "TSDebugger", features);
+		win.openDialog("chrome://thunderstats/content/mzts-debugger.xul", "TSDebugger", features, args);
 	}
 
 };

@@ -167,7 +167,7 @@
 		    <checkbox id="ThunderStats.debug_warn_show_checkbox" label="&ThunderStats.DebugWarnShow;" preference="ThunderStats.debug_warn_show" />
 		     <button id="runDebuggerBtn"
                   label="&ThunderStats.runDebuggerBtn.label;"
-                  oncommand="miczThunderStatsUtils.runDebugger(window);"/>
+                  oncommand="miczThunderStatsUtils.runDebugger(window,'settings');"/>
           <label control="symbol" value=" "/>
           <label control="symbol" value=" "/>
           <label control="symbol" value="* &ThunderStats.ReopenTabDesc;"/>

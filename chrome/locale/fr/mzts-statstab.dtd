@@ -1,0 +1,67 @@
+<!ENTITY ThunderStats.TABTitle "Paramètres de ThunderStats">
+<!ENTITY ThunderStats.DonateLink "Faites un don !">
+<!ENTITY ThunderStats.NoSearchWarn "La recherche globale et l'indexation ne sont pas activées !">
+<!ENTITY ThunderStats.NoSearchWarn2 "Cliquez ici pour les activer">
+<!ENTITY ThunderStats.ChooseAccount "Choisissez un compte">
+<!ENTITY ThunderStats.Update "Mise à jour">
+<!ENTITY ThunderStats.Setup "installation">
+<!ENTITY ThunderStats.Today "Aujourd'hui">
+<!ENTITY ThunderStats.Yesterday "Hier">
+<!ENTITY ThunderStats.Last "Derniers">
+<!ENTITY ThunderStats.days "jours">
+<!ENTITY ThunderStats.TotalDays "Nombre total de jours">
+<!ENTITY ThunderStats.Info "Information">
+<!ENTITY ThunderStats.Mails "Courriels">
+<!ENTITY ThunderStats.Loading "Chargement">
+<!ENTITY ThunderStats.SentMails "Courriers envoyés">
+<!ENTITY ThunderStats.ReceivedMails "Courriers reçus">
+<!ENTITY ThunderStats.InboxZeroStatus "Boîte de réception vide">
+<!ENTITY ThunderStats.TotalInbox "Nombre total de messages dans la boîte de réception">
+<!ENTITY ThunderStats.TotalInboxUnread "non lus">
+<!ENTITY ThunderStats.YesterdayThisTime "Hier à cette heure-ci">
+<!ENTITY ThunderStats.sent "envoyés">
+<!ENTITY ThunderStats.received "reçus">
+<!ENTITY ThunderStats.FolderLocation "Statistique de provenance des dossiers de courriels">
+<!ENTITY ThunderStats.NoMailsReceived "Aucun courriel reçu !">
+<!ENTITY ThunderStats.InboxMailsDateSpreading "Graphique des courriers de la boîte de réception en fonction de la date">
+<!ENTITY ThunderStats.NoMailsInbox "Pas de messages dans la boîte de réception !">
+<!ENTITY ThunderStats.TopRecipients "Principaux destinataires">
+<!ENTITY ThunderStats.TopSenders "Principaux expéditeurs">
+<!ENTITY ThunderStats.clickhere "cliquez ici">
+<!ENTITY ThunderStats.clickheremoreinfo "Cliquez ici pour en savoir plus">
+<!ENTITY ThunderStats.AboutTitle "À propos de ce module">
+<!ENTITY ThunderStats.AboutText_1 "Vous vous souvenez des statistiques d'Eudora ? ils vous manquent ?">
+<!ENTITY ThunderStats.AboutText_2 "En utilisant ce module vous pouvez enfin garder un œil sur l'usage que vous faites de votre Thunderbird adoré !">
+<!ENTITY ThunderStats.AboutText_3 "Davantage de fonctions seront développées à l'avenir, mais si vous avez une suggestion, dites-le moi.">
+<!ENTITY ThunderStats.AboutText_DebugMessage_1 "Avez-vous des difficultés à utiliser cette extension ?">
+<!ENTITY ThunderStats.AboutText_DebugMessage_2 "Lancez le débigueur et envoyez-nous un rapport,nous verrons comment nous pouvons régler le problème. Merci !">
+<!ENTITY ThunderStats.InboxZeroTitle "Qu'est-ce que Inbox Zero ?">
+<!ENTITY ThunderStats.InboxZeroText_1 "« Inbox Zero » (zéro courrier en attente) est une politique de gestion rigoureuse des courriers qui vise à n'avoir aucun message dans sa boîte de réception, pour qu'elle reste toujours vide.">
+<!ENTITY ThunderStats.InboxZeroText_2 "ThunderStats vous donne des astuces pour savoir comment gérer votre boîte de réception.">
+<!ENTITY ThunderStats.OtherInfoTitle "Comment fonctionne cette extension ?">
+<!ENTITY ThunderStats.OtherInfoText_1 "Toutes le statistiques sont calculées à partir de la base de données interne de Thunderbird et sont associées avec les adresses électroniques du compte sélectionné.">
+<!ENTITY ThunderStats.OtherInfoText_2b "Les statistiques seront mises à jour dès que l'indexeur de Thunderbird  aura traité les nouveaux messages. Les dates dans l'angle supérieur droit indiquent les récentes mise à jour des statistiques.">
+<!ENTITY ThunderStats.OtherInfoText_3 "Jetez un coup d'œil aux derniers développements de cette extension">
+<!ENTITY ThunderStats.SubmitNewIssue "Signaler un nouveau problème">
+<!ENTITY ThunderStats.DonationsTitle "Dons">
+<!ENTITY ThunderStats.max "max">
+<!ENTITY ThunderStats.min "min">
+<!ENTITY ThunderStats.average "moyenne">
+<!ENTITY ThunderStats.CustomQry "Personnalisées">
+<!ENTITY ThunderStats.UpdateCustomQry "Extraire les données">
+<!ENTITY ThunderStats.CustomQryDataMsg "Données extraites depuis">
+<!ENTITY ThunderStats.From "De">
+<!ENTITY ThunderStats.To "Pour">
+<!ENTITY ThunderStats.Views "Affichage">
+<!ENTITY ThunderStats.CurrentWeek "La semaine en cours">
+<!ENTITY ThunderStats.CurrentMonth "Le mois en cours">
+<!ENTITY ThunderStats.CurrentYear "Année courante">
+<!ENTITY ThunderStats.LastWeek "La semaine dernière">
+<!ENTITY ThunderStats.LastMonth "Le mois dernier">
+<!ENTITY ThunderStats.LastYear "Année précédente">
+<!ENTITY ThunderStats.Last2Week "Les deux dernières semaines">
+<!ENTITY ThunderStats.OnlyBDCustomQry "Ne tenir compte que des jours ouvrables">
+<!ENTITY ThunderStats.Debugger.Run "Lancer le débogueur">
+<!ENTITY ThunderStats.Debugger.WarnTitle "Aucun message trouvé pour aujourd'hui !">
+<!ENTITY ThunderStats.Debugger.WarnDesc "Si vous pensez qu'il s'agit d'une erreur, lancez le débogueur puis envoyez un rapport pour que nous puissions régler le problème.">
+<!ENTITY ThunderStats.Debugger.ThankYou "Merci !">

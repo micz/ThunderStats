@@ -1,6 +1,7 @@
 <!ENTITY ThunderStats.SettingsTitle "Thunderstats Konfiguration">
 <!ENTITY ThunderStats.GlobalDescSettingTab "Benutzen Sie diese Einstellungen um ihr persönliches Thunderstats-Erlebnis anzupassen!">
 <!ENTITY ThunderStats.TabSettings.label "Allgemein">
+<!ENTITY ThunderStats.TabAdvanced.label "Advanced">
 <!ENTITY ThunderStats.TabCustomIdentities.label "Zusätzliche Identitäten">
 <!ENTITY ThunderStats.TabInfo.label "Info">
 <!ENTITY ThunderStats.InfoMainDesc "Diese Erweiterung ist frei und wird in meiner Freizeit entwickelt. Falls Sie es täglich nutzen, können Sie diese gerne mit einer kleinen Spende unterstützen. Klicken Sie einfach auf den Link unten - vielen Dank!!">

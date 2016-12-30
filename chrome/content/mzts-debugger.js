@@ -109,6 +109,7 @@ var miczThunderStatsDebugger = {
 	getThunderbirdConf:function(){
 		let output='';
 		output+="Global Indexing: "+(miczThunderStatsUtils.checkGlobalIndexing?'enabled':'disabled')+"\r\n";
+		//TODO: check if globalindexing is active. Search for an option like this: user_pref("mail.server.server1.deferred_to_account", "account2");
 		return output.trim();
 	},
 

@@ -199,6 +199,12 @@ var miczThunderStatsDebugger = {
 				miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,0,miczThunderStatsDebugger.callback.stats_customqry_rcvd);
 			break;
 			case 11:
+				miczThunderStatsDebugger.addLogLines('msgAttributes: '+JSON.stringify(miczThunderStatsDB.msgAttributes));
+				miczThunderStatsDebugger.addLogLines('identities_custom_ids: '+JSON.stringify(miczThunderStatsDB.identities_custom_ids));
+				miczThunderStatsDebugger.addLogLines('identities_custom_ids_mail: '+JSON.stringify(miczThunderStatsDB.identities_custom_ids_mail));
+				miczThunderStatsDebugger.getThunderStatsData(12);
+			break;
+			case 12:
 				miczThunderStatsDebugger.getThunderStatsData(99);
 			break;
 

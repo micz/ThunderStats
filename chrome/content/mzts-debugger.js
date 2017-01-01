@@ -142,10 +142,6 @@ var miczThunderStatsDebugger = {
 	},
 
 	getThunderStatsData:function(step){
-		let mToDay = new Date();
-		let mFromDay = new Date();
-		let mDays = 0;
-
 		switch(step){
 			case 0:	//get last indexed message
 				miczThunderStatsDebugger.addLogLines('Debugger _source: '+this._source);
@@ -180,23 +176,23 @@ var miczThunderStatsDebugger = {
 				miczThunderStatsCore.db.getYesterdayMessages(0,0,miczThunderStatsDebugger.callback.stats_yesterday_rcvd);
 			break;
 			case 9: //get last 7 days sent (no business days, to force per folder stats)
-				let mInfoSent={type:1,info:1};
+				let mInfoSent_9={type:1,info:1};
 				//let mInfoReceived={type:0,info:1};
-				mToDay = new Date();
-				mFromDay = new Date();
-				mFromDay.setDate(mFromDay.getDate() - 7);
-				mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,1);
-				miczThunderStatsUtils._customqry_num_days=mDays.length;
-				miczThunderStatsCore.db.getManyDaysMessages(mInfoSent,mFromDay,mToDay,0,miczThunderStatsDebugger.callback.stats_customqry_sent);
+				let mToDay_9 = new Date();
+				let mFromDay_9 = new Date();
+				mFromDay_9.setDate(mFromDay_9.getDate() - 7);
+				let mDays_9 = miczThunderStatsUtils.getDaysFromRange(mFromDay_9,mToDay_9,1);
+				miczThunderStatsUtils._customqry_num_days=mDays_9.length;
+				miczThunderStatsCore.db.getManyDaysMessages(mInfoSent_9,mFromDay_9,mToDay_9,0,miczThunderStatsDebugger.callback.stats_customqry_sent);
 			break;
 			case 10: //get last 7 days sent (no business days, to force per folder stats)
-				let mInfoReceived={type:0,info:1};
-				mToDay = new Date();
-				mFromDay = new Date();
-				mFromDay.setDate(mFromDay.getDate() - 7);
-				mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,1);
-				miczThunderStatsUtils._customqry_num_days=mDays.length;
-				miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,0,miczThunderStatsDebugger.callback.stats_customqry_rcvd);
+				let mInfoReceived_10={type:0,info:1};
+				let mToDay_10 = new Date();
+				let mFromDay_10 = new Date();
+				mFromDay_10.setDate(mFromDay_10.getDate() - 7);
+				let mDays_10 = miczThunderStatsUtils.getDaysFromRange(mFromDay_10,mToDay_10,1);
+				miczThunderStatsUtils._customqry_num_days=mDays_10.length;
+				miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived_10,mFromDay_10,mToDay_10,0,miczThunderStatsDebugger.callback.stats_customqry_rcvd);
 			break;
 			case 11:
 				miczThunderStatsDebugger.addLogLines('msgAttributes: '+JSON.stringify(miczThunderStatsDB.msgAttributes));

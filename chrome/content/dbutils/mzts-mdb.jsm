@@ -423,15 +423,6 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns tot_msg_att
 	},
 
-	queryDebuggerTimeRangeMessages:function(mFromDate,mToDate,mCallback){
-		let mWhat="count(distinct m.headerMessageID) as Num";
-		let mFrom="messages m";
-		let forbiddenFolders=this.queryGetForbiddenFolders();
-		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
-		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
-	},
-
 	queryDebuggerGetForbiddenFoldersInfo:function(){
 		let folderArray=new Array();
 		//not in drafts folders and not if folder is not indexed
@@ -441,6 +432,15 @@ var miczThunderStatsDB = {
 			folderArray.push(rows[key]);
 		}
 		return folderArray;
+	},
+
+	queryDebuggerTimeRangeMessages:function(mFromDate,mToDate,mCallback){
+		let mWhat="count(distinct m.headerMessageID) as Num";
+		let mFrom="messages m";
+		let forbiddenFolders=this.queryGetForbiddenFolders();
+		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
+		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
 };

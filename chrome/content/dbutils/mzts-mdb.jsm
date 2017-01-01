@@ -444,6 +444,19 @@ var miczThunderStatsDB = {
 		return "SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
 	},
 
+	queryDebuggerMessageAttributes:function(mType_attribute,involves_attribute,identitiesStr,mCallback){	//returns the query string
+		let mWhat="count(distinct m.headerMessageID) as Num";
+		let mFrom="messageattributes ma left join messages m on ma.messageID=m.id";
+		mFrom+=" left join messageattributes ma2 on ma2.messageID=m.id";
+		let forbiddenFolders=this.queryGetForbiddenFolders();
+		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
+		let mWhere="m.folderID not in "+forbiddenFoldersStr;
+		mWhere+="and ((ma.attributeID="+mType_attribute+") OR ";
+		mWhere+="(ma.attributeID="+involves_attribute+" AND ma.value in "+identitiesStr+"))";
+		this.querySelect(mWhat,mFrom,mWhere,mCallback);
+		return "SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
+	},
+
 };
 
 miczThunderStatsDB.callback={};

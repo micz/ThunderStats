@@ -206,14 +206,30 @@ var miczThunderStatsDebugger = {
 				miczThunderStatsDebugger.getThunderStatsData(12);
 			break;
 			case 12:
-				let mFromDate=new Date();
-				mFromDate.setDate(mFromDate.getDate() - 2);	//two days back
-				mFromDate.setHours(0,0,0,0);
-				let mToDate=new Date();
-				mToDate.setHours(24,0,0,0);
-				miczThunderStatsDebugger.addLogLines('queryDebuggerTimeRangeMessages QRY: '+miczThunderStatsDB.queryDebuggerTimeRangeMessages(mFromDate.getTime(),mToDate.getTime(),miczThunderStatsDebugger.callback.debugger_time_range));
+				let mFromDate_12=new Date();
+				mFromDate_12.setDate(mFromDate_12.getDate() - 2);	//two days back
+				mFromDate_12.setHours(0,0,0,0);
+				let mToDate_12=new Date();
+				mToDate_12.setHours(24,0,0,0);
+				miczThunderStatsDebugger.addLogLines('queryDebuggerTimeRangeMessages QRY: '+miczThunderStatsDB.queryDebuggerTimeRangeMessages(mFromDate_12.getTime(),mToDate_12.getTime(),miczThunderStatsDebugger.callback.debugger_time_range));
 			break;
 			case 13:
+				/*let fromMe_attribute=this.msgAttributes['fromMe'];
+				let toMe_attribute=this.msgAttributes['toMe'];*/
+				let mType_attribute_13=miczThunderStatsDB.msgAttributes['fromMe'];
+				let involves_attribute_13=miczThunderStatsDB.msgAttributes['involves'];
+				let identitiesStr_13="("+miczThunderStatsDB.identities_custom_ids.join()+")";
+				miczThunderStatsDebugger.addLogLines('queryDebuggerMessageAttributes QRY SENT: '+miczThunderStatsDB.queryDebuggerMessageAttributes(mType_attribute_13,involves_attribute_13,identitiesStr_13,miczThunderStatsDebugger.callback.debugger_attributes_sent));
+			break;
+			case 14:
+				/*let fromMe_attribute=this.msgAttributes['fromMe'];
+				let toMe_attribute=this.msgAttributes['toMe'];*/
+				let mType_attribute_14=miczThunderStatsDB.msgAttributes['toMe'];
+				let involves_attribute_14=miczThunderStatsDB.msgAttributes['involves'];
+				let identitiesStr_14="("+miczThunderStatsDB.identities_custom_ids.join()+")";
+				miczThunderStatsDebugger.addLogLines('queryDebuggerMessageAttributes QRY RCVD: '+miczThunderStatsDB.queryDebuggerMessageAttributes(mType_attribute_14,involves_attribute_14,identitiesStr_14,miczThunderStatsDebugger.callback.debugger_attributes_rcvd));
+			break;
+			case 15:
 				miczThunderStatsDebugger.getThunderStatsData(99);
 			break;
 

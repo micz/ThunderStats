@@ -434,13 +434,14 @@ var miczThunderStatsDB = {
 		return folderArray;
 	},
 
-	queryDebuggerTimeRangeMessages:function(mFromDate,mToDate,mCallback){
+	queryDebuggerTimeRangeMessages:function(mFromDate,mToDate,mCallback){	//returns the query string
 		let mWhat="count(distinct m.headerMessageID) as Num";
 		let mFrom="messages m";
 		let forbiddenFolders=this.queryGetForbiddenFolders();
 		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
 		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
-		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
+		this.querySelect(mWhat,mFrom,mWhere,mCallback);
+		return "SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
 	},
 
 };

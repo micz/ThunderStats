@@ -206,6 +206,14 @@ var miczThunderStatsDebugger = {
 				miczThunderStatsDebugger.getThunderStatsData(12);
 			break;
 			case 12:
+				let mFromDate=new Date();
+				mFromDate.setDate(mFromDate.getDate() - 2);	//two days back
+				mFromDate.setHours(0,0,0,0);
+				let mToDate=new Date();
+				mToDate.setHours(24,0,0,0);
+				miczThunderStatsDebugger.addLogLines('queryDebuggerTimeRangeMessages QRY: '+miczThunderStatsDB.queryDebuggerTimeRangeMessages(mFromDate.getTime(),mToDate.getTime(),miczThunderStatsDebugger.callback.debugger_time_range));
+			break;
+			case 13:
 				miczThunderStatsDebugger.getThunderStatsData(99);
 			break;
 

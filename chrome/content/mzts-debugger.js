@@ -191,7 +191,6 @@ var miczThunderStatsDebugger = {
 			break;
 			case 10: //get last 7 days sent (no business days, to force per folder stats)
 				let mInfoReceived={type:0,info:1};
-				//let mInfoReceived={type:0,info:1};
 				mToDay = new Date();
 				mFromDay = new Date();
 				mFromDay.setDate(mFromDay.getDate() - 7);

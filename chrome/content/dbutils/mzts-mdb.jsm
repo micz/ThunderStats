@@ -432,6 +432,17 @@ var miczThunderStatsDB = {
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
+	queryDebuggerGetForbiddenFoldersInfo:function(){
+		let folderArray=new Array();
+		//not in drafts folders and not if folder is not indexed
+		let mWhere='indexingPriority=-1 OR name="Drafts"';
+		let rows=this.querySelect("*","folderLocations",mWhere);
+		for(let key in rows){
+			folderArray.push(rows[key]);
+		}
+		return folderArray;
+	},
+
 };
 
 miczThunderStatsDB.callback={};

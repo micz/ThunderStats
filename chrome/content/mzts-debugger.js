@@ -202,6 +202,7 @@ var miczThunderStatsDebugger = {
 				miczThunderStatsDebugger.addLogLines('msgAttributes: '+JSON.stringify(miczThunderStatsDB.msgAttributes));
 				miczThunderStatsDebugger.addLogLines('identities_custom_ids: '+JSON.stringify(miczThunderStatsDB.identities_custom_ids));
 				miczThunderStatsDebugger.addLogLines('identities_custom_ids_mail: '+JSON.stringify(miczThunderStatsDB.identities_custom_ids_mail));
+				miczThunderStatsDebugger.addLogLines('Forbidden Folders: '+JSON.stringify(miczThunderStatsDB.queryDebuggerGetForbiddenFoldersInfo()));
 				miczThunderStatsDebugger.getThunderStatsData(12);
 			break;
 			case 12:

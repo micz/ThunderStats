@@ -415,12 +415,21 @@ var miczThunderStatsDB = {
 		let mWhere="";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns tot_msg
 	},
-	
+
 	getTotalMessageAttributes:function(mCallback){
 		let mWhat="count(*) as tot_msg_att";
 		let mFrom="messageAttributes";
 		let mWhere="";
 		return this.querySelect(mWhat,mFrom,mWhere,mCallback);	//returns tot_msg_att
+	},
+
+	queryDebuggerTimeRangeMessages:function(mFromDate,mToDate,mCallback){
+		let mWhat="count(distinct m.headerMessageID) as Num";
+		let mFrom="messages m";
+		let forbiddenFolders=this.queryGetForbiddenFolders();
+		let forbiddenFoldersStr="("+forbiddenFolders.join()+")";
+		let mWhere="m.date>"+mFromDate+"000 and m.date<"+mToDate+"000 AND m.folderID not in "+forbiddenFoldersStr;
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
 	},
 
 };

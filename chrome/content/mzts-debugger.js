@@ -223,6 +223,8 @@ var miczThunderStatsDebugger = {
 	addLogLines:function(text){
 		let debug_log = document.getElementById('mzts-debugger-log');
 		debug_log.value+=text+"\r\n";
+		let end_pos=debug_log.value.length;
+		debug_log.setSelectionRange(end_pos,end_pos);
 	},
 
 	clearLog:function(){

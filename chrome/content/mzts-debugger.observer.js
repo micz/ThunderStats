@@ -11,6 +11,11 @@ miczThunderStatsDebugger.observer.last_idx_update = function(mCallback){
 	ObserverService.addObserver(mCallback,"mzts-last-index-update",false);
 };
 
+miczThunderStatsDebugger.observer.last_idx_update_remove = function(mCallback){
+	let ObserverService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+	ObserverService.removeObserver(mCallback,"mzts-last-index-update");
+};
+
 miczThunderStatsDebugger.observer.callback.last_idx_update = {
 	observe: function(aSubject,aTopic,aData){
 			//dump(">>>>>>>>>>>>> miczThunderStats: [aSubject] "+aData+"\r\n");

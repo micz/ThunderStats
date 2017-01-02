@@ -28,6 +28,10 @@ var miczThunderStatsDebugger = {
 		this.run();
 	},
 
+	onClose: function(){
+		miczThunderStatsDebugger.observer.last_idx_update_remove(miczThunderStatsDebugger.observer.callback.last_idx_update);
+	},
+
 	fixWinHeight:function(){
 		sizeToContent();
 		var vbox = document.getElementById('ts_vbox');

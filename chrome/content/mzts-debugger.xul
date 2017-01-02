@@ -12,7 +12,7 @@
   persist="screenX screenY"
   buttons="accept"
   onload="miczThunderStatsDebugger.onLoad();"
-  onunload="">
+  onunload="miczThunderStatsDebugger.onClose();">
 
   <script type="application/javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js"/>
   <script type="application/javascript" src="chrome://thunderstats/content/mzts-debugger.js"/>

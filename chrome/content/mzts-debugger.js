@@ -93,7 +93,7 @@ var miczThunderStatsDebugger = {
 		message_body+="\r\n\r\n";
 		message_body+=document.getElementById('mzts-debugger-log').value;
 		let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-	    let sURL="mailto:" + miczThunderStatsUtils.mailto + "?subject=[ThunderStats] Debugger Report&body=" + encodeURI(message_body); // urlencode
+	    let sURL="mailto:" + miczThunderStatsUtils.mailto + "?subject=[ThunderStats] Debugger Report v"+miczThunderStatsUtils.ThunderStatsVersion+"&body=" + encodeURI(message_body); // urlencode
 		let MessageComposer=Components.classes["@mozilla.org/messengercompose;1"].getService(Components.interfaces.nsIMsgComposeService);
 		let ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 		let aURI = ioService.newURI(sURL, null, null);

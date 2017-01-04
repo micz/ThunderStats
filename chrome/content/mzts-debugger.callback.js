@@ -557,3 +557,46 @@ miczThunderStatsDebugger.callback.debugger_attributes_rcvd = {
 	return false;
 	},
 };
+
+miczThunderStatsDebugger.callback.debugger_used_attributes = {
+	empty:true,
+	data:new Array(),
+  handleResult: function(aResultSet) {
+    let result = miczThunderStatsCore.db.getResultObject(["attributeID","Num"],aResultSet);
+    this.empty=false;
+    for (let key in result) {
+		this.data.push(result[key]);
+	}
+	//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_recipients handleResult '+JSON.stringify(this.data)+'\r\n');
+  },
+
+  handleError: miczThunderStatsDebugger.callback.base.handleError,
+
+  handleCompletion: function(aReason) {
+		switch (aReason) {
+			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+				if(!this.empty){
+					miczThunderStatsDebugger.addLogLines("queryDebuggerUsedMessageAttributes: "+JSON.stringify(this.data));
+					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_7days_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
+				}else{
+					miczThunderStatsDebugger.addLogLines("queryDebuggerUsedMessageAttributes: not found");
+				}
+				miczLogger.log("debugger_used_attributes loaded.",0);
+				this.data=new Array();
+				this.empty=true;
+				miczThunderStatsDebugger.getThunderStatsData(16);
+				return true;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+				miczLogger.log("Query canceled by the user!",1);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+				miczLogger.log("Query aborted!",2);
+				this.data=new Array();
+				this.empty=true;
+				return false;
+		}
+	return false;
+	},
+};

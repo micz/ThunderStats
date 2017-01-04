@@ -457,6 +457,13 @@ var miczThunderStatsDB = {
 		return "SELECT "+mWhat+" FROM "+mFrom+" WHERE "+mWhere;
 	},
 
+	queryDebuggerUsedMessageAttributes:function(mCallback){
+		let mWhat="attributeID,count(attributeID) as Num";
+		let mFrom="messageAttributes";
+		let mWhere="1=1 group by attributeID order by 2 DESC";
+		return this.querySelect(mWhat,mFrom,mWhere,mCallback);
+	},
+
 };
 
 miczThunderStatsDB.callback={};

@@ -230,6 +230,9 @@ var miczThunderStatsDebugger = {
 				miczThunderStatsDebugger.addLogLines('queryDebuggerMessageAttributes QRY RCVD: '+miczThunderStatsDB.queryDebuggerMessageAttributes(mType_attribute_14,involves_attribute_14,identitiesStr_14,miczThunderStatsDebugger.callback.debugger_attributes_rcvd));
 			break;
 			case 15:
+				miczThunderStatsDB.queryDebuggerUsedMessageAttributes(miczThunderStatsDebugger.callback.debugger_used_attributes);
+			break
+			case 16:
 				miczThunderStatsDebugger.getThunderStatsData(99);
 			break;
 

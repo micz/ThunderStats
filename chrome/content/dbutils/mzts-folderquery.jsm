@@ -36,7 +36,7 @@ var miczThunderStatsFolderQ = {
 	},
 
 	run:function(){
-		for each (let [,analyzer] in Iterator(this._analyzers)) {
+		for (let [,analyzer] in Iterator(this._analyzers)) {
 		  analyzer.init(this);
 		}
 		let messages=new Array(); // actually creates an array of iterators
@@ -128,7 +128,7 @@ var miczThunderStatsFolderQ = {
    * @param messageGenerator a generator returning a sequence of messages in the
    *        folder
    */
-  _processMessages: function(messageGenerator_array) {
+  _processMessages: function*(messageGenerator_array) {
     // Use microseconds here.
     let maxDate = Date.now() * 1000;
     this.numDays = 30;
@@ -139,7 +139,7 @@ var miczThunderStatsFolderQ = {
     let maxMessages = 100000;// Services.prefs.getIntPref("extensions.mailsummaries.max_messages");
     let overflowed = false;
 
-    /*for each (let [,analyzer] in Iterator(this._analyzers)) {
+    /*for (let [,analyzer] in Iterator(this._analyzers)) {
       analyzer.init(this);
     }*/
 
@@ -147,7 +147,7 @@ var miczThunderStatsFolderQ = {
       let messageGenerator=messageGenerator_array[akey];
       //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] akey: '+JSON.stringify(akey)+'\r\n');
 
-      for each (let message in messageGenerator) {
+      for (let message in messageGenerator) {
         messagesProcessed++;
         //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
         if (maxMessages != -1 && messagesProcessed > maxMessages) {
@@ -167,7 +167,7 @@ var miczThunderStatsFolderQ = {
 		miczLogger.log("Too many message in the inbox! More than " + maxMessages + "... We stopped counting...",2);
 	}
 
-    for each (let [,analyzer] in Iterator(this._analyzers))
+    for (let [,analyzer] in Iterator(this._analyzers))
       analyzer.render();
 
     this.loading = false;
@@ -193,7 +193,7 @@ var miczThunderStatsFolderQ = {
     let reprocess = false;
 
     if (message.date > this.minDate) {
-      for each (let [,analyzer] in Iterator(this._analyzers)) {
+      for (let [,analyzer] in Iterator(this._analyzers)) {
         if (analyzer.processRecentMessage &&
             analyzer.processRecentMessage(message, deleted)) {
           reprocess = true;
@@ -202,7 +202,7 @@ var miczThunderStatsFolderQ = {
       }
     }
 
-    for each (let [,analyzer] in Iterator(this._analyzers)) {
+    for (let [,analyzer] in Iterator(this._analyzers)) {
       if (analyzer.processMessage &&
           analyzer.processMessage(message, deleted)) {
         reprocess = true;
@@ -220,7 +220,7 @@ var miczThunderStatsFolderQ = {
 
   reprocessMessages: function() {
    //dump(" Reprocessing messages\n");
-    for each (let [,analyzer] in Iterator(this._analyzers))
+    for (let [,analyzer] in Iterator(this._analyzers))
       analyzer.uninit();
 		let messages=new Array();
 		for (let key in this.folders){
@@ -238,7 +238,7 @@ var miczThunderStatsFolderQ = {
     //dump("Unloading folder summary\n\n");
 
     this.cancelProcessing();
-    for each (let [,analyzer] in Iterator(this._analyzers))
+    for (let [,analyzer] in Iterator(this._analyzers))
       analyzer.uninit();
 
     this._removeListeners();
@@ -253,7 +253,7 @@ var miczThunderStatsFolderQ = {
    */
   _updateAnalyzers: function() {
     if (!this.loading) {
-      for each (let [,analyzer] in Iterator(this._analyzers)) {
+      for (let [,analyzer] in Iterator(this._analyzers)) {
         if (analyzer.update)
           analyzer.update();
       }

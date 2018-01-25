@@ -160,10 +160,9 @@ var miczThunderStatsUtils = {
 	},
 
 	 getCurrentSystemLocale:function(){
-		let th_locale = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
-          .getService(Components.interfaces.nsILocaleService)
-		  .getSystemLocale()
-		  .getCategory('NSILOCALE_TIME');
+		let th_locale = Components.classes["@mozilla.org/intl/localeservice;1"]
+          .getService(Components.interfaces.mozILocaleService)
+		  .getAppLocaleAsLangTag();
 
 		  th_locale=th_locale.toLowerCase();
 

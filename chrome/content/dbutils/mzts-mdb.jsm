@@ -27,7 +27,7 @@ var miczThunderStatsDB = {
 
 		let dirName = OS.Constants.Path.profileDir;
 		let fileName = OS.Path.join(dirName, "global-messages-db.sqlite");
-		let file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+		let file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 		file.initWithPath(fileName);
 
 		if(this.mDb.openDatabase(file)){

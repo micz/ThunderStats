@@ -36,7 +36,7 @@ var miczThunderStatsFolderQ = {
 	},
 
 	run:function(){
-		for (let [,analyzer] in Iterator(this._analyzers)) {
+		for (let [,analyzer] of Object.entries(this._analyzers)) {
 		  analyzer.init(this);
 		}
 		let messages=new Array(); // actually creates an array of iterators

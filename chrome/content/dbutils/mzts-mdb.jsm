@@ -302,8 +302,7 @@ var miczThunderStatsDB = {
 	},
 
 	//returns an array of nsIMsgFolders of inbox folders for the given identity
-	queryGetInboxFolders:function(account_split){
-		if(!account_split) account_split=false;
+	queryGetInboxFolders:function(account_split = false){
 		if(!account_split){
 			if(this.inboxFolders!==null){
 				return this.inboxFolders;

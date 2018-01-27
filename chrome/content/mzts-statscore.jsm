@@ -262,11 +262,11 @@ miczThunderStatsCore.db = {
 	getInboxMessagesTotal:function(mIdentity,mCallback){
 		let mIdentityAddresses=miczThunderStatsUtils.getIdentitiesArray(mIdentity,miczThunderStatsCore.identities);
 		let mCurrentAccountKey=mIdentity.base_account_key;
-		miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mCurrentAccountKey '+JSON.stringify(mCurrentAccountKey)+'\r\n');
-		miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] miczThunderStatsCore.custom_account_key '+JSON.stringify(miczThunderStatsCore.custom_account_key)+'\r\n');
+		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mCurrentAccountKey '+JSON.stringify(mCurrentAccountKey)+'\r\n');
+		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] miczThunderStatsCore.custom_account_key '+JSON.stringify(miczThunderStatsCore.custom_account_key)+'\r\n');
 		let mSplitted=(mIdentity!=0)&&(mCurrentAccountKey!=miczThunderStatsCore.custom_account_key)&&miczThunderStatsPrefs.getBoolPref_TS('inbox_search_only_curr_account');
-		miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
-		miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
 		miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
 		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(mSplitted),mIdentityAddresses,this.win,mSplitted,mCurrentAccountKey);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);

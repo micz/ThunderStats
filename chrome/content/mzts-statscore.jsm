@@ -5,6 +5,7 @@ Components.utils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -29,10 +30,12 @@ var miczThunderStatsCore = {
 				if(account==null) continue;
 				if((account.incomingServer.type!='pop3')&&(account.incomingServer.type!='imap')) continue;
 				this.accounts[account.key]={};
-				this.accounts[account.key].name=account.incomingServer.rootFolder.prettiestName;
+				this.accounts[account.key].name=account.incomingServer.rootFolder.prettyName;
 				this.accounts[account.key].key=account.key;
 				this.accounts[account.key].identities=new Array();
-				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] account.incomingServer '+JSON.stringify(account.incomingServer.type)+'\r\n');
+				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] account.incomingServer '+JSON.stringify(account.incomingServer.type)+'\r\n');
+				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] account.incomingServer.rootFolder.prettiestName '+JSON.stringify(account.incomingServer.rootFolder.prettiestName)+'\r\n');
+				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] account.incomingServer.rootFolder.prettyName '+JSON.stringify(account.incomingServer.rootFolder.prettyName)+'\r\n');
 				// Enumerate identities
 				let identities=account.identities;
 				for (let j = 0; j < identities.length; j++) {
@@ -46,7 +49,7 @@ var miczThunderStatsCore = {
 					identity_item["key"]=identity.key;
 					identity_item["custom"]=false;
 					identity_item["account_key"]=account.key;
-					//identity_item["account_name"]=account.incomingServer.rootFolder.prettiestName;
+					//identity_item["account_name"]=account.incomingServer.rootFolder.prettyName;
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
 					this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity.email));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');

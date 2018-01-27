@@ -26,12 +26,10 @@ var miczLogger = {
 		return end.getHours() + ':' + end.getMinutes() + ':' + end.getSeconds() + '.' + end.getMilliseconds();
 	},
 
-	log:function(msg,level){ //level 0: msg, 1: warning, 2: critical error
+	log:function(msg,level = 0){ //level 0: msg, 1: warning, 2: critical error
 		if (this.consoleService === null){
 			this.consoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
 		}
-
-		if (!level) level=0;
 
 		if((level==0)&&(this.debug)){
 			this.consoleService.logStringMessage("ThunderStats >>> " + this.logTime() + "\n"+ msg);

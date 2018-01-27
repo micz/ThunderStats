@@ -442,7 +442,7 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
 				let m = moment(this.data[1]["Info"]);
-				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent m.format("L") '+m.format("L")+'\r\n');
+				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent m.format("L") '+m.format("L")+'\r\n',0);
 				if(!this.empty){
 					if(m.format("L")!=moment().format("L")){	//not today
 						this.total_mail+=this.data[1]["Num"];

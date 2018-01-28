@@ -562,7 +562,7 @@ miczThunderStatsTab.ui={
 			if(do_select_message){
 				try{
 					let folder_msg_iterator = fixIterator(curr_folder.msgDatabase.ReverseEnumerateMessages(), Components.interfaces.nsIMsgDBHdr);
-					for (let fmsg in folder_msg_iterator){
+					for each (let fmsg in folder_msg_iterator){
 						mwin.gFolderDisplay.selectMessage(fmsg);
 						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] subject: "+JSON.stringify(fmsg.subject)+"\r\n");
 						break;

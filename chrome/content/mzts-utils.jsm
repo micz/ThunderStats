@@ -159,18 +159,6 @@ var miczThunderStatsUtils = {
 	  return dest;
 	},
 	
-	miczfixIterator:function(aEnum, aIface){
-		if(miczThunderStatsUtils.checkTBVersion_pre57()){
-			return fixIterator(aEnum, aIface);
-		}else{
-			let output=new Array();
-			while (aEnum.hasMoreElements()){
-				 output.push(aEnum.getNext().QueryInterface(aIface));
-			}
-			return output;
-		}
-	},
-
 	getCurrentSystemLocale:function(){
 		let th_locale = null;
 		if(!miczThunderStatsUtils.checkTBVersion_pre57()){

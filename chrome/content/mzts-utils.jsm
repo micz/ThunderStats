@@ -160,9 +160,17 @@ var miczThunderStatsUtils = {
 	},
 
 	 getCurrentSystemLocale:function(){
-		let th_locale = Components.classes["@mozilla.org/intl/localeservice;1"]
-          .getService(Components.interfaces.mozILocaleService)
-		  .getAppLocaleAsLangTag();
+		let th_locale = null;
+		if(miczThunderStatsUtils.TBVersion>=57){
+			th_locale = Components.classes["@mozilla.org/intl/localeservice;1"]
+							.getService(Components.interfaces.mozILocaleService)
+							.getAppLocaleAsLangTag();
+		}else{
+			th_locale = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
+			           		.getService(Components.interfaces.nsILocaleService)
+			 		  		.getSystemLocale()
+			 		  		.getCategory('NSILOCALE_TIME');
+		}
 
 		  th_locale=th_locale.toLowerCase();
 

@@ -41,14 +41,14 @@ var miczThunderStatsFolderQ = {
 		}
 		let messages=new Array(); // actually creates an array of iterators
 		for (let key in this.folders){
-			messages.push(fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(), Ci.nsIMsgDBHdr));
-			let fld = this.folders[key],
-			//	mails = fixIterator(fld.msgDatabase.ReverseEnumerateMessages(), Ci.nsIMsgDBHdr),
-				l = messages.length;
+			messages.push(miczThunderStatsUtils.miczfixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(), Ci.nsIMsgDBHdr));
+			//let fld = this.folders[key],
+			//	mails = miczThunderStatsUtils.miczfixIterator(fld.msgDatabase.ReverseEnumerateMessages(), Ci.nsIMsgDBHdr),
+				//l = messages.length;
 				//messages.push(mails);
-				miczLogger.log('Iterator ' + l + ' for server ' + fld.server.prettyName + ' ...\n'+'Total according to nsIMsgFolder: ' + fld.getTotalMessages(false) , 0);
+				//miczLogger.log('Iterator ' + l + ' for server ' + fld.server.prettyName + ' ...\n'+'Total according to nsIMsgFolder: ' + fld.getTotalMessages(false) , 0);
 		}
-		miczLogger.log('this.processMessages(messages) - messages:  '+JSON.stringify(messages));
+		//miczLogger.log('this.processMessages(messages) - messages:  '+JSON.stringify(messages));
 		this.processMessages(messages);
 	},
 
@@ -95,7 +95,7 @@ var miczThunderStatsFolderQ = {
 		if(!self.loading){
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] DONE\r\n');
 			self._timeoutId = null;
-			gen.close();
+			//gen.close();
 		}else{
 			/*dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION\r\n');
 			if (first){
@@ -143,8 +143,8 @@ var miczThunderStatsFolderQ = {
       analyzer.init(this);
     }*/
 
-    for (let akey of messageGenerator_array) {
-      let messageGenerator=messageGenerator_array[akey];
+    for (let messageGenerator of messageGenerator_array) {
+      //let messageGenerator=messageGenerator_array[akey];
       //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] akey: '+JSON.stringify(akey)+'\r\n');
 
       for (let message of messageGenerator) {
@@ -225,7 +225,7 @@ var miczThunderStatsFolderQ = {
 		let messages=new Array();
 		for (let key of this.folders){
 			 if (this.isVirtualFolder(this.folders[key])) { continue; }
-			 messages.push(fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr));
+			 messages.push(miczThunderStatsUtils.miczfixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr));
     	}
     	this.processMessages(messages);
   },

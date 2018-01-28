@@ -158,10 +158,22 @@ var miczThunderStatsUtils = {
 	  }
 	  return dest;
 	},
+	
+	miczfixIterator:function(aEnum, aIface){
+		if(miczThunderStatsUtils.checkTBVersion_pre57()){
+			return fixIterator(aEnum, aIface);
+		}else{
+			let output=new Array();
+			while (aEnum.hasMoreElements()){
+				 output.push(aEnum.getNext().QueryInterface(aIface));
+			}
+			return output;
+		}
+	},
 
-	 getCurrentSystemLocale:function(){
+	getCurrentSystemLocale:function(){
 		let th_locale = null;
-		if(miczThunderStatsUtils.TBVersion>=57){
+		if(!miczThunderStatsUtils.checkTBVersion_pre57()){
 			th_locale = Components.classes["@mozilla.org/intl/localeservice;1"]
 							.getService(Components.interfaces.mozILocaleService)
 							.getAppLocaleAsLangTag();
@@ -385,6 +397,11 @@ var miczThunderStatsUtils = {
 	get TBVersion() {
 		let appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
 		return appInfo.version;
+	},
+	
+	checkTBVersion_pre57:function(){	//true if TB version is PRE 57, false otherwise
+		let versionComparator = Components.classes["@mozilla.org/xpcom/version-comparator;1"].getService(Components.interfaces.nsIVersionComparator);
+		return versionComparator.compare(miczThunderStatsUtils.TBVersion,'57.0')<0;
 	},
 
 	get TSVersion() {

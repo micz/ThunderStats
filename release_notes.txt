@@ -5,6 +5,7 @@ Version 1.4 - ??/??/2018
 - Debugger output improved.
 - Minor bugs fixed.
 - Added compatibility with Thunderbird 57+.
+- Moment.js library update to version 2.20.1.
 - 
 ==========
 Version 1.3.2 - 02/01/2017

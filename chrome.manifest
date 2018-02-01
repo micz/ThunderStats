@@ -8,5 +8,5 @@ locale		thunderstats	de			chrome/locale/de/
 locale		thunderstats	fr			chrome/locale/fr/
 
 style chrome://global/content/customizeToolbar.xul chrome://thunderstats/content/css/mzts-button.css appversion<=58.0b3
-style chrome://global/content/customizeToolbar.xul chrome://thunderstats/content/css/mzts-button.css appversion>=59.0a1
+style chrome://messenger/content/customizeToolbar.xul chrome://thunderstats/content/css/mzts-button.css appversion>=59.0a1
 overlay	chrome://messenger/content/messenger.xul chrome://thunderstats/content/mzts-overlay.xul

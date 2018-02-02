@@ -399,7 +399,7 @@ miczThunderStatsTab.ui={
 				let tmp_array=new Array();
 				let aggregate_day={};
 				aggregate_day.Num=0;
-				aggregate_day.Date=moment('1900/01/01');
+				aggregate_day.Date=moment('1900-01-01');
 				aggregate_day.aggregate=true;
 				for(let key in data_array){
 					if(moment(data_array[key].Date) <= spin_day){	//aggregate day

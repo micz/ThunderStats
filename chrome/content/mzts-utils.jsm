@@ -43,6 +43,13 @@ var miczThunderStatsUtils = {
 	getDateTimeString:function(mDate){	//mDate is a moment(Date) object
 		return mDate.format('L')+" "+mDate.format('LTS');
 	},
+	
+	getDate7DaysString:function(jDate){  //jDate is a javascript Date() object - returns YYYY-MM-DD
+	   let yyyy = jDate.getFullYear();
+	   let mm = jDate.getMonth() < 9 ? "0" + (jDate.getMonth() + 1) : (jDate.getMonth() + 1); // getMonth() is zero-based
+	   let dd  = jDate.getDate() < 10 ? "0" + jDate.getDate() : jDate.getDate();
+	   return "".concat(yyyy).concat(mm).concat(dd);
+	},
 
 	getTimeString:function(mDate){	//mDate is a moment(Date) object
 		return mDate.format('LTS');

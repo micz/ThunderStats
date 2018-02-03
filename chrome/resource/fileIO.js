@@ -19,7 +19,7 @@ var FileIO = {
 
   getFileFromProfDir: function(aAppendNames) {
     var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties).get('ProfD', Ci.nsIFile);
-    for each(let sName in aAppendNames)
+    for (let sName in aAppendNames)
       file.append(sName);
     return file;
   },
@@ -42,7 +42,7 @@ var FileIO = {
 
   getLines: function(file, charset) {
     var istream = Cc["@mozilla.org/network/file-input-stream;1"].createInstance(Ci.nsIFileInputStream);
-    istream.init(file, 0x01, 0444, 0);
+    istream.init(file, 0x01, 0o444, 0);
 
     var is = Cc["@mozilla.org/intl/converter-input-stream;1"].createInstance(Ci.nsIConverterInputStream);
 
@@ -88,4 +88,3 @@ var FileIO = {
     return aFiles;
   }
 };
-

@@ -128,7 +128,7 @@ var miczThunderStatsFolderQ = {
    * @param messageGenerator a generator returning a sequence of messages in the
    *        folder
    */
-  _processMessages: function(messageGenerator_array) {
+  _processMessages: function*(messageGenerator_array) {
     // Use microseconds here.
     let maxDate = Date.now() * 1000;
     this.numDays = 30;

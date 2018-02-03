@@ -27,7 +27,7 @@ var miczThunderStatsDB = {
 
 		let dirName = OS.Constants.Path.profileDir;
 		let fileName = OS.Path.join(dirName, "global-messages-db.sqlite");
-		let file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+		let file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsIFile);
 		file.initWithPath(fileName);
 
 		if(this.mDb.openDatabase(file)){
@@ -302,14 +302,13 @@ var miczThunderStatsDB = {
 	},
 
 	//returns an array of nsIMsgFolders of inbox folders for the given identity
-	queryGetInboxFolders:function(account_split){
-		if(!account_split) account_split=false;
+	queryGetInboxFolders:function(account_split = false){
 		if(!account_split){
-			if(this.inboxFolders!==null){
+			if((this.inboxFolders!==null)&&(this.inboxFolders.length>0)){
 				return this.inboxFolders;
 			}
 		}else{
-			if(this.inboxFolders_Account!==null){
+			if((this.inboxFolders_Account!==null)&&(this.inboxFolders_Account.length>0)){
 				return this.inboxFolders_Account;
 			}
 		}

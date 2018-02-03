@@ -22,7 +22,7 @@ miczThunderStatsTab.ui={
 	},
 
 	update_inbox0_inboxmsg:function(type,total_msg,unread_msg){	//type is "today" or "yesterday" or "customqry_oneday"
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab.ui.update_inbox0_inboxmsg] type '+JSON.stringify(type)+'\r\n');
+		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab.ui.update_inbox0_inboxmsg] type '+JSON.stringify(type)+'\r\n');
 		miczThunderStatsTab.ui.hideLoadingElement(type+"_inbox0_inboxmsg_wait");
 		$jQ("#"+type+"_inbox0_inboxmsg").text(total_msg);
 		miczThunderStatsTab.ui.hideLoadingElement(type+"_inbox0_inboxmsg_unread_wait");
@@ -55,7 +55,7 @@ miczThunderStatsTab.ui={
 				}
 			}
 			if(Object.keys(miczThunderStatsCore.accounts).length==1){	//If there is only one account, autochoose it
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
+				//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
 				$jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key);
 				$jQ("#"+selector_id).change();
 			}else{	//choose the chosen startup account from prefs
@@ -67,15 +67,15 @@ miczThunderStatsTab.ui={
 			}
 		}
 		/*for(let key in miczThunderStatsCore.identities){
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+Object.keys(miczThunderStatsCore.identities).length+"\r\n");
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+Object.keys(miczThunderStatsCore.identities).length+"\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");
 			if(tmp_account_key!=miczThunderStatsCore.identities[key]["account_key"]){	//it's a new account
 				tmp_account_key=miczThunderStatsCore.identities[key]["account_key"];
 				$jQ("#"+selector_id).append('<option class="mzts-sel-account" value="'+miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.identities[key]["account_key"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["account_key"]+"] "+miczThunderStatsCore.identities[key]["account_name"])+'</option>');
 			}
 			$jQ("#"+selector_id).append('<option class="mzts-sel-identity" value="'+miczThunderStatsCore.identities[key]["id"]+'">'+miczThunderStatsUtils.escapeHTML("["+miczThunderStatsCore.identities[key]["id"]+":"+miczThunderStatsCore.identities[key]["key"]+"] "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")")+'</option>');
 			if(Object.keys(miczThunderStatsCore.identities).length==1){	//If there is only one identity, autochoose it
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
+				//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
 				$jQ("#"+selector_id).val(miczThunderStatsCore.identities[key]["id"]);
 				$jQ("#"+selector_id).change();
 			}
@@ -106,7 +106,7 @@ miczThunderStatsTab.ui={
 
 	initDatePickers: function() {
 		//adding datepicker with week start init
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");
 		let locale_firstweekday=moment().startOf("week").format('d');
 		//document.getElementById('datepicker_from').setAttribute("firstdayofweek",locale_firstweekday);
 		//document.getElementById('datepicker_to').setAttribute("firstdayofweek",locale_firstweekday);
@@ -134,9 +134,9 @@ miczThunderStatsTab.ui={
 		aDatepickerTo.month=mto.format('MM')-1;
 		aDatepickerTo.year=mto.format('YYYY');*/
 		document.getElementById('datepicker_to_placeholder').appendChild(aDatepickerTo);
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentMomentLocale: "+moment.locale()+"\r\n");
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentMomentLocale: "+moment.locale()+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
 	},
 
 	initDatePickers_dates:function(){
@@ -186,11 +186,11 @@ miczThunderStatsTab.ui={
 		}
 		//DST fix
 		/*if(!dfrom.isDST()){
-			//dump(">>>>>>>>>>>>>> [customQueryViewSelect] dfrom isDST fix.\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [customQueryViewSelect] dfrom isDST fix.\r\n");
 			dfrom.subtract(1,'hour');
 		}
 		if(!dto.isDST()){
-			//dump(">>>>>>>>>>>>>> [customQueryViewSelect] dto isDST fix.\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [customQueryViewSelect] dto isDST fix.\r\n");
 			dto.subtract(1,'hour');
 		}*/
 		document.getElementById('datepicker_from').dateValue=dfrom.toDate();
@@ -198,8 +198,8 @@ miczThunderStatsTab.ui={
 		if(miczThunderStatsPrefs.customQryBookmarkImmediateUpdate){	//update statistics
 			miczThunderStatsTab.updateCustomQry();
 		}
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
 	},
 
 	openPrefWindow:function(){
@@ -210,7 +210,7 @@ miczThunderStatsTab.ui={
 	},
 
 	formatInvolvedTable: function(involvedData){	//data columns ["ID","Name","Mail","Num"]
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] formatInvolvedTable involvedData: "+JSON.stringify(involvedData)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] formatInvolvedTable involvedData: "+JSON.stringify(involvedData)+"\r\n");
 		let outString="<table class='mzts-tinvolved'>";
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 		outString+="<tr class='mzts-thead'><td class='mzts-row-num'>#</td><td>"+_bundleCW.GetStringFromName("ThunderStats.Name")+"</td><td>"+_bundleCW.GetStringFromName("ThunderStats.Mail")+"</td><td>"+_bundleCW.GetStringFromName("ThunderStats.Total")+"</td></tr>";
@@ -245,7 +245,7 @@ miczThunderStatsTab.ui={
 
 	util7DaysGraph_InsertLinebreaks:function(d){
 		let el = d3.select(this);
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] d: "+JSON.stringify(d)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] d: "+JSON.stringify(d)+"\r\n");
 		let words = d.day_str.split('|');
 		el.text('');
 
@@ -285,7 +285,7 @@ miczThunderStatsTab.ui={
 		let x = d3.scale.linear().domain([0, data_array.length]).range([0, w]);
 		let y = d3.scale.linear().domain([0, Math.ceil((d3.max(data_array, function(datum) { return datum.num; })+1)/10)*10]).rangeRound([h, 0]);
 
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab draw7DaysGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
@@ -336,7 +336,7 @@ miczThunderStatsTab.ui={
 							output+="|["+_bundleCW.GetStringFromName("ThunderStats.TimeGraph.today")+"]";
 							datum.day_str=output;
 						}
-						//dump(">>>>> TS: output: "+output+"\r\n");
+						//miczLogger.log(">>>>> TS: output: "+output+"\r\n");
 						if(_many_days>_many_days_max_labels){
 							let splitted=output.split('|');
 							output=splitted[1];
@@ -380,7 +380,7 @@ miczThunderStatsTab.ui={
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();
 
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 		if(Object.keys(data_array).length==0){
 			return;
 		}
@@ -399,11 +399,11 @@ miczThunderStatsTab.ui={
 				let tmp_array=new Array();
 				let aggregate_day={};
 				aggregate_day.Num=0;
-				aggregate_day.Date=moment('1900/01/01');
+				aggregate_day.Date=moment('1900-01-01');
 				aggregate_day.aggregate=true;
 				for(let key in data_array){
 					if(moment(data_array[key].Date) <= spin_day){	//aggregate day
-						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] aggregating: "+JSON.stringify(data_array[key])+"\r\n");
+						//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] aggregating: "+JSON.stringify(data_array[key])+"\r\n");
 						aggregate_day.Num+=data_array[key].Num;
 						aggregate_day.Date=Math.max(moment(aggregate_day.Date),moment(data_array[key].Date));
 					}else{		//keep day
@@ -433,16 +433,16 @@ miczThunderStatsTab.ui={
 			data_array[key].incremental_normalized=data_array[key].normalized+incr_norm;
 			incr_norm+=data_array[key].normalized;
 			data_array[key].bar_height=y(0) - y(data_array[key].normalized);
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height: "+JSON.stringify(data_array[key].bar_height)+"\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array[key].bar_height: "+JSON.stringify(data_array[key].bar_height)+"\r\n");
 			total_bar_height+=data_array[key].bar_height;
 			incr_bar_height+=data_array[key].bar_height;
 			data_array[key].y=h-incr_bar_height;
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] total_bar_height: "+JSON.stringify(total_bar_height)+"\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] total_bar_height: "+JSON.stringify(total_bar_height)+"\r\n");
 		}
 
 		//data_array=JSON.parse('[{"Date":"2010-09-21","Num":3,"incremental":3,"normalized":0.1875,"incremental_normalized":0.1875},{"Date":"2012-01-26","Num":1,"incremental":4,"normalized":0.0625,"incremental_normalized":0.25},{"Date":"2015-03-02","Num":3,"incremental":7,"normalized":0.1875,"incremental_normalized":0.4375},{"Date":"2015-03-08","Num":1,"incremental":8,"normalized":0.0625,"incremental_normalized":0.5},{"Date":"2015-03-13","Num":3,"incremental":11,"normalized":0.1875,"incremental_normalized":0.6875},{"Date":"2015-03-14","Num":5,"incremental":16,"normalized":0.3125,"incremental_normalized":1}]');
 
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0DateSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 
 		let chart = d3.select("#"+element_id_txt)
 			.append("svg:svg")
@@ -513,9 +513,9 @@ miczThunderStatsTab.ui={
 		for(let cc=step;cc<127;cc=cc+step){	//ligther colors
 			output.push('#'+parseInt(255).toString(16)+cc.toString(16)+cc.toString(16));
 		}
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getInboxColors] num_elements: "+JSON.stringify(num_elements)+"\r\n");
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getInboxColors] step: "+JSON.stringify(step)+"\r\n");
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getInboxColors] output: "+JSON.stringify(output)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getInboxColors] num_elements: "+JSON.stringify(num_elements)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getInboxColors] step: "+JSON.stringify(step)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getInboxColors] output: "+JSON.stringify(output)+"\r\n");
 		return output;
 	},
 
@@ -537,9 +537,9 @@ miczThunderStatsTab.ui={
 		while(output.length<num_elements){
 			output=output.concat(output1,output2);
 		}
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] num_elements: "+JSON.stringify(num_elements)+"\r\n");
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] step: "+JSON.stringify(step)+"\r\n");
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] output: "+JSON.stringify(output)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] num_elements: "+JSON.stringify(num_elements)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] step: "+JSON.stringify(step)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab utilDrawInbox0FolderSpreadGraph_getOtherFoldersColors] output: "+JSON.stringify(output)+"\r\n");
 		return output;
 	},
 
@@ -551,24 +551,24 @@ miczThunderStatsTab.ui={
 		}else{
 			let tabmail = mdoc.getElementById("tabmail");
 			tabmail.selectTabByIndex(null,0);
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mKey: "+JSON.stringify(d.data.mKey)+"\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mKey: "+JSON.stringify(d.data.mKey)+"\r\n");
 			let curr_folder = MailUtils.getFolderForURI(d.data.folder_url);
 			let do_select_message=(mwin.gFolderDisplay.displayedFolder!=curr_folder);	//the selected folder is the same
 			if(do_select_message){
 				mwin.gFolderTreeView.selectFolder(curr_folder);
 			}
 			do_select_message=do_select_message&&(mwin.gFolderDisplay.selectedCount==0);	//there is already a selected folder
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mwin.gFolderDisplay.selectedCount: "+mwin.gFolderDisplay.selectedCount+"\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mwin.gFolderDisplay.selectedCount: "+mwin.gFolderDisplay.selectedCount+"\r\n");
 			if(do_select_message){
 				try{
 					let folder_msg_iterator = fixIterator(curr_folder.msgDatabase.ReverseEnumerateMessages(), Components.interfaces.nsIMsgDBHdr);
-					for each (let fmsg in folder_msg_iterator){
+					for (let fmsg of folder_msg_iterator){
 						mwin.gFolderDisplay.selectMessage(fmsg);
-						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] subject: "+JSON.stringify(fmsg.subject)+"\r\n");
+						//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] subject: "+JSON.stringify(fmsg.subject)+"\r\n");
 						break;
 					}
 				}catch(e){
-					dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] error: "+e.message+"\r\n");
+					miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] error: "+e.message+"\r\n");
 				}
 			}
 		}
@@ -577,7 +577,7 @@ miczThunderStatsTab.ui={
 	drawInbox0FolderSpreadGraph:function(element_id_txt,data_array){
 		//miczLogger.log(">>>>>>>>>>>>>> Inbox0FolderSpreadGraph start ["+element_id_txt+"]",0);
 		let inboxFolderURLs=miczThunderStatsDB.queryGetInboxFolderURLs();
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] inboxFolderURLs: "+JSON.stringify(inboxFolderURLs)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] inboxFolderURLs: "+JSON.stringify(inboxFolderURLs)+"\r\n");
 		miczThunderStatsTab.ui.mwin=miczThunderStatsUtils.getMail3PaneWindow();
 		//let mtabcontainer=mwin.document.getElementById('tabmail').tabContainer;
 		//let mdoc=mwin.document;
@@ -595,7 +595,7 @@ miczThunderStatsTab.ui={
     miczLogger.log(">>>>>>>>>>>>>> drawInbox0FolderSpreadGraph miczThunderStatsTab.ui.last_pos0[poly_"+element_id_txt+": "+miczThunderStatsTab.ui.last_pos0['poly_'+element_id_txt],0);
     miczLogger.log(">>>>>>>>>>>>>> drawInbox0FolderSpreadGraph miczThunderStatsTab.ui.last_pos1[poly_"+element_id_txt+": "+miczThunderStatsTab.ui.last_pos1['poly_'+element_id_txt],0);
 */
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] data_array: "+JSON.stringify(data_array)+"\r\n");
 
 		//data_array=JSON.parse('[{"Folder":"All Mail","Num":10},{"Folder":"Inbox","Num":21},{"Folder":"test1","Num":21},{"Folder":"test2","Num":21},{"Folder":"test3","Num":21},{"Folder":"test4","Num":21},{"Folder":"test5","Num":21},{"Folder":"test6","Num":21},{"Folder":"test7","Num":2},{"Folder":"test8","Num":3},{"Folder":"test________________9","Num":14},{"Folder":"test_____________10","Num":14},{"Folder":"test11","Num":14},{"Folder":"test12","Num":14}]');
 
@@ -633,9 +633,9 @@ miczThunderStatsTab.ui={
 			//element.label=data_array[key].Folder;
 			element.folder_url=data_array[key].FolderURI;
 			element.normalized=data_array[key].Num/data_sum;
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] FolderURI "+data_array[key].FolderURI+"\r\n");
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] Folder "+data_array[key].Folder+"\r\n");
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] prettyName "+tmp_folder.prettyName+"\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] FolderURI "+data_array[key].FolderURI+"\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] Folder "+data_array[key].Folder+"\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] prettyName "+tmp_folder.prettyName+"\r\n");
 			norm_data.push(element);
 		}
 
@@ -703,7 +703,7 @@ miczThunderStatsTab.ui={
 					return d.data.label+" ("+d.data.value+")";
 				})
 				.attr("class",function(d){
-									//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] d.data.folder_url: "+JSON.stringify(d.data.folder_url)+"\r\n");
+									//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] d.data.folder_url: "+JSON.stringify(d.data.folder_url)+"\r\n");
 									if(inboxFolderURLs.indexOf(d.data.folder_url)>-1){
 										return "tooltip inbox_label pointer";
 									}else{
@@ -723,7 +723,7 @@ miczThunderStatsTab.ui={
 						let pos = outerArc.centroid(d);
 						pos[0] = radius * (midAngle(d) < Math.PI ? 1 : -1);
 						pos[1] = miczThunderStatsTab.ui.utilInbox0FolderSpreadGraph_LabelPosition(pos,'text_'+element_id_txt);
-						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] "+d.data.label+" "+JSON.stringify(pos)+"\r\n");
+						//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] "+d.data.label+" "+JSON.stringify(pos)+"\r\n");
 						return "translate("+ pos +")";
 				})
 				.style("text-anchor", function(d){
@@ -767,13 +767,13 @@ miczThunderStatsTab.ui={
 		if((miczThunderStatsTab.ui.last_pos0[namespace]==0)||(miczThunderStatsTab.ui.last_pos1[namespace]==0)){
 			miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
 			miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
-			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label\r\n");
+			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label\r\n");
 			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first label",0);
 			return pos[1];
 		}	//first label
 		if(pos[0]>0){	//starting from 12 hours CW...
 			if(pos[1]<0){ //first quarter
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first quarter\r\n");
+				//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first quarter\r\n");
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first quarter",0);
 				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1[namespace]);
 				//if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]<miczThunderStatsTab.ui.last_pos1[namespace])){
@@ -791,7 +791,7 @@ miczThunderStatsTab.ui={
         			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				}
 			}else{	//second quarter
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] second quarter\r\n");
+				//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] second quarter\r\n");
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] second quarter",0);
 				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1[namespace]);
 				//if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]<miczThunderStatsTab.ui.last_pos1[namespace])){
@@ -811,14 +811,14 @@ miczThunderStatsTab.ui={
 			}
 		}else{	//second half
 			if(miczThunderStatsTab.ui.last_pos0[namespace]>0){	//first label in the second half
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label in the second half\r\n");
+				//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] first label in the second half\r\n");
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] first label in second half",0);
 				miczThunderStatsTab.ui.last_pos0[namespace]=pos[0];
 				miczThunderStatsTab.ui.last_pos1[namespace]=pos[1];
 				return pos[1];
 			}
 			if(pos[1]>0){ //third quarter
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] third quarter\r\n");
+				//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] third quarter\r\n");
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] third quarter",0);
 				let label_diff=Math.abs(pos[1]-miczThunderStatsTab.ui.last_pos1[namespace]);
 				//if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]>miczThunderStatsTab.ui.last_pos1[namespace])){
@@ -836,7 +836,7 @@ miczThunderStatsTab.ui={
         			//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				}
 			}else{	//fourth quarter
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fourth quarter\r\n");
+				//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fourth quarter\r\n");
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fourth quarter",0);
 				let label_diff=miczThunderStatsTab.ui.last_pos1[namespace]-pos[1];
 				//if(((pos[1]*miczThunderStatsTab.ui.last_pos1[namespace])>0)&&(pos[1]>miczThunderStatsTab.ui.last_pos1[namespace])){
@@ -846,9 +846,9 @@ miczThunderStatsTab.ui={
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[0]: "+pos[0],0);
         		//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] pos[1]: "+pos[1],0);
 				//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] label_diff: "+label_diff,0);
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] label_diff: "+label_diff+"\r\n");
+				//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] label_diff: "+label_diff+"\r\n");
 				if(label_diff<miczThunderStatsTab.ui.label_height+offset_labelpos){
-					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fixing position\r\n");
+					//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] fixing position\r\n");
 					//miczLogger.log(">>>>>>>>>>>>>> utilInbox0FolderSpreadGraph_LabelPosition ["+namespace+"] fixing position",0);
 					//pos[1]-=miczThunderStatsTab.ui.label_height+label_diff;
 					pos[1]=miczThunderStatsTab.ui.last_pos1[namespace]-miczThunderStatsTab.ui.label_height-offset_labelpos;
@@ -908,7 +908,7 @@ miczThunderStatsTab.ui={
 						current_data.data[eld].value+=tmp_prgrss_data;
 						tmp_prgrss_data=current_data.data[eld].value;
 				}
-				//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] utilDrawTimeGraph_ArrangeData current_data: "+JSON.stringify(current_data)+"\r\n");
+				//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] utilDrawTimeGraph_ArrangeData current_data: "+JSON.stringify(current_data)+"\r\n");
 			}
 
 			data_output.push(current_data);
@@ -962,11 +962,11 @@ miczThunderStatsTab.ui={
 
 		let bar_width=(width/(23*data_types.length));
 
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawTimeGraph data_types: "+JSON.stringify(data_types)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] drawTimeGraph data_types: "+JSON.stringify(data_types)+"\r\n");
 
 		//let data = [{"type": "today_sent","data": [{"type": "today_sent","hour": "11","value": "63"},{"type": "today_sent","hour": "18","value": "18"},{"type": "today_sent","date": "21","value": "53"}]}];
 
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] drawTimeGraph data: "+JSON.stringify(data)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] drawTimeGraph data: "+JSON.stringify(data)+"\r\n");
 
 		//remove old graph
 		$jQ("#"+element_id_txt+"_svg_graph").remove();

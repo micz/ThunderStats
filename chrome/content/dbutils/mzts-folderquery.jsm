@@ -36,19 +36,19 @@ var miczThunderStatsFolderQ = {
 	},
 
 	run:function(){
-		for each (let [,analyzer] in Iterator(this._analyzers)) {
+		for (let analyzer of this._analyzers) {
 		  analyzer.init(this);
 		}
 		let messages=new Array(); // actually creates an array of iterators
 		for (let key in this.folders){
 			messages.push(fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(), Ci.nsIMsgDBHdr));
-			/*let fld = this.folders[key],
-				mails = fixIterator(fld.msgDatabase.ReverseEnumerateMessages(), Ci.nsIMsgDBHdr),
-				l = messages.length;
-				messages.push(mails);
-				miczLogger.log('Iterator ' + l + ' for server ' + fld.server.prettyName + ' ...\n'
-								 + 'Total according to nsIMsgFolder: ' + fld.getTotalMessages(false) , 0);*/
+			//let fld = this.folders[key],
+			//	mails = fixIterator(fld.msgDatabase.ReverseEnumerateMessages(), Ci.nsIMsgDBHdr),
+				//l = messages.length;
+				//messages.push(mails);
+				//miczLogger.log('Iterator ' + l + ' for server ' + fld.server.prettyName + ' ...\n'+'Total according to nsIMsgFolder: ' + fld.getTotalMessages(false) , 0);
 		}
+		//miczLogger.log('this.processMessages(messages) - messages:  '+JSON.stringify(messages));
 		this.processMessages(messages);
 	},
 
@@ -95,7 +95,7 @@ var miczThunderStatsFolderQ = {
 		if(!self.loading){
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] DONE\r\n');
 			self._timeoutId = null;
-			gen.close();
+			//gen.close();
 		}else{
 			/*dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ processMessages] ITERATION\r\n');
 			if (first){
@@ -139,15 +139,15 @@ var miczThunderStatsFolderQ = {
     let maxMessages = 100000;// Services.prefs.getIntPref("extensions.mailsummaries.max_messages");
     let overflowed = false;
 
-    /*for each (let [,analyzer] in Iterator(this._analyzers)) {
+    /*for (let analyzer of this._analyzers) {
       analyzer.init(this);
     }*/
 
-    for (let akey in messageGenerator_array) {
-      let messageGenerator=messageGenerator_array[akey];
+    for (let messageGenerator of messageGenerator_array) {
+      //let messageGenerator=messageGenerator_array[akey];
       //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] akey: '+JSON.stringify(akey)+'\r\n');
 
-      for each (let message in messageGenerator) {
+      for (let message of messageGenerator) {
         messagesProcessed++;
         //dump('>>>>>>>>>>>>>> [miczThunderStatsFolderQ _processMessages] messagesProcessed: '+JSON.stringify(messagesProcessed)+'\r\n');
         if (maxMessages != -1 && messagesProcessed > maxMessages) {
@@ -167,7 +167,7 @@ var miczThunderStatsFolderQ = {
 		miczLogger.log("Too many message in the inbox! More than " + maxMessages + "... We stopped counting...",2);
 	}
 
-    for each (let [,analyzer] in Iterator(this._analyzers))
+    for (let analyzer of this._analyzers)
       analyzer.render();
 
     this.loading = false;
@@ -193,7 +193,7 @@ var miczThunderStatsFolderQ = {
     let reprocess = false;
 
     if (message.date > this.minDate) {
-      for each (let [,analyzer] in Iterator(this._analyzers)) {
+      for (let analyzer of this._analyzers) {
         if (analyzer.processRecentMessage &&
             analyzer.processRecentMessage(message, deleted)) {
           reprocess = true;
@@ -202,7 +202,7 @@ var miczThunderStatsFolderQ = {
       }
     }
 
-    for each (let [,analyzer] in Iterator(this._analyzers)) {
+    for (let analyzer of this._analyzers) {
       if (analyzer.processMessage &&
           analyzer.processMessage(message, deleted)) {
         reprocess = true;
@@ -220,10 +220,10 @@ var miczThunderStatsFolderQ = {
 
   reprocessMessages: function() {
    //dump(" Reprocessing messages\n");
-    for each (let [,analyzer] in Iterator(this._analyzers))
+    for (let analyzer of this._analyzers)
       analyzer.uninit();
 		let messages=new Array();
-		for (let key in this.folders){
+		for (let key of this.folders){
 			 if (this.isVirtualFolder(this.folders[key])) { continue; }
 			 messages.push(fixIterator(this.folders[key].msgDatabase.ReverseEnumerateMessages(),Ci.nsIMsgDBHdr));
     	}
@@ -238,7 +238,7 @@ var miczThunderStatsFolderQ = {
     //dump("Unloading folder summary\n\n");
 
     this.cancelProcessing();
-    for each (let [,analyzer] in Iterator(this._analyzers))
+    for (let analyzer of this._analyzers)
       analyzer.uninit();
 
     this._removeListeners();
@@ -253,7 +253,7 @@ var miczThunderStatsFolderQ = {
    */
   _updateAnalyzers: function() {
     if (!this.loading) {
-      for each (let [,analyzer] in Iterator(this._analyzers)) {
+      for (let analyzer of this._analyzers) {
         if (analyzer.update)
           analyzer.update();
       }

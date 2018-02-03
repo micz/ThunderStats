@@ -9,6 +9,7 @@ height:240px;
 .chart_inbox0_datemsg svg{
 display:block;
 margin:0 auto;
+overflow:visible;
 }
 
 .chart_7days text.data_label {

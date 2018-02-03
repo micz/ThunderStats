@@ -10,7 +10,7 @@ Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 
 var miczThunderStatsUtils = {
 
-	ThunderStatsVersion:'1.3.3alpha',
+	ThunderStatsVersion:'1.4',
 	mailto:'m@micz.it',
 	mHost:null,
 	_y_is_last_business_day:false,
@@ -42,6 +42,13 @@ var miczThunderStatsUtils = {
 
 	getDateTimeString:function(mDate){	//mDate is a moment(Date) object
 		return mDate.format('L')+" "+mDate.format('LTS');
+	},
+	
+	getDate7DaysString:function(jDate){  //jDate is a javascript Date() object - returns YYYY-MM-DD
+	   let yyyy = jDate.getFullYear();
+	   let mm = jDate.getMonth() < 9 ? "0" + (jDate.getMonth() + 1) : (jDate.getMonth() + 1); // getMonth() is zero-based
+	   let dd  = jDate.getDate() < 10 ? "0" + jDate.getDate() : jDate.getDate();
+	   return "".concat(yyyy).concat(mm).concat(dd);
 	},
 
 	getTimeString:function(mDate){	//mDate is a moment(Date) object
@@ -158,12 +165,19 @@ var miczThunderStatsUtils = {
 	  }
 	  return dest;
 	},
-
-	 getCurrentSystemLocale:function(){
-		let th_locale = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
-          .getService(Components.interfaces.nsILocaleService)
-		  .getSystemLocale()
-		  .getCategory('NSILOCALE_TIME');
+	
+	getCurrentSystemLocale:function(){
+		let th_locale = null;
+		if(!miczThunderStatsUtils.checkTBVersion_pre57()){
+			th_locale = Components.classes["@mozilla.org/intl/localeservice;1"]
+							.getService(Components.interfaces.mozILocaleService)
+							.getAppLocaleAsLangTag();
+		}else{
+			th_locale = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
+			           		.getService(Components.interfaces.nsILocaleService)
+			 		  		.getSystemLocale()
+			 		  		.getCategory('NSILOCALE_TIME');
+		}
 
 		  th_locale=th_locale.toLowerCase();
 
@@ -214,7 +228,7 @@ var miczThunderStatsUtils = {
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(mFolder.URI)+'\r\n');
 		}
 		if (mFolder.hasSubFolders){
-			for (let folder in fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){
+			for (let folder of fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){
 				let tmp_inbox=miczThunderStatsUtils.getInboxFoldersObjects(folder);
 				if(tmp_inbox.length > 0){
 					arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,tmp_inbox);
@@ -378,6 +392,11 @@ var miczThunderStatsUtils = {
 	get TBVersion() {
 		let appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
 		return appInfo.version;
+	},
+	
+	checkTBVersion_pre57:function(){	//true if TB version is PRE 57, false otherwise
+		let versionComparator = Components.classes["@mozilla.org/xpcom/version-comparator;1"].getService(Components.interfaces.nsIVersionComparator);
+		return versionComparator.compare(miczThunderStatsUtils.TBVersion,'57.0')<0;
 	},
 
 	get TSVersion() {

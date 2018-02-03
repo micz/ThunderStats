@@ -5,6 +5,7 @@ Components.utils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+Components.utils.import("resource://thunderstats/miczLogger.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -29,10 +30,12 @@ var miczThunderStatsCore = {
 				if(account==null) continue;
 				if((account.incomingServer.type!='pop3')&&(account.incomingServer.type!='imap')) continue;
 				this.accounts[account.key]={};
-				this.accounts[account.key].name=account.incomingServer.rootFolder.prettiestName;
+				this.accounts[account.key].name=account.incomingServer.rootFolder.prettyName;
 				this.accounts[account.key].key=account.key;
 				this.accounts[account.key].identities=new Array();
-				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] account.incomingServer '+JSON.stringify(account.incomingServer.type)+'\r\n');
+				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] account.incomingServer '+JSON.stringify(account.incomingServer.type)+'\r\n');
+				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] account.incomingServer.rootFolder.prettiestName '+JSON.stringify(account.incomingServer.rootFolder.prettiestName)+'\r\n');
+				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] account.incomingServer.rootFolder.prettyName '+JSON.stringify(account.incomingServer.rootFolder.prettyName)+'\r\n');
 				// Enumerate identities
 				let identities=account.identities;
 				for (let j = 0; j < identities.length; j++) {
@@ -46,7 +49,7 @@ var miczThunderStatsCore = {
 					identity_item["key"]=identity.key;
 					identity_item["custom"]=false;
 					identity_item["account_key"]=account.key;
-					//identity_item["account_name"]=account.incomingServer.rootFolder.prettiestName;
+					//identity_item["account_name"]=account.incomingServer.rootFolder.prettyName;
 					this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)]=identity_item;
 					this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity.email));
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
@@ -142,8 +145,8 @@ miczThunderStatsCore.db = {
 		mFromDate.setHours(0,0,0,0);
 		let mToDate=new Date(mGivenDay);
 		mToDate.setHours(24,0,0,0);
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getOneDayMessages] mToDate '+JSON.stringify(mToDate)+'\r\n');
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getOneDayMessages] mFromDate '+JSON.stringify(mFromDate)+'\r\n');
+		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab getOneDayMessages] mToDate '+JSON.stringify(mToDate)+'\r\n');
+		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab getOneDayMessages] mFromDate '+JSON.stringify(mFromDate)+'\r\n');
 		return miczThunderStatsDB.queryMessages(mType,mFromDate.getTime(),mToDate.getTime(),mIdentity,mCallback);
 	},
 
@@ -259,11 +262,11 @@ miczThunderStatsCore.db = {
 	getInboxMessagesTotal:function(mIdentity,mCallback){
 		let mIdentityAddresses=miczThunderStatsUtils.getIdentitiesArray(mIdentity,miczThunderStatsCore.identities);
 		let mCurrentAccountKey=mIdentity.base_account_key;
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mCurrentAccountKey '+JSON.stringify(mCurrentAccountKey)+'\r\n');
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] miczThunderStatsCore.custom_account_key '+JSON.stringify(miczThunderStatsCore.custom_account_key)+'\r\n');
+		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mCurrentAccountKey '+JSON.stringify(mCurrentAccountKey)+'\r\n');
+		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] miczThunderStatsCore.custom_account_key '+JSON.stringify(miczThunderStatsCore.custom_account_key)+'\r\n');
 		let mSplitted=(mIdentity!=0)&&(mCurrentAccountKey!=miczThunderStatsCore.custom_account_key)&&miczThunderStatsPrefs.getBoolPref_TS('inbox_search_only_curr_account');
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
-		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentity: " +JSON.stringify(mIdentity)+"\r\n");
+		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessagesTotal] mIdentityAddress: " +JSON.stringify(mIdentityAddresses)+"\r\n");
 		miczThunderStatsFolderQ.unregisterAnalyzer(mCallback);
 		miczThunderStatsFolderQ.init(miczThunderStatsDB.queryGetInboxFolders(mSplitted),mIdentityAddresses,this.win,mSplitted,mCurrentAccountKey);
 		miczThunderStatsFolderQ.registerAnalyzer(mCallback);

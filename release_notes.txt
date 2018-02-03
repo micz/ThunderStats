@@ -1,6 +1,9 @@
 -= ThunderStats Thunderbird Addon Release Notes =-
 
 ==========
+Version 1.5 - ??/??/2018
+- 
+==========
 Version 1.4 - 03/02/2018
 - Debugger output improved.
 - Minor bugs fixed.

@@ -123,25 +123,29 @@ var miczThunderStatsDebugger = {
 		let pref_branch_array={};
 		let pref_branch_key=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch(miczThunderStatsPrefs.pref_base).getChildList("",pref_branch_count,pref_branch_array);
 		output+="Count "+JSON.stringify(pref_branch_count)+"\r\n";
+		let prefs_item_array=[];
 		for (let ii in pref_branch_key){
-			output+=pref_branch_key[ii]+": ";
+			let item_output=pref_branch_key[ii]+": ";
 			try{
 				try{
-					output+=miczThunderStatsPrefs.getCharPref_TS(pref_branch_key[ii]);
+					item_output+=miczThunderStatsPrefs.getCharPref_TS(pref_branch_key[ii]);
 				}finally{
 					try{
-						output+=miczThunderStatsPrefs.getIntPref_TS(pref_branch_key[ii]);
+						item_output+=miczThunderStatsPrefs.getIntPref_TS(pref_branch_key[ii]);
 					}finally{
 						try{
-							output+=miczThunderStatsPrefs.getBoolPref_TS(pref_branch_key[ii]);
+							item_output+=miczThunderStatsPrefs.getBoolPref_TS(pref_branch_key[ii]);
 						}finally{
 							//output+="error";
 						}
 					}
 				}
 			}catch(e){ }
-			output+="\r\n";
+			item_output+="\r\n";
+			prefs_item_array.push(item_output);
 		}
+		prefs_item_array.sort();
+		output+=prefs_item_array.join('');
 		return output.trim();
 	},
 

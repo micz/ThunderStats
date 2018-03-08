@@ -2,6 +2,7 @@
 
 ==========
 Version 1.5 - ??/??/2018
+- Debugger output improved.
 - 
 -==========
 Version 1.4.1 - 05/02/2018

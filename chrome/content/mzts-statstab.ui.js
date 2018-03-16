@@ -107,10 +107,10 @@ miczThunderStatsTab.ui={
 	initDatePickers: function() {
 		//adding datepicker with week start init
 		//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");
-		let locale_firstweekday=moment().startOf("week").format('d');
 		//document.getElementById('datepicker_from').setAttribute("firstdayofweek",locale_firstweekday);
 		//document.getElementById('datepicker_to').setAttribute("firstdayofweek",locale_firstweekday);
-		let aDatepickerFrom = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
+		$jQ('#mzts-datepicker_from').datepicker('setDate',moment().subtract(15,'d').toDate());
+		/*let aDatepickerFrom = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
 		aDatepickerFrom.setAttribute("id", "datepicker_from");
 		aDatepickerFrom.setAttribute("type", "popup");
 		aDatepickerFrom.setAttribute("class", "customqry_datepicker");
@@ -121,12 +121,12 @@ miczThunderStatsTab.ui={
 		aDatepickerFrom.date=mfrom.format('DD');
 		aDatepickerFrom.month=mfrom.format('MM')-1;
 		aDatepickerFrom.year=mfrom.format('YYYY');*/
-		document.getElementById('datepicker_from_placeholder').appendChild(aDatepickerFrom);
+		/*document.getElementById('datepicker_from_placeholder').appendChild(aDatepickerFrom);*/
 		let aDatepickerTo = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul","datepicker");
 		aDatepickerTo.setAttribute("id", "datepicker_to");
 		aDatepickerTo.setAttribute("type", "popup");
 		aDatepickerTo.setAttribute("class", "customqry_datepicker");
-		aDatepickerTo.setAttribute("firstdayofweek", locale_firstweekday);
+		aDatepickerTo.setAttribute("firstdayofweek", moment().startOf("week").format('d'));
 		aDatepickerTo.onchange=miczThunderStatsTab.ui.checkDatePickers_To;
 		//aDatepickerTo.dateValue=moment().subtract(1,'d').toDate();
 		/*let mto=moment().subtract(1,'d');

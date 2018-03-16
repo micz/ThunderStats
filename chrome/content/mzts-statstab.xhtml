@@ -23,6 +23,7 @@
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css"/>
 	<link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-dropdownmenu.css"/>
     <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css"/>
+    <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/datepicker.css"/>
     <title>&ThunderStats.TABTitle;</title>
 
     <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.min.js"/>
@@ -30,6 +31,7 @@
     <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.ba-replacetext.js"/>
     <script type="application/javascript" src="chrome://thunderstats/content/jslib/d3.js"/>
     <script type="application/javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js"/>
+    <script type="application/javascript" src="chrome://thunderstats/content/jslib/datepicker.js"/>
     <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.js"/>
     <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.callback.js"/>
     <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.observer.js"/>
@@ -87,6 +89,12 @@
 		});
 
 		$jQ('img.tooltip').tooltipster({debug:false,theme:'tooltipster-light',contentAsHTML:true,arrow:false,position:'top'});
+
+
+      //Init datepickers
+      $jQ('[data-toggle="datepicker"]').datepicker({
+        weekStart:moment().startOf("week").format('d'),
+      });
 
 	});
 	</script>
@@ -269,7 +277,6 @@
 			</div> <!--tab 7days-->
 
 			<div id="tab_customqry" class="tab">
-				<!--<div id="customqry_dashboard">From <xul:datepicker type="popup" id="datepicker_from"/> To <xul:datepicker type="popup" id="datepicker_to"/> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();">&ThunderStats.UpdateCustomQry;</button><span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>-->
 				<div id="customqry_dashboard"><div id="cssmenu">
 					<ul>
 					   <li class="active has-sub"><a href="#nil"><img src="chrome://thunderstats/skin/mzts-customqry-view.png" title="&ThunderStats.Views;" class="tooltip"/></a>
@@ -284,7 +291,7 @@
 						  </ul>
 						</li>
 					</ul>
-					</div> &ThunderStats.From; <span id="datepicker_from_placeholder"></span> &ThunderStats.To; <span id="datepicker_to_placeholder"></span> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();" id="customqry_update_btn">&ThunderStats.UpdateCustomQry;</button> <input type="checkbox" id="customqry_only_bd"/> &ThunderStats.OnlyBDCustomQry;<span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>
+					</div> &ThunderStats.From; <span id="datepicker_from_placeholder"><input type="text" data-toggle="datepicker" class="form-control docs-date" id="mzts-datepicker_from" placeholder="Pick a date"/></span> &ThunderStats.To; <span id="datepicker_to_placeholder"></span> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();" id="customqry_update_btn">&ThunderStats.UpdateCustomQry;</button> <input type="checkbox" id="customqry_only_bd"/> &ThunderStats.OnlyBDCustomQry;<span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span></div>
 				<div id="table_customqry">
 				  <div id="tier1_customqry" class="tier1">
 					<div class="chunk" id="top_left_chunk_customqry">

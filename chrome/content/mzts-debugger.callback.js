@@ -338,7 +338,7 @@ miczThunderStatsDebugger.callback.stats_customqry_sent = {
     handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				let m = moment(this.data[1]["Info"]);
+				let m = moment(miczThunderStatsUtils.getDate7DaysString(new Date(this.data[1]["Info"])),"YYYYMMDD");
 				if(!this.empty){
 					this.total_mail+=this.data[1]["Num"];
 					this.data_customqry_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]});
@@ -396,7 +396,7 @@ miczThunderStatsDebugger.callback.stats_customqry_rcvd = {
     handleCompletion: function(aReason) {
 		switch (aReason) {
 			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				let m = moment(this.data[1]["Info"]);
+				let m = moment(miczThunderStatsUtils.getDate7DaysString(new Date(this.data[1]["Info"])),"YYYYMMDD");
 				if(!this.empty){
 					this.total_mail+=this.data[1]["Num"];
 					this.data_customqry_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]});

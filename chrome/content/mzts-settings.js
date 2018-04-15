@@ -6,6 +6,7 @@ Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
 Components.utils.import("resource://thunderstats/miczLogger.jsm");
 Components.utils.import("resource://gre/modules/osfile.jsm");
+Components.utils.importGlobalProperties(["XMLHttpRequest"]);
 
 var miczThunderStatsPrefPanel = {
 
@@ -84,19 +85,14 @@ var miczThunderStatsPrefPanel = {
 				url ="chrome://tsrl/content/license.txt";
 				break;
 		 }
-		let request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
-					  .createInstance(Components.interfaces.nsIXMLHttpRequest);
-		request.onload = function(aEvent) {
+		let request = new XMLHttpRequest();
+		request.responseType="text";
+		request.addEventListener("load", function() {
 			let relnotes = document.getElementById('mzts-release-notes');
-			relnotes.value= aEvent.target.responseText;
-		};
-		request.onerror = function(aEvent) {
-		   miczLogger.log("Error reading release notes file status: " + aEvent.target.status,2);
-		};
-
-		request.open("GET", url, true);
-		request.responseType = "text";
-		request.send(null);
+			relnotes.value= this.responseText;
+		});
+		request.open("GET", url);
+		request.send();
 	},
 
 // ======= BUSINESS DAYS FUNCTIONS =======

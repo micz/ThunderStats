@@ -1,9 +1,9 @@
 -= ThunderStats Thunderbird Addon Release Notes =-
 
 ==========
-Version 1.5 - ??/??/2018
+Version 1.4.2 - 15/04/2018
 - Debugger output improved.
-- 
+- Added compatibility with Thunderbird up to version 60.
 -==========
 Version 1.4.1 - 05/02/2018
 - jQuery library update to version 3.3.1. 
@@ -11,7 +11,7 @@ Version 1.4.1 - 05/02/2018
 Version 1.4 - 03/02/2018
 - Debugger output improved.
 - Minor bugs fixed.
-- Added compatibility with Thunderbird 57+.
+- Added compatibility with Thunderbird 57.
 - Moment.js library update to version 2.20.1.
 - d3.js library updated to version 3.5.17.
 ==========

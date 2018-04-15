@@ -10,7 +10,7 @@ ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 
 var miczThunderStatsUtils = {
 
-	ThunderStatsVersion:'1.4.2',
+	ThunderStatsVersion:'1.5alpha',
 	mailto:'m@micz.it',
 	mHost:null,
 	_y_is_last_business_day:false,

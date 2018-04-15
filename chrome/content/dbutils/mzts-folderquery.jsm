@@ -4,9 +4,9 @@
 */
 
 "use strict";
-Components.utils.import("resource://thunderstats/miczLogger.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
-Components.utils.import("resource:///modules/iteratorUtils.jsm");
+ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsFolderQ"];
 

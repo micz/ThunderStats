@@ -1,8 +1,8 @@
 "use strict";
 
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
-Components.utils.import("resource://thunderstats/miczLogger.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
 miczThunderStatsTab.promises={};
 

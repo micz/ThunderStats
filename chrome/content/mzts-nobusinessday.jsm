@@ -1,6 +1,6 @@
 "use strict";
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsNBD"];
 

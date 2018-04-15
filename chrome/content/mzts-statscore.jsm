@@ -1,11 +1,11 @@
 "use strict";
-Components.utils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
-//Components.utils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	 // To be enabled in vesion 2.0
-Components.utils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-Components.utils.import("resource://thunderstats/miczLogger.jsm");
+ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
+//ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	 // To be enabled in vesion 2.0
+ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 

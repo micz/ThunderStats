@@ -1,5 +1,5 @@
 "use strict";
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 
 var miczThunderStats = {
 

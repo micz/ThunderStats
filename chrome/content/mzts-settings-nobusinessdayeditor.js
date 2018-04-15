@@ -1,5 +1,5 @@
 "use strict";
-Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
 
 var miczThunderStatsPrefPanel_NBDEditor = {
 

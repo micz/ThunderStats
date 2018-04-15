@@ -1,10 +1,10 @@
 "use strict";
-Components.utils.import("resource://thunderstats/sqlite.js");
-Components.utils.import("resource://thunderstats/tokenize.js");
-Components.utils.import("resource://thunderstats/fileIO.js");
-Components.utils.import("resource://gre/modules/osfile.jsm");
-Components.utils.import("chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
-Components.utils.import("resource://thunderstats/miczLogger.jsm");
+ChromeUtils.import("resource://thunderstats/sqlite.js");
+ChromeUtils.import("resource://thunderstats/tokenize.js");
+ChromeUtils.import("resource://thunderstats/fileIO.js");
+ChromeUtils.import("resource://gre/modules/osfile.jsm");
+ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
+ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 

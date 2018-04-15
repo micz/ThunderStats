@@ -1,11 +1,11 @@
 "use strict";
-Components.utils.import("chrome://thunderstats/content/mzts-statscore.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
-Components.utils.import("resource://thunderstats/miczLogger.jsm");
-Components.utils.import("resource://gre/modules/osfile.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+ChromeUtils.import("resource://gre/modules/osfile.jsm");
 Components.utils.importGlobalProperties(["XMLHttpRequest"]);
 
 var miczThunderStatsPrefPanel = {

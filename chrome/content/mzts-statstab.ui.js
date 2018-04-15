@@ -1,9 +1,9 @@
 "use strict";
 
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-Components.utils.import("resource:///modules/MailUtils.js");
-Components.utils.import("resource:///modules/iteratorUtils.jsm");
-//Components.utils.import("resource://thunderstats/miczLogger.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+ChromeUtils.import("resource:///modules/MailUtils.js");
+ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
+//ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
 miczThunderStatsTab.ui={
 

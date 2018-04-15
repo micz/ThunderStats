@@ -1,7 +1,7 @@
 "use strict";
-Components.utils.import("chrome://thunderstats/content/mzts-utils.jsm");
-Components.utils.import("resource://thunderstats/miczLogger.jsm");
-Components.utils.import("resource:///modules/mailServices.js");
+ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+ChromeUtils.import("resource:///modules/mailServices.js");
 
 miczThunderStatsTab.folderworker={};
 

@@ -2,11 +2,11 @@
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsUtils"];
 
-Components.utils.import("resource:///modules/iteratorUtils.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-Components.utils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
-//Components.utils.import("resource://thunderstats/miczLogger.jsm");
+ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
+//ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
 var miczThunderStatsUtils = {
 

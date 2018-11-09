@@ -1,6 +1,6 @@
 <!ENTITY ThunderStats.SettingsTitle "Paramètres de ThunderStats">
 <!ENTITY ThunderStats.GlobalDescSettingTab "Utiliser ces options pour personnaliser votre usage de ThunderStats !">
-<!ENTITY ThunderStats.TabSettings.label "Générales">
+<!ENTITY ThunderStats.TabSettings.label "Général">
 <!ENTITY ThunderStats.TabAdvanced.label "Avancé">
 <!ENTITY ThunderStats.TabCustomIdentities.label "Identités personnalisées">
 <!ENTITY ThunderStats.TabInfo.label "Infos">
@@ -11,7 +11,8 @@
 <!ENTITY ThunderStats.ChooseAccount "Choisir un compte">
 <!ENTITY ThunderStats.ShowIdentitiesAccountsSelector "Afficher les identités dans le sélecteur de comptes">
 <!ENTITY ThunderStats.ManageCustomIdentitites "Gérez ici vos identités personnalisées.">
-<!ENTITY ThunderStats.ManageCustomIdentititesDesc "Une identité personnalisée est une adresse mail, différente de celles qui sont enregistrées pour le compte, avec laquelle vous recevez des courriels. Habituellement ce sont des adresses de listes de diffusion auxquelles vous êtes abonné⋅e, et qui n'utilisent votre adresse mail ni dans le champ Pour (destinataire) ni dans le champ Copie">
+<!ENTITY ThunderStats.ManageCustomIdentititesDesc "Une identité personnalisée est une adresse mail, différente de celles qui sont enregistrées pour le compte, avec laquelle vous recevez des courriels. Habituellement ce sont des adresses de listes de diffusion auxquelles vous êtes abonné⋅e, et qui n'utilisent votre adresse mail ni dans le 
+Pour (destinataire) ni dans le champ Copie.">
 <!ENTITY ThunderStats.Account "Compte">
 <!ENTITY ThunderStats.CustomIdentititesAccount "identités personnalisées pour le compte sélectionné">
 <!ENTITY ThunderStats.CustomIdentititesAccount.Info "Ajouter une adresse électronique par ligne.">

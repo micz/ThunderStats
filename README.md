@@ -13,7 +13,7 @@ the code for compatibility going forward and possible improvements.
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-red.png)](./LICENSE.txt)
 ![License: GPL v3](https://img.shields.io/badge/Status-v1.4.3%20Under%20Review-lightgreen.png)
 ![License: GPL v3](https://img.shields.io/badge/Status-v1.4.3%20Under%20Review-green.png)
-![License: GPL v3](https://img.shields.io/badge/Status-v1.4.3%20Under%20Review-darkgreen.png)
+![License: GPL v3](https://img.shields.io/badge/Status-v1.4.3%20Under%20Review-brightgreen.png)
 #
 
 ## ThunderStats Add-On Installation

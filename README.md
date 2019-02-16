@@ -11,6 +11,9 @@ the code for compatibility going forward and possible improvements.
 ![ThunderStats_tb_version](https://img.shields.io/badge/version-v1.4.2-blue.png?label=Thunderbird%20Add-On)
 ![Thunderbird_version](https://img.shields.io/badge/version-v60.0_--_60.0-blue.png?label=Thunderbird)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-red.png)](./LICENSE.txt)
+![License: GPL v3](https://img.shields.io/badge/Status-v1.4.3%20Under%20Review-lightgreen.png)
+![License: GPL v3](https://img.shields.io/badge/Status-v1.4.3%20Under%20Review-green.png)
+![License: GPL v3](https://img.shields.io/badge/Status-v1.4.3%20Under%20Review-darkgreen.png)
 #
 
 ## ThunderStats Add-On Installation

@@ -1,14 +1,14 @@
 {
   "title": "ThunderStats",
-  "name": "thunderstats-1.4.3-beta1-tb",
-  "version": "1.4.3-beta1",
+  "name": "thunderstats-1.4.3-tb",
+  "version": "1.4.3",
   "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
   "main": "./chrome/content/mzts-overlay.js",
   "author": "Micz, Christopher Leidigh",
   "engines": {
     "": ">=38.0a1"
   },
-  "license": "MPLv2",
+  "license": "GPLv3",
   "keywords": [
     "jetpack"
   ]

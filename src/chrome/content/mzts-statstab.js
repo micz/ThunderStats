@@ -506,10 +506,20 @@ var miczThunderStatsTab = {
 		if(!miczThunderStatsTab._check_today_sent_running&&!miczThunderStatsTab._check_today_rcvd_running){
 			if(miczThunderStatsTab._check_today_sent_empty&&miczThunderStatsTab._check_today_rcvd_empty){
 				miczThunderStatsTab.ui.showLoadingElement('mzts-debugger-warn');
+				document.getElementById("mzts-debugger-warn-close").focus();
 			}
 		}
 	},
 
+	keyDown:function(e){
+		if (e.code === 'Escape' && document.getElementById("mzts-debugger-warn-close")) {
+			// Close warning window
+			miczThunderStatsTab.ui.hideLoadingElement('mzts-debugger-warn');
+			miczThunderStatsTab._debug_warn_temp_hide=true;
+		}
+	},
 };
 
+
+document.addEventListener('keydown', miczThunderStatsTab.keyDown);
 window.addEventListener("load", miczThunderStatsTab.onLoad, false);

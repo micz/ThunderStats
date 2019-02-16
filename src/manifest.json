@@ -1,0 +1,18 @@
+{
+	"manifest_version": 2,
+	"name": "thunderstats-1.4.3-tb",
+	"version": "1.4.3",
+	"description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
+	"author": "Mic (m@micz.it), Christopher Leidigh",
+	"applications": {
+		"gecko": {
+			"id": "thunderstats@micz.it"
+		}
+	},
+	"legacy": {
+		"options": {
+			"page": "chrome://columnswizard/content/mzcw-settings.xul",
+			"open_in_tab": false
+		}
+	}
+}

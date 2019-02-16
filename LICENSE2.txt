@@ -24,7 +24,7 @@ Italian (it) thanks to Mic [http://micz.it].
 
 -= Thanks to... =-
 Axel Grude, developer of QuickFolders addon, for his help in testing and brainstorming new features.
-Jörg Knobloch, Thunderbird contributor, for his help in fixing this addon for Thunderbird 60.
+Jï¿½rg Knobloch, Thunderbird contributor, for his help in fixing this addon for Thunderbird 60.
 
 -= Javascript Libraries =-
 - jQuery - https://jquery.org/

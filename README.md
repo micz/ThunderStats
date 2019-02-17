@@ -7,11 +7,11 @@ More info on the homepage: http://micz.it/thunderdbird-addon-thunderstats-your-t
 This add-on is the original work of Micz and with his permission I will be updating
 the code for compatibility going forward and possible improvements.
 
-![ThunderStats_version](https://img.shields.io/badge/version-v1.4.2-darkorange.png?label=ThunderStats)
-![ThunderStats_tb_version](https://img.shields.io/badge/version-v1.4.2-blue.png?label=Thunderbird%20Add-On)
-![Thunderbird_version](https://img.shields.io/badge/version-v60.0_--_60.0-blue.png?label=Thunderbird)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-red.png)](./LICENSE.txt)
-![Release Status](https://img.shields.io/badge/Release%20Status-v1.4.3%20Under%20Review-brightgreen.png)
+![ThunderStats_version](https://img.shields.io/badge/version-v1.4.3-darkorange.png?label=ThunderStats)
+![ThunderStats_tb_version](https://img.shields.io/badge/version-v1.4.3-blue.png?label=Thunderbird%20Add-On)
+![Thunderbird_version](https://img.shields.io/badge/version-v60.0_--_60.*-blue.png?label=Thunderbird)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-red.png)](./LICENSE.txt)]
+![Release Status](https://img.shields.io/badge/Release%20Status-v1.4.3%20Latest-brightgreen.png)
 #
 
 ## ThunderStats Add-On Installation

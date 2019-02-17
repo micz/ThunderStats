@@ -2,7 +2,7 @@
 
 
 
-### Version 1.4.3 - ??/??/2019 : In Review
+### Version 1.4.3 - 16/02/2019 
 - Bump compatibility to TB60.*
 - Add Escape key warning window close
 

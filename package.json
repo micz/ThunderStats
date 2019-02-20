@@ -1,7 +1,7 @@
 {
   "title": "ThunderStats",
   "name": "thunderstats",
-  "version": "1.4.4-Alpha",
+  "version": "1.4.4-beta1",
   "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
   "main": "./chrome/content/mzts-overlay.js",
   "author": "Micz, Christopher Leidigh",

@@ -1,5 +1,4 @@
-# ![ThunderStats icon](rep-resources/images/mzts-icon.png "ThunderStats")  ThunderStats Release Notes
-
+# ![TS] ThunderStats Release Notes
 
 
 ### Version 1.4.3 - 16/02/2019 
@@ -124,3 +123,4 @@
 - First experimental release.
 
 
+[TS]: rep-resources/images/mzts-icon.png 

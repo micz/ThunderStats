@@ -4,9 +4,16 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Build TB Extension",
+			"label": "Build TB Extension -BAT",
 			"type": "shell",
 			"command": ".\\scripts\\build-xpi.bat",
+			"group": "build"
+		},
+		{
+			"label": "Build TB Extension - XUL (package)",
+			"type": "npm",
+			"script": "build-xpi",
+			"problemMatcher": [],
 			"group": {
 				"kind": "build",
 				"isDefault": true

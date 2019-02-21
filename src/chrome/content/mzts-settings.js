@@ -79,10 +79,10 @@ var miczThunderStatsPrefPanel = {
 		let url = '';
 		switch(filetype){
 			case 'release_notes':
-				url ="chrome://tsrl/content/release_notes.txt";
+				url ="chrome://tsrl/content/CHANGELOG.md";
 				break;
 			case 'license':
-				url ="chrome://tsrl/content/license.txt";
+				url ="chrome://tsrl/content/LICENSE";
 				break;
 		 }
 		let request = new XMLHttpRequest();

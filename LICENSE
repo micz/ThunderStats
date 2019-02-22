@@ -21,6 +21,7 @@ ATTRIBUTIONS
 -= Translations =-  (Thanks to BabelZilla.org)
 German (de) thanks to RealRaven [http://quickfolders.mozdev.org/].
 Italian (it) thanks to Mic [http://micz.it].
+French (fr) thanks to Goofy.
 
 -= Thanks to... =-
 Christopher Leidigh, for working hard on the Thunderbird 60+ compatibility.
@@ -42,7 +43,6 @@ Provided under the MIT license: http://opensource.org/licenses/MIT
 
 - jQuery replaceText - http://benalman.com/projects/jquery-replacetext-plugin/
 Provided under the MIT license: http://opensource.org/licenses/MIT
-
 
 -= Graphics =-
 Addon icon thanks to http://hopstarter.deviantart.com/

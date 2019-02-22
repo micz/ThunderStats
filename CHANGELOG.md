@@ -3,13 +3,14 @@
 
 ### Version 1.4.3 - 16/02/2019 
 - Bump compatibility to TB60.*
-- Add Escape key warning window close
+- Add Escape key warning window close.
+- German (de) locale updated.
 
 
 ### Version 1.4.2 - 15/04/2018
 - Debugger output improved.
 - Added compatibility with Thunderbird up to ### Version 60.0
--
+
 
 ### Version 1.4.1 - 05/02/2018
 - jQuery library update to ### Version 3.3.1. 

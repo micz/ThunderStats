@@ -1,7 +1,7 @@
 {
   "title": "ThunderStats",
   "name": "thunderstats",
-  "version": "1.4.4-beta1",
+  "version": "1.4.4",
   "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
   "main": "./chrome/content/mzts-overlay.js",
   "author": "Micz, Christopher Leidigh",
@@ -9,8 +9,16 @@
     "": ">=38.0a1"
   },
   "license": "GPLv3",
+
+  "config": {
+    "source_dir": "./src",
+    "target_dir": "./xpi",
+    "target_suffix": "-tb",
+    "target_extension": ".xpi"
+  },
   "scripts": {
-    "build-xpi": ".\\scripts\\build-xpi.bat"
+    "build-xpi-bat": ".\\scripts\\build-xpi.bat",
+    "build-xpi": "node ./scripts/build-xpi.js"
   },
   "keywords": [
     "jetpack"

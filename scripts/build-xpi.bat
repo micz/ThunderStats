@@ -11,6 +11,8 @@ if not defined npm_package_version (
 	set targetVersion=%npm_package_version%
 )
 
+echo %npm_package_name%  %npm_package_version%
+
 rem get RDF version
 FOR /F "tokens=* USEBACKQ" %%F IN (`node .\scripts\xml-util -get Description[\"em:version\"]`) DO (
 SET installRDFVer=%%F
@@ -31,7 +33,9 @@ set targetName=%targetPath%\%targetBaseName%-%targetVersion%-tb.xpi
 del "%targetName%"
 
 call 7z a %targetName% %sourcePath%\* -x@%sourcePath%\.jpmignore
-call 7z d %targetName% ./src/manifest.json
+
+rem call 7z d %targetName% ./src/manifest.json
+
 call 7z a %targetName% .\LICENSE
 call 7z a %targetName% .\CHANGELOG.md
 

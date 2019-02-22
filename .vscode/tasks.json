@@ -14,6 +14,13 @@
 			"type": "npm",
 			"script": "build-xpi",
 			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Build TB Extension - XUL (package) - viaBAT",
+			"type": "npm",
+			"script": "build-xpi-bat",
+			"problemMatcher": [],
 			"group": {
 				"kind": "build",
 				"isDefault": true

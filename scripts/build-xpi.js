@@ -1,8 +1,7 @@
 // cleidigh
 
 let fs = require('fs');
-// import Seven from 'node-7z'
-let Seven = require('node-7z');
+const _7z = require('7zip-min');
 
 // Configuration args
 
@@ -47,24 +46,13 @@ try {
 
 console.log(targetName);
 
-// exclude: [`@${sourceDir}/.jpmignore`],
-// $raw: [`-x@${sourceDir}\\.jpmignore`],
-let archive = Seven.add( `${targetDir}\\${targetName}`, `${sourceDir}\\*`, {
-	// exclude: [`${sourceDir}\\.jpmignore`],
-	// $raw: [`-x .src\\manifest.json`],
-	recursive: true
-  })
+// Create xpi archive using exclude file
+_7z.cmd(['a', `${targetDir}/${targetName}`, `${sourceDir}/*`, '-x@./src/.tb-hybrid-ignore'], err => {
+    // done
+	console.log('Archive done: '+err);
 
-archive.on('end', function () {
-    // end of the operation, get the number of folders involved in the operation
-  archive.info.get('Folders') //? '4'
-  console.error(archive.info);
-  console.error('Archive Done Folders:Files - '+ archive.info.get('Folders')+ ' : '+archive.info.get('Files'));
-})
- 
-// const archive2 = Seven.delete( `${targetDir}\\${targetName}`, `${sourceDir}/manifest.json`);
+});
 
-archive.on('error', (err) => handleError(err))
 
 function handleError(err) {
 	console.error('Archive Error: '+err);

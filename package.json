@@ -1,28 +1,29 @@
 {
-  "title": "ThunderStats",
-  "name": "thunderstats",
-  "version": "1.4.5-beta1",
-  "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
-  "main": "./chrome/content/mzts-overlay.js",
-  "author": "Micz, Christopher Leidigh",
-  "engines": {
-    "": ">=38.0a1"
-  },
-  "license": "GPLv3",
+    "title": "ThunderStats",
+    "name": "thunderstats",
+    "version": "1.4.5-b1",
+    "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
+    "main": "./chrome/content/mzts-overlay.js",
+    "author": "Micz, Christopher Leidigh",
+    "engines": {
+        "": ">=38.0a1"
+    },
+    "license": "GPLv3",
 
-  "config": {
-    "source_dir": "./src",
-    "target_dir": "./xpi",
-    "target_suffix": "-tb",
-    "target_extension": ".xpi",
-    "target_include_manifest": "true"
-  },
+    "config": {
+        "source_dir": "./src",
+        "target_dir": "./xpi",
+        "target_suffix": "-tb",
+        "target_extension": ".xpi",
+        "target_include_manifest": "true"
+    },
+    "scripts": {
+        "build-xpi-bat": ".\\scripts\\build-xpi.bat",
+        "build-xpi": "node ./scripts/build-xpi.js"
+    },
+    "keywords": [
+        "jetpack"
+    ],
+    "dependencies": {}
 
-  "scripts": {
-    "build-xpi-bat": ".\\scripts\\build-xpi.bat",
-    "build-xpi": "node ./scripts/build-xpi.js"
-  },
-  "keywords": [
-    "jetpack"
-  ]
 }

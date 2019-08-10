@@ -13,9 +13,8 @@
     },
     "legacy": {
         "options": {
-            "page": "chrome://columnswizard/content/mzcw-settings.xul",
+            "page": "chrome://thunderstats/content/mzts-settings.xul",
             "open_in_tab": false
         }
-    },
-    "default_locale": "en_US"
+    }
 }

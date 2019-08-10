@@ -25,9 +25,9 @@ ps.forEach(p => {
 
 console.debug('Preferences.addAll([');
 prefArrayConverted.forEach(pref => {
-    var prefLineTemplate = `{ id: "${pref.id}" name: "${pref.name}" type: "${pref.type}" },`;
+    var prefLineTemplate = `{ id: "${pref.id}", name: "${pref.name}", type: "${pref.type}" },`;
 
     console.debug(prefLineTemplate);
 });
 
-console.debug('];\n');
+console.debug(']);\n');

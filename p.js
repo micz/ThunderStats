@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+Synchronous read: <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/preferences/preferences.css" type="text/css" ?>
 <?xml-stylesheet href="chrome://thunderstats/content/css/mzts-settings.css" type="text/css"?>
@@ -7,8 +7,7 @@
 
 <dialog id="ThunderStats_Settings"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-  type="child"
-  title="&ThunderStats.SettingsTitle; Test 7" >
+  title="&ThunderStats.SettingsTitle; Test 5" >
 
   <!-- onload="miczThunderStatsPrefPanel.onLoad();"> -->
 
@@ -271,3 +270,31 @@
   <script type="application/x-javascript" src="chrome://thunderstats/content/mzts-settings.js" />
   <script type="application/x-javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js" />
 </dialog>
+
+Preferences.addAll([
+{ id: "ThunderStats.identities_selector", name: "extensions.ThunderStats.identities_selector", type: "bool" },
+{ id: "ThunderStats.inbox_search_only_curr_account", name: "extensions.ThunderStats.inbox_search_only_curr_account", type: "bool" },
+{ id: "ThunderStats.global_update", name: "extensions.ThunderStats.global_update", type: "bool" },
+{ id: "ThunderStats.debug", name: "extensions.ThunderStats.debug", type: "bool" },
+{ id: "ThunderStats.debug_warn_show", name: "extensions.ThunderStats.debug_warn_show", type: "bool" },
+{ id: "ThunderStats.folderspreadgraph_openinfirsttab", name: "extensions.ThunderStats.folderspreadgraph_openinfirsttab", type: "bool" },
+{ id: "ThunderStats.today_time_graph_show_yesterday", name: "extensions.ThunderStats.today_time_graph_show_yesterday", type: "bool" },
+{ id: "ThunderStats.today_time_graph_progressive", name: "extensions.ThunderStats.today_time_graph_progressive", type: "bool" },
+{ id: "ThunderStats.aggregate_average_not_rounded", name: "extensions.ThunderStats.aggregate_average_not_rounded", type: "bool" },
+{ id: "ThunderStats.many_days", name: "extensions.ThunderStats.many_days", type: "int" },
+{ id: "ThunderStats.many_days_small_labels", name: "extensions.ThunderStats.many_days_small_labels", type: "bool" },
+{ id: "ThunderStats.bday.use_last_business_day", name: "extensions.ThunderStats.bday.use_last_business_day", type: "bool" },
+{ id: "ThunderStats.bday.easter", name: "extensions.ThunderStats.bday.easter", type: "bool" },
+{ id: "ThunderStats.bday.weekday0", name: "extensions.ThunderStats.bday.weekday0", type: "bool" },
+{ id: "ThunderStats.bday.weekday1", name: "extensions.ThunderStats.bday.weekday1", type: "bool" },
+{ id: "ThunderStats.bday.weekday2", name: "extensions.ThunderStats.bday.weekday2", type: "bool" },
+{ id: "ThunderStats.bday.weekday3", name: "extensions.ThunderStats.bday.weekday3", type: "bool" },
+{ id: "ThunderStats.bday.weekday4", name: "extensions.ThunderStats.bday.weekday4", type: "bool" },
+{ id: "ThunderStats.bday.weekday5", name: "extensions.ThunderStats.bday.weekday5", type: "bool" },
+{ id: "ThunderStats.bday.weekday6", name: "extensions.ThunderStats.bday.weekday6", type: "bool" },
+{ id: "ThunderStats.customquery_bookmark_immediate_update", name: "extensions.ThunderStats.customquery_bookmark_immediate_update", type: "bool" },
+{ id: "ThunderStats.customquery_default_only_bd", name: "extensions.ThunderStats.customquery_default_only_bd", type: "bool" },
+{ id: "ThunderStats.involved_num", name: "extensions.ThunderStats.involved_num", type: "int" },
+{ id: "ThunderStats.involvedtable_forceidentityname", name: "extensions.ThunderStats.involvedtable_forceidentityname", type: "bool" },
+]);
+

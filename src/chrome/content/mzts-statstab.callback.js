@@ -1,11 +1,14 @@
 "use strict";
-ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 //ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	// To be enabled in vesion 2.0
-ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+
+var { miczThunderStatsDB } = ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
+var { miczThunderStatsCore } = ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
+var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
 
 miczThunderStatsTab.callback={};

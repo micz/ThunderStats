@@ -2,11 +2,14 @@
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsUtils"];
 
-ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 //ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+var { fixIterator } = ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
+var { miczThunderStatsNBD } = ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
+var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
 var miczThunderStatsUtils = {
 
@@ -169,15 +172,26 @@ var miczThunderStatsUtils = {
 	getCurrentSystemLocale:function(){
 		let th_locale = null;
 		if(!miczThunderStatsUtils.checkTBVersion_pre57()){
+
+			try {
+			// getAppLocaleAsBCP47() - replaces getAppLocaleAsLangTag();
 			th_locale = Components.classes["@mozilla.org/intl/localeservice;1"]
 							.getService(Components.interfaces.mozILocaleService)
-							.getAppLocaleAsLangTag();
+							.getAppLocaleAsBCP47();
+			} catch {
+				th_locale = Services.locale.appLocaleAsBCP47;
+				if (!th_locale) {
+					th_locale = "en-US";
+				}
+			}
 		}else{
 			th_locale = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
 			           		.getService(Components.interfaces.nsILocaleService)
 			 		  		.getSystemLocale()
 			 		  		.getCategory('NSILOCALE_TIME');
 		}
+
+		Services.console.logStringMessage("utilities get system locale "+ th_locale);
 
 		  th_locale=th_locale.toLowerCase();
 

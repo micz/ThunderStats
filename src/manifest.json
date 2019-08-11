@@ -16,5 +16,8 @@
             "page": "chrome://thunderstats/content/mzts-settings.xul",
             "open_in_tab": false
         }
-    }
+    },
+    "permissions": [
+        "tabs"
+    ]
 }

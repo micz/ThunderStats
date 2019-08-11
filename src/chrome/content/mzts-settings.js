@@ -2,14 +2,28 @@
 
 var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
 
-ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
-ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
-ChromeUtils.import("resource://gre/modules/osfile.jsm");
-Components.utils.importGlobalProperties(["XMLHttpRequest"]);
+var { miczThunderStatsCore } = ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
+var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+
+Services.console.logStringMessage("settings after imports 1");
+
+var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+var { miczThunderStatsNBD } = ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
+var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+var { OS } = ChromeUtils.import("resource://gre/modules/osfile.jsm");
+
+Services.console.logStringMessage("settings after imports 2");
+
+// ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
+// ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+// ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+// ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
+// ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+// ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+// ChromeUtils.import("resource://gre/modules/osfile.jsm");
+
+// Components.utils.importGlobalProperties(["XMLHttpRequest"]);
 
 var miczThunderStatsPrefPanel = {
 
@@ -358,4 +372,3 @@ document.addEventListener('dialogaccept', function(e) {
 });
 
 window.addEventListener("load", function(e) { miczThunderStatsPrefPanel.onLoad(e); }, false);
-10

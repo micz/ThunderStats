@@ -22,28 +22,12 @@
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css" />
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-dropdownmenu.css" />
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css" />
-        <title>&ThunderStats.TABTitle;</title>
+        <title>&ThunderStats.TABTitle; Test3</title>
 
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/th60fix.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.min.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.tooltipster.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.ba-replacetext.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/d3.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.callback.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.observer.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.folderworkers.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.promises.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.ui.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/mzts-utils.jsm" />
-        <script type="application/javascript" src="chrome://thunderstats/content/mzts-prefobserver.js" />
 
         <script>
-            console.debug('in-line script x2');
+            console.debug('in-line script');
         </script>
-
-    
     </head>
 
     <body>
@@ -414,8 +398,6 @@
 
         </div>
         <!--<div id="test_output" class="mzts-desc"></div>-->
-
-        <script type="application/javascript" src="chrome://thunderstats/content/jqscript.js" />
 
     </body>
 

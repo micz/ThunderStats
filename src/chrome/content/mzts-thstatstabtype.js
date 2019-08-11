@@ -1,5 +1,6 @@
 "use strict";
-ChromeUtils.import("resource:///modules/StringBundle.js");
+
+// ChromeUtils.import("resource:///modules/StringBundle.js");
 
 var micz_thstatsTabType = {
   name: "miczThStatsTab",

@@ -289,8 +289,17 @@ var miczThunderStatsTab = {
 		this.data_customqry_sent=new Array();
 		this.data_customqry_rcvd=new Array();
 
-		let mFromDay = document.getElementById('datepicker_from').dateValue;
-		let mToDay = document.getElementById('datepicker_to').dateValue;
+		// let mFromDay = document.getElementById('datepicker_from').dateValue;
+		// let mToDay = document.getElementById('datepicker_to').dateValue;
+
+		let fp = document.querySelector("#date_range_picker")._flatpickr;
+
+		Services.console.logStringMessage("stats UI update date: "+fp.selectedDates[0] + "\n"+fp. selectedDates[1]);
+        let mFromDay = fp.selectedDates[0];
+        let mToDay = fp.selectedDates[1];
+
+		Services.console.logStringMessage("stats UI update update custom dates: " + mFromDay + "\n"+ mToDay);
+
 		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
 
 		if(miczThunderStatsUtils._customqry_num_days == 1){	//only one day

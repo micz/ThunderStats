@@ -177,7 +177,12 @@ miczThunderStatsTab.ui = {
 
     initDatePickers: function() {
 
-        flatpickr("#dpick", {});
+        flatpickr("#date_range_picker", {
+            mode: "range",
+            maxDate: "today",
+            defaultDate: [ "yesterday", new Date()]
+
+        });
 
         //adding datepicker with week start init
         //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");

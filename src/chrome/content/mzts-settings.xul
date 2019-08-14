@@ -8,7 +8,7 @@
 <dialog id="ThunderStats_Settings"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   type="child"
-  title="&ThunderStats.SettingsTitle; Test 9" >
+  title="&ThunderStats.SettingsTitle; Test 10" >
 
   <!-- onload="miczThunderStatsPrefPanel.onLoad();"> -->
 

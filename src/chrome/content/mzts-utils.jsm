@@ -191,8 +191,7 @@ var miczThunderStatsUtils = {
 			 		  		.getCategory('NSILOCALE_TIME');
 		}
 
-		Services.console.logStringMessage("utilities get system locale "+ th_locale);
-
+		Services.console.logStringMessage("Locale: "+th_locale);
 		  th_locale=th_locale.toLowerCase();
 
 		  if((th_locale=='en-ie')||(th_locale=='en-uk')){

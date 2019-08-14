@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 
+
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"
   [
   <!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd"> %brandDTD;
@@ -13,6 +14,9 @@
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css"/>
+
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/messageHeader.css" />
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/content/bindings.css" />
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-statstab.css" />
@@ -22,10 +26,13 @@
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css" />
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-dropdownmenu.css" />
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css" />
+
+        
         <title>&ThunderStats.TABTitle;</title>
 
         <script type="application/javascript" src="chrome://thunderstats/content/jslib/th60fix.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.min.js" />
+
+        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.tooltipster.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.ba-replacetext.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/jslib/d3.js" />
@@ -39,6 +46,13 @@
         <script type="application/javascript" src="chrome://thunderstats/content/mzts-utils.jsm" />
         <script type="application/javascript" src="chrome://thunderstats/content/mzts-prefobserver.js" />
 
+        <script type="application/javascript" src="chrome://thunderstats/content/flatpickr-4.6.2-min.js" />
+        <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
+
+        <!-- <script src="chrome://calendar/content/calendar-ui-utils.js"/>
+        <script src="chrome://messenger/content/customElements.js"/>
+        <script src="chrome://calendar/content/datetimepickers/datetimepickers.js"/>
+ -->
         <script>
             console.debug('in-line script x2');
         </script>
@@ -55,7 +69,9 @@
         <div id="heading_wrapper">
             <div id="mzts-main-error">&ThunderStats.NoSearchWarn; <span class="outlink" onclick="miczThunderStatsUtils.activateGlobalIndexing();">&ThunderStats.NoSearchWarn2;</span></div>
             <div id="mzts-idnt_sel">&ThunderStats.ChooseAccount;:&nbsp;
-                <select id="identities_selector"></select>&nbsp;
+                <select id="identities_selector" test1="testv" value="test2@kokkini.net">
+                <option value="1" selected="selected" >test2@kokkini.net</option>
+                </select>&nbsp;
                 <button type="button" onclick="miczThunderStatsTab.updateStats();">&ThunderStats.Update;</button>
             </div>
             <div id="mzts-setup_icon">
@@ -282,7 +298,8 @@
                                         </ul>
                                     </li>
                                 </ul>
-                            </div> &ThunderStats.From; <span id="datepicker_from_placeholder"></span> &ThunderStats.To; <span id="datepicker_to_placeholder"></span> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();" id="customqry_update_btn">&ThunderStats.UpdateCustomQry;</button>                            <input type="checkbox" id="customqry_only_bd" /> &ThunderStats.OnlyBDCustomQry;<span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span>
+
+                            </div> Date Range:<input class="flatpickr" type="text" placeholder="Select Date.." id="dpick" /> <span id="datepicker_from_placeholder"></span> &ThunderStats.To; <span id="datepicker_to_placeholder"></span> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();" id="customqry_update_btn">&ThunderStats.UpdateCustomQry;</button>                            <input type="checkbox" id="customqry_only_bd" /> &ThunderStats.OnlyBDCustomQry;<span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span>
                         </div>
                         <div id="table_customqry">
                             <div id="tier1_customqry" class="tier1">

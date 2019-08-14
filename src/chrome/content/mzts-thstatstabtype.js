@@ -1,5 +1,7 @@
 "use strict";
 
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+
 // ChromeUtils.import("resource:///modules/StringBundle.js");
 
 var micz_thstatsTabType = {

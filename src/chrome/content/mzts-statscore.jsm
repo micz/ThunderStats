@@ -24,6 +24,8 @@ var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm"
 
 const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
+Services.console.logStringMessage("standard score after imports 2");
+
 let EXPORTED_SYMBOLS = ["miczThunderStatsCore"];
 
 var miczThunderStatsCore = {

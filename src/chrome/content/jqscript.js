@@ -1,15 +1,18 @@
 var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
 
-Services.console.logStringMessage("JQ script start ");
+Services.console.logStringMessage("JQ script start 2");
 
-$jQ(document).ready(function() {
+    function jq_ready() {
+// $jQ(document).ready(function() {
     console.debug('jq ready');
     Services.console.logStringMessage("JQ script ready ");
     $jQ('.tooltip').tooltipster({
         debug: false,
         theme: 'tooltipster-light'
     });
+
     $jQ('#cssmenu').prepend('<div id="menu-button">Menu</div>');
+    
     $jQ('#cssmenu #menu-button').on('click', function() {
         var menu = $jQ(this).next('ul');
         if (menu.hasClass('open')) {
@@ -58,4 +61,24 @@ $jQ(document).ready(function() {
         position: 'top'
     });
 
-});
+    // cleidigh
+// });
+    Services.console.logStringMessage("JQ script end");
+};
+
+function test() {
+    Services.console.logStringMessage("JQ script test start");
+    const selector_id = "identities_selector";
+    let o = document.createElement('option');
+        o.setAttribute('value', '3');
+        o.textContent = "All Accounts Test"
+        document.getElementById(selector_id).appendChild(o);
+        
+}
+
+function onLoad(e) {
+    Services.console.logStringMessage("stat page ready event handler");
+    // test();
+    jq_ready();
+}
+window.addEventListener("load", function(e) { onLoad(e); }, false);

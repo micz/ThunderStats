@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"
+  [
+  <!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd"> %brandDTD;
+    <!ENTITY % globalDTD SYSTEM "chrome://global/locale/global.dtd">
+    %globalDTD;
+    <!ENTITY % startDTD SYSTEM "chrome://thunderstats/locale/mzts-statstab.dtd">
+    %startDTD;
+    <!ENTITY % settingsDTD SYSTEM "chrome://thunderstats/locale/settings.dtd">
+    %settingsDTD; ] >
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <head>
+        <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/messageHeader.css" />
+        <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/content/bindings.css" />
+        <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-statstab.css" />
+        <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-statstab.graphs.css" />
+        <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-log.css" />
+        <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster.css" />
+        <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css" />
+        <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-dropdownmenu.css" />
+        <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css" />
+        <title>&ThunderStats.TABTitle; T4</title>
+
+
+<!-- <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.2.1.min.js" /> -->
+
+        <script type="application/javascript" src="chrome://thunderstats/content/jslib/th60fix.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.min.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.tooltipster.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.ba-replacetext.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/jslib/d3.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js" />
+        
+		<!-- 
+		<script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.callback.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.observer.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.folderworkers.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.promises.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.ui.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/mzts-utils.jsm" />
+        <script type="application/javascript" src="chrome://thunderstats/content/mzts-prefobserver.js" />
+ -->
+ 
+         <script>
+            console.debug('in-line script');
+        </script>
+    </head>
+
+    <body>
+
+        <xul:popupset id="mainPopupSet">
+            <xul:tooltip id="mztsXulInXhtmlTooltip" />
+        </xul:popupset>
+
+        <div id="heading_wrapper">
+            <div id="mzts-main-error">&ThunderStats.NoSearchWarn; <span class="outlink" onclick="miczThunderStatsUtils.activateGlobalIndexing();">&ThunderStats.NoSearchWarn2;</span></div>
+            <div id="mzts-idnt_sel">&ThunderStats.ChooseAccount;:&nbsp;
+                <select id="identities_selector">
+				<option value="1" selected="selected" >test1@kokkini.net</option>
+				<option value="2"  >test2@kokkini.net</option>
+				</select>&nbsp;
+                <button type="button" onclick="miczThunderStatsTab.updateStats();">&ThunderStats.Update;</button>
+            </div>
+            <div id="mzts-setup_icon">
+                <img src="chrome://thunderstats/skin/mzts-setup.png" alt="&ThunderStats.Setup;" onclick="miczThunderStatsTab.ui.openPrefWindow();" title="&ThunderStats.Setup;" class="tooltip" />
+            </div>
+            <div id="mzts-updates">
+                <div id="mzts-idx_update"></div>
+                <div id="mzts-last_msg"></div>
+            </div>
+        </div>
+
+	<script type="application/javascript" src="chrome://thunderstats/content/jqscript.js" />
+    </body>
+
+    </html>

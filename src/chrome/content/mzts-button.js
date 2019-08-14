@@ -13,7 +13,7 @@ var miczThunderStatsButton = {
 
     onCommand: function() {
 
-        let aURL = "chrome://thunderstats/content/pagetest.xhtml";
+        let aURL = "chrome://thunderstats/content/pagetest2.xhtml";
         // let aURL = "chrome://thunderstats/content/mzts-statstab.xhtml";
         let tabmail = this.getMail3Pane().document.getElementById("tabmail");
         // tabmail.openTab("miczThStatsTab", { title: "ThunderStats" });
@@ -22,9 +22,11 @@ var miczThunderStatsButton = {
         // let tabmail = document.getElementById('tabmail');
         if (tabmail) {
             //tabmail.openTab("micz_thstat",{title:"ThunderStats Test"});
-            //let aURL = "chrome://thunderstats/content/mzts-statstab.xul";
-            //tabmail.openTab("chromeTab", { chromePage: aURL });
-            tabmail.openTab("miczThStatsTab", { title: "ThunderStats" });
+            // let aURL = "chrome://thunderstats/content/mzts-statstab.xhtml";
+            // tabmail.openTab("chromeTab", { chromePage: aURL });
+            // tabmail.openTab("contentTab", { contentPage: aURL });
+            tabmail.openTab("miczThStatsTab", { id: "miczThStatsTabLive", title: "ThunderStats" });
+            // openContentTab('<a class="moz-txt-link-rfc2396E" href="http://www.jorgk.com">http://www.jorgk2.com</a>',"tab");
         }
         //alert("Just testing");
     },

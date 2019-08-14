@@ -5,6 +5,7 @@ var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content
 var { miczThunderStatsNBD } = ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
 var { fixIterator } = ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
+var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
 const versionChecker = Services.vc;
 const currentVersion = Services.appinfo.platformVersion;
@@ -17,6 +18,8 @@ if (versionChecker.compare(currentVersion, "61") >= 0) {
 }
 
 //ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+
+Services.console.logStringMessage("stats UI after imports: ");
 
 miczThunderStatsTab.ui = {
 
@@ -43,9 +46,36 @@ miczThunderStatsTab.ui = {
     },
 
     loadIdentitiesSelector: function(selector_id, custom_account_key) {
-        $jQ("select#" + selector_id).find('option').remove();
+
+        Services.console.logStringMessage("stats UI load identity selector start: ");
+        // let selectv = $jQ("#" + selector_id).val();
+        // Services.console.logStringMessage("stats UI load identity select : "+selectv);
+        console.debug('select:\n'+document.getElementById(selector_id).outerHTML);
+        // $jQ("select#" + selector_id).find('option').remove();
+        
+        console.debug('select after remove:\n'+document.getElementById(selector_id).outerHTML);
         let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
-        $jQ("#" + selector_id).append('<option value="0">' + _bundleCW.GetStringFromName("ThunderStats.AllAccounts") + '</option>');
+    
+        Services.console.logStringMessage("stats UI load identity selector : "+selector_id);
+        let aa = _bundleCW.GetStringFromName("ThunderStats.AllAccounts");
+        Services.console.logStringMessage("stats UI load identity selector string : "+ aa);
+
+        // $jQ("#" + selector_id).append('<option value="0">' + _bundleCW.GetStringFromName("ThunderStats.AllAccounts") + '</option>');
+        // $jQ("#" + selector_id).append('<option value="0">' + _bundleCW.GetStringFromName("ThunderStats.AllAccounts") + '</option>');
+
+            // let o = document.createElement('option');
+            // o.setAttribute('value', '0');
+            // o.textContent = "All Accounts Test"
+            // document.getElementById(selector_id).appendChild(o);
+            // // document.getElementById(selector_id).remove(0);
+
+        // let o2 = document.createXULElement('option');
+        // o2.setAttribute('value', '0');
+        // o2.textContent = "Test 2"
+        // document.getElementById(selector_id).appendChild(o2);
+        
+        Services.console.logStringMessage("stats UI load identity selector after Append: \n"+document.getElementById(selector_id).outerHTML);
+
         for (let key in miczThunderStatsCore.accounts) {
             let debug_txt = '';
             if (miczThunderStatsPrefs.isDebug) {
@@ -56,7 +86,22 @@ miczThunderStatsTab.ui = {
             /*if(!show_identities){
             	item_css_class='';
             }*/
-            $jQ("#" + selector_id).append('<option class="' + item_css_class + '" value="' + miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key + '">' + miczThunderStatsUtils.escapeHTML(debug_txt + miczThunderStatsCore.accounts[key].name) + '</option>');
+            // $jQ("#" + selector_id).append('<option class="' + item_css_class + '" value="' + miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key + '">' + miczThunderStatsUtils.escapeHTML(debug_txt + miczThunderStatsCore.accounts[key].name) + '</option>');
+
+            
+            Services.console.logStringMessage("stats UI load identity selector string : "+ aa);
+
+            let o = document.createElement('option');
+            o.classList += item_css_class;
+            o.setAttribute('value', (miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key) );
+            o.text = miczThunderStatsCore.accounts[key].name;
+            o.setAttribute('selected', 'selected');
+            document.getElementById(selector_id).appendChild(o);
+    
+            // $jQ("#" + selector_id).append('<option class="' + item_css_class + '" value="' + miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key + '">' + miczThunderStatsUtils.escapeHTML(debug_txt + miczThunderStatsCore.accounts[key].name) + '</option>');
+            
+            Services.console.logStringMessage("stats UI load identity selector string : "+ miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key);
+            
             if (show_identities) {
                 for (let ikey in miczThunderStatsCore.accounts[key].identities) {
                     let curr_idn = miczThunderStatsCore.accounts[key].identities[ikey];
@@ -69,8 +114,18 @@ miczThunderStatsTab.ui = {
             }
             if (Object.keys(miczThunderStatsCore.accounts).length == 1) { //If there is only one account, autochoose it
                 //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
-                $jQ("#" + selector_id).val(miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key);
+                
+                console.debug('prefix: ' + miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key);
+                document.getElementById(selector_id).setAttribute('value', miczThunderStatsCore.accounts[key].name);
+                console.debug('select:\n'+document.getElementById(selector_id).outerHTML  + " : "+document.getElementById(selector_id).length);
+                // $jQ("#" + selector_id).val(miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key);
+
+
                 $jQ("#" + selector_id).change();
+                // document.getElementById(selector_id).selectedIndex = 1;
+                console.debug('select after selecting index:\n'+document.getElementById(selector_id).outerHTML + "   "+ document.getElementById(selector_id).selectedIndex  );
+
+
             } else { //choose the chosen startup account from prefs
                 let strt_acc = miczThunderStatsPrefs.startupAccount;
                 if (strt_acc != 0) {
@@ -93,14 +148,17 @@ miczThunderStatsTab.ui = {
         		$jQ("#"+selector_id).change();
         	}
         }*/
-        $jQ("#" + selector_id).change(miczThunderStatsTab.updateStats);
+        // $jQ("#" + selector_id).change(miczThunderStatsTab.updateStats);
+        Services.console.logStringMessage("stats UI load identity selector end: ");
     },
 
     updateTab: function() {
         miczThunderStatsDB.init();
         switch (miczThunderStatsTab.currentTab) {
             case '#tab_today':
+                Services.console.logStringMessage("stats UI update today: ");
                 miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
+                Services.console.logStringMessage("stats UI update today: after");
                 break;
             case '#tab_yesterday':
                 miczThunderStatsTab.getYesterdayStats(miczThunderStatsTab.getCurrentIdentityId());
@@ -118,12 +176,17 @@ miczThunderStatsTab.ui = {
     },
 
     initDatePickers: function() {
+
+        flatpickr("#dpick", {});
+
         //adding datepicker with week start init
         //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");
         let locale_firstweekday = moment().startOf("week").format('d');
         //document.getElementById('datepicker_from').setAttribute("firstdayofweek",locale_firstweekday);
         //document.getElementById('datepicker_to').setAttribute("firstdayofweek",locale_firstweekday);
-        let aDatepickerFrom = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "datepicker");
+        // let aDatepickerFrom = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "datetimepicker");
+        let aDatepickerFrom = document.createElement("datetimepicker-data");
+        
         aDatepickerFrom.setAttribute("id", "datepicker_from");
         aDatepickerFrom.setAttribute("type", "popup");
         aDatepickerFrom.setAttribute("class", "customqry_datepicker");
@@ -570,12 +633,14 @@ miczThunderStatsTab.ui = {
         let mwin = miczThunderStatsTab.ui.mwin;
         let mdoc = miczThunderStatsTab.ui.mwin.document;
         if (!miczThunderStatsPrefs.openFolderInFirstTab) {
-            mdoc.getElementById("tabmail").openTab("folder", { folder: MailUtils.getFolderForURI(d.data.folder_url) });
+            // cleidigh - conditional for TB67+
+            // mdoc.getElementById("tabmail").openTab("folder", { folder: MailUtils.getFolderForURI(d.data.folder_url) });
+            mdoc.getElementById("tabmail").openTab("folder", { folder: MailUtils.getExistingFolder(d.data.folder_url) });
         } else {
             let tabmail = mdoc.getElementById("tabmail");
             tabmail.selectTabByIndex(null, 0);
             //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mKey: "+JSON.stringify(d.data.mKey)+"\r\n");
-            let curr_folder = MailUtils.getFolderForURI(d.data.folder_url);
+            let curr_folder = MailUtils.getExistingFolder(d.data.folder_url);
             let do_select_message = (mwin.gFolderDisplay.displayedFolder != curr_folder); //the selected folder is the same
             if (do_select_message) {
                 mwin.gFolderTreeView.selectFolder(curr_folder);
@@ -651,7 +716,7 @@ miczThunderStatsTab.ui = {
         for (let key in data_array) {
             let element = {};
             element.value = data_array[key].Num;
-            let tmp_folder = MailUtils.getFolderForURI(data_array[key].FolderURI);
+            let tmp_folder = MailUtils.getExistingFolder(data_array[key].FolderURI);
             element.label = tmp_folder.prettyName;
             //element.label=data_array[key].Folder;
             element.folder_url = data_array[key].FolderURI;

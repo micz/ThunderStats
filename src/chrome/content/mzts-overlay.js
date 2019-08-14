@@ -28,7 +28,7 @@ var miczThunderStats = {
             if (toolbar != null) {
                 toolbar.insertItem(buttonId, before_el);
                 toolbar.setAttribute("currentset", toolbar.currentSet);
-                document.persist(toolbar.id, "currentset");
+                Services.xulStore.persist(toolbar, "currentset");
             }
         }
     },

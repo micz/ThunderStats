@@ -54,8 +54,14 @@ var miczThunderStatsTab = {
 
 			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 			$jQ("span._many_days").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.InTheLastNumDays",miczThunderStatsTab._many_days));
-			$jQ("span._many_days_tab").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.LastNumDays",miczThunderStatsTab._many_days));
+			// $jQ("span._many_days_tab").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.LastNumDays",miczThunderStatsTab._many_days));
+			
+			
+			// $jQ("span._many_days_tab").text("7 Days2");
+			const md = miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.LastNumDays",miczThunderStatsTab._many_days);
 
+			miczLogger.log("TabText : " + md);
+			$jQ("span._many_days_tab").text(md);
 			miczThunderStatsTab.checkLastBusinessDay();
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');
@@ -401,7 +407,10 @@ var miczThunderStatsTab = {
 
 	getCurrentIdentityId:function(){	//returning an identities object or a 0 if none selected
 										//identities object is {ids_merged: array of all ids; ids:array of normal identities ids; ids_custom: array of custom identities ids; base_account_key: identity account key}}
-		let id_selector_value = $jQ("#identities_selector").val();
+		// let id_selector_value = $jQ("#identities_selector").val();
+		console.debug('selectIdentities:\n'+document.getElementById("identities_selector").outerHTML  + " : "+document.getElementById("identities_selector").value);
+		let id_selector_value = document.getElementById("identities_selector").value;
+		
 		let output=new Array();
 		let output_obj={};
 		if(id_selector_value==0){

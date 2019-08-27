@@ -8,7 +8,6 @@
 // ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 // ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
-
 var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
 Services.console.logStringMessage("standard score start");
 
@@ -168,6 +167,8 @@ miczThunderStatsCore.db = {
     },
 
     getManyDaysMessages: function(mType, mFromDay, mToDay, mIdentity, mCallback) { //mFromDay and mToDay are a Date objects
+        Services.console.logStringMessage("get Many days: Start "+ miczThunderStatsUtils._test);
+        Services.console.logStringMessage("number days: " + miczThunderStatsUtils._customqry_num_days);
         let mInfo = null;
         if (typeof mType === 'object') {
             mInfo = mType.info;
@@ -175,11 +176,13 @@ miczThunderStatsCore.db = {
         }
         let mOnlyBD = (mInfo != null); //if mInfo is set we want only business days
         let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay, mToDay, mOnlyBD);
-        //dump('>>>>>>>>>>>>>> [miczThunderStatsTab getManyDaysMessages] mDays.length '+JSON.stringify(mDays.length)+'\r\n');
+        Services.console.logStringMessage("get Many days: " + "nDays: "+ miczThunderStatsUtils._customqry_num_days + "  "+mOnlyBD);
+        // dump('>>>>>>>>>>>>>> [miczThunderStatsTab getManyDaysMessages] mDays.length '+JSON.stringify(mDays.length)+'\r\n');
         miczThunderStatsUtils._customqry_num_days = mDays.length; //update the total number of days, we may have used only the business days
         for (let mKey in mDays) {
             this.getOneDayMessages({ type: mType, info: mDays[mKey], hours: null }, mDays[mKey], mIdentity, mCallback);
         }
+        Services.console.logStringMessage("get Many days: finish d: "+miczThunderStatsUtils._customqry_num_days);
         return true;
     },
 
@@ -252,11 +255,14 @@ miczThunderStatsCore.db = {
     },
 
     getManyDaysInvolved_OnlyBD: function(mType, mFromDay, mToDay, mIdentity, mCallback) { //mFromDay and mToDay are a Date objects
+        console.debug('get Days: only business');
         let mOnlyBD = true;
         let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay, mToDay, mOnlyBD);
+        miczThunderStatsUtils._customqry_num_days = mDays.length; //update the total number of days, we may have used only the business days
         for (let mKey in mDays) {
             this.getOneDayInvolved(mType, mDays[mKey], mIdentity, 0, mCallback);
         }
+        console.debug('only business finish bd: '+miczThunderStatsUtils._customqry_num_days);
         return true;
     },
 

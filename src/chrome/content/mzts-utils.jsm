@@ -11,14 +11,19 @@ var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/conten
 var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
+Services.console.logStringMessage("utilities loading");
+
 var miczThunderStatsUtils = {
 
+	_test: "testStart",
 	ThunderStatsVersion:'1.5alpha',
 	mailto:'m@micz.it',
 	mHost:null,
 	_y_is_last_business_day:false,
 	_y_ui_strings_update_needed:true,
 	_customqry_num_days:0,
+	_customqry_mFromDay: new Date(),
+	_customqry_mToDay: new Date(),
 	_customqry_num_days_small_labels:15,
 	_customqry_analyzer_data:{},
 	_customqry_only_bd:false,
@@ -71,16 +76,32 @@ var miczThunderStatsUtils = {
 	},
 
 	getDaysFromRange: function(mFromDate,mToDate,mOnlyBD){
+		Services.console.logStringMessage("getDaysFromRange number days: " + miczThunderStatsUtils._customqry_num_days);
 		if(!mOnlyBD) mOnlyBD=false;
 		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] begin',0);
-		if(mOnlyBD&&miczThunderStatsUtils._customqry_days_range!=null){	//do not get bd days range many time for one data extract
-			return miczThunderStatsUtils._customqry_days_range;
-		}
+
+		// cleidigh check where Ranges  set
+		// if(mOnlyBD&&miczThunderStatsUtils._customqry_days_range!=null){	//do not get bd days range many time for one data extract
+		// 	return miczThunderStatsUtils._customqry_days_range;
+		// }
+
 		let dOutput=new Array();
 		// Calculate days between dates
 		let millisecondsPerDay = 86400000;	// Day in milliseconds
-		let mFromDateInternal=new Date(mFromDate);
-		let mToDateInternal=new Date(mToDate);
+		var mFromDateInternal=new Date();
+		var mToDateInternal=new Date();
+		
+		if (Object.prototype.toString.call(mFromDate) === '[object Date]') {
+			mFromDateInternal = mFromDate;
+			mToDateInternal = mToDate;
+		
+		} else {
+			mFromDateInternal=new Date(mFromDate);
+			mToDateInternal=new Date(mToDate);
+		
+		}
+		console.debug('from internal '+mFromDateInternal);
+
 		mFromDateInternal.setHours(0,0,0,0);			// Start just after midnight
 		mToDateInternal.setHours(23,59,59,59);			// End just before midnight
 		//DST fix
@@ -102,20 +123,20 @@ var miczThunderStatsUtils = {
 			let dTmp = new Date(mFromDateInternal);
 			dTmp.setDate(mFromDateInternal.getDate()+ii);
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dTmp)+'\r\n');
-			//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp.getDate() '+JSON.stringify(dTmp.getDate())+'\r\n');
+			dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp.getDate() '+JSON.stringify(dTmp.getDate())+'\r\n');
 			if(mOnlyBD){	//we want only business days
 				if(miczThunderStatsUtils.isBusinessDay(dTmp)){	//add this day only if it's a business day
 					dOutput.push(dTmp);
-					//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
+					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
 				}else{
-					//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp NOT ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
+					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp NOT ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
 				}
 			}else{	//we want all days
 				dOutput.push(dTmp);
 			}
 		}
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
-		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput),0);
+		// dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
+		miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput),0);
 		if(mOnlyBD){
 			miczThunderStatsUtils._customqry_days_range=dOutput;
 		}
@@ -191,7 +212,6 @@ var miczThunderStatsUtils = {
 			 		  		.getCategory('NSILOCALE_TIME');
 		}
 
-		Services.console.logStringMessage("Locale: "+th_locale);
 		  th_locale=th_locale.toLowerCase();
 
 		  if((th_locale=='en-ie')||(th_locale=='en-uk')){

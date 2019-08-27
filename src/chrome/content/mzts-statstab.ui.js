@@ -14,12 +14,12 @@ if (versionChecker.compare(currentVersion, "61") >= 0) {
     var { MailUtils } = ChromeUtils.import("resource:///modules/MailUtils.jsm");
 
 } else {
-    ChromeUtils.import("resource:///modules/MailUtils.js");
+    var { MailUtils } = ChromeUtils.import("resource:///modules/MailUtils.js");
 }
 
 //ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
-Services.console.logStringMessage("stats UI after imports: ");
+// Services.console.logStringMessage("stats UI after imports: ");
 
 miczThunderStatsTab.ui = {
 
@@ -47,18 +47,12 @@ miczThunderStatsTab.ui = {
 
     loadIdentitiesSelector: function(selector_id, custom_account_key) {
 
-        Services.console.logStringMessage("stats UI load identity selector start: ");
         // let selectv = $jQ("#" + selector_id).val();
-        // Services.console.logStringMessage("stats UI load identity select : "+selectv);
-        console.debug('select:\n'+document.getElementById(selector_id).outerHTML);
         // $jQ("select#" + selector_id).find('option').remove();
         
-        console.debug('select after remove:\n'+document.getElementById(selector_id).outerHTML);
         let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
     
-        Services.console.logStringMessage("stats UI load identity selector : "+selector_id);
         let aa = _bundleCW.GetStringFromName("ThunderStats.AllAccounts");
-        Services.console.logStringMessage("stats UI load identity selector string : "+ aa);
 
         // $jQ("#" + selector_id).append('<option value="0">' + _bundleCW.GetStringFromName("ThunderStats.AllAccounts") + '</option>');
         // $jQ("#" + selector_id).append('<option value="0">' + _bundleCW.GetStringFromName("ThunderStats.AllAccounts") + '</option>');
@@ -74,7 +68,6 @@ miczThunderStatsTab.ui = {
         // o2.textContent = "Test 2"
         // document.getElementById(selector_id).appendChild(o2);
         
-        Services.console.logStringMessage("stats UI load identity selector after Append: \n"+document.getElementById(selector_id).outerHTML);
 
         for (let key in miczThunderStatsCore.accounts) {
             let debug_txt = '';
@@ -88,9 +81,6 @@ miczThunderStatsTab.ui = {
             }*/
             // $jQ("#" + selector_id).append('<option class="' + item_css_class + '" value="' + miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key + '">' + miczThunderStatsUtils.escapeHTML(debug_txt + miczThunderStatsCore.accounts[key].name) + '</option>');
 
-            
-            Services.console.logStringMessage("stats UI load identity selector string : "+ aa);
-
             let o = document.createElement('option');
             o.classList += item_css_class;
             o.setAttribute('value', (miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key) );
@@ -99,8 +89,6 @@ miczThunderStatsTab.ui = {
             document.getElementById(selector_id).appendChild(o);
     
             // $jQ("#" + selector_id).append('<option class="' + item_css_class + '" value="' + miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key + '">' + miczThunderStatsUtils.escapeHTML(debug_txt + miczThunderStatsCore.accounts[key].name) + '</option>');
-            
-            Services.console.logStringMessage("stats UI load identity selector string : "+ miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key);
             
             if (show_identities) {
                 for (let ikey in miczThunderStatsCore.accounts[key].identities) {
@@ -115,15 +103,11 @@ miczThunderStatsTab.ui = {
             if (Object.keys(miczThunderStatsCore.accounts).length == 1) { //If there is only one account, autochoose it
                 //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
                 
-                console.debug('prefix: ' + miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key);
                 document.getElementById(selector_id).setAttribute('value', miczThunderStatsCore.accounts[key].name);
-                console.debug('select:\n'+document.getElementById(selector_id).outerHTML  + " : "+document.getElementById(selector_id).length);
                 // $jQ("#" + selector_id).val(miczThunderStatsCore._account_selector_prefix + miczThunderStatsCore.accounts[key].key);
-
 
                 $jQ("#" + selector_id).change();
                 // document.getElementById(selector_id).selectedIndex = 1;
-                console.debug('select after selecting index:\n'+document.getElementById(selector_id).outerHTML + "   "+ document.getElementById(selector_id).selectedIndex  );
 
 
             } else { //choose the chosen startup account from prefs
@@ -177,71 +161,100 @@ miczThunderStatsTab.ui = {
 
     initDatePickers: function() {
 
-        flatpickr("#date_range_picker", {
+        let today = new Date();
+        // let d = moment(today.toLocaleString()).format("YYYY-MM-DD");
+        let f = moment().subtract(1, 'd');
+        let t = moment().subtract(0, 'd');
+
+        miczThunderStatsUtils._customqry_mToDay = t.toDate();
+		miczThunderStatsUtils._customqry_mFromDay = f.toDate();
+
+        Services.console.logStringMessage("INIT date pickers "+ t + "   " + f);
+
+        const currentLocale = miczThunderStatsUtils.getCurrentSystemLocale();
+        const currentLocaleBase = currentLocale.split('-')[0];
+
+        // console.debug('current system locale is ' + currentLocale);
+        // console.debug('flatp locales ' + Object.keys(flatpickr.l10ns));
+
+        const flatpLocales = Object.keys(flatpickr.l10ns);
+
+        // console.debug('locale type of = ' + typeof flatpickr.l10ns[currentLocale]);
+        if (currentLocaleBase !== 'en') {
+
+            if (flatpLocales.includes(currentLocale)) {
+                flatpickr.localize(flatpickr.l10ns[currentLocale]);
+                // console.debug('flat locale is '+ currentLocale);
+            } else if (currentLocale.includes('-') && flatpLocales.includes(currentLocaleBase)) {
+                // console.debug('flat locale is '+ currentLocale + "  shortLocale : " + currentLocale.split('-')[0]);
+                flatpickr.localize(flatpickr.l10ns[currentLocaleBase]);
+            } else {
+                // console.debug('default English');
+                flatpickr.localize(flatpickr.l10ns.default);
+            }
+        }
+
+        let fp = flatpickr("#date_range_picker", {
             mode: "range",
             maxDate: "today",
-            defaultDate: [ "yesterday", new Date()]
-
+            defaultDate: [ f.format("YYYY-MM-DD"), t.format("YYYY-MM-DD") ],
         });
+
+        // Services.console.logStringMessage("stats UI initialize date: "+fp.selectedDates[0] + "\n"+fp.selectedDates[1]);
+        Services.console.logStringMessage("stats UI initialize date picker 1: " );
 
         //adding datepicker with week start init
         //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");
         let locale_firstweekday = moment().startOf("week").format('d');
-        //document.getElementById('datepicker_from').setAttribute("firstdayofweek",locale_firstweekday);
-        //document.getElementById('datepicker_to').setAttribute("firstdayofweek",locale_firstweekday);
-        // let aDatepickerFrom = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "datetimepicker");
-        let aDatepickerFrom = document.createElement("datetimepicker-data");
-        
-        aDatepickerFrom.setAttribute("id", "datepicker_from");
-        aDatepickerFrom.setAttribute("type", "popup");
-        aDatepickerFrom.setAttribute("class", "customqry_datepicker");
-        aDatepickerFrom.setAttribute("firstdayofweek", locale_firstweekday);
-        aDatepickerFrom.onchange = miczThunderStatsTab.ui.checkDatePickers_From;
-        //aDatepickerFrom.dateValue=moment().subtract(15,'d').toDate();
-        /*let mfrom=moment().subtract(15,'d');
-        aDatepickerFrom.date=mfrom.format('DD');
-        aDatepickerFrom.month=mfrom.format('MM')-1;
-        aDatepickerFrom.year=mfrom.format('YYYY');*/
-        document.getElementById('datepicker_from_placeholder').appendChild(aDatepickerFrom);
-        let aDatepickerTo = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "datepicker");
-        aDatepickerTo.setAttribute("id", "datepicker_to");
-        aDatepickerTo.setAttribute("type", "popup");
-        aDatepickerTo.setAttribute("class", "customqry_datepicker");
-        aDatepickerTo.setAttribute("firstdayofweek", locale_firstweekday);
-        aDatepickerTo.onchange = miczThunderStatsTab.ui.checkDatePickers_To;
-        //aDatepickerTo.dateValue=moment().subtract(1,'d').toDate();
-        /*let mto=moment().subtract(1,'d');
-        aDatepickerTo.date=mto.format('DD');
-        aDatepickerTo.month=mto.format('MM')-1;
-        aDatepickerTo.year=mto.format('YYYY');*/
-        document.getElementById('datepicker_to_placeholder').appendChild(aDatepickerTo);
+
+        // flatpickr.l10ns.default.firstDayOfWeek = 1; // Monday
+
+        // let aDatepickerFrom = document.createElement("datetimepicker-data");
+        // aDatepickerFrom.setAttribute("id", "datepicker_from");
+        // aDatepickerFrom.setAttribute("type", "popup");
+        // aDatepickerFrom.setAttribute("class", "customqry_datepicker");
+        // aDatepickerFrom.setAttribute("firstdayofweek", locale_firstweekday);
+
+        // aDatepickerFrom.onchange = miczThunderStatsTab.ui.checkDatePickers_From;
+
+        // document.getElementById('datepicker_from_placeholder').appendChild(aDatepickerFrom);
+        // let aDatepickerTo = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "datepicker");
+        // aDatepickerTo.setAttribute("id", "datepicker_to");
+        // aDatepickerTo.setAttribute("type", "popup");
+        // aDatepickerTo.setAttribute("class", "customqry_datepicker");
+        // aDatepickerTo.setAttribute("firstdayofweek", locale_firstweekday);
+        // aDatepickerTo.onchange = miczThunderStatsTab.ui.checkDatePickers_To;
+
+        // document.getElementById('datepicker_to_placeholder').appendChild(aDatepickerTo);
         //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentMomentLocale: "+moment.locale()+"\r\n");
         //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
         //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
     },
 
     initDatePickers_dates: function() {
-        document.getElementById('datepicker_from').dateValue = moment().subtract(15, 'd').toDate();
-        document.getElementById('datepicker_to').dateValue = moment().subtract(1, 'd').toDate();
+        // cleidigh What dates?
+        // document.getElementById('datepicker_from').dateValue = moment().subtract(15, 'd').toDate();
+        // document.getElementById('datepicker_to').dateValue = moment().subtract(1, 'd').toDate();
     },
 
     checkDatePickers_To: function(event) {
-        let dto = document.getElementById('datepicker_to');
-        let dfrom = document.getElementById('datepicker_from');
-        if (dto.dateValue < dfrom.dateValue) {
-            dfrom.dateValue = dto.dateValue;
-        }
+        // let dto = document.getElementById('datepicker_to');
+        // let dfrom = document.getElementById('datepicker_from');
+        // if (dto.dateValue < dfrom.dateValue) {
+        //     dfrom.dateValue = dto.dateValue;
+        // }
     },
 
     checkDatePickers_From: function(event) {
-        let dto = document.getElementById('datepicker_to');
-        let dfrom = document.getElementById('datepicker_from');
-        if (dto.dateValue < dfrom.dateValue) {
-            dto.dateValue = dfrom.dateValue;
-        }
+        // let dto = document.getElementById('datepicker_to');
+        // let dfrom = document.getElementById('datepicker_from');
+        // if (dto.dateValue < dfrom.dateValue) {
+        //     dto.dateValue = dfrom.dateValue;
+        // }
     },
 
     customQueryViewSelect: function(bkselected) {
+        Services.console.logStringMessage("stats UI view select: " + bkselected);
         let dfrom = moment();
         let dto = moment();
         switch (bkselected) {
@@ -282,8 +295,19 @@ miczThunderStatsTab.ui = {
         	//miczLogger.log(">>>>>>>>>>>>>> [customQueryViewSelect] dto isDST fix.\r\n");
         	dto.subtract(1,'hour');
         }*/
-        document.getElementById('datepicker_from').dateValue = dfrom.toDate();
-        document.getElementById('datepicker_to').dateValue = dto.toDate();
+        
+        // cleidigh tweak for real-time updates
+        // document.getElementById('datepicker_from').dateValue = dfrom.toDate();
+        // document.getElementById('datepicker_to').dateValue = dto.toDate();
+        miczThunderStatsUtils._customqry_mFromDay = dfrom.toDate();
+        miczThunderStatsUtils._customqry_mToDay = dto.toDate();
+
+        let fp = document.querySelector("#date_range_picker")._flatpickr;
+        fp.setDate( [ dfrom.format("YYYY-MM-DD"), dto.format("YYYY-MM-DD")]);
+        // fp.selectedDates = [ "2019-08-02", "2019-08-23"];
+
+        Services.console.logStringMessage("stats UI view select From: " + miczThunderStatsUtils._customqry_mFromDay);
+        Services.console.logStringMessage("stats UI view select To: " + miczThunderStatsUtils._customqry_mToDay);
         if (miczThunderStatsPrefs.customQryBookmarkImmediateUpdate) { //update statistics
             miczThunderStatsTab.updateCustomQry();
         }
@@ -721,7 +745,13 @@ miczThunderStatsTab.ui = {
         for (let key in data_array) {
             let element = {};
             element.value = data_array[key].Num;
-            let tmp_folder = MailUtils.getExistingFolder(data_array[key].FolderURI);
+
+            var tmp_folder;
+            if (versionChecker.compare(currentVersion, "61") >= 0) {
+                tmp_folder = MailUtils.getExistingFolder(data_array[key].FolderURI);
+            } else {
+                tmp_folder = MailUtils.getFolderForURI(data_array[key].FolderURI);
+            }
             element.label = tmp_folder.prettyName;
             //element.label=data_array[key].Folder;
             element.folder_url = data_array[key].FolderURI;
@@ -1310,4 +1340,4 @@ miczThunderStatsTab.ui = {
 
     },
 
-};
+}; 

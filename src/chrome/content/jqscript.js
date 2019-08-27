@@ -1,11 +1,10 @@
 var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
 
-Services.console.logStringMessage("JQ script start 2");
+// Services.console.logStringMessage("JQ script start 2");
 
     function jq_ready() {
 // $jQ(document).ready(function() {
-    console.debug('jq ready');
-    Services.console.logStringMessage("JQ script ready ");
+    // Services.console.logStringMessage("JQ script ready ");
     $jQ('.tooltip').tooltipster({
         debug: false,
         theme: 'tooltipster-light'
@@ -63,7 +62,7 @@ Services.console.logStringMessage("JQ script start 2");
 
     // cleidigh
 // });
-    Services.console.logStringMessage("JQ script end");
+    // Services.console.logStringMessage("JQ script end");
 };
 
 function test() {
@@ -77,7 +76,7 @@ function test() {
 }
 
 function onLoad(e) {
-    Services.console.logStringMessage("stat page ready event handler");
+    // Services.console.logStringMessage("stat page ready event handler");
     // test();
     jq_ready();
 }

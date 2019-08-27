@@ -27,13 +27,14 @@
 
 <!-- <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.2.1.min.js" /> -->
 
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/th60fix.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.min.js" />
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.tooltipster.js" />
+        <!-- <script type="application/javascript" src="chrome://thunderstats/content/jslib/th60fix.js" /> -->
+        <!-- <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.min.js" /> -->
+        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.js" />
+        <!-- <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.tooltipster.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.ba-replacetext.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/jslib/d3.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js" />
-        
+         -->
 		<!-- 
 		<script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.callback.js" />
@@ -52,18 +53,10 @@
 
     <body>
 
-        <xul:popupset id="mainPopupSet">
-            <xul:tooltip id="mztsXulInXhtmlTooltip" />
-        </xul:popupset>
-
+        
         <div id="heading_wrapper">
             <div id="mzts-main-error">&ThunderStats.NoSearchWarn; <span class="outlink" onclick="miczThunderStatsUtils.activateGlobalIndexing();">&ThunderStats.NoSearchWarn2;</span></div>
             <div id="mzts-idnt_sel">&ThunderStats.ChooseAccount;:&nbsp;
-                <select id="identities_selector">
-				<option value="1" selected="selected" >test1@kokkini.net</option>
-				<option value="2"  >test2@kokkini.net</option>
-				</select>&nbsp;
-                <button type="button" onclick="miczThunderStatsTab.updateStats();">&ThunderStats.Update;</button>
             </div>
             <div id="mzts-setup_icon">
                 <img src="chrome://thunderstats/skin/mzts-setup.png" alt="&ThunderStats.Setup;" onclick="miczThunderStatsTab.ui.openPrefWindow();" title="&ThunderStats.Setup;" class="tooltip" />
@@ -74,7 +67,7 @@
             </div>
         </div>
 
-	<script type="application/javascript" src="chrome://thunderstats/content/jqscript.js" />
+	<!-- <script type="application/javascript" src="chrome://thunderstats/content/jqscript.js" /> -->
     </body>
 
     </html>

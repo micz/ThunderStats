@@ -263,7 +263,9 @@ var miczThunderStatsTab = {
 
 	getCustomQryStats:function(identity_id){
 		miczLogger.log("Getting custom query statistics...",0);
-
+		Services.console.logStringMessage("Get CustomeQStats:");
+		Services.console.logStringMessage("number days: " + miczThunderStatsUtils._customqry_num_days);
+		Services.console.logStringMessage("test string: " + miczThunderStatsUtils._test);
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] getCustomQryStats identity_id: "+JSON.stringify(identity_id)+"\r\n");
 
 		//Show loading indicators
@@ -289,18 +291,33 @@ var miczThunderStatsTab = {
 		this.data_customqry_sent=new Array();
 		this.data_customqry_rcvd=new Array();
 
-		// let mFromDay = document.getElementById('datepicker_from').dateValue;
-		// let mToDay = document.getElementById('datepicker_to').dateValue;
-
 		let fp = document.querySelector("#date_range_picker")._flatpickr;
+		var mToDay;
+		var mFromDay = fp.selectedDates[0];
+		
+		if (fp.selectedDates.length === 2) {
+			mToDay = fp.selectedDates[1];
+			// Services.console.logStringMessage("stats UI Custom update date: "+fp.selectedDates[0] + "\n"+fp. selectedDates[1]);
 
-		Services.console.logStringMessage("stats UI update date: "+fp.selectedDates[0] + "\n"+fp. selectedDates[1]);
-        let mFromDay = fp.selectedDates[0];
-        let mToDay = fp.selectedDates[1];
+		} else {
+			mToDay = fp.selectedDates[0];
+			if (mToDay === undefined) {
+				mToDay = new Date()
+				mFromDay = new Date()
+			}
+			// Services.console.logStringMessage("stats UI single date: "+mToDay);
 
-		Services.console.logStringMessage("stats UI update update custom dates: " + mFromDay + "\n"+ mToDay);
+		}
+
+		miczThunderStatsUtils._customqry_mToDay = mToDay;
+		miczThunderStatsUtils._customqry_mFromDay = mFromDay;
+
 
 		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
+		miczThunderStatsUtils._test = "testFromStatsT";
+		Services.console.logStringMessage("test after set:  "+ miczThunderStatsUtils._test);
+
+		Services.console.logStringMessage("stats UI update update custom dates:\n  From: " + mFromDay + "\n  To: "+ mToDay + "\n  nDays: "+ miczThunderStatsUtils._customqry_num_days );
 
 		if(miczThunderStatsUtils._customqry_num_days == 1){	//only one day
 			miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_1");
@@ -365,6 +382,7 @@ var miczThunderStatsTab = {
 			//Get received messages
 			miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
 
+			console.debug('after callbacks');
 			//== If we are using only business days, everything is calculated in the two callbacks above
 			if(!miczThunderStatsUtils._customqry_only_bd){
 				//Get first 10 recipients
@@ -376,6 +394,7 @@ var miczThunderStatsTab = {
 				miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
 				miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
 			}else{	//with only business days
+				console.debug('before Doing business days');
 				//Get first 10 recipients
 				miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients=new Array();
 				miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients_count=0;
@@ -384,6 +403,7 @@ var miczThunderStatsTab = {
 				miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders=new Array();
 				miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders_count=0;
 				miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
+				console.debug('after business at');
 			}
 		}else{	//getting only one day
 			//Print dates
@@ -417,7 +437,7 @@ var miczThunderStatsTab = {
 	getCurrentIdentityId:function(){	//returning an identities object or a 0 if none selected
 										//identities object is {ids_merged: array of all ids; ids:array of normal identities ids; ids_custom: array of custom identities ids; base_account_key: identity account key}}
 		// let id_selector_value = $jQ("#identities_selector").val();
-		console.debug('selectIdentities:\n'+document.getElementById("identities_selector").outerHTML  + " : "+document.getElementById("identities_selector").value);
+		// console.debug('selectIdentities:\n'+document.getElementById("identities_selector").outerHTML  + " : "+document.getElementById("identities_selector").value);
 		let id_selector_value = document.getElementById("identities_selector").value;
 		
 		let output=new Array();
@@ -478,12 +498,15 @@ var miczThunderStatsTab = {
 
 		//if only bd, check if the selected range has some valid day
 		if(miczThunderStatsUtils._customqry_only_bd){
-			let mFromDay = document.getElementById('datepicker_from').dateValue;
-			let mToDay = document.getElementById('datepicker_to').dateValue;
+			let mFromDay = miczThunderStatsUtils._customqry_mFromDay;
+			let mToDay = miczThunderStatsUtils._customqry_mToDay;
+
 			let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,true);
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mFromDay: "+JSON.stringify(mFromDay)+"\r\n");
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mToDay: "+JSON.stringify(mToDay)+"\r\n");
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mDays: "+JSON.stringify(mDays)+"\r\n");
+
+			console.debug('total days '+mDays);
 			if(mDays.length==0){	//we have no valid business days, so tell the user
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 				alert(_bundleCW.GetStringFromName("ThunderStats.NoValidBusinessDays"));

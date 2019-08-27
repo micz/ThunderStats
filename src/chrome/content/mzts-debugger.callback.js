@@ -350,6 +350,8 @@ miczThunderStatsDebugger.callback.stats_customqry_sent = {
                 miczLogger.log("Custom query sent messages loaded day: " + this.data[1]["Info"] + ".", 0);
                 //if we've collected our days, let's print it!
                 //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsDebugger.callback.stats_customqry_sent miczThunderStatsDebugger.data_customqry_sent.length '+this.data_customqry_sent.length+'\r\n');
+                
+                miczThunderStatsUtils._customqry_num_days
                 if (this.data_customqry_sent.length == miczThunderStatsUtils._customqry_num_days) {
                     //ordering results array
                     this.data_customqry_sent.sort(miczThunderStatsUtils.array_7days_compare);

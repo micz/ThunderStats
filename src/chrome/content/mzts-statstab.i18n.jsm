@@ -1,7 +1,6 @@
 "use strict";
 
 var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
-Services.console.logStringMessage("i18 start");
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsI18n"];
 

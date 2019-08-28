@@ -1,7 +1,6 @@
 "use strict";
 
 var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
-Services.console.logStringMessage("setting start");
 
 var { miczThunderStatsCore } = ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
 var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
@@ -11,10 +10,7 @@ var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/conten
 var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 var { OS } = ChromeUtils.import("resource://gre/modules/osfile.jsm");
 
-Services.console.logStringMessage("setting before HTTP request");
-// Components.utils.importGlobalProperties(["XMLHttpRequest"]);
-
-Services.console.logStringMessage("setting after imports");
+// Services.console.logStringMessage("setting after imports");
 
 var miczThunderStatsPrefPanel = {
 
@@ -215,7 +211,7 @@ var miczThunderStatsPrefPanel = {
         if (doc.getElementById("deleteButtonNBD").disabled) return;
 
         //Are you sure?
-        let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+        let prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
         let _bundleCW = miczThunderStatsI18n.createBundle("settings");
 
         if (!prompts.confirm(null, _bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.title"), _bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.text"))) return;

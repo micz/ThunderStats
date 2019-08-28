@@ -1,13 +1,5 @@
 "use strict";
 
-// ChromeUtils.import("resource://thunderstats/sqlite.js");
-// ChromeUtils.import("resource://thunderstats/tokenize.js");
-// ChromeUtils.import("resource://thunderstats/fileIO.js");
-// ChromeUtils.import("resource://gre/modules/osfile.jsm");
-// ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-sqlquery.jsm");
-// ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
-// ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
-
 var { SQLiteTypes, SQLiteHandler, SQLiteFn } = ChromeUtils.import("resource://thunderstats/sqlite.js");
 var { sql_tokenizer, replaceObjectNameInSql, getViewSchemaSelectStmt } = ChromeUtils.import("resource://thunderstats/tokenize.js");
 var { FileIO } = ChromeUtils.import("resource://thunderstats/fileIO.js");
@@ -16,8 +8,6 @@ var { miczThunderStatsQuery } = ChromeUtils.import("chrome://thunderstats/conten
 var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
 
-
-const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsDB"];
 
@@ -323,13 +313,13 @@ var miczThunderStatsDB = {
             }
         }
         //get accounts
-        let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
+        let acctMgr = Cc["@mozilla.org/messenger/account-manager;1"].getService(Ci.nsIMsgAccountManager);
         let accounts = acctMgr.accounts;
         let arr_inbox = new Array();
         let arr_inbox_account = {};
         //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
         for (let i = 0; i < accounts.length; i++) {
-            let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
+            let account = accounts.queryElementAt(i, Ci.nsIMsgAccount);
             if (account == null) continue;
             //dump('>>>>>>>>>>>>>> [miczThunderStatsTab queryGetInboxFolders] mIdentity|identities '+mIdentity+"|"+JSON.stringify(identities)+'\r\n');
             //if((mIdentity!=0)&&(identities[mIdentity]["account_key"]!=account.key)) continue;
@@ -396,7 +386,7 @@ var miczThunderStatsDB = {
         let promise = OS.File.stat(fileName);
         promise = promise.then(
             function onSuccess(stat) {
-                let ObserverService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+                let ObserverService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
                 ObserverService.notifyObservers(null, "mzts-last-index-update", JSON.stringify(stat.lastModificationDate));
             },
             function onFailure(reason) {
@@ -494,7 +484,7 @@ miczThunderStatsDB.callback.loadMsgAttributes = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 this.msgAttributes = {};
                 if (!this.empty) {
                     for (let key in this.data) {
@@ -508,12 +498,12 @@ miczThunderStatsDB.callback.loadMsgAttributes = {
                 this.data = new Array();
                 this.empty = true;
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = new Array();
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = new Array();
                 this.empty = true;

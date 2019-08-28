@@ -1,16 +1,7 @@
 "use strict";
 
-// ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
-// //ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	 // To be enabled in vesion 2.0
-// ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.jsm");
-// ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-// ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
-// ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-// ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
-
 var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
 Services.console.logStringMessage("standard score start");
-
 
 var { miczThunderStatsDB } = ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 //ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	 // To be enabled in vesion 2.0
@@ -20,10 +11,7 @@ var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/conten
 var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
-
-const { classes: Cc, interfaces: Ci, utils: Cu, results: Cr } = Components;
-
-Services.console.logStringMessage("standard score after imports 2");
+// Services.console.logStringMessage("standard score after imports 2");
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsCore"];
 
@@ -37,12 +25,12 @@ var miczThunderStatsCore = {
 
     loadIdentities: function() {
         this.identities = {};
-        let acctMgr = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
+        let acctMgr = Cc["@mozilla.org/messenger/account-manager;1"].getService(Ci.nsIMsgAccountManager);
         let accounts = acctMgr.accounts;
         let cid_prog = 0; //custom identities id prog
         //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
         for (let i = 0; i < accounts.length; i++) {
-            let account = accounts.queryElementAt(i, Components.interfaces.nsIMsgAccount);
+            let account = accounts.queryElementAt(i, Ci.nsIMsgAccount);
             if (account == null) continue;
             if ((account.incomingServer.type != 'pop3') && (account.incomingServer.type != 'imap')) continue;
             this.accounts[account.key] = {};
@@ -55,7 +43,7 @@ var miczThunderStatsCore = {
             // Enumerate identities
             let identities = account.identities;
             for (let j = 0; j < identities.length; j++) {
-                let identity = identities.queryElementAt(j, Components.interfaces.nsIMsgIdentity);
+                let identity = identities.queryElementAt(j, Ci.nsIMsgIdentity);
                 //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
                 if (!identity.email) continue;
                 let identity_item = {};
@@ -167,8 +155,7 @@ miczThunderStatsCore.db = {
     },
 
     getManyDaysMessages: function(mType, mFromDay, mToDay, mIdentity, mCallback) { //mFromDay and mToDay are a Date objects
-        Services.console.logStringMessage("get Many days: Start "+ miczThunderStatsUtils._test);
-        Services.console.logStringMessage("number days: " + miczThunderStatsUtils._customqry_num_days);
+        // Services.console.logStringMessage("number days: " + miczThunderStatsUtils._customqry_num_days);
         let mInfo = null;
         if (typeof mType === 'object') {
             mInfo = mType.info;
@@ -176,7 +163,7 @@ miczThunderStatsCore.db = {
         }
         let mOnlyBD = (mInfo != null); //if mInfo is set we want only business days
         let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay, mToDay, mOnlyBD);
-        Services.console.logStringMessage("get Many days: " + "nDays: "+ miczThunderStatsUtils._customqry_num_days + "  "+mOnlyBD);
+        // Services.console.logStringMessage("get Many days: " + "nDays: "+ miczThunderStatsUtils._customqry_num_days + "  "+mOnlyBD);
         // dump('>>>>>>>>>>>>>> [miczThunderStatsTab getManyDaysMessages] mDays.length '+JSON.stringify(mDays.length)+'\r\n');
         miczThunderStatsUtils._customqry_num_days = mDays.length; //update the total number of days, we may have used only the business days
         for (let mKey in mDays) {

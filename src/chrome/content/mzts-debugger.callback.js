@@ -19,13 +19,13 @@ miczThunderStatsDebugger.callback.base = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 //miczLogger.log("Query completed successfully.");
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 return false;
         }
@@ -48,7 +48,7 @@ miczThunderStatsDebugger.callback.last_idx_msg = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
                     miczThunderStatsDebugger.addLogLines(_bundleCW.GetStringFromName("ThunderStats.LastIndexedMessage") + ": " + miczThunderStatsUtils.getDateTimeString(moment(this.data[1]["last_msg_date"] / 1000)));
@@ -60,12 +60,12 @@ miczThunderStatsDebugger.callback.last_idx_msg = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(1);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -91,7 +91,7 @@ miczThunderStatsDebugger.callback.tot_msg = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     miczThunderStatsDebugger.addLogLines("Total messages from gloda: " + this.data[1]["tot_msg"]);
                 } else {
@@ -102,12 +102,12 @@ miczThunderStatsDebugger.callback.tot_msg = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(4);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -132,7 +132,7 @@ miczThunderStatsDebugger.callback.tot_msg_att = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     miczThunderStatsDebugger.addLogLines("Total message attributes from gloda: " + this.data[1]["tot_msg_att"]);
                 } else {
@@ -143,12 +143,12 @@ miczThunderStatsDebugger.callback.tot_msg_att = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(5);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -173,7 +173,7 @@ miczThunderStatsDebugger.callback.stats_today_sent = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     miczThunderStatsDebugger.addLogLines("Today: total messages sent: " + this.data[1]["Num"]);
                 } else {
@@ -184,12 +184,12 @@ miczThunderStatsDebugger.callback.stats_today_sent = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(6);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -214,7 +214,7 @@ miczThunderStatsDebugger.callback.stats_today_rcvd = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     miczThunderStatsDebugger.addLogLines("Today: total messages received: " + this.data[1]["Num"]);
                 } else {
@@ -225,12 +225,12 @@ miczThunderStatsDebugger.callback.stats_today_rcvd = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(7);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -255,7 +255,7 @@ miczThunderStatsDebugger.callback.stats_yesterday_sent = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     miczThunderStatsDebugger.addLogLines("Yesterday: total messages sent: " + this.data[1]["Num"]);
                 } else {
@@ -266,12 +266,12 @@ miczThunderStatsDebugger.callback.stats_yesterday_sent = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(8);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -296,7 +296,7 @@ miczThunderStatsDebugger.callback.stats_yesterday_rcvd = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     miczThunderStatsDebugger.addLogLines("Yesterday: total messages received: " + this.data[1]["Num"]);
                 } else {
@@ -307,12 +307,12 @@ miczThunderStatsDebugger.callback.stats_yesterday_rcvd = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(9);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -339,7 +339,7 @@ miczThunderStatsDebugger.callback.stats_customqry_sent = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 let m = moment(miczThunderStatsUtils.getDate7DaysString(new Date(this.data[1]["Info"])), "YYYYMMDD");
                 if (!this.empty) {
                     this.total_mail += this.data[1]["Num"];
@@ -364,13 +364,13 @@ miczThunderStatsDebugger.callback.stats_customqry_sent = {
                 this.data = {};
                 this.empty = true;
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 this.total_mail = 0;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -399,7 +399,7 @@ miczThunderStatsDebugger.callback.stats_customqry_rcvd = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 let m = moment(miczThunderStatsUtils.getDate7DaysString(new Date(this.data[1]["Info"])), "YYYYMMDD");
                 if (!this.empty) {
                     this.total_mail += this.data[1]["Num"];
@@ -422,13 +422,13 @@ miczThunderStatsDebugger.callback.stats_customqry_rcvd = {
                 this.data = {};
                 this.empty = true;
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 this.total_mail = 0;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -454,7 +454,7 @@ miczThunderStatsDebugger.callback.debugger_time_range = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     miczThunderStatsDebugger.addLogLines("queryDebuggerTimeRangeMessages: total: " + this.data[1]["Num"]);
                 } else {
@@ -465,12 +465,12 @@ miczThunderStatsDebugger.callback.debugger_time_range = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(13);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -495,7 +495,7 @@ miczThunderStatsDebugger.callback.debugger_attributes_sent = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     miczThunderStatsDebugger.addLogLines("queryDebuggerMessageAttributes: total sent: " + this.data[1]["Num"]);
                 } else {
@@ -506,12 +506,12 @@ miczThunderStatsDebugger.callback.debugger_attributes_sent = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(14);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -536,7 +536,7 @@ miczThunderStatsDebugger.callback.debugger_attributes_rcvd = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     miczThunderStatsDebugger.addLogLines("queryDebuggerMessageAttributes: total received: " + this.data[1]["Num"]);
                 } else {
@@ -547,12 +547,12 @@ miczThunderStatsDebugger.callback.debugger_attributes_rcvd = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(15);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = {};
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = {};
                 this.empty = true;
@@ -578,7 +578,7 @@ miczThunderStatsDebugger.callback.debugger_used_attributes = {
 
     handleCompletion: function(aReason) {
         switch (aReason) {
-            case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+            case Ci.mozIStorageStatementCallback.REASON_FINISHED:
                 if (!this.empty) {
                     miczThunderStatsDebugger.addLogLines("queryDebuggerUsedMessageAttributes: " + JSON.stringify(this.data));
                     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_7days_recipients handleCompletion '+JSON.stringify(this.data)+'\r\n');
@@ -590,12 +590,12 @@ miczThunderStatsDebugger.callback.debugger_used_attributes = {
                 this.empty = true;
                 miczThunderStatsDebugger.getThunderStatsData(16);
                 return true;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+            case Ci.mozIStorageStatementCallback.REASON_CANCELED:
                 miczLogger.log("Query canceled by the user!", 1);
                 this.data = new Array();
                 this.empty = true;
                 return false;
-            case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+            case Ci.mozIStorageStatementCallback.REASON_ERROR:
                 miczLogger.log("Query aborted!", 2);
                 this.data = new Array();
                 this.empty = true;

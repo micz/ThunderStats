@@ -1,11 +1,5 @@
 "use strict";
 
-// ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
-//ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	// To be enabled in vesion 2.0
-// ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
-// ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
-// ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
-
 
 var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
 
@@ -265,7 +259,6 @@ var miczThunderStatsTab = {
 		miczLogger.log("Getting custom query statistics...",0);
 		Services.console.logStringMessage("Get CustomeQStats:");
 		Services.console.logStringMessage("number days: " + miczThunderStatsUtils._customqry_num_days);
-		Services.console.logStringMessage("test string: " + miczThunderStatsUtils._test);
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] getCustomQryStats identity_id: "+JSON.stringify(identity_id)+"\r\n");
 
 		//Show loading indicators
@@ -314,8 +307,6 @@ var miczThunderStatsTab = {
 
 
 		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
-		miczThunderStatsUtils._test = "testFromStatsT";
-		Services.console.logStringMessage("test after set:  "+ miczThunderStatsUtils._test);
 
 		Services.console.logStringMessage("stats UI update update custom dates:\n  From: " + mFromDay + "\n  To: "+ mToDay + "\n  nDays: "+ miczThunderStatsUtils._customqry_num_days );
 
@@ -334,7 +325,7 @@ var miczThunderStatsTab = {
 		//if there are too much days, warn the user...
 		if(miczThunderStatsUtils._customqry_num_days > 99){
 			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
-			let promptService_numd = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+			let promptService_numd = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 			if(!promptService_numd.confirm(null,miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.Warning"),miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.CustomViewTooMuchDays",miczThunderStatsUtils._customqry_num_days))){
 				//The user aborted the action...
 				//... so hide the loading indicators

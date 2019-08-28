@@ -17,8 +17,6 @@ if (versionChecker.compare(currentVersion, "61") >= 0) {
     var { MailUtils } = ChromeUtils.import("resource:///modules/MailUtils.js");
 }
 
-//ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
-
 // Services.console.logStringMessage("stats UI after imports: ");
 
 miczThunderStatsTab.ui = {
@@ -273,6 +271,7 @@ miczThunderStatsTab.ui = {
                 break;
             case '#last2week':
                 dfrom.weekday(0).subtract(1, 'day').weekday(0);
+                // dfrom.weekday(0).subtract(2, 'week').weekday(0);
                 break;
             case '#lastmonth':
                 dfrom.subtract(1, 'month').subtract(dfrom.format('D'), 'day').add(1, 'day');
@@ -678,7 +677,7 @@ miczThunderStatsTab.ui = {
             //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] mwin.gFolderDisplay.selectedCount: "+mwin.gFolderDisplay.selectedCount+"\r\n");
             if (do_select_message) {
                 try {
-                    let folder_msg_iterator = fixIterator(curr_folder.msgDatabase.ReverseEnumerateMessages(), Components.interfaces.nsIMsgDBHdr);
+                    let folder_msg_iterator = fixIterator(curr_folder.msgDatabase.ReverseEnumerateMessages(), Ci.nsIMsgDBHdr);
                     for (let fmsg of folder_msg_iterator) {
                         mwin.gFolderDisplay.selectMessage(fmsg);
                         //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab drawInbox0FolderSpreadGraph] subject: "+JSON.stringify(fmsg.subject)+"\r\n");

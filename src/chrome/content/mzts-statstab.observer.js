@@ -11,7 +11,7 @@ miczThunderStatsTab.observer={};
 miczThunderStatsTab.observer.callback={};
 
 miczThunderStatsTab.observer.last_idx_update = function(mCallback){
-	let ObserverService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+	let ObserverService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
 	ObserverService.addObserver(mCallback,"mzts-last-index-update",false);
 };
 

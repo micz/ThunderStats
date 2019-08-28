@@ -11,12 +11,12 @@ miczThunderStatsDebugger.observer = {};
 miczThunderStatsDebugger.observer.callback = {};
 
 miczThunderStatsDebugger.observer.last_idx_update = function(mCallback) {
-    let ObserverService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+    let ObserverService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
     ObserverService.addObserver(mCallback, "mzts-last-index-update", false);
 };
 
 miczThunderStatsDebugger.observer.last_idx_update_remove = function(mCallback) {
-    let ObserverService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+    let ObserverService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
     ObserverService.removeObserver(mCallback, "mzts-last-index-update");
 };
 

@@ -96,10 +96,10 @@ var miczThunderStatsDebugger = {
         message_body += '-====================================-';
         message_body += "\r\n\r\n";
         message_body += document.getElementById('mzts-debugger-log').value;
-        let prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+        let prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
         let sURL = "mailto:" + miczThunderStatsUtils.mailto + "?subject=[ThunderStats] Debugger Report v" + miczThunderStatsUtils.ThunderStatsVersion + "&body=" + encodeURI(message_body); // urlencode
-        let MessageComposer = Components.classes["@mozilla.org/messengercompose;1"].getService(Components.interfaces.nsIMsgComposeService);
-        let ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+        let MessageComposer = Cc["@mozilla.org/messengercompose;1"].getService(Ci.nsIMsgComposeService);
+        let ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
         let aURI = ioService.newURI(sURL, null, null);
         window.close();
         MessageComposer.OpenComposeWindowWithURI(null, aURI);
@@ -125,7 +125,7 @@ var miczThunderStatsDebugger = {
         let output = '';
         let pref_branch_count = {};
         let pref_branch_array = {};
-        let pref_branch_key = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch(miczThunderStatsPrefs.pref_base).getChildList("", pref_branch_count, pref_branch_array);
+        let pref_branch_key = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService).getBranch(miczThunderStatsPrefs.pref_base).getChildList("", pref_branch_count, pref_branch_array);
         output += "Count " + JSON.stringify(pref_branch_count) + "\r\n";
         let prefs_item_array = [];
         for (let ii in pref_branch_key) {

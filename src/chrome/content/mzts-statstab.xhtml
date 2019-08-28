@@ -43,7 +43,6 @@
         <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.folderworkers.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.promises.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/mzts-statstab.ui.js" />
-        <!-- <script type="application/javascript" src="chrome://thunderstats/content/mzts-utils.jsm" /> -->
         <script type="application/javascript" src="chrome://thunderstats/content/mzts-prefobserver.js" />
 
         <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/flatpickr-4.6.2-min.js" />
@@ -53,16 +52,6 @@
         <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/nl.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/ja.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/de.js" />
-
-        <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
-
-        <!-- <script src="chrome://calendar/content/calendar-ui-utils.js"/>
-        <script src="chrome://messenger/content/customElements.js"/>
-        <script src="chrome://calendar/content/datetimepickers/datetimepickers.js"/>
- -->
-        <script>
-            console.debug('in-line script x2');
-        </script>
 
     
     </head>
@@ -306,9 +295,11 @@
                                     </li>
                                 </ul>
 
-                        </div> Date Range <input id="date_range_picker" class="flatpickr" type="text" placeholder="Select Date Range.."  />
-                             <span id="datepicker_from_placeholder"></span>
-                             <span id="datepicker_to_placeholder"></span> <button type="button" onclick="miczThunderStatsTab.updateCustomQry();" id="customqry_update_btn">&ThunderStats.UpdateCustomQry;</button>                            <input type="checkbox" id="customqry_only_bd" /> &ThunderStats.OnlyBDCustomQry;<span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span>
+                        </div><span>&ThunderStats.DateRange; : &nbsp;</span><input id="date_range_picker" class="flatpickr" type="text" placeholder="Select Date Range.."  style="padding-left: 8px; padding-right: 5px;" />
+                        <span style="padding-right: 16px;"></span>
+                             <button type="button" onclick="miczThunderStatsTab.updateCustomQry();" id="customqry_update_btn" style="padding-right: 8px; padding-left: 8px; padding-bottom: 1px">&ThunderStats.UpdateCustomQry;</button>
+                             <span style="padding-right: 14px;"></span>
+                             <input type="checkbox" id="customqry_only_bd" /> &ThunderStats.OnlyBDCustomQry;<span id="customqry_totaldays_text">&ThunderStats.CustomQryDataMsg;: <span id="customqry_account"></span> - &ThunderStats.TotalDays;: <span id="customqry_totaldays_num"></span></span>
 
 
                         </div>

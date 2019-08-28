@@ -60,6 +60,7 @@
 <!ENTITY ThunderStats.LastMonth "Last Month">
 <!ENTITY ThunderStats.LastYear "Last Year">
 <!ENTITY ThunderStats.Last2Week "Last two Week">
+<!ENTITY ThunderStats.DateRange "Date Range">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Consider business days only">
 <!ENTITY ThunderStats.Debugger.Run "Run the Debugger">
 <!ENTITY ThunderStats.Debugger.WarnTitle "No messages found for today!">

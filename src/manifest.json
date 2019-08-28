@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
-    "name": "ThunderStats",
+    "name": "__MSG_extensionName__",
+	"description": "__MSG_extensionDescription__",
     "xpi-name": "thunderstats",
     "version": "1.4.5-b2",
-    "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
     "author": "Mic (m@micz.it), Christopher Leidigh",
     "applications": {
         "gecko": {

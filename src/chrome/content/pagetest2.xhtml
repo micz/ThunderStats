@@ -13,6 +13,14 @@
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <head>
+
+    
+<!--         <link rel="stylesheet" href="chrome://thunderstats/content/flatpickr/flatpickr.min.css"/>
+        <link rel="stylesheet" type="text/css" href="chrome://thunderstats/content/flatpickr/material_blue.css"/>
+ -->
+        <link rel="stylesheet" href="chrome://thunderstats/content/flatpickr/flatpickr.min.css"/>
+        <link rel="stylesheet" type="text/css" href="chrome://thunderstats/content/flatpickr/material_blue.css"/>
+
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/messageHeader.css" />
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/content/bindings.css" />
         <link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-statstab.css" />
@@ -29,7 +37,7 @@
 
         <!-- <script type="application/javascript" src="chrome://thunderstats/content/jslib/th60fix.js" /> -->
         <!-- <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.min.js" /> -->
-        <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.js" />
+        <!-- <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery-3.3.1.js" /> -->
         <!-- <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.tooltipster.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/jslib/jquery.ba-replacetext.js" />
         <script type="application/javascript" src="chrome://thunderstats/content/jslib/d3.js" />
@@ -45,13 +53,22 @@
         <script type="application/javascript" src="chrome://thunderstats/content/mzts-utils.jsm" />
         <script type="application/javascript" src="chrome://thunderstats/content/mzts-prefobserver.js" />
  -->
- 
+        <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/flatpickr-4.6.2-min.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/es.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/it.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/fr.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/nl.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/ja.js" />
+        <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/de.js" />
+
+<script type="application/javascript" src="chrome://thunderstats/content/flatp.js"/>
+
          <script>
-            console.debug('in-line script');
+            console.debug('in-line script 2');
         </script>
     </head>
 
-    <body>
+    <body  style="height: 200px; width: 500px;" >
 
         
         <div id="heading_wrapper">
@@ -65,6 +82,10 @@
                 <div id="mzts-idx_update"></div>
                 <div id="mzts-last_msg"></div>
             </div>
+<div style="height: 200px; width: 500px;" >
+	        <input id="date_picker1" class="flatpickr" type="text" placeholder="Select New Date .."  style="padding-left: 8px; padding-right: 5px;" />
+</div>
+
         </div>
 
 	<!-- <script type="application/javascript" src="chrome://thunderstats/content/jqscript.js" /> -->

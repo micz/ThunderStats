@@ -2,15 +2,17 @@
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 <!DOCTYPE dialog SYSTEM "chrome://thunderstats/locale/mzts-settings-nobusinessdayeditor.dtd">
 <?xml-stylesheet href="css/mzts-settings-nobusinessdayeditor.css" type="text/css"?>
-
+<!-- 
   <?xml-stylesheet  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" type="text/css"?>
   <?xml-stylesheet  rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css"?>
 
+  onload="miczThunderStatsPrefPanel_NBDEditor.onLoad();"
 
-<dialog id="TSNoBusinessDayEditor"
-  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-  xmlns:html="http://www.w3.org/1999/xhtml"
+ -->
+
+<dialog id="TSNoBusinessDayEditor" height="200px" width="300px"
+  xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns="http://www.w3.org/1999/xhtml"
   title="&ThunderStats.NBDEditor.window.title; Test 1"
   style=""
   windowtype="mailnews:tsnobusinessday"
@@ -20,15 +22,11 @@
   onunload=""
   ondialogaccept="miczThunderStatsPrefPanel_NBDEditor.onAccept();">
 
-<stringbundleset id="stringbundleset">
-   <stringbundle id="ThunderStats-string-bundle" src="chrome://thunderstats/locale/mzts-settings-nobusinessday.properties" />
-</stringbundleset>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css"/>
 
 
-        <link rel="stylesheet" href="chrome://thunderstats/content/flatpickr/flatpickr.min.css"/>
-        <link rel="stylesheet" type="text/css" href="chrome://thunderstats/content/flatpickr/material_blue.css"/>
 
-  
   <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/flatpickr-4.6.2-min.js" />
   <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/es.js" />
   <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/it.js" />
@@ -39,38 +37,8 @@
 
   <script type="application/javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js"/>
   <script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.js"/>
-
-  <vbox id="ts_vbox" flex="1">
-     <separator class="thin"/>
-      <grid>
-        <columns>
-          <column/>
-          <column/>
-        </columns>
-        <rows>
-          <row>
-			<vbox><label value="&ThunderStats.desc.label;:"/>
-			<label value="(&ThunderStats.optional.label;)"/></vbox>
-			<vbox>
-				<textbox id="ThunderStats.desc"/>
-			</vbox>
-          </row>
-          <row>
-			<label value="&ThunderStats.date.label;:"/>
-			<vbox>
-				<vbox id="ThunderStats.date_placeholder">
-        </vbox>
-	        <html:input id="non_biz_date_picker" class="flatpickr" type="text" placeholder="Select New Date .."  style="padding-left: 8px; padding-right: 5px;" />
-
-  		</vbox>
-          </row>
-          <row>
-			<label value="&ThunderStats.every_year.label;:"/>
-			<vbox>
-				<checkbox id="ThunderStats.every_year" checked="true" label="&ThunderStats.every_year.desc;"/>
-			</vbox>
-          </row>
-        </rows>
-      </grid>
-  </vbox>
+<div height="200px" width="300px">
+	        <input id="date_picker1" class="flatpickr" type="text" placeholder="Select New Date .."  style="padding-left: 8px; padding-right: 5px;" />
+</div>
+  		
 </dialog>

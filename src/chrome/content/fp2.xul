@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+
+    <!DOCTYPE window>
+  
+
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <head>
+
+        <link rel="stylesheet" href="chrome://thunderstats/content/flatpickr/flatpickr.min.css"/>
+        <link rel="stylesheet" type="text/css" href="chrome://thunderstats/content/flatpickr/material_blue.css"/>
+  
+  </head>
+
+<body style="height: 350px; width: 600px;">
+
+<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/flatpickr-4.6.2-min.js" />
+  <!-- <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/flatp-umin.js" /> -->
+  <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/es.js" />
+  <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/it.js" />
+  <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/fr.js" />
+  <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/nl.js" />
+  <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/ja.js" />
+  <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/de.js" />
+
+  <script type="application/javascript" src="chrome://thunderstats/content/flatp.js"/>
+<div style="height: 200px; width: 500px;" >
+	        <input id="date_picker1" class="flatpickr" type="text" placeholder="Select New Date .."  style="padding-left: 8px; padding-right: 5px;" />
+</div>
+  		
+<!-- </window> -->
+</body>
+</html>

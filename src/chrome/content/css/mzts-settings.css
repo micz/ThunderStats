@@ -5,3 +5,110 @@
 .mzts-label_no_border{-moz-margin-start:0px;}
 .mzts-checkbox_no_border{border-right-width:0px;margin-right:0px;}
 .mzts-warn{color:#0B0B61;font-style:italic;background:white;}
+
+
+.table-list-container {
+	/* max-width: 800px; */
+	/* width: 100%; */
+	width: 350px;
+	height: 200px;
+	margin-top: 4px;
+	margin-right: 6px;
+	margin-left: 6px;
+	margin-bottom: 8px;
+	/* margin: 4px auto; */
+	/* background-color: cornsilk; */
+	border: 1px solid #dddddd;
+	/* border: 1px solid #aaaaaa; */
+	position: relative;
+	z-index: 0;
+  }
+
+  .hbox {
+	  /* display: -moz-box; */
+	  background-color: yellow;
+	  height: 10px;
+	  /* width: 600px; */
+  }
+  .table-list {
+	/* table-layout: fixed; */
+	/* display: -moz-box; */
+	/* -moz-box-flex: 1; */
+	/* width: 100%; */
+	/* width: 200px; */
+	/* min-height: 120px; */
+	/* border: 1px solid #aaaaaa; */
+	/* border: 1px solid red; */
+	/* background-color: aquamarine; */
+  }
+  
+  .date {
+	/* display: -moz-box; */
+	/* -moz-box-flex: 1; */
+	width: 80px;
+	
+  }
+
+  .description {
+	/* display: -moz-box; */
+	/* -moz-box-flex: 1; */
+	/* width: 200px; */
+  }
+
+  .wider {
+	width: 300px !important;
+  }
+  .yearly {
+	/* display: -moz-box; */
+	/* -moz-box-flex: 1; */
+	width: 80px;
+	/* -moz-box-pack: end; */
+	
+  }
+
+  .table-list th {
+	border-right: .6px solid #d2d2d2;
+	height: 14px;
+	/* font-style: normal; */
+	font-weight: 500;
+	color: black;
+	text-align: left;
+	padding-right: 6px;
+	padding-left: 6px;
+	background-color: #f9f9f9;
+	/* background-color: aquamarine; */
+  }
+  
+  .table-list td {
+	white-space: nowrap;
+	height: 14px;
+	/* vertical-align: top; */
+	padding-right: 6px;
+	padding-left: 6px;
+	/* padding: 4px; */
+	/* border-bottom: 1px solid #d2d2d2; */
+  }
+  
+  /* .table-list tr:last-child td {
+	height: auto;
+  } */
+  
+  .list-row {
+	  /* background-color: burlywood; */
+	  height: 16px;
+  }
+  
+  
+  .list-row:hover, :focus {
+	  background-color: aqua;
+	  /* color: white; */
+  }
+  
+  .list-row selected {
+	  background-color: cadetblue;
+	  /* color: white; */
+  }
+  
+  .header {
+	  background-color: inherit !important;
+  }

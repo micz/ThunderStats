@@ -22,8 +22,6 @@ var miczThunderStatsPrefPanel = {
         let context = {};
         Services.console.logStringMessage("dialog onLoad event handler - load preferences");
         Services.scriptloader.loadSubScript("chrome://global/content/preferencesBindings.js", context, "UTF-8" /* The script's encoding */ );
-        Services.console.logStringMessage("Preferences 1: onload loaded preferences script");
-
 
         Preferences.addAll([
             { id: "ThunderStats.identities_selector", name: "extensions.ThunderStats.identities_selector", type: "bool" },
@@ -60,9 +58,15 @@ var miczThunderStatsPrefPanel = {
         // const elements = Preferences.getElementsByAttribute("preference");
         for (const element of elements) {
             const p = Preferences.get(element.getAttribute("preference"));
-            Services.console.logStringMessage("Preferences 1: onload loaded  " + element.id + "  " + p.value);
+            // Services.console.logStringMessage("Preferences 1: onload loaded  " + element.id + "  " + p.value);
             p.setElementValue(element);
         }
+
+        var s1 = "   string1   ";
+        // Services.console.logStringMessage(`String.trim(s1) :${String.trim(s1)} `);
+        Services.console.logStringMessage(`s1.trim() :${s1.trim()} `);
+        Services.console.logStringMessage(`String.charCodeAt():${s1.charCodeAt(1)} `);
+        Services.console.logStringMessage(`String.prototype.trim() :${String.prototype.trim(s1)} `);
 
         Services.console.logStringMessage("Preferences 1: onload loaded preferences ");
 
@@ -89,14 +93,38 @@ var miczThunderStatsPrefPanel = {
 
         this.loadInfoFile('release_notes');
 
-        this.loadNBDList('ThunderStats.NoBusinessDaysList');
+        Services.console.logStringMessage("get table info");
+        // this.loadNBDList('ThunderStats.NoBusinessDaysList');
+        
+        // const nbd_table = document.getElementById('tableID');
+        // let total_table_width = window.getComputedStyle(nbd_table, null).getPropertyValue('width');
+        // console.debug('TableWith '+total_table_width); 
+        // Services.console.logStringMessage("get table with "+total_table_width);
+        const nbd_description_header = document.getElementById('description_header');
+        // const hw = Number(total_table_width) - 160;
+        // nbd_description_header.className += 'wider';
+        // nbd_description_header.style.width = 300;
+        var table_box = document.getElementById('nbd_table_box');
+        var table_container = document.getElementById('tableID');
+        const hwidth = window.getComputedStyle(table_box, null).getPropertyValue('width');
+
+        Services.console.logStringMessage("get header with before "+ hwidth );
+        
+        Services.console.logStringMessage("get table width after "+ table_container.width );
+        var nbd_table = document.getElementById('nbd_table');
+        // nbd_table.width = table_container.width;
+        nbd_table.width = hwidth;
+        table_container.width = hwidth;
+        Services.console.logStringMessage("get table width after "+ nbd_table.width );
 
         //Fixing window height
         sizeToContent();
         var vbox = document.getElementById('ts_tabbox');
         vbox.height = vbox.boxObject.height;
         sizeToContent();
-    },
+
+        // size non business day table
+        },
 
     onCIAccountChange: function() {
         let acc_list = document.getElementById('ts_accnt_lst');
@@ -171,8 +199,12 @@ var miczThunderStatsPrefPanel = {
             'chrome,modal,titlebar,centerscreen,resizable,dependent,instantApply' :
             'chrome,modal,titlebar,centerscreen,resizable,alwaysRaised,instantApply';
 
-        window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", features, args);
+            window.openDialog("chrome://thunderstats/content/fp3.xhtml", "NBDEditor", features, args);
+            // window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", features, args);
+        
+        // window.open("chrome://thunderstats/content/fp3.xhtml", "NBDEditor", features, args);
 
+        console.debug('arguments '+ JSON.stringify(args));
         if (("save" in args && args.save) && ("newnbd" in args && args.newnbd)) {
             miczThunderStatsPrefPanel.createOneNBDRow(doc, container, args.newnbd, true);
             miczThunderStatsPrefPanel.saveNBDList();

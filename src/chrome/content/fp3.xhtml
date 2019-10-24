@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="css/mzts-settings-nobusinessdayeditor.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/preferences/preferences.css" type="text/css" ?>
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> -->
+
+<!DOCTYPE html SYSTEM "chrome://thunderstats/locale/mzts-settings-nobusinessdayeditor.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<head>
+    <link rel="stylesheet" href="chrome://thunderstats/content/flatpickr/flatpickr.min.css" />
+    <link rel="stylesheet" type="text/css" href="chrome://thunderstats/content/flatpickr/material_blue.css" />
+    <!-- 
+        <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/messageHeader.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/content/bindings.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-statstab.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-statstab.graphs.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-log.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-dropdownmenu.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css" />
+ -->
+    <title>&ThunderStats.NBDEditor.window.title; Test 3</title>
+
+    <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/flatpickr-4.6.2-min.js" />
+    <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/es.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/it.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/fr.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/nl.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/ja.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/de.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.js"/>
+        <!-- <script type="application/javascript" src="chrome://thunderstats/content/flatp.js"/> -->
+
+        <script>
+            console.debug('in-line script 2');
+        </script>
+</head>
+
+<body style="min-height: 355px; width: 500px;">
+    <div height="40px" width="100%">
+        <table>
+            <tr>
+                <td><label for="">&ThunderStats.desc.label;:</label></td>
+                <td><input id="ThunderStats.desc" type="text" /></td>
+            </tr>
+            <tr>
+                <td><label for="">&ThunderStats.date.label;:</label></td>
+                <td>
+                    <input id="non_biz_date_picker" class="flatpickr" type="text" placeholder="Select New Date .."
+                        style="padding-left: 8px; padding-right: 5px;" /></td>
+            </tr>
+            <tr>
+                <td><label for="">&ThunderStats.every_year.label;:</label></td>
+                <td>
+                    <xul:checkbox id="ThunderStats.every_year" checked="true" label="&ThunderStats.every_year.desc;" /></td>
+
+            </tr>
+
+        </table>
+
+
+    </div>
+    <div style="height: 100px; background-color: aqua;"></div>
+    <div style="height: 100%; align-content: bottom;">
+        <!-- <xul:button id="localfolder.btValider" label="Ok" oncommand="flatp.tsOk();" /> -->
+        <xul:button id="localfolder.btValider" label="Ok" oncommand="miczThunderStatsPrefPanel_NBDEditor.onAccept();" />
+        <xul:button id="localfolder.btQuitter" label="Cancel" oncommand="window.close();" />
+    </div>
+</body>
+
+</html>

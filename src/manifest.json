@@ -3,7 +3,7 @@
     "name": "__MSG_extensionName__",
 	"description": "__MSG_extensionDescription__",
     "xpi-name": "thunderstats",
-    "version": "1.4.5-b4",
+    "version": "1.4.5-b5",
     "author": "Mic (m@micz.it), Christopher Leidigh",
     "applications": {
         "gecko": {

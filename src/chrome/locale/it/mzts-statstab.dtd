@@ -60,6 +60,7 @@
 <!ENTITY ThunderStats.LastMonth "Mese Scorso">
 <!ENTITY ThunderStats.LastYear "Anno Scorso">
 <!ENTITY ThunderStats.Last2Week "Ultime due Settimane">
+<!ENTITY ThunderStats.DateRange "Intervallo di date">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Considera solo i giorni lavorativi">
 <!ENTITY ThunderStats.Debugger.Run "Avvia il Debugger">
 <!ENTITY ThunderStats.Debugger.WarnTitle "Nessun messaggio trovato per oggi!">

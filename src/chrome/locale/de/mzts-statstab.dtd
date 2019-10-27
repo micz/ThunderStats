@@ -60,6 +60,7 @@
 <!ENTITY ThunderStats.LastMonth "Letzter Monat">
 <!ENTITY ThunderStats.LastYear "Letztes Jahr">
 <!ENTITY ThunderStats.Last2Week "Letzte zwei Wochen">
+<!ENTITY ThunderStats.DateRange "Zeitraum">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Nur Werktage berücksichtigen">
 <!ENTITY ThunderStats.Debugger.Run "Debugger starten.">
 <!ENTITY ThunderStats.Debugger.WarnTitle "Keine Meldungen gefunden!">

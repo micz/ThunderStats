@@ -56,8 +56,8 @@ const manifestVersion = loadJsonFile.sync(`${sourceDir}/manifest.json`).version;
 const manifestName = loadJsonFile.sync(`${sourceDir}/manifest.json`)["xpi-name"];
 const ignoreFile = (includeManifest ? null : `-x!${sourceDir}/manifest.json`);
 
-// const extraFiles = ['LICENSE', 'CHANGELOG.md'];
-const extraFiles = ['LICENSE'];
+const extraFiles = ['LICENSE', 'CHANGELOG.md'];
+// const extraFiles = ['LICENSE'];
 
 console.log('\nVersioning:\n  Target:\t\t' + targetVersion + '\n  install.rdf:\t\t' + installRDFVersion + '\n  manifest.json:\t' + manifestVersion);
 

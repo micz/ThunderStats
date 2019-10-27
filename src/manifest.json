@@ -3,12 +3,11 @@
     "name": "__MSG_extensionName__",
 	"description": "__MSG_extensionDescription__",
     "xpi-name": "thunderstats",
-    "version": "1.4.5-b3",
+    "version": "1.4.5-b4",
     "author": "Mic (m@micz.it), Christopher Leidigh",
     "applications": {
         "gecko": {
-            "id": "thunderstats@micz.it",
-            "strict_max_version": "70.*"
+            "id": "thunderstats@micz.it"
         }
     },
     "legacy": {

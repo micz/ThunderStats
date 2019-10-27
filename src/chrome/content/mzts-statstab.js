@@ -79,7 +79,7 @@ var miczThunderStatsTab = {
 
 			miczLogger.log("Loading accounts...",0);
 			miczThunderStatsCore.loadIdentities();
-			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
 
 			miczLogger.log("Accounts found: "+Object.keys(miczThunderStatsCore.accounts).length,0);
 			miczLogger.log("Identities found: "+Object.keys(miczThunderStatsCore.identities).length,0);

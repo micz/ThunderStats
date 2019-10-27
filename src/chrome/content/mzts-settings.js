@@ -62,17 +62,11 @@ var miczThunderStatsPrefPanel = {
             p.setElementValue(element);
         }
 
-        var s1 = "   string1   ";
-        // Services.console.logStringMessage(`String.trim(s1) :${String.trim(s1)} `);
-        Services.console.logStringMessage(`s1.trim() :${s1.trim()} `);
-        Services.console.logStringMessage(`String.charCodeAt():${s1.charCodeAt(1)} `);
-        Services.console.logStringMessage(`String.prototype.trim() :${String.prototype.trim(s1)} `);
-
-        Services.console.logStringMessage("Preferences 1: onload loaded preferences ");
-
-
         //Setting the correct locale to display dates and times
         moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
+
+        // cleidigh how did this get done before?
+        miczThunderStatsCore.loadIdentities();
 
         //Loading accounts
         let chosen_strt_acc = miczThunderStatsPrefs.getCharPref_TS('strt_acc');
@@ -80,7 +74,11 @@ var miczThunderStatsPrefPanel = {
         let strt_acc = document.getElementById('ts_strt_accnt');
         let strt_acc_sel_idx = 0;
         let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
+        console.debug(miczThunderStatsCore.accounts);
+        let s = _bundleCW.GetStringFromName("ThunderStats.AllAccounts");
+        
         strt_acc.appendItem(_bundleCW.GetStringFromName("ThunderStats.AllAccounts"), 0);
+        // acc_list.appendItem('Test', 99);
         for (let key in miczThunderStatsCore.accounts) {
             acc_list.appendItem(miczThunderStatsCore.accounts[key].name, key);
             let curr_item = strt_acc.appendItem(miczThunderStatsCore.accounts[key].name, key);
@@ -116,7 +114,6 @@ var miczThunderStatsPrefPanel = {
         nbd_table.width = hwidth;
         table_container.width = hwidth;
         Services.console.logStringMessage("get table width after "+ nbd_table.width );
-
         //Fixing window height
         sizeToContent();
         var vbox = document.getElementById('ts_tabbox');
@@ -156,6 +153,7 @@ var miczThunderStatsPrefPanel = {
     },
 
     loadInfoFile: function(filetype) {
+        console.debug('load file');
         let url = '';
         switch (filetype) {
             case 'release_notes':
@@ -167,12 +165,16 @@ var miczThunderStatsPrefPanel = {
         }
         let request = new XMLHttpRequest();
         request.responseType = "text";
-        request.addEventListener("load", function() {
+        // request.addEventListener("load", function() {
+            request.onload = function () {
+                console.debug('Onload');
+                console.debug(this.responseText);
             let relnotes = document.getElementById('mzts-release-notes');
             relnotes.value = this.responseText;
-        });
+        };
         request.open("GET", url);
-        request.send();
+        request.send(null);
+        console.debug('after said');
     },
 
     // ======= BUSINESS DAYS FUNCTIONS =======

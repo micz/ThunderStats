@@ -6,6 +6,7 @@
 <dialog id="TSDebugger"
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:html="http://www.w3.org/1999/xhtml"
   title="&ThunderStats.Debugger.window.title;"
   style=""
   windowtype="mailnews:tsdebugger"
@@ -30,7 +31,7 @@
 			<label control="symbol" value="&ThunderStats.Debugger.Working;" id="mzts_status_label"/>
 		  </row>
           <row>
-          	<textbox id="mzts-debugger-log" class="mzts-debugger-log" value="&ThunderStats.Debugger.Loading;" multiline="true" readonly="true" flex="7"/>
+          	<html:textarea id="mzts-debugger-log" class="mzts-debugger-log" value="&ThunderStats.Debugger.Loading;" multiline="true" readonly="true" flex="7"/>
           </row>
           <row>
 			<label control="symbol" value=" " />
@@ -39,7 +40,7 @@
 			<label control="symbol" value="&ThunderStats.Debugger.UserMsgTitle;" id="mzts_user_msg_label"/>
 		  </row>
           <row>
-          	<textbox id="mzts-debugger-user-msg" class="mzts-debugger-user-msg" value="" multiline="true" flex="2"/>
+          	<html:textarea id="mzts-debugger-user-msg" class="mzts-debugger-user-msg" value="" multiline="true" flex="2" height="320px" rows="20" cols="80"/>
           </row>
           <row>
 			 <button id="SendReportBtn"

@@ -28,7 +28,13 @@ var miczThunderStatsCore = {
         let acctMgr = Cc["@mozilla.org/messenger/account-manager;1"].getService(Ci.nsIMsgAccountManager);
         let accounts = acctMgr.accounts;
         let cid_prog = 0; //custom identities id prog
-        //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
+
+        miczThunderStatsDB.init();
+
+        Services.console.logStringMessage("loadidentities");
+        Services.console.logStringMessage("loadidentities"+ JSON.stringify(accounts)+'\r\n');
+
+        dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
         for (let i = 0; i < accounts.length; i++) {
             let account = accounts.queryElementAt(i, Ci.nsIMsgAccount);
             if (account == null) continue;
@@ -116,6 +122,8 @@ var miczThunderStatsCore = {
         }
 
         this.sortAccounts();
+        miczThunderStatsDB.close();
+
     },
 
     sortAccounts: function() {

@@ -1,6 +1,6 @@
 .mzts-desc-big{word-wrap:normal;max-width:550px;font-size:1.2em;}
 .mzts-donate{text-align:center;font-size:1.4em;max-width:550px;}
-.release-notes-text{font-family:"courier new";}
+.release-notes-text{font-family:"courier new"; height: 300px;}
 .mzts-tbox{width:50px;}
 .mzts-label_no_border{-moz-margin-start:0px;}
 .mzts-checkbox_no_border{border-right-width:0px;margin-right:0px;}
@@ -109,6 +109,7 @@
 	  /* color: white; */
   }
   
+  /* This will set the group box headers with the correct background */
   .header {
 	  background-color: inherit !important;
   }

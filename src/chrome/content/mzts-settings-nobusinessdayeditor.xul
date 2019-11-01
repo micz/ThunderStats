@@ -11,7 +11,7 @@
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   xmlns:html="http://www.w3.org/1999/xhtml"
-  title="&ThunderStats.NBDEditor.window.title; Test 1"
+  title="&ThunderStats.NBDEditor.window.title; Test 2"
   style=""
   windowtype="mailnews:tsnobusinessday"
   persist="screenX screenY"
@@ -52,7 +52,7 @@
 			<vbox><label value="&ThunderStats.desc.label;:"/>
 			<label value="(&ThunderStats.optional.label;)"/></vbox>
 			<vbox>
-				<textbox id="ThunderStats.desc"/>
+				<html:input type="text" id="ThunderStats.desc"/>
 			</vbox>
           </row>
           <row>

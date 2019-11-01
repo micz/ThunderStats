@@ -8,7 +8,7 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:html="http://www.w3.org/1999/xhtml"
   type="child"
-  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b5" >
+  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b6" >
 	<!-- onload="miczThunderStatsPrefPanel.onLoad();"> -->
 	<prefpane id="ThunderStats_PrefPane">
 		<!-- 
@@ -197,29 +197,34 @@
 <!-- <html:div id="tableID" class="table-list-container"> -->
 <hbox id="tableID" class="table-list-container" >
 
-	<html:table id="nbd_table" class="table-list" data-currentpage="1" style="height: 100%; ">
+	 <!-- <table id="nbd_table" class="table-list" data-currentpage="1" style="height: 100%; " xmlns="http://www.w3.org/TR/html4/"> -->
+	
+	<table id="nbd_table" class="table-list" data-currentpage="1" style="height: 100%; " xmlns="http://www.w3.org/1999/xhtml">
 
-		<html:thead>
-			<html:th class="date" >Date</html:th>
-			<html:th class="description">Description</html:th>
-			<html:th class="yearly">Yearly</html:th>
-</html:thead>
+		<thead>
+			<th class="date" >Date</th>
+			<th class="description">Description</th>
+			<th class="yearly">Yearly</th>
+</thead>
 
-		<html:tbody class="list">
-			<html:tr tabindex="0" class="list-row">
-						<html:td class="date">10-7</html:td>
-						<html:td class="description">Bohemian Easter</html:td>
-						<html:td class="yearly">False</html:td>
+		<tbody class="list" xmlns="http://www.w3.org/1999/xhtml">
+		 
+		 <!--
+			<tr tabindex="0" class="list-row">
+						<td class="date">10-16</td>
+						<td class="description">Bohemian Easter</td>
+						<td class="yearly">False</td>
 
-</html:tr>
+</tr>
+
 <html:tr tabindex="0" class="list-row">
-						<html:td class="date">10-20</html:td>
-						<html:td class="description">Easter</html:td>
-						<html:td class="yearly">False</html:td>
+						<html:td class="date">10-20</td>
+						<html:td class="description">Easter</td>
+						<html:td class="yearly">False</td>
 
-</html:tr>
-</html:tbody>
-</html:table>
+</tr> -->
+</tbody>
+</table>
 </hbox>
 <!-- </html:div> -->
 
@@ -229,9 +234,9 @@
 
 <!-- 								<richlistbox id="ThunderStats.NoBusinessDaysList" flex="1" height="100px" onselect="miczThunderStatsPrefPanel.updateNBDButtons(window);" seltype="single" >
 									<listheader>
-										<treecol label="Date" width="85px" flex="0"  />
-										<treecol label="Description" flex="1"  />
-										<treecol label="Yearly" width="70px" flex="0"  />
+										<html:treecol label="Date" width="85px" flex="0"  />
+										<html:treecol label="Description" flex="1"  />
+										<html:treecol label="Yearly" width="70px" flex="0"  />
 									</listheader>
 									<richlistitem>
 										<label  width="85px" flex="0">10-31</label>
@@ -341,7 +346,7 @@
 	</prefpane>
 	<script type="application/x-javascript" src="chrome://thunderstats/content/mzts-settings.js" />
 	<script type="application/x-javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js" />
-	<script type="application/x-javascript" src="chrome://thunderstats/content/listjs/list.js" />
+	<script type="application/x-javascript" src="chrome://thunderstats/content/listjs/list-test.js" />
 
 
 </dialog>

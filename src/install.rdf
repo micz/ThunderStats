@@ -3,7 +3,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>thunderstats@micz.it</em:id>
     <em:type>2</em:type>
-    <em:version>1.4.5-b5</em:version>
+    <em:version>1.4.5-b6</em:version>
     <em:name>ThunderStats</em:name>
     <em:description>Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!</em:description>
     <em:iconURL>chrome://thunderstats/skin/mzts-icon.png</em:iconURL>

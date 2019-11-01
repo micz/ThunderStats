@@ -39,7 +39,7 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 		// if(!miczThunderStatsPrefPanel_NBDEditor.checkFields()){
 			// return false;
 		// }Was
-		Services.console.logStringMessage("on except: "+ window.arguments[0]);
+		Services.console.logStringMessage("on except: "+ JSON.stringify(window.arguments[0]));
 		if ("arguments" in window && window.arguments[0]){
 			let args = window.arguments[0];
 			let newnbd={};
@@ -49,7 +49,9 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 					case "new":  //Save new NBD
 						//get userinput val
 						newnbd.desc=document.getElementById("ThunderStats.desc").value;
+						Services.console.logStringMessage("on new "+ newnbd.desc);
 						newnbd.date=document.getElementById("non_biz_date_picker").value;
+						Services.console.logStringMessage("date "+ newnbd.date);
 						newnbd.every_year=document.getElementById("ThunderStats.every_year").checked;
 						//dump(">>>>>>>>>>>>> miczThunderStats->onAccept: [newnbd] "+JSON.stringify(newnbd)+"\r\n");
 						window.arguments[0].save=true;

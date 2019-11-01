@@ -50,10 +50,11 @@ miczThunderStatsTab.ui = {
 		let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
         // $jQ("#"+selector_id).append('<option value="0">'+_bundleCW.GetStringFromName("ThunderStats.AllAccounts")+'</option>');
 
+        const account_selector = document.getElementById(selector_id);
         let option = document.createElement('option');
         option.value = "0";
         option.text = _bundleCW.GetStringFromName("ThunderStats.AllAccounts");
-        document.getElementById(selector_id).appendChild(option);
+        account_selector.appendChild(option);
         
         Services.console.logStringMessage("load identities after options");
         // return;
@@ -74,7 +75,7 @@ miczThunderStatsTab.ui = {
             option.classList += 'item_css_class';
             option.value = miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key;
             option.text = miczThunderStatsUtils.escapeHTML(debug_txt+miczThunderStatsCore.accounts[key].name);
-            document.getElementById(selector_id).appendChild(option);
+            account_selector.appendChild(option);
     
 
             if(show_identities){
@@ -91,22 +92,31 @@ miczThunderStatsTab.ui = {
                     option.classList += 'mzts-sel-identity';
                     option.value = miczThunderStatsCore.identities[curr_idn]["id"];
                     option.text = miczThunderStatsUtils.escapeHTML(debug_txt_idn+miczThunderStatsCore.identities[curr_idn]["fullName"] + " (" + miczThunderStatsCore.identities[curr_idn]["email"] + ")");
-                    document.getElementById(selector_id).appendChild(option);
+                    account_selector.appendChild(option);
         
 				}
 			}
 			if(Object.keys(miczThunderStatsCore.accounts).length==1){	//If there is only one account, autochoose it
 				//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] id_selector autochoosing.\r\n");
-				$jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key);
-				$jQ("#"+selector_id).change();
-			}else{	//choose the chosen startup account from prefs
+				// $jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key);
+				// $jQ("#"+selector_id).change();
+                account_selector.value = miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[key].key;
+                Services.console.logStringMessage("load selector "+ account_selector.value +'  '+account_selector.selectedIndex);
+
+                // account_selector.selected
+            }else{	//choose the chosen startup account from prefs
 				let strt_acc=miczThunderStatsPrefs.startupAccount;
 				if(strt_acc!=0){
-					$jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[strt_acc].key);
-					$jQ("#"+selector_id).change();
+					// $jQ("#"+selector_id).val(miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[strt_acc].key);
+                    // $jQ("#"+selector_id).change();
+                    account_selector.value = miczThunderStatsCore._account_selector_prefix+miczThunderStatsCore.accounts[strt_acc].key;
+                    Services.console.logStringMessage("load selector multiple "+ account_selector.value +'  '+account_selector.selectedIndex);
 				}
 			}
-		}
+        }
+        
+        // account_selector.selectedIndex = 0;
+
 		/*for(let key in miczThunderStatsCore.identities){
 			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities.length "+Object.keys(miczThunderStatsCore.identities).length+"\r\n");
 			//miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities "+miczThunderStatsCore.identities[key]["fullName"]+" ("+miczThunderStatsCore.identities[key]["email"]+")\r\n");

@@ -5,6 +5,7 @@ var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
 var { miczThunderStatsCore } = ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
 var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+var { miczThunderStatsDB } = ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 var { miczThunderStatsNBD } = ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
 var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
 var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
@@ -16,12 +17,13 @@ var miczThunderStatsPrefPanel = {
 
     nbd_objs: {},
     nbd_objs_length: 0,
+    nbd_tableList: {},
 
-    onLoad: function() {
+    onLoad: function () {
 
         let context = {};
         Services.console.logStringMessage("dialog onLoad event handler - load preferences");
-        Services.scriptloader.loadSubScript("chrome://global/content/preferencesBindings.js", context, "UTF-8" /* The script's encoding */ );
+        Services.scriptloader.loadSubScript("chrome://global/content/preferencesBindings.js", context, "UTF-8" /* The script's encoding */);
 
         Preferences.addAll([
             { id: "ThunderStats.identities_selector", name: "extensions.ThunderStats.identities_selector", type: "bool" },
@@ -58,7 +60,7 @@ var miczThunderStatsPrefPanel = {
         // const elements = Preferences.getElementsByAttribute("preference");
         for (const element of elements) {
             const p = Preferences.get(element.getAttribute("preference"));
-            // Services.console.logStringMessage("Preferences 1: onload loaded  " + element.id + "  " + p.value);
+            Services.console.logStringMessage("Preferences 1: onload loaded  " + element.id + "  " + p.value);
             p.setElementValue(element);
         }
 
@@ -66,7 +68,9 @@ var miczThunderStatsPrefPanel = {
         moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 
         // cleidigh how did this get done before?
+        miczThunderStatsDB.init();
         miczThunderStatsCore.loadIdentities();
+        miczThunderStatsDB.close();
 
         //Loading accounts
         let chosen_strt_acc = miczThunderStatsPrefs.getCharPref_TS('strt_acc');
@@ -76,10 +80,11 @@ var miczThunderStatsPrefPanel = {
         let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
         console.debug(miczThunderStatsCore.accounts);
         let s = _bundleCW.GetStringFromName("ThunderStats.AllAccounts");
-        
+
         strt_acc.appendItem(_bundleCW.GetStringFromName("ThunderStats.AllAccounts"), 0);
-        // acc_list.appendItem('Test', 99);
+
         for (let key in miczThunderStatsCore.accounts) {
+            Services.console.logStringMessage('account key ' + miczThunderStatsCore.accounts[key].name + " " + key);
             acc_list.appendItem(miczThunderStatsCore.accounts[key].name, key);
             let curr_item = strt_acc.appendItem(miczThunderStatsCore.accounts[key].name, key);
             if (key == chosen_strt_acc) {
@@ -88,11 +93,12 @@ var miczThunderStatsPrefPanel = {
         }
 
         strt_acc.selectedIndex = strt_acc_sel_idx;
+        acc_list.selectedIndex = strt_acc_sel_idx;
+        this.onCIAccountChange();
 
+        Services.console.logStringMessage('start index ' + strt_acc.selectedIndex);
         this.loadInfoFile('release_notes');
 
-        Services.console.logStringMessage("get table info");
-        // this.loadNBDList('ThunderStats.NoBusinessDaysList');
         
         // const nbd_table = document.getElementById('tableID');
         // let total_table_width = window.getComputedStyle(nbd_table, null).getPropertyValue('width');
@@ -106,14 +112,43 @@ var miczThunderStatsPrefPanel = {
         var table_container = document.getElementById('tableID');
         const hwidth = window.getComputedStyle(table_box, null).getPropertyValue('width');
 
-        Services.console.logStringMessage("get header with before "+ hwidth );
-        
-        Services.console.logStringMessage("get table width after "+ table_container.width );
+        Services.console.logStringMessage("get header with before " + hwidth);
+
+        Services.console.logStringMessage("get table width after " + table_container.width);
         var nbd_table = document.getElementById('nbd_table');
         // nbd_table.width = table_container.width;
         nbd_table.width = hwidth;
         table_container.width = hwidth;
-        Services.console.logStringMessage("get table width after "+ nbd_table.width );
+        Services.console.logStringMessage("get table width after " + nbd_table.width);
+
+        /* List.js is required to make this table work. */
+
+        Document.prototype.createElement = function (e) {
+            var element = document.createElementNS("http://www.w3.org/1999/xhtml", e);
+            return element;
+        };
+
+        var options = {
+            //   valueNames: [ { data: ['date'] }, { data: ['description'] }, { data: ['yearly']} ],
+            valueNames: ['date', 'description', 'yearly', { data: ['id']}],
+            item: '<tr tabindex="0" class="list-row"><td class="date"></td><td class="description"></td><td class="yearly"></td></tr>'
+        };
+
+        miczThunderStatsPrefPanel.nbd_tableList = new List('tableID', options);
+        Services.console.logStringMessage("after table constructor");
+
+        // miczThunderStatsPrefPanel.nbd_tableList.add({
+        //     date: "11-6",
+        //     description: "my birthday yeah",
+        //     yearly: "True",
+        // });
+
+        Services.console.logStringMessage("get table info");
+        this.loadNBDList('ThunderStats.NoBusinessDaysList');
+
+        nbd_table.addEventListener("click", this.onNBDItemClick, true);
+
+        // Services.console.logStringMessage("after table add");
         //Fixing window height
         sizeToContent();
         var vbox = document.getElementById('ts_tabbox');
@@ -121,9 +156,9 @@ var miczThunderStatsPrefPanel = {
         sizeToContent();
 
         // size non business day table
-        },
+    },
 
-    onCIAccountChange: function() {
+    onCIAccountChange: function () {
         let acc_list = document.getElementById('ts_accnt_lst');
         let cstid_txtbox = document.getElementById('ts_cstmids');
         /*		let sel_account_identities=miczThunderStatsCore.accounts[acc_list.selectedItem.value].identities;
@@ -140,19 +175,19 @@ var miczThunderStatsPrefPanel = {
         cstid_txtbox.value = sel_account_identities.replace(',', "\r\n");
     },
 
-    onCIAccountTextbox: function() {
+    onCIAccountTextbox: function () {
         let acc_list = document.getElementById('ts_accnt_lst');
         let cstid_txtbox = document.getElementById('ts_cstmids');
         let ci_pref_string = cstid_txtbox.value.replace(/(?:\r\n|\r|\n)/g, ',');
         miczThunderStatsPrefs.saveAccountCustomIdentities(acc_list.selectedItem.value, ci_pref_string);
     },
 
-    onDefaultAccountChange: function() {
+    onDefaultAccountChange: function () {
         let strt_acc = document.getElementById('ts_strt_accnt');
         miczThunderStatsPrefs.setCharPref_TS('strt_acc', strt_acc.selectedItem.value);
     },
 
-    loadInfoFile: function(filetype) {
+    loadInfoFile: function (filetype) {
         console.debug('load file');
         let url = '';
         switch (filetype) {
@@ -166,9 +201,9 @@ var miczThunderStatsPrefPanel = {
         let request = new XMLHttpRequest();
         request.responseType = "text";
         // request.addEventListener("load", function() {
-            request.onload = function () {
-                console.debug('Onload');
-                console.debug(this.responseText);
+        request.onload = function () {
+            console.debug('Onload');
+            console.debug(this.responseText);
             let relnotes = document.getElementById('mzts-release-notes');
             relnotes.value = this.responseText;
         };
@@ -178,10 +213,13 @@ var miczThunderStatsPrefPanel = {
     },
 
     // ======= BUSINESS DAYS FUNCTIONS =======
-    updateNBDButtons: function(win) {
+         updateNBDButtons: function (win) {
+        Services.console.logStringMessage("update buttons event");
         let doc = win.document;
-        let currlist = doc.getElementById('ThunderStats.NoBusinessDaysList');
-        let numSelected = currlist.selectedItems.length;
+        Services.console.logStringMessage("after table event"+doc.getElementById( 'tableID').outerHTML);
+        // let currlist = doc.getElementById('ThunderStats.NoBusinessDaysList');
+        // let numSelected = currlist.selectedItems.length;
+        let numSelected = 1;
         let oneSelected = (numSelected == 1);
         if (oneSelected) {
             doc.getElementById("editButtonNBD").disabled = false;
@@ -192,22 +230,25 @@ var miczThunderStatsPrefPanel = {
         }
     },
 
-    onNewNBDDate: function() {
+    onNewNBDDate: function () {
         let doc = document;
-        let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
+        // let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
+        let container = miczThunderStatsPrefPanel.nbd_tableList;
         let args = { "action": "new" };
 
         let features = (miczThunderStatsUtils.HostSystem == 'linux') ?
             'chrome,modal,titlebar,centerscreen,resizable,dependent,instantApply' :
             'chrome,modal,titlebar,centerscreen,resizable,alwaysRaised,instantApply';
 
-            window.openDialog("chrome://thunderstats/content/fp3.xhtml", "NBDEditor", features, args);
-            // window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", features, args);
-        
-        // window.open("chrome://thunderstats/content/fp3.xhtml", "NBDEditor", features, args);
+        window.openDialog("chrome://thunderstats/content/fp3.xhtml", "NBDEditor", features, args);
+        // window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", features, args);
 
-        console.debug('arguments '+ JSON.stringify(args));
+        // window.open("chrome://thunderstats/content/fp3.xhtml", "NBDEditor", features, args);
+        Services.console.logStringMessage("arguments "+ JSON.stringify(args));
+
         if (("save" in args && args.save) && ("newnbd" in args && args.newnbd)) {
+            Services.console.logStringMessage("new nonbusiness ");
+
             miczThunderStatsPrefPanel.createOneNBDRow(doc, container, args.newnbd, true);
             miczThunderStatsPrefPanel.saveNBDList();
             // Select the new nbd, it is at the end of the list.
@@ -217,7 +258,7 @@ var miczThunderStatsPrefPanel = {
 
     },
 
-    onEditNBDDate: function() {
+    onEditNBDDate: function () {
         let container = document.getElementById('ThunderStats.NoBusinessDaysList');
 
         if (container.selectedIndex == -1) return;
@@ -237,12 +278,13 @@ var miczThunderStatsPrefPanel = {
 
     },
 
-    onDeleteNBDDate: function() {
+    onDeleteNBDDate: function () {
         let doc = document;
-        let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
+        
+        // let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
 
-        if (container.selectedIndex == -1) return;
-        if (doc.getElementById("deleteButtonNBD").disabled) return;
+        // if (container.selectedIndex == -1) return;
+        // if (doc.getElementById("deleteButtonNBD").disabled) return;
 
         //Are you sure?
         let prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
@@ -251,26 +293,56 @@ var miczThunderStatsPrefPanel = {
         if (!prompts.confirm(null, _bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.title"), _bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.text"))) return;
 
         //get the col id
-        let nbd_idx = container.selectedItem._nbd.tmp_id;
+        // let nbd_idx = container.selectedItem._nbd.tmp_id;
         //dump(">>>>>>>>>>>>> miczColumnsWizard: [onDeleteCustomCol] col_idx ["+col_idx+"]\r\n");
-
+        let nbd_idx = doc.getElementById('nbd_table').getAttribute('selected-index');
+        if (nbd_idx === '') {
+            return;
+        }
+        miczThunderStatsPrefPanel.nbd_tableList.remove('id', nbd_idx);
+        doc.getElementById('nbd_table').setAttribute('selected-index', '');
+        // let nbd_idx = container.selectedItem._nbd.tmp_id;
+        Services.console.logStringMessage("get active");
+        let entry = document.activeElement;
+        Services.console.logStringMessage("act development "+entry.outerHTML);
         //remove the nbd from the listbox and save the list to the prefs
-        miczThunderStatsPrefPanel.deleteOneNBDRow(container, container.selectedIndex);
+        // miczThunderStatsPrefPanel.deleteOneNBDRow(container, container.selectedIndex);
         delete this.nbd_objs[nbd_idx];
         miczThunderStatsPrefPanel.saveNBDList();
     },
 
-    createNBDRows: function(doc, container) {
+    createNBDRows: function (doc, container) {
         for (let nbdr in this.nbd_objs) {
             this.createOneNBDRow(doc, container, this.nbd_objs[nbdr], false);
         }
     },
 
-    createOneNBDRow: function(doc, container, currcol, force_save_obj) {
+    createOneNBDRow: function (doc, container, cur_nbdobj, force_save_obj) {
         if (!container) return;
-        let listitem = doc.createElement("listitem");
 
-        //dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol {"+JSON.stringify(currcol)+"}\r\n");
+        Services.console.logStringMessage("new nonbusiness create one");
+
+        miczThunderStatsPrefPanel.nbd_tableList.add({
+            date: cur_nbdobj.date,
+            description: cur_nbdobj.desc,
+            yearly: cur_nbdobj.every_year,
+            id: cur_nbdobj.tmp_id,
+        });
+
+        cur_nbdobj.nbd_date_string = miczThunderStatsNBD.formatNBDDateString(cur_nbdobj, moment);
+        if (force_save_obj) {
+            this.nbd_objs_length++;
+            let nbd_tmp_id = this.nbd_objs_length;
+            cur_nbdobj.tmp_id = nbd_tmp_id;
+            this.nbd_objs[nbd_tmp_id] = cur_nbdobj;
+            //dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] nbd_tmp_id {"+JSON.stringify(nbd_tmp_id)+"}\r\n");
+            //dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol.desc {"+JSON.stringify(currcol.desc)+"}\r\n");
+        }
+
+        Services.console.logStringMessage("new nonbusiness finish");
+/* 
+
+        let listitem = doc.createElement("listitem");
 
         let nbd_date_string = miczThunderStatsNBD.formatNBDDateString(currcol, moment);
         currcol.date_string = nbd_date_string;
@@ -281,12 +353,11 @@ var miczThunderStatsPrefPanel = {
         let descCell = doc.createElement("listcell");
         descCell.setAttribute("label", currcol.desc);
         listitem.appendChild(descCell);
-
         if (force_save_obj) {
             this.nbd_objs_length++;
             let nbd_tmp_id = this.nbd_objs_length;
-            currcol.tmp_id = nbd_tmp_id;
-            this.nbd_objs[nbd_tmp_id] = currcol;
+            cur_nbdobj.tmp_id = nbd_tmp_id;
+            this.nbd_objs[nbd_tmp_id] = cur_nbdobj;
             //dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] nbd_tmp_id {"+JSON.stringify(nbd_tmp_id)+"}\r\n");
             //dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol.desc {"+JSON.stringify(currcol.desc)+"}\r\n");
         }
@@ -300,9 +371,11 @@ var miczThunderStatsPrefPanel = {
         listitem.addEventListener("click", this.onNBDItemClick, true);
         listitem.addEventListener("dblclick", this.onNBDItemDoubleClick, true);
         return listitem;
+     */
+    
     },
 
-    editOneNBDRow: function(doc, container, currcol, idx_col) {
+    editOneNBDRow: function (doc, container, currcol, idx_col) {
         if (!container) return;
         let listitem = container.getItemAtIndex(idx_col);
         if (!listitem) return;
@@ -323,17 +396,27 @@ var miczThunderStatsPrefPanel = {
         return listitem;
     },
 
-    deleteOneNBDRow: function(container, col_idx) {
+    deleteOneNBDRow: function (container, col_idx) {
         this.nbd_objs_length--;
-        container.removeItemAt(col_idx);
+        // container.removeItemAt(col_idx);
     },
 
-    onNBDItemClick: function(event) {
+    onNBDItemClick: function (event) {
         //do nothing special
+        var selector = 'tr'
+        var iel = event.target.closest(selector)
+        if (!iel) return
+        var id = iel.getAttribute('data-id');
+        Services.console.logStringMessage("table click 1");
+        Services.console.logStringMessage("table click "+id);
+
+        document.getElementById('nbd_table').setAttribute('selected-index', id);
+        Services.console.logStringMessage("table click "+iel.outerHTML);
+        miczThunderStatsPrefPanel.updateNBDButtons(window);
         return;
     },
 
-    onNBDItemDoubleClick: function(event) {
+    onNBDItemDoubleClick: function (event) {
         // we only care about button 0 (left click) events
         if (event.button != 0)
             return;
@@ -341,21 +424,24 @@ var miczThunderStatsPrefPanel = {
         miczThunderStatsPrefPanel.onEditNBDDate();
     },
 
-    saveNBDList: function() {
+    saveNBDList: function () {
         miczThunderStatsNBD.saveToPref(miczThunderStatsNBD.nbd_pref_name, this.nbd_objs);
     },
 
-    loadNBDList: function(list_el) {
-        let container = document.getElementById(list_el);
+    loadNBDList: function (list_el) {
+        // let container = document.getElementById(list_el);
+        let container = miczThunderStatsPrefPanel.nbd_tableList;
         this.nbd_objs = miczThunderStatsNBD.readFromPref(miczThunderStatsNBD.nbd_pref_name);
+        
+        Services.console.logStringMessage("load nonbusiness "+JSON.stringify(this.nbd_objs));
         //reorder array
-        this.reindexNBDArray();
-        //dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] this.nbd_objs {"+JSON.stringify(this.nbd_objs)+"}\r\n");
+        // this.reindexNBDArray();
+        dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] this.nbd_objs {"+JSON.stringify(this.nbd_objs)+"}\r\n");
         this.createNBDRows(document, container);
     },
 
-    reindexNBDArray: function() {
-        //dump(">>>>>>>>>>>>> miczThunderStats: [reindexNBDArray] this.nbd_objs BEFORE "+JSON.stringify(this.nbd_objs)+"\r\n");
+    reindexNBDArray: function () {
+        //dump(">>>>>>>>>>>>> miczThunderStats: [reindexNBDArray] this., BEFORE "+JSON.stringify(this.nbd_objs)+"\r\n");
         let tmp_array = new Array();
         for (let nn in this.nbd_objs) {
             tmp_array.push(this.nbd_objs[nn]);
@@ -379,17 +465,17 @@ var miczThunderStatsPrefPanel = {
 };
 
 
-document.addEventListener('dialogcancel', function(e) {
+document.addEventListener('dialogcancel', function (e) {
     Services.console.logStringMessage("Preferences 1: dialogcancel event handler");
     return true;
 });
 
 
-document.addEventListener('dialogaccept', function(e) {
+document.addEventListener('dialogaccept', function (e) {
     Services.console.logStringMessage("Preferences 1: dialogaccept event handler");
     // Call our handler function - could be done here
     // onDialogAccept(e);
     return false;
 });
 
-window.addEventListener("load", function(e) { miczThunderStatsPrefPanel.onLoad(e); }, false);
+window.addEventListener("load", function (e) { miczThunderStatsPrefPanel.onLoad(e); }, false);

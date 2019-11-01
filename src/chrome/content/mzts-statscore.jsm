@@ -29,7 +29,6 @@ var miczThunderStatsCore = {
         let accounts = acctMgr.accounts;
         let cid_prog = 0; //custom identities id prog
 
-        miczThunderStatsDB.init();
 
         Services.console.logStringMessage("loadidentities");
         Services.console.logStringMessage("loadidentities"+ JSON.stringify(accounts)+'\r\n');
@@ -122,7 +121,6 @@ var miczThunderStatsCore = {
         }
 
         this.sortAccounts();
-        miczThunderStatsDB.close();
 
     },
 

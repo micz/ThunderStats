@@ -98,9 +98,11 @@ var miczThunderStatsTab = {
 			}
 			miczThunderStatsTab.getLastIndexedMessage();
 
+			// this.updateStats();
+
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
-
+			// miczThunderStatsTab.updateStats();
 		},
 
 	getTodayStats:function(identity_id){

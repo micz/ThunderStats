@@ -24,6 +24,15 @@
 	z-index: 0;
   }
 
+.table-list-container:focus {
+	outline: 1px solid black;
+  }
+
+  
+.table-list-container.no-outline {
+	outline: none !important;
+  }
+  
   .hbox {
 	  /* display: -moz-box; */
 	  background-color: yellow;
@@ -99,17 +108,20 @@
   }
   
   
-  .list-row:hover, :focus {
-	  background-color: aqua;
-	  /* color: white; */
-  }
   
-  .list-row selected {
-	  background-color: cadetblue;
-	  /* color: white; */
-  }
-  
+.list-row:hover, .list-row:focus {
+	background-color: aqua;
+	/* color: white; */
+}
+
+.list-row.selected-row {
+	background-color: cadetblue !important;
+	/* color: white; */
+}
+
+
   /* This will set the group box headers with the correct background */
   .header {
 	  background-color: inherit !important;
   }
+

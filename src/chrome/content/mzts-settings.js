@@ -135,6 +135,7 @@ var miczThunderStatsPrefPanel = {
         };
 
         miczThunderStatsPrefPanel.nbd_tableList = new List('tableID', options);
+        miczThunderStatsPrefPanel.nbd_tableList.controller = new ListController(miczThunderStatsPrefPanel.nbd_tableList, {onSelectListRow: this.onSelectListRow});
         Services.console.logStringMessage("after table constructor");
 
         // miczThunderStatsPrefPanel.nbd_tableList.add({
@@ -146,7 +147,7 @@ var miczThunderStatsPrefPanel = {
         Services.console.logStringMessage("get table info");
         this.loadNBDList('ThunderStats.NoBusinessDaysList');
 
-        nbd_table.addEventListener("click", this.onNBDItemClick, true);
+        // nbd_table.addEventListener("click", this.onNBDItemClick, true);
 
         // Services.console.logStringMessage("after table add");
         //Fixing window height
@@ -369,11 +370,17 @@ var miczThunderStatsPrefPanel = {
         // about clicks on the enabledCell. However, attaching to that item doesn't
         // result in any events actually getting received.
         listitem.addEventListener("click", this.onNBDItemClick, true);
-        listitem.addEventListener("dblclick", this.onNBDItemDoubleClick, true);
+        listitem.addEventListener("dblclick", thi.onNBDItemDoubleClick, true);
         return listitem;
      */
     
     },
+
+    onSelectListRow(event,data_id) {
+        Services.console.logStringMessage("onSelectListRow call");
+        this.onNBDItemClick();
+    },
+
 
     editOneNBDRow: function (doc, container, currcol, idx_col) {
         if (!container) return;

@@ -111,12 +111,20 @@ var miczThunderStatsDB = {
                 let identities_customStr = "(" + mIdentity.ids_custom.join() + ")";
                 mWhere += "and ((ma.attributeID=" + mType_attribute + " AND ma2.attributeID=" + involves_attribute + " AND ma2.value in " + identitiesStr + ") OR ";
                 mWhere += " (ma.attributeID=" + involves_attribute + " AND ma.value in " + identities_customStr + "))";
+
+                console.debug('Identities1 '+identities_customStr);
+
             } else { //all identities
                 let identitiesStr = "(" + this.identities_custom_ids.join() + ")";
                 mWhere += "and ((ma.attributeID=" + mType_attribute + ") OR ";
                 mWhere += "(ma.attributeID=" + involves_attribute + " AND ma.value in " + identitiesStr + "))";
+
+                console.debug('Identities '+identitiesStr);
+
             }
         }
+
+        // cleidigh
         if (mHours != null) { //group messages by hours
             mWhat += ", strftime('%H',m.date/1000000,'unixepoch','localtime') AS mHour";
             mWhere += " GROUP BY mHour";

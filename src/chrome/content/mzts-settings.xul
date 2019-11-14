@@ -8,7 +8,7 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:html="http://www.w3.org/1999/xhtml"
   type="child"
-  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b6" >
+  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b7" >
 	<!-- onload="miczThunderStatsPrefPanel.onLoad();"> -->
 	<prefpane id="ThunderStats_PrefPane">
 		<!-- 
@@ -195,7 +195,7 @@
 
 
 <!-- <html:div id="tableID" class="table-list-container"> -->
-<hbox id="tableID" class="table-list-container" >
+<hbox id="tableID" class="table-list-container" tabindex="0">
 
 	 <!-- <table id="nbd_table" class="table-list" data-currentpage="1" style="height: 100%; " xmlns="http://www.w3.org/TR/html4/"> -->
 	
@@ -346,7 +346,8 @@
 	</prefpane>
 	<script type="application/x-javascript" src="chrome://thunderstats/content/mzts-settings.js" />
 	<script type="application/x-javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js" />
-	<script type="application/x-javascript" src="chrome://thunderstats/content/listjs/list-test.js" />
+	<script type="application/x-javascript" src="chrome://thunderstats/content/listjs/list.controller.js" />
+	<script type="application/x-javascript" src="chrome://thunderstats/content/listjs/list.js" />
 
 
 </dialog>

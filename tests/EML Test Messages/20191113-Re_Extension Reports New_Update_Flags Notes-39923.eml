@@ -1,0 +1,130 @@
+Delivered-To: cleidigh@gmail.com
+Received: by 2002:adf:b584:0:0:0:0:0 with SMTP id c4csp9104779wre;
+        Wed, 13 Nov 2019 00:49:10 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyyOlY4oR1JPGmZ0iyp/S0Fu7GixAgMZU64Ljv4TW59IlCcdLB+H15UeFKC5TRm1PBxEG83
+X-Received: by 2002:a50:eb91:: with SMTP id y17mr2285028edr.216.1573634950059;
+        Wed, 13 Nov 2019 00:49:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1573634950; cv=none;
+        d=google.com; s=arc-20160816;
+        b=IHdt8FFXZax6c7bqhiGCo00XYWnpD3PodEmAyDual4ppMW5kbtm6cskk1uTTY769LD
+         mXLZlK8TTpoYYeHrezsKateQA6b99YSh+osZZX0NTH/YFLEb9i+08XzBZ1eJoxgI0wQv
+         uE20OyHlC37xziYwkSOVFiz9iQV/fsD7sol80yLrv204e4SduM6r7cZjJI27kvfYhyrA
+         uskiX/HzU4RkLZ6xQ9HmaFVk9Rybl219Xq0SBWKGsyCB1W6jSyGHhlOTz1BdCVs58Oif
+         oe9hwslQD66Z8t7vrV5QFRrxOLjVhScJhu+VN80KQcIIBqa+zwakAnL10SGfR+AWnJlx
+         82wQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=topicbox-delivery-id:list-unsubscribe:reply-to:precedence
+         :list-subscribe:list-software:list-post:list-id:list-help
+         :archived-at:topicbox-message-uuid:topicbox-policy-reasoning
+         :content-transfer-encoding:mime-version:date:references:in-reply-to
+         :message-id:subject:to:from:dkim-signature;
+        bh=LuQkc9p2SV13E557+eRQgJWTX7OR3j5bk2y44DhJPpk=;
+        b=sCstVXM6UR74w0atfvOuucVP1+HWq05ZfVgVwAD9sjjefyJhCjwPR5vnuVZGt/HECZ
+         lR+WAqhZMIXytgWG7fVcxMUxioAq6msKlhWFAmPSk+QOke/6HnrGSFUOhdQpn3jXRAW1
+         oKe8wDIA07IPurqN2gQJwVfVwZ71C9fXeSXtFd24zqZX1oTOTxU9ucCG2qizY77b7PK4
+         iIh+H4WWeeF9ptKb45nU7+vMhvHT/94oDQMkVuc2cY52tCniMSJgV+6+3B9zCMY25f30
+         x6AnY5JukX36A4m0X52XS8acZYmIp8Ao2kK4N7k037p7Nf/L8sXOuuNqgJ2qLWrXqI+f
+         iLnw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@thunderbird.topicbox.com header.s=dkim-1 header.b=fjeSdGXQ;
+       spf=pass (google.com: domain of bounce.mmd4bf7b61449b71a46d2773c1.r2b04b44c-768c-11e9-a489-78c09034e1fa@thunderbird.bounce.topicbox.com designates 173.228.157.67 as permitted sender) smtp.mailfrom=bounce.mMd4bf7b61449b71a46d2773c1.r2b04b44c-768c-11e9-a489-78c09034e1fa@thunderbird.bounce.topicbox.com;
+       dmarc=fail (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Return-Path: <bounce.mMd4bf7b61449b71a46d2773c1.r2b04b44c-768c-11e9-a489-78c09034e1fa@thunderbird.bounce.topicbox.com>
+Received: from tb-ob21.topicbox.com (tb-ob21.topicbox.com. [173.228.157.67])
+        by mx.google.com with ESMTPS id f8si884365edf.428.2019.11.13.00.49.09
+        for <cleidigh@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 13 Nov 2019 00:49:10 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounce.mmd4bf7b61449b71a46d2773c1.r2b04b44c-768c-11e9-a489-78c09034e1fa@thunderbird.bounce.topicbox.com designates 173.228.157.67 as permitted sender) client-ip=173.228.157.67;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@thunderbird.topicbox.com header.s=dkim-1 header.b=fjeSdGXQ;
+       spf=pass (google.com: domain of bounce.mmd4bf7b61449b71a46d2773c1.r2b04b44c-768c-11e9-a489-78c09034e1fa@thunderbird.bounce.topicbox.com designates 173.228.157.67 as permitted sender) smtp.mailfrom=bounce.mMd4bf7b61449b71a46d2773c1.r2b04b44c-768c-11e9-a489-78c09034e1fa@thunderbird.bounce.topicbox.com;
+       dmarc=fail (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Received: from tb-mx0.topicbox.com (tb-mx0.nyi.icgroup.com [10.90.30.73])
+	by tb-ob21.topicbox.com (Postfix) with ESMTP id 8C3CC1C9ED
+	for <cleidigh@gmail.com>; Wed, 13 Nov 2019 03:49:08 -0500 (EST)
+	(envelope-from bounce.mMd4bf7b61449b71a46d2773c1.r2b04b44c-768c-11e9-a489-78c09034e1fa@thunderbird.bounce.topicbox.com)
+Received: by tb-mx0.topicbox.com (Postfix, from userid 1132)
+	id 7573B839BB2; Wed, 13 Nov 2019 03:49:08 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=
+	thunderbird.topicbox.com; h=from:to:subject:message-id
+	:in-reply-to:references:date:mime-version:content-type
+	:content-transfer-encoding:list-help:list-id:list-post
+	:list-subscribe:reply-to:list-unsubscribe; s=dkim-1; bh=pSy7rjgo
+	ygZ1OewL3kYcqLAfX4b170kPWonn//bPuP4=; b=fjeSdGXQ+VHT/SrOB8FwuqQh
+	UiN0upWOZUXcR8UAnhoLDz4rMY50n5bdj0eHhEvBQytjnY7EnoJJLwX7udlYHziL
+	dTrDnnR6eV6abPvS9GJwzm5S/vpUAj8c1d/TOQr/IdpEp0I4sy3ihBc6xa5WcNfm
+	tq4XzfXSbQ+lFS3bLjI=
+From: "Richard Leger" <richard.leger@gmail.com>
+To: =?UTF-8?B?QWRkLW9uIERldmVsb3BlcnMg?= <addons@thunderbird.topicbox.com>
+Subject: Re: Extension Reports New/Update/Flags Notes
+Message-Id: <15736349400.21d1.63967@composer.thunderbird.topicbox.com>
+In-Reply-To: <15736344590.Dd9c.14882@composer.thunderbird.topicbox.com>
+References: <dfd7200f-9dc8-6e23-3d04-d64fd0513511@gmail.com>
+ <cb45583d-b17e-2f18-3b03-38abe6a4c7cb@thunderbird.net>
+ <c3ae5efa-4ad7-b1fb-9cce-4c311f87c13e@gmx.de>
+ <15736344590.Dd9c.14882@composer.thunderbird.topicbox.com>
+Date: Wed, 13 Nov 2019 03:49:00 -0500
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="15736349401.CEfc6985.63967"
+Content-Transfer-Encoding: 7bit
+Topicbox-Policy-Reasoning: allow: sender is a member
+Topicbox-Message-UUID: 7006da70-05f2-11ea-9b00-02249134e1fa
+Archived-At: =?UTF-8?B?PGh0dHBzOi8vdGh1bmRlcmJpcmQudG9waWNib3guY29tL2dy?=
+ =?UTF-8?B?b3Vwcy9hZGRvbnMvVDNhMWUyNGM5MTNlNjIwMWQtTWQ0YmY3YjYxNDQ5Yjcx?=
+ =?UTF-8?B?YTQ2ZDI3NzNjMT4=?=
+List-Help: <https://thunderbird.topicbox.com/groups/addons>
+List-Id: "Add-on Developers " <addons.thunderbird.topicbox.com>
+List-Post: <mailto:addons@thunderbird.topicbox.com>
+List-Software: Topicbox v0
+List-Subscribe: <https://thunderbird.topicbox.com/groups/addons>
+Precedence: list
+Reply-To: =?UTF-8?B?QWRkLW9uIERldmVsb3BlcnMg?=
+ <addons@thunderbird.topicbox.com>
+List-Unsubscribe: <https://thunderbird.topicbox.com/groups/addons>,
+ <mailto:addons+unsubscribe@thunderbird.topicbox.com?subject=x-tx-unsubscribe:1:thunderbird:45da53ea-767c-11e9-8d6e-b356242d11b0:2b04b44c-768c-11e9-a489-78c09034e1fa:WGFQC_Gsc2S6uJsgV5Opmc9_I0wb49tbBmxf1-M3I0E>
+Topicbox-Delivery-ID:
+ 1:thunderbird:45da53ea-767c-11e9-8d6e-b356242d11b0:2b04b44c-768c-11e9-a489-78c09034e1fa:6tOsQB0fx_XOzLZRxWCPoUlTfXxzTC73X4m64FU0jc0
+
+
+--15736349401.CEfc6985.63967
+Date: Wed, 13 Nov 2019 03:49:00 -0500
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+GPO =3D Group Policies (as per Microsoft feature)
+------------------------------------------
+Thunderbird: Add-on Developers=20
+Permalink: https://thunderbird.topicbox.com/groups/addons/T3a1e24c913e6201d=
+-Md4bf7b61449b71a46d2773c1
+Delivery options: https://thunderbird.topicbox.com/groups/addons/subscripti=
+on
+
+--15736349401.CEfc6985.63967
+Date: Wed, 13 Nov 2019 03:49:00 -0500
+MIME-Version: 1.0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+<html><html><html><body>GPO =3D Group Policies (as per Microsoft feature)<d=
+iv id=3D"topicbox-footer" style=3D"margin:10px 0 0;border-top:1px solid #dd=
+d;border-color:rgba(0,0,0,.15);padding:7px 0;">
+
+<strong><a href=3D"https://thunderbird.topicbox.com/latest" style=3D"color:=
+inherit;text-decoration:none">Thunderbird</a></strong>
+  / Add-on Developers  / see
+<a href=3D"https://thunderbird.topicbox.com/groups/addons">discussions</a>
+  +
+<a href=3D"https://thunderbird.topicbox.com/groups/addons/members">particip=
+ants</a>
+  +
+<a href=3D"https://thunderbird.topicbox.com/groups/addons/subscription">del=
+ivery options</a>
+<a href=3D"https://thunderbird.topicbox.com/groups/addons/T3a1e24c913e6201d=
+-Md4bf7b61449b71a46d2773c1" style=3D"float:right">Permalink</a>
+</div>
+</body></html></html></html>=
+
+--15736349401.CEfc6985.63967--

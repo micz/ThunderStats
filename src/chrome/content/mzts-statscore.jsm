@@ -66,11 +66,13 @@ var miczThunderStatsCore = {
             }
             //enumerate custom identities for this account
             let account_custom_identities = miczThunderStatsPrefs.accountCustomIdentities(account.key);
+            // cleidigh
+            console.debug('custom identities '+account_custom_identities);
             if (account_custom_identities != '') {
                 let account_custom_identities_arr = account_custom_identities.split(',');
                 for (let j = 0; j < account_custom_identities_arr.length; j++) {
-                    let identity = account_custom_identities_arr[j];
-                    //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
+                    let identity = account_custom_identities_arr[j].toLowerCase();
+                    console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
                     let identity_item = {};
                     identity_item["email"] = identity;
                     identity_item["fullName"] = "CustomID" + cid_prog;
@@ -78,6 +80,8 @@ var miczThunderStatsCore = {
                     identity_item["key"] = "__custom" + cid_prog;
                     identity_item["custom"] = true;
                     identity_item["account_key"] = account.key;
+
+                    console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_itemFor '+JSON.stringify(identity_item)+'\r\n');
                     if (identity_item["id"]) {
                         cid_prog++;
                         this.identities[miczThunderStatsDB.queryGetIdentityID(identity)] = identity_item;
@@ -85,6 +89,7 @@ var miczThunderStatsCore = {
                         miczThunderStatsDB.identities_custom_ids_mail.push(identity);
                         this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
                         //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+                        console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
                     }
                 }
             }
@@ -113,7 +118,7 @@ var miczThunderStatsCore = {
                     cid_prog++;
                     this.identities[miczThunderStatsDB.queryGetIdentityID(identity)] = identity_item;
                     miczThunderStatsDB.identities_custom_ids.push(miczThunderStatsDB.queryGetIdentityID(identity));
-                    miczThunderStatsDB.identities_custom_ids_mail.push(identity);
+                    miczThunderStatsDB.identities_custom_ids_mail.push(identity.toLowercase());
                     this.accounts[this.custom_account_key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
                     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
                 }

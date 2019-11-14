@@ -1,0 +1,119 @@
+Delivered-To: cleidigh@gmail.com
+Received: by 2002:adf:b584:0:0:0:0:0 with SMTP id c4csp9881031wre;
+        Wed, 13 Nov 2019 12:17:53 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzES3dV9ZvqiJVnfPkp3FnyGpoq/t6tZr3obh0fxflWBQmR6oTMp3uZqUJAiMowX0HhZi5P
+X-Received: by 2002:ac8:524a:: with SMTP id y10mr4486129qtn.325.1573676272893;
+        Wed, 13 Nov 2019 12:17:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1573676272; cv=none;
+        d=google.com; s=arc-20160816;
+        b=zreHX7rnIQqe58ahf4FZ7uUMNaVub8MrLJPe3lBY3Wrnla0qoxotveXk+Q17WBTRZ9
+         oJOL+djxFH/IIc8vJb1kdkd/hut3Kul1rNAOWgdqttvF/v3PzAjCkznR7U+EEUaXPg1V
+         0BdnyMtyT2EvLLQ/k/Is8IghBfCWBBzMvzPRszal3ghu1TreLUTPuewAQU3rdAZtMhL1
+         4IUhhizsMqRd0j89+D2YyHa5+kOyQWlZuevLySaEIQVhlK9mA9dY9Tn2RkxLP8G1bkGy
+         z8lVPc5PPJRtR2yJNCvF/cgUNWsuhAqwXEfhztGJ9WMQyUeXdC0iwMkujJcDDdnz/72u
+         qoMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=list-unsubscribe:list-post:list-archive:list-id:precedence
+         :content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:reply-to:from:dkim-signature:date;
+        bh=h2pqsehUavT3IXQDj1LgH7ssFkyRAlw/iT9+Vdl0Na8=;
+        b=SKE0YemakZH9aJAamWh9hZ00x/3+gT2wTKUN+mSnahza3L2zluIxYrkNplUcWVUHTc
+         OrOucrusx6g7tD5JYxmg80kTQJDTLZwPg5vkaGmCVsxp3HtTeEN/4hcYPCLbmspWpftg
+         Tu8C7PLLPJzacL+KVBlaAEwxDkbfUHvPdV9r4Eethuv55ht4auPxU+SfnqPlrlbMrcZd
+         uXMEjClJhRUW+++RPH3hLXE+FXm72llVlUHAhiEnfxD9jarQW+6TaHZvZ00LIHCtV/ZS
+         M1GnZ2+PNmz+AyfwFbE7S7bf3XMm8AbQKhxCMkKPgM/x+toALPT1bzoeO9jsVODZGk8/
+         Mh1Q==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass (test mode) header.i=@github.com header.s=pf2014 header.b=tIsSdGtw;
+       spf=pass (google.com: domain of noreply@github.com designates 192.30.252.192 as permitted sender) smtp.mailfrom=noreply@github.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=github.com
+Return-Path: <noreply@github.com>
+Received: from out-1.smtp.github.com (out-1.smtp.github.com. [192.30.252.192])
+        by mx.google.com with ESMTPS id e11si1926860qvm.190.2019.11.13.12.17.52
+        for <cleidigh@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 13 Nov 2019 12:17:52 -0800 (PST)
+Received-SPF: pass (google.com: domain of noreply@github.com designates 192.30.252.192 as permitted sender) client-ip=192.30.252.192;
+Authentication-Results: mx.google.com;
+       dkim=pass (test mode) header.i=@github.com header.s=pf2014 header.b=tIsSdGtw;
+       spf=pass (google.com: domain of noreply@github.com designates 192.30.252.192 as permitted sender) smtp.mailfrom=noreply@github.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=github.com
+Date: Wed, 13 Nov 2019 12:17:52 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=github.com;
+	s=pf2014; t=1573676272;
+	bh=h2pqsehUavT3IXQDj1LgH7ssFkyRAlw/iT9+Vdl0Na8=;
+	h=Date:From:Reply-To:To:Cc:In-Reply-To:References:Subject:List-ID:
+	 List-Archive:List-Post:List-Unsubscribe:From;
+	b=tIsSdGtwUg8Vrr1JaiGYLKiO1f4kjrm61e4ZI5/HYD43L57A7quJeQj+RbVwl7Weu
+	 QoY5peRpPF647GIDBp344C9oFvsHOI81QeKrVMmppThYQSjrh1uwqcebudQTdF7elS
+	 oJxquWnBi/gWJ+5iokJLzA1BWvDa5MLRkOy7rGvc=
+From: Mic <notifications@github.com>
+Reply-To: micz/ThunderStats <reply+AGAZ763J73HPOSAGKFADUWN33GLXBEVBNHHBVGQCBY@reply.github.com>
+To: micz/ThunderStats <ThunderStats@noreply.github.com>
+Cc: Christopher Leidigh <cleidigh@gmail.com>, 
+ Mention <mention@noreply.github.com>
+Message-ID: <micz/ThunderStats/issues/181/553583439@github.com>
+In-Reply-To: <micz/ThunderStats/issues/181@github.com>
+References: <micz/ThunderStats/issues/181@github.com>
+Subject: Re: [micz/ThunderStats] ThunderStats not compatible with Thunderbird
+ 61+ (#181)
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_5dcc64f0895c9_52a3f8b8c4cd96417539d8";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Precedence: list
+X-GitHub-Sender: micz
+X-GitHub-Recipient: cleidigh
+X-GitHub-Reason: mention
+List-ID: micz/ThunderStats <ThunderStats.micz.github.com>
+List-Archive: https://github.com/micz/ThunderStats
+List-Post: <mailto:reply+AGAZ763J73HPOSAGKFADUWN33GLXBEVBNHHBVGQCBY@reply.github.com>
+List-Unsubscribe: <mailto:unsub+AGAZ763J73HPOSAGKFADUWN33GLXBEVBNHHBVGQCBY@reply.github.com>,
+ <https://github.com/notifications/unsubscribe/AGAZ767DEZZNCRMJ7DVRWYTQTROHBANCNFSM4HOFH3RA>
+X-Auto-Response-Suppress: All
+X-GitHub-Recipient-Address: cleidigh@gmail.com
+
+
+----==_mimepart_5dcc64f0895c9_52a3f8b8c4cd96417539d8
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This extension works querying the internal Thunderbird database that is populated by Thunderbird when it indexes the emails.
+Thunderbird adds an identity for every email address it manages.
+If the user adds a custom identity, in order to use it in a query, ThunderStats needs to find its identity_id. If Thunderbird has never seen that address, there no identity_id for it and ThunderStats can not use it in the queries.
+
+-- 
+You are receiving this because you were mentioned.
+Reply to this email directly or view it on GitHub:
+https://github.com/micz/ThunderStats/issues/181#issuecomment-553583439
+----==_mimepart_5dcc64f0895c9_52a3f8b8c4cd96417539d8
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>This extension works querying the internal Thunderbird database that is populated by Thunderbird when it indexes the emails.<br>
+Thunderbird adds an identity for every email address it manages.<br>
+If the user adds a custom identity, in order to use it in a query, ThunderStats needs to find its identity_id. If Thunderbird has never seen that address, there no identity_id for it and ThunderStats can not use it in the queries.</p>
+
+<p style="font-size:small;-webkit-text-size-adjust:none;color:#666;">&mdash;<br />You are receiving this because you were mentioned.<br />Reply to this email directly, <a href="https://github.com/micz/ThunderStats/issues/181?email_source=notifications&amp;email_token=AGAZ7667XW3EUGE4P5LXXITQTROHBA5CNFSM4HOFH3RKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOED7QGTY#issuecomment-553583439">view it on GitHub</a>, or <a href="https://github.com/notifications/unsubscribe-auth/AGAZ765A3QBSG7YCTSBAM23QTROHBANCNFSM4HOFH3RA">unsubscribe</a>.<img src="https://github.com/notifications/beacon/AGAZ763XLDCHABJXFXPVXNTQTROHBA5CNFSM4HOFH3RKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOED7QGTY.gif" height="1" width="1" alt="" /></p>
+<script type="application/ld+json">[
+{
+"@context": "http://schema.org",
+"@type": "EmailMessage",
+"potentialAction": {
+"@type": "ViewAction",
+"target": "https://github.com/micz/ThunderStats/issues/181?email_source=notifications\u0026email_token=AGAZ7667XW3EUGE4P5LXXITQTROHBA5CNFSM4HOFH3RKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOED7QGTY#issuecomment-553583439",
+"url": "https://github.com/micz/ThunderStats/issues/181?email_source=notifications\u0026email_token=AGAZ7667XW3EUGE4P5LXXITQTROHBA5CNFSM4HOFH3RKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOED7QGTY#issuecomment-553583439",
+"name": "View Issue"
+},
+"description": "View this Issue on GitHub",
+"publisher": {
+"@type": "Organization",
+"name": "GitHub",
+"url": "https://github.com"
+}
+}
+]</script>
+----==_mimepart_5dcc64f0895c9_52a3f8b8c4cd96417539d8--

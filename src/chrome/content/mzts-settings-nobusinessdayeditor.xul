@@ -43,7 +43,7 @@
   <vbox id="ts_vbox" flex="1">
      <separator class="thin"/>
       <grid>
-        <columns>
+        <columns width="80px">
           <column/>
           <column/>
         </columns>

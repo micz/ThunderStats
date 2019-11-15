@@ -100,8 +100,10 @@ var miczThunderStatsDB = {
         if ((mType == 1) || (this.identities_custom_ids_mail.length == 0)) {
             mWhere += " and ma.attributeID=" + mType_attribute;
             if (typeof mIdentity == "object") {
+                let mIdsStr = mIdentity.ids.join();
+                console.debug('MainIdentities '+mIdsStr);
                 mFrom += " left join messageattributes ma2 on ma2.messageID=m.id";
-                let identitiesStr = "(" + mIdentity.ids.join() + ")";
+                let identitiesStr = "(" + mIdsStr + ")";
                 mWhere += " AND ma2.attributeID=" + involves_attribute + " AND ma2.value in " + identitiesStr;
             }
         } else { //do consider custom identities
@@ -361,7 +363,8 @@ var miczThunderStatsDB = {
 
     //returns the id of an identity from its email
     queryGetIdentityID: function(email) {
-        let mWhere = 'value="' + email + '" LIMIT 1';
+        // cleidigh - e-mail id queries should be case insensitive db expects normalized to lowercase
+        let mWhere = 'value="' + email.toLowerCase() + '" LIMIT 1';
         let rows = this.querySelect("id", "identities", mWhere);
         if (rows.length > 0) {
             return rows[0][0];

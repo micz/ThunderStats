@@ -49,19 +49,20 @@ var miczThunderStatsCore = {
             let identities = account.identities;
             for (let j = 0; j < identities.length; j++) {
                 let identity = identities.queryElementAt(j, Ci.nsIMsgIdentity);
-                //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
+                console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] Account identity '+JSON.stringify(identity)+'\r\n');
                 if (!identity.email) continue;
                 let identity_item = {};
-                identity_item["email"] = identity.email;
+                identity_item["email"] = identity.email.toLowerCase();
                 identity_item["fullName"] = identity.fullName;
                 identity_item["id"] = miczThunderStatsDB.queryGetIdentityID(identity.email);
+                console.debug('ID Q '+identity_item["id"]);
                 identity_item["key"] = identity.key;
                 identity_item["custom"] = false;
                 identity_item["account_key"] = account.key;
                 //identity_item["account_name"]=account.incomingServer.rootFolder.prettyName;
                 this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)] = identity_item;
                 this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity.email));
-                //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+                console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
                 this.identities_email_name[identity.email] = identity.fullName;
             }
             //enumerate custom identities for this account
@@ -71,7 +72,8 @@ var miczThunderStatsCore = {
             if (account_custom_identities != '') {
                 let account_custom_identities_arr = account_custom_identities.split(',');
                 for (let j = 0; j < account_custom_identities_arr.length; j++) {
-                    let identity = account_custom_identities_arr[j].toLowerCase();
+                    let identity = account_custom_identities_arr[j];
+                    // let identity = account_custom_identities_arr[j];
                     console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
                     let identity_item = {};
                     identity_item["email"] = identity;
@@ -118,7 +120,7 @@ var miczThunderStatsCore = {
                     cid_prog++;
                     this.identities[miczThunderStatsDB.queryGetIdentityID(identity)] = identity_item;
                     miczThunderStatsDB.identities_custom_ids.push(miczThunderStatsDB.queryGetIdentityID(identity));
-                    miczThunderStatsDB.identities_custom_ids_mail.push(identity.toLowercase());
+                    miczThunderStatsDB.identities_custom_ids_mail.push(identity);
                     this.accounts[this.custom_account_key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
                     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
                 }

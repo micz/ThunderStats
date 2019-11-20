@@ -52,7 +52,7 @@ var miczThunderStatsCore = {
                 console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] Account identity '+JSON.stringify(identity)+'\r\n');
                 if (!identity.email) continue;
                 let identity_item = {};
-                identity_item["email"] = identity.email.toLowerCase();
+                identity_item["email"] = identity.email;
                 identity_item["fullName"] = identity.fullName;
                 identity_item["id"] = miczThunderStatsDB.queryGetIdentityID(identity.email);
                 console.debug('ID Q '+identity_item["id"]);

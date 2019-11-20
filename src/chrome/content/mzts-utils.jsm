@@ -13,7 +13,7 @@ var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm"
 
 var miczThunderStatsUtils = {
 
-	ThunderStatsVersion:'1.5b1',
+	ThunderStatsVersion:'1.4.5-b9',
 	mailto:'m@micz.it',
 	mHost:null,
 	_y_is_last_business_day:false,

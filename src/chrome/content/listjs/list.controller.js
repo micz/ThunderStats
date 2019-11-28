@@ -15,10 +15,11 @@ class ListController {
 		
 		this.list_container = list.listContainer;
 		
-		this.onSelectedCB = options.onSelectedCB | null;
+		this.onSelectedCB = options.onSelectedCB;
 
-		console.debug('listContainer '+this.list_container.id);
-		console.debug('list Call '+this.onSelectedCB);
+		
+		Services.console.logStringMessage('listContainer '+this.list_container.id);
+		Services.console.logStringMessage('list Call '+this.onSelectedCB);
 		this.list_container.addEventListener('click', (event) => { this.onClick(event); });
 		this.list_container.addEventListener('keydown', (event) => { this.onKey(event); });
 		this.list_container.addEventListener('blur', (event) => { this.onBlur(event); });
@@ -48,8 +49,18 @@ class ListController {
 		return null;
 	}
 
+	getSelectedRowElement() {
+		var selector = 'tr.selected-row';
+		var selectedRow = this.list_container.querySelector(selector);
+		if (selectedRow) {
+			return selectedRow;
+		}
+		return null;
+	}
+
 	// Event handlers
  	onClick(event) {
+		console.debug('Click');
 		var selector = 'tr'
 		var closestRow = event.target.closest(selector)
 		if (!closestRow) return
@@ -63,9 +74,12 @@ class ListController {
 		}
 		closestRow.classList.add('selected-row');
 
+		console.debug('Click call' + closestRow.outerHTML);
 		if (this.onSelectedCB) {
 			this.onSelectedCB(event, data_id);
 		}
+		Services.console.logStringMessage('after call');
+
 	}
 
 	onKey(event) {
@@ -137,7 +151,7 @@ class ListController {
 		this.list_container.classList.remove('no-outline');
 		let selectedRow = event.target.querySelector('tr.selected-row');
 		if (selectedRow) {
-			selectedRow.classList.remove('selected-row');
+			// selectedRow.classList.remove('selected-row');
 		}
 	}
 

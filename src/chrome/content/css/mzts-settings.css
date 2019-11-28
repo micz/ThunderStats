@@ -88,6 +88,14 @@
 	/* background-color: aquamarine; */
   }
   
+138
+240
+216
+
+  .table-list th:last-child {
+	border: none;
+  }
+
   .table-list td {
 	white-space: nowrap;
 	height: 14px;
@@ -110,12 +118,12 @@
   
   
 .list-row:hover, .list-row:focus {
-	background-color: aqua;
+	background-color: #cce8ff;
 	/* color: white; */
 }
 
 .list-row.selected-row {
-	background-color: cadetblue !important;
+	background-color: #cce8ff !important;
 	/* color: white; */
 }
 

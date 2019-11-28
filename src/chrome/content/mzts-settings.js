@@ -22,7 +22,7 @@ var miczThunderStatsPrefPanel = {
     onLoad: function () {
 
         let context = {};
-        Services.console.logStringMessage("dialog onLoad event handler - load preferences");
+        // Services.console.logStringMessage("dialog onLoad event handler - load preferences");
         Services.scriptloader.loadSubScript("chrome://global/content/preferencesBindings.js", context, "UTF-8" /* The script's encoding */);
 
         Preferences.addAll([
@@ -52,15 +52,14 @@ var miczThunderStatsPrefPanel = {
             { id: "ThunderStats.involvedtable_forceidentityname", name: "extensions.ThunderStats.involvedtable_forceidentityname", type: "bool" },
         ]);
 
-        Services.console.logStringMessage("Preferences 1: onload added preferences ");
-        // Preferences.updateElements();
-        Services.console.logStringMessage("Preferences 1: onload added preferences " + Preferences.get("ThunderStats.many_days").name + "\nPn: " + Preferences.get("ThunderStats.many_days").value);
+        // Services.console.logStringMessage("Preferences 1: onload added preferences ");
+        // Services.console.logStringMessage("Preferences 1: onload added preferences " + Preferences.get("ThunderStats.many_days").name + "\nPn: " + Preferences.get("ThunderStats.many_days").value);
 
         const elements = document.querySelectorAll(`[preference]`);
         // const elements = Preferences.getElementsByAttribute("preference");
         for (const element of elements) {
             const p = Preferences.get(element.getAttribute("preference"));
-            Services.console.logStringMessage("Preferences 1: onload loaded  " + element.id + "  " + p.value);
+            // Services.console.logStringMessage("Preferences 1: onload loaded  " + element.id + "  " + p.value);
             p.setElementValue(element);
         }
 
@@ -84,7 +83,7 @@ var miczThunderStatsPrefPanel = {
         strt_acc.appendItem(_bundleCW.GetStringFromName("ThunderStats.AllAccounts"), 0);
 
         for (let key in miczThunderStatsCore.accounts) {
-            Services.console.logStringMessage('account key ' + miczThunderStatsCore.accounts[key].name + " " + key);
+            // Services.console.logStringMessage('account key ' + miczThunderStatsCore.accounts[key].name + " " + key);
             acc_list.appendItem(miczThunderStatsCore.accounts[key].name, key);
             let curr_item = strt_acc.appendItem(miczThunderStatsCore.accounts[key].name, key);
             if (key == chosen_strt_acc) {
@@ -96,7 +95,7 @@ var miczThunderStatsPrefPanel = {
         acc_list.selectedIndex = strt_acc_sel_idx;
         this.onCIAccountChange();
 
-        Services.console.logStringMessage('start index ' + strt_acc.selectedIndex);
+        // Services.console.logStringMessage('start index ' + strt_acc.selectedIndex);
         this.loadInfoFile('release_notes');
 
         
@@ -112,31 +111,31 @@ var miczThunderStatsPrefPanel = {
         var table_container = document.getElementById('tableID');
         const hwidth = window.getComputedStyle(table_box, null).getPropertyValue('width');
 
-        Services.console.logStringMessage("get header with before " + hwidth);
+        // Services.console.logStringMessage("get header with before " + hwidth);
 
-        Services.console.logStringMessage("get table width after " + table_container.width);
+        // Services.console.logStringMessage("get table width after " + table_container.width);
         var nbd_table = document.getElementById('nbd_table');
         // nbd_table.width = table_container.width;
         nbd_table.width = hwidth;
         table_container.width = hwidth;
-        Services.console.logStringMessage("get table width after " + nbd_table.width);
+        // Services.console.logStringMessage("get table width after " + nbd_table.width);
 
         /* List.js is required to make this table work. */
 
         Document.prototype.createElement = function (e) {
-            var element = document.createElementNS("http://www.w3.org/1999/xhtml", e);
+                var element = document.createElementNS("http://www.w3.org/1999/xhtml", e);
             return element;
         };
 
         var options = {
             //   valueNames: [ { data: ['date'] }, { data: ['description'] }, { data: ['yearly']} ],
             valueNames: ['date', 'description', 'yearly', { data: ['id']}],
-            item: '<tr tabindex="0" class="list-row"><td class="date"></td><td class="description"></td><td class="yearly"></td></tr>'
+            item: '<tr class="list-row"><td class="date"></td><td class="description"></td><td class="yearly"></td></tr>'
         };
 
         miczThunderStatsPrefPanel.nbd_tableList = new List('tableID', options);
-        miczThunderStatsPrefPanel.nbd_tableList.controller = new ListController(miczThunderStatsPrefPanel.nbd_tableList, {onSelectListRow: this.onSelectListRow});
-        Services.console.logStringMessage("after table constructor");
+        miczThunderStatsPrefPanel.nbd_tableList.controller = new ListController(miczThunderStatsPrefPanel.nbd_tableList, {onSelectedCB: this.onSelectListRow});
+        // Services.console.logStringMessage("after table constructor");
 
         // miczThunderStatsPrefPanel.nbd_tableList.add({
         //     date: "11-6",
@@ -144,7 +143,7 @@ var miczThunderStatsPrefPanel = {
         //     yearly: "True",
         // });
 
-        Services.console.logStringMessage("get table info");
+        // Services.console.logStringMessage("get table info");
         this.loadNBDList('ThunderStats.NoBusinessDaysList');
 
         // nbd_table.addEventListener("click", this.onNBDItemClick, true);
@@ -223,6 +222,7 @@ var miczThunderStatsPrefPanel = {
         let numSelected = 1;
         let oneSelected = (numSelected == 1);
         if (oneSelected) {
+            Services.console.logStringMessage("update buttons now");
             doc.getElementById("editButtonNBD").disabled = false;
             doc.getElementById("deleteButtonNBD").disabled = false;
         } else {
@@ -254,27 +254,39 @@ var miczThunderStatsPrefPanel = {
             miczThunderStatsPrefPanel.saveNBDList();
             // Select the new nbd, it is at the end of the list.
             container.selectedIndex = container.itemCount - 1;
-            container.ensureIndexIsVisible(container.selectedIndex);
+            // container.ensureIndexIsVisible(container.selectedIndex);
         }
 
     },
 
     onEditNBDDate: function () {
+        Services.console.logStringMessage("OnEdit");
         let container = document.getElementById('ThunderStats.NoBusinessDaysList');
 
-        if (container.selectedIndex == -1) return;
+        // if (container.selectedIndex == -1) return;
         if (document.getElementById("editButtonNBD").disabled) return;
 
-        let args = { "action": "edit", "newnbd": JSON.stringify(container.selectedItem._nbd) };
+        let nbd_idx = document.getElementById('nbd_table').getAttribute('selected-index');
+        if (nbd_idx === '') {
+            return;
+        }
+        Services.console.logStringMessage("load nonbusiness "+JSON.stringify(this.nbd_objs[nbd_idx]));
+        Services.console.logStringMessage("OpenDialogue");
+        let args = { "action": "edit", "newnbd": JSON.stringify(this.nbd_objs[nbd_idx]) };
 
-        window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
+        // window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
+        window.openDialog("chrome://thunderstats/content/fp3.xhtml", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
+        
+        Services.console.logStringMessage("After Dialogue");
+        Services.console.logStringMessage(JSON.stringify(args));
 
         if (("save" in args && args.save) && ("newnbd" in args && args.newnbd)) {
             //update the cust col in the listbox
-            miczThunderStatsPrefPanel.editOneNBDRow(document, container, args.newnbd, container.selectedIndex);
+            Services.console.logStringMessage("save after edit");
+            miczThunderStatsPrefPanel.editOneNBDRow(document, container, args.newnbd, 0);
             miczThunderStatsPrefPanel.saveNBDList();
             // Select the edited nbd
-            container.ensureIndexIsVisible(container.selectedIndex);
+            // container.ensureIndexIsVisible(container.selectedIndex);
         }
 
     },
@@ -321,7 +333,6 @@ var miczThunderStatsPrefPanel = {
     createOneNBDRow: function (doc, container, cur_nbdobj, force_save_obj) {
         if (!container) return;
 
-        Services.console.logStringMessage("new nonbusiness create one");
 
         miczThunderStatsPrefPanel.nbd_tableList.add({
             date: cur_nbdobj.date,
@@ -330,8 +341,12 @@ var miczThunderStatsPrefPanel = {
             id: cur_nbdobj.tmp_id,
         });
 
+        Services.console.logStringMessage("new nonbusiness create row: " + cur_nbdobj.tmp_id);
+
         cur_nbdobj.nbd_date_string = miczThunderStatsNBD.formatNBDDateString(cur_nbdobj, moment);
         if (force_save_obj) {
+            Services.console.logStringMessage("saving row: ");
+
             this.nbd_objs_length++;
             let nbd_tmp_id = this.nbd_objs_length;
             cur_nbdobj.tmp_id = nbd_tmp_id;
@@ -340,7 +355,7 @@ var miczThunderStatsPrefPanel = {
             //dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol.desc {"+JSON.stringify(currcol.desc)+"}\r\n");
         }
 
-        Services.console.logStringMessage("new nonbusiness finish");
+        Services.console.logStringMessage("new nonbusiness finish "+ this.nbd_objs_length);
 /* 
 
         let listitem = doc.createElement("listitem");
@@ -370,7 +385,6 @@ var miczThunderStatsPrefPanel = {
         // about clicks on the enabledCell. However, attaching to that item doesn't
         // result in any events actually getting received.
         listitem.addEventListener("click", this.onNBDItemClick, true);
-        listitem.addEventListener("dblclick", thi.onNBDItemDoubleClick, true);
         return listitem;
      */
     
@@ -378,29 +392,55 @@ var miczThunderStatsPrefPanel = {
 
     onSelectListRow(event,data_id) {
         Services.console.logStringMessage("onSelectListRow call");
-        this.onNBDItemClick();
+        miczThunderStatsPrefPanel.onNBDItemClick(event, data_id);
     },
 
 
-    editOneNBDRow: function (doc, container, currcol, idx_col) {
-        if (!container) return;
-        let listitem = container.getItemAtIndex(idx_col);
-        if (!listitem) return;
+    editOneNBDRow: function (doc, container, cur_nbdobj, idx_col) {
+        // let doc = document;
+        // if (!container) return;
+        Services.console.logStringMessage("EditRow");
+        let nbd_idx = doc.getElementById('nbd_table').getAttribute('selected-index');
+        if (nbd_idx === '') {
+            return;
+        }
 
-        //dump(">>>>>>>>>>>>> miczThunderStats: [editOneNBDRow] listitem "+JSON.stringify(listitem)+"\r\n");
+        // let listitem = container.getItemAtIndex(idx_col);
+        // if (!listitem) return;
 
-        let nbd_date_string = miczThunderStatsNBD.formatNBDDateString(currcol, moment);
-        currcol.date_string = nbd_date_string;
-        let dateCell = listitem.childNodes[0];
-        dateCell.setAttribute("label", nbd_date_string);
+        Services.console.logStringMessage(">>>>>>>>>>>>> miczThunderStats: [editOneNBDRow] listitem "+JSON.stringify(cur_nbdobj)+"\r\n");
 
-        let descCell = listitem.childNodes[1];
-        descCell.setAttribute("label", currcol.desc);
+        let nbd_date_string = miczThunderStatsNBD.formatNBDDateString(cur_nbdobj, moment);
+        cur_nbdobj.date_string = nbd_date_string;
 
-        listitem._nbd = currcol;
-        this.nbd_objs[currcol.tmp_id] = currcol;
+        Services.console.logStringMessage(doc.getElementById('nbd_table').outerHTML);
+        // let item = miczThunderStatsPrefPanel.nbd_tableList.controller.getSelectedRowElement();
+        
+        let item = miczThunderStatsPrefPanel.nbd_tableList.get("id", nbd_idx)[0];
 
-        return listitem;
+        Services.console.logStringMessage(JSON.stringify(item));
+        // Services.console.logStringMessage(JSON.stringify(item[0]));
+
+        item.values({
+            date: cur_nbdobj.date,
+            description: cur_nbdobj.desc,
+            yearly: cur_nbdobj.every_year,
+            id: cur_nbdobj.nbd_idx,
+        });
+
+        Services.console.logStringMessage(miczThunderStatsPrefPanel.nbd_tableList.get("id", nbd_idx));
+
+        // let dateCell = listitem.childNodes[0];
+        // dateCell.setAttribute("label", nbd_date_string);
+
+        // let descCell = listitem.childNodes[1];
+        // descCell.setAttribute("label", currcol.desc);
+
+        // listitem._nbd = currcol;
+        this.nbd_objs[cur_nbdobj.tmp_id] = cur_nbdobj;
+        Services.console.logStringMessage("EditRow Finish");
+        return;
+        // return listitem;
     },
 
     deleteOneNBDRow: function (container, col_idx) {
@@ -408,12 +448,15 @@ var miczThunderStatsPrefPanel = {
         // container.removeItemAt(col_idx);
     },
 
-    onNBDItemClick: function (event) {
+    onNBDItemClick: function (event, data_id) {
         //do nothing special
+        Services.console.logStringMessage("onSelectListRow onItemClick");
         var selector = 'tr'
         var iel = event.target.closest(selector)
+        Services.console.logStringMessage("iel " + iel);
         if (!iel) return
         var id = iel.getAttribute('data-id');
+
         Services.console.logStringMessage("table click 1");
         Services.console.logStringMessage("table click "+id);
 
@@ -432,6 +475,7 @@ var miczThunderStatsPrefPanel = {
     },
 
     saveNBDList: function () {
+        Services.console.logStringMessage("Save nonbusiness "+ this.nbd_objs.length + " "+ JSON.stringify(this.nbd_objs));
         miczThunderStatsNBD.saveToPref(miczThunderStatsNBD.nbd_pref_name, this.nbd_objs);
     },
 
@@ -440,9 +484,9 @@ var miczThunderStatsPrefPanel = {
         let container = miczThunderStatsPrefPanel.nbd_tableList;
         this.nbd_objs = miczThunderStatsNBD.readFromPref(miczThunderStatsNBD.nbd_pref_name);
         
-        Services.console.logStringMessage("load nonbusiness "+JSON.stringify(this.nbd_objs));
+        Services.console.logStringMessage("Load NBDs: "+ this.nbd_objs.length + " "+ JSON.stringify(this.nbd_objs));
         //reorder array
-        // this.reindexNBDArray();
+        this.reindexNBDArray();
         dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] this.nbd_objs {"+JSON.stringify(this.nbd_objs)+"}\r\n");
         this.createNBDRows(document, container);
     },

@@ -8,7 +8,7 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:html="http://www.w3.org/1999/xhtml"
   type="child"
-  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b9" >
+  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b10" >
 	<!-- onload="miczThunderStatsPrefPanel.onLoad();"> -->
 	<prefpane id="ThunderStats_PrefPane">
 		<!-- 

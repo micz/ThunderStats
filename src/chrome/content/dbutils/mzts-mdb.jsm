@@ -363,8 +363,7 @@ var miczThunderStatsDB = {
 
     //returns the id of an identity from its email
     queryGetIdentityID: function(email) {
-        // cleidigh - e-mail id queries should be case insensitive db expects normalized to lowercase
-        let mWhere = 'value="' + email.toLowerCase() + '" LIMIT 1';
+        let mWhere = 'value="' + email + '" LIMIT 1';
         let rows = this.querySelect("id", "identities", mWhere);
         if (rows.length > 0) {
             return rows[0][0];

@@ -16,6 +16,8 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 		if ("arguments" in window && window.arguments[0]){
 			let args = window.arguments[0];
 
+			Services.console.logStringMessage(args);
+
 			if ("action" in args){
 				switch (args.action){
 					//case "new":
@@ -44,6 +46,7 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 			let args = window.arguments[0];
 			let newnbd={};
 
+			Services.console.logStringMessage("check-action");
 			if ("action" in args){	
 				switch (args.action){
 					case "new":  //Save new NBD
@@ -61,7 +64,7 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 						let nbd=JSON.parse(args.newnbd);
 						//get userinput val
 						nbd.desc=document.getElementById("ThunderStats.desc").value;
-						nbd.date=document.getElementById("ThunderStats.date").value;
+						nbd.date=document.getElementById("non_biz_date_picker").value;
 						nbd.every_year=document.getElementById("ThunderStats.every_year").checked;
 						//dump(">>>>>>>>>>>>> miczColumnsWizard->onAccept: [newcol] "+JSON.stringify(newcol)+"\r\n");
 						//miczColumnsWizard_CustCols.addNewCustCol(newcol);

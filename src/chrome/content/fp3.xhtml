@@ -55,12 +55,23 @@
 
 
     </div>
-    <div style="height: 100px; background-color: inhert;"></div>
-    <div style="height: 100%; align-content: bottom;">
+    <!-- <div height="150px" width="100%" style="background-color: green">X</div> -->
+    <div height="150px" width="100%" style="background-color: aqua; height: 240px"> </div>
+    <!-- <div height="280px" style="background-color: red"> -->
+    <xul:vbox height="25px" style="width: inherit">
+    </xul:vbox>
+    
+    <xul:hbox style="width: inherit">
+    <xul:hbox flex="1" style="background-color: inherit;"></xul:hbox>
+     <!-- <xul:hbox style="height: 100%; align-content: bottom;  background-color: orange;" pack="right">  -->
+    <xul:hbox flex="0"  style="align-content: bottom;  background-color: inherit;" pack="right">
+
         <!-- <xul:button id="localfolder.btValider" label="Ok" oncommand="flatp.tsOk();" /> -->
         <xul:button id="localfolder.btValider" label="Ok" oncommand="miczThunderStatsPrefPanel_NBDEditor.onAccept();" />
         <xul:button id="localfolder.btQuitter" label="Cancel" oncommand="window.close();" />
-    </div>
+    </xul:hbox>
+    </xul:hbox>
+    <!-- </div> -->
 </body>
 
 </html>

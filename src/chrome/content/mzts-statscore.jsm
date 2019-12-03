@@ -68,7 +68,7 @@ var miczThunderStatsCore = {
             //enumerate custom identities for this account
             let account_custom_identities = miczThunderStatsPrefs.accountCustomIdentities(account.key);
             // cleidigh
-            console.debug('custom identities '+account_custom_identities);
+            console.debug('Account default custom identities '+account_custom_identities);
             if (account_custom_identities != '') {
                 let account_custom_identities_arr = account_custom_identities.split(',');
                 for (let j = 0; j < account_custom_identities_arr.length; j++) {
@@ -98,7 +98,7 @@ var miczThunderStatsCore = {
         }
         //If there are custom identities for the custom account, add it and its identities
         let account_custom_identities = miczThunderStatsPrefs.accountCustomIdentities(this.custom_account_key);
-        //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] account_custom_identities '+JSON.stringify(account_custom_identities)+'\r\n');
+        console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] account_custom_identities '+JSON.stringify(account_custom_identities)+'\r\n');
         if (account_custom_identities != '') {
             let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statscore");
             this.accounts[this.custom_account_key] = {};
@@ -107,7 +107,7 @@ var miczThunderStatsCore = {
             this.accounts[this.custom_account_key].identities = new Array();
             let account_custom_identities_arr = account_custom_identities.split(',');
             for (let j = 0; j < account_custom_identities_arr.length; j++) {
-                let identity = account_custom_identities_arr[j].toLowerCase();
+                let identity = account_custom_identities_arr[j];
                 //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
                 let identity_item = {};
                 identity_item["email"] = identity;
@@ -120,7 +120,7 @@ var miczThunderStatsCore = {
                     cid_prog++;
                     this.identities[miczThunderStatsDB.queryGetIdentityID(identity)] = identity_item;
                     miczThunderStatsDB.identities_custom_ids.push(miczThunderStatsDB.queryGetIdentityID(identity));
-                    miczThunderStatsDB.identities_custom_ids_mail.push(identity.toLowerCase());
+                    miczThunderStatsDB.identities_custom_ids_mail.push(identity);
                     this.accounts[this.custom_account_key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
                     //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
                 }

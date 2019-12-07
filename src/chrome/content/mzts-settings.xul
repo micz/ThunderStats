@@ -8,7 +8,7 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:html="http://www.w3.org/1999/xhtml"
   type="child"
-  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b11 (b7 match)" >
+  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b12" >
 	<!-- onload="miczThunderStatsPrefPanel.onLoad();"> -->
 	<prefpane id="ThunderStats_PrefPane">
 		<!-- 
@@ -184,7 +184,7 @@
 					</groupbox>
 					<groupbox>
 						<hbox class="groupbox-title">
-							<label class="header">&ThunderStats.NoBusinessDaysList.groupbox; [ Disabled for Beta ]</label>
+							<label class="header">&ThunderStats.NoBusinessDaysList.groupbox;</label>
 						</hbox>
 						<hbox >
 							<hbox id="nbd_table_box" flex="1" style="background-color: ;">
@@ -195,7 +195,7 @@
 
 
 <!-- <html:div id="tableID" class="table-list-container"> -->
-<hbox id="tableID" class="table-list-container" tabindex="0">
+<hbox id="nbd_table_container" class="table-list-container" tabindex="0">
 
 	 <!-- <table id="nbd_table" class="table-list" data-currentpage="1" style="height: 100%; " xmlns="http://www.w3.org/TR/html4/"> -->
 	
@@ -290,12 +290,13 @@
 							<vbox>
 								<button id="newButtonNBD"
                   label="&ThunderStats.newButtonNBD.label;"
+				  accesskey="N"
                   oncommand="miczThunderStatsPrefPanel.onNewNBDDate();"/>
 								<button id="editButtonNBD" label="&ThunderStats.editButtonNBD.label;"
-                  oncommand="miczThunderStatsPrefPanel.onEditNBDDate();" disabled="true"/>
+                  oncommand="miczThunderStatsPrefPanel.onEditNBDDate();" disabled="true" accesskey="E"/>
 								<button id="deleteButtonNBD"
                   label="&ThunderStats.deleteButtonNBD.label;"
-                  oncommand="miczThunderStatsPrefPanel.onDeleteNBDDate();" disabled="true"/>
+                  oncommand="miczThunderStatsPrefPanel.onDeleteNBDDate();" disabled="true" accesskey="D"/>
 							</vbox>
 						</hbox>
 						</hbox>

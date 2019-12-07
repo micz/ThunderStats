@@ -108,7 +108,7 @@ var miczThunderStatsPrefPanel = {
         // nbd_description_header.className += 'wider';
         // nbd_description_header.style.width = 300;
         var table_box = document.getElementById('nbd_table_box');
-        var table_container = document.getElementById('tableID');
+        var table_container = document.getElementById('nbd_table_container');
         const hwidth = window.getComputedStyle(table_box, null).getPropertyValue('width');
 
         // Services.console.logStringMessage("get header with before " + hwidth);
@@ -133,7 +133,7 @@ var miczThunderStatsPrefPanel = {
             item: '<tr class="list-row"><td class="date"></td><td class="description"></td><td class="yearly"></td></tr>'
         };
 
-        miczThunderStatsPrefPanel.nbd_tableList = new List('tableID', options);
+        miczThunderStatsPrefPanel.nbd_tableList = new List('nbd_table_container', options);
         miczThunderStatsPrefPanel.nbd_tableList.controller = new ListController(miczThunderStatsPrefPanel.nbd_tableList, {onSelectedCB: this.onSelectListRow});
         // Services.console.logStringMessage("after table constructor");
 
@@ -216,7 +216,7 @@ var miczThunderStatsPrefPanel = {
          updateNBDButtons: function (win) {
         Services.console.logStringMessage("update buttons event");
         let doc = win.document;
-        Services.console.logStringMessage("after table event"+doc.getElementById( 'tableID').outerHTML);
+        Services.console.logStringMessage("after table event"+doc.getElementById('nbd_table').outerHTML);
         // let currlist = doc.getElementById('ThunderStats.NoBusinessDaysList');
         // let numSelected = currlist.selectedItems.length;
         let numSelected = 1;
@@ -251,10 +251,13 @@ var miczThunderStatsPrefPanel = {
             Services.console.logStringMessage("new nonbusiness ");
 
             miczThunderStatsPrefPanel.createOneNBDRow(doc, container, args.newnbd, true);
+            Services.console.logStringMessage("new d "+ doc.getElementById('nbd_table').outerHTML);
+
             miczThunderStatsPrefPanel.saveNBDList();
             // Select the new nbd, it is at the end of the list.
-            container.selectedIndex = container.itemCount - 1;
+            // container.selectedIndex = container.itemCount - 1;
             // container.ensureIndexIsVisible(container.selectedIndex);
+            miczThunderStatsPrefPanel.nbd_tableList.controller.selectRowByDataId('1');
         }
 
     },
@@ -266,7 +269,7 @@ var miczThunderStatsPrefPanel = {
         // if (container.selectedIndex == -1) return;
         if (document.getElementById("editButtonNBD").disabled) return;
 
-        let nbd_idx = document.getElementById('nbd_table').getAttribute('selected-index');
+        let nbd_idx = miczThunderStatsPrefPanel.nbd_tableList.list.getAttribute('selected-index');
         if (nbd_idx === '') {
             return;
         }
@@ -287,6 +290,7 @@ var miczThunderStatsPrefPanel = {
             miczThunderStatsPrefPanel.saveNBDList();
             // Select the edited nbd
             // container.ensureIndexIsVisible(container.selectedIndex);
+            miczThunderStatsPrefPanel.nbd_tableList.controller.selectRowByDataId(nbd_idx);
         }
 
     },
@@ -299,29 +303,45 @@ var miczThunderStatsPrefPanel = {
         // if (container.selectedIndex == -1) return;
         // if (doc.getElementById("deleteButtonNBD").disabled) return;
 
+        // let nbd_idx = doc.getElementById('nbd_table').getAttribute('selected-index');
+        let nbd_idx = miczThunderStatsPrefPanel.nbd_tableList.list.getAttribute('selected-index');
         //Are you sure?
         let prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
         let _bundleCW = miczThunderStatsI18n.createBundle("settings");
 
-        if (!prompts.confirm(null, _bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.title"), _bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.text"))) return;
+        if (!prompts.confirm(null, _bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.title"), _bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.text")+ " : "+nbd_idx)) return;
 
         //get the col id
         // let nbd_idx = container.selectedItem._nbd.tmp_id;
         //dump(">>>>>>>>>>>>> miczColumnsWizard: [onDeleteCustomCol] col_idx ["+col_idx+"]\r\n");
-        let nbd_idx = doc.getElementById('nbd_table').getAttribute('selected-index');
+        
         if (nbd_idx === '') {
             return;
         }
+        console.debug('Delete ' + nbd_idx);
         miczThunderStatsPrefPanel.nbd_tableList.remove('id', nbd_idx);
-        doc.getElementById('nbd_table').setAttribute('selected-index', '');
+
+        // doc.getElementById('nbd_table').setAttribute('selected-index', '');
         // let nbd_idx = container.selectedItem._nbd.tmp_id;
         Services.console.logStringMessage("get active");
         let entry = document.activeElement;
         Services.console.logStringMessage("act development "+entry.outerHTML);
         //remove the nbd from the listbox and save the list to the prefs
         // miczThunderStatsPrefPanel.deleteOneNBDRow(container, container.selectedIndex);
+        Services.console.logStringMessage(JSON.stringify(this.nbd_objs));
+        Services.console.logStringMessage("Remove "+JSON.stringify(this.nbd_objs[nbd_idx]));
         delete this.nbd_objs[nbd_idx];
+        this.nbd_objs_length--;
+        Services.console.logStringMessage("after "+JSON.stringify(this.nbd_objs));
+        //reorder array
+        this.reindexNBDArray();
+        Services.console.logStringMessage("after reindex "+JSON.stringify(this.nbd_objs));
         miczThunderStatsPrefPanel.saveNBDList();
+
+        // clear list/rebuild
+        miczThunderStatsPrefPanel.nbd_tableList.clear();
+        this.createNBDRows(document, miczThunderStatsPrefPanel.nbd_tableList);
+        miczThunderStatsPrefPanel.nbd_tableList.controller.selectRowByDataId(nbd_idx);
     },
 
     createNBDRows: function (doc, container) {
@@ -391,8 +411,14 @@ var miczThunderStatsPrefPanel = {
     },
 
     onSelectListRow(event,data_id) {
-        Services.console.logStringMessage("onSelectListRow call");
+        Services.console.logStringMessage("onSelectListRow call "+event.type + " "+ data_id);
+        if (event.type === 'onclick') {
         miczThunderStatsPrefPanel.onNBDItemClick(event, data_id);
+            
+        } else {
+            Services.console.logStringMessage("enable buttons");
+            miczThunderStatsPrefPanel.updateNBDButtons(window);
+        }
     },
 
 
@@ -400,7 +426,7 @@ var miczThunderStatsPrefPanel = {
         // let doc = document;
         // if (!container) return;
         Services.console.logStringMessage("EditRow");
-        let nbd_idx = doc.getElementById('nbd_table').getAttribute('selected-index');
+        let nbd_idx = miczThunderStatsPrefPanel.nbd_tableList.list.getAttribute('selected-index');
         if (nbd_idx === '') {
             return;
         }
@@ -460,7 +486,7 @@ var miczThunderStatsPrefPanel = {
         Services.console.logStringMessage("table click 1");
         Services.console.logStringMessage("table click "+id);
 
-        document.getElementById('nbd_table').setAttribute('selected-index', id);
+        let nbd_idx = miczThunderStatsPrefPanel.nbd_tableList.list.getAttribute('selected-index');
         Services.console.logStringMessage("table click "+iel.outerHTML);
         miczThunderStatsPrefPanel.updateNBDButtons(window);
         return;

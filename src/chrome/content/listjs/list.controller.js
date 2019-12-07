@@ -1,5 +1,5 @@
 var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
-
+  
 class ListController {
 
 	constructor(list, options) {
@@ -11,6 +11,7 @@ class ListController {
 		};
 	
 		this.list = list;
+		this.listElement = list.list;
 		this.listId = 99;
 		
 		this.list_container = list.listContainer;
@@ -23,7 +24,7 @@ class ListController {
 		this.list_container.addEventListener('click', (event) => { this.onClick(event); });
 		this.list_container.addEventListener('keydown', (event) => { this.onKey(event); });
 		this.list_container.addEventListener('blur', (event) => { this.onBlur(event); });
-		this.list_container.setAttribute('selected-index', "-1");
+		this.listElement.setAttribute('selected-index', "-1");
 	}
 
 	selectRowByDataId(data_id) {
@@ -60,21 +61,21 @@ class ListController {
 
 	// Event handlers
  	onClick(event) {
-		console.debug('Click');
+		Services.console.logStringMessage('Click');
 		var selector = 'tr'
 		var closestRow = event.target.closest(selector)
 		if (!closestRow) return
 		var data_id = closestRow.getAttribute('data-id')
-		console.log(data_id);
-		this.list_container.setAttribute('selected-index', data_id);
+		console.log("clickRow "+data_id);
+		this.listElement.setAttribute('selected-index', data_id);
 		selector = 'tr.selected-row';
-		var selectedRow = this.list_container.querySelector(selector);
+		var selectedRow = this.listElement.querySelector(selector);
 		if (selectedRow) {
 			selectedRow.classList.remove('selected-row');
 		}
 		closestRow.classList.add('selected-row');
 
-		console.debug('Click call' + closestRow.outerHTML);
+		Services.console.logStringMessage('Click call' + closestRow.outerHTML);
 		if (this.onSelectedCB) {
 			this.onSelectedCB(event, data_id);
 		}
@@ -83,17 +84,24 @@ class ListController {
 	}
 
 	onKey(event) {
-		console.debug('Key');
-		console.debug(event.target.outerHTML);
-		console.debug('ID ' + event.target.id);
-		if (event.target === this.list_container && event.target.getAttribute('selected-index') === "-1") {
-			console.debug('on container');
+		Services.console.logStringMessage('Key: '+event.which);
+		Services.console.logStringMessage('ID ' + event.target.getAttribute('selected-index'));
+		Services.console.logStringMessage(this.listElement.outerHTML);
+
+		if (event.target === this.list_container && event.which === this.Keys.DOWN && this.listElement.getAttribute('selected-index') === '-1') {
+
+			Services.console.logStringMessage('on container Down');
 
 			let next = event.target.querySelector('.list-row');
 			next.classList.add('selected-row');
-			this.list_container.setAttribute('selected-index', "1");
+			this.listElement.setAttribute('selected-index', "1");
 			this.list_container.classList.add('no-outline');
-			console.debug(event.target.outerHTML);
+			Services.console.logStringMessage('after no outline');
+			Services.console.logStringMessage(this.list_container.outerHTML);
+			if (this.onSelectedCB) {
+				this.onSelectedCB(event, "1");
+			}
+	
 			return;
 		}
 
@@ -104,14 +112,19 @@ class ListController {
 		switch (event.which) {
 
 			case this.Keys.DOWN:
+				if (!selectedRow) {
+					Services.console.logStringMessage('NoSelectedRow');
+					break;
+				}
 				let nextRow = this.getNextSibling(selectedRow, 'tr.list-row');
 				if (!nextRow) {
+					Services.console.logStringMessage('NoNextRow');
 					break;
 				}
 				selectedRow.classList.remove('selected-row');
 				nextRow.classList.add('selected-row');
 				data_id = nextRow.getAttribute('data-id')
-				this.list_container.setAttribute('selected-index', data_id);
+				this.listElement.setAttribute('selected-index', data_id);
 				if (this.onSelectedCB) {
 					Services.console.logStringMessage("onSelectListRow callBack");
 					this.onSelectedCB(event, data_id);
@@ -126,14 +139,14 @@ class ListController {
 				selectedRow.classList.remove('selected-row');
 				previousRow.classList.add('selected-row');
 				data_id = previousRow.getAttribute('data-id')
-				this.list_container.setAttribute('selected-index', data_id);
+				this.listElement.setAttribute('selected-index', data_id);
 				if (this.onSelectedCB) {
 					this.onSelectedCB(event, data_id);
 				}
 
 				break;
 			case this.Keys.ENTER:
-				console.debug('Select');
+				Services.console.logStringMessage('Select');
 				break;
 
 			default:
@@ -147,11 +160,19 @@ class ListController {
 	}
 
 	onBlur(event) {
-		this.list_container.setAttribute('selected-index', "-1");
+		let targetElement = event.explicitOriginalTarget;
+		Services.console.logStringMessage(event.explicitOriginalTarget.id);
+
+		if (targetElement.id === "newButtonNBD" || targetElement.id === "editButtonNBD" || targetElement.id === "deleteButtonNBD") {
+			return;
+		}
+
 		this.list_container.classList.remove('no-outline');
+		this.listElementIs.setAttribute('selected-index', "-1");
+
 		let selectedRow = event.target.querySelector('tr.selected-row');
 		if (selectedRow) {
-			// selectedRow.classList.remove('selected-row');
+			selectedRow.classList.remove('selected-row');
 		}
 	}
 
@@ -182,7 +203,7 @@ class ListController {
 		// If the sibling matches our selector, use it
 		// If not, jump to the next sibling and continue the loop
 		while (sibling) {
-			console.debug(sibling.outerHTML);
+			Services.console.logStringMessage(sibling.outerHTML);
 			if (sibling.matches(selector)) return sibling;
 			sibling = sibling.nextElementSibling
 		}

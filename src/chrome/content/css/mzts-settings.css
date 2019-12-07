@@ -88,12 +88,9 @@
 	/* background-color: aquamarine; */
   }
   
-138
-240
-216
 
-  .table-list th:last-child {
-	border: none;
+  .table-list thead > th:last-child {
+	border-right: none;
   }
 
   .table-list td {

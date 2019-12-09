@@ -140,8 +140,8 @@
 }
 .flatpickr-months .flatpickr-month {
   border-radius: 5px 5px 0 0;
-  background: #4290b0;
-  /* background: #42a5f5; */
+  /* background: #4290b0; */
+  background: #42a5f5;
   color: #fff;
   fill: #fff;
   height: 34px;

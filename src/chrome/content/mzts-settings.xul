@@ -8,60 +8,8 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:html="http://www.w3.org/1999/xhtml"
   type="child"
-  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b13" >
-	<!-- onload="miczThunderStatsPrefPanel.onLoad();"> -->
+  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b14" >
 	<prefpane id="ThunderStats_PrefPane">
-		<!-- 
-  	<preferences><preference id="ThunderStats.identities_selector"
-        name="extensions.ThunderStats.identities_selector"
-        type="bool"/><preference id="ThunderStats.inbox_search_only_curr_account"
-        name="extensions.ThunderStats.inbox_search_only_curr_account"
-        type="bool"/><preference id="ThunderStats.global_update"
-        name="extensions.ThunderStats.global_update"
-        type="bool"/><preference id="ThunderStats.debug"
-        name="extensions.ThunderStats.debug"
-        type="bool"/><preference id="ThunderStats.debug_warn_show"
-        name="extensions.ThunderStats.debug_warn_show"
-        type="bool"/><preference id="ThunderStats.folderspreadgraph_openinfirsttab"
-        name="extensions.ThunderStats.folderspreadgraph_openinfirsttab"
-        type="bool"/><preference id="ThunderStats.today_time_graph_show_yesterday"
-        name="extensions.ThunderStats.today_time_graph_show_yesterday"
-        type="bool"/><preference id="ThunderStats.today_time_graph_progressive"
-        name="extensions.ThunderStats.today_time_graph_progressive"
-        type="bool"/><preference id="ThunderStats.aggregate_average_not_rounded"
-        name="extensions.ThunderStats.aggregate_average_not_rounded"
-        type="bool"/><preference id="ThunderStats.many_days"
-        name="extensions.ThunderStats.many_days"
-        type="int"/><preference id="ThunderStats.many_days_small_labels"
-        name="extensions.ThunderStats.many_days_small_labels"
-        type="bool"/><preference id="ThunderStats.bday.use_last_business_day"
-        name="extensions.ThunderStats.bday.use_last_business_day"
-        type="bool"/><preference id="ThunderStats.bday.easter"
-        name="extensions.ThunderStats.bday.easter"
-        type="bool"/><preference id="ThunderStats.bday.weekday0"
-        name="extensions.ThunderStats.bday.weekday0"
-        type="bool"/><preference id="ThunderStats.bday.weekday1"
-        name="extensions.ThunderStats.bday.weekday1"
-        type="bool"/><preference id="ThunderStats.bday.weekday2"
-        name="extensions.ThunderStats.bday.weekday2"
-        type="bool"/><preference id="ThunderStats.bday.weekday3"
-        name="extensions.ThunderStats.bday.weekday3"
-        type="bool"/><preference id="ThunderStats.bday.weekday4"
-        name="extensions.ThunderStats.bday.weekday4"
-        type="bool"/><preference id="ThunderStats.bday.weekday5"
-        name="extensions.ThunderStats.bday.weekday5"
-        type="bool"/><preference id="ThunderStats.bday.weekday6"
-        name="extensions.ThunderStats.bday.weekday6"
-        type="bool"/><preference id="ThunderStats.customquery_bookmark_immediate_update"
-        name="extensions.ThunderStats.customquery_bookmark_immediate_update"
-        type="bool"/><preference id="ThunderStats.customquery_default_only_bd"
-        name="extensions.ThunderStats.customquery_default_only_bd"
-        type="bool"/><preference id="ThunderStats.involved_num"
-        name="extensions.ThunderStats.involved_num"
-        type="int"/><preference id="ThunderStats.involvedtable_forceidentityname"
-        name="extensions.ThunderStats.involvedtable_forceidentityname"
-        type="bool"/></preferences>
- -->
 		<tabbox id="ts_tabbox">
 			<tabs>
 				<tab label="&ThunderStats.TabSettings.label;"/>
@@ -124,8 +72,9 @@
 						</columns>
 						<rows>
 							<groupbox>
+								<caption label="&ThunderStats.ManyDaysGraph;"/>
 								<hbox class="groupbox-title">
-									<label class="header">&ThunderStats.ManyDaysGraph;</label>
+									<label class="header groupbox-label">&ThunderStats.ManyDaysGraph;</label>
 								</hbox>
 								<hbox align="center">
 									<textbox id="ThunderStats.many_days_textfield" maxlength="2" class="mzts-tbox" preference="ThunderStats.many_days"/>
@@ -140,8 +89,9 @@
 								</hbox>
 							</groupbox>
 							<groupbox>
+								<caption label="&ThunderStats.CustomQryTabGroupbox;"/>
 								<hbox class="groupbox-title">
-									<label class="header">&ThunderStats.CustomQryTabGroupbox;</label>
+									<label class="header groupbox-label">&ThunderStats.CustomQryTabGroupbox;</label>
 								</hbox>
 								<checkbox id="ThunderStats.customquery_default_only_bd" label="&ThunderStats.CustomQueryDefaultOnlyBD;"
             		preference="ThunderStats.customquery_default_only_bd" />
@@ -164,8 +114,9 @@
 					<checkbox id="ThunderStats.bday.use_last_business_day_checkbox" preference="ThunderStats.bday.use_last_business_day" label="&ThunderStats.UseLastBusinessDay;"/>
 					<label control="symbol" value=" "/>
 					<groupbox>
+						<caption label="&ThunderStats.WeekDays.groupbox;"/>
 						<hbox class="groupbox-title">
-							<label class="header">&ThunderStats.WeekDays.groupbox;</label>
+							<label class="header groupbox-label">&ThunderStats.WeekDays.groupbox;</label>
 						</hbox>
 						<label control="symbol" value="&ThunderStats.WeekDays.desc;"/>
 						<hbox>
@@ -183,122 +134,40 @@
 						</hbox>
 					</groupbox>
 					<groupbox>
+					<caption label="&ThunderStats.NoBusinessDaysList.groupbox;"/>
 						<hbox class="groupbox-title">
-							<label class="header">&ThunderStats.NoBusinessDaysList.groupbox;</label>
+							<label class="header groupbox-label">&ThunderStats.NoBusinessDaysList.groupbox;</label>
 						</hbox>
 						<hbox >
-							<hbox id="nbd_table_box" flex="1" style="background-color: ;">
-							<!-- <vbox height="200px"> -->
-
-<!-- list.js based table -->
-<!-- <html:div  class="hbox" > -->
-
-
-<!-- <html:div id="tableID" class="table-list-container"> -->
-<hbox id="nbd_table_container" class="table-list-container" tabindex="0">
-
-	 <!-- <table id="nbd_table" class="table-list" data-currentpage="1" style="height: 100%; " xmlns="http://www.w3.org/TR/html4/"> -->
-	
-	<table id="nbd_table" class="table-list" data-currentpage="1" style="height: 100%; " xmlns="http://www.w3.org/1999/xhtml">
-
-		<thead>
-			<th class="date" >Date</th>
-			<th class="description">Description</th>
-			<th class="yearly">Yearly</th>
-</thead>
-
-		<tbody class="list" xmlns="http://www.w3.org/1999/xhtml">
-		 
-		 <!--
-			<tr tabindex="0" class="list-row">
-						<td class="date">10-16</td>
-						<td class="description">Bohemian Easter</td>
-						<td class="yearly">False</td>
-
-</tr>
-
-<html:tr tabindex="0" class="list-row">
-						<html:td class="date">10-20</td>
-						<html:td class="description">Easter</td>
-						<html:td class="yearly">False</td>
-
-</tr> -->
-</tbody>
-</table>
-</hbox>
-<!-- </html:div> -->
-
-<!-- </html:div> -->
-
-                <!-- richlistbox with header -->
-
-<!-- 								<richlistbox id="ThunderStats.NoBusinessDaysList" flex="1" height="100px" onselect="miczThunderStatsPrefPanel.updateNBDButtons(window);" seltype="single" >
-									<listheader>
-										<html:treecol label="Date" width="85px" flex="0"  />
-										<html:treecol label="Description" flex="1"  />
-										<html:treecol label="Yearly" width="70px" flex="0"  />
-									</listheader>
-									<richlistitem>
-										<label  width="85px" flex="0">10-31</label>
-										<label flex="1">Halloween</label>
-										<label width="70px" flex="0">True</label>
-									</richlistitem>
-									<richlistitem>
-										<label width="85px" flex="0">5-10</label>
-										<label flex="1">Greek Easter lamb roast</label>
-										<label width="70px" flex="0">False</label>
-									</richlistitem>
-									<richlistitem>
-										<label width="85px" flex="0">5-11</label>
-										<label flex="1">Greek Easter lamb roast yummy</label>
-										<label width="70px" flex="0">False</label>
-									</richlistitem>
-								</richlistbox>
-
- -->                <!-- simple tree -->
-				<!-- 
-								<tree id="ThunderStats.NoBusinessDaysList2" flex="1" height="80px" onselect="miczThunderStatsPrefPanel.updateNBDButtons(window);" seltype="single" hidecolumnpicker="true">
-									<treecols>
-										<treecol label="Date" width="85px" flex="0"  />
-										<splitter class="tree-splitter"  />
-										<treecol label="Description" flex="1"  style="color: red;"/>
-										<splitter class="tree-splitter"  />
-										<treecol label="Yearly" width="70px" flex="0"  />
-									</treecols>
-									<treechildren>
-										<treeitem>
-											<treerow>
-												<treecell label="12-25"/>
-												<treecell label="Christmas"/>
-												<treecell label="True"/>
-											</treerow>
-										</treeitem>
-										<treeitem>
-											<treerow>
-												<treecell label="05-20"/>
-												<treecell label="Greek Easter - glamorous day"/>
-												<treecell label="True"/>
-											</treerow>
-										</treeitem>
-									</treechildren>
-								</tree>
--->
-				 			<!-- </vbox> -->
-							 </hbox>
-
-							 <hbox flex="0" style="background-color: ;">
-							<vbox>
-								<button id="newButtonNBD"
+							<hbox id="nbd_table_box" flex="1" >
+								<!-- list.js based table -->
+								<html:div id="nbd_table_container" class="table-list-container" tabindex="0">
+									<table id="nbd_table" class="table-list" data-currentpage="1" style="height: 100%; "
+										xmlns="http://www.w3.org/1999/xhtml">
+										<thead>
+											<th class="date" >Date</th>
+											<th class="description">Description</th>
+											<th class="yearly">Yearly</th>
+										</thead>
+										<tbody class="list"
+											xmlns="http://www.w3.org/1999/xhtml">
+										</tbody>
+									</table>
+								</html:div>
+							</hbox>
+							<hbox flex="0">
+								<vbox>
+									<button id="newButtonNBD"
                   label="&ThunderStats.newButtonNBD.label;"
 				  accesskey="N"
                   oncommand="miczThunderStatsPrefPanel.onNewNBDDate();"/>
-								<button id="editButtonNBD" label="&ThunderStats.editButtonNBD.label;"
+									<button id="editButtonNBD" label="&ThunderStats.editButtonNBD.label;"
                   oncommand="miczThunderStatsPrefPanel.onEditNBDDate();" disabled="true" accesskey="E"/>
-								<button id="deleteButtonNBD"
+									<button id="deleteButtonNBD"
                   label="&ThunderStats.deleteButtonNBD.label;"
                   oncommand="miczThunderStatsPrefPanel.onDeleteNBDDate();" disabled="true" accesskey="D"/>
-							</vbox>
-						</hbox>
+								</vbox>
+							</hbox>
 						</hbox>
 						<checkbox id="ThunderStats.EasterNoBusinessDay" preference="ThunderStats.bday.easter" label="&ThunderStats.EasterNoBusinessDay.label;"/>
 					</groupbox>
@@ -349,6 +218,4 @@
 	<script type="application/x-javascript" src="chrome://thunderstats/content/jslib/moment-with-locales.js" />
 	<script type="application/x-javascript" src="chrome://thunderstats/content/listjs/list.controller.js" />
 	<script type="application/x-javascript" src="chrome://thunderstats/content/listjs/list.js" />
-
-
 </dialog>

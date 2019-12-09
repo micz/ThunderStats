@@ -126,7 +126,7 @@
 
 
   /* This will set the group box headers with the correct background */
-  .header {
+.groupbox-label {
 	  background-color: inherit !important;
-  }
+}
 

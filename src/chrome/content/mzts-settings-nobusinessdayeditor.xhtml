@@ -2,7 +2,6 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="css/mzts-settings-nobusinessdayeditor.css" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/preferences/preferences.css" type="text/css" ?>
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> -->
 
 <!DOCTYPE html SYSTEM "chrome://thunderstats/locale/mzts-settings-nobusinessdayeditor.dtd">
 
@@ -11,9 +10,7 @@
 <head>
     <link rel="stylesheet" href="chrome://thunderstats/content/flatpickr/flatpickr.min.css" />
     <link rel="stylesheet" type="text/css" href="chrome://thunderstats/content/flatpickr/material_blue.css" />
-    <!-- 
-        <link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/messageHeader.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/content/bindings.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-statstab.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-statstab.graphs.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-log.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/tooltip/tooltipster-light.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://thunderstats/content/css/mzts-dropdownmenu.css" /><link rel="stylesheet" media="screen" type="text/css" href="chrome://messenger/skin/tagColors.css" />
- -->
+
     <title>&ThunderStats.NBDEditor.window.title;</title>
 
     <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/flatpickr-4.6.2-min.js" />
@@ -64,9 +61,8 @@
      <!-- <xul:hbox style="height: 100%; align-content: bottom;  background-color: orange;" pack="right">  -->
     <xul:hbox flex="0"  style="align-content: bottom;  background-color: inherit;" pack="right">
 
-        <!-- <xul:button id="localfolder.btValider" label="Ok" oncommand="flatp.tsOk();" /> -->
-        <xul:button id="localfolder.btValider" label="Ok" oncommand="miczThunderStatsPrefPanel_NBDEditor.onAccept();" />
-        <xul:button id="localfolder.btQuitter" label="Cancel" oncommand="window.close();" />
+        <xul:button id="nbd_editor_ok" label="Ok" oncommand="miczThunderStatsPrefPanel_NBDEditor.onAccept();" />
+        <xul:button id="nbd_editor_cancel" label="Cancel" oncommand="window.close();" />
     </xul:hbox>
     </xul:hbox>
     <!-- </div> -->

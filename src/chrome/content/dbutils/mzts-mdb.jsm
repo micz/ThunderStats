@@ -1,5 +1,7 @@
 "use strict";
 
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+
 var { SQLiteTypes, SQLiteHandler, SQLiteFn } = ChromeUtils.import("resource://thunderstats/sqlite.js");
 var { sql_tokenizer, replaceObjectNameInSql, getViewSchemaSelectStmt } = ChromeUtils.import("resource://thunderstats/tokenize.js");
 var { FileIO } = ChromeUtils.import("resource://thunderstats/fileIO.js");
@@ -101,7 +103,7 @@ var miczThunderStatsDB = {
             mWhere += " and ma.attributeID=" + mType_attribute;
             if (typeof mIdentity == "object") {
                 let mIdsStr = mIdentity.ids.join();
-                console.debug('MainIdentities '+mIdsStr);
+                Services.console.logStringMessage('MainIdentities '+mIdsStr);
                 mFrom += " left join messageattributes ma2 on ma2.messageID=m.id";
                 let identitiesStr = "(" + mIdsStr + ")";
                 mWhere += " AND ma2.attributeID=" + involves_attribute + " AND ma2.value in " + identitiesStr;
@@ -114,15 +116,12 @@ var miczThunderStatsDB = {
                 mWhere += "and ((ma.attributeID=" + mType_attribute + " AND ma2.attributeID=" + involves_attribute + " AND ma2.value in " + identitiesStr + ") OR ";
                 mWhere += " (ma.attributeID=" + involves_attribute + " AND ma.value in " + identities_customStr + "))";
 
-                console.debug('Identities1 '+identities_customStr);
+                Services.console.logStringMessage('Identities1 '+identities_customStr);
 
             } else { //all identities
                 let identitiesStr = "(" + this.identities_custom_ids.join() + ")";
                 mWhere += "and ((ma.attributeID=" + mType_attribute + ") OR ";
                 mWhere += "(ma.attributeID=" + involves_attribute + " AND ma.value in " + identitiesStr + "))";
-
-                console.debug('Identities '+identitiesStr);
-
             }
         }
 

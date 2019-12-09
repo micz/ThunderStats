@@ -1,17 +1,13 @@
 "use strict";
 
 var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
-Services.console.logStringMessage("standard score start");
 
 var { miczThunderStatsDB } = ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
-//ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	 // To be enabled in vesion 2.0
 var { miczThunderStatsFolderQ } = ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-folderquery.jsm");
 var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
 var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
 var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
 var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
-
-// Services.console.logStringMessage("standard score after imports 2");
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsCore"];
 
@@ -30,10 +26,9 @@ var miczThunderStatsCore = {
         let cid_prog = 0; //custom identities id prog
 
 
-        Services.console.logStringMessage("loadidentities");
-        Services.console.logStringMessage("loadidentities"+ JSON.stringify(accounts)+'\r\n');
+        Services.console.logStringMessage("loadidentities:\n"+ JSON.stringify(accounts)+'\r\n');
 
-        dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
+        // dump('>>>>>>>>>>>>>> [miczThunderStatsTab] accounts '+JSON.stringify(accounts)+'\r\n');
         for (let i = 0; i < accounts.length; i++) {
             let account = accounts.queryElementAt(i, Ci.nsIMsgAccount);
             if (account == null) continue;
@@ -49,32 +44,31 @@ var miczThunderStatsCore = {
             let identities = account.identities;
             for (let j = 0; j < identities.length; j++) {
                 let identity = identities.queryElementAt(j, Ci.nsIMsgIdentity);
-                console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] Account identity '+JSON.stringify(identity)+'\r\n');
+                Services.console.logStringMessage('>>>>>>>>>>>>>> [miczThunderStatsTab] Account identity '+JSON.stringify(identity)+'\r\n');
                 if (!identity.email) continue;
                 let identity_item = {};
                 identity_item["email"] = identity.email;
                 identity_item["fullName"] = identity.fullName;
                 identity_item["id"] = miczThunderStatsDB.queryGetIdentityID(identity.email);
-                console.debug('ID Q '+identity_item["id"]);
                 identity_item["key"] = identity.key;
                 identity_item["custom"] = false;
                 identity_item["account_key"] = account.key;
                 //identity_item["account_name"]=account.incomingServer.rootFolder.prettyName;
                 this.identities[miczThunderStatsDB.queryGetIdentityID(identity.email)] = identity_item;
                 this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity.email));
-                console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+                Services.console.logStringMessage('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
                 this.identities_email_name[identity.email] = identity.fullName;
             }
             //enumerate custom identities for this account
             let account_custom_identities = miczThunderStatsPrefs.accountCustomIdentities(account.key);
             // cleidigh
-            console.debug('Account default custom identities '+account_custom_identities);
+            Services.console.logStringMessage('Account default custom identities '+account_custom_identities);
             if (account_custom_identities != '') {
                 let account_custom_identities_arr = account_custom_identities.split(',');
                 for (let j = 0; j < account_custom_identities_arr.length; j++) {
                     let identity = account_custom_identities_arr[j].toLowerCase();
                     // let identity = account_custom_identities_arr[j];
-                    console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
+                    Services.console.logStringMessage('>>>>>>>>>>>>>> [miczThunderStatsTab] identity '+JSON.stringify(identity)+'\r\n');
                     let identity_item = {};
                     identity_item["email"] = identity;
                     identity_item["fullName"] = "CustomID" + cid_prog;
@@ -83,7 +77,7 @@ var miczThunderStatsCore = {
                     identity_item["custom"] = true;
                     identity_item["account_key"] = account.key;
 
-                    console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_itemFor '+JSON.stringify(identity_item)+'\r\n');
+                    Services.console.logStringMessage('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_itemFor '+JSON.stringify(identity_item)+'\r\n');
                     if (identity_item["id"]) {
                         cid_prog++;
                         this.identities[miczThunderStatsDB.queryGetIdentityID(identity)] = identity_item;
@@ -91,14 +85,14 @@ var miczThunderStatsCore = {
                         miczThunderStatsDB.identities_custom_ids_mail.push(identity);
                         this.accounts[account.key].identities.push(miczThunderStatsDB.queryGetIdentityID(identity));
                         //dump('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
-                        console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
+                        Services.console.logStringMessage('>>>>>>>>>>>>>> [miczThunderStatsTab] identity_item '+JSON.stringify(identity_item)+'\r\n');
                     }
                 }
             }
         }
         //If there are custom identities for the custom account, add it and its identities
         let account_custom_identities = miczThunderStatsPrefs.accountCustomIdentities(this.custom_account_key);
-        console.debug('>>>>>>>>>>>>>> [miczThunderStatsTab] account_custom_identities '+JSON.stringify(account_custom_identities)+'\r\n');
+        Services.console.logStringMessage('>>>>>>>>>>>>>> [miczThunderStatsTab] account_custom_identities '+JSON.stringify(account_custom_identities)+'\r\n');
         if (account_custom_identities != '') {
             let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statscore");
             this.accounts[this.custom_account_key] = {};
@@ -255,14 +249,14 @@ miczThunderStatsCore.db = {
     },
 
     getManyDaysInvolved_OnlyBD: function(mType, mFromDay, mToDay, mIdentity, mCallback) { //mFromDay and mToDay are a Date objects
-        console.debug('get Days: only business');
+        Services.console.logStringMessage('get Days: only business');
         let mOnlyBD = true;
         let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay, mToDay, mOnlyBD);
         miczThunderStatsUtils._customqry_num_days = mDays.length; //update the total number of days, we may have used only the business days
         for (let mKey in mDays) {
             this.getOneDayInvolved(mType, mDays[mKey], mIdentity, 0, mCallback);
         }
-        console.debug('only business finish bd: '+miczThunderStatsUtils._customqry_num_days);
+        Services.console.logStringMessage('only business finish bd: '+miczThunderStatsUtils._customqry_num_days);
         return true;
     },
 

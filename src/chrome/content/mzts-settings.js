@@ -11,8 +11,6 @@ var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/conten
 var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 var { OS } = ChromeUtils.import("resource://gre/modules/osfile.jsm");
 
-// Services.console.logStringMessage("setting after imports");
-
 var miczThunderStatsPrefPanel = {
 
     nbd_objs: {},
@@ -63,6 +61,23 @@ var miczThunderStatsPrefPanel = {
             p.setElementValue(element);
         }
 
+
+        const versionChecker = Services.vc;
+        const currentVersion = Services.appinfo.platformVersion;
+    
+        // cleidigh - TB68 groupbox needs hbox/label
+        if (versionChecker.compare(currentVersion, "61") >= 0) {
+            var captions = document.querySelectorAll("caption");
+            for (let i = 0; i < captions.length; i++) {
+                captions[i].style.display = "none";
+            }
+        } else {
+            var groupboxtitles = document.querySelectorAll(".groupbox-title");
+            for (let i = 0; i < groupboxtitles.length; i++) {
+                groupboxtitles[i].style.display = "none";
+            }
+        }
+    
         //Setting the correct locale to display dates and times
         moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 
@@ -77,7 +92,7 @@ var miczThunderStatsPrefPanel = {
         let strt_acc = document.getElementById('ts_strt_accnt');
         let strt_acc_sel_idx = 0;
         let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
-        console.debug(miczThunderStatsCore.accounts);
+        // Services.console.logStringMessage(miczThunderStatsCore.accounts);
         let s = _bundleCW.GetStringFromName("ThunderStats.AllAccounts");
 
         strt_acc.appendItem(_bundleCW.GetStringFromName("ThunderStats.AllAccounts"), 0);
@@ -95,30 +110,14 @@ var miczThunderStatsPrefPanel = {
         acc_list.selectedIndex = strt_acc_sel_idx;
         this.onCIAccountChange();
 
-        // Services.console.logStringMessage('start index ' + strt_acc.selectedIndex);
         this.loadInfoFile('release_notes');
 
-        
-        // const nbd_table = document.getElementById('tableID');
-        // let total_table_width = window.getComputedStyle(nbd_table, null).getPropertyValue('width');
-        // console.debug('TableWith '+total_table_width); 
-        // Services.console.logStringMessage("get table with "+total_table_width);
-        const nbd_description_header = document.getElementById('description_header');
-        // const hw = Number(total_table_width) - 160;
-        // nbd_description_header.className += 'wider';
-        // nbd_description_header.style.width = 300;
         var table_box = document.getElementById('nbd_table_box');
         var table_container = document.getElementById('nbd_table_container');
         const hwidth = window.getComputedStyle(table_box, null).getPropertyValue('width');
-
-        // Services.console.logStringMessage("get header with before " + hwidth);
-
-        // Services.console.logStringMessage("get table width after " + table_container.width);
         var nbd_table = document.getElementById('nbd_table');
-        // nbd_table.width = table_container.width;
         nbd_table.width = hwidth;
         table_container.width = hwidth;
-        // Services.console.logStringMessage("get table width after " + nbd_table.width);
 
         /* List.js is required to make this table work. */
 
@@ -128,27 +127,15 @@ var miczThunderStatsPrefPanel = {
         };
 
         var options = {
-            //   valueNames: [ { data: ['date'] }, { data: ['description'] }, { data: ['yearly']} ],
             valueNames: ['date', 'description', 'yearly', { data: ['id']}],
             item: '<tr class="list-row"><td class="date"></td><td class="description"></td><td class="yearly"></td></tr>'
         };
 
         miczThunderStatsPrefPanel.nbd_tableList = new List('nbd_table_container', options);
         miczThunderStatsPrefPanel.nbd_tableList.controller = new ListController(miczThunderStatsPrefPanel.nbd_tableList, {onSelectedCB: this.onSelectListRow});
-        // Services.console.logStringMessage("after table constructor");
 
-        // miczThunderStatsPrefPanel.nbd_tableList.add({
-        //     date: "11-6",
-        //     description: "my birthday yeah",
-        //     yearly: "True",
-        // });
-
-        // Services.console.logStringMessage("get table info");
         this.loadNBDList('ThunderStats.NoBusinessDaysList');
 
-        // nbd_table.addEventListener("click", this.onNBDItemClick, true);
-
-        // Services.console.logStringMessage("after table add");
         //Fixing window height
         sizeToContent();
         var vbox = document.getElementById('ts_tabbox');
@@ -188,7 +175,6 @@ var miczThunderStatsPrefPanel = {
     },
 
     loadInfoFile: function (filetype) {
-        console.debug('load file');
         let url = '';
         switch (filetype) {
             case 'release_notes':
@@ -202,23 +188,18 @@ var miczThunderStatsPrefPanel = {
         request.responseType = "text";
         // request.addEventListener("load", function() {
         request.onload = function () {
-            console.debug('Onload');
-            console.debug(this.responseText);
             let relnotes = document.getElementById('mzts-release-notes');
             relnotes.value = this.responseText;
         };
         request.open("GET", url);
         request.send(null);
-        console.debug('after said');
     },
 
     // ======= BUSINESS DAYS FUNCTIONS =======
          updateNBDButtons: function (win) {
-        Services.console.logStringMessage("update buttons event");
+        // Services.console.logStringMessage("update buttons event");
         let doc = win.document;
-        Services.console.logStringMessage("after table event"+doc.getElementById('nbd_table').outerHTML);
-        // let currlist = doc.getElementById('ThunderStats.NoBusinessDaysList');
-        // let numSelected = currlist.selectedItems.length;
+
         let numSelected = 1;
         let oneSelected = (numSelected == 1);
         if (oneSelected) {
@@ -233,7 +214,6 @@ var miczThunderStatsPrefPanel = {
 
     onNewNBDDate: function () {
         let doc = document;
-        // let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
         let container = miczThunderStatsPrefPanel.nbd_tableList;
         let args = { "action": "new" };
 
@@ -241,55 +221,40 @@ var miczThunderStatsPrefPanel = {
             'chrome,modal,titlebar,centerscreen,resizable,dependent,instantApply' :
             'chrome,modal,titlebar,centerscreen,resizable,alwaysRaised,instantApply';
 
-        window.openDialog("chrome://thunderstats/content/fp3.xhtml", "NBDEditor", features, args);
-        // window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", features, args);
+        window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xhtml", "NBDEditor", features, args);
 
-        // window.open("chrome://thunderstats/content/fp3.xhtml", "NBDEditor", features, args);
-        Services.console.logStringMessage("arguments "+ JSON.stringify(args));
+        // Services.console.logStringMessage("arguments "+ JSON.stringify(args));
 
         if (("save" in args && args.save) && ("newnbd" in args && args.newnbd)) {
-            Services.console.logStringMessage("new nonbusiness ");
-
             miczThunderStatsPrefPanel.createOneNBDRow(doc, container, args.newnbd, true);
             Services.console.logStringMessage("new d "+ doc.getElementById('nbd_table').outerHTML);
 
             miczThunderStatsPrefPanel.saveNBDList();
             // Select the new nbd, it is at the end of the list.
-            // container.selectedIndex = container.itemCount - 1;
-            // container.ensureIndexIsVisible(container.selectedIndex);
             miczThunderStatsPrefPanel.nbd_tableList.controller.selectRowByDataId('1');
         }
 
     },
 
     onEditNBDDate: function () {
-        Services.console.logStringMessage("OnEdit");
         let container = document.getElementById('ThunderStats.NoBusinessDaysList');
 
-        // if (container.selectedIndex == -1) return;
         if (document.getElementById("editButtonNBD").disabled) return;
 
         let nbd_idx = miczThunderStatsPrefPanel.nbd_tableList.list.getAttribute('selected-index');
         if (nbd_idx === '') {
             return;
         }
-        Services.console.logStringMessage("load nonbusiness "+JSON.stringify(this.nbd_objs[nbd_idx]));
-        Services.console.logStringMessage("OpenDialogue");
+
         let args = { "action": "edit", "newnbd": JSON.stringify(this.nbd_objs[nbd_idx]) };
 
-        // window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xul", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
-        window.openDialog("chrome://thunderstats/content/fp3.xhtml", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
+        window.openDialog("chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.xhtml", "NBDEditor", "chrome,modal,titlebar,resizable,centerscreen", args);
         
-        Services.console.logStringMessage("After Dialogue");
-        Services.console.logStringMessage(JSON.stringify(args));
-
         if (("save" in args && args.save) && ("newnbd" in args && args.newnbd)) {
             //update the cust col in the listbox
-            Services.console.logStringMessage("save after edit");
             miczThunderStatsPrefPanel.editOneNBDRow(document, container, args.newnbd, 0);
             miczThunderStatsPrefPanel.saveNBDList();
             // Select the edited nbd
-            // container.ensureIndexIsVisible(container.selectedIndex);
             miczThunderStatsPrefPanel.nbd_tableList.controller.selectRowByDataId(nbd_idx);
         }
 
@@ -297,13 +262,7 @@ var miczThunderStatsPrefPanel = {
 
     onDeleteNBDDate: function () {
         let doc = document;
-        
-        // let container = doc.getElementById('ThunderStats.NoBusinessDaysList');
 
-        // if (container.selectedIndex == -1) return;
-        // if (doc.getElementById("deleteButtonNBD").disabled) return;
-
-        // let nbd_idx = doc.getElementById('nbd_table').getAttribute('selected-index');
         let nbd_idx = miczThunderStatsPrefPanel.nbd_tableList.list.getAttribute('selected-index');
         //Are you sure?
         let prompts = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
@@ -311,31 +270,21 @@ var miczThunderStatsPrefPanel = {
 
         if (!prompts.confirm(null, _bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.title"), _bundleCW.GetStringFromName("ThunderStats.deletePromptNBD.text")+ " : "+nbd_idx)) return;
 
-        //get the col id
-        // let nbd_idx = container.selectedItem._nbd.tmp_id;
         //dump(">>>>>>>>>>>>> miczColumnsWizard: [onDeleteCustomCol] col_idx ["+col_idx+"]\r\n");
         
         if (nbd_idx === '') {
             return;
         }
-        console.debug('Delete ' + nbd_idx);
+        Services.console.logStringMessage('Delete ' + nbd_idx);
         miczThunderStatsPrefPanel.nbd_tableList.remove('id', nbd_idx);
 
-        // doc.getElementById('nbd_table').setAttribute('selected-index', '');
-        // let nbd_idx = container.selectedItem._nbd.tmp_id;
-        Services.console.logStringMessage("get active");
         let entry = document.activeElement;
-        Services.console.logStringMessage("act development "+entry.outerHTML);
         //remove the nbd from the listbox and save the list to the prefs
-        // miczThunderStatsPrefPanel.deleteOneNBDRow(container, container.selectedIndex);
-        Services.console.logStringMessage(JSON.stringify(this.nbd_objs));
-        Services.console.logStringMessage("Remove "+JSON.stringify(this.nbd_objs[nbd_idx]));
         delete this.nbd_objs[nbd_idx];
         this.nbd_objs_length--;
-        Services.console.logStringMessage("after "+JSON.stringify(this.nbd_objs));
+
         //reorder array
         this.reindexNBDArray();
-        Services.console.logStringMessage("after reindex "+JSON.stringify(this.nbd_objs));
         miczThunderStatsPrefPanel.saveNBDList();
 
         // clear list/rebuild
@@ -361,11 +310,8 @@ var miczThunderStatsPrefPanel = {
             id: cur_nbdobj.tmp_id,
         });
 
-        Services.console.logStringMessage("new nonbusiness create row: " + cur_nbdobj.tmp_id);
-
         cur_nbdobj.nbd_date_string = miczThunderStatsNBD.formatNBDDateString(cur_nbdobj, moment);
         if (force_save_obj) {
-            Services.console.logStringMessage("saving row: ");
 
             this.nbd_objs_length++;
             let nbd_tmp_id = this.nbd_objs_length;
@@ -375,38 +321,6 @@ var miczThunderStatsPrefPanel = {
             //dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol.desc {"+JSON.stringify(currcol.desc)+"}\r\n");
         }
 
-        Services.console.logStringMessage("new nonbusiness finish "+ this.nbd_objs_length);
-/* 
-
-        let listitem = doc.createElement("listitem");
-
-        let nbd_date_string = miczThunderStatsNBD.formatNBDDateString(currcol, moment);
-        currcol.date_string = nbd_date_string;
-        let dateCell = doc.createElement("listcell");
-        dateCell.setAttribute("label", nbd_date_string);
-        listitem.appendChild(dateCell);
-
-        let descCell = doc.createElement("listcell");
-        descCell.setAttribute("label", currcol.desc);
-        listitem.appendChild(descCell);
-        if (force_save_obj) {
-            this.nbd_objs_length++;
-            let nbd_tmp_id = this.nbd_objs_length;
-            cur_nbdobj.tmp_id = nbd_tmp_id;
-            this.nbd_objs[nbd_tmp_id] = cur_nbdobj;
-            //dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] nbd_tmp_id {"+JSON.stringify(nbd_tmp_id)+"}\r\n");
-            //dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] currcol.desc {"+JSON.stringify(currcol.desc)+"}\r\n");
-        }
-
-        listitem._nbd = currcol;
-
-        container.appendChild(listitem);
-        // We have to attach this listener to the listitem, even though we only care
-        // about clicks on the enabledCell. However, attaching to that item doesn't
-        // result in any events actually getting received.
-        listitem.addEventListener("click", this.onNBDItemClick, true);
-        return listitem;
-     */
     
     },
 
@@ -431,21 +345,12 @@ var miczThunderStatsPrefPanel = {
             return;
         }
 
-        // let listitem = container.getItemAtIndex(idx_col);
-        // if (!listitem) return;
-
-        Services.console.logStringMessage(">>>>>>>>>>>>> miczThunderStats: [editOneNBDRow] listitem "+JSON.stringify(cur_nbdobj)+"\r\n");
+        // Services.console.logStringMessage(">>>>>>>>>>>>> miczThunderStats: [editOneNBDRow] listitem "+JSON.stringify(cur_nbdobj)+"\r\n");
 
         let nbd_date_string = miczThunderStatsNBD.formatNBDDateString(cur_nbdobj, moment);
         cur_nbdobj.date_string = nbd_date_string;
 
-        Services.console.logStringMessage(doc.getElementById('nbd_table').outerHTML);
-        // let item = miczThunderStatsPrefPanel.nbd_tableList.controller.getSelectedRowElement();
-        
         let item = miczThunderStatsPrefPanel.nbd_tableList.get("id", nbd_idx)[0];
-
-        Services.console.logStringMessage(JSON.stringify(item));
-        // Services.console.logStringMessage(JSON.stringify(item[0]));
 
         item.values({
             date: cur_nbdobj.date,
@@ -454,24 +359,12 @@ var miczThunderStatsPrefPanel = {
             id: cur_nbdobj.nbd_idx,
         });
 
-        Services.console.logStringMessage(miczThunderStatsPrefPanel.nbd_tableList.get("id", nbd_idx));
-
-        // let dateCell = listitem.childNodes[0];
-        // dateCell.setAttribute("label", nbd_date_string);
-
-        // let descCell = listitem.childNodes[1];
-        // descCell.setAttribute("label", currcol.desc);
-
-        // listitem._nbd = currcol;
         this.nbd_objs[cur_nbdobj.tmp_id] = cur_nbdobj;
-        Services.console.logStringMessage("EditRow Finish");
         return;
-        // return listitem;
     },
 
     deleteOneNBDRow: function (container, col_idx) {
         this.nbd_objs_length--;
-        // container.removeItemAt(col_idx);
     },
 
     onNBDItemClick: function (event, data_id) {
@@ -483,11 +376,7 @@ var miczThunderStatsPrefPanel = {
         if (!iel) return
         var id = iel.getAttribute('data-id');
 
-        Services.console.logStringMessage("table click 1");
-        Services.console.logStringMessage("table click "+id);
-
         let nbd_idx = miczThunderStatsPrefPanel.nbd_tableList.list.getAttribute('selected-index');
-        Services.console.logStringMessage("table click "+iel.outerHTML);
         miczThunderStatsPrefPanel.updateNBDButtons(window);
         return;
     },
@@ -513,7 +402,7 @@ var miczThunderStatsPrefPanel = {
         Services.console.logStringMessage("Load NBDs: "+ this.nbd_objs.length + " "+ JSON.stringify(this.nbd_objs));
         //reorder array
         this.reindexNBDArray();
-        dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] this.nbd_objs {"+JSON.stringify(this.nbd_objs)+"}\r\n");
+        // dump(">>>>>>>>>>>>> miczThunderStats: [createOneCustomColRow] this.nbd_objs {"+JSON.stringify(this.nbd_objs)+"}\r\n");
         this.createNBDRows(document, container);
     },
 
@@ -543,13 +432,11 @@ var miczThunderStatsPrefPanel = {
 
 
 document.addEventListener('dialogcancel', function (e) {
-    Services.console.logStringMessage("Preferences 1: dialogcancel event handler");
     return true;
 });
 
 
 document.addEventListener('dialogaccept', function (e) {
-    Services.console.logStringMessage("Preferences 1: dialogaccept event handler");
     // Call our handler function - could be done here
     // onDialogAccept(e);
     return false;

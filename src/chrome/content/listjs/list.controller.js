@@ -19,8 +19,9 @@ class ListController {
 		this.onSelectedCB = options.onSelectedCB;
 
 		
-		Services.console.logStringMessage('listContainer '+this.list_container.id);
-		Services.console.logStringMessage('list Call '+this.onSelectedCB);
+		// Services.console.logStringMessage('listContainer '+this.list_container.id);
+		// Services.console.logStringMessage('list Call '+this.onSelectedCB);
+
 		this.list_container.addEventListener('click', (event) => { this.onClick(event); });
 		this.list_container.addEventListener('keydown', (event) => { this.onKey(event); });
 		this.list_container.addEventListener('blur', (event) => { this.onBlur(event); });

@@ -52,9 +52,7 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 					case "new":  //Save new NBD
 						//get userinput val
 						newnbd.desc=document.getElementById("ThunderStats.desc").value;
-						Services.console.logStringMessage("on new "+ newnbd.desc);
 						newnbd.date=document.getElementById("non_biz_date_picker").value;
-						Services.console.logStringMessage("date "+ newnbd.date);
 						newnbd.every_year=document.getElementById("ThunderStats.every_year").checked;
 						//dump(">>>>>>>>>>>>> miczThunderStats->onAccept: [newnbd] "+JSON.stringify(newnbd)+"\r\n");
 						window.arguments[0].save=true;
@@ -102,39 +100,27 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 		const currentLocale = miczThunderStatsUtils.getCurrentSystemLocale();
         const currentLocaleBase = currentLocale.split('-')[0];
 
-		Services.console.logStringMessage("after system locale");
-        console.debug('current system locale is ' + currentLocale);
-        console.debug('flatp locales ' + Object.keys(flatpickr.l10ns));
-
         const flatpLocales = Object.keys(flatpickr.l10ns);
 
-        // console.debug('locale type of = ' + typeof flatpickr.l10ns[currentLocale]);
         if (currentLocaleBase !== 'en') {
 
             if (flatpLocales.includes(currentLocale)) {
                 flatpickr.localize(flatpickr.l10ns[currentLocale]);
-                console.debug('flat locale is '+ currentLocale);
             } else if (currentLocale.includes('-') && flatpLocales.includes(currentLocaleBase)) {
-                // console.debug('flat locale is '+ currentLocale + "  shortLocale : " + currentLocale.split('-')[0]);
                 flatpickr.localize(flatpickr.l10ns[currentLocaleBase]);
             } else {
-                console.debug('default English');
                 flatpickr.localize(flatpickr.l10ns.default);
             }
         }
 
-		console.debug('initialize piAnd and tocker');
 		let e = document.getElementById('non_biz_date_picker');
-		console.debug('picker '+e.getAttribute('placeholder'));
         let fp = flatpickr("#non_biz_date_picker", {
 			static: true,
-            maxDate: "today",
-            defaultDate: [ "2019-08-30"],
     
 		});
 
-		Services.console.logStringMessage("after picker");
-		console.debug('initialize finish');
+		// defaultDate: [ "2019-08-30"],
+
 	},
 	// defaultDate: [ f.format("YYYY-MM-DD"), t.format("YYYY-MM-DD") ],
 

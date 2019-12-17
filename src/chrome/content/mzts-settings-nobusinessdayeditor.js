@@ -9,7 +9,6 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 
 	onLoad: function(){
 		Services.console.logStringMessage("onLoad start");
-		miczThunderStatsPrefPanel_NBDEditor.initDatePicker();
 		//Fixing window height
 		// this.fixWinHeight();
 
@@ -19,28 +18,36 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 			Services.console.logStringMessage(args);
 
 			if ("action" in args){
+				let description = document.getElementById("ThunderStats.desc");
+
 				switch (args.action){
-					//case "new":
-					//break;
+					case "new":
+						// description.setAttribute("value",nbd.desc);
+						miczThunderStatsPrefPanel_NBDEditor.initDatePicker(null);
+						document.getElementById("ThunderStats.desc").focus();
+					break;
 					case "edit":
 						let nbd=JSON.parse(args.newnbd);
 						//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] nbd: "+JSON.stringify(nbd)+"\r\n");
 						//fill the fields
-						document.getElementById("ThunderStats.desc").setAttribute("value",nbd.desc);
-						document.getElementById("ThunderStats.date").dateValue=new Date(nbd.date);
+						description.setAttribute("value",nbd.desc);
+						miczThunderStatsPrefPanel_NBDEditor.initDatePicker(nbd.date);
+						// document.getElementById("ThunderStats.date").setAttribute(value, new Date(nbd.date));
 						document.getElementById("ThunderStats.every_year").setAttribute("checked",nbd.every_year);
 						document.getElementById("ThunderStats.desc").focus();
 					break;
 				}
+				// description.focus();
 			}
 		}
 	},
 
 	onAccept:function(){
-		Services.console.logStringMessage("on except");
-		// if(!miczThunderStatsPrefPanel_NBDEditor.checkFields()){
-			// return false;
-		// }Was
+		Services.console.logStringMessage("on accept");
+		if(!miczThunderStatsPrefPanel_NBDEditor.checkFields()){
+			return false;
+		}
+
 		Services.console.logStringMessage("on except: "+ JSON.stringify(window.arguments[0]));
 		if ("arguments" in window && window.arguments[0]){
 			let args = window.arguments[0];
@@ -77,14 +84,25 @@ var miczThunderStatsPrefPanel_NBDEditor = {
 		return true;
 	},
 
+	onCancel:function(){
+		Services.console.logStringMessage("on nbd cancel");
+		window.arguments[0].cancel = true;
+		window.close();
+	},
+
 	checkFields:function(){
 		//The fields must be filled!!
+		let desc = document.getElementById("ThunderStats.desc").value;
+		let date = document.getElementById("non_biz_date_picker").value;
 
+		if (!desc || !date) {
+			return false;
+		}
 		return true;
 	},
 
-	initDatePicker: function() {
-		Services.console.logStringMessage("init for business days 3");
+	initDatePicker: function(date) {
+		Services.console.logStringMessage("init for business days : "+date);
 		// moment.locale(miczThunderStatsUtils.getCurrentSystemLocale());
 		//adding datepicker with week start init
 		// dump(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");
@@ -113,16 +131,22 @@ var miczThunderStatsPrefPanel_NBDEditor = {
             }
         }
 
+		let defaultDate;
+
+		if (date) {
+			defaultDate = date;
+		} else {
+			defaultDate = new Date().toISOString().split('T')[0];
+		}
+
+		// Services.console.logStringMessage("date for business days : "+ defaultDate);
 		let e = document.getElementById('non_biz_date_picker');
         let fp = flatpickr("#non_biz_date_picker", {
 			static: true,
-    
+			defaultDate: [ defaultDate ],
 		});
 
-		// defaultDate: [ "2019-08-30"],
-
 	},
-	// defaultDate: [ f.format("YYYY-MM-DD"), t.format("YYYY-MM-DD") ],
 
 
 	fixWinHeight:function(){

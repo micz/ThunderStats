@@ -29,16 +29,35 @@ class ListController {
 	}
 
 	selectRowByDataId(data_id) {
+		if (data_id === -1) {
+			this.list_container.classList.remove('no-outline');
+			this.listElement.setAttribute('selected-index', "-1");
+
+			let selectedRow = event.target.querySelector('tr.selected-row');
+			if (selectedRow) {
+				selectedRow.classList.remove('selected-row');
+			}
+			return;
+		}
+		
 		var selector = 'tr.selected-row';
 		var selectedRow = this.list_container.querySelector(selector);
 		if (selectedRow) {
+			console.debug('selected well '+selectedRow.outerHTML);
 			selectedRow.classList.remove('selected-row');
 		}
+
+
 		selector = `tr.list-row[data-id="${data_id}"]`;
 		var selectedRow = this.list_container.querySelector(selector);
 		if (selectedRow) {
 			selectedRow.classList.add('selected-row');
 			this.list_container.setAttribute('selected-index', data_id);
+			this.list_container.focus();
+			console.debug('set focus');
+		} else {
+			console.debug('no selective');
+			this.this_container.focus();
 		}
 	}
 
@@ -62,7 +81,7 @@ class ListController {
 
 	// Event handlers
  	onClick(event) {
-		Services.console.logStringMessage('Click');
+		// Services.console.logStringMessage('Click');
 		var selector = 'tr'
 		var closestRow = event.target.closest(selector)
 		if (!closestRow) return
@@ -76,29 +95,25 @@ class ListController {
 		}
 		closestRow.classList.add('selected-row');
 
-		Services.console.logStringMessage('Click call' + closestRow.outerHTML);
 		if (this.onSelectedCB) {
 			this.onSelectedCB(event, data_id);
 		}
-		Services.console.logStringMessage('after call');
-
 	}
 
 	onKey(event) {
-		Services.console.logStringMessage('Key: '+event.which);
-		Services.console.logStringMessage('ID ' + event.target.getAttribute('selected-index'));
-		Services.console.logStringMessage(this.listElement.outerHTML);
+		// Services.console.logStringMessage('Key: '+event.which);
+		// Services.console.logStringMessage('ID ' + event.target.getAttribute('selected-index'));
+		// Services.console.logStringMessage(this.listElement.outerHTML);
 
 		if (event.target === this.list_container && event.which === this.Keys.DOWN && this.listElement.getAttribute('selected-index') === '-1') {
 
-			Services.console.logStringMessage('on container Down');
+			// Services.console.logStringMessage('on container Down');
 
 			let next = event.target.querySelector('.list-row');
 			next.classList.add('selected-row');
 			this.listElement.setAttribute('selected-index', "1");
 			this.list_container.classList.add('no-outline');
-			Services.console.logStringMessage('after no outline');
-			Services.console.logStringMessage(this.list_container.outerHTML);
+			// Services.console.logStringMessage(this.list_container.outerHTML);
 			if (this.onSelectedCB) {
 				this.onSelectedCB(event, "1");
 			}
@@ -161,15 +176,15 @@ class ListController {
 	}
 
 	onBlur(event) {
-		let targetElement = event.explicitOriginalTarget;
-		Services.console.logStringMessage(event.explicitOriginalTarget.id);
+		let relatedTarget = event.relatedTarget;
+		Services.console.logStringMessage(relatedTarget.id);
 
-		if (targetElement.id === "newButtonNBD" || targetElement.id === "editButtonNBD" || targetElement.id === "deleteButtonNBD") {
+		if (relatedTarget.id === "newButtonNBD" || relatedTarget.id === "editButtonNBD" || relatedTarget.id === "deleteButtonNBD") {
 			return;
 		}
 
 		this.list_container.classList.remove('no-outline');
-		this.listElementIs.setAttribute('selected-index', "-1");
+		this.listElement.setAttribute('selected-index', "-1");
 
 		let selectedRow = event.target.querySelector('tr.selected-row');
 		if (selectedRow) {

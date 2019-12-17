@@ -8,12 +8,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <head>
-    <link rel="stylesheet" href="chrome://thunderstats/content/flatpickr/flatpickr.min.css" />
+    <link rel="stylesheet" href="chrome://thunderstats/content/flatpickr/flatpickr-4.6.3-min.css" />
     <link rel="stylesheet" type="text/css" href="chrome://thunderstats/content/flatpickr/material_blue.css" />
 
     <title>&ThunderStats.NBDEditor.window.title;</title>
 
-    <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/flatpickr-4.6.2-min.js" />
+    <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/flatpickr-4.6.3-min.js" />
     <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/es.js" />
 		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/it.js" />
 		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/fr.js" />
@@ -62,7 +62,7 @@
     <xul:hbox flex="0"  style="align-content: bottom;  background-color: inherit;" pack="right">
 
         <xul:button id="nbd_editor_ok" label="Ok" oncommand="miczThunderStatsPrefPanel_NBDEditor.onAccept();" />
-        <xul:button id="nbd_editor_cancel" label="Cancel" oncommand="window.close();" />
+        <xul:button id="nbd_editor_cancel" label="Cancel" oncommand="miczThunderStatsPrefPanel_NBDEditor.onCancel();" />
     </xul:hbox>
     </xul:hbox>
     <!-- </div> -->

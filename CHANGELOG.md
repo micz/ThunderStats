@@ -1,5 +1,18 @@
 # ![TS] ThunderStats Release Notes
 
+### Version 1.4.5 - 09/12/2019
+- Update for 68+ changes
+- Use flatpickr to replace date picker
+  https://github.com/flatpickr/flatpickr
+- Use listJs to replace Richlistbox
+  Jonny Strömberg
+  https://listjs.com/
+- Create list controller for keyboard/mouse
+- Make custom identities case insensitive
+  (no solution yet for main identities)
+- Update deprecated elements
+- Add access keys for business days editor
+
 
 ### Version 1.4.4 - 22/02/2019 
 - German (de) locale updated.

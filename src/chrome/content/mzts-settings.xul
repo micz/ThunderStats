@@ -8,9 +8,9 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:html="http://www.w3.org/1999/xhtml"
   type="child"
-  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b14" >
+  title="&ThunderStats.SettingsTitle; Beta 1.4.5-b15" >
 	<prefpane id="ThunderStats_PrefPane">
-		<tabbox id="ts_tabbox">
+		<tabbox id="ts_tabbox" >
 			<tabs>
 				<tab label="&ThunderStats.TabSettings.label;"/>
 				<tab label="&ThunderStats.TabAdvanced.label;"/>
@@ -155,7 +155,7 @@
 									</table>
 								</html:div>
 							</hbox>
-							<hbox flex="0">
+							<hbox flex="0" style="padding-left: 14px">
 								<vbox>
 									<button id="newButtonNBD"
                   label="&ThunderStats.newButtonNBD.label;"

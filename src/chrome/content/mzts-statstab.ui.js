@@ -17,8 +17,6 @@ if (versionChecker.compare(currentVersion, "61") >= 0) {
     var { MailUtils } = ChromeUtils.import("resource:///modules/MailUtils.js");
 }
 
-// Services.console.logStringMessage("stats UI after imports: ");
-
 miczThunderStatsTab.ui = {
 
     last_pos0: 0,
@@ -56,8 +54,6 @@ miczThunderStatsTab.ui = {
         option.text = _bundleCW.GetStringFromName("ThunderStats.AllAccounts");
         account_selector.appendChild(option);
         
-        Services.console.logStringMessage("load identities after options");
-        // return;
 
 		for(let key in miczThunderStatsCore.accounts){
 			let debug_txt='';
@@ -234,9 +230,7 @@ miczThunderStatsTab.ui = {
         miczThunderStatsDB.init();
         switch (miczThunderStatsTab.currentTab) {
             case '#tab_today':
-                Services.console.logStringMessage("stats UI update today: ");
                 miczThunderStatsTab.getTodayStats(miczThunderStatsTab.getCurrentIdentityId());
-                Services.console.logStringMessage("stats UI update today: after");
                 break;
             case '#tab_yesterday':
                 miczThunderStatsTab.getYesterdayStats(miczThunderStatsTab.getCurrentIdentityId());
@@ -262,8 +256,6 @@ miczThunderStatsTab.ui = {
 
         miczThunderStatsUtils._customqry_mToDay = t.toDate();
 		miczThunderStatsUtils._customqry_mFromDay = f.toDate();
-
-        Services.console.logStringMessage("INIT date pickers "+ t + "   " + f);
 
         const currentLocale = miczThunderStatsUtils.getCurrentSystemLocale();
         const currentLocaleBase = currentLocale.split('-')[0];
@@ -294,35 +286,9 @@ miczThunderStatsTab.ui = {
             defaultDate: [ f.format("YYYY-MM-DD"), t.format("YYYY-MM-DD") ],
         });
 
-        // Services.console.logStringMessage("stats UI initialize date: "+fp.selectedDates[0] + "\n"+fp.selectedDates[1]);
-        Services.console.logStringMessage("stats UI initialize date picker 1: " );
 
-        //adding datepicker with week start init
-        //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] weekstart: "+JSON.stringify(moment().startOf("week").format('d'))+"\r\n");
         let locale_firstweekday = moment().startOf("week").format('d');
 
-        // flatpickr.l10ns.default.firstDayOfWeek = 1; // Monday
-
-        // let aDatepickerFrom = document.createElement("datetimepicker-data");
-        // aDatepickerFrom.setAttribute("id", "datepicker_from");
-        // aDatepickerFrom.setAttribute("type", "popup");
-        // aDatepickerFrom.setAttribute("class", "customqry_datepicker");
-        // aDatepickerFrom.setAttribute("firstdayofweek", locale_firstweekday);
-
-        // aDatepickerFrom.onchange = miczThunderStatsTab.ui.checkDatePickers_From;
-
-        // document.getElementById('datepicker_from_placeholder').appendChild(aDatepickerFrom);
-        // let aDatepickerTo = document.createElementNS("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul", "datepicker");
-        // aDatepickerTo.setAttribute("id", "datepicker_to");
-        // aDatepickerTo.setAttribute("type", "popup");
-        // aDatepickerTo.setAttribute("class", "customqry_datepicker");
-        // aDatepickerTo.setAttribute("firstdayofweek", locale_firstweekday);
-        // aDatepickerTo.onchange = miczThunderStatsTab.ui.checkDatePickers_To;
-
-        // document.getElementById('datepicker_to_placeholder').appendChild(aDatepickerTo);
-        //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] CurrentMomentLocale: "+moment.locale()+"\r\n");
-        //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_from init: "+JSON.stringify(document.getElementById('datepicker_from').dateValue)+"\r\n");
-        //miczLogger.log(">>>>>>>>>>>>>> [miczThunderStatsTab] datepicker_to init: "+JSON.stringify(document.getElementById('datepicker_to').dateValue)+"\r\n");
     },
 
     initDatePickers_dates: function() {

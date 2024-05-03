@@ -1,5 +1,8 @@
 "use strict";
-ChromeUtils.import("resource:///modules/StringBundle.js");
+
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+
+// ChromeUtils.import("resource:///modules/StringBundle.js");
 
 var micz_thstatsTabType = {
   name: "miczThStatsTab",
@@ -63,7 +66,10 @@ var micz_thstatsTabType = {
 
       // Now start loading the content.
       aTab.title = "ThunderStats";
+      
       aTab.browser.loadURI("chrome://thunderstats/content/mzts-statstab.xhtml");
+      // aTab.browser.loadURI("chrome://thunderstats/content/pagetest2.xhtml");
+      // aTab.browser.loadURI("chrome://thunderstats/content/fp2.xul");
 
     },
     tryCloseTab: function onTryCloseTab(aTab) {

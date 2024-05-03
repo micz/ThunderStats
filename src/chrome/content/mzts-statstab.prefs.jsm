@@ -7,7 +7,7 @@
 let EXPORTED_SYMBOLS = ["miczThunderStatsPrefs"];
 
 var miczThunderStatsPrefs = {
-	service: Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch),
+	service: Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefBranch),
 	pref_base:'extensions.ThunderStats.',
 
 	get isDebug() {

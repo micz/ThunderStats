@@ -1,7 +1,25 @@
 "use strict";
-ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
-ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
-ChromeUtils.import("resource:///modules/mailServices.js");
+
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+
+var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+
+// if (typeof versionChecker !== "object") {
+  // const versionChecker = Services.vc;
+// }
+const versionChecker2 = Services.vc;
+const currentVersion2 = Services.appinfo.platformVersion;
+
+
+if (versionChecker2.compare(currentVersion2, "61") >= 0) {
+  var { MailServices } = ChromeUtils.import("resource:///modules/MailServices.jsm");
+
+} else {
+  ChromeUtils.import("resource:///modules/mailServices.js");
+}
+
+Services.console.logStringMessage("folder work first after imports 1");
 
 miczThunderStatsTab.folderworker={};
 

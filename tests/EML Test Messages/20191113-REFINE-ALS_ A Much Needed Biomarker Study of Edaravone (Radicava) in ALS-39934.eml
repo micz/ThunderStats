@@ -1,0 +1,711 @@
+Delivered-To: cleidigh@gmail.com
+Received: by 2002:adf:b584:0:0:0:0:0 with SMTP id c4csp9830129wre;
+        Wed, 13 Nov 2019 11:30:45 -0800 (PST)
+X-Google-Smtp-Source: APXvYqwdz6YTMXLjlHuBhZCFZPpD9kq9N01M/n808t56/p+js26YEtxDYqRthbzrx9axZAvweW2X
+X-Received: by 2002:a05:620a:113b:: with SMTP id p27mr4129048qkk.333.1573673445589;
+        Wed, 13 Nov 2019 11:30:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1573673445; cv=none;
+        d=google.com; s=arc-20160816;
+        b=qUyZSWK9d82I4vJGXovMcmkmOOIT76GSwsdAdeAPUD2d5edyTZKpPUEhWMUXIgkfU9
+         BztCHiATSdBL71kSwxZ9BnjNQnOqaN2x9VnW2B0uLsf6noytOCG6yq8cbhzv4FHj2Xgn
+         eGJrGuAyfW9J7F6pFScSpO2DWNex/25T64siP7wBHtkkJ6UTjG3T5FcxW00hHsTR1IRI
+         ZidQ1CUQRuEFpgs1EmDSe22p0DFQTyffOZuYfPf5wudchM+VNAMEgHq9YBtCcTGFb+H1
+         gZJmKrvNrAl4OohYiXz0tCKZkctOrVjpvmxyNmLeCfsKKjgk7ohSn4Kr59aqIcs9Tiwf
+         upiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=list-unsubscribe-post:list-unsubscribe:mime-version:subject:to
+         :reply-to:from:date:message-id:dkim-signature;
+        bh=HX5732codiyzMFQfwYP1eJDMt+nETANFvY8nQnvzX2Q=;
+        b=frug6FFJQgPw6edlk8Ff0NAC+GifEUTyUcTYCkazsZ7cegv3EFfNAMY8RIPS+hce82
+         IjxolMDXcnS+5HYG7e3ISd/45jpC1CjTDIWA6BFgSIx2xNJaKCuHeStkunuFWLTNqDEy
+         uVt9waEufs9wIe8GCFiyTBcYMGAxxDI4S+IHDTlUA9t3yLFv3lePFvbyIyA2F2IfKj5g
+         WEVR3hn49CIf1h+SIESd+GTZY+SBbn7T+Yxg/GEnhHYev42Ni6/q8fEhhEhj5s+sGanV
+         Q/WBLYMj/Ip1dq7vomLWaR8x/e8ZwSaYQM0sDOI2pXE410eut5fx9ctStKOiLZi0+i56
+         lKZQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@auth.ccsend.com header.s=1000073432 header.b="Gllzf/+2";
+       spf=pass (google.com: domain of annoydaxlqjack4oahgtnjg==_1104014359259_f6/iop3zeekwldsuunt5tw==@in.constantcontact.com designates 208.75.123.134 as permitted sender) smtp.mailfrom="ANnoYdaXLQjaCk4OahGTNjg==_1104014359259_f6/ioP3ZEeKWLdSuUnt5tw==@in.constantcontact.com"
+Return-Path: <ANnoYdaXLQjaCk4OahGTNjg==_1104014359259_f6/ioP3ZEeKWLdSuUnt5tw==@in.constantcontact.com>
+Received: from ccm134.constantcontact.com (ccm134.constantcontact.com. [208.75.123.134])
+        by mx.google.com with ESMTPS id y44si1883001qtj.111.2019.11.13.11.30.45
+        for <cleidigh@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 13 Nov 2019 11:30:45 -0800 (PST)
+Received-SPF: pass (google.com: domain of annoydaxlqjack4oahgtnjg==_1104014359259_f6/iop3zeekwldsuunt5tw==@in.constantcontact.com designates 208.75.123.134 as permitted sender) client-ip=208.75.123.134;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@auth.ccsend.com header.s=1000073432 header.b="Gllzf/+2";
+       spf=pass (google.com: domain of annoydaxlqjack4oahgtnjg==_1104014359259_f6/iop3zeekwldsuunt5tw==@in.constantcontact.com designates 208.75.123.134 as permitted sender) smtp.mailfrom="ANnoYdaXLQjaCk4OahGTNjg==_1104014359259_f6/ioP3ZEeKWLdSuUnt5tw==@in.constantcontact.com"
+Return-Path: <ANnoYdaXLQjaCk4OahGTNjg==_1104014359259_f6/ioP3ZEeKWLdSuUnt5tw==@in.constantcontact.com>
+Received: from [10.252.0.104] ([10.252.0.104:52284] helo=p2-jbemailsyndicator23.ctct.net)
+	by 10.249.238.20 (envelope-from <ANnoYdaXLQjaCk4OahGTNjg==_1104014359259_f6/ioP3ZEeKWLdSuUnt5tw==@in.constantcontact.com>)
+	(ecelerity 4.2.1.52273 r(Core:4.2.1.11)) with ESMTP
+	id AF/CD-03178-FD95CCD5; Wed, 13 Nov 2019 14:30:39 -0500
+DKIM-Signature: v=1; q=dns/txt; a=rsa-sha256; c=relaxed/relaxed; s=1000073432; d=auth.ccsend.com; h=date:mime-version:subject:X-Feedback-ID:message-id:from:reply-to:list-unsubscribe:list-unsubscribe-post:to; bh=HX5732codiyzMFQfwYP1eJDMt+nETANFvY8nQnvzX2Q=; b=Gllzf/+2vGe95/ewnUwLbAyjq6zaacQ6aBRg83jlwrnrTOEwPppOuBZPpv4p2nHLMUnr2uvOlevzdkizzaJfKQcfC6WnJaWgPBfye+P7ScvO8WSkCuSNj+MIKEhZ8OY7e1aG35QrnBVV5pNkuo5teSPPfCgfQazoExpBIaS4vLM=
+Message-ID: <1133501160678.1104014359259.1340428126.0.291430JL.2002@scheduler.constantcontact.com>
+Date: Wed, 13 Nov 2019 14:30:39 -0500 (EST)
+From: The Northeast ALS Consortium <alstrials@neals.org>
+Reply-To: alstrials@neals.org
+To: cleidigh@gmail.com
+Subject: REFINE-ALS: A Much Needed Biomarker Study of Edaravone (Radicava)
+ in ALS
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_761119432_1587373229.1573673439688"
+List-Unsubscribe: <https://visitor.constantcontact.com/do?p=un&m=0014aDP97qUWBdGODXvnrwVJA%3D%3D&se=001j8GaUGX2yhU11yy67PErFQ%3D%3D&t=001EkZLEx15CcE%3D&llr=8woeggeab>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Campaign-Activity-ID: 367a1875-a5cb-4236-8293-839a8464cd8e
+X-Channel-ID: 7fafe2a0-fdd9-11e2-962d-d4ae527b79b7
+X-Mailer: Roving Constant Contact 2012 (http://www.constantcontact.com)
+X-Return-Path-Hint: ANnoYdaXLQjaCk4OahGTNjg==_1104014359259_f6/ioP3ZEeKWLdSuUnt5tw==@in.constantcontact.com
+X-Roving-Campaignid: 1133501160678
+X-Roving-Id: 1104014359259.1340428126
+X-Feedback-ID: 7fafe2a0-fdd9-11e2-962d-d4ae527b79b7:367a1875-a5cb-4236-8293-839a8464cd8e:1104014359259:CTCT
+X-CTCT-ID: 7fab4ec0-fdd9-11e2-962d-d4ae527b79b7
+
+------=_Part_761119432_1587373229.1573673439688
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+Having trouble viewing this email?
+Click here
+http://campaign.r20.constantcontact.com/render?m=1104014359259&ca=367a1875-a5cb-4236-8293-839a8464cd8e
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ALS Association/Northeast ALS Consortium PALS Webinar Reminder
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+REFINE-ALS: A Much Needed Biomarker Study of Edaravone (Radicava) in ALS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+James D. Berry, MD, MPH, Massachusetts General Hospital
+Thursday, November 14, 2019
+4:00 - 5:00 PM EST
+We will review edaravone evidence, talk about the use of biomarkers to understand
+the effect of medical therapies, present the design of the REFINE-ALS study, and
+ discuss how people can get involved in the study.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+REGISTER NOW [http://r20.rs6.net/tn.jsp?f=001rToXMyV4Pa0WE4NMBztqneoFtjlRBfGO29o-Qw_kgUl6dVlk47ihX5HBUTZ86b7yVGcuDdUP3v0CDUdeh7Jr8zkoAelkCXN2v2QhVTsHzJowSZIGqrEKSxcpmT_skce3e9ZobDR5M4xh2oJ5qNSDUV8uz760EYZAfWfV771pw3u5I1TWURYTCYGK656kw_JO2tDlrlBV2UUc32kdOeAGf1LNSYjF4m-JkMLHpTdgGAwSk37XJ77001BN9OVSRhW_IBuaKXN-1JshJAUybb2LAw6DTt8E1TV3_dPkecUrNCRG2B8gs199adsNCv9Hlq6f1Y9FLjbBWfIvdQvVQyrBm9KKnXGZfcOStIbAZbcVioFsmgrc6yX5YbfxQlQln_zlv1_llfXFBkw=&c=RtpL961i8VN0bdiN01jfyk1ORmY6R-A0HL4eA7edx-nVEDYdV726QQ==&ch=1qaB8xqP_I9OsANaUBmYojsLxdKpOKL8wpVkTR51Iz2JwjFkYBGLEw==]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Northeast ALS Consortium | 877-458-0631 | alstrials@neals.org [mailto:alstrials@neals.org]
+| www.neals.org [http://r20.rs6.net/tn.jsp?f=001rToXMyV4Pa0WE4NMBztqneoFtjlRBfGO29o-Qw_kgUl6dVlk47ihX-F6bHY6ii3XBXw_D-sQZMOg6cMH-h_hhH6MGJJ6-SMYf83S5OEHuSzPORIZF_LsiLD8As59vJGYhn_FyilYyWctUWdvYvSXGUeYtdu9718QPATysWrw2USPV51DtD-0nDlqibFcEQviaAcr-fuSxukarHfVf4Icmy7JwuL_L-EYdjUvSyfIc7b4Q-5WWeKNeRh7ebxqKSZN3xotNsRfvVomHrlpPAKEyUH1Lk-LTZyPKwvnmZHJN-wAkVoUhUv8I9hw2Ag7gzdiY4P2I3FHU6rR2kipRGShzA==&c=RtpL961i8VN0bdiN01jfyk1ORmY6R-A0HL4eA7edx-nVEDYdV726QQ==&ch=1qaB8xqP_I9OsANaUBmYojsLxdKpOKL8wpVkTR51Iz2JwjFkYBGLEw==]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Like us on Facebook [http://r20.rs6.net/tn.jsp?f=001rToXMyV4Pa0WE4NMBztqneoFtjlRBfGO29o-Qw_kgUl6dVlk47ihX8WA3aRWMno3byIvKhiJEbevPNvQcMTWFpeIDA72qzcE8Ul0qUMXWqIOJAKSC1oYtkDgJd5iktTdJY1CetEqkkkHiFidnDDM5PFsPd9_g0_ByJOarpUHzhc_C9FoGUCTSOBMZ8UF8fWQ_DApSR6o840=&c=RtpL961i8VN0bdiN01jfyk1ORmY6R-A0HL4eA7edx-nVEDYdV726QQ==&ch=1qaB8xqP_I9OsANaUBmYojsLxdKpOKL8wpVkTR51Iz2JwjFkYBGLEw==]
+
+Follow us on Twitter [http://r20.rs6.net/tn.jsp?f=001rToXMyV4Pa0WE4NMBztqneoFtjlRBfGO29o-Qw_kgUl6dVlk47ihX62b4pI75jk_QkVg3dxWz9AIKFtj9P3snlHv7Gcm9HzgqekKm45dz6BmcjWpPdlZHoDm2wYHCTU-zTFT2eE-4gWAUAf1CbSjkIeq-W7QQUsDD78t7KMu-dNjX_swvb53MOEn_k3770DE&c=RtpL961i8VN0bdiN01jfyk1ORmY6R-A0HL4eA7edx-nVEDYdV726QQ==&ch=1qaB8xqP_I9OsANaUBmYojsLxdKpOKL8wpVkTR51Iz2JwjFkYBGLEw==]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Forward this email
+http://ui.constantcontact.com/sa/fwtf.jsp?llr=8woeggeab&m=1104014359259&ea=$cleidigh@gmail.com$&a=1133501160678
+
+This email was sent to cleidigh@gmail.com by alstrials@neals.org.
+
+Update Profile/Email Address
+https://visitor.constantcontact.com/do?p=oo&m=0014aDP97qUWBdGODXvnrwVJA%3D%3D&ch=7fafe2a0-fdd9-11e2-962d-d4ae527b79b7&ca=367a1875-a5cb-4236-8293-839a8464cd8e
+
+
+Instant removal with SafeUnsubscribe(TM)
+https://visitor.constantcontact.com/do?p=un&m=0014aDP97qUWBdGODXvnrwVJA%3D%3D&ch=7fafe2a0-fdd9-11e2-962d-d4ae527b79b7&ca=367a1875-a5cb-4236-8293-839a8464cd8e
+
+
+Privacy Policy:
+http://www.constantcontact.com/legal/service-provider?cc=about-service-provider
+
+Online Marketing by
+Constant Contact(R)
+www.constantcontact.com
+
+
+
+The Northeast ALS Consortium | 177 E Colorado Blvd | Ste 200 | Pasadena | CA | 91105
+------=_Part_761119432_1587373229.1573673439688
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+
+
+<body topmargin=3D"0" leftmargin=3D"0" rightmargin=3D"0"><!--Copyright (c) =
+1996-2019 Constant Contact. All rights reserved.  Except as permitted under=
+ a separate
+written agreement with Constant Contact, neither the Constant Contact softw=
+are, nor any content that appears on any Constant Contact site,
+including but not limited to, web pages, newsletters, or templates may be r=
+eproduced, republished, repurposed, or distributed without the
+prior written permission of Constant Contact.  For inquiries regarding repr=
+oduction or distribution of any Constant Contact material, please
+contact legal@constantcontact.com.--><meta name=3D"x-apple-disable-message-=
+reformatting" /><style>
+@media only screen and (max-width:480px) {
+body {
+align:center;
+topmargin:0;
+leftmargin:0;
+marginheight:0;
+marginwidth:0;
+width:100% !important;
+min-width:100% !important;
+padding: 0px 0px 0px 0px;
+margin: 0px 0px 0px 0px;
+-webkit-text-size-adjust:100%;
+-ms-text-size-adjust:100%;
+}
+table {
+border-collapse:collapse;
+mso-table-lspace:0pt;
+mso-table-rspace:0pt;
+}
+td[class=3D"MainWidth"] {
+width:100% !important;
+}
+table[class=3D"HideInMobile"], img[class=3D"HideInMobile"], td[class=3D"Hid=
+eInMobile"] {
+display: none !important;
+}
+td[class~=3D"OneColumnMobile"], table[class~=3D"OneColumnMobile"] {
+width: 100% !important;
+}
+td[class~=3D"OneColumn"], table[class~=3D"OneColumn"] {
+width: 100% !important;
+display:block !important;
+}
+.BodyPadding {
+padding: 15px 5px 15px 5px !important;
+}
+.BorderWidth{
+padding: 1px 1px 1px 1px !important;
+}
+.PreheaderContent {
+padding: 10px 20px 10px 20px !important;
+}
+.PreheaderText {
+font-size: 12px !important;
+}
+.Logo {
+padding: 8px 0px 9px 0px !important;
+}
+.Image {
+padding: 0px 0px 0px 0px !important;
+}
+.SectionHeadlinePadding {
+padding: 8px 0px 9px 0px !important; =20
+}
+.SectionHeadlineContent {
+padding: 10px 20px 10px 20px !important;
+}
+.SectionHeadlineText {
+font-size: 24px !important;
+}
+.HeadlineContent {
+padding: 10px 20px 10px 20px !important;
+}
+.HeadlineText {
+font-size: 20px !important;
+}
+.SubheadlineContent {
+padding: 10px 20px 10px 20px !important;
+}
+.SubheadlineText {
+font-size: 16px !important;
+}
+.Content {
+padding: 10px 20px 10px 20px !important;
+}
+.FeaturePadding {
+padding: 10px 10px 10px 10px !important;
+}
+.FeatureContent {
+padding: 10px 15px 10px 15px !important;
+}
+.LeftImage {
+padding: 10px 0px 10px 0px !important;
+}
+.RightImage {
+padding: 10px 0px 10px 0px !important;
+}
+.FeatureHeadlineText {
+font-size: 20px !important;
+}
+.FeatureText {
+font-size: 16px !important;
+}
+.FeatureLink {
+font-size: 16px !important;
+}
+.ArticlePadding {
+padding: 10px 20px 10px 20px !important;
+}
+.ArticleHeadlineText {
+font-size: 20px !important;
+}
+.MainText {
+font-size: 16px !important;
+}
+.MainLink {
+font-size: 16px !important;
+}
+.ButtonContent {
+padding: 10px 20px 10px 20px !important;
+}
+.ButtonText {
+font-size: 16px !important;
+}
+.DividerPadding {
+padding: 10px 20px 10px 20px !important;
+}
+.CouponPadding {
+padding: 10px 20px 10px 20px !important;
+}
+.CouponHeadlineText {
+font-size: 24px !important;
+}
+.CouponHeadlineContent {
+padding: 15px 10px 15px 10px !important;
+}
+.CouponContent {
+padding: 10px 10px 10px 10px !important;
+}
+.CouponText {
+font-size: 16px !important;
+}
+.SocialMediaPadding {
+padding: 10px 20px 10px 20px !important;
+}
+.SocialMediaText {
+font-size: 16px !important;
+}
+.SocialMediaIcon {
+padding: 5px 10px 0px 10px !important;
+}
+.SpacerHeight {
+padding-bottom: 14px !important;
+}
+}
+@media only screen and (max-width:480px) {td[class~=3D"mobile-hidden"] {dis=
+play: none !important;}}</style><style>@media only screen and (max-width:48=
+0px) {table[class~=3D"HideInMobile"], img[class~=3D"HideInMobile"], td[clas=
+s~=3D"HideInMobile"], span[class~=3D"HideInMobile"] {display: none !importa=
+nt;}td[class~=3D"FooterColumn"], table[class~=3D"FooterColumn"], span[class=
+~=3D"FooterColumn"] {display:block !important;}.FooterText {line-height: 1.=
+6 !important;}}</style><style>blockquote .hideInRplyFwd, .WordSection1 .hid=
+eInRplyFwd, blockquote a[href*=3D'https://visitor.constantcontact.com/do?p=
+=3Dun&m=3D0014aDP97qUWBdGODXvnrwVJA%3D%3D&ch=3D7fafe2a0-fdd9-11e2-962d-d4ae=
+527b79b7&ca=3D367a1875-a5cb-4236-8293-839a8464cd8e'], .WordSection1 a[href*=
+=3D'https://visitor.constantcontact.com/do?p=3Dun&m=3D0014aDP97qUWBdGODXvnr=
+wVJA%3D%3D&ch=3D7fafe2a0-fdd9-11e2-962d-d4ae527b79b7&ca=3D367a1875-a5cb-423=
+6-8293-839a8464cd8e'], #OLK_SRC_BODY_SECTION .hideInRplyFwd, #OLK_SRC_BODY_=
+SECTION a[href*=3D'https://visitor.constantcontact.com/do?p=3Dun&m=3D0014aD=
+P97qUWBdGODXvnrwVJA%3D%3D&ch=3D7fafe2a0-fdd9-11e2-962d-d4ae527b79b7&ca=3D36=
+7a1875-a5cb-4236-8293-839a8464cd8e'] { display: none !important; }</style><=
+div id=3D"rootDiv"><div align=3D"center"><div align=3D"center" style=3D"max=
+-width:602px;margin-left:auto;margin-right:auto;"><table width=3D"100%" cel=
+lpadding=3D"0" cellspacing=3D"0" border=3D"0" style=3D"margin-left:auto;mar=
+gin-right:auto;"><tr><td><img alt=3D"" width=3D"1" height=3D"5" hspace=3D"0=
+" vspace=3D"0" border=3D"0" src=3D"https://imgssl.constantcontact.com/lette=
+rs/images/sys/S.gif" /></td><td align=3D"center" valign=3D"top" width=3D"60=
+0"><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"><=
+tr><td align=3D"center" valign=3D"top"><div align=3D"center" style=3D"backg=
+round-color:#ffffff;padding-bottom:10px;"><div align=3D"left" style=3D"font=
+-family:verdana,arial;font-size:8pt;color:#000000;"><font face=3D"verdana,a=
+rial" size=3D"1" color=3D"#000000" style=3D"font-family:verdana,arial;font-=
+size:8pt;color:#000000;"><center><table bgcolor=3D"#ffffff" width=3D"595" i=
+d=3D"VWPLINK"><tr><td style=3D"color:#000000;font-size:8pt;font-family:Verd=
+ana, Arial, Helvetica, sans-serif;" width=3D"100%" rowspan=3D"1" colspan=3D=
+"1">Having trouble viewing this email?
+<a track=3D"off" shape=3D"rect" href=3D"http://campaign.r20.constantcontact=
+.com/render?m=3D1104014359259&ca=3D367a1875-a5cb-4236-8293-839a8464cd8e" ta=
+rget=3D"_blank">Click here
+</a></td></tr></table></center></font></div></div></td></tr></table></td><t=
+d><img alt=3D"" width=3D"1" height=3D"5" hspace=3D"0" vspace=3D"0" border=
+=3D"0" src=3D"https://imgssl.constantcontact.com/letters/images/sys/S.gif" =
+/></td></tr></table></div></div><div><div align=3D"center"><div align=3D"ce=
+nter" style=3D"max-width:602px;margin-left:auto;margin-right:auto;"><table =
+width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" style=3D"ma=
+rgin-left:auto;margin-right:auto;"><tr><td><img alt=3D"" width=3D"1" height=
+=3D"5" hspace=3D"0" vspace=3D"0" border=3D"0" src=3D"https://imgssl.constan=
+tcontact.com/letters/images/sys/S.gif" /></td><td align=3D"center" valign=
+=3D"top" width=3D"600"><table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0"><tr><td align=3D"center" valign=3D"top"><table cellpadd=
+ing=3D"0" cellspacing=3D"0" class=3D"shr-btn-tbl"><tr><td><img src=3D"http:=
+//img.constantcontact.com/ui/images1/shr_drw_left.png" /></td><td><a href=
+=3D"http://s.rs6.net/t?e=3D_2xBI4gNMsA&c=3D1&r=3D1" title=3D"Share with Fac=
+ebook"><img src=3D"http://img.constantcontact.com/ui/images1/shr_drw_fb.png=
+" style=3D"border:0;" /></a></td><td><a href=3D"http://s.rs6.net/t?e=3D_2xB=
+I4gNMsA&c=3D3&r=3D1" title=3D"Share with Twitter"><img src=3D"http://img.co=
+nstantcontact.com/ui/images1/shr_drw_twit.png" style=3D"border:0;" /></a></=
+td><td><a href=3D"http://s.rs6.net/t?e=3D_2xBI4gNMsA&c=3D4&r=3D1" title=3D"=
+Share with LinkedIn"><img src=3D"http://img.constantcontact.com/ui/images1/=
+shr_drw_linked.png" style=3D"border:0;" /></a></td><td><img src=3D"http://i=
+mg.constantcontact.com/ui/images1/shr_drw_divider.png" style=3D"border:0;" =
+/></td><td><a href=3D"http://s.rs6.net/t?e=3D_2xBI4gNMsA&c=3D5&r=3D1" title=
+=3D"More Share Options"><img src=3D"http://img.constantcontact.com/ui/image=
+s1/shr_drw_more.png" style=3D"border:0;" /></a></td><td><img src=3D"http://=
+img.constantcontact.com/ui/images1/shr_drw_right.png" style=3D"border:0;" /=
+></td><td class=3D"like-this" style=3D"padding-left:5px;"><a href=3D"https:=
+//myemail.constantcontact.com/REFINE-ALS--A-Much-Needed-Biomarker-Study-of-=
+Edaravone--Radicava--in-ALS.html?soid=3D1104014359259&aid=3D_2xBI4gNMsA#fbl=
+ike" title=3D"Like This"><img src=3D"http://img.constantcontact.com/ui/imag=
+es1/shr_btn_like_sm.png" style=3D"border:0;" /></a></td></tr></table></td><=
+/tr></table></td><td><img alt=3D"" width=3D"1" height=3D"5" hspace=3D"0" vs=
+pace=3D"0" border=3D"0" src=3D"https://imgssl.constantcontact.com/letters/i=
+mages/sys/S.gif" /></td></tr></table></div></div></div><img src=3D"http://r=
+20.rs6.net/on.jsp?a=3D1104014359259&r=3D3&c=3D7fab4ec0-fdd9-11e2-962d-d4ae5=
+27b79b7&d=3D1133501160678&ch=3D7fafe2a0-fdd9-11e2-962d-d4ae527b79b7&ca=3D36=
+7a1875-a5cb-4236-8293-839a8464cd8e&o=3Dhttps://imgssl.constantcontact.com/u=
+i/images1/s.gif" height=3D"1" width=3D"1" />
+<div class=3D"OuterBGColor" style=3D"background-color:#DFE2E9;background-re=
+peat:repeat;background-image:none;background-position:top left;" bgcolor=3D=
+"#DFE2E9" align=3D"center">
+<table class=3D"OuterBGColor" style=3D"background-color:#DFE2E9;margin-left=
+:auto;background-repeat:repeat;background-image:none;background-position:to=
+p left;margin-right:auto;" bgcolor=3D"#DFE2E9" border=3D"0" width=3D"100%" =
+cellspacing=3D"0" cellpadding=3D"0">
+<tr>
+<td class=3D"HideInMobile" rowspan=3D"1" colspan=3D"1"><img height=3D"5" vs=
+pace=3D"0" border=3D"0" hspace=3D"0" width=3D"1" alt=3D"" src=3D"https://im=
+gssl.constantcontact.com/letters/images/sys/S.gif" /></td>
+<td class=3D"MainWidth" style=3D"width:610px;" valign=3D"top" width=3D"610"=
+ rowspan=3D"1" colspan=3D"1" align=3D"center">
+<div class=3D"MaxMainWidth" style=3D"margin-left:auto;max-width:610px;margi=
+n-right:auto;" align=3D"center">
+<table border=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0">
+<tr>
+<td class=3D"BodyPadding" style=3D"padding:15px 5px 15px 5px;" valign=3D"to=
+p" rowspan=3D"1" colspan=3D"1" align=3D"center">
+<table border=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0">
+<tr>
+<td class=3D"TopMargin" style=3D"padding:0px 0px 8px 0px;" valign=3D"top" w=
+idth=3D"100%" rowspan=3D"1" colspan=3D"1" align=3D"center">
+
+
+</td>
+</tr>
+</table>
+<table class=3D"BorderColor" style=3D"background:transparent;" border=3D"0"=
+ width=3D"100%" cellspacing=3D"0" cellpadding=3D"0">
+<tr>
+<td class=3D"BorderWidth" style=3D"padding:1px 1px 1px 1px;" valign=3D"top"=
+ width=3D"100%" rowspan=3D"1" colspan=3D"1" align=3D"center">
+<table class=3D"InnerBGColor" style=3D"background-color:#FFFFFF;" bgcolor=
+=3D"#FFFFFF" border=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0=
+">
+<tr>
+<td class=3D"EmailContainer" style=3D"padding:30px 0px 30px 0px;" valign=3D=
+"top" width=3D"100%" rowspan=3D"1" colspan=3D"1" align=3D"center">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table border=3D"0" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" id=
+=3D"content_LETTER.BLOCK17"><tr><td class=3D"OuterText Logo" style=3D"paddi=
+ng:8px 0px 9px 0px;color:#000000;" valign=3D"top" rowspan=3D"1" colspan=3D"=
+1" align=3D"center">
+<table class=3D"OneColumnMobile" style=3D"margin-top:0px;margin-bottom:0px;=
+" width=3D"598" data-padding-converted=3D"true" cellpadding=3D"0" cellspaci=
+ng=3D"0"><tr><td style=3D"padding:0px;color:#000000;" width=3D"100%" rowspa=
+n=3D"1" colspan=3D"1">
+<div align=3D"center"><a class=3D"imgCaptionAnchor" track=3D"on" shape=3D"r=
+ect" href=3D"http://r20.rs6.net/tn.jsp?f=3D001rToXMyV4Pa0WE4NMBztqneoFtjlRB=
+fGO29o-Qw_kgUl6dVlk47ihX0InmVhqChGWXTkilvf2crMB5_EEh0fHkEeXqJfh6ONfYzhrN-bC=
+eulF9hwGdlMMuL4hhbHOQb5sfyjxx8XvGr0tKLLsm6YK0eiSj4J2l_N9aiM_lnzChhifJ0VlISr=
+WXIimryoDkvXx0I4VRspu1SfENCgJxwp6kLdbJRLBDCd1u8i0gc_AYlZ1i1LcFcSXC2vhyylzX7=
+v0RQ82uH3TnD_CB_XxaOHyMCV_xkHoVusY8-VL8MX3Wjs31LwD_NwqQVyea73m24t3egtIkq3P_=
+cRDKDukVfaFSuMubo4rXk3v&c=3DRtpL961i8VN0bdiN01jfyk1ORmY6R-A0HL4eA7edx-nVEDY=
+dV726QQ=3D=3D&ch=3D1qaB8xqP_I9OsANaUBmYojsLxdKpOKL8wpVkTR51Iz2JwjFkYBGLEw=
+=3D=3D" alt=3D"http://www.alsconsortium.org/?utm_source=3D111419+Berry+Webi=
+nar+Reminder&utm_campaign=3D111419+Berry+Webinar+Reminder&utm_medium=3Demai=
+l" target=3D"_blank"><img style=3D"max-width:100% ! important;display:block=
+;height:auto ! important;" vspace=3D"0" border=3D"0" name=3D"ACCOUNT.IMAGE.=
+406" hspace=3D"0" width=3D"598" src=3D"https://files.constantcontact.com/bd=
+a326c0101/371a711b-92fb-4444-ac9f-288b44dfdc88.png" /></a></div>
+</td></tr></table>
+</td></tr></table>
+<table border=3D"0" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" id=
+=3D"content_LETTER.BLOCK18"><tr><td class=3D"Date MainText" style=3D"paddin=
+g:8px 20px 0px 20px;color:#384856;font-size:11pt;font-family:Trebuchet MS,V=
+erdana,Helvetica,sans-serif;" valign=3D"top" rowspan=3D"1" colspan=3D"1" al=
+ign=3D"left">
+<div>
+<div style=3D"text-align:left;" align=3D"left">The ALS Association/Northeas=
+t ALS Consortium PALS Webinar Reminder<br /></div>
+</div>
+</td></tr></table>
+<table style=3D"display:table;" border=3D"0" width=3D"100%" cellpadding=3D"=
+0" cellspacing=3D"0" id=3D"content_LETTER.BLOCK19"><tr><td class=3D"Headlin=
+eContent HeadlineText" style=3D"padding:8px 20px 9px 20px;color:#666666;fon=
+t-weight:bold;font-size:18pt;font-family:Trebuchet MS,Verdana,Helvetica,san=
+s-serif;" valign=3D"top" rowspan=3D"1" colspan=3D"1" align=3D"left">
+<div><span>REFINE-ALS: A Much Needed Biomarker Study of Edaravone <span>(Ra=
+dicava)</span> in ALS</span><br /></div>
+</td></tr></table>
+
+
+
+<table border=3D"0" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" id=
+=3D"content_LETTER.BLOCK31"><tr><td class=3D"Image MainText" style=3D"paddi=
+ng:0px 0px 0px 0px;color:#384856;font-size:11pt;font-family:Trebuchet MS,Ve=
+rdana,Helvetica,sans-serif;" valign=3D"top" rowspan=3D"1" colspan=3D"1" ali=
+gn=3D"center">
+<table class=3D"CC_NoEdit OneColumnMobile" style=3D"margin:0px 0px 0px 0px;=
+" width=3D"189" data-padding-converted=3D"true" cellpadding=3D"0" cellspaci=
+ng=3D"0"><tr><td style=3D"padding:0px;" width=3D"100%" rowspan=3D"1" colspa=
+n=3D"1">
+<div align=3D"center"><img style=3D"max-width:100% !important;display:block=
+;height:auto !important;" height=3D"189" vspace=3D"0" border=3D"0" name=3D"=
+ACCOUNT.IMAGE.270" hspace=3D"0" width=3D"189" src=3D"https://files.constant=
+contact.com/bda326c0101/2000a424-3210-42a2-aca8-1f811b8d82ba.jpg" /></div>
+</td></tr></table>
+</td></tr></table><table border=3D"0" width=3D"100%" cellpadding=3D"0" cell=
+spacing=3D"0" id=3D"content_LETTER.BLOCK23"><tr><td class=3D"Content MainTe=
+xt" style=3D"padding:8px 20px 9px 20px;color:#384856;font-size:11pt;font-fa=
+mily:Trebuchet MS,Verdana,Helvetica,sans-serif;" valign=3D"top" rowspan=3D"=
+1" colspan=3D"1" align=3D"left">
+<div style=3D"font-size:12pt;text-align:center;" align=3D"center"><span><st=
+rong>James D. Berry, MD, MPH,&nbsp;Massachusetts General Hospital</strong><=
+/span><span>
+<div><span><strong>Thursday, November 14, 2019 &nbsp;</strong></span></div>
+</span></div>
+<div style=3D"font-size:12pt;text-align:center;" align=3D"center"><strong>&=
+nbsp; &nbsp; 4:00 - 5:00 PM EST <br /></strong></div>
+<div>
+<div><span>&nbsp;</span></div>
+<div style=3D"text-align:center;" align=3D"center"><span>
+<div><span>
+<div style=3D"text-align:left;" align=3D"left"><span>
+<div><span>We will review edaravone evidence, talk about the use of biomark=
+ers to understand the effect of medical therapies, present the design of th=
+e REFINE-ALS study, and discuss how people can get involved in the study.&n=
+bsp;</span></div>
+</span></div>
+</span></div>
+</span></div>
+</div>
+</td></tr></table>
+<table style=3D"display:table;" border=3D"0" width=3D"100%" cellpadding=3D"=
+0" cellspacing=3D"0" id=3D"content_LETTER.BLOCK24"><tr><td class=3D"Content=
+" style=3D"padding:8px 20px 9px 20px;color:#000000;" valign=3D"top" rowspan=
+=3D"1" colspan=3D"1">
+<table style=3D"margin-left:auto;background-color:#4a7eb0;border-width:0px;=
+border-style:none;margin-right:auto;text-align:center;" height=3D"40" borde=
+r=3D"0" width=3D"145" cellpadding=3D"0" cellspacing=3D"0" align=3D"center">=
+<tr><td class=3D"ButtonContent" style=3D"padding:9px 15px 10px 15px;color:#=
+000000;vertical-align:top;width:115px;height:24px;" valign=3D"top" rowspan=
+=3D"1" colspan=3D"1" align=3D"center">
+<div>
+<div class=3D"ButtonText" style=3D"color:#1A75BB;font-weight:bold;text-deco=
+ration:none;font-size:12pt;font-family:Trebuchet MS,Verdana,Helvetica,sans-=
+serif;text-align:center;" align=3D"center"><a style=3D"color:rgb(255, 255, =
+255);font-weight:bold;text-decoration:none;" track=3D"on" shape=3D"rect" hr=
+ef=3D"http://r20.rs6.net/tn.jsp?f=3D001rToXMyV4Pa0WE4NMBztqneoFtjlRBfGO29o-=
+Qw_kgUl6dVlk47ihX5HBUTZ86b7yVGcuDdUP3v0CDUdeh7Jr8zkoAelkCXN2v2QhVTsHzJowSZI=
+GqrEKSxcpmT_skce3e9ZobDR5M4xh2oJ5qNSDUV8uz760EYZAfWfV771pw3u5I1TWURYTCYGK65=
+6kw_JO2tDlrlBV2UUc32kdOeAGf1LNSYjF4m-JkMLHpTdgGAwSk37XJ77001BN9OVSRhW_IBuaK=
+XN-1JshJAUybb2LAw6DTt8E1TV3_dPkecUrNCRG2B8gs199adsNCv9Hlq6f1Y9FLjbBWfIvdQvV=
+QyrBm9KKnXGZfcOStIbAZbcVioFsmgrc6yX5YbfxQlQln_zlv1_llfXFBkw=3D&c=3DRtpL961i=
+8VN0bdiN01jfyk1ORmY6R-A0HL4eA7edx-nVEDYdV726QQ=3D=3D&ch=3D1qaB8xqP_I9OsANaU=
+BmYojsLxdKpOKL8wpVkTR51Iz2JwjFkYBGLEw=3D=3D" linktype=3D"1" alt=3D"https://=
+attendee.gotowebinar.com/register/557918990425643788?utm_source=3D111419+Be=
+rry+Webinar+Reminder&utm_campaign=3D111419+Berry+Webinar+Reminder&utm_mediu=
+m=3Demail" target=3D"_blank">REGISTER NOW</a></div>
+</div>
+</td></tr></table>
+</td></tr></table>
+
+<table border=3D"0" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" id=
+=3D"content_LETTER.BLOCK25"><tr><td class=3D"Content MainText" style=3D"pad=
+ding:8px 20px 9px 20px;color:#384856;font-size:11pt;font-family:Trebuchet M=
+S,Verdana,Helvetica,sans-serif;" valign=3D"top" rowspan=3D"1" colspan=3D"1"=
+ align=3D"center">
+<div><span style=3D"font-size:10pt;">Northeast ALS Consortium | 877-458-063=
+1 | </span><a style=3D"color:rgb(26, 117, 187);text-decoration:none;font-si=
+ze:10pt;" shape=3D"rect" href=3D"mailto:alstrials@neals.org" linktype=3D"2"=
+ target=3D"_blank">alstrials@neals.org</a><span style=3D"font-size:10pt;"> =
+| </span><a style=3D"color:rgb(26, 117, 187);text-decoration:none;font-size=
+:10pt;" track=3D"on" shape=3D"rect" href=3D"http://r20.rs6.net/tn.jsp?f=3D0=
+01rToXMyV4Pa0WE4NMBztqneoFtjlRBfGO29o-Qw_kgUl6dVlk47ihX-F6bHY6ii3XBXw_D-sQZ=
+MOg6cMH-h_hhH6MGJJ6-SMYf83S5OEHuSzPORIZF_LsiLD8As59vJGYhn_FyilYyWctUWdvYvSX=
+GUeYtdu9718QPATysWrw2USPV51DtD-0nDlqibFcEQviaAcr-fuSxukarHfVf4Icmy7JwuL_L-E=
+YdjUvSyfIc7b4Q-5WWeKNeRh7ebxqKSZN3xotNsRfvVomHrlpPAKEyUH1Lk-LTZyPKwvnmZHJN-=
+wAkVoUhUv8I9hw2Ag7gzdiY4P2I3FHU6rR2kipRGShzA=3D=3D&c=3DRtpL961i8VN0bdiN01jf=
+yk1ORmY6R-A0HL4eA7edx-nVEDYdV726QQ=3D=3D&ch=3D1qaB8xqP_I9OsANaUBmYojsLxdKpO=
+KL8wpVkTR51Iz2JwjFkYBGLEw=3D=3D" linktype=3D"1" alt=3D"https://www.neals.or=
+g/?utm_source=3D111419+Berry+Webinar+Reminder&utm_campaign=3D111419+Berry+W=
+ebinar+Reminder&utm_medium=3Demail" target=3D"_blank">www.neals.org</a><br =
+/></div>
+</td></tr></table></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table border=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0">
+<tr>
+<td class=3D"BottomMargin" style=3D"padding:9px 0px 8px 0px;" valign=3D"top=
+" width=3D"100%" rowspan=3D"1" colspan=3D"1" align=3D"center">
+
+<table style=3D"display:table;" border=3D"0" width=3D"100%" cellspacing=3D"=
+0" cellpadding=3D"0" id=3D"content_LETTER.BLOCK27"><tr><td class=3D"SocialM=
+ediaPadding" style=3D"padding:8px 0px 9px 0px;color:rgb(0, 0, 0);" valign=
+=3D"top" width=3D"100%" rowspan=3D"1" colspan=3D"1" align=3D"center">
+<table class=3D"CC_NoEdit" style=3D"margin:0px 0px 0px 0px;" border=3D"0" w=
+idth=3D"100%" cellspacing=3D"0" cellpadding=3D"0" align=3D"center"><tr><td =
+style=3D"color:#000000;" valign=3D"center" rowspan=3D"1" colspan=3D"1" alig=
+n=3D"center">
+<table border=3D"0" width=3D"1" cellspacing=3D"0" cellpadding=3D"0"><tr><td=
+ class=3D"SocialMediaIcon" style=3D"padding:0px 5px 0px 5px;color:rgb(0, 0,=
+ 0);" valign=3D"center" rowspan=3D"1" colspan=3D"1" align=3D"center">
+<div style=3D"text-align:center;" align=3D"center"><a track=3D"on" shape=3D=
+"rect" href=3D"http://r20.rs6.net/tn.jsp?f=3D001rToXMyV4Pa0WE4NMBztqneoFtjl=
+RBfGO29o-Qw_kgUl6dVlk47ihX8WA3aRWMno3byIvKhiJEbevPNvQcMTWFpeIDA72qzcE8Ul0qU=
+MXWqIOJAKSC1oYtkDgJd5iktTdJY1CetEqkkkHiFidnDDM5PFsPd9_g0_ByJOarpUHzhc_C9FoG=
+UCTSOBMZ8UF8fWQ_DApSR6o840=3D&c=3DRtpL961i8VN0bdiN01jfyk1ORmY6R-A0HL4eA7edx=
+-nVEDYdV726QQ=3D=3D&ch=3D1qaB8xqP_I9OsANaUBmYojsLxdKpOKL8wpVkTR51Iz2JwjFkYB=
+GLEw=3D=3D" linktype=3D"facebook" alt=3D"https://www.facebook.com/Northeast=
+ALSConsortium" target=3D"_blank"><img height=3D"36" border=3D"0" width=3D"3=
+6" alt=3D"Like us on Facebook" title=3D"Like us on Facebook" src=3D"https:/=
+/imgssl.constantcontact.com/ui/images1/ic_fbk_36.png" /></a></div>
+</td><td class=3D"SocialMediaIcon" style=3D"padding:0px 5px 0px 5px;color:r=
+gb(0, 0, 0);" valign=3D"center" rowspan=3D"1" colspan=3D"1" align=3D"center=
+">
+<div style=3D"text-align:center;" align=3D"center"><a track=3D"on" shape=3D=
+"rect" href=3D"http://r20.rs6.net/tn.jsp?f=3D001rToXMyV4Pa0WE4NMBztqneoFtjl=
+RBfGO29o-Qw_kgUl6dVlk47ihX62b4pI75jk_QkVg3dxWz9AIKFtj9P3snlHv7Gcm9HzgqekKm4=
+5dz6BmcjWpPdlZHoDm2wYHCTU-zTFT2eE-4gWAUAf1CbSjkIeq-W7QQUsDD78t7KMu-dNjX_swv=
+b53MOEn_k3770DE&c=3DRtpL961i8VN0bdiN01jfyk1ORmY6R-A0HL4eA7edx-nVEDYdV726QQ=
+=3D=3D&ch=3D1qaB8xqP_I9OsANaUBmYojsLxdKpOKL8wpVkTR51Iz2JwjFkYBGLEw=3D=3D" l=
+inktype=3D"twitter" alt=3D"https://twitter.com/nealsconsortium" target=3D"_=
+blank"><img height=3D"36" border=3D"0" width=3D"36" alt=3D"Follow us on Twi=
+tter" title=3D"Follow us on Twitter" src=3D"https://imgssl.constantcontact.=
+com/ui/images1/ic_twit_36.png" /></a></div>
+</td><td class=3D"SocialMediaIcon" style=3D"padding:0px 5px 0px 5px;color:r=
+gb(0, 0, 0);" valign=3D"center" rowspan=3D"1" colspan=3D"1" align=3D"center=
+"><br /></td><td class=3D"SocialMediaIcon" style=3D"padding:0px 5px 0px 5px=
+;color:rgb(0, 0, 0);" valign=3D"center" rowspan=3D"1" colspan=3D"1" align=
+=3D"center"><br /></td></tr></table>
+</td></tr></table>
+</td></tr></table>
+
+<table border=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0">
+<tr>
+<td class=3D"SpacerHeight" style=3D"padding-bottom:9px;line-height:1px;heig=
+ht:1px;" height=3D"1" rowspan=3D"1" colspan=3D"1" align=3D"center"><img hei=
+ght=3D"1" vspace=3D"0" border=3D"0" hspace=3D"0" width=3D"5" style=3D"displ=
+ay: block; height:1px; width:5px;" alt=3D"" src=3D"https://imgssl.constantc=
+ontact.com/letters/images/sys/S.gif" /></td>
+</tr>
+</table></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td class=3D"HideInMobile" rowspan=3D"1" colspan=3D"1"><img height=3D"5" vs=
+pace=3D"0" border=3D"0" hspace=3D"0" width=3D"1" alt=3D"" src=3D"https://im=
+gssl.constantcontact.com/letters/images/sys/S.gif" /></td>
+</tr>
+</table>
+</div>
+<div id=3D"footerContainer" align=3D"center" style=3D"background-color:#fff=
+fff;">
+<table style=3D"background-color:#ffffff;" border=3D"0" width=3D"100%" cell=
+padding=3D"0" cellspacing=3D"0" id=3D"footerPanelWrap">
+<tr>
+<td rowspan=3D"1" colspan=3D"1" align=3D"center">
+
+<table style=3D"background-color:#ffffff;" border=3D"0" width=3D"100%" cell=
+spacing=3D"0" cellpadding=3D"0" id=3D"footerContainer"><tr><td class=3D"Hid=
+eInMobile" rowspan=3D"1" colspan=3D"1"><img height=3D"5" vspace=3D"0" borde=
+r=3D"0" hspace=3D"0" width=3D"1" src=3D"https://imgssl.constantcontact.com/=
+letters/images/sys/S.gif" /></td><td style=3D"background-color:#FFFFFF;" va=
+lign=3D"top" width=3D"610" rowspan=3D"1" colspan=3D"1" align=3D"center"><di=
+v style=3D"margin-left:auto;max-width:610px;margin-right:auto;" align=3D"ce=
+nter"><table style=3D"margin-left:auto;margin-right:auto;" border=3D"0" wid=
+th=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td style=3D"padding:15=
+px 10px 15px 10px;" valign=3D"top" width=3D"100%" rowspan=3D"1" colspan=3D"=
+1" align=3D"center"><table style=3D"margin-left:auto;margin-right:auto;" bo=
+rder=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td style=
+=3D"padding-bottom:15px;" valign=3D"top" width=3D"100%" rowspan=3D"1" colsp=
+an=3D"1" align=3D"center"><div style=3D"color:#5d5d5d;font-size:13px;font-f=
+amily:Verdana,Geneva,sans-serif;" id=3D"LETTER.PHYSICALADDRESS"><span class=
+=3D"FooterColumn">The Northeast ALS Consortium<span class=3D"HideInMobile">=
+,</span></span><span class=3D"FooterColumn"> 177&nbsp;E&nbsp;Colorado&nbsp;=
+Blvd<span class=3D"HideInMobile">,</span></span><span class=3D"FooterColumn=
+"> Ste&nbsp;200<span class=3D"HideInMobile">,</span></span><span class=3D"F=
+ooterColumn">&nbsp;Pasadena<span class=3D"HideInMobile">,</span>&nbsp;CA&nb=
+sp;91105</span></div></td></tr><tr><td valign=3D"top" width=3D"100%" rowspa=
+n=3D"1" colspan=3D"1" align=3D"center"><table border=3D"0" width=3D"100%" c=
+ellspacing=3D"0" cellpadding=3D"0"><tr><td style=3D"padding-bottom:5px;" va=
+lign=3D"top" width=3D"100%" rowspan=3D"1" colspan=3D"1" align=3D"center"><d=
+iv class=3D"FooterText" style=3D"color:#5d5d5d;font-size:12px;font-family:V=
+erdana,Geneva,sans-serif;line-height:1.4;"><a class=3D"hideInRplyFwd" style=
+=3D"color:#5d5d5d;" shape=3D"rect" href=3D"https://visitor.constantcontact.=
+com/do?p=3Dun&m=3D0014aDP97qUWBdGODXvnrwVJA%3D%3D&ch=3D7fafe2a0-fdd9-11e2-9=
+62d-d4ae527b79b7&ca=3D367a1875-a5cb-4236-8293-839a8464cd8e" target=3D"_blan=
+k" id=3D"unsubscribeLink"><span id=3D"unsubscribeLinkText">SafeUnsubscribe&=
+trade;</span> cleidigh@gmail.com</a></div></td></tr></table><table border=
+=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td valign=3D=
+"top" width=3D"100%" rowspan=3D"1" colspan=3D"1" align=3D"center"><div clas=
+s=3D"FooterText" style=3D"color:#5d5d5d;font-size:12px;font-family:Verdana,=
+Geneva,sans-serif;line-height:1.4;"><span class=3D"FooterColumn"><a style=
+=3D"color:#5d5d5d;" shape=3D"rect" href=3D"http://ui.constantcontact.com/sa=
+/fwtf.jsp?llr=3D8woeggeab&m=3D1104014359259&ea=3Dcleidigh%40gmail.com&a=3D1=
+133501160678" target=3D"_blank" id=3D"fwtfLink">Forward this email</a>&nbsp=
+;<span class=3D"HideInMobile">|&nbsp;</span></span><span class=3D"FooterCol=
+umn"><a class=3D"hideInRplyFwd" style=3D"color:#5d5d5d;" shape=3D"rect" hre=
+f=3D"https://visitor.constantcontact.com/do?p=3Doo&m=3D0014aDP97qUWBdGODXvn=
+rwVJA%3D%3D&ch=3D7fafe2a0-fdd9-11e2-962d-d4ae527b79b7&ca=3D367a1875-a5cb-42=
+36-8293-839a8464cd8e" target=3D"_blank" id=3D"updateProfileLink">Update Pro=
+file</a><span class=3D"HideInMobile hideInRplyFwd">&nbsp;|&nbsp;</span></sp=
+an><span class=3D"FooterColumn"><a style=3D"color:#5d5d5d;" shape=3D"rect" =
+href=3D"http://www.constantcontact.com/legal/service-provider?cc=3Dabout-se=
+rvice-provider" alt=3D"http://www.constantcontact.com/legal/service-provide=
+r?cc=3Dabout-service-provider" target=3D"_blank" id=3D"privacyLink">About o=
+ur service provider</a></span></div></td></tr></table><table border=3D"0" w=
+idth=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td style=3D"padding-=
+top:5px;" valign=3D"top" width=3D"100%" rowspan=3D"1" colspan=3D"1" align=
+=3D"center"><div class=3D"FooterText" style=3D"color:#5d5d5d;font-size:12px=
+;font-family:Verdana,Geneva,sans-serif;">Sent by <a style=3D"color:#5d5d5d;=
+" shape=3D"rect" href=3D"mailto:alstrials@neals.org" target=3D"_blank" id=
+=3D"sentByEmailLink">alstrials@neals.org</a> in collaboration with</div></t=
+d></tr></table></td></tr><tr><td style=3D"padding-top:20px;padding-bottom:2=
+0px;" valign=3D"top" width=3D"100%" rowspan=3D"1" colspan=3D"1" align=3D"ce=
+nter"><table border=3D"0" width=3D"240" cellspacing=3D"0" cellpadding=3D"0"=
+><tr><td style=3D"padding:0px 0px 3px 10px;" valign=3D"top" rowspan=3D"1" c=
+olspan=3D"1" align=3D"center"><a style=3D"color:#5d5d5d;text-decoration:non=
+e;" shape=3D"rect" href=3D"http://www.constantcontact.com/index.jsp?cc=3DPT=
+1133&rmc=3DVF19_V8" alt=3D"http://www.constantcontact.com/index.jsp?cc=3DPT=
+1133&rmc=3DVF19_V8" target=3D"_blank" id=3D"footerLogoLink"><img vspace=3D"=
+0" border=3D"0" hspace=3D"0" width=3D"211" alt=3D"Constant Contact" src=3D"=
+https://imgssl.constantcontact.com/ui/images1/logo_ctct_2x.png" /></a></td>=
+</tr><tr><td style=3D"color:#5d5d5d;font-size:9px;font-family:Verdana,Genev=
+a,sans-serif;" valign=3D"top" rowspan=3D"1" colspan=3D"1" align=3D"center">=
+<a style=3D"color:#5d5d5d;text-decoration:none;" shape=3D"rect" href=3D"htt=
+p://www.constantcontact.com/index.jsp?cc=3DPT1133&rmc=3DVF19_V8" alt=3D"htt=
+p://www.constantcontact.com/index.jsp?cc=3DPT1133&rmc=3DVF19_V8" target=3D"=
+_blank" id=3D"footerLogoTxtLink">Try email marketing for free today!</a></t=
+d></tr></table></td></tr></table></td></tr></table></div></td><td class=3D"=
+HideInMobile" rowspan=3D"1" colspan=3D"1"><img height=3D"5" vspace=3D"0" bo=
+rder=3D"0" hspace=3D"0" width=3D"1" src=3D"https://imgssl.constantcontact.c=
+om/letters/images/sys/S.gif" /></td></tr></table>
+</td>
+</tr>
+</table>
+</div></div></body>
+
+------=_Part_761119432_1587373229.1573673439688--

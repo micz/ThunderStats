@@ -1,9 +1,14 @@
 "use strict";
-ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
-//ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	// To be enabled in vesion 2.0
-ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
-ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+
+
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+
+var { miczThunderStatsDB } = ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
+var { miczThunderStatsCore } = ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
+var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+
 
 var $jQ = jQuery.noConflict();
 
@@ -43,8 +48,14 @@ var miczThunderStatsTab = {
 
 			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 			$jQ("span._many_days").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.InTheLastNumDays",miczThunderStatsTab._many_days));
-			$jQ("span._many_days_tab").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.LastNumDays",miczThunderStatsTab._many_days));
+			// $jQ("span._many_days_tab").text(miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.LastNumDays",miczThunderStatsTab._many_days));
+			
+			
+			// $jQ("span._many_days_tab").text("7 Days2");
+			const md = miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.LastNumDays",miczThunderStatsTab._many_days);
 
+			miczLogger.log("TabText : " + md);
+			$jQ("span._many_days_tab").text(md);
 			miczThunderStatsTab.checkLastBusinessDay();
 
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] window.name '+JSON.stringify(window.name)+'\r\n');
@@ -68,7 +79,7 @@ var miczThunderStatsTab = {
 
 			miczLogger.log("Loading accounts...",0);
 			miczThunderStatsCore.loadIdentities();
-			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
+			dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsCore.identities '+JSON.stringify(miczThunderStatsCore.identities)+'\r\n');
 
 			miczLogger.log("Accounts found: "+Object.keys(miczThunderStatsCore.accounts).length,0);
 			miczLogger.log("Identities found: "+Object.keys(miczThunderStatsCore.identities).length,0);
@@ -87,9 +98,11 @@ var miczThunderStatsTab = {
 			}
 			miczThunderStatsTab.getLastIndexedMessage();
 
+			// this.updateStats();
+
 			miczThunderStatsDB.close();
 			//miczThunderStatsStorageDB.close();	 // To be enabled in vesion 2.0
-
+			// miczThunderStatsTab.updateStats();
 		},
 
 	getTodayStats:function(identity_id){
@@ -246,7 +259,8 @@ var miczThunderStatsTab = {
 
 	getCustomQryStats:function(identity_id){
 		miczLogger.log("Getting custom query statistics...",0);
-
+		Services.console.logStringMessage("Get CustomeQStats:");
+		Services.console.logStringMessage("number days: " + miczThunderStatsUtils._customqry_num_days);
 		//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] getCustomQryStats identity_id: "+JSON.stringify(identity_id)+"\r\n");
 
 		//Show loading indicators
@@ -272,9 +286,31 @@ var miczThunderStatsTab = {
 		this.data_customqry_sent=new Array();
 		this.data_customqry_rcvd=new Array();
 
-		let mFromDay = document.getElementById('datepicker_from').dateValue;
-		let mToDay = document.getElementById('datepicker_to').dateValue;
+		let fp = document.querySelector("#date_range_picker")._flatpickr;
+		var mToDay;
+		var mFromDay = fp.selectedDates[0];
+		
+		if (fp.selectedDates.length === 2) {
+			mToDay = fp.selectedDates[1];
+			// Services.console.logStringMessage("stats UI Custom update date: "+fp.selectedDates[0] + "\n"+fp. selectedDates[1]);
+
+		} else {
+			mToDay = fp.selectedDates[0];
+			if (mToDay === undefined) {
+				mToDay = new Date()
+				mFromDay = new Date()
+			}
+			// Services.console.logStringMessage("stats UI single date: "+mToDay);
+
+		}
+
+		miczThunderStatsUtils._customqry_mToDay = mToDay;
+		miczThunderStatsUtils._customqry_mFromDay = mFromDay;
+
+
 		miczThunderStatsUtils._customqry_num_days=Math.round((mToDay-mFromDay)/86400000)+1;
+
+		Services.console.logStringMessage("stats UI update update custom dates:\n  From: " + mFromDay + "\n  To: "+ mToDay + "\n  nDays: "+ miczThunderStatsUtils._customqry_num_days );
 
 		if(miczThunderStatsUtils._customqry_num_days == 1){	//only one day
 			miczThunderStatsTab.ui.showLoadingElement("customqry_oneday_1");
@@ -291,7 +327,7 @@ var miczThunderStatsTab = {
 		//if there are too much days, warn the user...
 		if(miczThunderStatsUtils._customqry_num_days > 99){
 			let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
-			let promptService_numd = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+			let promptService_numd = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 			if(!promptService_numd.confirm(null,miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.Warning"),miczThunderStatsI18n.getBundleString(_bundleCW,"ThunderStats.CustomViewTooMuchDays",miczThunderStatsUtils._customqry_num_days))){
 				//The user aborted the action...
 				//... so hide the loading indicators
@@ -339,6 +375,7 @@ var miczThunderStatsTab = {
 			//Get received messages
 			miczThunderStatsCore.db.getManyDaysMessages(mInfoReceived,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_rcvd);
 
+			console.debug('after callbacks');
 			//== If we are using only business days, everything is calculated in the two callbacks above
 			if(!miczThunderStatsUtils._customqry_only_bd){
 				//Get first 10 recipients
@@ -350,6 +387,7 @@ var miczThunderStatsTab = {
 				miczThunderStatsCore.db.getAggregatePeriodMessages(1,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_sent);
 				miczThunderStatsCore.db.getAggregatePeriodMessages(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd);
 			}else{	//with only business days
+				console.debug('before Doing business days');
 				//Get first 10 recipients
 				miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients=new Array();
 				miczThunderStatsTab.callback.stats_customqry_recipients_only_bd.data_customqry_recipients_count=0;
@@ -358,6 +396,7 @@ var miczThunderStatsTab = {
 				miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders=new Array();
 				miczThunderStatsTab.callback.stats_customqry_senders_only_bd.data_customqry_senders_count=0;
 				miczThunderStatsCore.db.getManyDaysInvolved_OnlyBD(0,mFromDay,mToDay,identity_id,miczThunderStatsTab.callback.stats_customqry_senders_only_bd);
+				console.debug('after business at');
 			}
 		}else{	//getting only one day
 			//Print dates
@@ -390,7 +429,10 @@ var miczThunderStatsTab = {
 
 	getCurrentIdentityId:function(){	//returning an identities object or a 0 if none selected
 										//identities object is {ids_merged: array of all ids; ids:array of normal identities ids; ids_custom: array of custom identities ids; base_account_key: identity account key}}
-		let id_selector_value = $jQ("#identities_selector").val();
+		// let id_selector_value = $jQ("#identities_selector").val();
+		// console.debug('selectIdentities:\n'+document.getElementById("identities_selector").outerHTML  + " : "+document.getElementById("identities_selector").value);
+		let id_selector_value = document.getElementById("identities_selector").value;
+		
 		let output=new Array();
 		let output_obj={};
 		if(id_selector_value==0){
@@ -449,12 +491,15 @@ var miczThunderStatsTab = {
 
 		//if only bd, check if the selected range has some valid day
 		if(miczThunderStatsUtils._customqry_only_bd){
-			let mFromDay = document.getElementById('datepicker_from').dateValue;
-			let mToDay = document.getElementById('datepicker_to').dateValue;
+			let mFromDay = miczThunderStatsUtils._customqry_mFromDay;
+			let mToDay = miczThunderStatsUtils._customqry_mToDay;
+
 			let mDays = miczThunderStatsUtils.getDaysFromRange(mFromDay,mToDay,true);
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mFromDay: "+JSON.stringify(mFromDay)+"\r\n");
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mToDay: "+JSON.stringify(mToDay)+"\r\n");
 			//dump(">>>>>>>>>>>>>> [miczThunderStatsTab] updateCustomQry mDays: "+JSON.stringify(mDays)+"\r\n");
+
+			console.debug('total days '+mDays);
 			if(mDays.length==0){	//we have no valid business days, so tell the user
 				let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab.ui");
 				alert(_bundleCW.GetStringFromName("ThunderStats.NoValidBusinessDays"));

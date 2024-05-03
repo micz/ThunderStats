@@ -59,6 +59,7 @@
 <!ENTITY ThunderStats.LastWeek "La semaine dernière">
 <!ENTITY ThunderStats.LastMonth "Le mois dernier">
 <!ENTITY ThunderStats.LastYear "Année précédente">
+<!ENTITY ThunderStats.DateRange "Plage de dates">
 <!ENTITY ThunderStats.Last2Week "Les deux dernières semaines">
 <!ENTITY ThunderStats.OnlyBDCustomQry "Ne tenir compte que des jours ouvrables">
 <!ENTITY ThunderStats.Debugger.Run "Lancer le débogueur">

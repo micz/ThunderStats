@@ -1,8 +1,10 @@
 "use strict";
 
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
-ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+
+var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
 miczThunderStatsTab.promises={};
 

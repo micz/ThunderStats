@@ -1,13 +1,17 @@
 "use strict";
-ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+
+var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+var { miczThunderStatsUtils } = ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
+var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+
 
 miczThunderStatsTab.observer={};
 miczThunderStatsTab.observer.callback={};
 
 miczThunderStatsTab.observer.last_idx_update = function(mCallback){
-	let ObserverService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+	let ObserverService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
 	ObserverService.addObserver(mCallback,"mzts-last-index-update",false);
 };
 

@@ -28,7 +28,7 @@ var miczLogger = {
 
 	log:function(msg,level = 0){ //level 0: msg, 1: warning, 2: critical error
 		if (this.consoleService === null){
-			this.consoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+			this.consoleService = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
 		}
 
 		if((level==0)&&(this.debug)){
@@ -40,7 +40,7 @@ var miczLogger = {
 			// exceptionFlag  0x2   An exception was thrown for this case - exception-aware hosts can ignore this.
 			// strictFlag     0x4
 			let aCategory = '';
-        	let scriptError = Components.classes["@mozilla.org/scripterror;1"].createInstance(Components.interfaces.nsIScriptError);
+        	let scriptError = Cc["@mozilla.org/scripterror;1"].createInstance(Ci.nsIScriptError);
         	let aFlags=0x0;
         	if(level==1) aFlags=0x1;
         	let aSourceName='ThunderStats',

@@ -1,0 +1,452 @@
+Delivered-To: cleidigh@gmail.com
+Received: by 2002:adf:b584:0:0:0:0:0 with SMTP id c4csp9873055wre;
+        Wed, 13 Nov 2019 12:10:37 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzxudNPP1Wj9jgAKq146dkxIkQIOGQpUEiPlKKYexmwMW+tGpHbK7RVhAXeUacVg9FgkkIa
+X-Received: by 2002:ac8:e03:: with SMTP id a3mr4619429qti.169.1573675837104;
+        Wed, 13 Nov 2019 12:10:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1573675837; cv=none;
+        d=google.com; s=arc-20160816;
+        b=QKBjvFnZyo/YiGHjH4X7FCvlsA97JOPOhdiPCNwaJADbebDUAfNuxgOiX+KkJzKs+Y
+         tIwqULbQuj+EdIEZNeWBvzE8dHeFHHma89RkmrTIGz2vN+zrM0eARbHxORppODhDpgPA
+         oTSNU2n7R+UgrR0py4Xf3Y6HWDv1ixJnpejqFfwz0m9OY+g6i0icnCBEKz6j/nW7Pqii
+         9EFO8FdjYusmGOdogZTbi8WUvq+lAXJxcatbhStjkMWJNgTyFxL7seX1Qi/vlckPsXsp
+         kOUXVr/X9/q20+nBMWJVKGLPR1KdLr9tSA4xuywJOT5+Dqg+4d0t9T074rk4icDrzTL8
+         U3qQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=mime-version:date:rpcampaign:list-unsubscribe:message-id:to:subject
+         :from;
+        bh=7zFBi+owyVdwq+NbnnBgR0LBvmlHqqUulc/Ug8j62jQ=;
+        b=gIdfKbl5lgJwNhfOVUgTFAbJtNDFAqbkK1OqVLlqWRjYKuCKY3OlBzpi4vtRDRUh3o
+         mCN2quMzW38ib7A2mmlRNMk8hza3na2LNB15TEfvpH0HnI86GYJLfzu1MH90yID8cnwq
+         X7lcnP36x4w29BZXvoWsPvFvXY0Sx7weyUs+kso8CVBED671cwt+PT+lBIapOq7C/u0X
+         eOBnZarS7N8x62VDLurXIyZFTvr+fAKOXPOOyAc+4uOD/wXdAkAojdywhcRU4q13Gvwz
+         iviDVI+Jssg86/8QCX/CItHxKmUX61pzT63gJVju+SX6Vl/ALad5DXAaG9baiqYGfhBb
+         /LLw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of bounce@blackbaudemail.netcommunity1.com designates 205.139.105.202 as permitted sender) smtp.mailfrom=bounce@blackbaudemail.netcommunity1.com
+Return-Path: <bounce@blackbaudemail.netcommunity1.com>
+Received: from d2pdcsmmtapv2.blackbaud.com (d2pdcsmmtapv2.blackbaud.com. [205.139.105.202])
+        by mx.google.com with ESMTPS id v49si2002960qta.255.2019.11.13.12.10.36
+        for <cleidigh@gmail.com>
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Wed, 13 Nov 2019 12:10:37 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounce@blackbaudemail.netcommunity1.com designates 205.139.105.202 as permitted sender) client-ip=205.139.105.202;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of bounce@blackbaudemail.netcommunity1.com designates 205.139.105.202 as permitted sender) smtp.mailfrom=bounce@blackbaudemail.netcommunity1.com
+Received: from blackbaud.com ([10.4.119.245])
+	by d2pdcsmmtapv2.blackbaud.com (-); Wed, 13 Nov 2019 15:10:34 -0500
+X-VirtualServer: BO3-MTA04-205-202, d2pdcsmmtapv2.blackbaud.com, 10.4.116.217
+X-SMHeaderMap: mid="X-MailingID"
+X-Destination-ID: cleidigh@gmail.com
+X-SMFBL: Y2xlaWRpZ2hAZ21haWwuY29t
+X-VirtualServerGroup: BO3-MTA04-205-202
+FROM: "Brown Club of Rhode Island" <BCRI@alumni.brown.edu>
+Subject: Monday 12/9 - Annual BCRI Holiday Party
+TO: "Christopher D. Leidigh" <cleidigh@gmail.com>
+X-MailingID: 00000::GP::d097bf5a-4795-444f-9dc3-33babe8096d8::29bdc6da-f9c4-4488-b4d9-f9ba9b8d5cf4::b5106081-7a0f-4849-bd64-5fe6dc706c2b::0
+Return-Path: bounce@blackbaudemail.netcommunity1.com
+Message-ID: <c404557d5919420ca8fb0f5228d51e4c@alumni.brown.edu>
+List-Unsubscribe: <mailto:mail+_smverp_.00000.GP.d097bf5a-4795-444f-9dc3-33babe8096d8.29bdc6da-f9c4-4488-b4d9-f9ba9b8d5cf4.b5106081-7a0f-4849-bd64-5fe6dc706c2b.0._smverp_.cleidigh=gmail.com@dev.unsubscribe.com>
+RPCampaign: Blackbaud_324812194440490244161589244972798691034
+Date: Wed, 13 Nov 2019 15:10:37 -0500
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="NextPart_dff8c90c_521a_4602_9475_e2dcf0597c36"
+
+--NextPart_dff8c90c_521a_4602_9475_e2dcf0597c36
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+=5Bimage: Brown University seal]	=0A=0ABrown Club of Rhode Island=0A=0ASave=
+=0A=0ASave=0A=0ASave=0A=0A=0A=0A=0A=0A[image: BCRI Holiday Party]=0A=0A=0A=
+=0A=0A=0A=0ABCRI Holiday Party=0A=0A=0AMonday, December 9, 2019=0A=0A=0A6:0=
+=30 PM - 8:00 PM=0A=0A=0AMaddock Alumni Center=0A38 Brown Street, Providenc=
+=65=0A=0A=0APlease join the Brown Club of Rhode Island for our annual holid=
+=61y party!=0A=0AWarm up with old friends, make new friends, and enjoy some=
+=20holiday cheer as we celebrate the season in the friendly confines of Mad=
+=64ock Alumni Center!=0A=0AEntertainment will be provided by a jazz trio of=
+=20Brown music students.=0A=0AThis special event includes an open bar with =
+=77ine, beer, and soft drinks plus heavy hors d=E2=80=99oeurvres.=0A=0A=0AC=
+=6Fst:=0A=0AAlumni, Parents, and Guests - $ 20=0ABCRI College Hill and Ever=
+=20True Members - $ 15=0ANew Alumni ('17-'19) - $ 10=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0ARegister <https://bbis.advancement.brown.edu/BBPhenix/page.redi=
+=72?target=3Dhttps%3a%2f%2fbbis.advancement.brown.edu%2fbbphenix%2fbrunonia=
+=252fEvents%2fBrown-Club-of-Rhode-Island%2f2019%2fBCRIHolidayParty-2-Regist=
+=72ation&srcid=3D86587&srctid=3D1&erid=3Db5106081-7a0f-4849-bd64-5fe6dc706c=
+=32b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b>=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0AQuestions? Please contact Thano A. Chaltas at thano@chaltas.com.=
+=0A=0A=0AVisit BCRI Holiday Party <https://bbis.advancement.brown.edu/BBPhe=
+=6Eix/page.redir?target=3Dhttps%3a%2f%2fbbis.advancement.brown.edu%2fbbphen=
+=69x%2fbrunonia%2fEvents%2fBrown-Club-of-Rhode-Island%2f2019%2fBCRIHolidayP=
+=61rty&srcid=3D86587&srctid=3D1&erid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b=
+=26trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b> for more details.=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A[image: The curriculum at 50 logo] <https:=
+=2F/bbis.advancement.brown.edu/BBPhenix/page.redir?target=3Dhttps%3a%2f%2fb=
+=62is.advancement.brown.edu%2fBBPhenix%2fpage.redir%3ftarget%3dhttps%253a%2=
+=352f%252fwww.brown.edu%252facademics%252fundergraduate%252fopen-curriculum=
+=25252f50%26srcid%3d503%26erid%3d%2f(%7b%5bdollar%5d%7d)%5c%2f(%7b%5bdollar=
+=255d%7d)%5cI%2f(%7b%5bdollar%5d%7d)%5c%2f(%7b%5bdollar%5d%7d)%5c%26trid%3d=
+=252f(%7b%5bdollar%5d%7d)%5c%2f(%7b%5bdollar%5d%7d)%5cM%2f(%7b%5bdollar%5d%=
+=37d)%5c%2f(%7b%5bdollar%5d%7d)%5c&srcid=3D86587&srctid=3D1&erid=3Db5106081=
+=2D7a0f-4849-bd64-5fe6dc706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b>=
+=09=0A=0A=0A=0A=0A=0A=0A=0A=0AAs part of Brown=E2=80=99s yearlong celebrati=
+=6Fn of the 50th anniversary of the Open Curriculum, Brunonians are coming =
+=74ogether to reflect on the University=E2=80=99s distinctive and innovativ=
+=65 educational philosophy and to explore how it should be embodied today a=
+=6Ed into the future. Learn more. <https://bbis.advancement.brown.edu/BBPhe=
+=6Eix/page.redir?target=3Dhttps%3a%2f%2fbbis.advancement.brown.edu%2fBBPhen=
+=69x%2fpage.redir%3ftarget%3dhttps%253a%252f%252fwww.brown.edu%252facademic=
+=73%252fundergraduate%252fopen-curriculum%252f50%26srcid%3d503%26erid%3d%2f=
+=28%7b%5bdollar%5d%7d)%5c%2f(%7b%5bdollar%5d%7d)%5cI%2f(%7b%5bdollar%5d%7d)=
+=255c%2f(%7b%5bdollar%5d%7d)%5c%26trid%3d%2f(%7b%5bdollar%5d%7d)%5c%2f(%7b%=
+=35bdollar%5d%7d)%5cM%2f(%7b%5bdollar%5d%7d)%5c%2f(%7b%5bdollar%5d%7d)%5c&s=
+=72cid=3D86587&srctid=3D1&erid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b&trid=
+=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b>=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0AYou are receiving this email because you are either a constituent =
+=6Ff, or have opted into receiving communication from Brown Club of Rhode I=
+=73land.=0A=0ASave=0A=0ASave=0A=0ASave=0A=0AUnsubscribe <https://bbis.advan=
+=63ement.brown.edu/BBPhenix/subscriptions/unsubscribe?srctid=3D1&erid=3Db51=
+=306081-7a0f-4849-bd64-5fe6dc706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc70=
+=36c2b> Unsubscribe from this group <https://bbis.advancement.brown.edu/BBP=
+=68enix/subscriptions/unsubscribe?srctid=3D1&erid=3Db5106081-7a0f-4849-bd64=
+=2D5fe6dc706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b> | Manage more =
+=73ubscriptions <https://bbis.advancement.brown.edu/BBPhenix/policies?srcti=
+=64=3D1&erid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b&trid=3Db5106081-7a0f-48=
+=349-bd64-5fe6dc706c2b> | View privacy policy <https://bbis.advancement.bro=
+=77n.edu/BBPhenix/policies?srctid=3D1&erid=3Db5106081-7a0f-4849-bd64-5fe6dc=
+=3706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b>=0ABrown University, B=
+=6Fx 1893, Providence, RI 02912, USA <https://bbis.advancement.brown.edu/BB=
+=50henix/page.redir?target=3Dhttps%3a%2f%2fgoo.gl%2fmaps%2fCuVHpdv8dKzzgBZ3=
+=38&srcid=3D86587&srctid=3D1&erid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b&tr=
+=69d=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b>
+--NextPart_dff8c90c_521a_4602_9475_e2dcf0597c36
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+=3C!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"=0A    "htt=
+=70://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0A<HTML>=0A<HEAD>=
+=0A<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"=
+=20/>=0A<meta name=3D"viewport" content=3D"width=3Ddevice-width; initial-sc=
+=61le=3D1.0; maximum-scale=3D1.0; user-scalable=3D1;" />=0A<meta name=3D"fo=
+=72mat-detection" content=3D"telephone=3Dno" />=0A=0A<style type=3D"text/cs=
+=73">                      =0A=0Aimg {=0A	height: auto;=0A	line-height: 100=
+=25;=0A	outline: none;=0A	text-decoration: none;=0A	border:none;=0A	display=
+=3Ablock; /* display:block helps with space issue in Hotmail. Change indivi=
+=64ual images to display:inline if need them to flow with text. in this tem=
+=70late they are set to display inline inside of the body area */=0A}=0A=0A=
+=74able, td {=0A	mso-table-lspace:0pt; =0A	mso-table-rspace:0pt;=0A} =0A	=
+=0Aimg {=0A	-ms-interpolation-mode: bicubic;=0A} =0A  =0A  =0A.brownais-foo=
+=74er a[href^=3D"x-apple-data-detectors:"], .brownais-capsulDescrpt a[href^=
+=3D"x-apple-data-detectors:"], .brownais-apple-detector a[href^=3D"x-apple-=
+=64ata-detectors:"] { =0A	color:#4E3629 !important;=0A	text-decoration:none=
+=20/* !important*/;=0A	font-weight:normal!important;=0A}=0A=0A.brownais-cap=
+=73ulDescrpt-p a[href^=3D"x-apple-data-detectors:"] { =0A	color:#ffffff !im=
+=70ortant;=0A	text-decoration:none /* !important*/;=0A	font-weight:normal!i=
+=6Dportant;=0A}=0A    =0A    =0A    .brownais-storyButton-btn a, .brownais-=
+=73toryButton-btn a:link, .brownais-storyButton-btn a:visited, .brownais-st=
+=6FryButton-btn a:hover, .brownais-storyButton-btn a:active, .brownais-stor=
+=79Button-btn a:focus {=0A        color:#ffffff !important;=0A        font-=
+=77eight:bold !important;=0A        font-family: Arial, Helvetica, sans-ser=
+=69f !important;=0A        text-transform:uppercase !important;=0A    }=0A =
+=20  =0A    .brownais-storyButton-text a, .brownais-storyButton-text a:link=
+=2C .brownais-storyButton-text a:visited, .brownais-storyButton-text a:hove=
+=72, .brownais-storyButton-text a:active, .brownais-storyButton-text a:focu=
+=73 {=0A        color: #ed1c24 !important;=0A            =0A    }=0A   =0A =
+=20  img.eventImage270 {=0A        text-align:center !important;=0A        =
+=6Dargin:0 auto !important;=0A    }=0A    =0A    .brownais-bravoeventconten=
+=74 img {=0A        max-width:350px !important;=0A        width:100%;=0A   =
+=20}=0A    =0A    .brownais-bravoeventcontent ul li {=0A        list-style-=
+=74ype:none;=0A    }=0A=0A    img.eventThumbnail {=0A        margin:0 auto;=
+=0A        text-align:center;=0A    }=0A=0A=0A=0A	@media screen and (max-wi=
+=64th: 620px){=0A		.brownais-wrapper-maxWidth {=0A			max-width:100% !import=
+=61nt;=0A		}=0A=0A		.brownais-outerTable {=0A			padding:32px 0 0 !important=
+=3B=0A			text-align:center !important;=0A			max-width:100% !important;=0A		=
+=7D=0A=0A		.brownais-headerWrapper {=0A			padding-top:0 !important;=0A		}=
+=0A=0A		.brownais-preheaderBrownLogo {=0A			display:block !important;=0A			=
+=70osition:absolute !important;=0A			left:50% !important;=0A			right:0 !imp=
+=6Frtant;=0A			top:10px !important;=0A			width:100% !important;=0A			margin=
+=2Dleft:-50%!important;=0A			margin-bottom:0!important;=0A			padding:0!impo=
+=72tant;=0A			text-align:center!important;=0A		}=0A		=0A		.brownais-prehead=
+=65rContent {=0A			padding-bottom:8px!important;=0A			padding-right:10px!im=
+=70ortant;=0A			padding-left:10px!important;=0A			padding-top:0!important;=
+=0A		}=0A		=0A		.brownais-preheaderContent {=0A			text-align:center!importa=
+=6Et;=0A		}=0A=0A		.brownais-header {=0A			width:100% !important;=0A		}=0A	=
+=0A		.brownais-story {=0A			width:auto !important;=0A			margin:0 15px 0 !im=
+=70ortant;=0A		}=0A		=0A		.brownais-storyNav, .brownais-storyInitiative, .b=
+=72ownais-storyTitle, .brownais-capsulDescrpt, .brownais-storyButton, .brow=
+=6Eais-CTA-row, .brownais-unsubscribe, .brownais-unsubscribeAddress {=0A			=
+=70adding-left:22px!important;=0A			padding-right:22px!important;=0A			text=
+=2Dalign:left !important;=0A		}=0A		=0A		.brownais-eventDateBoxWrap {=0A			=
+=70adding-left:5%!important;=0A			padding-right:5%!important;=0A			text-ali=
+=67n:left !important;=0A		}=0A		.brownais-eventDateBox {=0A			width: 100%!i=
+=6Dportant;=0A		}=0A		.brownais-eventDateBox {=0A			font-size: 25px!importa=
+=6Et;=0A		}=0A		=0A		.brownais-storyButton-btn {=0A			margin-left:auto!impo=
+=72tant;=0A			margin-right:auto!important;=0A		}=0A		=0A		.brownais-twoColu=
+=6Dn-imageWrap {=0A			width:100%!important;=0A			padding-bottom:15px!import=
+=61nt;=0A			padding-left:0!important;=0A			padding-right:0!important;=0A			=
+=64isplay:table!important;=0A			text-align:center!important;=0A		}=0A		=0A	=
+=09.brownais-twoColumn-image {=0A			width:100%!important;=0A			padding-righ=
+=74:0!important;=0A		}=0A		=0A		.brownais-twoColumn-imageDesript {=0A			wid=
+=74h:100%!important;=0A			padding-bottom:0!important;=0A			padding-left:0!i=
+=6Dportant;=0A			padding-right:0!important;=0A			display:table!important;=
+=0A			text-align:left!important;=0A		}=0A		=0A		.mobileExpand {=0A			width:=
+=3100%!important;=0A			height:auto!important;=0A		}=0A		=0A		.mobileHide {=
+=0A			display:none!important;=0A		}=0A		=0A		.brownais-mobileShrink-50 {=0A=
+=09		width:90%!important;=0A			max-width:300px!important;=0A			height:auto!=
+=69mportant;=0A		}=0A		=0A		.mobileShrink {=0A			max-width:325px!important;=
+=0A			width:100%!important;=0A		}=0A		=0A		.mobileshrink200 {=0A			width:20=
+=30px !important;=0A			height:auto !important;=0A			padding:0!important;=0A=
+=09		margin:0!important;=0A			margin-left: auto!important;=0A			margin-righ=
+=74: auto!important;=0A		}=0A		.brownTogetherImages {=0A			width:150px !imp=
+=6Frtant;=0A			height:auto !important;=0A			padding:0!important;=0A			margi=
+=6E:0 auto!important;=0A			float: none!important;=0A			text-align: center!i=
+=6Dportant;=0A		}=0A=0A		.brownais-footer {=0A			width:auto !important;=0A	=
+=09	margin:0 15px 7px !important;=0A		}=0A        =0A        /* left-align =
+=62ravo promo images on mobile */=0A        .bravo-promo-image{=0A         =
+=20  margin:0 !important;=0A        }=0A		=0A}=0A	=0A	=0A</style>=0A=0A </H=
+=45AD>=0A<BODY  style=3D"padding: 0; margin: 0;" >=0A=0A<table align=3D"cen=
+=74er" bgcolor=3D"#f5f2ec" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+=20style=3D"width: 100%; background-color: #f5f2ec; border-spacing: 0; bord=
+=65r: none;">=0A<tbody>=0A<tr>=0A<td><center class=3D"brownais-wrapper" sty=
+=6Ce=3D"width: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: =
+=3100%; background-color: #f5f2ec;">=0A<div class=3D"brownais-wrapper-maxWi=
+=64th" style=3D"max-width: 600px;"><!--[if (gte mso 9)|(IE)]>=0A           =
+=20<table width=3D"600" align=3D"center" style=3D"border-spacing:0; font-fa=
+=6Dily:Arial, Helvetica, sans-serif; color:#4E3629; text-align:left; margin=
+=3A 0 auto !important;" >=0A            <tr>=0A            <td style=3D"pad=
+=64ing-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >=0A        =
+=20   <![endif]-->=0A<table align=3D"center" class=3D"brownais-outerTable" =
+=73tyle=3D"border-spacing: 0; font-family: Arial, Helvetica, sans-serif; co=
+=6Cor: #4e3629; margin: 0 auto; width: 100%; max-width: 600px; padding: 30p=
+=78 10px 45px 10px;">=0A<tbody><!-- Email Region -->=0A<tr>=0A<td style=3D"=
+=70adding: 0;">=0A<table align=3D"center" bgcolor=3D"#ffffff" class=3D"brow=
+=6Eais-story" style=3D"border-spacing: 0; font-family: 'Helvetica Neue', He=
+=6Cvetica, Arial, sans-serif; color: #4e3629; background-color: #fff; borde=
+=72-top: 6px solid #3b302c; border-right: 1px solid #e3dfd4; border-bottom:=
+=206px solid #3b302c; border-left: 1px solid #e3dfd4;" width=3D"100%"><!-- =
+=49mage Row -->=0A<tbody>=0A<tr>=0A<td class=3D"brownais-storyImageHeader" =
+=73tyle=3D"border-bottom: 1px solid #dad3cf; padding: 20px 0 20px 0;" align=
+=3D"center"><img alt=3D"Brown University seal" border=3D"0" height=3D"116" =
+=73rc=3D"http://advancement.brown.edu/emails/images/Brown_Logo_2_Color_500.=
+=70ng" style=3D"display: block; border: 0; margin-left: auto; margin-right:=
+=20auto;" width=3D"100" /></td>=0A</tr>=0A<!--END Image Row --> <!--Committ=
+=65e/Department -->=0A<tr>=0A<td class=3D"brownais-storyButton" style=3D"co=
+=6Cor: #584842; line-height: 20px; font-size: 17px; text-transform: upperca=
+=73e; letter-spacing: 1px; font-weight: bold; font-family: 'Helvetica Neue'=
+=2C Helvetica, Arial, sans-serif; text-align: center; padding: 40px 40px 0 =
+=340px;" align=3D"center"><!--Committee/Department--> <!-- CONTENT FOR INSI=
+=44E CRM--> <!-- START INSIDE TOP -->=0A<p style=3D"font-size: 17px; text-t=
+=72ansform: uppercase; letter-spacing: 1px; font-weight: bold; color: #5848=
+=342; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-ali=
+=67n: center; margin: 0;"><div>=0A	<p style=3D"margin: 0 0 8px 0;">Brown Cl=
+=75b of Rhode Island</p>=0A<p><span style=3D"border-radius: 2px; text-inden=
+=74: 20px; width: auto; padding: 0px 4px 0px 0px; text-align: center; font:=
+=20bold 11px/20px 'Helvetica Neue',Helvetica,sans-serif; color: #ffffff; ba=
+=63kground: #bd081c  no-repeat scroll 3px 50% / 14px 14px; position: absolu=
+=74e; opacity: 1; z-index: 8675309; display: none; cursor: pointer;">Save</=
+=73pan></p>=0A<p><span style=3D"border-radius: 2px; text-indent: 20px; widt=
+=68: auto; padding: 0px 4px 0px 0px; text-align: center; font: bold 11px/20=
+=70x 'Helvetica Neue',Helvetica,sans-serif; color: #ffffff; background: #bd=
+=3081c  no-repeat scroll 3px 50% / 14px 14px; position: absolute; opacity: =
+=31; z-index: 8675309; display: none; cursor: pointer;">Save</span></p>=0A<=
+=70><span style=3D"border-radius: 2px; text-indent: 20px; width: auto; padd=
+=69ng: 0px 4px 0px 0px; text-align: center; font: bold 11px/20px 'Helvetica=
+=20Neue',Helvetica,sans-serif; color: #ffffff; background: #bd081c  no-repe=
+=61t scroll 3px 50% / 14px 14px; position: absolute; opacity: 1; z-index: 8=
+=3675309; display: none; cursor: pointer;">Save</span></p>=0A</div></p>=0A<=
+=21-- END INSIDE TOP --></td>=0A</tr>=0A<!--END Committee/Department -->=0A=
+=3Ctr>=0A<td><div><!-- START Bravo only table wrapper -->=0A<table style=3D=
+=22margin: 0; padding: 0;" cellspacing=3D"0" cellpadding=3D"0">=0A<tbody><!=
+=2D- START Bravo only table wrapper --> <!--Video/Large Image Content -->=
+=0A<tr>=0A<td class=3D"brownais-capsulDescrpt" style=3D"color: #111111; fon=
+=74-family: Georgia, 'Times New Roman', Times, serif; text-transform: none;=
+=20font-size: 18px; line-height: 34px; font-weight: normal; padding: 30px 3=
+=35px 0 35px;" align=3D"center"><!--Event Image (270px width)-->=0A<p><img =
+=63lass=3D"eventThumbnail" style=3D"max-width: 550px !important; height: au=
+=74o !important; display: block !important; border: none !important;" src=
+=3D"https://bbis.advancement.brown.edu/bbphenix/brunonia//handler/EventImag=
+=65.ashx?src=3Ddb&amp;id=3D3DF7629E-8A43-44F3-BDB5-485334664748" alt=3D"BCR=
+=49 Holiday Party" /></p>=0A</td>=0A</tr>=0A<!--Video/Large Image Content -=
+=2D> <!--Text Content -->=0A<tr>=0A<td class=3D"brownais-storyButton browna=
+=69s-bravoeventcontent" style=3D"color: #3b302c; line-height: 20px; font-fa=
+=6Dily: Georgia, 'Times New Roman', Times, serif; font-size: 14px; text-ali=
+=67n: center; padding: 30px 40px 0 40px;"><!-- EVENT NAME -->=0A<h1 style=
+=3D"font-weight: bold; font-size: 32px; line-height: 34px; font-family: 'He=
+=6Cvetica Neue', Helvetica, Arial, sans-serif; margin: 0 0 40px 0;">BCRI Ho=
+=6Ciday Party</h1>=0A<!-- Start Date -->=0A<p style=3D"font-weight: bold; f=
+=6Fnt-size: 20px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-ser=
+=69f; margin: 0 0 30px 0;"><span class=3D"brownais-date-color" style=3D"col=
+=6Fr: #3b302c!important; text-decoration: none!important;">Monday, December=
+=209,&nbsp;2019</span></p>=0A<!-- Start Time End Time -->=0A<p style=3D"fon=
+=74-weight: bold; font-size: 20px; font-family: 'Helvetica Neue', Helvetica=
+=2C Arial, sans-serif; margin: 0 0 30px 0;"><span class=3D"brownais-date-co=
+=6Cor" style=3D"color: #3b302c!important; text-decoration: none!important;"=
+=3E6:00 PM - 8:00 PM</span></p>=0A<!-- LOCATION -->=0A<p style=3D"font-size=
+=3A 16px; line-height: 22px; font-family: Georgia, serif; margin: 0 0 30px =
+=30;">Maddock Alumni Center<br /> <span class=3D"brownais-date-color" style=
+=3D"color: #3b302c!important; text-decoration: none!important;">38 Brown St=
+=72eet, Providence<br /></span></p>=0A<!-- LONG DESCRIPTION -->=0A<p>Please=
+=20join the Brown Club of Rhode Island for our annual holiday party!</p>=0A=
+=3Cp>Warm up with old friends, make new friends, and enjoy some holiday che=
+=65r as we celebrate the season in the friendly confines of Maddock Alumni =
+=43enter!</p>=0A<p>Entertainment will be provided by a jazz trio of Brown m=
+=75sic students.</p>=0A<p>This special event includes an open bar with wine=
+=2C beer, and soft drinks plus heavy hors d&rsquo;oeurvres.</p>=0A<!-- COST=
+=20-->=0A<h3 style=3D"font-weight: bold; font-size: 15px; font-family: 'Hel=
+=76etica Neue', Helvetica, Arial, sans-serif; margin: 0 0 5px 0;">Cost:</h3=
+=3E=0A<p>Alumni, Parents, and Guests - &#36;20 <br />BCRI College Hill and =
+=45ver True Members - &#36;15 <br />New Alumni ('17-'19) - &#36;10</p>=0A</=
+=74d>=0A</tr>=0A<!--END Event Title and Time Row --> <!--RSVP Button Row --=
+=3E=0A<tr>=0A<td class=3D"brownais-storyButton" style=3D"color: #ffffff !im=
+=70ortant; font-family: Arial, Helvetica, sans-serif; text-transform: none;=
+=20font-size: 14px; line-height: 24px; font-weight: normal; text-align: cen=
+=74er; padding: 30px 40px 0 40px;" align=3D"center"><!--RSVP Button -->=0A<=
+=74able class=3D"brownais-storyButton-btn" style=3D"margin-left: auto; marg=
+=69n-right: auto;" cellspacing=3D"0" cellpadding=3D"0">=0A<tbody>=0A<tr>=0A=
+=3Ctd style=3D"padding: 10px 0; color: #ffffff !important; display: block; =
+=66ont-family: Arial, Helvetica, sans-serif;" align=3D"center" bgcolor=3D"#=
+=65d1c24" width=3D"220"><!-- REGISTRATION LINK -->=0A<p style=3D"font-weigh=
+=74: bold; line-height: 28px; font-family: Arial, Helvetica, Sans-serif; fo=
+=6Et-size: 18px; color: #ffffff !important; margin: 0;"><span style=3D"colo=
+=72: #ffffff !important;"><span style=3D"color: #ffffff;"><a href=3D"https:=
+=2F/bbis.advancement.brown.edu/BBPhenix/page.redir?target=3Dhttps%3a%2f%2fb=
+=62is.advancement.brown.edu%2fbbphenix%2fbrunonia%2fEvents%2fBrown-Club-of-=
+=52hode-Island%2f2019%2fBCRIHolidayParty-2-Registration&srcid=3D86587&srcti=
+=64=3D1&erid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b&trid=3Db5106081-7a0f-48=
+=349-bd64-5fe6dc706c2b">Register</a></span></span></p>=0A</td>=0A</tr>=0A</=
+=74body>=0A</table>=0A<!--END RSVP Button --></td>=0A</tr>=0A<!--END RSVP B=
+=75tton Row --> <!--Text and Image Row -->=0A<tr>=0A<td class=3D"brownais-s=
+=74oryButton-text" style=3D"color: #3b302c; font-family: Georgia, 'Times Ne=
+=77 Roman', Times, serif; text-transform: none; font-size: 14px; line-heigh=
+=74: 24px; font-weight: normal; text-align: center; padding: 30px 40px 40px=
+=2040px;"><!-- CONTACT INFO -->=0A<p style=3D"margin: 0 0 20px 0;"><em><str=
+=6Fng>Questions?</strong> Please contact Thano A. Chaltas at thano@chaltas.=
+=63om.</em></p>=0A<!-- PAGE LINK -->=0A<p style=3D"font-weight: normal; lin=
+=65-height: 28px; font-family: Georgia, serif; font-size: 15px; margin: 0 0=
+=2018px 0;">Visit <a title=3D"BCRI Holiday Party" href=3D"https://bbis.adva=
+=6Ecement.brown.edu/BBPhenix/page.redir?target=3Dhttps%3a%2f%2fbbis.advance=
+=6Dent.brown.edu%2fbbphenix%2fbrunonia%2fEvents%2fBrown-Club-of-Rhode-Islan=
+=64%2f2019%2fBCRIHolidayParty&srcid=3D86587&srctid=3D1&erid=3Db5106081-7a0f=
+=2D4849-bd64-5fe6dc706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b">BCRI=
+=20Holiday Party</a> for more details.</p>=0A</td>=0A</tr>=0A<!--END Text a=
+=6Ed Image Row --> <!--START ALL Curriculum @ 50 Content -->=0A<tr>=0A<td c=
+=6Cass=3D"brownais-capsulDescrpt" style=3D"color: #111111; font-family: Geo=
+=72gia, 'Times New Roman', Times, serif; text-transform: none; font-size: 1=
+=36px; line-height: 30px; font-weight: normal; border-top: #e1e1e1 2px soli=
+=64; background-color: #efeeee; padding: 35px;"><!-- [if (gte mso 9)|(IE)]>=
+=0A								   <table cellpadding=3D"0" cellspacing=3D"0">=0A								   <tr>=
+=0A								   <td>=0A								   <![endif]--> <!--Two Column Content Wrapper=
+=20- LAST ROW ONLY-->=0A<table style=3D"border-spacing: 0; width: 100%; pad=
+=64ing: 0; margin: 0;" cellspacing=3D"0" cellpadding=3D"0">=0A<tbody>=0A<tr=
+=3E=0A<td style=3D"padding: 0; margin: 0;"><!--Two Column Image-->=0A<table=
+=20class=3D"brownais-twoColumn-imageWrap" style=3D"border-spacing: 0; font-=
+=66amily: Arial, Helvetica, sans-serif; color: #ee0000; width: 33%; font-we=
+=69ght: bold; padding: 0;" cellspacing=3D"0" cellpadding=3D"0" align=3D"lef=
+=74">=0A<tbody><!--Image-->=0A<tr>=0A<td class=3D"brownais-twoColumn-image"=
+=20style=3D"padding: 0 30px 20px 0;"><a style=3D"color: #ed1c24; text-decor=
+=61tion: underline; font-weight: normal;" href=3D"https://bbis.advancement.=
+=62rown.edu/BBPhenix/page.redir?target=3Dhttps%3a%2f%2fbbis.advancement.bro=
+=77n.edu%2fBBPhenix%2fpage.redir%3ftarget%3dhttps%253a%252f%252fwww.brown.e=
+=64u%252facademics%252fundergraduate%252fopen-curriculum%252f50%26srcid%3d5=
+=303%26erid%3d%2f(%7b%5bdollar%5d%7d)%5c%2f(%7b%5bdollar%5d%7d)%5cI%2f(%7b%=
+=35bdollar%5d%7d)%5c%2f(%7b%5bdollar%5d%7d)%5c%26trid%3d%2f(%7b%5bdollar%5d=
+=257d)%5c%2f(%7b%5bdollar%5d%7d)%5cM%2f(%7b%5bdollar%5d%7d)%5c%2f(%7b%5bdol=
+=6Car%5d%7d)%5c&srcid=3D86587&srctid=3D1&erid=3Db5106081-7a0f-4849-bd64-5fe=
+=36dc706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b" target=3D"_blank" =
+=72el=3D"noopener noreferrer"><img class=3D"mobileshrink150" style=3D"width=
+=3A 100px; height: 100px; outline: none; border: none; display: block; marg=
+=69n: 0 auto; -ms-interpolation-mode: bicubic; float: none;" src=3D"http://=
+=61dvancement.brown.edu/emails/images/curriculum-at-50/secondary_brown_50_r=
+=65d.png" alt=3D"The curriculum at 50 logo" width=3D"100" height=3D"100" al=
+=69gn=3D"left" border=3D"0" /></a></td>=0A</tr>=0A<!--END Image--></tbody>=
+=0A</table>=0A<!--END Two Column Image--> <!--Image Description-->=0A<table=
+=20class=3D"brownais-twoColumn-imageDesript" style=3D"border-spacing: 0; fo=
+=6Et-family: Arial, Helvetica, sans-serif; color: #000000; width: 60%; font=
+=2Dweight: normal; padding: 0;" cellspacing=3D"0" cellpadding=3D"0" align=
+=3D"left">=0A<tbody><!--Text-->=0A<tr>=0A<td class=3D"brownais-campaignProg=
+=72ess-desript" style=3D"padding: 0; color: #000; font-family: Arial, Helve=
+=74ica, sans-serif; text-transform: none; font-size: 13px; line-height: 18p=
+=78; font-weight: normal;">=0A<p style=3D"margin: 0; padding: 0;">As part o=
+=66 Brown&rsquo;s yearlong celebration of the 50th anniversary of the Open =
+=43urriculum, Brunonians are coming together to reflect on the University&r=
+=73quo;s distinctive and innovative educational philosophy and to explore h=
+=6Fw it should be embodied today and into the future. <a style=3D"color: #e=
+=641c24; text-decoration: underline; font-weight: normal;" href=3D"https://=
+=62bis.advancement.brown.edu/BBPhenix/page.redir?target=3Dhttps%3a%2f%2fbbi=
+=73.advancement.brown.edu%2fBBPhenix%2fpage.redir%3ftarget%3dhttps%253a%252=
+=66%252fwww.brown.edu%252facademics%252fundergraduate%252fopen-curriculum%2=
+=352f50%26srcid%3d503%26erid%3d%2f(%7b%5bdollar%5d%7d)%5c%2f(%7b%5bdollar%5=
+=64%7d)%5cI%2f(%7b%5bdollar%5d%7d)%5c%2f(%7b%5bdollar%5d%7d)%5c%26trid%3d%2=
+=66(%7b%5bdollar%5d%7d)%5c%2f(%7b%5bdollar%5d%7d)%5cM%2f(%7b%5bdollar%5d%7d=
+=29%5c%2f(%7b%5bdollar%5d%7d)%5c&srcid=3D86587&srctid=3D1&erid=3Db5106081-7=
+=610f-4849-bd64-5fe6dc706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b" t=
+=61rget=3D"_blank" rel=3D"noopener noreferrer">Learn more.</a></p>=0A</td>=
+=0A</tr>=0A<!--END Text--></tbody>=0A</table>=0A<!--END Image Description--=
+=3E</td>=0A</tr>=0A</tbody>=0A</table>=0A<!--END Two Column Content Wrapper=
+=2D-> <!-- [if (gte mso 9)|(IE)]>=0A								 </td>=0A								 </tr>=0A					=
+=09	  	 </table>=0A								 <![endif]--></td>=0A</tr>=0A<!--END ALL Curricu=
+=6Cum @ 50 Content --> <!-- END Bravo only table wrapper --></tbody>=0A</ta=
+=62le>=0A<!-- END Bravo only table wrapper --></div></td>=0A</tr>=0A</tbody=
+=3E=0A</table>=0A</td>=0A</tr>=0A<!-- END Email Region --> <!-- Unsubscribe=
+=20-->=0A<tr>=0A<td style=3D"background-color: #f5f2ec; padding: 0;" align=
+=3D"left">=0A<table align=3D"left" class=3D"brownais-footer" style=3D"borde=
+=72-spacing: 0; font-family: Arial, Helvetica, sans-serif; color: #4e3629; =
+=74ext-align: left; margin-bottom: 18px; background-color: #f5f2ec;" width=
+=3D"100%"><!-- Unsubscribe and Address Region -->=0A<tbody>=0A<tr>=0A<td cl=
+=61ss=3D"brownais-unsubscribe" style=3D"font-size: 11px; line-height: 19px;=
+=20color: #4e3629; padding: 30px 35px 10px 35px;"><div>=0A	<p style=3D"font=
+=2Dsize: 11px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica,=
+=20Arial, sans-serif; color: #808080; margin: 0 0 8px 0;">You are receiving=
+=20this email because you are either a constituent of, or have opted into r=
+=65ceiving communication from Brown Club of Rhode Island.</p>=0A<p><span st=
+=79le=3D"border-radius: 2px; text-indent: 20px; width: auto; padding: 0px 4=
+=70x 0px 0px; text-align: center; font: bold 11px/20px 'Helvetica Neue',Hel=
+=76etica,sans-serif; color: #ffffff; background: #bd081c  no-repeat scroll =
+=33px 50% / 14px 14px; position: absolute; opacity: 1; z-index: 8675309; di=
+=73play: none; cursor: pointer;">Save</span></p>=0A<p><span style=3D"border=
+=2Dradius: 2px; text-indent: 20px; width: auto; padding: 0px 4px 0px 0px; t=
+=65xt-align: center; font: bold 11px/20px 'Helvetica Neue',Helvetica,sans-s=
+=65rif; color: #ffffff; background: #bd081c  no-repeat scroll 3px 50% / 14p=
+=78 14px; position: absolute; opacity: 1; z-index: 8675309; display: none; =
+=63ursor: pointer;">Save</span></p>=0A<p><span style=3D"border-radius: 2px;=
+=20text-indent: 20px; width: auto; padding: 0px 4px 0px 0px; text-align: ce=
+=6Eter; font: bold 11px/20px 'Helvetica Neue',Helvetica,sans-serif; color: =
+=23ffffff; background: #bd081c  no-repeat scroll 3px 50% / 14px 14px; posit=
+=69on: absolute; opacity: 1; z-index: 8675309; display: none; cursor: point=
+=65r;">Save</span></p>=0A</div>=0A<p style=3D"font-size: 11px; line-height:=
+=2016px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color=
+=3A #808080; margin: 0 0 8px 0;"><a href=3D"https://bbis.advancement.brown.=
+=65du/BBPhenix/subscriptions/unsubscribe?srctid=3D1&erid=3Db5106081-7a0f-48=
+=349-bd64-5fe6dc706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b" style=
+=3D"text-decoration: underline; color: #df0606; display: none;" pid=3D"501"=
+=20did=3D"0" tab=3D"0">Unsubscribe</a> <a href=3D"https://bbis.advancement.=
+=62rown.edu/BBPhenix/subscriptions/unsubscribe?srctid=3D1&erid=3Db5106081-7=
+=610f-4849-bd64-5fe6dc706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b" s=
+=74yle=3D"text-decoration: underline; color: #df0606;" pid=3D"501" did=3D"0=
+=22 tab=3D"0">Unsubscribe from this group</a> | <a href=3D"https://bbis.adv=
+=61ncement.brown.edu/BBPhenix/policies?srctid=3D1&erid=3Db5106081-7a0f-4849=
+=2Dbd64-5fe6dc706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b" style=3D"=
+=74ext-decoration: underline; color: #df0606;" pid=3D"487" did=3D"0" tab=3D=
+=220">Manage more subscriptions</a> | <a href=3D"https://bbis.advancement.b=
+=72own.edu/BBPhenix/policies?srctid=3D1&erid=3Db5106081-7a0f-4849-bd64-5fe6=
+=64c706c2b&trid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b" style=3D"text-decor=
+=61tion: underline; color: #df0606;" pid=3D"487" did=3D"0" tab=3D"0">View p=
+=72ivacy policy</a></p>=0A</td>=0A</tr>=0A<tr>=0A<td class=3D"brownais-unsu=
+=62scribeAddress" style=3D"font-size: 11px; line-height: 19px; color: #8080=
+=380; padding: 5px 35px 12px 35px;"><a style=3D"color: #808080; text-decora=
+=74ion: none !important;" href=3D"https://bbis.advancement.brown.edu/BBPhen=
+=69x/page.redir?target=3Dhttps%3a%2f%2fgoo.gl%2fmaps%2fCuVHpdv8dKzzgBZ38&sr=
+=63id=3D86587&srctid=3D1&erid=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b&trid=
+=3Db5106081-7a0f-4849-bd64-5fe6dc706c2b"><span style=3D"color: #808080;"><s=
+=70an style=3D"color: #808080;">Brown University, Box 1893, Providence, RI =
+=302912, USA</span></span></a></td>=0A</tr>=0A<!-- END Unsubscribe and Addr=
+=65ss Region --></tbody>=0A</table>=0A</td>=0A</tr>=0A<!-- END Unsubscribe =
+=2D-></tbody>=0A</table>=0A<!--[if (gte mso 9)|(IE)]>=0A            </td>=
+=0A            </tr>=0A            </table>=0A            <![endif]--></div=
+=3E=0A</center></td>=0A</tr>=0A</tbody>=0A</table>=0A=0A<div style=3D"displ=
+=61y:none;"><IMG alt=3D"" hspace=3D"0" border=3D"0" src=3D"https://bbis.adv=
+=61ncement.brown.edu/BBPhenix/smtp.mailopen?id=3Db5106081-7a0f-4849-bd64-5f=
+=656dc706c2b" /></div>=0A</BODY>=0A</HTML>
+--NextPart_dff8c90c_521a_4602_9475_e2dcf0597c36--
+
+

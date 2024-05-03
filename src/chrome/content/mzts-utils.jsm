@@ -2,20 +2,25 @@
 
 let EXPORTED_SYMBOLS = ["miczThunderStatsUtils"];
 
-ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
-//ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+var { fixIterator } = ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
+var { miczThunderStatsNBD } = ChromeUtils.import("chrome://thunderstats/content/mzts-nobusinessday.jsm");
+var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
+
+// Services.console.logStringMessage("utilities loading");
 
 var miczThunderStatsUtils = {
 
-	ThunderStatsVersion:'1.5alpha',
+	ThunderStatsVersion:'1.4.5-b9',
 	mailto:'m@micz.it',
 	mHost:null,
 	_y_is_last_business_day:false,
 	_y_ui_strings_update_needed:true,
 	_customqry_num_days:0,
+	_customqry_mFromDay: new Date(),
+	_customqry_mToDay: new Date(),
 	_customqry_num_days_small_labels:15,
 	_customqry_analyzer_data:{},
 	_customqry_only_bd:false,
@@ -68,16 +73,32 @@ var miczThunderStatsUtils = {
 	},
 
 	getDaysFromRange: function(mFromDate,mToDate,mOnlyBD){
+		Services.console.logStringMessage("getDaysFromRange number days: " + miczThunderStatsUtils._customqry_num_days);
 		if(!mOnlyBD) mOnlyBD=false;
 		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] begin',0);
-		if(mOnlyBD&&miczThunderStatsUtils._customqry_days_range!=null){	//do not get bd days range many time for one data extract
-			return miczThunderStatsUtils._customqry_days_range;
-		}
+
+		// cleidigh check where Ranges  set
+		// if(mOnlyBD&&miczThunderStatsUtils._customqry_days_range!=null){	//do not get bd days range many time for one data extract
+		// 	return miczThunderStatsUtils._customqry_days_range;
+		// }
+
 		let dOutput=new Array();
 		// Calculate days between dates
 		let millisecondsPerDay = 86400000;	// Day in milliseconds
-		let mFromDateInternal=new Date(mFromDate);
-		let mToDateInternal=new Date(mToDate);
+		var mFromDateInternal=new Date();
+		var mToDateInternal=new Date();
+		
+		if (Object.prototype.toString.call(mFromDate) === '[object Date]') {
+			mFromDateInternal = mFromDate;
+			mToDateInternal = mToDate;
+		
+		} else {
+			mFromDateInternal=new Date(mFromDate);
+			mToDateInternal=new Date(mToDate);
+		
+		}
+		console.debug('from internal '+mFromDateInternal);
+
 		mFromDateInternal.setHours(0,0,0,0);			// Start just after midnight
 		mToDateInternal.setHours(23,59,59,59);			// End just before midnight
 		//DST fix
@@ -99,20 +120,20 @@ var miczThunderStatsUtils = {
 			let dTmp = new Date(mFromDateInternal);
 			dTmp.setDate(mFromDateInternal.getDate()+ii);
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dTmp)+'\r\n');
-			//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp.getDate() '+JSON.stringify(dTmp.getDate())+'\r\n');
+			dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp.getDate() '+JSON.stringify(dTmp.getDate())+'\r\n');
 			if(mOnlyBD){	//we want only business days
 				if(miczThunderStatsUtils.isBusinessDay(dTmp)){	//add this day only if it's a business day
 					dOutput.push(dTmp);
-					//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
+					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
 				}else{
-					//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp NOT ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
+					dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp NOT ADDED '+JSON.stringify(dTmp)+"weekday: "+dTmp.getUTCDay()+'\r\n');
 				}
 			}else{	//we want all days
 				dOutput.push(dTmp);
 			}
 		}
-		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
-		//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput),0);
+		// dump('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput)+'\r\n');
+		miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsUtils getDaysFromRange] dTmp '+JSON.stringify(dOutput),0);
 		if(mOnlyBD){
 			miczThunderStatsUtils._customqry_days_range=dOutput;
 		}
@@ -169,12 +190,21 @@ var miczThunderStatsUtils = {
 	getCurrentSystemLocale:function(){
 		let th_locale = null;
 		if(!miczThunderStatsUtils.checkTBVersion_pre57()){
-			th_locale = Components.classes["@mozilla.org/intl/localeservice;1"]
-							.getService(Components.interfaces.mozILocaleService)
-							.getAppLocaleAsLangTag();
+
+			try {
+			// getAppLocaleAsBCP47() - replaces getAppLocaleAsLangTag();
+			th_locale = Cc["@mozilla.org/intl/localeservice;1"]
+							.getService(Ci.mozILocaleService)
+							.getAppLocaleAsBCP47();
+			} catch {
+				th_locale = Services.locale.appLocaleAsBCP47;
+				if (!th_locale) {
+					th_locale = "en-US";
+				}
+			}
 		}else{
-			th_locale = Components.classes["@mozilla.org/intl/nslocaleservice;1"]
-			           		.getService(Components.interfaces.nsILocaleService)
+			th_locale = Cc["@mozilla.org/intl/nslocaleservice;1"]
+			           		.getService(Ci.nsILocaleService)
 			 		  		.getSystemLocale()
 			 		  		.getCategory('NSILOCALE_TIME');
 		}
@@ -195,7 +225,7 @@ var miczThunderStatsUtils = {
 
 	activateGlobalIndexing:function(){
     	let _bundleCW = miczThunderStatsI18n.createBundle("mzts-searchwarn");
-		let promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+		let promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"].getService(Ci.nsIPromptService);
 		if(!promptService.confirm(null,_bundleCW.GetStringFromName("ThunderStats.Attention"),_bundleCW.GetStringFromName("ThunderStats.SearchWarnQuestion")))return;
 		miczThunderStatsPrefs.setBoolPref("mailnews.database.global.indexer.enabled",true);
 		miczThunderStatsTab.ui.showGlobalIndexingWarning(true);
@@ -203,7 +233,7 @@ var miczThunderStatsUtils = {
 	},
 
 	getAccountsOrder:function(custom_account_key){
-		let prefsc = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+		let prefsc = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefService);
 		let prefs = prefsc.getBranch("mail.accountmanager.");
 		let default_account=prefs.getCharPref("defaultaccount");
 		//dump('>>>>>>>>>>>>>> [miczThunderStatsUtil getAccountsOrder] default_account '+JSON.stringify(default_account)+'\r\n');
@@ -222,13 +252,13 @@ var miczThunderStatsUtils = {
 
 	getInboxFoldersObjects:function(mFolder){ //first input is a root account folder - then the function is recursive
 		let arr_inbox=new Array();
-		let isInbox = mFolder.flags & Components.interfaces.nsMsgFolderFlags.Inbox;
+		let isInbox = mFolder.flags & Ci.nsMsgFolderFlags.Inbox;
 		if (isInbox){
 			arr_inbox.push(mFolder);
 			//dump('>>>>>>>>>>>>>> [miczThunderStatsTab getInboxMessages] mFolder.URI '+JSON.stringify(mFolder.URI)+'\r\n');
 		}
 		if (mFolder.hasSubFolders){
-			for (let folder of fixIterator(mFolder.subFolders, Components.interfaces.nsIMsgFolder)){
+			for (let folder of fixIterator(mFolder.subFolders, Ci.nsIMsgFolder)){
 				let tmp_inbox=miczThunderStatsUtils.getInboxFoldersObjects(folder);
 				if(tmp_inbox.length > 0){
 					arr_inbox=miczThunderStatsUtils.arrayMerge(arr_inbox,tmp_inbox);
@@ -240,18 +270,18 @@ var miczThunderStatsUtils = {
 
 	openLink:function(link){
 		// first construct an nsIURI object using the ioservice
-		let ioservice = Components.classes["@mozilla.org/network/io-service;1"]
-								  .getService(Components.interfaces.nsIIOService);
+		let ioservice = Cc["@mozilla.org/network/io-service;1"]
+								  .getService(Ci.nsIIOService);
 		let uriToOpen = ioservice.newURI(link, null, null);
-		let extps = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"]
-							  .getService(Components.interfaces.nsIExternalProtocolService);
+		let extps = Cc["@mozilla.org/uriloader/external-protocol-service;1"]
+							  .getService(Ci.nsIExternalProtocolService);
 		// now, open it!
 		extps.loadURI(uriToOpen, null);
 	},
 
 	getHostSystem:function(){
 		if (null==this.mHost) {
-				let osString = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS;
+				let osString = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
 				this.mHost = osString.toLowerCase();
 		}
 		return this.mHost; // linux - winnt - darwin
@@ -383,19 +413,19 @@ var miczThunderStatsUtils = {
 
 	get HostSystem(){
 		if (null==miczThunderStatsUtils.mHost){
-			let osString = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS;
+			let osString = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS;
 			miczThunderStatsUtils.mHost = osString.toLowerCase();
 		}
 		return miczThunderStatsUtils.mHost; // linux - winnt - darwin
 	},
 
 	get TBVersion() {
-		let appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
+		let appInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
 		return appInfo.version;
 	},
 	
 	checkTBVersion_pre57:function(){	//true if TB version is PRE 57, false otherwise
-		let versionComparator = Components.classes["@mozilla.org/xpcom/version-comparator;1"].getService(Components.interfaces.nsIVersionComparator);
+		let versionComparator = Cc["@mozilla.org/xpcom/version-comparator;1"].getService(Ci.nsIVersionComparator);
 		return versionComparator.compare(miczThunderStatsUtils.TBVersion,'57.0')<0;
 	},
 
@@ -404,8 +434,8 @@ var miczThunderStatsUtils = {
 	},
 
 	getMail3PaneWindow:function getMail3PaneWindow(){
-		let windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1']
-				.getService(Components.interfaces.nsIWindowMediator),
+		let windowManager = Cc['@mozilla.org/appshell/window-mediator;1']
+				.getService(Ci.nsIWindowMediator),
 		    win3pane = windowManager.getMostRecentWindow("mail:3pane");
 		return win3pane;
 	},

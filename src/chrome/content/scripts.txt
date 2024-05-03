@@ -1,0 +1,36 @@
+ Volume in drive C has no label.
+ Volume Serial Number is 82E9-2688
+
+ Directory of C:\Dev\Thunderbird\Extensions XUL\thunderstats-tb-master\src\chrome\content
+
+08/10/2019  10:50 PM             2,102 jqscript.js
+02/16/2019  12:39 AM               427 mzts-button.js
+
+02/16/2019  12:39 AM            20,379 mzts-debugger.callback.js
+02/16/2019  12:39 AM            12,582 mzts-debugger.js
+02/16/2019  12:39 AM             1,413 mzts-debugger.observer.js
+08/10/2019  10:41 PM             1,013 mzts-overlay.js
+02/16/2019  12:39 AM             1,846 mzts-prefobserver.js
+02/16/2019  12:39 AM             3,187 mzts-settings-nobusinessdayeditor.js
+08/10/2019  10:41 PM            17,147 mzts-settings.js
+08/10/2019  10:41 PM            74,141 mzts-statstab.callback.js
+02/16/2019  12:39 AM            10,924 mzts-statstab.folderworkers.js
+08/10/2019  10:32 PM            27,622 mzts-statstab.js
+02/16/2019  12:39 AM             1,049 mzts-statstab.observer.js
+02/16/2019  12:39 AM             4,519 mzts-statstab.promises.js
+08/10/2019  10:41 PM            54,990 mzts-statstab.ui.js
+02/16/2019  12:39 AM             4,783 mzts-thstatstabtype.js
+              16 File(s)        238,124 bytes
+               0 Dir(s)  783,982,874,624 bytes free
+ Volume in drive C has no label.
+ Volume Serial Number is 82E9-2688
+
+ Directory of C:\Dev\Thunderbird\Extensions XUL\thunderstats-tb-master\src\chrome\content
+
+08/10/2019  10:41 PM             2,057 mzts-nobusinessday.jsm
+08/10/2019  10:41 PM            15,166 mzts-statscore.jsm
+02/16/2019  12:39 AM               545 mzts-statstab.i18n.jsm
+08/10/2019  10:39 PM             4,633 mzts-statstab.prefs.jsm
+08/10/2019  10:41 PM            16,760 mzts-utils.jsm
+               5 File(s)         39,161 bytes
+               0 Dir(s)  783,982,870,528 bytes free

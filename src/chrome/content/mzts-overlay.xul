@@ -36,7 +36,7 @@
  insertafter="joinChatMenuItem"/>
  </menupopup>
 
-
+<!-- 
  <menupopup id="appmenu_taskPopup">
  <menuitem id="miczThunderStats-action-appmenu-item"
  label="ThunderStats"
@@ -47,6 +47,6 @@
  <menuseparator id="appmenu_miczThunderStats-Separator"
  insertafter="appmenu_joinChatMenuItem"/>
  </menupopup>
-
+ -->
 
 </overlay>

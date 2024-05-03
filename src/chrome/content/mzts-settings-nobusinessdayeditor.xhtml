@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="css/mzts-settings-nobusinessdayeditor.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/preferences/preferences.css" type="text/css" ?>
+
+<!DOCTYPE html SYSTEM "chrome://thunderstats/locale/mzts-settings-nobusinessdayeditor.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<head>
+    <link rel="stylesheet" href="chrome://thunderstats/content/flatpickr/flatpickr-4.6.3-min.css" />
+    <link rel="stylesheet" type="text/css" href="chrome://thunderstats/content/flatpickr/material_blue.css" />
+
+    <title>&ThunderStats.NBDEditor.window.title;</title>
+
+    <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/flatpickr-4.6.3-min.js" />
+    <script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/es.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/it.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/fr.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/nl.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/ja.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/flatpickr/locales/de.js" />
+		<script type="application/javascript" src="chrome://thunderstats/content/mzts-settings-nobusinessdayeditor.js"/>
+
+</head>
+
+<body style="min-height: 355px; width: 500px;">
+    <div height="40px" width="100%">
+        <table>
+            <tr>
+                <td width="70px"><label for="">&ThunderStats.desc.label;:</label></td>
+                <td><input id="ThunderStats.desc" type="text" size="26"
+                style="padding-left: 8px; padding-right: 5px;" /></td>
+            </tr>
+            <tr>
+                <td width="70px"><label for="">&ThunderStats.date.label;:</label></td>
+                <td>
+                    <input id="non_biz_date_picker" class="flatpickr" type="text" placeholder="Select New Date .."  size="26"
+                        style="padding-left: 8px; padding-right: 5px;" /></td>
+            </tr>
+            <tr>
+                <td width="70px"><label for="">&ThunderStats.every_year.label;:</label></td>
+                <td>
+                    <xul:checkbox id="ThunderStats.every_year" checked="true" label="&ThunderStats.every_year.desc;" 
+                    style="padding-left: -8px;" /></td>
+
+            </tr>
+
+        </table>
+
+
+    </div>
+    <!-- <div height="150px" width="100%" style="background-color: green">X</div> -->
+    <div height="150px" width="100%" style="background-color: inherit; height: 240px"> </div>
+    <!-- <div height="280px" style="background-color: red"> -->
+    <xul:vbox height="25px" style="width: inherit">
+    </xul:vbox>
+    
+    <xul:hbox style="width: inherit">
+    <xul:hbox flex="1" style="background-color: inherit;"></xul:hbox>
+     <!-- <xul:hbox style="height: 100%; align-content: bottom;  background-color: orange;" pack="right">  -->
+    <xul:hbox flex="0"  style="align-content: bottom;  background-color: inherit;" pack="right">
+
+        <xul:button id="nbd_editor_ok" label="Ok" oncommand="miczThunderStatsPrefPanel_NBDEditor.onAccept();" />
+        <xul:button id="nbd_editor_cancel" label="Cancel" oncommand="miczThunderStatsPrefPanel_NBDEditor.onCancel();" />
+    </xul:hbox>
+    </xul:hbox>
+    <!-- </div> -->
+</body>
+
+</html>

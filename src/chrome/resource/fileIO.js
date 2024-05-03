@@ -1,10 +1,5 @@
 let EXPORTED_SYMBOLS = ["FileIO"];
 
-const Cc = Components.classes;
-const Ci = Components.interfaces;
-const Cr = Components.results;
-const Cu = Components.utils;
-
 var FileIO = {
   getFile: function(sPath) {
     try {

@@ -1,12 +1,13 @@
 "use strict";
-ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
 //ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-storagedb.jsm");	// To be enabled in vesion 2.0
-ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-utils.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
-ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
-ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
+var { Services } = ChromeUtils.import('resource://gre/modules/Services.jsm');
+
+var { miczThunderStatsDB } = ChromeUtils.import("chrome://thunderstats/content/dbutils/mzts-mdb.jsm");
+var { miczThunderStatsCore } = ChromeUtils.import("chrome://thunderstats/content/mzts-statscore.jsm");
+var { miczThunderStatsPrefs } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.prefs.jsm");
+var { miczThunderStatsI18n } = ChromeUtils.import("chrome://thunderstats/content/mzts-statstab.i18n.jsm");
+var { miczLogger } = ChromeUtils.import("resource://thunderstats/miczLogger.jsm");
 
 miczThunderStatsTab.callback={};
 
@@ -18,13 +19,13 @@ miczThunderStatsTab.callback.base={
 
 	handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				//miczLogger.log("Query completed successfully.");
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				return false;
 		}
@@ -47,7 +48,7 @@ miczThunderStatsTab.callback.homepage_stats_today_sent = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_sent_wait");
 				if(!this.empty){
 					$jQ("#today_sent").text(this.data[1]["Num"]);
@@ -62,12 +63,12 @@ miczThunderStatsTab.callback.homepage_stats_today_sent = {
 				miczThunderStatsTab._check_today_sent_running=false;
 				miczThunderStatsTab.showDebuggerWarning();
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -92,7 +93,7 @@ miczThunderStatsTab.callback.homepage_stats_today_rcvd = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_rcvd_wait");
 				if(!this.empty){
 					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab today_rcvd] this.data "+JSON.stringify(this.data)+"\r\n");
@@ -108,12 +109,12 @@ miczThunderStatsTab.callback.homepage_stats_today_rcvd = {
 				miczThunderStatsTab._check_today_rcvd_running=false;
 				miczThunderStatsTab.showDebuggerWarning();
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -138,7 +139,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_sent = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_sent_wait");
 				if(!this.empty){
 					$jQ("#yesterday_sent").text(this.data[1]["Num"]);
@@ -149,12 +150,12 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_sent = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -179,7 +180,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_rcvd = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_rcvd_wait");
 				if(!this.empty){
 					$jQ("#yesterday_rcvd").text(this.data[1]["Num"]);
@@ -190,12 +191,12 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_rcvd = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -221,7 +222,7 @@ miczThunderStatsTab.callback.homepage_stats_today_recipients = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_recipients_wait");
 				if(!this.empty){
 					$jQ("#today_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
@@ -234,12 +235,12 @@ miczThunderStatsTab.callback.homepage_stats_today_recipients = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -265,7 +266,7 @@ miczThunderStatsTab.callback.homepage_stats_today_senders = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_senders_wait");
 				if(!this.empty){
 					$jQ("#today_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
@@ -278,12 +279,12 @@ miczThunderStatsTab.callback.homepage_stats_today_senders = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -309,7 +310,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_recipients = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_recipients_wait");
 				if(!this.empty){
 					$jQ("#yesterday_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
@@ -322,12 +323,12 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_recipients = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -353,7 +354,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_senders = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_senders_wait");
 				if(!this.empty){
 					$jQ("#yesterday_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
@@ -366,12 +367,12 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_senders = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -396,7 +397,7 @@ miczThunderStatsTab.callback.last_idx_msg = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				if(!this.empty){
 					let _bundleCW = miczThunderStatsI18n.createBundle("mzts-statstab");
 					$jQ("#mzts-last_msg").text(_bundleCW.GetStringFromName("ThunderStats.LastIndexedMessage")+": "+miczThunderStatsUtils.getDateTimeString(moment(this.data[1]["last_msg_date"]/1000)));
@@ -407,12 +408,12 @@ miczThunderStatsTab.callback.last_idx_msg = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -440,7 +441,7 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				let m = moment(miczThunderStatsUtils.getDate7DaysString(new Date(this.data[1]["Info"])),"YYYYMMDD");
 				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_7days_sent m.format("L") '+m.format("L")+'\r\n',0);
 				if(!this.empty){
@@ -480,14 +481,14 @@ miczThunderStatsTab.callback.stats_7days_sent = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				this.total_mail=0;
 				this.today_mail=0
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -518,7 +519,7 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				let m = moment(miczThunderStatsUtils.getDate7DaysString(new Date(this.data[1]["Info"])),"YYYYMMDD");
 				if(!this.empty){
 					if(m.format("L")!=moment().format("L")){	//not today
@@ -557,14 +558,14 @@ miczThunderStatsTab.callback.stats_7days_rcvd = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				this.total_mail=0;
 				this.today_mail=0
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -592,7 +593,7 @@ miczThunderStatsTab.callback.stats_7days_recipients = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("7days_recipients_wait");
 				if(!this.empty){
 					$jQ("#7days_recipients").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
@@ -605,12 +606,12 @@ miczThunderStatsTab.callback.stats_7days_recipients = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -636,7 +637,7 @@ miczThunderStatsTab.callback.stats_7days_senders = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("7days_senders_wait");
 				if(!this.empty){
 					$jQ("#7days_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
@@ -649,12 +650,12 @@ miczThunderStatsTab.callback.stats_7days_senders = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -680,7 +681,7 @@ miczThunderStatsTab.callback.stats_today_inbox0_folder_spread = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_wait");
 				if(!this.empty){
 					//$jQ("#today_inbox0_folder_spread").text(JSON.stringify(this.data));
@@ -696,12 +697,12 @@ miczThunderStatsTab.callback.stats_today_inbox0_folder_spread = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -726,7 +727,7 @@ miczThunderStatsTab.callback.stats_today_inbox0_folder_spread = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_inboxmsg_wait");
 				if(!this.empty){
 					$jQ("#today_inbox0_inboxmsg").text(this.data[1]["Num"]);
@@ -737,12 +738,12 @@ miczThunderStatsTab.callback.stats_today_inbox0_folder_spread = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -767,7 +768,7 @@ miczThunderStatsTab.callback.stats_today_inbox0_datemsg = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				//miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_wait");
 				if(!this.empty){
 					//$jQ("#today_inbox0_datemsg").text(JSON.stringify(this.data));
@@ -782,12 +783,12 @@ miczThunderStatsTab.callback.stats_today_inbox0_datemsg = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -812,7 +813,7 @@ miczThunderStatsTab.callback.stats_yesterday_incremental_sent = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_incremental_sent_wait");
 				if(!this.empty){
 					$jQ("#yesterday_incremental_sent").text(this.data[1]["Num"]);
@@ -823,12 +824,12 @@ miczThunderStatsTab.callback.stats_yesterday_incremental_sent = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -853,7 +854,7 @@ miczThunderStatsTab.callback.stats_yesterday_incremental_rcvd = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_incremental_rcvd_wait");
 				if(!this.empty){
 					$jQ("#yesterday_incremental_rcvd").text(this.data[1]["Num"]);
@@ -864,12 +865,12 @@ miczThunderStatsTab.callback.stats_yesterday_incremental_rcvd = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -895,7 +896,7 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_folder_spread = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_inbox0_wait");
 				if(!this.empty){
 					$jQ("#yesterday_inbox0_folder_spread_nomails").hide();
@@ -908,12 +909,12 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_folder_spread = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -938,7 +939,7 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_inboxmsg = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_inbox0_inboxmsg_wait");
 				if(!this.empty){
 					$jQ("#yesterday_inbox0_inboxmsg").text(this.data[1]["Num"]);
@@ -949,12 +950,12 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_inboxmsg = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -980,7 +981,7 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				//miczThunderStatsTab.ui.hideLoadingElement("today_inbox0_wait");
 				if(!this.empty){
 					$jQ("#yesterday_inbox0_datemsg_nomails").hide();
@@ -993,12 +994,12 @@ miczThunderStatsTab.callback.stats_yesterday_inbox0_datemsg = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -1025,7 +1026,7 @@ miczThunderStatsTab.callback.homepage_stats_today_hours = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("today_hours_graph_wait");
 				if(!this.empty){
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_today_hours handleResult '+JSON.stringify(this.data)+'\r\n');
@@ -1043,12 +1044,12 @@ miczThunderStatsTab.callback.homepage_stats_today_hours = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1081,7 +1082,7 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_hours = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("yesterday_hours_graph_wait");
 				if(!this.empty){
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_yesterday_hours handleResult '+JSON.stringify(this.data)+'\r\n');
@@ -1099,12 +1100,12 @@ miczThunderStatsTab.callback.homepage_stats_yesterday_hours = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1134,7 +1135,7 @@ miczThunderStatsTab.callback.stats_msg_aggregate_sent = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_msg_aggregate_sent handleResult '+JSON.stringify(this.data)+'\r\n');
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_max_sent_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_min_sent_wait");
@@ -1165,12 +1166,12 @@ miczThunderStatsTab.callback.stats_msg_aggregate_sent = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1195,7 +1196,7 @@ miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_msg_aggregate_rcvd handleResult '+JSON.stringify(this.data)+'\r\n');
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_max_rcvd_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("aggregate_min_rcvd_wait");
@@ -1226,12 +1227,12 @@ miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1240,6 +1241,8 @@ miczThunderStatsTab.callback.stats_msg_aggregate_rcvd = {
 	return false;
 	},
 };
+
+
 
 miczThunderStatsTab.callback.stats_customqry_sent = {
 	empty:true,
@@ -1257,9 +1260,14 @@ miczThunderStatsTab.callback.stats_customqry_sent = {
 	handleError: miczThunderStatsTab.callback.base.handleError,
 
     handleCompletion: function(aReason) {
+		// Services.console.logStringMessage("CallBack Completion sent: " );
+		// Services.console.logStringMessage("number days: " + miczThunderStatsUtils._customqry_num_days);
+
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				let m = moment(this.data[1]["Info"]);
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
+				let dsISO = new Date(this.data[1]["Info"]).toISOString();
+				let m = moment(dsISO);
+				
 				if(!this.empty){
 					this.total_mail+=this.data[1]["Num"];
 					this.data_customqry_sent.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:this.data[1]["Num"]});
@@ -1279,8 +1287,10 @@ miczThunderStatsTab.callback.stats_customqry_sent = {
 					$jQ("#customqry_sent_total").text(this.total_mail);
 					miczThunderStatsTab.ui.hideLoadingElement("customqry_sent_wait");
 				  	miczLogger.log("Custom query sent messages chart rendered.",0);
-				  	if(miczThunderStatsUtils._customqry_only_bd){	//getting only business day
+					  if(miczThunderStatsUtils._customqry_only_bd){	//getting only business day
+						
 						miczThunderStatsTab.promises.customqry.setAnalyzer(1,this.data_customqry_sent);
+						Services.console.logStringMessage("CallBack Completion sent: after analyzer" );
 					}
 				  	this.total_mail=0;
 				  	this.data_customqry_sent=new Array();
@@ -1288,13 +1298,13 @@ miczThunderStatsTab.callback.stats_customqry_sent = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				this.total_mail=0;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1323,8 +1333,9 @@ miczThunderStatsTab.callback.stats_customqry_rcvd = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				let m = moment(this.data[1]["Info"]);
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
+				let dsISO = new Date(this.data[1]["Info"]).toISOString();
+				let m = moment(dsISO);
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_sent m: '+m.format()+'\r\n');
 				if(!this.empty){
 					this.total_mail+=this.data[1]["Num"];
@@ -1334,7 +1345,7 @@ miczThunderStatsTab.callback.stats_customqry_rcvd = {
 					this.data_customqry_rcvd.push({day:m.unix(),day_str:miczThunderStatsUtils.getDateStringYY(m,true),num:0});
 					//$jQ("#customqry_rcvd").append(this.data[1]["Info"]+": 0");
 				}
-				miczLogger.log("Custom query sent messages loaded day: "+this.data[1]["Info"]+".",0);
+				miczLogger.log("Custom query received messages loaded day: "+this.data[1]["Info"]+".",0);
 				//if we've collected our 7 days, let's print it!
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_rcvd miczThunderStatsTab.data_customqry_rcvd.length '+this.data_customqry_rcvd.length+'\r\n');
 				if(this.data_customqry_rcvd.length==miczThunderStatsUtils._customqry_num_days){
@@ -1355,13 +1366,13 @@ miczThunderStatsTab.callback.stats_customqry_rcvd = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				this.total_mail=0;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1388,7 +1399,7 @@ miczThunderStatsTab.callback.stats_customqry_recipients = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
 				if(!this.empty){
 					//miczLogger.log("Custom query recipients loaded: "+JSON.stringify(this.data),0);
@@ -1403,12 +1414,12 @@ miczThunderStatsTab.callback.stats_customqry_recipients = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -1434,7 +1445,7 @@ miczThunderStatsTab.callback.stats_customqry_senders = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_senders_wait");
 				if(!this.empty){
 					$jQ("#customqry_senders").html(miczThunderStatsTab.ui.formatInvolvedTable(this.data));
@@ -1447,12 +1458,12 @@ miczThunderStatsTab.callback.stats_customqry_senders = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -1469,7 +1480,7 @@ miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
 	data_customqry_recipients_count:0,
   handleResult: function(aResultSet) {
     let result = miczThunderStatsCore.db.getResultObject(["ID","Name","Mail","Num"],aResultSet);
-    //miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion result: '+JSON.stringify(result),0);
+    miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion result: '+JSON.stringify(result),0);
     this.empty=false;
    for (let key in result) {
 		this.data.push(result[key]);
@@ -1481,22 +1492,22 @@ miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
-				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data: '+JSON.stringify(this.data),0);
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
+				miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data: '+JSON.stringify(this.data),0);
 				if(!this.empty){
 					let tmp_array=new Array();
 					for(let kk in this.data){
 						tmp_array.push(this.data[kk]);
-						//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_recipients_only_bd handleCompletion '+JSON.stringify(this.data[kk])+'\r\n');
-						//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data[kk]: '+JSON.stringify(this.data[kk]),0);
+						dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.homepage_stats_customqry_recipients_only_bd handleCompletion '+JSON.stringify(this.data[kk])+'\r\n');
+						miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data[kk]: '+JSON.stringify(this.data[kk]),0);
 					}
 					this.data_customqry_recipients_count++;
 					this.data_customqry_recipients.push(tmp_array);
 				}else{
 					this.data_customqry_recipients_count++;
 				}
-				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion check ready to go!',0);
-				//miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data_customqry_recipients_count - miczThunderStatsUtils._customqry_num_days: '+this.data_customqry_recipients_count+' - '+miczThunderStatsUtils._customqry_num_days,0);
+				miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion check ready to go!',0);
+				miczLogger.log('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_customqry_recipients_only_bd handleCompletion this.data_customqry_recipients_count - miczThunderStatsUtils._customqry_num_days: '+this.data_customqry_recipients_count+' - '+miczThunderStatsUtils._customqry_num_days,0);
 				if(this.data_customqry_recipients_count==miczThunderStatsUtils._customqry_num_days){
 					miczThunderStatsTab.ui.hideLoadingElement("customqry_recipients_wait");
 					//do data aggregation
@@ -1517,14 +1528,14 @@ miczThunderStatsTab.callback.stats_customqry_recipients_only_bd = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				this.data_customqry_recipients=new Array();
 				this.data_customqry_recipients_count=0;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -1554,7 +1565,7 @@ miczThunderStatsTab.callback.stats_customqry_senders_only_bd = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				if(!this.empty){
 					let tmp_array=new Array();
 					for(let kk in this.data){
@@ -1585,14 +1596,14 @@ miczThunderStatsTab.callback.stats_customqry_senders_only_bd = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				this.data_customqry_senders=new Array();
 				this.data_customqry_senders_count=0;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;
@@ -1619,7 +1630,7 @@ miczThunderStatsTab.callback.stats_customqry_aggregate_sent = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_msg_aggregate_sent handleResult '+JSON.stringify(this.data)+'\r\n');
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_sent_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_sent_wait");
@@ -1641,12 +1652,12 @@ miczThunderStatsTab.callback.stats_customqry_aggregate_sent = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1671,7 +1682,7 @@ miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.stats_msg_aggregate_rcvd handleResult '+JSON.stringify(this.data)+'\r\n');
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_max_rcvd_wait");
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_aggregate_min_rcvd_wait");
@@ -1693,12 +1704,12 @@ miczThunderStatsTab.callback.stats_customqry_aggregate_rcvd = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1723,7 +1734,7 @@ miczThunderStatsTab.callback.customqry_stats_oneday_sent = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_sent_wait");
 				if(!this.empty){
 					$jQ("#customqry_oneday_sent").text(this.data[1]["Num"]);
@@ -1734,12 +1745,12 @@ miczThunderStatsTab.callback.customqry_stats_oneday_sent = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1764,7 +1775,7 @@ miczThunderStatsTab.callback.customqry_stats_oneday_rcvd = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_rcvd_wait");
 				if(!this.empty){
 					//dump(">>>>>>>>>>>>>> [miczThunderStatsTab customqry_one_day_rcvd] this.data "+JSON.stringify(this.data)+"\r\n");
@@ -1776,12 +1787,12 @@ miczThunderStatsTab.callback.customqry_stats_oneday_rcvd = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1808,7 +1819,7 @@ miczThunderStatsTab.callback.customqry_stats_oneday_hours = {
 
     handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_hours_graph_wait");
 				if(!this.empty){
 					//dump('>>>>>>>>>>>>>> [miczThunderStatsTab] miczThunderStatsTab.callback.customqry_stats_oneday_hours handleResult '+JSON.stringify(this.data)+'\r\n');
@@ -1826,12 +1837,12 @@ miczThunderStatsTab.callback.customqry_stats_oneday_hours = {
 				this.data={};
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data={};
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data={};
 				this.empty=true;
@@ -1862,7 +1873,7 @@ miczThunderStatsTab.callback.customqry_stats_oneday_inbox0_folder_spread = {
 
   handleCompletion: function(aReason) {
 		switch (aReason) {
-			case Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED:
+			case Ci.mozIStorageStatementCallback.REASON_FINISHED:
 				miczThunderStatsTab.ui.hideLoadingElement("customqry_oneday_inbox0_wait");
 				if(!this.empty){
 					//$jQ("#customqry_onedayinbox0_folder_spread").text(JSON.stringify(this.data));
@@ -1878,12 +1889,12 @@ miczThunderStatsTab.callback.customqry_stats_oneday_inbox0_folder_spread = {
 				this.data=new Array();
 				this.empty=true;
 				return true;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_CANCELED:
+			case Ci.mozIStorageStatementCallback.REASON_CANCELED:
 				miczLogger.log("Query canceled by the user!",1);
 				this.data=new Array();
 				this.empty=true;
 				return false;
-			case Components.interfaces.mozIStorageStatementCallback.REASON_ERROR:
+			case Ci.mozIStorageStatementCallback.REASON_ERROR:
 				miczLogger.log("Query aborted!",2);
 				this.data=new Array();
 				this.empty=true;

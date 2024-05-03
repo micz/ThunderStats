@@ -1,7 +1,7 @@
 <template>
 <div class="chart_hours">
   <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.gif" alt="__MSG_Loading__..." id="today_hours_graph_wait"/></div>
-  <Bar
+  <Line
       :options="chartOptions"
       :data="chartData"
       :plugins="chartPlugins"
@@ -16,11 +16,10 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { Bar } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-import { tsBarPosition } from '@statslib/chartjs_plugin/chartjs-barposition';
+import { Line } from 'vue-chartjs'
+import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title );
 
 let props = defineProps({
     chartData: {
@@ -68,7 +67,7 @@ let chartOptions = ref({
         },
       });
 
-      let chartPlugins = ref([tsBarPosition]);
+      let chartPlugins = null;// ref([tsBarPosition]);
 
 /*async function updateChart() {
   console.log("updateChart: " + JSON.stringify(chartData.value));

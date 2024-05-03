@@ -150,6 +150,8 @@ async function updateData() {
         borderColor: '#1f77b4',
         backgroundColor: '#1f77b4',
         order: 1,
+        borderWidth: 2,
+        pointRadius: 1,
     })
     chartData_Today.value.datasets.push({
         tsID: 'tr',
@@ -158,13 +160,18 @@ async function updateData() {
         borderColor: '#ff7f0e',
         backgroundColor: '#ff7f0e',
         order: 1,
+        borderWidth: 2,
+        pointRadius: 1,
     })
     chartData_Today.value.datasets.push({
         tsID: 'ys',
         label: 'yesterday sent',
-        data: graphdata_yesterday_hours_rcvd.value,
+        data: graphdata_yesterday_hours_sent.value,
         borderColor: '#17becf',
         backgroundColor: '#17becf',
+        borderDash: [12, 3, 3],
+        pointStyle: false,
+        borderWidth: 2,
     })
     chartData_Today.value.datasets.push({
         tsID: 'yr',
@@ -172,6 +179,9 @@ async function updateData() {
         data: graphdata_yesterday_hours_rcvd.value,
         borderColor: '#ffbb78',
         backgroundColor: '#ffbb78',
+        borderDash: [12, 3, 3],
+        pointStyle: false,
+        borderWidth: 2,
     })
     // graph inbox zero folders
     let folders_data = tsUtils.getFoldersLabelsColors(graphdata_inboxzero_folders.value);

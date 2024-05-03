@@ -9,7 +9,7 @@ This addon adds awesome statistics to your beloved Thunderbird!
 ## The path to Version 2.0
 In this branch is present the source code for the new ThunderStats 2.0!
 
-The addon is being rewritten from scratch using Vuejs.
+The addon is being rewritten from scratch using Vue.js.
 
 Check the issues assigned to [Milestone 2.0](https://github.com/micz/ThunderStats/milestone/2) for more detailed updates on the progress and the features that will be included in the first 2.0 release.
 

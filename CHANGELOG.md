@@ -1,7 +1,7 @@
 # ![TS] ThunderStats Release Notes
 
 ### Version 2.0.0 - ??/??/2024
-- 
+- First release of the new ThunderStats 2.0.
 
 
 ### Version 1.4.5 - 16/12/2019

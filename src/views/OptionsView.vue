@@ -5,13 +5,20 @@
 <label>__MSG_StartupAccount__:
   <SelectAccount v-model="current_idn" id="startup_account" name="startup_account" class="option-input"/>
 </label>
-
+<br>
 <label>
-            <input type="checkbox" id="do_debug" name="do_debug" class="option-input" />
-            &nbsp;<span class="dims_label">Debug</span>
-          </label>
-        <label>
-        <br>
+  <input type="checkbox" id="do_debug" name="do_debug" class="option-input" />
+   &nbsp;<span class="dims_label">Debug</span>
+</label>
+<br>
+<label>
+  <input type="checkbox" id="today_time_graph_progressive" name="today_time_graph_progressive" class="option-input" />
+   &nbsp;<span class="dims_label">__MSG_TodayTimeGraphProgressive__</span>
+</label>
+
+
+<br><br><br><br>
+          <label>
             <input type="checkbox" id="test_checkbox" name="test_checkbox" class="option-input" />
             &nbsp;<span class="dims_label">test checkbox</span>
           </label>

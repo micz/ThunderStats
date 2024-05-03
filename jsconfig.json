@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@statslib/*": ["./statslib/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

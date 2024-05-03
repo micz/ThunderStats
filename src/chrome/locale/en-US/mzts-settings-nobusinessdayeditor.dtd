@@ -1,6 +1,0 @@
-<!ENTITY ThunderStats.NBDEditor.window.title "Non-Business Day Editor">
-<!ENTITY ThunderStats.desc.label "Label">
-<!ENTITY ThunderStats.date.label "Date">
-<!ENTITY ThunderStats.every_year.label "Yearly">
-<!ENTITY ThunderStats.every_year.desc "This day will be a non-business day on every year.">
-<!ENTITY ThunderStats.optional.label "Optional">

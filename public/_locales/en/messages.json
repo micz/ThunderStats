@@ -1,0 +1,626 @@
+{
+  "extensionDescription": {
+    "message": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
+    "description": "Description of the extension."
+  },
+  "AllAccounts": {
+    "message": "All Accounts",
+    "description": ""
+  },
+  "Name": {
+    "message": "Name",
+    "description": ""
+  },
+  "Mail": {
+    "message": "Mail",
+    "description": ""
+  },
+  "Total": {
+    "message": "Total",
+    "description": ""
+  },
+  "Before": {
+    "message": "Before",
+    "description": ""
+  },
+  "Mails": {
+    "message": "Mails",
+    "description": ""
+  },
+  "TimeGraph.Time": {
+    "message": "Time",
+    "description": ""
+  },
+  "TimeGraph.today_sent": {
+    "message": "Sent",
+    "description": ""
+  },
+  "TimeGraph.today_rcvd": {
+    "message": "Received",
+    "description": ""
+  },
+  "TimeGraph.yesterday_sent": {
+    "message": "Sent",
+    "description": ""
+  },
+  "TimeGraph.yesterday_rcvd": {
+    "message": "Received",
+    "description": ""
+  },
+  "TimeGraph.until": {
+    "message": "until",
+    "description": ""
+  },
+  "LastBusinessDay": {
+    "message": "Last business day",
+    "description": ""
+  },
+  "LastBusinessDay_short": {
+    "message": "Last B Day",
+    "description": ""
+  },
+  "NoValidBusinessDays": {
+    "message": "There are no valid business days in the selection you made.",
+    "description": ""
+  },
+  "TABTitle": {
+    "message": "ThunderStats Settings",
+    "description": ""
+  },
+  "DonateLink": {
+    "message": "Make a donation!",
+    "description": ""
+  },
+  "ChooseAccount": {
+    "message": "Choose Account",
+    "description": ""
+  },
+  "Update": {
+    "message": "Update",
+    "description": ""
+  },
+  "Setup": {
+    "message": "Setup",
+    "description": ""
+  },
+  "Today": {
+    "message": "Today",
+    "description": ""
+  },
+  "Yesterday": {
+    "message": "Yesterday",
+    "description": ""
+  },
+  "Last": {
+    "message": "Last",
+    "description": ""
+  },
+  "days": {
+    "message": "days",
+    "description": ""
+  },
+  "TotalDays": {
+    "message": "Total days",
+    "description": ""
+  },
+  "Info": {
+    "message": "Info",
+    "description": ""
+  },
+  "Loading": {
+    "message": "Loading",
+    "description": ""
+  },
+  "SentMails": {
+    "message": "Sent mails",
+    "description": ""
+  },
+  "ReceivedMails": {
+    "message": "Received mails",
+    "description": ""
+  },
+  "InboxZeroStatus": {
+    "message": "Inbox Zero Status",
+    "description": ""
+  },
+  "TotalInbox": {
+    "message": "Total mails in the inbox",
+    "description": ""
+  },
+  "TotalInboxUnread": {
+    "message": "unread",
+    "description": ""
+  },
+  "YesterdayThisTime": {
+    "message": "Yesterday at this time",
+    "description": ""
+  },
+  "sent": {
+    "message": "sent",
+    "description": ""
+  },
+  "received": {
+    "message": "received",
+    "description": ""
+  },
+  "FolderLocation": {
+    "message": "Mails folder locations chart",
+    "description": ""
+  },
+  "NoMailsReceived": {
+    "message": "No mails received!",
+    "description": ""
+  },
+  "InboxMailsDateSpreading": {
+    "message": "Inbox mails date spreading chart",
+    "description": ""
+  },
+  "NoMailsInbox": {
+    "message": "No mails in the Inbox!",
+    "description": ""
+  },
+  "TopRecipients": {
+    "message": "Top Recipients",
+    "description": ""
+  },
+  "TopSenders": {
+    "message": "Top Senders",
+    "description": ""
+  },
+  "clickhere": {
+    "message": "click here",
+    "description": ""
+  },
+  "clickheremoreinfo": {
+    "message": "Click here for more info",
+    "description": ""
+  },
+  "AboutTitle": {
+    "message": "About this addon",
+    "description": ""
+  },
+  "AboutText_1": {
+    "message": "Do you remember the old good Eudora statistics? Do you miss them?",
+    "description": ""
+  },
+  "AboutText_2": {
+    "message": "Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
+    "description": ""
+  },
+  "AboutText_3": {
+    "message": "More features will be added in the future, but if you have an idea, send it",
+    "description": ""
+  },
+  "AboutText_DebugMessage_1": {
+    "message": "Are you having trouble using this addon?",
+    "description": ""
+  },
+  "AboutText_DebugMessage_2": {
+    "message": "Run the Debugger and send us the report, we will check how to fix it. Thank you!",
+    "description": ""
+  },
+  "InboxZeroTitle": {
+    "message": "What is Inbox Zero?",
+    "description": ""
+  },
+  "InboxZeroText_1": {
+    "message": "Inbox Zero is a rigorous approach to email management aimed at keeping the inbox empty — or almost empty — at all times.",
+    "description": ""
+  },
+  "InboxZeroText_2": {
+    "message": "ThunderStats gives you some insights on how you're managing your inbox.",
+    "description": ""
+  },
+  "OtherInfoTitle": {
+    "message": "How does this addon works?",
+    "description": ""
+  },
+  "OtherInfoText_1": {
+    "message": "All the statistics are calculated from the internal Thunderbird database and are associated with the mail addresses of the selected account.",
+    "description": ""
+  },
+  "OtherInfoText_2b": {
+    "message": "The statistics will be updated as soon as the Thunderbird Indexer has processed all new messages. The dates in the top right corner show how up-to-date the statistics are.",
+    "description": ""
+  },
+  "OtherInfoText_3": {
+    "message": "Take a look at what's going on with the development of this addon",
+    "description": ""
+  },
+  "SubmitNewIssue": {
+    "message": "Submit a new issue",
+    "description": ""
+  },
+  "DonationsTitle": {
+    "message": "Donations",
+    "description": ""
+  },
+  "max": {
+    "message": "max",
+    "description": ""
+  },
+  "min": {
+    "message": "min",
+    "description": ""
+  },
+  "average": {
+    "message": "average",
+    "description": ""
+  },
+  "CustomQry": {
+    "message": "Custom View",
+    "description": ""
+  },
+  "UpdateCustomQry": {
+    "message": "Get Data",
+    "description": ""
+  },
+  "CustomQryDataMsg": {
+    "message": "Data extract for",
+    "description": ""
+  },
+  "From": {
+    "message": "From",
+    "description": ""
+  },
+  "To": {
+    "message": "To",
+    "description": ""
+  },
+  "Views": {
+    "message": "Views",
+    "description": ""
+  },
+  "CurrentWeek": {
+    "message": "Current Week",
+    "description": ""
+  },
+  "CurrentMonth": {
+    "message": "Current Month",
+    "description": ""
+  },
+  "CurrentYear": {
+    "message": "Current Year",
+    "description": ""
+  },
+  "LastWeek": {
+    "message": "Last Week",
+    "description": ""
+  },
+  "LastMonth": {
+    "message": "Last Month",
+    "description": ""
+  },
+  "LastYear": {
+    "message": "Last Year",
+    "description": ""
+  },
+  "Last2Week": {
+    "message": "Last two Week",
+    "description": ""
+  },
+  "OnlyBDCustomQry": {
+    "message": "Consider business days only",
+    "description": ""
+  },
+  "NoMailsSent": {
+    "message": "No mails sent!",
+    "description": ""
+  },
+  "LastIndexedMessage": {
+    "message": "Last indexed message",
+    "description": ""
+  },
+  "InTheLastNumDays": {
+    "message": "In the last $NUMDAYS$ days",
+    "description": "",
+    "placeholders": {
+      "numdays": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "LastNumDays": {
+    "message": "Last $NUMDAYS$ days",
+    "description": "",
+    "placeholders": {
+      "numdays": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "Warning": {
+    "message": "Warning!",
+    "description": ""
+  },
+  "CustomViewTooMuchDays": {
+    "message": "This date interval is {0} days long and the statistic could need some time to complete.\\r\\nDo you want to continue?",
+    "description": ""
+  },
+  "SettingsTitle": {
+    "message": "ThunderStats Settings",
+    "description": ""
+  },
+  "GlobalDescSettingTab": {
+    "message": "Use these options to customize your ThunderStats experience!",
+    "description": ""
+  },
+  "TabSettings.label": {
+    "message": "General",
+    "description": ""
+  },
+  "TabAdvanced.label": {
+    "message": "Advanced",
+    "description": ""
+  },
+  "TabCustomIdentities.label": {
+    "message": "Custom Identities",
+    "description": ""
+  },
+  "TabInfo.label": {
+    "message": "Info",
+    "description": ""
+  },
+  "InfoMainDesc": {
+    "message": "This addon is free and developed in my spare time. If you're using it in your every day routine, feel free to support it with a little donation clicking on the link below. Thanks!!",
+    "description": ""
+  },
+  "ReopenTabDesc": {
+    "message": "You need to close and reopen the ThunderStats tab to make the changes effective.",
+    "description": ""
+  },
+  "StartupAccount": {
+    "message": "Startup Account",
+    "description": ""
+  },
+  "ShowIdentitiesAccountsSelector": {
+    "message": "Show identities in the accounts selector",
+    "description": ""
+  },
+  "ManageCustomIdentitites": {
+    "message": "Manage your custom identitites here.",
+    "description": ""
+  },
+  "ManageCustomIdentititesDesc": {
+    "message": "A custom identity is an email address, different from the ones registered for the account, with which you receive mails. Usually these are email addresses of mailing lists that you're subscribed to, where your email address is not used in any 'to' or 'cc' fields.",
+    "description": ""
+  },
+  "Account": {
+    "message": "Account",
+    "description": ""
+  },
+  "CustomIdentititesAccount": {
+    "message": "Custom Identitites for the selected Account",
+    "description": ""
+  },
+  "CustomIdentititesAccount.Info": {
+    "message": "Add an email address per line.",
+    "description": ""
+  },
+  "ChangesSavedWarn": {
+    "message": "The changes made here are saved immediately.",
+    "description": ""
+  },
+  "ActivateDebug": {
+    "message": "Activate the debug system.",
+    "description": ""
+  },
+  "runDebuggerBtn.label": {
+    "message": "Run the Debugger",
+    "description": ""
+  },
+  "DebugWarnShow": {
+    "message": "Show the debug warning message if no mails are sent or received today.",
+    "description": ""
+  },
+  "InboxSearchOnlyCurrAccount": {
+    "message": "Search for mails in the Inbox folders only in the folders for the selected account.",
+    "description": ""
+  },
+  "InboxSearchOnlyCurrAccount.GlobaInboxWarn": {
+    "message": "You need to UNCHECK this option if you're using the Global Inbox for your mails.",
+    "description": ""
+  },
+  "GlobalUpdate": {
+    "message": "Update all tabs at once. If deselected the tabs are updated when switching between them.",
+    "description": ""
+  },
+  "TodayTimeGraphShowYesterday": {
+    "message": "Show also yesterday's mails in the today time graph.",
+    "description": ""
+  },
+  "TodayTimeGraphProgressive": {
+    "message": "Show cumulative data bars in the today and yesterday time graphs.",
+    "description": ""
+  },
+  "AggregateAverageNotRounded": {
+    "message": "Show two digits in the aggregate average number of sent and received mails.",
+    "description": ""
+  },
+  "ManyDaysGraph": {
+    "message": "Multiple Days Graph",
+    "description": ""
+  },
+  "ManyDays": {
+    "message": "Number of days to be shown.",
+    "description": ""
+  },
+  "ManyDaysSmallLabels": {
+    "message": "Show small day's labels.",
+    "description": ""
+  },
+  "ManyDaysSmallLabels_2": {
+    "message": "It's recommended to use this option when showing more than 10 days.",
+    "description": ""
+  },
+  "CustomQueryBookmarkImmediateUpdate": {
+    "message": "When selecting a custom date range view, update the statistics immediately.",
+    "description": ""
+  },
+  "TabBusinessDays.label": {
+    "message": "Business Days",
+    "description": ""
+  },
+  "WeekDaySun": {
+    "message": "Sunday",
+    "description": ""
+  },
+  "WeekDayMon": {
+    "message": "Monday",
+    "description": ""
+  },
+  "WeekDayTue": {
+    "message": "Tuesday",
+    "description": ""
+  },
+  "WeekDayWed": {
+    "message": "Wednesday",
+    "description": ""
+  },
+  "WeekDayThu": {
+    "message": "Thursday",
+    "description": ""
+  },
+  "WeekDayFri": {
+    "message": "Friday",
+    "description": ""
+  },
+  "WeekDaySat": {
+    "message": "Saturday",
+    "description": ""
+  },
+  "WeekDays.groupbox": {
+    "message": "Weekdays",
+    "description": ""
+  },
+  "WeekDays.desc": {
+    "message": "Check which weekdays are business days.",
+    "description": ""
+  },
+  "NoBusinessDaysList.groupbox": {
+    "message": "Non-Business Days",
+    "description": ""
+  },
+  "newButtonNBD.label": {
+    "message": "New...",
+    "description": ""
+  },
+  "editButtonNBD.label": {
+    "message": "Edit...",
+    "description": ""
+  },
+  "deleteButtonNBD.label": {
+    "message": "Delete",
+    "description": ""
+  },
+  "EasterNoBusinessDay.label": {
+    "message": "Easter and Easter Monday are non-business days.",
+    "description": ""
+  },
+  "UseLastBusinessDay": {
+    "message": "If yesterday is not a business day, show the last business day instead.",
+    "description": ""
+  },
+  "ListHeader.Desc": {
+    "message": "Description",
+    "description": ""
+  },
+  "ListHeader.Date": {
+    "message": "Date",
+    "description": ""
+  },
+  "ReleaseNotes": {
+    "message": "Release Notes",
+    "description": ""
+  },
+  "License": {
+    "message": "License",
+    "description": ""
+  },
+  "CustomQryTabGroupbox": {
+    "message": "Custom Range Statistics",
+    "description": ""
+  },
+  "CustomQueryDefaultOnlyBD": {
+    "message": "Always check &quot;Business Days Only&quot; option at startup.",
+    "description": ""
+  },
+  "folderspreadgraph_openinfirsttab": {
+    "message": "From the mails folder locations chart, open the folder always in the first tab.",
+    "description": ""
+  },
+  "InvolvedNum": {
+    "message": "Number of recipients or senders to be shown in &quot;Top&quot; tables.",
+    "description": ""
+  },
+  "involvedtable_forceidentityname": {
+    "message": "Always show the account name in the top senders and recipient tables when the shown mail is associated with a Thunderbird account.",
+    "description": ""
+  },
+  "prefs_OptionText_release_notes": {
+    "message": "Release Notes",
+    "description": ""
+  },
+  "prefs_OptionText_chatgpt_win_text": {
+    "message": "ChatGPT window dimensions",
+    "description": ""
+  },
+  "prefs_OptionText_chatgpt_win_height": {
+    "message": "Height",
+    "description": ""
+  },
+  "prefs_OptionText_chatgpt_win_width": {
+    "message": "Width",
+    "description": ""
+  },
+  "prefs_OptionText_default_sign_name": {
+    "message": "Default signature name",
+    "description": ""
+  },
+  "prefs_OptionText_default_chatgpt_lang": {
+    "message": "Default language for ChatGPT responses",
+    "description": ""
+  },
+  "prefs_OptionText_reply_all": {
+    "message": "Reply to All",
+    "description": ""
+  },
+  "prefs_OptionText_reply_sender": {
+    "message": "Reply to Sender",
+    "description": ""
+  },
+  "prefs_OptionText_reply_type": {
+    "message": "Reply type",
+    "description": ""
+  },
+  "prefsInfoTitle": {
+    "message": "Important Information",
+    "description": ""
+  },
+  "prefsInfoDesc_1": {
+    "message": " ",
+    "description": ""
+  },
+  "prefsInfoDesc_2": {
+    "message": " ",
+    "description": ""
+  },
+  "prefsInfoDesc_3": {
+    "message": " ",
+    "description": ""
+  },
+  "prefsDonation_1": {
+    "message": "Do you like this addon?",
+    "description": ""
+  },
+  "prefsDonation_2": {
+    "message": "Consider to make a donation!",
+    "description": ""
+  },
+  "backToOptionsText": {
+    "message": "Options",
+    "description": ""
+  }
+}

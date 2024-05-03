@@ -1,56 +1,45 @@
-# ![ThunderStats icon](rep-resources/images/mzts-icon.png "ThunderStats")  ThunderStats
+# ![ThunderStats icon](public/images/mzts-icon-32px.png "ThunderStats")  ThunderStats
 
 This addon adds awesome statistics to your beloved Thunderbird!
 
-More info on the homepage: http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/
 
-This add-on is the original work of Micz and with his permission I will be updating
-the code for compatibility going forward and possible improvements.
+<br>
 
-![ThunderStats_version](https://img.shields.io/badge/version-v1.4.4-darkorange.png?label=ThunderStats)
-![ThunderStats_tb_version](https://img.shields.io/badge/version-v1.4.4-blue.png?label=Thunderbird%20Add-On)
-![Thunderbird_version](https://img.shields.io/badge/version-v60.0_--_61.*-blue.png?label=Thunderbird)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-red.png)](./LICENSE.txt)
-![Release Status](https://img.shields.io/badge/Release%20Status-v1.4.4%20Latest-brightgreen.png)
-#
 
-## ThunderStats Add-On Installation
+## The path to Version 2.0
+In this branch is present the source code for the new ThunderStats 2.0!
 
-Normal install from Thunderbird Add-On site:
-- Download and install from the add-on menu
-- Within Thunderbird ``Tools\Add-ons`` search for 'ThunderStats' install and reload.
+The addon is being rewritten from scratch using Vuejs.
 
-Install XPI directly:
-- Download desired version package from the [XPI](xpi) folder.
-- Within Thunderbird ``Tools\Add-ons`` click the gear icon and choose ``Install Add-ons From File..``
-- Choose XPI file, install and reload.
+Check the issues assigned to [Milestone 2.0](https://github.com/micz/ThunderStats/milestone/2) for more detailed updates on the progress and the features that will be included in the first 2.0 release.
 
-## XPI Add-On Package Build instructions (WIP)
+Features of the previous version 1.4.5, that will not be present in the first 2.0 release, are assigned to Milestone 2.*.
 
-1. Have Node, npm, 7zip-min archiver installed and in PATH (used globally)
-2. Open a terminal in the repository root dir
-3. Using root level package.json and npm scripts now
-4. Run ``npm run build-xpi-bat`` to make the xpi
+More info on #NNN and #NNN
 
-Notes : 
-- ``install.rdf`` is used for TB60.*
-- A ``manifest.json`` file is also introduced for testing in TB60+.
+<br>
 
 ## Issues & Questions
-Post any issues or questions for ThunderStats under [Issues](https://github.com/micz/ThunderStats/issues)
+Post any issues or questions for ThunderStats under [Issues](https://github.com/micz/ThunderStats/issues), please refer only to version 2.0.
+
+<br>
+
 
 ## Changelog
 ThunderStats's changes are logged [here](CHANGELOG.md).
 
+
+<br>
+
 ## Credits
-Original Author: [Micz](https://addons.thunderbird.net/en-US/thunderbird/user/Micz/ "Micz")  
-Contributing Author: [cleidigh](https://addons.thunderbird.net/en-US/thunderbird/user/cleidigh/ "Cleidigh")
+Original Author: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
+Contributing Author: [Christopher Leidigh](https://addons.thunderbird.net/thunderbird/user/cleidigh/)
 
 Locale Translations:
 
-- English (en-US)	: Micz (m@micz.it)
-- Italian (it)		: Micz (m@micz.it)
+- English (en-US)	: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
+- Italian (it)		: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - French (fr)		: Goofy
-- German (de)		: Axel Grude
+- German (de)		: [Axel Grude](https://addons.thunderbird.net/thunderbird/user/realraven/)
 
 

@@ -1,29 +1,21 @@
 {
-    "title": "ThunderStats",
-    "name": "thunderstats",
-    "version": "1.4.5",
-    "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
-    "main": "./chrome/content/mzts-overlay.js",
-    "author": "Micz, Christopher Leidigh",
-    "engines": {
-        "": ">=38.0a1"
-    },
-    "license": "GPLv3",
-
-    "config": {
-        "source_dir": "./src",
-        "target_dir": "./xpi",
-        "target_suffix": "-tb",
-        "target_extension": ".xpi",
-        "target_include_manifest": "true"
-    },
-    "scripts": {
-        "build-xpi-bat": ".\\scripts\\build-xpi.bat",
-        "build-xpi": "node ./scripts/build-xpi.js"
-    },
-    "keywords": [
-        "jetpack"
-    ],
-    "dependencies": {}
-
+  "name": "thunderstats",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.2",
+    "vue": "^3.4.21",
+    "vue-chartjs": "^5.3.1",
+    "vue3-tabs-component": "^1.3.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite": "^5.1.6"
+  }
 }

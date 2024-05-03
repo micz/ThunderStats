@@ -1,0 +1,37 @@
+{
+    "manifest_version": 2,
+    "name": "ThunderStats",
+    "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
+    "version": "2.0",
+    "author": "Mic (m@micz.it)",
+    "homepage_url": "http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/",
+    "default_locale": "en",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "thunderstats@micz.it",
+            "strict_min_version": "125.0"
+        }
+    },
+    "browser_action": {
+        "default_title": "Thunderstats",
+        "default_icon": "images/mzts-icon-32px.png"
+    },
+    "permissions": [
+        "messagesRead",
+        "accountsRead",
+        "storage",
+        "tabs"
+    ],
+    "background": {
+        "page": "background.html"
+    },
+    "icons": {
+        "64": "images/mzts-icon.png",
+        "32": "images/mzts-icon-32px.png",
+        "16": "images/mzts-icon-16px.png"
+    },
+    "options_ui": {
+		"page": "/index.options.html",
+        "open_in_tab": true
+	}
+}

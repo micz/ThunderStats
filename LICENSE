@@ -29,20 +29,9 @@ Axel Grude, developer of QuickFolders addon, for his help in testing and brainst
 Jörg Knobloch, Thunderbird contributor, for his help in fixing this addon for Thunderbird 60.
 
 -= Javascript Libraries =-
-- jQuery - https://jquery.org/
-Provided under the MIT license: https://jquery.org/license/
+- Chartjs - https://www.chartjs.org/
+Provided under the MIT license: https://github.com/chartjs/Chart.js?tab=MIT-1-ov-file
 
-- D3 - http://d3js.org/
-Provided under the BSD license: http://opensource.org/licenses/BSD-3-Clause
-
-- Tooltipster - http://iamceege.github.io/tooltipster/
-Provided under the MIT license: http://opensource.org/licenses/MIT
-
-- Moment.js - http://momentjs.com/
-Provided under the MIT license: http://opensource.org/licenses/MIT
-
-- jQuery replaceText - http://benalman.com/projects/jquery-replacetext-plugin/
-Provided under the MIT license: http://opensource.org/licenses/MIT
 
 -= Graphics =-
 Addon icon thanks to http://hopstarter.deviantart.com/

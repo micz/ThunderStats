@@ -48,6 +48,7 @@ import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
 import TableInvolved from '../tables/TableInvolved.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
 import { TS_prefs } from '@statslib/mzts-options';
+import { i18n } from "@statslib/mzts-i18n.js";
 
 const props = defineProps({
     activeAccount: {
@@ -187,6 +188,7 @@ async function updateData() {
         is_loading_today_graph.value = false;
         is_loading_inbox_graph_folders.value = false;
         is_loading_inbox_graph_dates.value = false;
+        i18n.updateDocument();
     });
 };
 

@@ -13,9 +13,9 @@ The addon is being rewritten from scratch using Vuejs.
 
 Check the issues assigned to [Milestone 2.0](https://github.com/micz/ThunderStats/milestone/2) for more detailed updates on the progress and the features that will be included in the first 2.0 release.
 
-Features of the previous version 1.4.5, that will not be present in the first 2.0 release, are assigned to Milestone 2.*.
+Features from the previous version 1.4.5 have been assigned the label "[road to 2.0](https://github.com/micz/ThunderStats/labels/road%20to%202.0)".
 
-More info on #NNN and #NNN
+More info on [#194](https://github.com/micz/ThunderStats/issues/194) and [#195](https://github.com/micz/ThunderStats/issues/195)
 
 <br>
 
@@ -33,7 +33,10 @@ ThunderStats's changes are logged [here](CHANGELOG.md).
 
 ## Credits
 Original Author: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
+
 Contributing Author: [Christopher Leidigh](https://addons.thunderbird.net/thunderbird/user/cleidigh/)
+
+<br>
 
 Locale Translations:
 

@@ -134,7 +134,7 @@ export class thunderStastsCore {
           }
           // dates
           if(message.date){
-            let date_message = message.date.toLocaleDateString()
+            let date_message = tsUtils.dateToYYYYMMDD(message.date);
             if (dates[date_message]) {
               dates[date_message]++;
             } else {
@@ -280,7 +280,7 @@ export class thunderStastsCore {
       for await (let message of messages) {
           //this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
-          let day_message = tsUtils.getDateString(date_message);
+          let day_message = tsUtils.dateToYYYYMMDD(date_message);
           msg_days[day_message] = msg_days[day_message] || {}; //ensure the object for that day exists
           // check sender
           const match_author = message.author.match(this.regexEmail);

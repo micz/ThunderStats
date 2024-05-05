@@ -72,8 +72,9 @@ export const tsUtils = {
         for(let key in data) {
             let color = availableColors.shift();
             let value = data[key];
+            let current_date = this.parseYYYYMMDDToDate(key);
             let dataset = {
-                label: key,
+                label: current_date.toLocaleDateString(),
                 data: [value/total],
                 backgroundColor: color,
                 borderColor: color,
@@ -83,25 +84,32 @@ export const tsUtils = {
         return datasets;
     },
 
-    getDateString(originalDate) {
+    dateToYYYYMMDD(originalDate) {
         // Extract the year from the date
         let year = originalDate.getFullYear();
-        
         // Extract the month from the date and adjust for zero-index (0 for January, 11 for December)
         let month = originalDate.getMonth() + 1; 
-        
         // Extract the day from the date
         let day = originalDate.getDate();
-        
         // Format month and day to always have two digits
         let formattedMonth = month < 10 ? '0' + month : month;
         let formattedDay = day < 10 ? '0' + day : day;
-        
-        // Concatenate year, month, and day to form the YYYYMMDD string
+
         let dateString = '' + year + formattedMonth + formattedDay;
 
-        // Return the formatted date string
         return dateString;
+    },
+
+    parseYYYYMMDDToDate(dateString) {
+        // Extract year, month, and day from the string
+        let year = parseInt(dateString.substring(0, 4), 10);
+        let month = parseInt(dateString.substring(4, 6), 10) - 1; // Months are zero-based in JavaScript
+        let day = parseInt(dateString.substring(6, 8), 10);
+        
+        // Create a Date object using the extracted year, month, and day
+        let dateObject = new Date(year, month, day);
+        
+        return dateObject;
     },
 
     getDateArray(fromDate, toDate) {
@@ -109,7 +117,7 @@ export const tsUtils = {
         let currentDate = new Date(fromDate.getTime()); // Create a new date object to avoid mutating the original date
     
         while (currentDate <= toDate) {
-            let formattedDate = this.getDateString(currentDate);
+            let formattedDate = this.dateToYYYYMMDD(currentDate);
             dateArray[formattedDate] = {};
             dateArray[formattedDate].sent = 0;
             dateArray[formattedDate].received = 0;

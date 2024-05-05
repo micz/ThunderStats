@@ -60,6 +60,11 @@ let chartOptions = ref({
         plugins: {
             legend: {
                 display: false,
+            },
+            tooltip: {
+              callbacks: {
+                title: () => {return ""},
+              }
             }
         },
       });

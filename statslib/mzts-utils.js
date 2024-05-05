@@ -35,7 +35,7 @@ export const tsUtils = {
     },
 
     getFoldersLabelsColors(folders) {
-        let availableColors = [...inboxZeroFoldersColors];
+        let availableColors = [...inboxZeroColors];
         let output_labels = [];
         let output_colors = [];
         for(let key in folders) {
@@ -64,15 +64,19 @@ export const tsUtils = {
 
     transformDatesDataToDataset(data) {
         let datasets = [];
+        let availableColors = [...inboxZeroColors];
         let total = 0;
         for(let key in data) {
             total += data[key];
         }
         for(let key in data) {
+            let color = availableColors.shift();
             let value = data[key];
             let dataset = {
                 label: key,
-                data: [value/total]
+                data: [value/total],
+                backgroundColor: color,
+                borderColor: color,
             }
             datasets.push(dataset);
         }
@@ -116,7 +120,7 @@ export const tsUtils = {
 
 }
 
-const inboxZeroFoldersColors = [
+const inboxZeroColors = [
     "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", 
     "#98df8a", "#ff9896", "#9467bd", "#c5b0d5", 
     "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", 

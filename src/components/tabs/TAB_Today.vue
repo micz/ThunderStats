@@ -138,8 +138,7 @@ async function updateData() {
     tsLog = new tsLogger("TAB_Today", props.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     getManyDaysData();
-    getInboxZeroData();
-    await Promise.all([getTodayData(), getYesterdayData()]);
+    await Promise.all([getTodayData(), getYesterdayData(), getInboxZeroData()]);
     tsLog.log("graphdata_today_hours_sent.value: " + JSON.stringify(graphdata_today_hours_sent.value));
     tsLog.log("graphdata_today_hours_rcvd.value: " + JSON.stringify(graphdata_today_hours_rcvd.value));
     chartData_Today.value.datasets = [];
@@ -222,8 +221,6 @@ async function updateData() {
             is_loading_involved_table_recipients.value = false;
             // inbox zero folders
             graphdata_inboxzero_folders.value = result_today.folders;
-            // inbox zero dates
-            graphdata_inboxzero_dates.value = result_today.dates;
             resolve(true);
         });
     };
@@ -233,6 +230,8 @@ async function updateData() {
             let result_inbox = await tsCore.getInboxZeroData(props.activeAccount, props.accountEmails);
             counter_inbox_total.value = result_inbox.total;
             counter_inbox_unread.value = result_inbox.unread;
+            // inbox zero dates
+            graphdata_inboxzero_dates.value = result_inbox.dates;
             is_loading_counter_inbox.value = false;
             resolve(true);
         });

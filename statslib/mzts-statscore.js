@@ -338,6 +338,8 @@ export class thunderStastsCore {
       //total and unread mails in inbox
       let total = 0;
       let unread = 0;
+      //dates spread
+      let dates = {};
 
       for(let folder of inboxFolders) {
 
@@ -354,12 +356,21 @@ export class thunderStastsCore {
             if (!message.read) {
               unread++;
             }
+            // dates
+            if(message.date){
+              let date_message = tsUtils.dateToYYYYMMDD(message.date);
+              if (dates[date_message]) {
+                dates[date_message]++;
+              } else {
+                dates[date_message] = 1;
+              }
+            }
           }
       }
 
       let stop_time = performance.now();
 
-      return {total: total, unread: unread, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
+      return {total: total, unread: unread, dates: dates, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
     }
 
 

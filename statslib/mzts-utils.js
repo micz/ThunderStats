@@ -62,20 +62,43 @@ export const tsUtils = {
         return output;
     },
 
-    transformDatesDataToDataset(data) {
+    transformInboxZeroDatesDataToDataset(data) {
         let datasets = [];
         let availableColors = [...inboxZeroColors];
         let total = 0;
         for(let key in data) {
             total += data[key];
         }
+        let data_length = Object.keys(data).length;
+         //we are going to aggregate old days
+        let max_el = 20; //choose how much to aggregate
+        if( data_length > max_el) {  // ok, we really need to aggregate
+            let spin_day = Object.keys(data)[data_length - max_el - 1];
+            let spin_day_date = this.parseYYYYMMDDToDate(spin_day);
+            let tmp_array = {};
+            let aggregate_day_value = 0;
+            let aggregate_day_date = new Date(1900, 0, 1);
+            for(let key in data) {
+                let current_date = this.parseYYYYMMDDToDate(key);
+                if(current_date <= spin_day_date) {
+                    aggregate_day_value += data[key];
+                    aggregate_day_date = (aggregate_day_date < current_date) ? current_date : aggregate_day_date;
+                }else{
+                    tmp_array[key] = data[key];
+                }
+            }
+            tmp_array[this.dateToYYYYMMDD(aggregate_day_date)] = aggregate_day_value;
+            data = tmp_array;
+        }
         for(let key in data) {
             let color = availableColors.shift();
             let value = data[key];
+            let value_percentage = value / total;
             let current_date = this.parseYYYYMMDDToDate(key);
             let dataset = {
+                //label: current_date.toLocaleDateString() + ' ' + browser.i18n.getMessage('Mail') +': ' + value +' ('+value_percentage+'%)', // TODO: check it
                 label: current_date.toLocaleDateString(),
-                data: [value/total],
+                data: [value_percentage],
                 backgroundColor: color,
                 borderColor: color,
             }

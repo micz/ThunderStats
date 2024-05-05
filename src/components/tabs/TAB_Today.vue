@@ -191,7 +191,7 @@ async function updateData() {
     // graph inbox zero dates
     chartData_InboxZeroDates.value.labels = ['date'];
     chartData_InboxZeroDates.value.datasets = [];
-    chartData_InboxZeroDates.value.datasets = tsUtils.transformDatesDataToDataset(graphdata_inboxzero_dates.value);
+    chartData_InboxZeroDates.value.datasets = tsUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
     tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
     nextTick(() => {
         is_loading_today_graph.value = false;

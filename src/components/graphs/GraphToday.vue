@@ -18,6 +18,7 @@
 import { ref, computed } from 'vue'
 import { Line } from 'vue-chartjs'
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
+import { externalTooltipHoursGraphLines } from '@statslib/chartjs_plugin/external-tooltip-hoursgraphlines';
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title );
 
@@ -68,6 +69,12 @@ let chartOptions = ref({
             position: 'right',
             align: 'left',
           },
+          tooltip: {
+              enabled: false,
+              mode: 'index',
+              intersect: false,
+              external: externalTooltipHoursGraphLines
+            }
         },
       });
 

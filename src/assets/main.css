@@ -49,4 +49,5 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 	font-family: Arial, sans-serif;
 	font-size: 14px;
 	text-align: center;
+  white-space: nowrap;
 }

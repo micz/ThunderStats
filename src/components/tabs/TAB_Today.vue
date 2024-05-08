@@ -143,28 +143,23 @@ async function updateData() {
     tsLog.log("graphdata_today_hours_rcvd.value: " + JSON.stringify(graphdata_today_hours_rcvd.value));
     chartData_Today.value.datasets = [];
     chartData_Today.value.datasets.push({
-        tsID: 'ts',
-        label: 'today sent',
+        label: 'tsent',
         data: graphdata_today_hours_sent.value,
         borderColor: '#1f77b4',
         backgroundColor: '#1f77b4',
-        order: 1,
         borderWidth: 2,
         pointRadius: 1,
     })
     chartData_Today.value.datasets.push({
-        tsID: 'tr',
-        label: 'today received',
+        label: 'trcvd',
         data: graphdata_today_hours_rcvd.value,
         borderColor: '#ff7f0e',
         backgroundColor: '#ff7f0e',
-        order: 1,
         borderWidth: 2,
         pointRadius: 1,
     })
     chartData_Today.value.datasets.push({
-        tsID: 'ys',
-        label: 'yesterday sent',
+        label: 'ysent',
         data: graphdata_yesterday_hours_sent.value,
         borderColor: '#17becf',
         backgroundColor: '#17becf',
@@ -173,8 +168,7 @@ async function updateData() {
         borderWidth: 2,
     })
     chartData_Today.value.datasets.push({
-        tsID: 'yr',
-        label: 'yesterday received',
+        label: 'yrcvd',
         data: graphdata_yesterday_hours_rcvd.value,
         borderColor: '#ffbb78',
         backgroundColor: '#ffbb78',

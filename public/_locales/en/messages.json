@@ -31,19 +31,11 @@
     "message": "Time",
     "description": ""
   },
-  "TimeGraph.today_sent": {
+  "TimeGraph.Sent": {
     "message": "Sent",
     "description": ""
   },
-  "TimeGraph.today_rcvd": {
-    "message": "Received",
-    "description": ""
-  },
-  "TimeGraph.yesterday_sent": {
-    "message": "Sent",
-    "description": ""
-  },
-  "TimeGraph.yesterday_rcvd": {
+  "TimeGraph.Rcvd": {
     "message": "Received",
     "description": ""
   },

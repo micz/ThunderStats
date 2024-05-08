@@ -124,7 +124,7 @@ let graphdata_inboxzero_folders = ref([]);
 let graphdata_inboxzero_dates = ref([]);
 
 onMounted(async () => {
-    today_date.value = new Date().toLocaleDateString();
+    today_date.value = new Date().toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
 });
 
 

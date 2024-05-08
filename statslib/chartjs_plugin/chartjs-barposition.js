@@ -22,19 +22,19 @@ export const tsBarPosition = {
         chart.data.datasets.forEach((dataset, dsIndex) => {
                 const meta = chart.getDatasetMeta(dsIndex);
                 meta.data.forEach(bar => {
-                    switch(dataset.tsID){
-                        case 'ts':
+                    switch(dataset.label){
+                        case 'tsent':
                             bar.x = bar.x - (2 * bar.width);
                             bar.width *= 2;
                             break;
-                        case 'tr':
+                        case 'trcvd':
                             bar.x = bar.x - bar.width;
                             bar.width *= 2;
                             break;
-                        case 'ys':
+                        case 'ysent':
                             bar.x = bar.x + bar.width*3/4;
                             break;
-                        case 'yr':
+                        case 'yrcvd':
                             bar.x = bar.x + (3 * bar.width/2);
                             break;
                     }

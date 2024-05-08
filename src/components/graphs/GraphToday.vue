@@ -50,12 +50,16 @@ let chartOptions = ref({
               display: true,
               text: browser.i18n.getMessage('TimeGraph.Time')
             },
+            beginAtZero: true,
+            min: 0,
           },
           y: {
             title: {
               display: true,
               text: browser.i18n.getMessage('Mails')
-            }
+            },
+            beginAtZero: true,
+            min: 0,
           }
         },
         plugins: {

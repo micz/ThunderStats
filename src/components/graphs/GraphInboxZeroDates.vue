@@ -15,6 +15,7 @@
 import { ref, computed } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Colors } from 'chart.js'
+import { externalTooltipInboxZeroDates } from '@statslib/chartjs_plugin/external-tooltip-inboxzerodates';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Colors)
 
@@ -62,9 +63,17 @@ let chartOptions = ref({
                 display: false,
             },
             tooltip: {
-              callbacks: {
-                title: () => {return ""},
-              }
+              enabled: false,
+              position: 'nearest',
+              //  callbacks: {
+              //    title: () => {return ""},
+                //  label: function(context){
+                //   let label = context.dataset.label || '';
+                //   console.log(">>>>>>>>>>>>> label: "+label);
+                //   return label;
+                // },
+              //  },
+              external: externalTooltipInboxZeroDates,
             }
         },
       });

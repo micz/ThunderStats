@@ -1,3 +1,21 @@
+/*
+ *  ThunderStats [https://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/]
+ *  Copyright (C) 2024  Mic (m@micz.it)
+
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 export const tsUtils = {
     humanReadableMilliseconds(tot_milliseconds) {
         let hours = Math.floor(tot_milliseconds / 3600000);
@@ -66,6 +84,8 @@ export const tsUtils = {
         let datasets = [];
         let availableColors = [...inboxZeroColors];
         let total = 0;
+        let aggregate_day_date_string = '';
+
         for(let key in data) {
             total += data[key];
         }
@@ -87,7 +107,8 @@ export const tsUtils = {
                     tmp_array[key] = data[key];
                 }
             }
-            tmp_array[this.dateToYYYYMMDD(aggregate_day_date)] = aggregate_day_value;
+            aggregate_day_date_string = this.dateToYYYYMMDD(aggregate_day_date);
+            tmp_array[aggregate_day_date_string] = aggregate_day_value;
             data = tmp_array;
         }
         for(let key in data) {
@@ -96,8 +117,7 @@ export const tsUtils = {
             let value_percentage = value / total;
             let current_date = this.parseYYYYMMDDToDate(key);
             let dataset = {
-                //label: current_date.toLocaleDateString() + ' ' + browser.i18n.getMessage('Mail') +': ' + value +' ('+value_percentage+'%)', // TODO: check it
-                label: current_date.toLocaleDateString(),
+                label: (key==aggregate_day_date_string?browser.i18n.getMessage('Before') +'<br>':'') + current_date.toLocaleDateString(undefined,{day: '2-digit', month: '2-digit', year: 'numeric'}) + "<br>" + browser.i18n.getMessage('Mail') +':&nbsp;' + value + '&nbsp;(' + Math.round(value_percentage * 100) + '%)',
                 data: [value_percentage],
                 backgroundColor: color,
                 borderColor: color,

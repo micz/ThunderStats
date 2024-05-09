@@ -4,12 +4,13 @@
   <Line
       :options="chartOptions"
       :data="chartData"
+      :plugins="chartPlugins"
       :key="chartData.datasets.length"
       ref="todayChartBar_ref"
       v-if="!is_loading"
     />
-    <div id="today-time-legend-container"></div>
 </div>
+<div id="today-time-legend-container" class="legend-hours"></div>
 </template>
 
 
@@ -19,6 +20,7 @@ import { ref, computed } from 'vue'
 import { Line } from 'vue-chartjs'
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
 import { externalTooltipTimeGraphLines } from '@statslib/chartjs-lib/external-tooltip-timegraphlines';
+import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title );
 
@@ -65,9 +67,11 @@ let chartOptions = ref({
         },
         plugins: {
           legend: {
-            display: true,
-            position: 'right',
-            align: 'left',
+            display: false,
+          },
+          htmlLegend: {
+            // ID of the container to put the legend in
+            containerID: 'today-time-legend-container',
           },
           tooltip: {
               enabled: false,
@@ -77,6 +81,9 @@ let chartOptions = ref({
             }
         },
       });
+
+
+let chartPlugins =  [htmlLegendPlugin];
 
 /*async function updateChart() {
   console.log("updateChart: " + JSON.stringify(chartData.value));

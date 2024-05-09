@@ -4,7 +4,6 @@
   <Line
       :options="chartOptions"
       :data="chartData"
-      :plugins="chartPlugins"
       :key="chartData.datasets.length"
       ref="todayChartBar_ref"
       v-if="!is_loading"
@@ -77,8 +76,6 @@ let chartOptions = ref({
             }
         },
       });
-
-      let chartPlugins = null;// ref([tsBarPosition]);
 
 /*async function updateChart() {
   console.log("updateChart: " + JSON.stringify(chartData.value));

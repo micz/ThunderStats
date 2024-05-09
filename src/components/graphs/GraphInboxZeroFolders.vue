@@ -16,7 +16,7 @@
 import { ref, computed } from 'vue'
 import { Doughnut } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from 'chart.js'
-import { tsDoughnutLabelsLine } from '@statslib/chartjs_plugin/chartjs-doughnutlabels';
+import { tsDoughnutLabelsLine } from '@statslib/chartjs-lib/plugin-doughnutlabels';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);

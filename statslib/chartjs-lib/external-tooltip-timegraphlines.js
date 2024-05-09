@@ -70,7 +70,7 @@ const getOrCreateTooltip = (chart) => {
   }
 
   
-export const externalTooltipHoursGraphLines = (context) => {
+export const externalTooltipTimeGraphLines = (context) => {
     // Tooltip Element
     const {chart, tooltip} = context;
     const tooltipEl = getOrCreateTooltip(chart);
@@ -172,7 +172,7 @@ export const externalTooltipHoursGraphLines = (context) => {
     }else{
       tooltipEl.style.left = (positionX - 30) + tooltip.caretX + 'px';
     }
-    console.log('>>>>>>>>>>>>>>>>>>> tooltipEl.style.left: ', JSON.stringify(tooltipEl.style.left));
+    //console.log('>>>>>>>>>>>>>>>>>>> tooltipEl.style.left: ', JSON.stringify(tooltipEl.style.left));
     tooltipEl.style.top = positionY + tooltip.caretY + 'px';
     tooltipEl.style.font = tooltip.options.bodyFont.string;
     tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';

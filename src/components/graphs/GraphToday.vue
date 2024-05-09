@@ -8,6 +8,7 @@
       ref="todayChartBar_ref"
       v-if="!is_loading"
     />
+    <div id="today-time-legend-container"></div>
 </div>
 </template>
 
@@ -17,7 +18,7 @@
 import { ref, computed } from 'vue'
 import { Line } from 'vue-chartjs'
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
-import { externalTooltipHoursGraphLines } from '@statslib/chartjs_plugin/external-tooltip-hoursgraphlines';
+import { externalTooltipTimeGraphLines } from '@statslib/chartjs-lib/external-tooltip-timegraphlines';
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title );
 
@@ -72,7 +73,7 @@ let chartOptions = ref({
               enabled: false,
               mode: 'index',
               intersect: false,
-              external: externalTooltipHoursGraphLines
+              external: externalTooltipTimeGraphLines
             }
         },
       });

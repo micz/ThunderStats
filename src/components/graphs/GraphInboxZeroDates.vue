@@ -15,7 +15,7 @@
 import { ref, computed } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Colors } from 'chart.js'
-import { externalTooltipInboxZeroDates } from '@statslib/chartjs_plugin/external-tooltip-inboxzerodates';
+import { externalTooltipInboxZeroDates } from '@statslib/chartjs-lib/external-tooltip-inboxzerodates';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Colors)
 

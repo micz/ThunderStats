@@ -143,6 +143,10 @@
     "message": "No mails received!",
     "description": ""
   },
+  "NoMailsReceivedToday": {
+    "message": "No mails received today!",
+    "description": ""
+  },
   "InboxMailsDateSpreading": {
     "message": "Inbox mails date spreading chart",
     "description": ""

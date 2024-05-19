@@ -231,7 +231,7 @@ async function updateData() {
 
     function getInboxZeroData () {
         return new Promise(async (resolve) => {
-            let result_inbox = await tsCore.getInboxZeroData(props.activeAccount, props.accountEmails);
+            let result_inbox = await tsCore.getInboxZeroDates(props.activeAccount, props.accountEmails);
             counter_inbox_total.value = result_inbox.total;
             counter_inbox_unread.value = result_inbox.unread;
             // inbox zero dates

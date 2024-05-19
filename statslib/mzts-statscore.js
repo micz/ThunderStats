@@ -347,7 +347,7 @@ export class thunderStastsCore {
       return {sent: sent, received: received, count: count, msg_days: msg_days, max_sent: max_sent, min_sent: min_sent, max_received: max_received, min_received: min_received, avg_sent: avg_sent, avg_received: avg_received, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
     }
 
-    async getInboxZeroData(account_id = 0) {
+    async getInboxZeroDates(account_id = 0) {
 
       let start_time = performance.now();
 

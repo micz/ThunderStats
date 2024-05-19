@@ -17,6 +17,7 @@ import { ref, computed } from 'vue'
 import { Doughnut } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from 'chart.js'
 import { tsDoughnutLabelsLine } from '@statslib/chartjs-lib/plugin-doughnutlabels';
+import { getRelativePosition } from 'chart.js/helpers';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
@@ -80,18 +81,35 @@ let chartOptions = ref({
               enabled: false,
             },
           },
-          onClick: async (e, activeEls) => {    //TODO handle click on the label
+          onClick: async (e, activeEls, chart) => {
             // console.log("onClick index: " + JSON.stringify(activeEls[0].index));
             // console.log("onClick path: " + JSON.stringify(chartData.value.folder_paths[activeEls[0].index]));
+            if(activeEls.length == 0){
+              return;
+            }
             if(openFolderInFirstTab){
               let tabs = await browser.tabs.query({windowId: window.WINDOW_ID_CURRENT});
-              //TODO cycle through tabs to find the first mailtab
-              browser.mailTabs.update(tabs[0].id, {displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
-              browser.tabs.update(tabs[0].id, {active: true});
+              // Cycle through tabs to find the first mailtab
+              let currTab = null;
+              for(let i = 0; i < tabs.length; i++){
+                if(tabs[i].mailTab){
+                  currTab = tabs[i];
+                  break;
+                }
+              }
+              browser.mailTabs.update(currTab.id, {displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
+              browser.tabs.update(currTab.id, {active: true});
             } else {
               browser.mailTabs.create({displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
             }
-        }
+          },
+          onHover: async (e, activeEls, chart) => {
+            if(activeEls.length == 0){
+              chart.canvas.style.cursor = 'default';
+            }else{
+              chart.canvas.style.cursor = 'pointer';
+            }
+          }
       });
 
 let chartPlugins = ref([tsDoughnutLabelsLine]);

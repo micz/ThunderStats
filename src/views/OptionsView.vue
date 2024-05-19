@@ -15,18 +15,14 @@
   <input type="checkbox" id="_time_graph_progressive" name="_time_graph_progressive" class="option-input" />
    &nbsp;<span class="dims_label">__MSG_TimeGraphProgressive__</span>
 </label>
+<br>
+<label>
+  <input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" />
+   &nbsp;<span class="dims_label">__MSG_folderspreadgraph_openinfirsttab__</span>
+</label>
 
 
 <br><br><br><br>
-          <label>
-            <input type="checkbox" id="test_checkbox" name="test_checkbox" class="option-input" />
-            &nbsp;<span class="dims_label">test checkbox</span>
-          </label>
-          <br>
-          <label>
-            <input type="text" id="test_text" name="test_text" class="option-input" />
-            <span class="dims_label">test text</span>
-          </label>
     <div id="miczDescription">
       <h1>__MSG_prefsInfoTitle__</h1>
       <p>__MSG_prefsInfoDesc_1__<br/>

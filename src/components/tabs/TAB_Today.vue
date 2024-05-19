@@ -2,7 +2,7 @@
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         <span id="today_date" class="list_heading_date" v-html="today_date"></span></div>
-        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :today_sent="counter_today_sent" :today_rcvd="counter_today_rcvd" />
+        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_today_sent" :_rcvd="counter_today_rcvd" />
         <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" />
         <CounterManyDays :is_loading="is_loading_counter_many_days" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <GraphToday :chartData="chartData_Today" :is_loading="is_loading_today_graph" />

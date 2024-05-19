@@ -1,6 +1,6 @@
 <template>
-<p><span>__MSG_SentMails__: </span><span id="today_sent"  v-if="!is_loading">{{ today_sent }}</span><img src="@/assets/images/mzts-wait_line.gif" alt="__MSG_Loading__..." id="today_sent_wait" v-if="is_loading"/></p>
-<p><span>__MSG_ReceivedMails__: </span><span id="today_rcvd"  v-if="!is_loading">{{ today_rcvd }}</span><img src="@/assets/images/mzts-wait_line.gif" alt="__MSG_Loading__..." id="today_rcvd_wait"  v-if="is_loading"/></p>
+<p><span>__MSG_SentMails__: </span><span  v-if="!is_loading">{{ _sent }}</span><img src="@/assets/images/mzts-wait_line.gif" alt="__MSG_Loading__..." v-if="is_loading"/></p>
+<p><span>__MSG_ReceivedMails__: </span><span  v-if="!is_loading">{{ _rcvd }}</span><img src="@/assets/images/mzts-wait_line.gif" alt="__MSG_Loading__..." v-if="is_loading"/></p>
 </template>
 
 
@@ -8,11 +8,11 @@
 import { computed } from 'vue';
 
 let props = defineProps({
-    today_sent: {
+    _sent: {
         type: Number,
         default: 0
     },
-    today_rcvd: {
+    _rcvd: {
         type: Number,
         default: 0
     },
@@ -22,11 +22,11 @@ let props = defineProps({
     }
 });
 
-let today_sent = computed(() => {
-    return props.today_sent
+let _sent = computed(() => {
+    return props._sent
 })
-let today_rcvd = computed(() => {
-    return props.today_rcvd
+let _rcvd = computed(() => {
+    return props._rcvd
 })
 let is_loading = computed(() => {
     return props.is_loading

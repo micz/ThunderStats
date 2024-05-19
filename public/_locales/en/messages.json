@@ -83,6 +83,14 @@
     "message": "Yesterday",
     "description": ""
   },
+  "today": {
+    "message": "today",
+    "description": ""
+  },
+  "yesterday": {
+    "message": "yesterday",
+    "description": ""
+  },
   "Last": {
     "message": "Last",
     "description": ""
@@ -140,11 +148,7 @@
     "description": ""
   },
   "NoMailsReceived": {
-    "message": "No mails received!",
-    "description": ""
-  },
-  "NoMailsReceivedToday": {
-    "message": "No mails received today!",
+    "message": "No mails received",
     "description": ""
   },
   "InboxMailsDateSpreading": {
@@ -300,11 +304,7 @@
     "description": ""
   },
   "NoMailsSent": {
-    "message": "No mails sent!",
-    "description": ""
-  },
-  "NoMailsSentToday": {
-    "message": "No mails sent today!",
+    "message": "No mails sent",
     "description": ""
   },
   "LastIndexedMessage": {

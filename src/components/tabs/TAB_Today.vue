@@ -136,7 +136,7 @@ onMounted(async () => {
 
 async function updateData() {
     loadingDo();
-    do_progressive = await TS_prefs.getPref("today_time_graph_progressive");
+    do_progressive = await TS_prefs.getPref("_time_graph_progressive");
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }

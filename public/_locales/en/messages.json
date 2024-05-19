@@ -431,7 +431,7 @@
     "message": "Show also yesterday's mails in the today time graph.",
     "description": ""
   },
-  "TodayTimeGraphProgressive": {
+  "TimeGraphProgressive": {
     "message": "Show cumulative data bars in the today and yesterday time graphs.",
     "description": ""
   },

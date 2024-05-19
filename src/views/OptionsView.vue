@@ -12,8 +12,8 @@
 </label>
 <br>
 <label>
-  <input type="checkbox" id="today_time_graph_progressive" name="today_time_graph_progressive" class="option-input" />
-   &nbsp;<span class="dims_label">__MSG_TodayTimeGraphProgressive__</span>
+  <input type="checkbox" id="_time_graph_progressive" name="_time_graph_progressive" class="option-input" />
+   &nbsp;<span class="dims_label">__MSG_TimeGraphProgressive__</span>
 </label>
 
 

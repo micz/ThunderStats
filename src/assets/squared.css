@@ -11,6 +11,7 @@
     padding: 5px;
     border: 1px solid gray;
     width: 49.2vw;
+    height: 33vw;
 }
 
 .square_item:nth-child(1),

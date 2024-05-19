@@ -19,16 +19,19 @@
                         <p class="chart_info">__MSG_InboxMailsDateSpreading__</p><p class="chart_info_nomail" id="today_inbox0_datemsg_nomails" v-if="!is_loading_counter_inbox && (counter_inbox_total == 0)">__MSG_NoMailsInbox__</p>
                         <GraphInboxZeroDates :chartData="chartData_InboxZeroDates" :is_loading="is_loading_inbox_graph_dates" />
                       </div>
-                    </div>
+    </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_TopRecipients__</h2>
 					  </div>
-					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" />
-                    </div>
+					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
+                    <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSentToday__</p>
+    </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_TopSenders__</h2>
 					  </div>
-                      <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders"/></div>
+                      <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
+                      <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceivedToday__</p>
+    </div>
   </div>
 </template>
 
@@ -97,6 +100,8 @@ let counter_many_days_rcvd_avg = ref(0);
 
 let table_involved_recipients = ref([]);
 let table_involved_senders = ref([]);
+let show_table_involved_recipients = ref(false);
+let show_table_involved_senders = ref(false);
 
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
@@ -211,9 +216,11 @@ async function updateData() {
             graphdata_today_hours_sent.value = today_hours_data.dataset_sent;
             graphdata_today_hours_rcvd.value = today_hours_data.dataset_rcvd;
             //top senders list
+            show_table_involved_senders.value =  Object.keys(result_today.senders).length > 0;
             table_involved_senders.value = result_today.senders;
             is_loading_involved_table_senders.value = false;
             //top recipients list
+            show_table_involved_recipients.value =  Object.keys(result_today.recipients).length > 0;
             table_involved_recipients.value = result_today.recipients;
             is_loading_involved_table_recipients.value = false;
             // inbox zero folders

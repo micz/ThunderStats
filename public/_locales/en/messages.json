@@ -303,6 +303,10 @@
     "message": "No mails sent!",
     "description": ""
   },
+  "NoMailsSentToday": {
+    "message": "No mails sent today!",
+    "description": ""
+  },
   "LastIndexedMessage": {
     "message": "Last indexed message",
     "description": ""

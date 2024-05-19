@@ -126,7 +126,6 @@ input#chatgpt_win_height{
 }
 
 span.dims_label{
-    width: 75px;
     display: inline-block;
 }
 </style>

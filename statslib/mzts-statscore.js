@@ -99,6 +99,20 @@ export class thunderStastsCore {
     // ================ TODAY TAB - END =====================
 
 
+    // ================ YESTERDAY TAB =====================
+    async getYesterday(account_id = 0, account_emails = []) {
+
+      let yesterdayMidnight = new Date();
+      yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
+      yesterdayMidnight.setHours(0, 0, 0, 0);
+      let lastMidnight = new Date();
+      lastMidnight.setHours(0, 0, 0, 0);
+      //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
+
+      return this.getFullStatsData(yesterdayMidnight, lastMidnight, account_id, account_emails);
+    }
+
+    // ================ YESTERDAY TAB - END =====================
 
     // ================ BASE METHODS ========================
     async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = []) {

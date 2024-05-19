@@ -5,10 +5,9 @@
       <tabs :options="{ defaultTabHash: 'tab-today' }"  cache-lifetime="0">
         <tab id="tab-today" name="__MSG_Today__">
             <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="do_debug" ref="TAB_Today_ref" />
-            <div v-html="test_output"></div>
         </tab>
         <tab id="tab-yesterday" name="__MSG_Yesterday__">
-            Yesterday content
+          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="do_debug" ref="TAB_Yesterday_ref" />
         </tab>
         <tab id="tab-manydays" :name="_many_days_text">
             Many Days content
@@ -25,17 +24,20 @@
   
   
   
-  <script setup>
-  import { ref, onMounted, nextTick } from 'vue'
-  import HeadingNAV from "@/components/HeadingNAV.vue";
-  import TAB_Info from "@/components/tabs/TAB_Info.vue";
-  import TAB_Today from '@/components/tabs/TAB_Today.vue';
-  import { thunderStastsCore } from "@statslib/mzts-statscore.js";
-  import { i18n } from "@statslib/mzts-i18n.js";
-  import { TS_prefs } from '@statslib/mzts-options.js';
-  import { tsLogger } from "@statslib/mzts-logger.js";
+<script setup>
+import { ref, onMounted, nextTick } from 'vue'
+import HeadingNAV from "@/components/HeadingNAV.vue";
+import TAB_Info from "@/components/tabs/TAB_Info.vue";
+import TAB_Today from '@/components/tabs/TAB_Today.vue';
+import TAB_Yesterday from '@/components/tabs/TAB_Yesterday.vue';
+import { thunderStastsCore } from "@statslib/mzts-statscore.js";
+import { i18n } from "@statslib/mzts-i18n.js";
+import { TS_prefs } from '@statslib/mzts-options.js';
+import { tsLogger } from "@statslib/mzts-logger.js";
+
 
   let TAB_Today_ref = ref(null);
+  let TAB_Yesterday_ref = ref(null);
   let HeadingNAV_ref = ref(null);
   
   let activeAccount = ref(0);
@@ -68,7 +70,8 @@
     accountEmails.value = await tsCore.getAccountEmails(account_id);
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
     nextTick(() => {
-      TAB_Today_ref.value.updateData();
+      //TAB_Today_ref.value.updateData();
+      TAB_Yesterday_ref.value.updateData();
     });
   }
 

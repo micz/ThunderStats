@@ -27,6 +27,10 @@ let props = defineProps({
         default: () => ({}),
         required: true
     },
+    openFolderInFirstTab: {
+        type: Boolean,
+        default: false
+    },
     is_loading: {
         type: Boolean,
         default: true
@@ -37,6 +41,7 @@ let todayChartBar_ref = ref(null);
 
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
+let openFolderInFirstTab = computed(() => props.openFolderInFirstTab)
 
 let chartOptions = ref({
         responsive: true,
@@ -75,6 +80,18 @@ let chartOptions = ref({
               enabled: false,
             },
           },
+          onClick: async (e, activeEls) => {    //TODO handle click on the label
+            // console.log("onClick index: " + JSON.stringify(activeEls[0].index));
+            // console.log("onClick path: " + JSON.stringify(chartData.value.folder_paths[activeEls[0].index]));
+            if(openFolderInFirstTab){
+              let tabs = await browser.tabs.query({windowId: window.WINDOW_ID_CURRENT});
+              //TODO cycle through tabs to find the first mailtab
+              browser.mailTabs.update(tabs[0].id, {displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
+              browser.tabs.update(tabs[0].id, {active: true});
+            } else {
+              browser.mailTabs.create({displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
+            }
+        }
       });
 
 let chartPlugins = ref([tsDoughnutLabelsLine]);

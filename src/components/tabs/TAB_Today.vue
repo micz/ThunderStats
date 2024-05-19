@@ -13,7 +13,7 @@
 					  <CounterInbox :is_loading="is_loading_counter_inbox" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
                       <div class="chart_inbox0">
                         <p class="chart_info">__MSG_FolderLocation__</p><p class="chart_info_nomail" id="today_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_today_rcvd == 0)">__MSG_NoMailsReceivedToday__</p>
-                        <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :is_loading="is_loading_inbox_graph_folders" />
+                        <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_graph_folders" />
                       </div>
                       <div class="chart_inbox0_datemsg">
                         <p class="chart_info">__MSG_InboxMailsDateSpreading__</p><p class="chart_info_nomail" id="today_inbox0_datemsg_nomails" v-if="!is_loading_counter_inbox && (counter_inbox_total == 0)">__MSG_NoMailsInbox__</p>
@@ -72,6 +72,7 @@ var tsCore = null;
 let today_date = ref("");
 
 let do_progressive = true;
+let inbox0_openFolderInFirstTab = ref(false);
 
 let is_loading_counter_sent_rcvd = ref(true);
 let is_loading_counter_yesterday_thistime = ref(true);
@@ -178,11 +179,13 @@ async function updateData() {
     })
     // graph inbox zero folders
     let folders_data = tsUtils.getFoldersLabelsColors(graphdata_inboxzero_folders.value);
+    chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
     chartData_InboxZeroFolders.value.labels = folders_data.labels;
     chartData_InboxZeroFolders.value.datasets = [];
     chartData_InboxZeroFolders.value.datasets.push({data:tsUtils.getFoldersCounts(graphdata_inboxzero_folders.value), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
     tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
     // graph inbox zero dates
+    inbox0_openFolderInFirstTab.value = await TS_prefs.getPref("inbox0_openFolderInFirstTab");
     chartData_InboxZeroDates.value.labels = ['date'];
     chartData_InboxZeroDates.value.datasets = [];
     chartData_InboxZeroDates.value.datasets = tsUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);

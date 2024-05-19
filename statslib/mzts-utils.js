@@ -56,8 +56,10 @@ export const tsUtils = {
         let availableColors = [...inboxZeroColors];
         let output_labels = [];
         let output_colors = [];
+        let output_paths = [];
         for(let key in folders) {
             output_labels.push(folders[key].folder_data.name);
+            output_paths.push(folders[key].folder_data.id);
             if(folders[key].folder_data.type == 'inbox') {
                 output_colors.push(inboxZeroInboxColor);
             } else {
@@ -69,7 +71,7 @@ export const tsUtils = {
                 output_colors.push(color);
             }
         }
-        return {labels: output_labels, colors: output_colors};
+        return {labels: output_labels, colors: output_colors, folder_paths: output_paths};
     },
 
     getFoldersCounts(folders) {

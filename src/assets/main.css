@@ -37,7 +37,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .legend-hours{float:right;font-size:12px;padding-top:8px;}
 .legend-hours ul{list-style-type:none;margin:0;padding:0;}
 .legend-hours ul li.day_today_title{font-weight:bold;}
-.chart_inbox0{width:80%;height:310px;float:left}
+.chart_inbox0{width:80%;height:310px;float:left;}
 .chart_inbox0_datemsg{float:right;max-width:20%;min-width:90px;height:220px;}
 .inbox0_inboxmsg_unread{color:grey;}
 

@@ -42,7 +42,6 @@ import { tsLogger } from "@statslib/mzts-logger.js";
   
   let activeAccount = ref(0);
   let accountEmails = ref([]);
-  let _many_days = 0;
   let _many_days_text = ref("");
 
   let do_debug = ref(false);
@@ -52,7 +51,7 @@ import { tsLogger } from "@statslib/mzts-logger.js";
 
   onMounted(async () => {
     //test_output.value = await thunderStatsCore.test_core_accounts();
-    _many_days = await TS_prefs.getPref("_many_days");
+    let _many_days = await TS_prefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     do_debug.value = await TS_prefs.getPref("do_debug");
     tsLog = new tsLogger("ThunderStatsView", do_debug.value);

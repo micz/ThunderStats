@@ -3,6 +3,7 @@
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         <span id="yesterday_date" class="list_heading_date" v-html="yesterday_date"></span></div>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_yesterday_sent" :_rcvd="counter_yesterday_rcvd" />
+        <div id="yesterday_spacing"></div>
         <GraphYesterday :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_graph" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">

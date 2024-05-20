@@ -43,7 +43,6 @@ import { tsLogger } from "@statslib/mzts-logger.js";
   let activeAccount = ref(0);
   let accountEmails = ref([]);
   let _many_days = 0;
-  let test_output = ref("");
   let _many_days_text = ref("");
 
   let do_debug = ref(false);

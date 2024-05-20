@@ -47,9 +47,11 @@ let chartOptions = ref({
           },
           y: {
             stacked: true,
+            min: 0,
+            max: 1,
             ticks: {
               min: 0,
-              max: 100,
+              max: 1,
               stepSize: 0.2,
               format: {
                 style: 'percent',

@@ -552,7 +552,7 @@
     "description": ""
   },
   "InvolvedNum": {
-    "message": "Number of recipients or senders to be shown in &quot;Top&quot; tables.",
+    "message": "Number of recipients or senders to be shown in \"Top\" tables.",
     "description": ""
   },
   "involvedtable_forceidentityname": {

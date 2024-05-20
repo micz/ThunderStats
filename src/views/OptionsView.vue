@@ -29,7 +29,14 @@
    &nbsp;<span class="dims_label">__MSG_ManyDays__</span>
 </label>
 </p>
+<p>
+<label>
+  <input type="textbox" id="_involved_num" name="_involved_num" class="option-input" />
+   &nbsp;<span class="dims_label">__MSG_InvolvedNum__</span>
+</label>
+</p>
 <br>
+
 
 <br><br><br><br>
     <div id="miczDescription">

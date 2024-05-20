@@ -22,12 +22,16 @@ import { tsUtils } from "./mzts-utils";
 export class thunderStastsCore {
 
   regexEmail = /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-  do_debug = false;
   tsLog = null;
+  do_debug = false;
+  _involved_num = 10;
+  _many_days = 7;
 
-  constructor(do_debug) {
-    this.do_debug = do_debug;
-    this.tsLog = new tsLogger("thunderStastsCore",do_debug);
+  constructor(options = {}) {
+    this.do_debug = options.hasOwnProperty('do_debug') ? options.do_debug : false;
+    this.tsLog = new tsLogger("thunderStastsCore",this.do_debug);
+    this._involved_num = options.hasOwnProperty('_involved_num') ? options._involved_num : 10;
+    this._many_days = options.hasOwnProperty('_many_days') ? options._many_days : 7;
   }
 
     async getAccountEmails(account_id = 0) {
@@ -225,9 +229,11 @@ export class thunderStastsCore {
         count++;
       }
 
-
       senders = Object.fromEntries(Object.entries(senders).sort((a, b) => b[1] - a[1]));
+      senders = Object.fromEntries(Object.entries(senders).slice(0,this._involved_num));
+
       recipients = Object.fromEntries(Object.entries(recipients).sort((a, b) => b[1] - a[1]));
+      recipients = Object.fromEntries(Object.entries(recipients).slice(0,this._involved_num));
 
       let stop_time = performance.now();
 

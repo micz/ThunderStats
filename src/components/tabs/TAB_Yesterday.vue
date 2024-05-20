@@ -95,6 +95,8 @@ let show_table_involved_senders = ref(false);
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
 
+let _involved_num = 10;
+let _many_days = 7;
 
 let chartData_Yesterday = ref({
     labels: Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')),
@@ -118,7 +120,7 @@ let graphdata_inboxzero_dates = ref([]);
 
 onMounted(async () => {
     yesterday_date.value = new Date(Date.now() - (1000 * 60 * 60 * 24)).toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
-    let _involved_num = await TS_prefs.getPref("_involved_num");
+    _involved_num = await TS_prefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
 });
@@ -130,7 +132,7 @@ async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    tsCore = new thunderStastsCore(props.do_debug);
+    tsCore = new thunderStastsCore({do_debug: props.do_debug, _involved_num: _involved_num, _many_days: _many_days});
     tsLog = new tsLogger("TAB_Yesterday", props.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     await Promise.all([getYesterdayData(), getInboxZeroData()]);

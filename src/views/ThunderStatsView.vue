@@ -55,7 +55,7 @@ import { tsLogger } from "@statslib/mzts-logger.js";
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     do_debug.value = await TS_prefs.getPref("do_debug");
     tsLog = new tsLogger("ThunderStatsView", do_debug.value);
-    tsCore = new thunderStastsCore(do_debug.value);
+    tsCore = new thunderStastsCore({do_debug: do_debug.value});
     i18n.updateDocument();
     updateStats(HeadingNAV_ref.value.getCurrentIdn());
   });

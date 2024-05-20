@@ -20,7 +20,16 @@
   <input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" />
    &nbsp;<span class="dims_label">__MSG_folderspreadgraph_openinfirsttab__</span>
 </label>
-
+<br><br><br><br>
+<h2>__MSG_TabAdvanced.label__</h2>
+<p>__MSG_ManyDaysGraph__
+  <br>
+<label>
+  <input type="textbox" id="_many_days" name="_many_days" class="option-input" />
+   &nbsp;<span class="dims_label">__MSG_ManyDays__</span>
+</label>
+</p>
+<br>
 
 <br><br><br><br>
     <div id="miczDescription">

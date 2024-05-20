@@ -3,14 +3,14 @@
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         <span id="yesterday_date" class="list_heading_date" v-html="yesterday_date"></span></div>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_yesterday_sent" :_rcvd="counter_yesterday_rcvd" />
-        <GraphToday :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_graph" />
+        <GraphYesterday :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_graph" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
 					  </div>
 					  <CounterInbox :is_loading="is_loading_counter_inbox" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
                       <div class="chart_inbox0">
-                        <p class="chart_info">__MSG_FolderLocation__</p><p class="chart_info_nomail" id="yesteday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_yesterday_rcvd == 0)">__MSG_NoMailsReceived__ __MSG_yesterday__</p>
+                        <p class="chart_info">__MSG_FolderLocation__</p><p class="chart_info_nomail" id="yesteday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_yesterday_rcvd == 0)">__MSG_NoMailsReceived__ __MSG_yesterday_small__</p>
                         <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_graph_folders" />
                       </div>
                       <div class="chart_inbox0_datemsg">
@@ -22,13 +22,13 @@
 						<h2 class="list_heading cropped">__MSG_TopRecipients__</h2>
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
-                    <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__ __MSG_yesterday__!</p>
+                    <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__ __MSG_yesterday_small__!</p>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_TopSenders__</h2>
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
-                      <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__ __MSG_yesterday__!</p>
+                      <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__ __MSG_yesterday_small__!</p>
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@ import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsUtils } from '@statslib/mzts-utils';
 import CounterSentReceived from '../counters/CounterSentReceived.vue';
-import GraphToday from '../graphs/GraphToday.vue';
+import GraphYesterday from '../graphs/GraphYesterday.vue';
 import GraphInboxZeroFolders from '../graphs/GraphInboxZeroFolders.vue';
 import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
 import TableInvolved from '../tables/TableInvolved.vue';

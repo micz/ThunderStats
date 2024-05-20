@@ -70,7 +70,7 @@ import { tsLogger } from "@statslib/mzts-logger.js";
     accountEmails.value = await tsCore.getAccountEmails(account_id);
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
     nextTick(() => {
-      //TAB_Today_ref.value.updateData();
+      TAB_Today_ref.value.updateData();
       TAB_Yesterday_ref.value.updateData();
     });
   }

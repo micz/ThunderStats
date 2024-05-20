@@ -83,11 +83,11 @@
     "message": "Yesterday",
     "description": ""
   },
-  "today": {
+  "today_small": {
     "message": "today",
     "description": ""
   },
-  "yesterday": {
+  "yesterday_small": {
     "message": "yesterday",
     "description": ""
   },

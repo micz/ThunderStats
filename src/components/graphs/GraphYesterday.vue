@@ -1,16 +1,16 @@
 <template>
 <div class="chart_hours">
-  <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.gif" alt="__MSG_Loading__..." id="today_hours_graph_wait"/></div>
+  <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.gif" alt="__MSG_Loading__..." id="yesterday_hours_graph_wait"/></div>
   <Line
       :options="chartOptions"
       :data="chartData"
       :plugins="chartPlugins"
       :key="chartData.datasets.length"
-      ref="todayChartBar_ref"
+      ref="yesterdayChartBar_ref"
       v-if="!is_loading"
     />
 </div>
-<div id="today-time-legend-container" class="legend-hours"></div>
+<div id="yesterday-time-legend-container" class="legend-hours"></div>
 </template>
 
 
@@ -36,7 +36,7 @@ let props = defineProps({
     }
 });
 
-let todayChartBar_ref = ref(null);
+let yesterdayChartBar_ref = ref(null);
 
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
@@ -71,8 +71,8 @@ let chartOptions = ref({
           },
           htmlLegend: {
             // ID of the container to put the legend in
-            containerID: 'today-time-legend-container',
-            is_today: true,
+            containerID: 'yesterday-time-legend-container',
+            is_today: false,
           },
           tooltip: {
               enabled: false,

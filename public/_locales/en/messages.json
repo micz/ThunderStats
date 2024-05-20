@@ -160,12 +160,24 @@
     "description": ""
   },
   "TopRecipients": {
-    "message": "Top Recipients",
-    "description": ""
+    "message": "Top $NUMTOP$ Recipients",
+    "description": "",
+    "placeholders": {
+      "numtop": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
   },
   "TopSenders": {
-    "message": "Top Senders",
-    "description": ""
+    "message": "Top $NUMTOP$ Senders",
+    "description": "",
+    "placeholders": {
+      "numtop": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
   },
   "clickhere": {
     "message": "click here",

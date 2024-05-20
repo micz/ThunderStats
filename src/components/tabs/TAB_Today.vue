@@ -21,13 +21,13 @@
                       </div>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_TopRecipients__</h2>
+						<h2 class="list_heading cropped" v-text="top_recipients_title"></h2>
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__ __MSG_today_small__!</p>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_TopSenders__</h2>
+						<h2 class="list_heading cropped" v-text="top_senders_title"></h2>
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
                       <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__ __MSG_today_small__!</p>
@@ -73,6 +73,8 @@ let tsLog = null;
 var tsCore = null;
 
 let today_date = ref("");
+let top_recipients_title = ref("");
+let top_senders_title = ref("");
 
 let do_progressive = true;
 let inbox0_openFolderInFirstTab = ref(false);
@@ -131,6 +133,9 @@ let graphdata_inboxzero_dates = ref([]);
 
 onMounted(async () => {
     today_date.value = new Date().toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
+    let _involved_num = await TS_prefs.getPref("_involved_num");
+    top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
+    top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
 });
 
 

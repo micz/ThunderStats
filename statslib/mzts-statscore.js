@@ -90,7 +90,7 @@ export class thunderStastsCore {
     async getToday_manyDaysData(account_id = 0, account_emails = []) {
 
       let fromDate = new Date();
-      let start_date = fromDate.getDate() - 8 // TODO: number of days, to be used the _many_days pref
+      let start_date = fromDate.getDate() - this._many_days - 1; // TODO: why are we subtracting 1?
       fromDate.setDate(start_date);
       fromDate.setHours(0, 0, 0, 0);
       let toDate = new Date();

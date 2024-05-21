@@ -89,7 +89,7 @@ export const tsUtils = {
         let aggregate_day_date_string = '';
 
         for(let key in data) {
-            total += data[key].count;
+            total += data[key];
         }
         let data_length = Object.keys(data).length;
          //we are going to aggregate old days
@@ -103,20 +103,19 @@ export const tsUtils = {
             for(let key in data) {
                 let current_date = this.parseYYYYMMDDToDate(key);
                 if(current_date <= spin_day_date) {
-                    aggregate_day_value += data[key].count;
+                    aggregate_day_value += data[key];
                     aggregate_day_date = (aggregate_day_date < current_date) ? current_date : aggregate_day_date;
                 }else{
                     tmp_array[key] = data[key];
                 }
             }
             aggregate_day_date_string = this.dateToYYYYMMDD(aggregate_day_date);
-            tmp_array[aggregate_day_date_string] = {};
-            tmp_array[aggregate_day_date_string].count = aggregate_day_value;
+            tmp_array[aggregate_day_date_string] = aggregate_day_value;
             data = tmp_array;
         }
         for(let key in data) {
             let color = availableColors.shift();
-            let value = data[key].count;
+            let value = data[key];
             let value_percentage = value / total;
             let current_date = this.parseYYYYMMDDToDate(key);
             let dataset = {

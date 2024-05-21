@@ -169,14 +169,14 @@ export class thunderStastsCore {
             }
           }
           // dates
-          if(message.date){
-            let date_message = tsUtils.dateToYYYYMMDD(message.date);
-            if (dates[date_message]) {
-              dates[date_message].count++;
-            } else {
-              dates[date_message] = {};
-              dates[date_message].count = 1;
-            }
+          let date_message_string = tsUtils.dateToYYYYMMDD(message.date);
+          if (dates[date_message_string]) {
+            dates[date_message_string].count++;
+          } else {
+            dates[date_message_string] = {};
+            dates[date_message_string].count = 1;
+            dates[date_message_string].sent = 0;
+            dates[date_message_string].received = 0;
           }
           // check sender
           const match_author = message.author.match(this.regexEmail);
@@ -185,6 +185,8 @@ export class thunderStastsCore {
             if(account_emails.includes(key_author)) {
               messageids_sent.push(message.id);
               sent++;
+              // group by date
+              dates[date_message_string].sent++;
               // group by hour
               msg_hours[hour_message].sent++;
               // check recipients
@@ -221,6 +223,8 @@ export class thunderStastsCore {
                 senders[key_author] = 1;
               }
               received++;
+              // group by date
+              dates[date_message_string].received++;
               // group by hour
               msg_hours[hour_message].received++;
             }
@@ -248,18 +252,18 @@ export class thunderStastsCore {
           let min_received = 0;
           let avg_received = parseFloat((received / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
 
-          for(let i in msg_days) {
-            if(msg_days[i].sent > max_sent) {
-              max_sent = msg_days[i].sent;
+          for(let i in dates) {
+            if(dates[i].sent > max_sent) {
+              max_sent = dates[i].sent;
             }
-            if(msg_days[i].sent < min_sent) {
-              min_sent = msg_days[i].sent;
+            if(dates[i].sent < min_sent) {
+              min_sent = dates[i].sent;
             }
-            if(msg_days[i].received > max_received) {
-              max_received = msg_days[i].received;
+            if(dates[i].received > max_received) {
+              max_received = dates[i].received;
             }
-            if(msg_days[i].received < min_received) {
-              min_received = msg_days[i].received;
+            if(dates[i].received < min_received) {
+              min_received = dates[i].received;
             }
           }
           output.aggregate = {max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, max_received: max_received, min_received: min_received, avg_received: avg_received};

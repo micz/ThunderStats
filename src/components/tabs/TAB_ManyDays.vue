@@ -1,11 +1,15 @@
 <template>
     <div class="square_container">
-    <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2></div>
+    <div class="square_item"><div class="list_heading_wrapper">
+                        <h2 class="list_heading cropped">__MSG_SentMails__: <span>{{ sent_total }}</span> <span v-if="sent_today > 0">(+<span>{{ sent_today }}</span> __MSG_Today__)</span></h2>
+                        <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_max="counter_many_days_sent_max" :_min="counter_many_days_sent_min" :_avg="counter_many_days_sent_avg"/>
+                      </div>
         SENT MAILS GRAPH
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_Mails__</h2>
+						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span>{{ rcvd_total }}</span> <span v-if="rcvd_today > 0">(+<span>{{ rcvd_today }}</span> __MSG_Today__)</span></h2>
+                        <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_max="counter_many_days_rcvd_max" :_min="counter_many_days_rcvd_min" :_avg="counter_many_days_rcvd_avg"/>
 					  </div>
 					  RCVD MAILS GRAPH
     </div>
@@ -34,6 +38,8 @@ import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsUtils } from '@statslib/mzts-utils';
 import TableInvolved from '../tables/TableInvolved.vue';
+import GraphManyDays_Row from '../graphs/GraphManyDays.vue';
+import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 
@@ -58,6 +64,11 @@ var tsCore = null;
 
 let top_recipients_title = ref("");
 let top_senders_title = ref("");
+
+let sent_total = ref(0);
+let sent_today = ref(0);
+let rcvd_total = ref(0);
+let rcvd_today = ref(0);
 
 let is_loading_counter_sent_rcvd = ref(true);
 let is_loading_counter_many_days = ref(true);
@@ -162,7 +173,21 @@ async function updateData() {
             show_table_involved_recipients.value =  Object.keys(result_many_days.recipients).length > 0;
             table_involved_recipients.value = result_many_days.recipients;
             is_loading_involved_table_recipients.value = false;
-
+            //sent and received counters
+            sent_total.value = result_many_days.sent;
+            let today_date_string = tsUtils.dateToYYYYMMDD(new Date());
+            if(result_many_days.dates[today_date_string] == undefined){
+                sent_today.value = 0;
+            } else {
+                sent_today.value = result_many_days.dates[today_date_string].sent;
+            }
+            rcvd_total.value = result_many_days.received;
+            if(result_many_days.dates[today_date_string] == undefined){
+                rcvd_today.value = 0;
+            } else {
+                rcvd_today.value = result_many_days.dates[today_date_string].received;
+            }
+            is_loading_counter_sent_rcvd.value = false;
             is_loading_counter_many_days.value = false;
             resolve(true);
         });

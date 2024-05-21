@@ -98,10 +98,9 @@ export class thunderStastsCore {
       toDate.setDate(stop_date);
       toDate.setHours(23, 59, 59, 999);
 
-       return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails);
+      return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails);
      }
     // ================ TODAY TAB - END =====================
-
 
     // ================ YESTERDAY TAB =====================
     async getYesterday(account_id = 0, account_emails = []) {
@@ -115,8 +114,23 @@ export class thunderStastsCore {
 
       return this.getFullStatsData(yesterdayMidnight, lastMidnight, account_id, account_emails);
     }
-
     // ================ YESTERDAY TAB - END =====================
+
+    // ================ MANY DAYS TAB =====================
+    async getManyDaysData(account_id = 0, account_emails = []) {
+
+      let fromDate = new Date();
+      let start_date = fromDate.getDate() - this._many_days - 1; // TODO: why are we subtracting 1?
+      fromDate.setDate(start_date);
+      fromDate.setHours(0, 0, 0, 0);
+      let toDate = new Date();
+      let stop_date = toDate.getDate();
+      toDate.setDate(stop_date);
+      toDate.setHours(23, 59, 59, 999);
+
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true);
+    }
+    // ================ MANY DAYS TAB - END =====================
 
     // ================ BASE METHODS ========================
     async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false) {

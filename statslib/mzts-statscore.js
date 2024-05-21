@@ -340,10 +340,10 @@ export class thunderStastsCore {
 
       let max_sent = 0;
       let min_sent = 0;
-      let avg_sent = parseFloat((sent / 7).toFixed(2));
+      let avg_sent = parseFloat((sent / this._many_days).toFixed(2));
       let max_received = 0;
       let min_received = 0;
-      let avg_received = parseFloat((received / 7).toFixed(2));
+      let avg_received = parseFloat((received / this._many_days).toFixed(2));
 
       for(let i in msg_days) {
         if(msg_days[i].sent > max_sent) {

@@ -172,9 +172,10 @@ export class thunderStastsCore {
           if(message.date){
             let date_message = tsUtils.dateToYYYYMMDD(message.date);
             if (dates[date_message]) {
-              dates[date_message]++;
+              dates[date_message].count++;
             } else {
-              dates[date_message] = 1;
+              dates[date_message] = {};
+              dates[date_message].count = 1;
             }
           }
           // check sender
@@ -240,7 +241,28 @@ export class thunderStastsCore {
       let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
 
       if(do_aggregate_stats) {
-        
+          let max_sent = 0;
+          let min_sent = 0;
+          let avg_sent = parseFloat((sent / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
+          let max_received = 0;
+          let min_received = 0;
+          let avg_received = parseFloat((received / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
+
+          for(let i in msg_days) {
+            if(msg_days[i].sent > max_sent) {
+              max_sent = msg_days[i].sent;
+            }
+            if(msg_days[i].sent < min_sent) {
+              min_sent = msg_days[i].sent;
+            }
+            if(msg_days[i].received > max_received) {
+              max_received = msg_days[i].received;
+            }
+            if(msg_days[i].received < min_received) {
+              min_received = msg_days[i].received;
+            }
+          }
+          output.aggregate = {max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, max_received: max_received, min_received: min_received, avg_received: avg_received};
       }
 
       return output;

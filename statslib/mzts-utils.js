@@ -186,3 +186,15 @@ const inboxZeroColors = [
 ];
 
 const inboxZeroInboxColor = "#d62728";
+
+
+export function daysBetween(fromDate, toDate) {
+    const from = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate(), 12, 0, 0);
+    const to = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), 12, 0, 0);
+    
+    const differenceInTime = to - from;
+    
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    
+    return Math.ceil(differenceInDays) +1;
+}

@@ -119,7 +119,7 @@ export class thunderStastsCore {
     // ================ YESTERDAY TAB - END =====================
 
     // ================ BASE METHODS ========================
-    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = []) {
+    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false) {
 
       let start_time = performance.now();
 
@@ -237,7 +237,13 @@ export class thunderStastsCore {
 
       let stop_time = performance.now();
 
-      return {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
+
+      if(do_aggregate_stats) {
+        
+      }
+
+      return output;
     }
 
 
@@ -340,10 +346,10 @@ export class thunderStastsCore {
 
       let max_sent = 0;
       let min_sent = 0;
-      let avg_sent = parseFloat((sent / this._many_days).toFixed(2));
+      let avg_sent = parseFloat((sent / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
       let max_received = 0;
       let min_received = 0;
-      let avg_received = parseFloat((received / this._many_days).toFixed(2));
+      let avg_received = parseFloat((received / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
 
       for(let i in msg_days) {
         if(msg_days[i].sent > max_sent) {
@@ -359,8 +365,6 @@ export class thunderStastsCore {
           min_received = msg_days[i].received;
         }
       }
-
-
 
       let stop_time = performance.now();
 

@@ -112,11 +112,11 @@
     "description": ""
   },
   "SentMails": {
-    "message": "Sent mails",
+    "message": "Sent Mails",
     "description": ""
   },
   "ReceivedMails": {
-    "message": "Received mails",
+    "message": "Received Mails",
     "description": ""
   },
   "InboxZeroStatus": {

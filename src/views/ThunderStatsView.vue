@@ -2,7 +2,7 @@
     <HeadingNAV @chooseAccount="updateStats" :do_debug="do_debug" ref="HeadingNAV_ref"/>
   
     <main>
-      <tabs :options="{ defaultTabHash: 'tab-today' }"  cache-lifetime="0">
+      <tabs :options="{ defaultTabHash: 'tab-today' }"  cache-lifetime="120000"  @changed="tabChanged" ref="statsTabs">
         <tab id="tab-today" name="__MSG_Today__">
             <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="do_debug" ref="TAB_Today_ref" />
         </tab>
@@ -23,7 +23,6 @@
   </template>
   
   
-  
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
 import HeadingNAV from "@/components/HeadingNAV.vue";
@@ -36,7 +35,7 @@ import { i18n } from "@statslib/mzts-i18n.js";
 import { TS_prefs } from '@statslib/mzts-options.js';
 import { tsLogger } from "@statslib/mzts-logger.js";
 
-
+  let statsTabs = ref(null);
   let TAB_Today_ref = ref(null);
   let TAB_Yesterday_ref = ref(null);
   let TAB_ManyDays_ref = ref(null);
@@ -50,7 +49,18 @@ import { tsLogger } from "@statslib/mzts-logger.js";
   let do_debug = ref(false);
   let tsLog = null;
   let tsCore = null
-    
+
+  // let stats_done = {
+  //   "tab-today": false,
+  //   "tab-yesterday": false,
+  //   "tab-manydays": false,
+  //   "tab-customqry": false,
+  // }
+  
+  // function statsDone(id) {
+
+  //   stats_done[id] = true;
+  // }
 
   onMounted(async () => {
     //test_output.value = await thunderStatsCore.test_core_accounts();
@@ -65,18 +75,43 @@ import { tsLogger } from "@statslib/mzts-logger.js";
   
 
   async function updateStats(account_id) {
+    if((tsLog == null) || (tsCore == null)) { do_debug.value = await TS_prefs.getPref("do_debug"); }
+    if(tsLog == null) {
+      tsLog = new tsLogger("ThunderStatsView", do_debug.value);
+    }
+    if(tsCore == null) {
+      tsCore = new thunderStastsCore({do_debug: do_debug.value});
+    }
     tsLog.log("updateStats", account_id);
-    //test_output.value = await tsCore.test_core_messages(account_id);
     activeAccount.value = account_id;
     accountEmails.value = await tsCore.getAccountEmails(account_id);
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
     nextTick(() => {
-      // TAB_Today_ref.value.updateData();
-      // TAB_Yesterday_ref.value.updateData();
-      TAB_ManyDays_ref.value.updateData();
+      let curr_tab = statsTabs.value.activeTabHash;
+      console.log(">>>>>>>>>>> curr_tab: " + curr_tab);
+      switch(curr_tab) {
+        case "#tab-today":
+          TAB_Today_ref.value.updateData();
+          break;
+        case "#tab-yesterday":
+          TAB_Yesterday_ref.value.updateData();
+          break;
+        case "#tab-manydays":
+          TAB_ManyDays_ref.value.updateData();
+          break;
+        case "#tab-customqry":
+          break;
+      }
     });
   }
 
+  async function tabChanged(id) {
+    console.log(">>>>>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
+    // if(!stats_done[id.tab.computedId]) {
+      await updateStats(HeadingNAV_ref.value.getCurrentIdn());
+    // }
+    // stats_done[id.tab.computedId] = true;
+  }
   
   </script>
   

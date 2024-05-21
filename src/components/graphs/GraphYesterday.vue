@@ -1,5 +1,5 @@
 <template>
-<div class="chart_hours">
+<div class="chart_time">
   <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.gif" alt="__MSG_Loading__..." id="yesterday_hours_graph_wait"/></div>
   <Line
       :options="chartOptions"
@@ -10,7 +10,7 @@
       v-if="!is_loading"
     />
 </div>
-<div id="yesterday-time-legend-container" class="legend-hours"></div>
+<div id="yesterday-time-legend-container" class="legend-time"></div>
 </template>
 
 

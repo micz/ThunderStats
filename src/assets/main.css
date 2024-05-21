@@ -34,13 +34,14 @@ table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:#bae0fa;}
 table.mzts-tinvolved tr.mzts-trow td{padding:2px 4px 2px 2px;color:black;white-space:-moz-pre-wrap !important;word-break: break-all;}
 table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:normal;}
 
-.chart_hours{ overflow:auto;float:left;height:175px;width:89%;}
-.legend-hours{float:right;font-size:12px;padding-top:8px;}
-.legend-hours ul{list-style-type:none;margin:0;padding:0;}
-.legend-hours ul li.day_today_title{font-weight:bold;}
+.chart_time{ overflow:auto;float:left;height:175px;width:89%;}
+.legend-time{float:right;font-size:12px;padding-top:8px;}
+.legend-time ul{list-style-type:none;margin:0;padding:0;}
+.legend-time ul li.day_today_title{font-weight:bold;}
 .chart_inbox0{width:80%;height:310px;float:left;}
 .chart_inbox0_datemsg{float:right;max-width:20%;min-width:90px;height:220px;}
 .inbox0_inboxmsg_unread{color:grey;}
+.chart_many_days{ overflow:auto;float:left;height:175px;width:89%;}
 
 .tooltip-light {
 	border-radius: 5px;

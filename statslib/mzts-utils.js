@@ -30,12 +30,12 @@ export const tsUtils = {
         let dataset_rcvd = Array.from({length: num_elements}, () => 0);
         for(let key in data) {
             let value = data[key];
-            let hour = parseInt(key);
-            dataset_sent[hour] = value.sent;
-            dataset_rcvd[hour] = value.received;
+            let k = parseInt(key);
+            dataset_sent[k] = value.sent;
+            dataset_rcvd[k] = value.received;
         }
         if(do_progressive) {
-            for(let i = 1; i < 24; i++) {
+            for(let i = 1; i < num_elements; i++) {
                 dataset_sent[i] = dataset_sent[i] + dataset_sent[i-1];
                 dataset_rcvd[i] = dataset_rcvd[i] + dataset_rcvd[i-1];
                 }

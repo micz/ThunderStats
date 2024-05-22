@@ -26,15 +26,6 @@ export const tsUtils = {
     },
 
     transformCountDataToDataset(data, do_progressive = false, num_elements = 24) {
-        //============== test
-        // let msg_hours = [];
-        // for(let i = 0; i < 24; i++) {
-        //     msg_hours[i] = {};
-        //     msg_hours[i].sent = Math.floor(Math.random() * 20);
-        //     msg_hours[i].received = Math.floor(Math.random() * 20);
-        //   }
-        // data = msg_hours;
-        //============== test END
         let dataset_sent = Array.from({length: num_elements}, () => 0);
         let dataset_rcvd = Array.from({length: num_elements}, () => 0);
         for(let key in data) {

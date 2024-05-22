@@ -154,7 +154,7 @@ export class thunderStastsCore {
       let recipients = {};
 
       let folders = {};
-      let dates = {};
+      let dates = tsUtils.getDateArray(fromDate,toDate);
 
       let messageids_sent = [];
 
@@ -184,14 +184,7 @@ export class thunderStastsCore {
           }
           // dates
           let date_message_string = tsUtils.dateToYYYYMMDD(message.date);
-          if (dates[date_message_string]) {
-            dates[date_message_string].count++;
-          } else {
-            dates[date_message_string] = {};
-            dates[date_message_string].count = 1;
-            dates[date_message_string].sent = 0;
-            dates[date_message_string].received = 0;
-          }
+          dates[date_message_string].count++;
           // check sender
           const match_author = message.author.match(this.regexEmail);
           if (match_author) {

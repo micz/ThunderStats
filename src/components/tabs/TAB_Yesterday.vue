@@ -185,7 +185,7 @@ async function updateData() {
             counter_yesterday_sent.value = result_yesterday.sent;
             is_loading_counter_sent_rcvd.value = false;
             // graph yesterday hours
-            const yesterday_hours_data = tsUtils.transformHoursDataToDataset(result_yesterday.msg_hours, do_progressive);
+            const yesterday_hours_data = tsUtils.transformCountDataToDataset(result_yesterday.msg_hours, do_progressive);
             graphdata_yesterday_hours_sent.value = yesterday_hours_data.dataset_sent;
             graphdata_yesterday_hours_rcvd.value = yesterday_hours_data.dataset_rcvd;
             //top senders list

@@ -219,7 +219,7 @@ async function updateData() {
             counter_today_sent.value = result_today.sent;
             is_loading_counter_sent_rcvd.value = false;
             // graph today hours
-            const today_hours_data = tsUtils.transformHoursDataToDataset(result_today.msg_hours, do_progressive);
+            const today_hours_data = tsUtils.transformCountDataToDataset(result_today.msg_hours, do_progressive);
             graphdata_today_hours_sent.value = today_hours_data.dataset_sent;
             graphdata_today_hours_rcvd.value = today_hours_data.dataset_rcvd;
             //top senders list
@@ -257,7 +257,7 @@ async function updateData() {
             counter_yesterday_thistime_sent.value = result_yesterday.sent;
             is_loading_counter_yesterday_thistime.value = false;
             // graph yesterday hours
-            const yesterday_hours_data = tsUtils.transformHoursDataToDataset(result_yesterday.msg_hours, do_progressive);
+            const yesterday_hours_data = tsUtils.transformCountDataToDataset(result_yesterday.msg_hours, do_progressive);
             graphdata_yesterday_hours_sent.value = yesterday_hours_data.dataset_sent;
             graphdata_yesterday_hours_rcvd.value = yesterday_hours_data.dataset_rcvd;
             resolve(true);

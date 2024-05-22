@@ -25,7 +25,7 @@ export const tsUtils = {
         return hours + "h " + minutes + "m " + seconds + "s " + milliseconds + "ms";
     },
 
-    transformHoursDataToDataset(data, do_progressive = false) {
+    transformCountDataToDataset(data, do_progressive = false, num_elements = 24) {
         //============== test
         // let msg_hours = [];
         // for(let i = 0; i < 24; i++) {
@@ -35,8 +35,8 @@ export const tsUtils = {
         //   }
         // data = msg_hours;
         //============== test END
-        let dataset_sent = Array.from({length: 25}, () => 0);
-        let dataset_rcvd = Array.from({length: 25}, () => 0);
+        let dataset_sent = Array.from({length: num_elements}, () => 0);
+        let dataset_rcvd = Array.from({length: num_elements}, () => 0);
         for(let key in data) {
             let value = data[key];
             let hour = parseInt(key);

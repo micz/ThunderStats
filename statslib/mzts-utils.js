@@ -25,22 +25,36 @@ export const tsUtils = {
         return hours + "h " + minutes + "m " + seconds + "s " + milliseconds + "ms";
     },
 
-    transformCountDataToDataset(data, do_progressive = false, num_elements = 24) {
-        let dataset_sent = Array.from({length: num_elements}, () => 0);
-        let dataset_rcvd = Array.from({length: num_elements}, () => 0);
+    transformCountDataToDataset(data, do_progressive = false, num_elements = 24, get_labels = false) {
+        let dataset_sent = {};
+        let dataset_rcvd = {};
         for(let key in data) {
-            let value = data[key];
-            let k = parseInt(key);
-            dataset_sent[k] = value.sent;
-            dataset_rcvd[k] = value.received;
+            let value = data[String(key)];
+            dataset_sent[String(key)] = value.sent;
+            dataset_rcvd[String(key)] = value.received;
         }
-        if(do_progressive) {
-            for(let i = 1; i < num_elements; i++) {
-                dataset_sent[i] = dataset_sent[i] + dataset_sent[i-1];
-                dataset_rcvd[i] = dataset_rcvd[i] + dataset_rcvd[i-1];
-                }
+        
+        if (do_progressive) {
+            let cumulative_sent = 0;
+            let cumulative_rcvd = 0;
+            
+            for (let key in dataset_sent) {
+                cumulative_sent += dataset_sent[key];
+                cumulative_rcvd += dataset_rcvd[key];
+                dataset_sent[key] = cumulative_sent;
+                dataset_rcvd[key] = cumulative_rcvd;
             }
-        return { dataset_sent, dataset_rcvd };
+        }
+
+        let output = { dataset_sent, dataset_rcvd };
+        if(get_labels) {
+            let labels = [];
+            for(let key in data) {
+                labels.push(key);
+            }
+            output.labels = labels;
+        }
+        return output;
     },
 
     getFoldersLabelsColors(folders) {
@@ -155,6 +169,7 @@ export const tsUtils = {
         while (currentDate <= toDate) {
             let formattedDate = this.dateToYYYYMMDD(currentDate);
             dateArray[formattedDate] = {};
+            dateArray[formattedDate].count = 0;
             dateArray[formattedDate].sent = 0;
             dateArray[formattedDate].received = 0;
             currentDate.setDate(currentDate.getDate() + 1); // Increment the date by one day

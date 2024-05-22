@@ -1,31 +1,31 @@
 <template>
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
-                        <h2 class="list_heading cropped">__MSG_SentMails__: <span>{{ sent_total }}</span> <span v-if="sent_today > 0">(+<span>{{ sent_today }}</span> __MSG_Today__)</span></h2>
+                        <h2 class="list_heading cropped">__MSG_SentMails__: <span>{{ sent_total }}</span> <span v-if="sent_today > 0">(+<span>{{ sent_today }}</span> __MSG_today_small__)</span></h2>
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_max="counter_many_days_sent_max" :_min="counter_many_days_sent_min" :_avg="counter_many_days_sent_avg"/>
                       </div>
-        SENT MAILS GRAPH
+                      <GraphManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span>{{ rcvd_total }}</span> <span v-if="rcvd_today > 0">(+<span>{{ rcvd_today }}</span> __MSG_Today__)</span></h2>
+						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span>{{ rcvd_total }}</span> <span v-if="rcvd_today > 0">(+<span>{{ rcvd_today }}</span> __MSG_today_small__)</span></h2>
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_max="counter_many_days_rcvd_max" :_min="counter_many_days_rcvd_min" :_avg="counter_many_days_rcvd_avg"/>
 					  </div>
-					  RCVD MAILS GRAPH
+					  <GraphManyDays :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped" v-text="top_recipients_title"></h2>
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
-                    <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__!</p>
+                    <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
     </div>
     
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped" v-text="top_senders_title"></h2>
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
-                      <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__!</p>
+                      <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__</p>
     </div>
   </div>
 </template>
@@ -38,7 +38,7 @@ import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsUtils } from '@statslib/mzts-utils';
 import TableInvolved from '../tables/TableInvolved.vue';
-import GraphManyDays_Row from '../graphs/GraphManyDays.vue';
+import GraphManyDays from '../graphs/GraphManyDays.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
@@ -74,6 +74,8 @@ let is_loading_counter_sent_rcvd = ref(true);
 let is_loading_counter_many_days = ref(true);
 let is_loading_involved_table_recipients = ref(true);
 let is_loading_involved_table_senders = ref(true);
+let is_loading_sent_graph = ref(true);
+let is_loading_rcvd_graph = ref(true);
 
 let counter_many_days_sent_max = ref(0);
 let counter_many_days_sent_min = ref(0);
@@ -87,14 +89,25 @@ let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
 
+let graphdata_manydays_sent = ref([]);
+let graphdata_manydays_rcvd = ref([]);
+let graphdata_manydays_labels = ref([]);
+
 let _involved_num = 10;
 let _many_days = 7;
 
 
-// let chartData_ManyDays = ref({
-//     labels: Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')),
-//     datasets: []
-// });
+let chartData_Sent = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Rcvd = ref({
+    labels: [],
+    datasets: []
+});
+
+
 
 onMounted(async () => {
     today_date.value = new Date().toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
@@ -114,41 +127,28 @@ async function updateData() {
     tsLog = new tsLogger("TAB_ManyDays", props.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     await Promise.all([getManyDaysData()]);
-    // chartData_Today.value.datasets = [];
-    // chartData_Today.value.datasets.push({
-    //     label: 'tsent',
-    //     data: graphdata_today_hours_sent.value,
-    //     borderColor: '#1f77b4',
-    //     backgroundColor: '#1f77b4',
-    //     borderWidth: 2,
-    //     pointRadius: 1,
-    // })
-    // chartData_Today.value.datasets.push({
-    //     label: 'trcvd',
-    //     data: graphdata_today_hours_rcvd.value,
-    //     borderColor: '#ff7f0e',
-    //     backgroundColor: '#ff7f0e',
-    //     borderWidth: 2,
-    //     pointRadius: 1,
-    // })
-    // chartData_Today.value.datasets.push({
-    //     label: 'ysent',
-    //     data: graphdata_yesterday_hours_sent.value,
-    //     borderColor: '#17becf',
-    //     backgroundColor: '#17becf',
-    //     borderDash: [12, 3, 3],
-    //     pointStyle: false,
-    //     borderWidth: 2,
-    // })
-    // chartData_Today.value.datasets.push({
-    //     label: 'yrcvd',
-    //     data: graphdata_yesterday_hours_rcvd.value,
-    //     borderColor: '#ffbb78',
-    //     backgroundColor: '#ffbb78',
-    //     borderDash: [12, 3, 3],
-    //     pointStyle: false,
-    //     borderWidth: 2,
-    // })
+    chartData_Sent.value.datasets = [];
+    chartData_Sent.value.datasets.push({
+        label: 'Sent',
+        data: graphdata_manydays_sent.value,
+        borderColor: '#1f77b4',
+        backgroundColor: '#1f77b4',
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("graphdata_manydays_sent.value: " + JSON.stringify(graphdata_manydays_sent.value));
+    chartData_Sent.value.labels = graphdata_manydays_labels.value;
+    chartData_Rcvd.value.datasets = [];
+    chartData_Rcvd.value.datasets.push({
+        label: 'Received',
+        data: graphdata_manydays_rcvd.value,
+        borderColor: '#ff7f0e',
+        backgroundColor: '#ff7f0e',
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("graphdata_manydays_rcvd.value: " + JSON.stringify(graphdata_manydays_rcvd.value));
+    chartData_Rcvd.value.labels = graphdata_manydays_labels.value;
     nextTick(() => {
         i18n.updateDocument();
     });
@@ -189,6 +189,15 @@ async function updateData() {
             }
             is_loading_counter_sent_rcvd.value = false;
             is_loading_counter_many_days.value = false;
+            const many_days_data = tsUtils.transformCountDataToDataset(result_many_days.dates, false, true);
+            tsLog.log("many_days_data: " + JSON.stringify(many_days_data));
+            graphdata_manydays_labels.value = many_days_data.labels;
+            // sent graph
+            graphdata_manydays_sent.value = many_days_data.dataset_sent;
+            is_loading_sent_graph.value = false;
+            // received graph
+            graphdata_manydays_rcvd.value = many_days_data.dataset_rcvd;
+            is_loading_rcvd_graph.value = false;
             resolve(true);
         });
     };
@@ -199,6 +208,8 @@ function loadingDo(){
     is_loading_counter_many_days.value = true;
     is_loading_involved_table_recipients.value = true;
     is_loading_involved_table_senders.value = true;
+    is_loading_sent_graph.value = true;
+    is_loading_rcvd_graph.value = true;
 }
 
 defineExpose({ updateData });

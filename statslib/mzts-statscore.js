@@ -252,28 +252,7 @@ export class thunderStastsCore {
       let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
 
       if(do_aggregate_stats) {
-          let max_sent = 0;
-          let min_sent = 0;
-          let avg_sent = parseFloat((sent / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
-          let max_received = 0;
-          let min_received = 0;
-          let avg_received = parseFloat((received / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
-
-          for(let i in dates) {
-            if(dates[i].sent > max_sent) {
-              max_sent = dates[i].sent;
-            }
-            if(dates[i].sent < min_sent) {
-              min_sent = dates[i].sent;
-            }
-            if(dates[i].received > max_received) {
-              max_received = dates[i].received;
-            }
-            if(dates[i].received < min_received) {
-              min_received = dates[i].received;
-            }
-          }
-          output.aggregate = {max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, max_received: max_received, min_received: min_received, avg_received: avg_received};
+        output.aggregate = this.aggregateData(dates, sent, received, fromDate, toDate);
       }
 
       return output;
@@ -377,6 +356,18 @@ export class thunderStastsCore {
         count++;
       }
 
+      let output = {sent: sent, received: received, count: count, msg_days: msg_days};
+
+      output.aggregate = this.aggregateData(dates, sent, received, fromDate, toDate);
+
+      let stop_time = performance.now();
+
+      output.elapsed = tsUtils.humanReadableMilliseconds(stop_time - start_time);
+
+      return output;
+    }
+
+    async aggregateData(dates, sent, received, fromDate, toDate) {
       let max_sent = 0;
       let min_sent = 0;
       let avg_sent = parseFloat((sent / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
@@ -384,24 +375,21 @@ export class thunderStastsCore {
       let min_received = 0;
       let avg_received = parseFloat((received / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
 
-      for(let i in msg_days) {
-        if(msg_days[i].sent > max_sent) {
-          max_sent = msg_days[i].sent;
+      for(let i in dates) {
+        if(dates[i].sent > max_sent) {
+          max_sent = dates[i].sent;
         }
-        if(msg_days[i].sent < min_sent) {
-          min_sent = msg_days[i].sent;
+        if(dates[i].sent < min_sent) {
+          min_sent = dates[i].sent;
         }
-        if(msg_days[i].received > max_received) {
-          max_received = msg_days[i].received;
+        if(dates[i].received > max_received) {
+          max_received = dates[i].received;
         }
-        if(msg_days[i].received < min_received) {
-          min_received = msg_days[i].received;
+        if(dates[i].received < min_received) {
+          min_received = dates[i].received;
         }
       }
-
-      let stop_time = performance.now();
-
-      return {sent: sent, received: received, count: count, msg_days: msg_days, max_sent: max_sent, min_sent: min_sent, max_received: max_received, min_received: min_received, avg_sent: avg_sent, avg_received: avg_received, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
+      return {max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, max_received: max_received, min_received: min_received, avg_received: avg_received};
     }
 
     async getInboxZeroDates(account_id = 0) {

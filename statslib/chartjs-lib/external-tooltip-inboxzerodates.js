@@ -102,7 +102,7 @@ const getOrCreateTooltip = (chart) => {
         text.innerHTML = body;
 
         //console.log('>>>>>>>>>>>>>>>>>>> body: ', JSON.stringify(body));
-        console.log(typeof body[0]);
+        //console.log(typeof body[0]);
   
         td.appendChild(span);
         td.appendChild(text);

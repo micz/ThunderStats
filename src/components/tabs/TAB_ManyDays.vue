@@ -159,12 +159,6 @@ async function updateData() {
         return new Promise(async (resolve) => {
             let result_many_days = await tsCore.getManyDaysData(props.activeAccount, props.accountEmails);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_many_days, null, 2));
-            counter_many_days_rcvd_max.value = result_many_days.aggregate.max_received;
-            counter_many_days_rcvd_min.value = result_many_days.aggregate.min_received;
-            counter_many_days_rcvd_avg.value = result_many_days.aggregate.avg_received;
-            counter_many_days_sent_max.value = result_many_days.aggregate.max_sent;
-            counter_many_days_sent_min.value = result_many_days.aggregate.min_sent;
-            counter_many_days_sent_avg.value = result_many_days.aggregate.avg_sent;
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_many_days.senders).length > 0;
             table_involved_senders.value = result_many_days.senders;
@@ -174,21 +168,40 @@ async function updateData() {
             table_involved_recipients.value = result_many_days.recipients;
             is_loading_involved_table_recipients.value = false;
             //sent and received counters
-            sent_total.value = result_many_days.sent;
             let today_date_string = tsUtils.dateToYYYYMMDD(new Date());
             if(result_many_days.dates[today_date_string] == undefined){
                 sent_today.value = 0;
             } else {
                 sent_today.value = result_many_days.dates[today_date_string].sent;
             }
-            rcvd_total.value = result_many_days.received;
+            sent_total.value = result_many_days.sent - sent_today.value;
             if(result_many_days.dates[today_date_string] == undefined){
                 rcvd_today.value = 0;
             } else {
                 rcvd_today.value = result_many_days.dates[today_date_string].received;
             }
+            rcvd_total.value = result_many_days.received - sent_today.value;
             is_loading_counter_sent_rcvd.value = false;
+            //aggregated data
+            // remove today from the dates
+            let dates_copy = Object.assign({}, result_many_days.dates);
+            delete dates_copy[today_date_string];
+            let aggregate = tsCore.aggregateData(dates_copy, sent_total.value, rcvd_total.value);
+            tsLog.log("aggregate: " + JSON.stringify(aggregate, null, 2));
+            counter_many_days_rcvd_max.value = aggregate.max_received;
+            counter_many_days_rcvd_min.value = aggregate.min_received;
+            counter_many_days_rcvd_avg.value = aggregate.avg_received;
+            counter_many_days_sent_max.value = aggregate.max_sent;
+            counter_many_days_sent_min.value = aggregate.min_sent;
+            counter_many_days_sent_avg.value = aggregate.avg_sent;
+            // counter_many_days_rcvd_max.value = result_many_days.aggregate.max_received;
+            // counter_many_days_rcvd_min.value = result_many_days.aggregate.min_received;
+            // counter_many_days_rcvd_avg.value = result_many_days.aggregate.avg_received;
+            // counter_many_days_sent_max.value = result_many_days.aggregate.max_sent;
+            // counter_many_days_sent_min.value = result_many_days.aggregate.min_sent;
+            // counter_many_days_sent_avg.value = result_many_days.aggregate.avg_sent;
             is_loading_counter_many_days.value = false;
+            // sent and received graphs
             const many_days_data = tsUtils.transformCountDataToDataset(result_many_days.dates, false, true);
             tsLog.log("many_days_data: " + JSON.stringify(many_days_data));
             graphdata_manydays_labels.value = many_days_data.labels;

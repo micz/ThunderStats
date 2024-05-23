@@ -90,13 +90,15 @@ export class thunderStastsCore {
     async getToday_manyDaysData(account_id = 0, account_emails = []) {
 
       let fromDate = new Date();
-      let start_date = fromDate.getDate() - this._many_days - 1; // TODO: why are we subtracting 1?
+      let start_date = fromDate.getDate() - this._many_days - 1; // we subtracting 1, to get 7 days without today
       fromDate.setDate(start_date);
       fromDate.setHours(0, 0, 0, 0);
       let toDate = new Date();
-      let stop_date = toDate.getDate();
+      let stop_date = toDate.getDate() -1;  // we subtracting 1, to get 7 days without today
       toDate.setDate(stop_date);
       toDate.setHours(23, 59, 59, 999);
+
+      this.tsLog.log("[getToday_manyDaysData]fromDate: " + fromDate + " - toDate: " + toDate);
 
       return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails);
      }
@@ -120,7 +122,7 @@ export class thunderStastsCore {
     async getManyDaysData(account_id = 0, account_emails = []) {
 
       let fromDate = new Date();
-      let start_date = fromDate.getDate() - this._many_days - 1; // TODO: why are we subtracting 1?
+      let start_date = fromDate.getDate() - this._many_days; // we get 7 days + today
       fromDate.setDate(start_date);
       fromDate.setHours(0, 0, 0, 0);
       let toDate = new Date();
@@ -128,7 +130,9 @@ export class thunderStastsCore {
       toDate.setDate(stop_date);
       toDate.setHours(23, 59, 59, 999);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true);
+      console.log(">>>>>>>>>>>>>>> [getManyDaysData] fromDate: " + fromDate + " - toDate: " + toDate);
+
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false);  // do not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
     // ================ MANY DAYS TAB - END =====================
 
@@ -250,7 +254,7 @@ export class thunderStastsCore {
       let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates };
 
       if(do_aggregate_stats) {
-        output.aggregate = this.aggregateData(dates, sent, received, fromDate, toDate);
+        output.aggregate = this.aggregateData(dates, sent, received);
       }
 
       let stop_time = performance.now();
@@ -360,7 +364,7 @@ export class thunderStastsCore {
 
       let output = {sent: sent, received: received, count: count, msg_days: msg_days};
 
-      output.aggregate = this.aggregateData(msg_days, sent, received, fromDate, toDate);
+      output.aggregate = this.aggregateData(msg_days, sent, received);
 
       let stop_time = performance.now();
 
@@ -369,13 +373,17 @@ export class thunderStastsCore {
       return output;
     }
 
-    aggregateData(dates, sent, received, fromDate, toDate) {
+    aggregateData(dates, sent, received) {
+      // dates must be popolated with all the days, even with 0 value
+      let num_days = Object.keys(dates).length;
       let max_sent = 0;
       let min_sent = 0;
-      let avg_sent = parseFloat((sent / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
+      //let avg_sent = parseFloat((sent / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
+      let avg_sent = parseFloat((sent / num_days).toFixed(2));
       let max_received = 0;
       let min_received = 0;
-      let avg_received = parseFloat((received / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
+      //let avg_received = parseFloat((received / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
+      let avg_received = parseFloat((received / num_days).toFixed(2));
 
       for(let i in dates) {
         if(dates[i].sent > max_sent) {

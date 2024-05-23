@@ -247,13 +247,15 @@ export class thunderStastsCore {
       recipients = Object.fromEntries(Object.entries(recipients).sort((a, b) => b[1] - a[1]));
       recipients = Object.fromEntries(Object.entries(recipients).slice(0,this._involved_num));
 
-      let stop_time = performance.now();
-
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates };
 
       if(do_aggregate_stats) {
         output.aggregate = this.aggregateData(dates, sent, received, fromDate, toDate);
       }
+
+      let stop_time = performance.now();
+
+      output.elapsed = tsUtils.humanReadableMilliseconds(stop_time - start_time);
 
       return output;
     }
@@ -358,7 +360,7 @@ export class thunderStastsCore {
 
       let output = {sent: sent, received: received, count: count, msg_days: msg_days};
 
-      output.aggregate = this.aggregateData(dates, sent, received, fromDate, toDate);
+      output.aggregate = this.aggregateData(msg_days, sent, received, fromDate, toDate);
 
       let stop_time = performance.now();
 
@@ -367,7 +369,7 @@ export class thunderStastsCore {
       return output;
     }
 
-    async aggregateData(dates, sent, received, fromDate, toDate) {
+    aggregateData(dates, sent, received, fromDate, toDate) {
       let max_sent = 0;
       let min_sent = 0;
       let avg_sent = parseFloat((sent / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));

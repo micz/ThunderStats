@@ -90,15 +90,15 @@ export class thunderStastsCore {
     async getToday_manyDaysData(account_id = 0, account_emails = []) {
 
       let fromDate = new Date();
-      let start_date = fromDate.getDate() - this._many_days - 1; // we subtracting 1, to get 7 days without today
+      let start_date = fromDate.getDate() - this._many_days; // we get 7 days without today
       fromDate.setDate(start_date);
       fromDate.setHours(0, 0, 0, 0);
       let toDate = new Date();
-      let stop_date = toDate.getDate() -1;  // we subtracting 1, to get 7 days without today
+      let stop_date = toDate.getDate() - 1;  // we subtracting 1, to get 7 days without today
       toDate.setDate(stop_date);
       toDate.setHours(23, 59, 59, 999);
 
-      this.tsLog.log("[getToday_manyDaysData]fromDate: " + fromDate + " - toDate: " + toDate);
+      this.tsLog.log("[getToday_manyDaysData] fromDate: " + fromDate + " - toDate: " + toDate);
 
       return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails);
      }
@@ -129,8 +129,6 @@ export class thunderStastsCore {
       let stop_date = toDate.getDate();
       toDate.setDate(stop_date);
       toDate.setHours(23, 59, 59, 999);
-
-      console.log(">>>>>>>>>>>>>>> [getManyDaysData] fromDate: " + fromDate + " - toDate: " + toDate);
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false);  // do not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
@@ -338,6 +336,8 @@ export class thunderStastsCore {
       let messages = this.getMessages(browser.messages.query(queryInfo_getAggregatedStatsData));
 
       let msg_days = tsUtils.getDateArray(fromDate,toDate);
+
+      this.tsLog.log("[getAggregatedStatsData] msg_days: " + JSON.stringify(msg_days));
 
       for await (let message of messages) {
           //this.tsLog.log("message: " + JSON.stringify(message));

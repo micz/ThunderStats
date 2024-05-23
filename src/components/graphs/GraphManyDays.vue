@@ -1,7 +1,7 @@
 <template>
 <div class="chart_many_days">
   <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.gif" alt="__MSG_Loading__..." /></div>
-  <Line
+  <Bar
       :options="chartOptions"
       :data="chartData"
       :plugins="chartPlugins"
@@ -16,11 +16,11 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { Line } from 'vue-chartjs'
-import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
-import { externalTooltipTimeGraphLines } from '@statslib/chartjs-lib/external-tooltip-timegraphlines';
+import { Bar } from 'vue-chartjs'
+import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 
-Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title );
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
+
 
 let props = defineProps({
     chartData: {
@@ -43,8 +43,8 @@ let chartOptions = ref({
         responsive: true,
         animation: false,
         maintainAspectRatio: false,
-        categoryPercentage: 1,
-        barPercentage: 1,
+        // categoryPercentage: 1,
+        // barPercentage: 0.8,
         scales: {
           x: {
             // title: {
@@ -68,11 +68,26 @@ let chartOptions = ref({
             display: false,
           },
           tooltip: {
-              enabled: true,
+              enabled: false,
               mode: 'index',
               intersect: false,
-              //external: externalTooltipTimeGraphLines
-            }
+          },
+          // animation: {
+          //   onComplete: (animation) => {
+          //     const ctx = animation.chart.ctx;
+          //     ctx.font = Chart.helpers.fontString(Chart.defaults.font.size, Chart.defaults.font.style, Chart.defaults.font.family);
+          //     ctx.textAlign = 'center';
+          //     ctx.textBaseline = 'bottom';
+
+          //     animation.chart.data.datasets.forEach((dataset, i) => {
+          //       const meta = animation.chart.getDatasetMeta(i);
+          //       meta.data.forEach((bar, index) => {
+          //         const data = dataset.data[index];
+          //         ctx.fillText(data, bar.x, bar.y - 5);
+          //       });
+          //     });
+          //   },
+          // },
         },
       });
 

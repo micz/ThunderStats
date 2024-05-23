@@ -180,13 +180,15 @@ async function updateData() {
             } else {
                 rcvd_today.value = result_many_days.dates[today_date_string].received;
             }
-            rcvd_total.value = result_many_days.received - sent_today.value;
+            rcvd_total.value = result_many_days.received - rcvd_today.value;
+            tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
             //aggregated data
             // remove today from the dates
             let dates_copy = Object.assign({}, result_many_days.dates);
             delete dates_copy[today_date_string];
             let aggregate = tsCore.aggregateData(dates_copy, sent_total.value, rcvd_total.value);
+            tsLog.log("dates_copy: " + JSON.stringify(dates_copy, null, 2));
             tsLog.log("aggregate: " + JSON.stringify(aggregate, null, 2));
             counter_many_days_rcvd_max.value = aggregate.max_received;
             counter_many_days_rcvd_min.value = aggregate.min_received;
@@ -194,12 +196,6 @@ async function updateData() {
             counter_many_days_sent_max.value = aggregate.max_sent;
             counter_many_days_sent_min.value = aggregate.min_sent;
             counter_many_days_sent_avg.value = aggregate.avg_sent;
-            // counter_many_days_rcvd_max.value = result_many_days.aggregate.max_received;
-            // counter_many_days_rcvd_min.value = result_many_days.aggregate.min_received;
-            // counter_many_days_rcvd_avg.value = result_many_days.aggregate.avg_received;
-            // counter_many_days_sent_max.value = result_many_days.aggregate.max_sent;
-            // counter_many_days_sent_min.value = result_many_days.aggregate.min_sent;
-            // counter_many_days_sent_avg.value = result_many_days.aggregate.avg_sent;
             is_loading_counter_many_days.value = false;
             // sent and received graphs
             const many_days_data = tsUtils.transformCountDataToDataset(result_many_days.dates, false, true);

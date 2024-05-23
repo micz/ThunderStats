@@ -275,12 +275,12 @@ async function updateData() {
         return new Promise(async (resolve) => {
             let result_many_days = await tsCore.getToday_manyDaysData(props.activeAccount, props.accountEmails);
             tsLog.log("result_today_manydays_data: " + JSON.stringify(result_many_days, null, 2));
-            counter_many_days_rcvd_max.value = result_many_days.max_received;
-            counter_many_days_rcvd_min.value = result_many_days.min_received;
-            counter_many_days_rcvd_avg.value = result_many_days.avg_received;
-            counter_many_days_sent_max.value = result_many_days.max_sent;
-            counter_many_days_sent_min.value = result_many_days.min_sent;
-            counter_many_days_sent_avg.value = result_many_days.avg_sent;
+            counter_many_days_rcvd_max.value = result_many_days.aggregate.max_received;
+            counter_many_days_rcvd_min.value = result_many_days.aggregate.min_received;
+            counter_many_days_rcvd_avg.value = result_many_days.aggregate.avg_received;
+            counter_many_days_sent_max.value = result_many_days.aggregate.max_sent;
+            counter_many_days_sent_min.value = result_many_days.aggregate.min_sent;
+            counter_many_days_sent_avg.value = result_many_days.aggregate.avg_sent;
             is_loading_counter_many_days.value = false;
             resolve(true);
         });

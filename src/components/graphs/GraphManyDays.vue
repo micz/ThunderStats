@@ -15,9 +15,10 @@
 
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
+import { tsUtils } from '@statslib/mzts-utils';
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
@@ -38,6 +39,25 @@ let manydaysChartBar_ref = ref(null);
 
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
+
+//let maxY = ref(Math.ceil(Math.max(...chartData.value.datasets[0].data) / 5) * 5);
+
+let maxY = ref(0);
+
+watch(props.chartData, (newChartData) => {
+    //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
+    if (newChartData.datasets && newChartData.datasets.length > 0) {
+        maxY.value = Math.ceil(tsUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
+    } else {
+        maxY.value = 5;
+    }
+    if(maxY.value < 20) {
+      chartOptions.value.scales.y.ticks.stepSize = 1;
+    }else{
+      chartOptions.value.scales.y.ticks.stepSize = 5;
+    }
+    chartOptions.value.scales.y.max = maxY.value;
+}, { immediate: true });
 
 let chartOptions = ref({
         responsive: true,
@@ -61,7 +81,17 @@ let chartOptions = ref({
             },
             beginAtZero: true,
             min: 0,
-          }
+            max: maxY.value,
+            ticks: {
+              stepSize: 5,
+              callback: function(value) {
+                if (Number.isInteger(value)) {
+                  return value;
+                }
+                return '';
+              }
+            },
+          },
         },
         plugins: {
           legend: {

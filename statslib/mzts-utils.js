@@ -25,7 +25,7 @@ export const tsUtils = {
         return hours + "h " + minutes + "m " + seconds + "s " + milliseconds + "ms";
     },
 
-    transformCountDataToDataset(data, do_progressive = false, num_elements = 24, get_labels = false) {
+    transformCountDataToDataset(data, do_progressive = false, get_labels = false) {
         let dataset_sent = {};
         let dataset_rcvd = {};
         for(let key in data) {
@@ -85,6 +85,10 @@ export const tsUtils = {
             output.push(folders[key].count);
         }
         return output;
+    },
+
+    getManyDaysLabels(labels) {
+       
     },
 
     transformInboxZeroDatesDataToDataset(data) {

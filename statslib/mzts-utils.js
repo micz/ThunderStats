@@ -188,6 +188,16 @@ export const tsUtils = {
         return Math.ceil(differenceInDays) +1;
     },
 
+    getMaxFromData(data) {      // data is an object like this: {"20240517":2,"20240518":4,"20240519":4,"20240520":2,"20240521":0,"20240522":2,"20240523":4,"20240524":0}
+        let maxValue = 0;
+        for (const [date, value] of Object.entries(data)) {
+            if (value > maxValue) {
+                maxValue = value;
+            }
+        }
+        return maxValue;
+    }
+
 }
 
 const inboxZeroColors = [

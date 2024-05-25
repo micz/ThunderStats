@@ -77,8 +77,11 @@ var chartOptions = ref({
             ticks: {
               callback: function(value, index, ticks) {
                             return tsUtils.getManyDaysLabel(this.getLabelForValue(value));
-                        }
-            }
+                        },
+              align: 'center',
+              // maxRotation: 0,
+              // minRotation: 0
+            },
           },
           y: {
             title: {
@@ -95,7 +98,7 @@ var chartOptions = ref({
                   return value;
                 }
                 return '';
-              }
+              },
             },
           },
         },
@@ -114,7 +117,6 @@ var chartOptions = ref({
           //     ctx.font = Chart.helpers.fontString(Chart.defaults.font.size, Chart.defaults.font.style, Chart.defaults.font.family);
           //     ctx.textAlign = 'center';
           //     ctx.textBaseline = 'bottom';
-
           //     animation.chart.data.datasets.forEach((dataset, i) => {
           //       const meta = animation.chart.getDatasetMeta(i);
           //       meta.data.forEach((bar, index) => {

@@ -87,8 +87,50 @@ export const tsUtils = {
         return output;
     },
 
-    getManyDaysLabels(labels) {
-       
+    // getManyDaysLabels(labels) {
+    //     const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
+
+    //     return labels.map(label => {
+    //         const year = parseInt(label.slice(0, 4));
+    //         const month = parseInt(label.slice(4, 6));
+    //         const day = parseInt(label.slice(6, 8));
+    
+    //         const date = new Date(year, month - 1, day);
+    //         const dayOfWeek = browser.i18n.getMessage(daysOfWeek[date.getDay()]);
+    
+    //         const dateFormatter = new Intl.DateTimeFormat(undefined, {
+    //             weekday: 'long',
+    //             day: '2-digit',
+    //             month: '2-digit',
+    //             year: 'numeric'
+    //         });
+    
+    //         const formattedDate = dateFormatter.format(date);
+    
+    //         return dayOfWeek + "\r\n" + formattedDate;
+    //     });
+    // },
+
+    getManyDaysLabel(label) {
+        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
+
+        const year = parseInt(label.slice(0, 4));
+        const month = parseInt(label.slice(4, 6));
+        const day = parseInt(label.slice(6, 8));
+
+        const date = new Date(year, month - 1, day);
+        const dayOfWeek = browser.i18n.getMessage(daysOfWeek[date.getDay()]);
+
+        const dateFormatter = new Intl.DateTimeFormat(undefined, {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+
+        const formattedDate = dateFormatter.format(date);
+
+        // return dayOfWeek + "\n" + formattedDate + (this.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : "");
+        return [dayOfWeek,formattedDate,(this.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : "")];
     },
 
     transformInboxZeroDatesDataToDataset(data) {
@@ -200,7 +242,14 @@ export const tsUtils = {
             }
         }
         return maxValue;
-    }
+    },
+
+    isToday(date) {
+        const today = new Date();
+        return date.getFullYear() === today.getFullYear() &&
+               date.getMonth() === today.getMonth() &&
+               date.getDate() === today.getDate();
+    },
 
 }
 

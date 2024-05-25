@@ -51,6 +51,7 @@ watch(props.chartData, (newChartData) => {
     } else {
         maxY.value = 5;
     }
+    if(!chartOptions) return;
     if(maxY.value < 20) {
       chartOptions.value.scales.y.ticks.stepSize = 1;
     }else{
@@ -59,7 +60,7 @@ watch(props.chartData, (newChartData) => {
     chartOptions.value.scales.y.max = maxY.value;
 }, { immediate: true });
 
-let chartOptions = ref({
+var chartOptions = ref({
         responsive: true,
         animation: false,
         maintainAspectRatio: false,
@@ -73,6 +74,11 @@ let chartOptions = ref({
             // },
             beginAtZero: true,
             min: 0,
+            ticks: {
+              callback: function(value, index, ticks) {
+                            return tsUtils.getManyDaysLabel(this.getLabelForValue(value));
+                        }
+            }
           },
           y: {
             title: {

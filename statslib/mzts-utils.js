@@ -133,6 +133,12 @@ export const tsUtils = {
         return [dayOfWeek,formattedDate,(this.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : "")];
     },
 
+    getManyDaysBarColor(ctx, totalBars) {
+        const defaultColor = '#4682B4';
+        const todayColor = '#5BB4FD';
+        return ctx.dataIndex === totalBars - 1 ? todayColor : defaultColor;
+    },
+
     transformInboxZeroDatesDataToDataset(data) {
         let datasets = [];
         let availableColors = [...inboxZeroColors];

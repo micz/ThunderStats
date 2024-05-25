@@ -131,8 +131,12 @@ async function updateData() {
     chartData_Sent.value.datasets.push({
         label: 'Sent',
         data: graphdata_manydays_sent.value,
-        borderColor: '#1f77b4',
-        backgroundColor: '#1f77b4',
+        borderColor: (ctx) => {
+            return tsUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
+        },
+        backgroundColor:  (ctx) => {
+            return tsUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
+        },
         borderWidth: 2,
         pointRadius: 1,
     });
@@ -142,8 +146,12 @@ async function updateData() {
     chartData_Rcvd.value.datasets.push({
         label: 'Received',
         data: graphdata_manydays_rcvd.value,
-        borderColor: '#ff7f0e',
-        backgroundColor: '#ff7f0e',
+        borderColor:  (ctx) => {
+            return tsUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
+        },
+        backgroundColor: (ctx) => {
+            return tsUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
+        },
         borderWidth: 2,
         pointRadius: 1,
     });

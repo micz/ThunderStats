@@ -475,31 +475,31 @@
     "message": "Business Days",
     "description": ""
   },
-  "WeekDaySun": {
+  "WeekDay0": {
     "message": "Sunday",
     "description": ""
   },
-  "WeekDayMon": {
+  "WeekDay1": {
     "message": "Monday",
     "description": ""
   },
-  "WeekDayTue": {
+  "WeekDay2": {
     "message": "Tuesday",
     "description": ""
   },
-  "WeekDayWed": {
+  "WeekDay3": {
     "message": "Wednesday",
     "description": ""
   },
-  "WeekDayThu": {
+  "WeekDay4": {
     "message": "Thursday",
     "description": ""
   },
-  "WeekDayFri": {
+  "WeekDay5": {
     "message": "Friday",
     "description": ""
   },
-  "WeekDaySat": {
+  "WeekDay6": {
     "message": "Saturday",
     "description": ""
   },

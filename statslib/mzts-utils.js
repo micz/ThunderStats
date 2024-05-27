@@ -252,7 +252,7 @@ export const tsUtils = {
 
     getMaxFromData(data) {      // data is an array like this: [2,0,2,4,0,2,0,0]
         let maxValue = 0;
-        for (const [key, value] of data) {
+        for (const value of data) {
             if (value > maxValue) {
                 maxValue = value;
             }

@@ -65,6 +65,7 @@ var chartOptions = ref({
         responsive: true,
         animation: false,
         maintainAspectRatio: false,
+        hover: {mode: null},
         // categoryPercentage: 1,
         // barPercentage: 0.8,
         scales: {

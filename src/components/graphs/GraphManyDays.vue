@@ -112,20 +112,28 @@ var chartOptions = ref({
           },
           datalabels: {
             display: true,
-            anchor: 'bottom',
-            align: 'end',
-            clamp: true,
-            font: {
-              weight: 'bold'
+            anchor: 'end',
+            align: function(context) {
+              let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
+              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
+              return height <= 25 ? 'top' : 'bottom';
             },
-            formatter: function(value, context) {
+            color: function(context) {
+              let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
+              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
+              return height > 25 ? '#fff' : 'grey';
+            },
+            font: {
+              weight: 'bold',
+            },
+            //formatter: function(value, context) {
               // console.log(">>>>>>>>>>>>>>>>>>>>> context.dataIndex: " + JSON.stringify(context.dataIndex));
               // console.log(">>>>>>>>>>>>>>>>>>>>> context.dataset: " + JSON.stringify(context.dataset));
               // const dataValues = Object.values(context.dataset.data);
               // value = dataValues[context.dataIndex];
               //console.log(">>>>>>>>>>>>>>>>>>>>> value: " + JSON.stringify(value));
-              return value;
-            }
+            //   return value;
+            // },
           },
         },
       });

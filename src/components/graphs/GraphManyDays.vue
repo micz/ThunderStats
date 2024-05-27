@@ -18,9 +18,10 @@
 import { ref, computed, watch } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { tsUtils } from '@statslib/mzts-utils';
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
+Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, BarController);
 
 
 let props = defineProps({
@@ -68,10 +69,10 @@ var chartOptions = ref({
         // barPercentage: 0.8,
         scales: {
           x: {
-            // title: {
-            //   display: true,
-            //   text: browser.i18n.getMessage('TimeGraph.Time')
-            // },
+            title: {
+              display: true,
+              text: browser.i18n.getMessage('TimeGraph.Time')
+            },
             beginAtZero: true,
             min: 0,
             ticks: {
@@ -108,29 +109,29 @@ var chartOptions = ref({
           },
           tooltip: {
               enabled: false,
-              mode: 'index',
-              intersect: false,
           },
-          // animation: {
-          //   onComplete: (animation) => {
-          //     const ctx = animation.chart.ctx;
-          //     ctx.font = Chart.helpers.fontString(Chart.defaults.font.size, Chart.defaults.font.style, Chart.defaults.font.family);
-          //     ctx.textAlign = 'center';
-          //     ctx.textBaseline = 'bottom';
-          //     animation.chart.data.datasets.forEach((dataset, i) => {
-          //       const meta = animation.chart.getDatasetMeta(i);
-          //       meta.data.forEach((bar, index) => {
-          //         const data = dataset.data[index];
-          //         ctx.fillText(data, bar.x, bar.y - 5);
-          //       });
-          //     });
-          //   },
-          // },
+          datalabels: {
+            display: true,
+            anchor: 'bottom',
+            align: 'end',
+            clamp: true,
+            font: {
+              weight: 'bold'
+            },
+            formatter: function(value, context) {
+              // console.log(">>>>>>>>>>>>>>>>>>>>> context.dataIndex: " + JSON.stringify(context.dataIndex));
+              // console.log(">>>>>>>>>>>>>>>>>>>>> context.dataset: " + JSON.stringify(context.dataset));
+              const dataValues = Object.values(context.dataset.data);
+              value = dataValues[context.dataIndex];
+              //console.log(">>>>>>>>>>>>>>>>>>>>> value: " + JSON.stringify(value));
+              return value;
+            }
+          },
         },
       });
 
 
-let chartPlugins =  null;
+var chartPlugins = [ChartDataLabels];
 
 </script>
 

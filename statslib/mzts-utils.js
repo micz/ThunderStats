@@ -26,12 +26,12 @@ export const tsUtils = {
     },
 
     transformCountDataToDataset(data, do_progressive = false, get_labels = false) {
-        let dataset_sent = {};
-        let dataset_rcvd = {};
+        let dataset_sent = [];
+        let dataset_rcvd = [];
         for(let key in data) {
             let value = data[String(key)];
-            dataset_sent[String(key)] = value.sent;
-            dataset_rcvd[String(key)] = value.received;
+            dataset_sent.push(value.sent);
+            dataset_rcvd.push(value.received);
         }
         
         if (do_progressive) {
@@ -240,9 +240,19 @@ export const tsUtils = {
         return Math.ceil(differenceInDays) +1;
     },
 
-    getMaxFromData(data) {      // data is an object like this: {"20240517":2,"20240518":4,"20240519":4,"20240520":2,"20240521":0,"20240522":2,"20240523":4,"20240524":0}
+    // getMaxFromData(data) {      // data is an object like this: {"20240517":2,"20240518":4,"20240519":4,"20240520":2,"20240521":0,"20240522":2,"20240523":4,"20240524":0}
+    //     let maxValue = 0;
+    //     for (const [date, value] of Object.entries(data)) {
+    //         if (value > maxValue) {
+    //             maxValue = value;
+    //         }
+    //     }
+    //     return maxValue;
+    // },
+
+    getMaxFromData(data) {      // data is an array like this: [2,0,2,4,0,2,0,0]
         let maxValue = 0;
-        for (const [date, value] of Object.entries(data)) {
+        for (const [key, value] of data) {
             if (value > maxValue) {
                 maxValue = value;
             }

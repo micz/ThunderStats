@@ -121,8 +121,8 @@ var chartOptions = ref({
             formatter: function(value, context) {
               // console.log(">>>>>>>>>>>>>>>>>>>>> context.dataIndex: " + JSON.stringify(context.dataIndex));
               // console.log(">>>>>>>>>>>>>>>>>>>>> context.dataset: " + JSON.stringify(context.dataset));
-              const dataValues = Object.values(context.dataset.data);
-              value = dataValues[context.dataIndex];
+              // const dataValues = Object.values(context.dataset.data);
+              // value = dataValues[context.dataIndex];
               //console.log(">>>>>>>>>>>>>>>>>>>>> value: " + JSON.stringify(value));
               return value;
             }

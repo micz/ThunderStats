@@ -81,7 +81,7 @@ let chartOptions = ref({
       });
 
 /*async function updateChart() {
-  console.log("updateChart: " + JSON.stringify(chartData.value));
+  //console.log("updateChart: " + JSON.stringify(chartData.value));
 }*/
 
 //defineExpose({ updateChart });

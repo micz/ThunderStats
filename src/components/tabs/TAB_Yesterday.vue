@@ -40,7 +40,7 @@
 import { ref, onMounted, nextTick } from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
-import { tsUtils } from '@statslib/mzts-utils';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import CounterSentReceived from '../counters/CounterSentReceived.vue';
 import GraphYesterday from '../graphs/GraphYesterday.vue';
 import GraphInboxZeroFolders from '../graphs/GraphInboxZeroFolders.vue';
@@ -162,17 +162,17 @@ async function updateData() {
         pointRadius: 1,
     })
     // graph inbox zero folders
-    let folders_data = tsUtils.getFoldersLabelsColors(graphdata_inboxzero_folders.value);
+    let folders_data = tsCoreUtils.getFoldersLabelsColors(graphdata_inboxzero_folders.value);
     chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
     chartData_InboxZeroFolders.value.labels = folders_data.labels;
     chartData_InboxZeroFolders.value.datasets = [];
-    chartData_InboxZeroFolders.value.datasets.push({data:tsUtils.getFoldersCounts(graphdata_inboxzero_folders.value), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
+    chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(graphdata_inboxzero_folders.value), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
     tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
     // graph inbox zero dates
     inbox0_openFolderInFirstTab.value = await TS_prefs.getPref("inbox0_openFolderInFirstTab");
     chartData_InboxZeroDates.value.labels = ['date'];
     chartData_InboxZeroDates.value.datasets = [];
-    chartData_InboxZeroDates.value.datasets = tsUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
+    chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
     tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
     nextTick(() => {
         is_loading_yesterday_graph.value = false;
@@ -191,7 +191,7 @@ async function updateData() {
             counter_yesterday_sent.value = result_yesterday.sent;
             is_loading_counter_sent_rcvd.value = false;
             // graph yesterday hours
-            const yesterday_hours_data = tsUtils.transformCountDataToDataset(result_yesterday.msg_hours, do_progressive);
+            const yesterday_hours_data = tsCoreUtils.transformCountDataToDataset(result_yesterday.msg_hours, do_progressive);
             graphdata_yesterday_hours_sent.value = yesterday_hours_data.dataset_sent;
             graphdata_yesterday_hours_rcvd.value = yesterday_hours_data.dataset_rcvd;
             //top senders list

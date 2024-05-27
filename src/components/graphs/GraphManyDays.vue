@@ -19,7 +19,7 @@ import { ref, computed, watch } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { tsUtils } from '@statslib/mzts-utils';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 
 Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, BarController);
 
@@ -48,7 +48,7 @@ let maxY = ref(0);
 watch(props.chartData, (newChartData) => {
     //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
-        maxY.value = Math.ceil(tsUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
+        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
     } else {
         maxY.value = 5;
     }
@@ -78,7 +78,7 @@ var chartOptions = ref({
             min: 0,
             ticks: {
               callback: function(value, index, ticks) {
-                            return tsUtils.getManyDaysLabel(this.getLabelForValue(value));
+                            return tsCoreUtils.getManyDaysLabel(this.getLabelForValue(value));
                         },
               align: 'center',
               // maxRotation: 0,

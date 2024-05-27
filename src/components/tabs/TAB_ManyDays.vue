@@ -37,6 +37,7 @@ import { ref, onMounted, nextTick } from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsUtils } from '@statslib/mzts-utils';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import TableInvolved from '../tables/TableInvolved.vue';
 import GraphManyDays from '../graphs/GraphManyDays.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
@@ -132,10 +133,10 @@ async function updateData() {
         label: 'Sent',
         data: graphdata_manydays_sent.value,
         borderColor: (ctx) => {
-            return tsUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
         },
         backgroundColor:  (ctx) => {
-            return tsUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
         },
         borderWidth: 2,
         pointRadius: 1,
@@ -147,10 +148,10 @@ async function updateData() {
         label: 'Received',
         data: graphdata_manydays_rcvd.value,
         borderColor:  (ctx) => {
-            return tsUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
         },
         backgroundColor: (ctx) => {
-            return tsUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
         },
         borderWidth: 2,
         pointRadius: 1,
@@ -206,7 +207,7 @@ async function updateData() {
             counter_many_days_sent_avg.value = aggregate.avg_sent;
             is_loading_counter_many_days.value = false;
             // sent and received graphs
-            const many_days_data = tsUtils.transformCountDataToDataset(result_many_days.dates, false, true);
+            const many_days_data = tsCoreUtils.transformCountDataToDataset(result_many_days.dates, false, true);
             tsLog.log("many_days_data: " + JSON.stringify(many_days_data));
             graphdata_manydays_labels.value = many_days_data.labels;
             // sent graph

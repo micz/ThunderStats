@@ -21,7 +21,7 @@ import { Line } from 'vue-chartjs'
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
 import { externalTooltipTimeGraphLines } from '@statslib/chartjs-lib/external-tooltip-timegraphlines';
 import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
-import { tsUtils } from '@statslib/mzts-utils';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title );
 
@@ -48,12 +48,12 @@ watch(props.chartData, (newChartData) => {
     //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
         let data = newChartData.datasets[0].data.concat(newChartData.datasets[1].data);
-        maxY.value = Math.ceil(tsUtils.getMaxFromData(data) / 5) * 5;
+        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(data) / 5) * 5;
     } else {
         maxY.value = 5;
     }
     if(!chartOptions) return;
-    console.log(">>>>>>>>>>>>>>>>>>>> maxY: " + maxY.value);
+    //console.log(">>>>>>>>>>>>>>>>>>>> maxY: " + maxY.value);
     if(maxY.value < 20) {
       chartOptions.value.scales.y.ticks.stepSize = 1;
     }else{
@@ -117,7 +117,7 @@ var chartOptions = ref({
 let chartPlugins =  [htmlLegendPlugin];
 
 /*async function updateChart() {
-  console.log("updateChart: " + JSON.stringify(chartData.value));
+  //console.log("updateChart: " + JSON.stringify(chartData.value));
 }*/
 
 //defineExpose({ updateChart });

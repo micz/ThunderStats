@@ -16,11 +16,12 @@
 
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { Line } from 'vue-chartjs'
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
 import { externalTooltipTimeGraphLines } from '@statslib/chartjs-lib/external-tooltip-timegraphlines';
 import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
+import { tsUtils } from '@statslib/mzts-utils';
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title );
 
@@ -41,7 +42,26 @@ let yesterdayChartBar_ref = ref(null);
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
 
-let chartOptions = ref({
+let maxY = ref(0);
+
+watch(props.chartData, (newChartData) => {
+    //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
+    if (newChartData.datasets && newChartData.datasets.length > 0) {
+        maxY.value = Math.ceil(tsUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
+    } else {
+        maxY.value = 5;
+    }
+    if(!chartOptions) return;
+    console.log(">>>>>>>>>>>>>>>>>>>> maxY: " + maxY.value);
+    if(maxY.value < 20) {
+      chartOptions.value.scales.y.ticks.stepSize = 1;
+    }else{
+      chartOptions.value.scales.y.ticks.stepSize = 5;
+    }
+    chartOptions.value.scales.y.max = maxY.value;
+}, { immediate: true });
+
+var chartOptions = ref({
         responsive: true,
         animation: false,
         maintainAspectRatio: false,
@@ -60,6 +80,15 @@ let chartOptions = ref({
             title: {
               display: true,
               text: browser.i18n.getMessage('Mails')
+            },
+            ticks: {
+              stepSize: 1,
+              // callback: function(value) {
+              //   if (Number.isInteger(value)) {
+              //     return value;
+              //   }
+              //   return '';
+              // },
             },
             beginAtZero: true,
             min: 0,

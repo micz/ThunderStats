@@ -1,10 +1,267 @@
-<template>
+<!--
+/*
+ *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
+ *  Copyright (C) 2024  Mic (m@micz.it)
 
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+
+<template>
+        <div id="customqry_dashboard">
+            <div id="cssmenu">
+                <ul>
+                    <li class="active has-sub"><a href="#nil"><img src="@/assets/images/mzts-customqry-view.png" title="__MSG_Views__" class="tooltip"/></a>
+                       <!-- <ul>
+                            <li><a href="#currentweek"><span>&ThunderStats.CurrentWeek;</span></a></li>
+                            <li><a href="#lastweek"><span>&ThunderStats.LastWeek;</span></a></li>
+                            <li><a href="#last2week"><span>&ThunderStats.Last2Week;</span></a></li>
+                            <li><a href="#currentmonth"><span>&ThunderStats.CurrentMonth;</span></a></li>
+                            <li><a href="#lastmonth" class="last"><span>&ThunderStats.LastMonth;</span></a></li>
+                            <li><a href="#currentyear"><span>&ThunderStats.CurrentYear;</span></a></li>
+                            <li><a href="#lastyear" class="last"><span>&ThunderStats.LastYear;</span></a></li>
+                        </ul>-->
+                    </li>
+                </ul>
+                </div> __MSG_DateRange__ <VueDatePicker v-model="dateQry" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false"></VueDatePicker>
+                <button type="button" id="customqry_update_btn" @click="doQry()">__MSG_UpdateCustomQry__</button>
+                <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
+                <span id="customqry_totaldays_text">__MSG_CustomQryDataMsg__: <span id="customqry_account"></span> - __MSG_TotalDays__: <span id="customqry_totaldays_num"></span></span>
+            </div>
+    <div class="square_container">
+    <div class="square_item"><div class="list_heading_wrapper">
+                        <h2 class="list_heading cropped">__MSG_SentMails__: <span>{{ sent_total }}</span></h2>
+                        <CounterManyDays_Row :is_loading="is_loading_counter_customqry" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg"/>
+                      </div>
+                      <GraphManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" />
+    </div>
+
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span>{{ rcvd_total }}</span></h2>
+                        <CounterManyDays_Row :is_loading="is_loading_counter_customqry" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg"/>
+					  </div>
+					  <GraphManyDays :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" />
+    </div>
+
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped" v-text="top_recipients_title"></h2>
+					  </div>
+					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
+                    <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
+    </div>
+    
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped" v-text="top_senders_title"></h2>
+					  </div>
+                      <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
+                      <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__</p>
+    </div>
+  </div>
 </template>
 
 
 
 <script setup>
+import { ref, onMounted, nextTick } from 'vue';
+import { tsLogger } from '@statslib/mzts-logger';
+import { thunderStastsCore } from '@statslib/mzts-statscore';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import TableInvolved from '../tables/TableInvolved.vue';
+import GraphManyDays from '../graphs/GraphManyDays.vue';
+import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
+import { TS_prefs } from '@statslib/mzts-options';
+import { i18n } from "@statslib/mzts-i18n.js";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
+const props = defineProps({
+    activeAccount: {
+        type: Number,
+        default: 0
+    },
+    accountEmails: {
+        type: Array,
+        default: []
+    },
+    do_debug: {
+        type: Boolean,
+        default: false
+    }
+});
+
+
+let tsLog = null;
+var tsCore = null;
+
+let dateQry = ref();
+
+let top_recipients_title = ref("");
+let top_senders_title = ref("");
+
+let sent_total = ref(0);
+let rcvd_total = ref(0);
+
+let is_loading_counter_sent_rcvd = ref(true);
+let is_loading_counter_customqry = ref(true);
+let is_loading_involved_table_recipients = ref(true);
+let is_loading_involved_table_senders = ref(true);
+let is_loading_sent_graph = ref(true);
+let is_loading_rcvd_graph = ref(true);
+
+let counter_customqry_sent_max = ref(0);
+let counter_customqry_sent_min = ref(0);
+let counter_customqry_sent_avg = ref(0);
+let counter_customqry_rcvd_max = ref(0);
+let counter_customqry_rcvd_min = ref(0);
+let counter_customqry_rcvd_avg = ref(0);
+
+let table_involved_recipients = ref([]);
+let table_involved_senders = ref([]);
+let show_table_involved_recipients = ref(false);
+let show_table_involved_senders = ref(false);
+
+let graphdata_manydays_sent = ref([]);
+let graphdata_manydays_rcvd = ref([]);
+let graphdata_manydays_labels = ref([]);
+
+let _involved_num = 10;
+
+
+let chartData_Sent = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Rcvd = ref({
+    labels: [],
+    datasets: []
+});
+
+
+
+onMounted(async () => {
+    const startDate = new Date();
+    const endDate = new Date(new Date().setDate(startDate.getDate() - 7));
+    dateQry.value = [startDate, endDate];
+    _involved_num = await TS_prefs.getPref("_involved_num");
+    top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
+    top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
+});
+
+
+function doQry(){
+    console.log(">>>>>>>>> [doQry] dateQry: " + JSON.stringify(dateQry.value));
+}
+
+async function updateData() {
+    loadingDo();
+    while(props.updated == false){
+        await new Promise(r => setTimeout(r, 100));
+    }
+    tsCore = new thunderStastsCore({do_debug: props.do_debug, _involved_num: _involved_num, _many_days: _many_days});
+    tsLog = new tsLogger("TAB_ManyDays", props.do_debug);
+    tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
+    await Promise.all([getManyDaysData()]);
+    chartData_Sent.value.datasets = [];
+    chartData_Sent.value.datasets.push({
+        label: 'Sent',
+        data: graphdata_manydays_sent.value,
+        borderColor: (ctx) => {
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
+        },
+        backgroundColor:  (ctx) => {
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
+        },
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("graphdata_manydays_sent.value: " + JSON.stringify(graphdata_manydays_sent.value));
+    chartData_Sent.value.labels = graphdata_manydays_labels.value;
+    chartData_Rcvd.value.datasets = [];
+    chartData_Rcvd.value.datasets.push({
+        label: 'Received',
+        data: graphdata_manydays_rcvd.value,
+        borderColor:  (ctx) => {
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
+        },
+        backgroundColor: (ctx) => {
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
+        },
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("graphdata_manydays_rcvd.value: " + JSON.stringify(graphdata_manydays_rcvd.value));
+    chartData_Rcvd.value.labels = graphdata_manydays_labels.value;
+    nextTick(() => {
+        i18n.updateDocument();
+    });
+};
+
+ // get many days data
+    function getManyDaysData () {
+        return new Promise(async (resolve) => {
+            let result_customqry = await tsCore.getManyDaysData(props.activeAccount, props.accountEmails);
+            tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
+            //top senders list
+            show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
+            table_involved_senders.value = result_customqry.senders;
+            is_loading_involved_table_senders.value = false;
+            //top recipients list
+            show_table_involved_recipients.value =  Object.keys(result_customqry.recipients).length > 0;
+            table_involved_recipients.value = result_customqry.recipients;
+            is_loading_involved_table_recipients.value = false;
+            //sent and received counters
+            sent_total.value = result_customqry.sent;
+            rcvd_total.value = result_customqry.received;
+            tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
+            is_loading_counter_sent_rcvd.value = false;
+            //aggregated data
+            let aggregate = tsCore.aggregateData(result_customqry.dates, sent_total.value, rcvd_total.value);
+            tsLog.log("dates: " + JSON.stringify(result_customqry.dates, null, 2));
+            tsLog.log("aggregate: " + JSON.stringify(aggregate, null, 2));
+            counter_customqry_rcvd_max.value = aggregate.max_received;
+            counter_customqry_rcvd_min.value = aggregate.min_received;
+            counter_customqry_rcvd_avg.value = aggregate.avg_received;
+            counter_customqry_sent_max.value = aggregate.max_sent;
+            counter_customqry_sent_min.value = aggregate.min_sent;
+            counter_customqry_sent_avg.value = aggregate.avg_sent;
+            is_loading_counter_customqry.value = false;
+            // sent and received graphs
+            const customqry_data = tsCoreUtils.transformCountDataToDataset(result_customqry.dates, false, true);
+            tsLog.log("customqry_data: " + JSON.stringify(customqry_data));
+            graphdata_manydays_labels.value = customqry_data.labels;
+            // sent graph
+            graphdata_manydays_sent.value = customqry_data.dataset_sent;
+            is_loading_sent_graph.value = false;
+            // received graph
+            graphdata_manydays_rcvd.value = customqry_data.dataset_rcvd;
+            is_loading_rcvd_graph.value = false;
+            resolve(true);
+        });
+    };
+
+
+function loadingDo(){
+    is_loading_counter_sent_rcvd.value = true;
+    is_loading_counter_customqry.value = true;
+    is_loading_involved_table_recipients.value = true;
+    is_loading_involved_table_senders.value = true;
+    is_loading_sent_graph.value = true;
+    is_loading_rcvd_graph.value = true;
+}
+
+defineExpose({ updateData });
 
 </script>
 

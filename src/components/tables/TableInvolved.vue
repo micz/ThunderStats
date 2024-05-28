@@ -22,15 +22,15 @@
     <table class='mzts-tinvolved' >
         <tr class='mzts-thead'>
             <td class='mzts-row-num'>#</td>
-            <!--<td>__MSG_Name__</td>-->
+            <td>__MSG_Name__</td>
             <td>__MSG_Mail__</td>
             <td>__MSG_Total__</td>
         </tr>
-        <tr v-for="(count, email, index) in tableData" :key="email" class='mzts-trow'>
+        <tr v-for="(element, email, index) in tableData" :key="email" class='mzts-trow'>
             <td class='mzts-row-num'>{{ index + 1 }}</td>
-            <!--<td></td>-->
+            <td>{{element.name}}</td>
             <td>{{email}}</td>
-            <td>{{count}}</td>
+            <td>{{element.count}}</td>
         </tr>
     </table>
     <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.gif" alt="__MSG_Loading__..." /></div>

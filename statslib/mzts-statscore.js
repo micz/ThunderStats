@@ -17,6 +17,7 @@
  */
 
 import { tsLogger } from "./mzts-logger";
+import { tsCoreUtils } from "./mzts-statscore.utils";
 import { tsUtils } from "./mzts-utils";
 
 export class thunderStastsCore {
@@ -205,9 +206,11 @@ export class thunderStastsCore {
                   const key_recipient = match_recipient[0];
                   if(!(account_emails.includes(key_recipient) || messageids_sent.includes(message.id))) {
                     if (recipients[key_recipient]) {
-                      recipients[key_recipient] ++;
+                      recipients[key_recipient].count++;
                     } else {
-                      recipients[key_recipient] = 1;
+                      recipients[key_recipient] = {}
+                      recipients[key_recipient].count = 1;
+                      recipients[key_recipient].name = 'Name: ' + key_recipient;  //TODO
                     }
                   }
                 }
@@ -218,18 +221,22 @@ export class thunderStastsCore {
                   const key_cc = match_cc[0];
                   if(!(account_emails.includes(key_cc) || messageids_sent.includes(message.id))) {
                     if (recipients[key_cc]) {
-                      recipients[key_cc] ++;
+                      recipients[key_cc].count++;
                     } else {
-                      recipients[key_cc] = 1;
+                      recipients[key_cc] = {}
+                      recipients[key_cc].count = 1;
+                      recipients[key_cc].name = 'Name: ' + key_cc;  //TODO
                     }
                   }
                 }
               }
             }else{
               if (senders[key_author]) {
-                senders[key_author] ++;
+                senders[key_author].count++;
               } else {
-                senders[key_author] = 1;
+                senders[key_author] = {}
+                senders[key_author].count = 1;
+                senders[key_author].name = await tsCoreUtils.getNameFromAddressBook(key_author);
               }
               received++;
               // group by date

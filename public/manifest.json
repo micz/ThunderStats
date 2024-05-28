@@ -17,6 +17,7 @@
         "default_icon": "images/mzts-icon-32px.png"
     },
     "permissions": [
+        "addressBooks",
         "messagesRead",
         "accountsRead",
         "storage",

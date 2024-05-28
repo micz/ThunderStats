@@ -202,6 +202,23 @@ export const tsCoreUtils = {
         return maxValue;
     },
 
+    async getNameFromAddressBook(address) {
+        let contacts = await browser.contacts.quickSearch(address);
+        if(contacts.length == 0) return '';
+
+        let vCard = contacts[0].properties.vCard;
+
+        const nameRegex = /FN:(.*)/i;
+        const match = vCard.match(nameRegex);
+
+        let name = '';
+
+        if (match && match[1]) {
+            name = match[1].trim();
+        }
+        return name;
+    }
+
 }
 
 const inboxZeroColors = [

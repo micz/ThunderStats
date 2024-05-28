@@ -67,7 +67,7 @@ let maxY = ref(0);
 watch(props.chartData, (newChartData) => {
     //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
-        let data = newChartData.datasets[0].data.concat(newChartData.datasets[1].data);
+        let data = newChartData.datasets[0].data.concat(newChartData.datasets[1].data).concat(newChartData.datasets[2].data).concat(newChartData.datasets[3].data);
         maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(data) / 5) * 5;
     } else {
         maxY.value = 5;

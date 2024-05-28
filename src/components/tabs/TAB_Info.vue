@@ -9,7 +9,7 @@
 					  </div>
 					  <p>__MSG_InboxZeroText_1__</p>
 						<p>__MSG_InboxZeroText_2__</p>
-						<p><a href="http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/what-is-inbox-0/">__MSG_clickheremoreinfo__</a></p></div>
+						<p><a href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/what-is-inbox-0/">__MSG_clickheremoreinfo__</a></p></div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_OtherInfoTitle__</h2>
 					  </div>
@@ -20,7 +20,7 @@
 						<h2 class="list_heading cropped">__MSG_DonationsTitle__</h2>
 					  </div>
 					  <p>__MSG_InfoMainDesc__</p>
-					  <p><a class="outlink" href="http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_DonateLink__</a></p></div>
+					  <p><a class="outlink" href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_DonateLink__</a></p></div>
   </div>
 </template>
 

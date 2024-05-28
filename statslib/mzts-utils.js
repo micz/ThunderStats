@@ -1,5 +1,5 @@
 /*
- *  ThunderStats [https://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/]
+ *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
  *  Copyright (C) 2024  Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify

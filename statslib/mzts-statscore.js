@@ -250,10 +250,10 @@ export class thunderStastsCore {
         count++;
       }
 
-      senders = Object.fromEntries(Object.entries(senders).sort((a, b) => b[1] - a[1]));
+      senders = Object.fromEntries(Object.entries(senders).sort((a, b) => b[1].count - a[1].count));
       senders = Object.fromEntries(Object.entries(senders).slice(0,this._involved_num));
 
-      recipients = Object.fromEntries(Object.entries(recipients).sort((a, b) => b[1] - a[1]));
+      recipients = Object.fromEntries(Object.entries(recipients).sort((a, b) => b[1].count - a[1].count));
       recipients = Object.fromEntries(Object.entries(recipients).slice(0,this._involved_num));
 
       let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates };

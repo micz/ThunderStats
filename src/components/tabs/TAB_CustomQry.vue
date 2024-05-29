@@ -31,7 +31,7 @@
                             <li><a href="#currentyear"><span>&ThunderStats.CurrentYear;</span></a></li>
                             <li><a href="#lastyear" class="last"><span>&ThunderStats.LastYear;</span></a></li>
                         </ul>-->
-                </div><span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker dark="true" v-model="dateQry" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false"></VueDatePicker>
+                </div><span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker dark="true" v-model="dateQry" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <button type="button" id="customqry_update_btn" @click="doQry()">__MSG_UpdateCustomQry__</button>
                 <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
                 <span id="customqry_totaldays_text">__MSG_CustomQryDataMsg__: <span id="customqry_account"></span> - __MSG_TotalDays__: <span id="customqry_totaldays_num"></span></span>

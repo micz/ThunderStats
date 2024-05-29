@@ -20,9 +20,8 @@
 
 <template>
         <div id="customqry_dashboard">
-            <div id="cssmenu">
-                <ul>
-                    <li class="active has-sub"><a href="#nil"><img src="@/assets/images/mzts-customqry-view.png" title="__MSG_Views__" class="tooltip"/></a>
+            <div id="customqry_menu">
+                <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Views__" class="tooltip"/>
                        <!-- <ul>
                             <li><a href="#currentweek"><span>&ThunderStats.CurrentWeek;</span></a></li>
                             <li><a href="#lastweek"><span>&ThunderStats.LastWeek;</span></a></li>
@@ -32,9 +31,7 @@
                             <li><a href="#currentyear"><span>&ThunderStats.CurrentYear;</span></a></li>
                             <li><a href="#lastyear" class="last"><span>&ThunderStats.LastYear;</span></a></li>
                         </ul>-->
-                    </li>
-                </ul>
-                </div> __MSG_DateRange__ <VueDatePicker v-model="dateQry" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false"></VueDatePicker>
+                </div><span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker dark="true" v-model="dateQry" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false"></VueDatePicker>
                 <button type="button" id="customqry_update_btn" @click="doQry()">__MSG_UpdateCustomQry__</button>
                 <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
                 <span id="customqry_totaldays_text">__MSG_CustomQryDataMsg__: <span id="customqry_account"></span> - __MSG_TotalDays__: <span id="customqry_totaldays_num"></span></span>
@@ -84,6 +81,8 @@ import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import ContextMenu from '@imengyu/vue3-context-menu'
+import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 
 const props = defineProps({
     activeAccount: {
@@ -159,6 +158,32 @@ onMounted(async () => {
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
 });
 
+function openBookmarkMenu(e){
+    e.preventDefault();
+    let menu_icon = document.getElementById("customqry_menu").getBoundingClientRect();
+    let x = menu_icon.x + menu_icon.width/2;
+    let y = menu_icon.y + menu_icon.height/2;
+    ContextMenu.showContextMenu({
+    x: x,
+    y: y,
+    items: [
+      { 
+        label: "A menu item", 
+        onClick: () => {
+          alert("You click a menu item");
+        }
+      },
+      { 
+        label: "A submenu", 
+        children: [
+          { label: "Item1" },
+          { label: "Item2" },
+          { label: "Item3" },
+        ]
+      },
+    ]
+  });
+}
 
 function doQry(){
     console.log(">>>>>>>>> [doQry] dateQry: " + JSON.stringify(dateQry.value));

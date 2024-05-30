@@ -34,7 +34,7 @@
                 </div><span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker dark="true" v-model="dateQry" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <button type="button" id="customqry_update_btn" @click="doQry()">__MSG_UpdateCustomQry__</button>
                 <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
-                <span id="customqry_totaldays_text">__MSG_CustomQryDataMsg__: <span id="customqry_account"></span> - __MSG_TotalDays__: <span id="customqry_totaldays_num"></span></span>
+                <span v-if="do_run">__MSG_CustomQryDataMsg__: <span v-text="customqry_current_account"></span> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></span>
             </div>
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
@@ -105,6 +105,8 @@ var tsCore = null;
 
 let dateQry = ref();
 let do_run = ref(false);
+let customqry_current_account = ref("");
+let customqry_totaldays_num = ref(0);
 
 let top_recipients_title = ref("");
 let top_senders_title = ref("");
@@ -151,8 +153,8 @@ let chartData_Rcvd = ref({
 
 
 onMounted(async () => {
-    const startDate = new Date();
-    const endDate = new Date(new Date().setDate(startDate.getDate() - 7));
+    const endDate = new Date();
+    const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
     dateQry.value = [startDate, endDate];
     _involved_num = await TS_prefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
@@ -188,6 +190,8 @@ function openBookmarkMenu(e){
 
 function doQry(){
     console.log(">>>>>>>>> [doQry] dateQry: " + JSON.stringify(dateQry.value));
+    customqry_totaldays_num.value = dateQry.value[1].getDate() - dateQry.value[0].getDate() + 1;
+    customqry_current_account.value = props.accountEmails.join(", ");
     do_run.value = true;
     nextTick(() => {
         i18n.updateDocument();

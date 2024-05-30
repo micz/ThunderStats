@@ -38,30 +38,30 @@
             </div>
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
-                        <h2 class="list_heading cropped">__MSG_SentMails__: <span>{{ sent_total }}</span></h2>
-                        <CounterManyDays_Row :is_loading="is_loading_counter_customqry" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg"/>
+                        <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run">{{ sent_total }}</span></h2>
+                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg"/>
                       </div>
-                      <GraphManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" />
+                      <GraphManyDays v-if="do_run" :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span>{{ rcvd_total }}</span></h2>
-                        <CounterManyDays_Row :is_loading="is_loading_counter_customqry" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg"/>
+						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run">{{ rcvd_total }}</span></h2>
+                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg"/>
 					  </div>
-					  <GraphManyDays :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" />
+					  <GraphManyDays v-if="do_run" :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped" v-text="top_recipients_title"></h2>
 					  </div>
-					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
+					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="do_run && (is_loading_involved_table_recipients || show_table_involved_recipients)" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
     </div>
     
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped" v-text="top_senders_title"></h2>
 					  </div>
-                      <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
+                      <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="do_run && (is_loading_involved_table_senders || show_table_involved_senders)"/>
                       <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__</p>
     </div>
   </div>
@@ -104,6 +104,7 @@ let tsLog = null;
 var tsCore = null;
 
 let dateQry = ref();
+let do_run = ref(false);
 
 let top_recipients_title = ref("");
 let top_senders_title = ref("");
@@ -187,6 +188,10 @@ function openBookmarkMenu(e){
 
 function doQry(){
     console.log(">>>>>>>>> [doQry] dateQry: " + JSON.stringify(dateQry.value));
+    do_run.value = true;
+    nextTick(() => {
+        i18n.updateDocument();
+    });
 }
 
 async function updateData() {

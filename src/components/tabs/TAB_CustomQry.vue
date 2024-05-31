@@ -74,6 +74,7 @@ import { ref, onMounted, nextTick } from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsUtils } from '@statslib/mzts-utils';
 import TableInvolved from '../tables/TableInvolved.vue';
 import GraphCustomQry from '../graphs/GraphCustomQry.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
@@ -189,7 +190,7 @@ function openBookmarkMenu(e){
 }
 
 function doQry(){
-    customqry_totaldays_num.value = dateQry.value[1].getDate() - dateQry.value[0].getDate() + 1;
+    customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
     customqry_current_account.value = props.accountEmails.join(", ");
     do_run.value = true;
     nextTick(() => {

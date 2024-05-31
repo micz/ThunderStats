@@ -222,7 +222,7 @@ export class thunderStastsCore {
                     } else {
                       recipients[key_recipient] = {}
                       recipients[key_recipient].count = 1;
-                      recipients[key_recipient].name = await tsCoreUtils.getNameFromAddressBook(key_recipient);
+                      recipients[key_recipient].name = await tsCoreUtils.getCorrespondantName(recipient);
                     }
                   }
                 }
@@ -238,7 +238,7 @@ export class thunderStastsCore {
                     } else {
                       recipients[key_cc] = {}
                       recipients[key_cc].count = 1;
-                      recipients[key_cc].name = await tsCoreUtils.getNameFromAddressBook(key_cc);
+                      recipients[key_cc].name = await tsCoreUtils.getCorrespondantName(cc);
                     }
                   }
                 }
@@ -249,7 +249,7 @@ export class thunderStastsCore {
               } else {
                 senders[key_author] = {}
                 senders[key_author].count = 1;
-                senders[key_author].name = await tsCoreUtils.getNameFromAddressBook(key_author);
+                senders[key_author].name = await tsCoreUtils.getCorrespondantName(message.author);
               }
               received++;
               // group by date

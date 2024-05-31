@@ -235,6 +235,22 @@ export const tsCoreUtils = {
             name = match[1].trim();
         }
         return name;
+    },
+
+    getNameFromAddress(address) {
+        if (address.includes('<') && address.includes('>')) {
+            const nameMatch = address.match(/^[^<]+/);
+            if (nameMatch) {
+                return nameMatch[0].trim();
+            }
+        }
+        return '';
+    },
+
+    async getCorrespondantName(address){
+        let name = await this.getNameFromAddressBook(address);
+        if(name == '') name = this.getNameFromAddress(address);
+        return name;
     }
 
 }

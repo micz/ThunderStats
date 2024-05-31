@@ -41,14 +41,14 @@
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run">{{ sent_total }}</span></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg"/>
                       </div>
-                      <GraphManyDays v-if="do_run" :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" />
+                      <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run">{{ rcvd_total }}</span></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg"/>
 					  </div>
-					  <GraphManyDays v-if="do_run" :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" />
+					  <GraphCustomQry v-if="do_run" :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
@@ -75,7 +75,7 @@ import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import TableInvolved from '../tables/TableInvolved.vue';
-import GraphManyDays from '../graphs/GraphManyDays.vue';
+import GraphCustomQry from '../graphs/GraphCustomQry.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
@@ -83,6 +83,7 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
+
 
 const props = defineProps({
     activeAccount: {
@@ -216,6 +217,8 @@ async function updateData() {
         backgroundColor: '#4682B4',
         borderWidth: 2,
         pointRadius: 1,
+        //maxBarThickness: 15,
+        minBarThickness: 15,
     });
     tsLog.log("graphdata_customqry_sent.value: " + JSON.stringify(graphdata_customqry_sent.value));
     chartData_Sent.value.labels = graphdata_customqry_labels.value;
@@ -227,6 +230,8 @@ async function updateData() {
         backgroundColor: '#4682B4',
         borderWidth: 2,
         pointRadius: 1,
+        //maxBarThickness: 15,
+        minBarThickness: 15,
     });
     tsLog.log("graphdata_customqry_rcvd.value: " + JSON.stringify(graphdata_customqry_rcvd.value));
     chartData_Rcvd.value.labels = graphdata_customqry_labels.value;

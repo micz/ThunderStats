@@ -106,6 +106,24 @@ export const tsCoreUtils = {
     //     });
     // },
 
+    getCustomQryLabel(label) {
+        const year = parseInt(label.slice(0, 4));
+        const month = parseInt(label.slice(4, 6));
+        const day = parseInt(label.slice(6, 8));
+
+        const date = new Date(year, month - 1, day);
+
+        const dateFormatter = new Intl.DateTimeFormat(undefined, {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+
+        const formattedDate = dateFormatter.format(date);
+
+        return formattedDate;
+    },
+
     getManyDaysLabel(label) {
         const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
 

@@ -189,7 +189,6 @@ function openBookmarkMenu(e){
 }
 
 function doQry(){
-    console.log(">>>>>>>>> [doQry] dateQry: " + JSON.stringify(dateQry.value));
     customqry_totaldays_num.value = dateQry.value[1].getDate() - dateQry.value[0].getDate() + 1;
     customqry_current_account.value = props.accountEmails.join(", ");
     do_run.value = true;
@@ -207,6 +206,7 @@ async function updateData() {
     tsCore = new thunderStastsCore({do_debug: props.do_debug, _involved_num: _involved_num});
     tsLog = new tsLogger("TAB_CustomQry", props.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
+    tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
     await Promise.all([getCustomQryData()]);
     chartData_Sent.value.datasets = [];
     chartData_Sent.value.datasets.push({

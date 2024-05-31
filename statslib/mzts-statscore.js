@@ -222,7 +222,7 @@ export class thunderStastsCore {
                     } else {
                       recipients[key_recipient] = {}
                       recipients[key_recipient].count = 1;
-                      recipients[key_recipient].name = 'Name: ' + key_recipient;  //TODO
+                      recipients[key_recipient].name = await tsCoreUtils.getNameFromAddressBook(key_recipient);
                     }
                   }
                 }
@@ -238,7 +238,7 @@ export class thunderStastsCore {
                     } else {
                       recipients[key_cc] = {}
                       recipients[key_cc].count = 1;
-                      recipients[key_cc].name = 'Name: ' + key_cc;  //TODO
+                      recipients[key_cc].name = await tsCoreUtils.getNameFromAddressBook(key_cc);
                     }
                   }
                 }

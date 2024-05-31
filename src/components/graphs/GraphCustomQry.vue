@@ -107,7 +107,6 @@ var chartOptions = ref({
           x: {
             title: {
               display: true,
-              text: browser.i18n.getMessage('TimeGraph.Time')
             },
             beginAtZero: true,
             min: 0,

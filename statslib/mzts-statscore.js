@@ -169,7 +169,7 @@ export class thunderStastsCore {
       let folders = {};
       let dates = tsUtils.getDateArray(fromDate,toDate);
 
-      let messageids_sent = [];
+      //let messageids_sent = [];
 
       let messages = this.getMessages(browser.messages.query(queryInfo_FullStatsData));
 
@@ -203,18 +203,20 @@ export class thunderStastsCore {
           if (match_author) {
             const key_author = match_author[0];
             if(account_emails.includes(key_author)) {
-              messageids_sent.push(message.id);
+              //messageids_sent.push(message.id);
               sent++;
               // group by date
               dates[date_message_string].sent++;
               // group by hour
               msg_hours[hour_message].sent++;
               // check recipients
+              //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
               for (let recipient of message.recipients) {
                 const match_recipient = recipient.match(this.regexEmail);
                 if (match_recipient) {
                   const key_recipient = match_recipient[0];
-                  if(!(account_emails.includes(key_recipient) || messageids_sent.includes(message.id))) {
+                  //if(!(account_emails.includes(key_recipient) || messageids_sent.includes(message.id))) {
+                  if(!(account_emails.includes(key_recipient))) {
                     if (recipients[key_recipient]) {
                       recipients[key_recipient].count++;
                     } else {
@@ -229,7 +231,8 @@ export class thunderStastsCore {
                 const match_cc = cc.match(this.regexEmail);
                 if (match_cc) {
                   const key_cc = match_cc[0];
-                  if(!(account_emails.includes(key_cc) || messageids_sent.includes(message.id))) {
+                  //if(!(account_emails.includes(key_cc) || messageids_sent.includes(message.id))) {
+                  if(!(account_emails.includes(key_cc))) {
                     if (recipients[key_cc]) {
                       recipients[key_cc].count++;
                     } else {

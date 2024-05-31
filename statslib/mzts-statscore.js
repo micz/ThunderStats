@@ -135,6 +135,16 @@ export class thunderStastsCore {
     }
     // ================ MANY DAYS TAB - END =====================
 
+    // ================ CUSTOM QUERY TAB =====================
+    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = []) {
+
+      fromDate.setHours(0, 0, 0, 0);
+      toDate.setHours(23, 59, 59, 999);
+
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true);
+    }
+    // ================ CUSTOM QUERY TAB - END =====================
+
     // ================ BASE METHODS ========================
     async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false) {
 

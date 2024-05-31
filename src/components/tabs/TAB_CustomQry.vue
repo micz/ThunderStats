@@ -133,9 +133,9 @@ let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
 
-let graphdata_manydays_sent = ref([]);
-let graphdata_manydays_rcvd = ref([]);
-let graphdata_manydays_labels = ref([]);
+let graphdata_customqry_sent = ref([]);
+let graphdata_customqry_rcvd = ref([]);
+let graphdata_customqry_labels = ref([]);
 
 let _involved_num = 10;
 
@@ -196,6 +196,7 @@ function doQry(){
     nextTick(() => {
         i18n.updateDocument();
     });
+    updateData();
 }
 
 async function updateData() {
@@ -203,49 +204,43 @@ async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    tsCore = new thunderStastsCore({do_debug: props.do_debug, _involved_num: _involved_num, _many_days: _many_days});
-    tsLog = new tsLogger("TAB_ManyDays", props.do_debug);
+    tsCore = new thunderStastsCore({do_debug: props.do_debug, _involved_num: _involved_num});
+    tsLog = new tsLogger("TAB_CustomQry", props.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
-    await Promise.all([getManyDaysData()]);
+    await Promise.all([getCustomQryData()]);
     chartData_Sent.value.datasets = [];
     chartData_Sent.value.datasets.push({
         label: 'Sent',
-        data: graphdata_manydays_sent.value,
-        borderColor: (ctx) => {
-            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
-        },
-        backgroundColor:  (ctx) => {
-            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
-        },
+        data: graphdata_customqry_sent.value,
+        borderColor: '#4682B4',
+        backgroundColor: '#4682B4',
         borderWidth: 2,
         pointRadius: 1,
     });
-    tsLog.log("graphdata_manydays_sent.value: " + JSON.stringify(graphdata_manydays_sent.value));
-    chartData_Sent.value.labels = graphdata_manydays_labels.value;
+    tsLog.log("graphdata_customqry_sent.value: " + JSON.stringify(graphdata_customqry_sent.value));
+    chartData_Sent.value.labels = graphdata_customqry_labels.value;
     chartData_Rcvd.value.datasets = [];
     chartData_Rcvd.value.datasets.push({
         label: 'Received',
-        data: graphdata_manydays_rcvd.value,
-        borderColor:  (ctx) => {
-            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
-        },
-        backgroundColor: (ctx) => {
-            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
-        },
+        data: graphdata_customqry_rcvd.value,
+        borderColor: '#4682B4',
+        backgroundColor: '#4682B4',
         borderWidth: 2,
         pointRadius: 1,
     });
-    tsLog.log("graphdata_manydays_rcvd.value: " + JSON.stringify(graphdata_manydays_rcvd.value));
-    chartData_Rcvd.value.labels = graphdata_manydays_labels.value;
+    tsLog.log("graphdata_customqry_rcvd.value: " + JSON.stringify(graphdata_customqry_rcvd.value));
+    chartData_Rcvd.value.labels = graphdata_customqry_labels.value;
     nextTick(() => {
         i18n.updateDocument();
     });
 };
 
  // get many days data
-    function getManyDaysData () {
+    function getCustomQryData () {
         return new Promise(async (resolve) => {
-            let result_customqry = await tsCore.getManyDaysData(props.activeAccount, props.accountEmails);
+            let fromDate = dateQry.value[0];
+            let toDate = dateQry.value[1];
+            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
@@ -274,12 +269,12 @@ async function updateData() {
             // sent and received graphs
             const customqry_data = tsCoreUtils.transformCountDataToDataset(result_customqry.dates, false, true);
             tsLog.log("customqry_data: " + JSON.stringify(customqry_data));
-            graphdata_manydays_labels.value = customqry_data.labels;
+            graphdata_customqry_labels.value = customqry_data.labels;
             // sent graph
-            graphdata_manydays_sent.value = customqry_data.dataset_sent;
+            graphdata_customqry_sent.value = customqry_data.dataset_sent;
             is_loading_sent_graph.value = false;
             // received graph
-            graphdata_manydays_rcvd.value = customqry_data.dataset_rcvd;
+            graphdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
             is_loading_rcvd_graph.value = false;
             resolve(true);
         });

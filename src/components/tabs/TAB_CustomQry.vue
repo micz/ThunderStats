@@ -248,16 +248,6 @@ function setPeriod(period){
     }
 }
 
-/*<!-- <ul>
-    <li><a href="#currentweek"><span>&ThunderStats.CurrentWeek;</span></a></li>
-    <li><a href="#lastweek"><span>&ThunderStats.LastWeek;</span></a></li>
-    <li><a href="#last2week"><span>&ThunderStats.Last2Week;</span></a></li>
-    <li><a href="#currentmonth"><span>&ThunderStats.CurrentMonth;</span></a></li>
-    <li><a href="#lastmonth" class="last"><span>&ThunderStats.LastMonth;</span></a></li>
-    <li><a href="#currentyear"><span>&ThunderStats.CurrentYear;</span></a></li>
-    <li><a href="#lastyear" class="last"><span>&ThunderStats.LastYear;</span></a></li>
-</ul>-->*/
-
 function doQry(){
     customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
     customqry_current_account.value = props.accountEmails.join(", ");

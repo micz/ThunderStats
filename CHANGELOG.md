@@ -4,6 +4,13 @@
 - First release of the new ThunderStats 2.0.
 
 
+<i>This is a complete rewrite of the original addon as a MailExtension, using Vue.js.</i>
+
+<br><br><br>
+
+
+
+[Go to version 1.* changelog file](CHANGELOG_v1.md)
 
 
 [TS]: public/images/mzts-icon-32px.png

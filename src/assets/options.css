@@ -1,0 +1,59 @@
+div#miczDescription{
+    padding:0px 15px 0px 15px;
+    font-size: 13px;
+}
+
+div#miczDescription h1{
+    font-size: 15px;
+}
+
+div#miczDonation{
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+table#miczPrefs {
+    font-size: 13px;
+    padding: 10px;
+    border-spacing: 0px;
+    
+}
+
+table#miczPrefs td{
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    vertical-align: top;
+    padding: 2px;
+}
+
+table#miczPrefs tr:first-child td {
+    border-top: none;
+}
+  
+table#miczPrefs  tr:last-child td {
+    border-bottom: none;
+}
+
+div#miczDescription h1{
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+div#miczDescription p{
+    text-align: justify;
+    margin-top: 0px;
+}
+
+input#chatgpt_win_width{
+    width: 100px;
+}
+
+input#chatgpt_win_height{
+    width: 100px;
+}
+
+span.dims_label{
+    display: inline-block;
+}

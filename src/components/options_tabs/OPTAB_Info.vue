@@ -19,8 +19,8 @@
 -->
 
 <template>
-    <div id="miczBackPrefs"><a href="/index.options.html">__MSG_backToOptionsText__</a></div>
-    <div id="miczRelNotes"><h1>ThunderStats Release Notes</h1>
+    <div>
+      <h1>ThunderStats Release Notes</h1>
       <h2>Version 2.0 - ??/??/2024</h2>
       <ul>
        <li>First release of the new ThunderStats 2.0.</li>
@@ -33,7 +33,7 @@
   
 <script setup>
 import { onMounted } from 'vue'
-import { i18n } from "../../statslib/mzts-i18n.js";
+import { i18n } from "@statslib/mzts-i18n.js";
 
 onMounted(() => { 
   i18n.updateDocument();

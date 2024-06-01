@@ -51,6 +51,9 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 #customqry_update_btn{
   margin: 0px 10px;
 }
+.bookmarkmenu{
+  cursor: pointer;
+}
 #customqry_menu{
   display: inline-block;
   position: relative;

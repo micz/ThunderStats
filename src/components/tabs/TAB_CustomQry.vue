@@ -21,17 +21,9 @@
 <template>
         <div id="customqry_dashboard">
             <div id="customqry_menu">
-                <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Views__" class="tooltip"/>
-                       <!-- <ul>
-                            <li><a href="#currentweek"><span>&ThunderStats.CurrentWeek;</span></a></li>
-                            <li><a href="#lastweek"><span>&ThunderStats.LastWeek;</span></a></li>
-                            <li><a href="#last2week"><span>&ThunderStats.Last2Week;</span></a></li>
-                            <li><a href="#currentmonth"><span>&ThunderStats.CurrentMonth;</span></a></li>
-                            <li><a href="#lastmonth" class="last"><span>&ThunderStats.LastMonth;</span></a></li>
-                            <li><a href="#currentyear"><span>&ThunderStats.CurrentYear;</span></a></li>
-                            <li><a href="#lastyear" class="last"><span>&ThunderStats.LastYear;</span></a></li>
-                        </ul>-->
-                </div><span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker dark="true" v-model="dateQry" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
+                <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
+            </div>
+                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker dark="true" v-model="dateQry" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <button type="button" id="customqry_update_btn" @click="doQry()">__MSG_UpdateCustomQry__</button>
                 <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
                 <span v-if="do_run">__MSG_CustomQryDataMsg__: <span v-text="customqry_current_account"></span> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></span>
@@ -172,22 +164,99 @@ function openBookmarkMenu(e){
     y: y,
     items: [
       { 
-        label: "A menu item", 
+        label: browser.i18n.getMessage("CurrentWeek"), 
         onClick: () => {
-          alert("You click a menu item");
+          setPeriod("currentweek");
         }
       },
       { 
+        label: browser.i18n.getMessage("LastWeek"), 
+        onClick: () => {
+          setPeriod("lastweek");
+        }
+      },
+      { 
+        label: browser.i18n.getMessage("Last2Week"), 
+        onClick: () => {
+          setPeriod("last2week");
+        }
+      },
+      { 
+        label: browser.i18n.getMessage("CurrentMonth"), 
+        onClick: () => {
+          setPeriod("currentmonth");
+        }
+      },
+      { 
+        label: browser.i18n.getMessage("LastMonth"),
+        onClick: () => {
+          setPeriod("lastmonth");
+        }
+      },
+      { 
+        label: browser.i18n.getMessage("CurrentYear"),
+        onClick: () => {
+          setPeriod("currentyear");
+        }
+      },
+      { 
+        label: browser.i18n.getMessage("LastYear"),
+        onClick: () => {
+          setPeriod("lastyear");
+        }
+      },
+      /*{
         label: "A submenu", 
         children: [
           { label: "Item1" },
           { label: "Item2" },
           { label: "Item3" },
         ]
-      },
+      },*/
     ]
   });
 }
+
+function setPeriod(period){
+    switch(period){
+        case "currentweek": //TODO after implementing #249 use the correct first day of the week
+        console.log(">>>>>>>>>>> getLastMonday: "+JSON.stringify(tsUtils.getLastMonday()));
+            dateQry.value = [tsUtils.getLastMonday(), new Date()];
+            break;
+        case "lastweek": //TODO after implementing #249 use the correct first day of the week
+            let last_weekday = tsUtils.getLastMonday();
+            last_weekday = new Date(last_weekday.setDate(last_weekday.getDate() - 1));
+            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday, 1), last_weekday];
+            break;
+        case "last2week": //TODO after implementing #249 use the correct first day of the week
+            let last_weekday2 = tsUtils.getLastMonday();
+            last_weekday2 = new Date(last_weekday2.setDate(last_weekday2.getDate() - 1));
+            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday2, 1), new Date()];
+            break;
+        case "currentmonth":
+            dateQry.value = [tsUtils.getFirstDayOfCurrentMonth(), new Date()];
+            break;
+        case "lastmonth":
+            dateQry.value = [tsUtils.getFirstDayOfLastMonth(), tsUtils.getLastDayOfLastMonth()];
+            break;
+        case "currentyear":
+            dateQry.value = [tsUtils.getFirstDayOfCurrentYear(), new Date()];
+            break;
+        case "lastyear":
+            dateQry.value = [tsUtils.getFirstDayOfLastYear(), tsUtils.getLastDayOfLastYear()];
+            break;
+    }
+}
+
+/*<!-- <ul>
+    <li><a href="#currentweek"><span>&ThunderStats.CurrentWeek;</span></a></li>
+    <li><a href="#lastweek"><span>&ThunderStats.LastWeek;</span></a></li>
+    <li><a href="#last2week"><span>&ThunderStats.Last2Week;</span></a></li>
+    <li><a href="#currentmonth"><span>&ThunderStats.CurrentMonth;</span></a></li>
+    <li><a href="#lastmonth" class="last"><span>&ThunderStats.LastMonth;</span></a></li>
+    <li><a href="#currentyear"><span>&ThunderStats.CurrentYear;</span></a></li>
+    <li><a href="#lastyear" class="last"><span>&ThunderStats.LastYear;</span></a></li>
+</ul>-->*/
 
 function doQry(){
     customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);

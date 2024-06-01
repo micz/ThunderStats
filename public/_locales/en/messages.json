@@ -287,7 +287,11 @@
     "message": "Views",
     "description": ""
   },
-  "CurrentWeek": {
+  "Bookmarks_Menu": {
+    "message": "Choose a period",
+    "description": ""
+  },
+    "CurrentWeek": {
     "message": "Current Week",
     "description": ""
   },

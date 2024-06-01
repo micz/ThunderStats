@@ -87,4 +87,91 @@ export const tsUtils = {
                date.getDate() === today.getDate();
     },
 
+    getPreviousWeekday(input_date,weekday) {
+        let curr_date = new Date(input_date);        
+        // Get the current day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+        let dayOfWeek = curr_date.getDay();
+        // Calculate the difference in days to the last desired weekday
+        let difference = (dayOfWeek + 7 - weekday) % 7;
+        // Subtract the difference in days from the current date
+        curr_date.setDate(curr_date.getDate() - difference);
+        curr_date.setHours(12, 0, 0, 0);
+        return curr_date;
+    },
+
+    getLastWeekday(weekday) {
+        return this.getPreviousWeekday(new Date(), weekday);
+    },
+
+    getLastSunday() {
+        return this.getLastWeekday(0); // 0 represents Sunday
+    },
+
+    getLastMonday() {
+        return this.getLastWeekday(1); // 1 represents Monday
+    },
+
+    getFirstDayOfCurrentMonth() {
+        // Create a new Date object for the current date
+        let month_first_day = new Date();
+        // Set the date to the first day of the current month
+        month_first_day.setDate(1);
+        month_first_day.setHours(12, 0, 0, 0);
+        return month_first_day;
+    },
+
+    getFirstDayOfLastMonth() {
+        // Create a new Date object for the current date
+        let month_first_day = new Date();
+        // Set the date to the first day of the current month
+        month_first_day.setDate(1);
+        // Subtract one month
+        month_first_day.setMonth(month_first_day.getMonth() - 1);
+        month_first_day.setHours(12, 0, 0, 0);
+        return month_first_day;
+    },
+
+    getLastDayOfLastMonth() {
+        // Create a new Date object for the current date
+        let month_last_day = new Date();
+        // Set the date to the first day of the current month
+        month_last_day.setDate(1);
+        // Subtract one day to get the last day of the previous month
+        month_last_day.setDate(0);
+        month_last_day.setHours(12, 0, 0, 0);
+        return month_last_day;
+    },
+
+    getFirstDayOfCurrentYear() {
+        // Create a new Date object for the current date
+        let first_year_day = new Date();
+        // Set the month to January (0) and the date to the 1st
+        first_year_day.setMonth(0); // January is 0
+        first_year_day.setDate(1);
+        first_year_day.setHours(12, 0, 0, 0);
+        return first_year_day;
+    },
+
+    getFirstDayOfLastYear() {
+        // Create a new Date object for the current date
+        let first_year_day = new Date();
+        // Set the year to the last year and the month to January (0) and the date to the 1st
+        first_year_day.setFullYear(first_year_day.getFullYear() - 1);
+        first_year_day.setMonth(0); // January is 0
+        first_year_day.setDate(1);
+        first_year_day.setHours(0, 0, 0, 0);
+        return first_year_day;
+    },
+
+    getLastDayOfLastYear() {
+        // Create a new Date object for the current date
+        let last_year_day = new Date();
+        // Set the year to the last year and the month to December (11) and the date to the 31st
+        last_year_day.setFullYear(last_year_day.getFullYear() - 1);
+        last_year_day.setMonth(11); // December is 11
+        last_year_day.setDate(31);
+        last_year_day.setHours(23, 59, 59, 999);
+        return last_year_day;
+    },
+
 }

@@ -288,35 +288,35 @@
     "description": ""
   },
   "Bookmarks_Menu": {
-    "message": "Choose a period",
+    "message": "Choose a predefined period",
     "description": ""
   },
     "CurrentWeek": {
-    "message": "Current Week",
+    "message": "Current week",
     "description": ""
   },
   "CurrentMonth": {
-    "message": "Current Month",
+    "message": "Current month",
     "description": ""
   },
   "CurrentYear": {
-    "message": "Current Year",
+    "message": "Current year",
     "description": ""
   },
   "LastWeek": {
-    "message": "Last Week",
+    "message": "Last week",
     "description": ""
   },
   "LastMonth": {
-    "message": "Last Month",
+    "message": "Last month",
     "description": ""
   },
   "LastYear": {
-    "message": "Last Year",
+    "message": "Last year",
     "description": ""
   },
   "Last2Week": {
-    "message": "Last two Week",
+    "message": "Last two weeks",
     "description": ""
   },
   "OnlyBDCustomQry": {

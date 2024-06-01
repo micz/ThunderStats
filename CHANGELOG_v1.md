@@ -1,4 +1,6 @@
-# ![TS] ThunderStats Release Notes for version 1.*
+# ![TS] ThunderStats Release Notes for version 1.x
+
+[Go to the release notes files for version 2.x](CHANGELOG.md)
 
 ### Version 1.4.5 - 16/12/2019
 - Update for 68+ changes

@@ -10,7 +10,7 @@
 
 
 
-_[Go to version 1.x release notes file](CHANGELOG_v1.md)_
+_[Go to the release notes files for version 1.x](CHANGELOG_v1.md)_
 
 
 [TS]: public/images/mzts-icon-32px.png

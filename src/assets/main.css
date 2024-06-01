@@ -41,8 +41,8 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .chart_inbox0{width:80%;height:310px;float:left;}
 .chart_inbox0_datemsg{float:right;max-width:20%;min-width:90px;height:220px;}
 .inbox0_inboxmsg_unread{color:grey;}
-.chart_many_days{overflow:auto;float:left;height:350px;width:100%;}
-.chart_customqry{overflow:scroll;float:left;height:350px;width:100%;}
+.chart_many_days{overflow:auto;float:left;height:370px;width:100%;}
+.chart_customqry{overflow-x:scroll;float:left;height:370px;width:100%;}
 .dp__main {
     width: 21vw !important;
     display: inline-block;

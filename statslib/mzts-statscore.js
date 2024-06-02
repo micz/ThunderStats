@@ -22,7 +22,6 @@ import { tsUtils } from "./mzts-utils";
 
 export class thunderStastsCore {
 
-  regexEmail = /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
   tsLog = null;
   do_debug = false;
   _involved_num = 10;
@@ -199,7 +198,7 @@ export class thunderStastsCore {
           let date_message_string = tsUtils.dateToYYYYMMDD(message.date);
           dates[date_message_string].count++;
           // check sender
-          const match_author = message.author.match(this.regexEmail);
+          const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0];
             if(account_emails.includes(key_author)) {
@@ -212,7 +211,7 @@ export class thunderStastsCore {
               // check recipients
               //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
               for (let recipient of message.recipients) {
-                const match_recipient = recipient.match(this.regexEmail);
+                const match_recipient = recipient.match(tsUtils.regexEmail);
                 if (match_recipient) {
                   const key_recipient = match_recipient[0];
                   //if(!(account_emails.includes(key_recipient) || messageids_sent.includes(message.id))) {
@@ -228,7 +227,7 @@ export class thunderStastsCore {
                 }
               }
               for (let cc of message.ccList) {
-                const match_cc = cc.match(this.regexEmail);
+                const match_cc = cc.match(tsUtils.regexEmail);
                 if (match_cc) {
                   const key_cc = match_cc[0];
                   //if(!(account_emails.includes(key_cc) || messageids_sent.includes(message.id))) {
@@ -314,7 +313,7 @@ export class thunderStastsCore {
           let date_message = new Date(message.date);
           let hour_message = date_message.getHours();
           // check sender
-          const match_author = message.author.match(this.regexEmail);
+          const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0];
             if(account_emails.includes(key_author)) {
@@ -365,7 +364,7 @@ export class thunderStastsCore {
           let day_message = tsUtils.dateToYYYYMMDD(date_message);
           msg_days[day_message] = msg_days[day_message] || {}; //ensure the object for that day exists
           // check sender
-          const match_author = message.author.match(this.regexEmail);
+          const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0];
             if(account_emails.includes(key_author)) {

@@ -17,6 +17,8 @@
  */
 
 export const tsUtils = {
+
+    regexEmail: /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
     
     humanReadableMilliseconds(tot_milliseconds) {
         let hours = Math.floor(tot_milliseconds / 3600000);

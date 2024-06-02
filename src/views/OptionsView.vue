@@ -22,16 +22,16 @@
   <main>
     <tabs :options="{ defaultTabHash: 'tab-main' }"  cache-lifetime="0"  @changed="tabChanged" ref="optionsTabs">
       <tab id="tab-main" name="__MSG_TabSettings.label__">
-          <OPTAB_Main :do_debug="do_debug" ref="OPTAB_Main_ref"/>
+         <OPTAB_Main ref="OPTAB_Main_ref"/>
       </tab>
       <tab id="tab-advanced" name="__MSG_TabAdvanced.label__">
-        ADVANCED
+         <OPTAB_Advanced ref="OPTAB_Advanced_ref"/>
       </tab>
       <tab id="tab-customids" name="__MSG_TabCustomIdentities.label__">
         CUSTOM IDENTITIES
       </tab>
       <tab id="tab-info" name="__MSG_Info__">
-          <OPTAB_Info :do_debug="do_debug" ref="OPTAB_Info_ref"/>
+          <OPTAB_Info ref="OPTAB_Info_ref"/>
       </tab>
       <tab id="tab-license" name="__MSG_License__">
           LICENSE
@@ -47,20 +47,19 @@ import { i18n } from "@statslib/mzts-i18n.js";
 import { TS_prefs } from "@statslib/mzts-options.js";
 import { tsLogger } from "@statslib/mzts-logger.js";
 import OPTAB_Main from '@/components/options_tabs/OPTAB_Main.vue';
-//import OPTAB_Advanced from '@/components/options_tabs/OPTAB_Advanced.vue';
+import OPTAB_Advanced from '@/components/options_tabs/OPTAB_Advanced.vue';
 //import OPTAB_CustomIds from '@/components/options_tabs/OPTAB_CustomIds.vue';
 import OPTAB_Info from '@/components/options_tabs/OPTAB_Info.vue';
 //import OPTAB_License from '@/components/options_tabs/OPTAB_License.vue';
 
 let optionsTabs = ref(null);
 let OPTAB_Main_ref = ref(null);
-//let OPTAB_Advanced_ref = ref(null);
+let OPTAB_Advanced_ref = ref(null);
 //let OPTAB_CustomIds_ref = ref(null);
 let OPTAB_Info_ref = ref(null);
 
 let do_debug = ref(false);
 let tsLog = null;
-let tsCore = null
 
 onMounted(async () => {
     do_debug.value = await TS_prefs.getPref("do_debug");

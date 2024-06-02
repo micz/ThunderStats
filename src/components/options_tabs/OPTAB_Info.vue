@@ -19,6 +19,12 @@
 -->
 
 <template>
+  <div>
+    __MSG_InfoMainDesc__
+	<div>
+    <a href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_DonateLink__</a>
+  </div>
+  </div>
     <div>
       <h1>ThunderStats Release Notes</h1>
       <h3>Version 2.0 - ??/??/2024</h3>

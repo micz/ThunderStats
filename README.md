@@ -3,9 +3,11 @@
 This addon adds awesome statistics to your beloved Thunderbird!
 
 > [!IMPORTANT]
-> **ThunderStats will be back!**
+> **ThunderStats is coming back!**
 > 
 > **[Read here!](https://github.com/micz/ThunderStats/issues/195)**
+> 
+> **[UPDATE 2024/06/02](https://github.com/micz/ThunderStats/issues/195#issuecomment-2143861383)**
 > 
 
 More info on the homepage: http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/

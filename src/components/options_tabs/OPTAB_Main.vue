@@ -52,7 +52,7 @@
 
 
 <script setup>
-  import { computed, onMounted, onUnmounted, ref } from 'vue'
+  import { onMounted, onUnmounted, ref } from 'vue'
   import { i18n } from "@statslib/mzts-i18n.js";
   import { TS_prefs } from "@statslib/mzts-options.js";
   import SelectAccount from '@/components/SelectAccount.vue';

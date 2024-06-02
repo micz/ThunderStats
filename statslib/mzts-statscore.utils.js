@@ -221,10 +221,18 @@ export const tsCoreUtils = {
     },
 
     async getNameFromAddressBook(address) {
+        //console.log(">>>>>>>>>>>>>> [getNameFromAddressBook] address: " + address);
+        const match_address = address.match(tsUtils.regexEmail);
+        if (match_address) {
+            address = match_address[0];
+        }
+        //console.log(">>>>>>>>>>>>>> [getNameFromAddressBook] address cleared: " + address);
         let contacts = await browser.contacts.quickSearch(address);
         if(contacts.length == 0) return '';
 
         let vCard = contacts[0].properties.vCard;
+
+        //console.log(">>>>>>>>>>>>>> [getNameFromAddressBook] vCard: " + vCard);
 
         const nameRegex = /FN:(.*)/i;
         const match = vCard.match(nameRegex);
@@ -249,7 +257,9 @@ export const tsCoreUtils = {
 
     async getCorrespondantName(address){
         let name = await this.getNameFromAddressBook(address);
+        //console.log(">>>>>>>>>>>>>> [getCorrespondantName] name 1: " + name);
         if(name == '') name = this.getNameFromAddress(address);
+        //console.log(">>>>>>>>>>>>>> [getCorrespondantName] name 2: " + name);
         return name;
     }
 

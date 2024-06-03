@@ -19,7 +19,9 @@
 -->
 
 <template>
-    <div class="intro_main">__MSG_GlobalDescSettingTab__</div>
+    <div class="intro_main">__MSG_GlobalDescSettingTab__
+      <br><span style="font-style: normal;">__MSG_ReopenTabDesc__</span>
+    </div>
   <table class="miczPrefs">
     <tr>
       <td style="padding-right: 10px;">

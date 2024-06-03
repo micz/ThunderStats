@@ -79,6 +79,11 @@ div.intro_main{
   font-style: italic;
 }
 
+div.intro_advanced{
+  margin-bottom: 10px;
+  margin-left: 12px;
+}
+
 div.intro_info{
     margin: 0px auto 10px auto;
     width: 47vw;

@@ -7,4 +7,5 @@ export const prefs_default = {
     'inbox0_openFolderInFirstTab': false,
     'startup_account': 0,
     'remember_last_tab': false,
+    'always_reload_tab_data': false,
 }

@@ -70,26 +70,26 @@ import { tsStore } from '@statslib/mzts-store';
   let _many_days_text = ref("");
   let cache_lifetime = ref(120000);
 
-  //let do_debug = ref(false);
-  let tsLog = null;
+  var tsLog = null;
   let tsCore = null
   let remember_last_tab = false;
+  let always_reload_tab_data = false;
 
-  // let stats_done = {
-  //   "tab-today": false,
-  //   "tab-yesterday": false,
-  //   "tab-manydays": false,
-  //   "tab-customqry": false,
-  // }
+  let stats_done = {
+    "tab-today": false,
+    "tab-yesterday": false,
+    "tab-manydays": false,
+    "tab-customqry": false,
+  }
   
-  // function statsDone(id) {
-
-  //   stats_done[id] = true;
-  // }
+  function statsDone(id) {
+    stats_done[id] = true;
+  }
 
   onBeforeMount(async () => {
     tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     remember_last_tab = await TS_prefs.getPref("remember_last_tab");
+    always_reload_tab_data = await TS_prefs.getPref("always_reload_tab_data");
     if(remember_last_tab) {
       cache_lifetime.value = 120000;
     } else {
@@ -101,11 +101,9 @@ import { tsStore } from '@statslib/mzts-store';
   });
 
   onMounted(async () => {
-    //test_output.value = await thunderStatsCore.test_core_accounts();
     //if(cache_lifetime.value == 0) { statsTabs.value.selectTab('#tab-today') }
     let _many_days = await TS_prefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
-    //tsStore.do_debug = await TS_prefs.getPref("do_debug");
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     i18n.updateDocument();
     updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
@@ -113,7 +111,6 @@ import { tsStore } from '@statslib/mzts-store';
   
 
   async function updateStats(account_id) {
-    if((tsLog == null) || (tsCore == null)) { tsStore.do_debug = await TS_prefs.getPref("do_debug"); }
     if(tsLog == null) {
       tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     }
@@ -144,11 +141,16 @@ import { tsStore } from '@statslib/mzts-store';
   }
 
   async function tabChanged(id) {
-    tsLog.log("tabChanged: " + JSON.stringify(id));
-    // if(!stats_done[id.tab.computedId]) {
+    // console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
+    // console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
+    tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));
+    // console.log(">>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id.tab.computedId));
+     if((!stats_done[id.tab.computedId]) || always_reload_tab_data) {
+      tsLog.log("tabChanged ==> Loading Data...");
+      // console.log(">>>>>>>>>>>>>> tabChanged ==> Loading Data...");
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());
-    // }
-    // stats_done[id.tab.computedId] = true;
+     }
+     statsDone(id.tab.computedId);
   }
 
   </script>

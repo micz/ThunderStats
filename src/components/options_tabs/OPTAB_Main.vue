@@ -36,6 +36,11 @@
   </label>
   <br>
   <label>
+    <input type="checkbox" id="always_reload_tab_data" name="always_reload_tab_data" class="option-input" />
+     &nbsp;<span class="dims_label">__MSG_prefs_always_reload_tab_data__</span>
+  </label>
+  <br>
+  <label>
     <input type="checkbox" id="remember_last_tab" name="remember_last_tab" class="option-input" />
      &nbsp;<span class="dims_label">__MSG_prefs_remember_last_tab__</span>
   </label>

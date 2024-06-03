@@ -19,7 +19,7 @@
 -->
 
 <template>
-  <div class="intro_advanced">__MSG_ReopenTabDesc__</div>
+  <div class="intro_advanced" v-if="new_changes" v-text="reopenTabDesc"></div>
   <table class="miczPrefs">
     <tr>
       <td colspan="2" class="grouptitle">__MSG_ManyDaysGraph__</td>
@@ -56,11 +56,13 @@
 
 
 <script setup>
-  import { onMounted, onUnmounted } from 'vue'
+  import { onMounted, onUnmounted, ref } from 'vue'
   import { tsLogger } from '@statslib/mzts-logger';
   import { tsStore } from '@statslib/mzts-store';
 
   let tsLog = null;
+  let new_changes = ref(false);
+  let reopenTabDesc = ref('');
 
   onMounted(() => {
     tsLog = new tsLogger("OPTAB_Advanced", tsStore.do_debug);
@@ -69,6 +71,11 @@
     document.querySelectorAll(".option-input").forEach(element => {
       element.addEventListener("change", TS_prefs.saveOptions);
     });*/
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.addEventListener('click', somethingChanged);
+    });
+    reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
     tsLog.log("onMounted");
   });
   
@@ -78,6 +85,10 @@
     });*/
     tsLog.log("onUnmounted");
   });
+
+  async function somethingChanged() {
+    new_changes.value = true;
+  }
   
 </script>
       

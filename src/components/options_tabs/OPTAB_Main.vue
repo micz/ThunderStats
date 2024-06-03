@@ -20,7 +20,7 @@
 
 <template>
     <div class="intro_main">__MSG_GlobalDescSettingTab__
-      <br><span style="font-style: normal;">__MSG_ReopenTabDesc__</span>
+      <br><span class="intro_main_normal" v-if="new_changes" v-text="reopenTabDesc"></span>
     </div>
   <table class="miczPrefs">
     <tr>
@@ -85,6 +85,8 @@
   
   let current_account = ref(0);
   let tsLog = null;
+  let new_changes = ref(false);
+  let reopenTabDesc = ref('');
   
   onMounted(() => {
     tsLog = new tsLogger("OPTAB_Main", tsStore.do_debug);
@@ -93,6 +95,11 @@
     document.querySelectorAll(".option-input").forEach(element => {
       element.addEventListener("change", TS_prefs.saveOptions);
     });*/
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.addEventListener('click', somethingChanged);
+    });
+    reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
     tsLog.log("onMounted");
   });
   
@@ -102,6 +109,10 @@
     });*/
     tsLog.log("onUnmounted");
   });
+
+  async function somethingChanged() {
+    new_changes.value = true;
+  }
   
 </script>
 

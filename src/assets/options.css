@@ -79,9 +79,15 @@ div.intro_main{
   font-style: italic;
 }
 
+div.intro_main_normal{
+    color: darkred;
+    font-style: normal;
+}
+
 div.intro_advanced{
   margin-bottom: 10px;
   margin-left: 12px;
+  color: darkred;
 }
 
 div.intro_info{

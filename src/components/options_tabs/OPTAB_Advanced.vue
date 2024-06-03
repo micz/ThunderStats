@@ -43,23 +43,26 @@
 
 <script setup>
   import { onMounted, onUnmounted } from 'vue'
-  import { i18n } from "@statslib/mzts-i18n.js";
-  import { TS_prefs } from "@statslib/mzts-options.js";
+  import { tsLogger } from '@statslib/mzts-logger';
+  import { tsStore } from '@statslib/mzts-store';
+
+  let tsLog = null;
 
   onMounted(() => {
+    tsLog = new tsLogger("OPTAB_Advanced", tsStore.do_debug);
     /*TS_prefs.restoreOptions();
     i18n.updateDocument();
     document.querySelectorAll(".option-input").forEach(element => {
       element.addEventListener("change", TS_prefs.saveOptions);
     });*/
-    console.log(">>>>>>>>>> OPTAB_Advanced mounted");
+    tsLog.log("onMounted");
   });
   
   onUnmounted(() => {
    /* document.querySelectorAll('.option-input').forEach(element => {
       element.removeEventListener('change', TS_prefs.saveOptions);
     });*/
-    console.log(">>>>>>>>>> OPTAB_Advanced unmounted");
+    tsLog.log("onUnmounted");
   });
   
 </script>

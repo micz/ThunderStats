@@ -190,13 +190,13 @@ Jonny Strömberg
   
 <script setup>
 import { onMounted, ref } from 'vue'
-import { i18n } from "@statslib/mzts-i18n.js";
+// import { i18n } from "@statslib/mzts-i18n.js";
 
 let show_v1 = ref(false);
 
-onMounted(() => { 
-  i18n.updateDocument();
-});
+// onMounted(() => { 
+//   i18n.updateDocument();
+// });
 
 </script>
   

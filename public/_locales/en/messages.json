@@ -387,10 +387,6 @@
     "message": "Startup Account",
     "description": ""
   },
-  "ShowIdentitiesAccountsSelector": {
-    "message": "Show identities in the accounts selector",
-    "description": ""
-  },
   "ManageCustomIdentitites": {
     "message": "Manage your custom identitites here.",
     "description": ""
@@ -419,28 +415,12 @@
     "message": "Activate the debug system",
     "description": ""
   },
-  "InboxSearchOnlyCurrAccount": {
-    "message": "Search for mails in the Inbox folders only in the folders for the selected account.",
-    "description": ""
-  },
-  "InboxSearchOnlyCurrAccount.GlobaInboxWarn": {
-    "message": "You need to UNCHECK this option if you're using the Global Inbox for your mails.",
-    "description": ""
-  },
-  "GlobalUpdate": {
-    "message": "Update all tabs at once. If deselected the tabs are updated when switching between them.",
-    "description": ""
-  },
   "TodayTimeGraphShowYesterday": {
-    "message": "Show also yesterday's mails in the today time graph.",
+    "message": "Show also yesterday's mails in the today time graph",
     "description": ""
   },
   "TimeGraphProgressive": {
     "message": "Show cumulative data bars in the today and yesterday time graphs",
-    "description": ""
-  },
-  "AggregateAverageNotRounded": {
-    "message": "Show two digits in the aggregate average number of sent and received mails.",
     "description": ""
   },
   "ManyDaysGraph": {
@@ -449,14 +429,6 @@
   },
   "ManyDays": {
     "message": "Number of days to be shown",
-    "description": ""
-  },
-  "ManyDaysSmallLabels": {
-    "message": "Show small day's labels.",
-    "description": ""
-  },
-  "ManyDaysSmallLabels_2": {
-    "message": "It's recommended to use this option when showing more than 10 days.",
     "description": ""
   },
   "CustomQueryBookmarkImmediateUpdate": {

@@ -25,14 +25,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { tsLogger } from "@statslib/mzts-logger.js";
+import { tsStore } from '@statslib/mzts-store';
 
 const props = defineProps({
-  do_debug: {
-    type: Boolean,
-    default: false
-  },
   current_idn: {
     type: String,
     default: 0
@@ -42,7 +39,7 @@ const props = defineProps({
 let identities_options = ref([]);
 let current_idn = ref(props.current_idn);
 
-const tsLog = new tsLogger("SelectAccount", props.do_debug);
+const tsLog = new tsLogger("SelectAccount", tsStore.do_debug);
 
 onMounted(async () => {
   tsLog.log("onMounted");

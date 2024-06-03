@@ -24,16 +24,16 @@
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today' }"  cache-lifetime="120000"  @changed="tabChanged" ref="statsTabs">
         <tab id="tab-today" name="__MSG_Today__">
-            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="tsStore.do_debug" ref="TAB_Today_ref" />
+            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_Today_ref" />
         </tab>
         <tab id="tab-yesterday" name="__MSG_Yesterday__">
-          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="tsStore.do_debug" ref="TAB_Yesterday_ref" />
+          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_Yesterday_ref" />
         </tab>
         <tab id="tab-manydays" :name="_many_days_text">
-          <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="tsStore.do_debug" ref="TAB_ManyDays_ref" />
+          <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_ManyDays_ref" />
         </tab>
         <tab id="tab-customqry" name="__MSG_CustomQry__">
-          <TAB_CustomQry :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="tsStore.do_debug" ref="TAB_CustomQry_ref" />
+          <TAB_CustomQry :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_CustomQry_ref" />
         </tab>
         <tab id="tab-info" name="__MSG_Info__">
             <TAB_Info />

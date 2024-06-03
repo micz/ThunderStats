@@ -72,6 +72,7 @@ import TableInvolved from '../tables/TableInvolved.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
+import { tsStore } from '@statslib/mzts-store';
 
 const props = defineProps({
     activeAccount: {
@@ -82,10 +83,6 @@ const props = defineProps({
         type: Array,
         default: []
     },
-    do_debug: {
-        type: Boolean,
-        default: false
-    }
 });
 
 
@@ -173,8 +170,8 @@ async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    tsCore = new thunderStastsCore({do_debug: props.do_debug, _involved_num: _involved_num, _many_days: _many_days});
-    tsLog = new tsLogger("TAB_Today", props.do_debug);
+    tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days});
+    tsLog = new tsLogger("TAB_Today", tsStore.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     getManyDaysData();
     await Promise.all([getTodayData(), getYesterdayData(), getInboxZeroData()]);

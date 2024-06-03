@@ -72,6 +72,7 @@ import GraphCustomQry from '../graphs/GraphCustomQry.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
+import { tsStore } from '@statslib/mzts-store';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
@@ -87,10 +88,6 @@ const props = defineProps({
         type: Array,
         default: []
     },
-    do_debug: {
-        type: Boolean,
-        default: false
-    }
 });
 
 
@@ -263,8 +260,8 @@ async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    tsCore = new thunderStastsCore({do_debug: props.do_debug, _involved_num: _involved_num});
-    tsLog = new tsLogger("TAB_CustomQry", props.do_debug);
+    tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num});
+    tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
     await Promise.all([getCustomQryData()]);

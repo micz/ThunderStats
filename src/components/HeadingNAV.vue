@@ -21,7 +21,7 @@
 <template>
     <div id="heading_wrapper">
 		  <div id="mzts-idnt_sel">__MSG_ChooseAccount__:&nbsp;
-          <SelectAccount id="identities_selector" :do_debug="tsStore.do_debug" v-model="current_idn" ref="SelectAccount_ref"/>
+          <SelectAccount id="identities_selector" v-model="current_idn" ref="SelectAccount_ref"/>
 			<button type="button" @click="update()">__MSG_Update__</button>
 		  </div>
 		<div id="mzts-setup_icon">

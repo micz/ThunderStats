@@ -33,7 +33,7 @@
       </ul>
       <p>This is a complete rewrite of the original addon as a MailExtension, using Vue.js.</p>
     </div>
-    <div v-if="!show_v1"><button type="button" @click="show_v1 = true">Show release notes for version 1.x</button></div>
+    <div v-if="!show_v1"><button type="button" @click="show_v1 = true">__MSG_ShowRelNotes1x__</button></div>
     <div v-if="show_v1">
 <h3 id="version-1-4-5-16-12-2019">Version 1.4.5 - 16/12/2019</h3>
 <ul>
@@ -189,14 +189,9 @@ Jonny Strömberg
   
   
 <script setup>
-import { onMounted, ref } from 'vue'
-// import { i18n } from "@statslib/mzts-i18n.js";
+import { ref } from 'vue'
 
 let show_v1 = ref(false);
-
-// onMounted(() => { 
-//   i18n.updateDocument();
-// });
 
 </script>
   

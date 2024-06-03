@@ -555,6 +555,10 @@
     "message": "Release Notes",
     "description": ""
   },
+  "ShowRelNotes1x": {
+    "message": "Show release notes for version 1.x",
+    "description": ""
+  },
   "License": {
     "message": "License",
     "description": ""

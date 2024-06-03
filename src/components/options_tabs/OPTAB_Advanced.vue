@@ -33,11 +33,6 @@
      &nbsp;<span class="dims_label">__MSG_InvolvedNum__</span>
   </label>
   </p>
-  <br>
-  
-  
-  <br><br><br><br>
-      <div id="miczDonation">__MSG_prefsDonation_1__<br/><a href="https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_prefsDonation_2__</a></div>
   </template>
 
 

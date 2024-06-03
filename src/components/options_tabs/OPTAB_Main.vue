@@ -47,7 +47,6 @@
           __MSG_prefsInfoDesc_2__<br/>
           __MSG_prefsInfoDesc_3__</p>
       </div>
-      <div id="miczDonation">__MSG_prefsDonation_1__<br/><a href="https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_prefsDonation_2__</a></div>
 </template>
 
 

@@ -20,7 +20,7 @@
 
 <template>
   <main>
-    <tabs :options="{ defaultTabHash: 'tab-main' }"  cache-lifetime="0"  @changed="tabChanged" ref="optionsTabs">
+    <tabs :options="{ defaultTabHash: 'tab-main' }"  cache-lifetime="0"  @changed="tabChanged" ref="optionsTabs" class="paddingbottom30">
       <tab id="tab-main" name="__MSG_TabSettings.label__">
          <OPTAB_Main ref="OPTAB_Main_ref"/>
       </tab>
@@ -37,6 +37,7 @@
         <OPTAB_License/>
       </tab>
   </tabs>
+  <OptionDonationFooter/>
   </main>
 </template>
 
@@ -51,6 +52,7 @@ import OPTAB_Advanced from '@/components/options_tabs/OPTAB_Advanced.vue';
 //import OPTAB_CustomIds from '@/components/options_tabs/OPTAB_CustomIds.vue';
 import OPTAB_Info from '@/components/options_tabs/OPTAB_Info.vue';
 import OPTAB_License from '@/components/options_tabs/OPTAB_License.vue';
+import OptionDonationFooter from '@/components/OptionDonationFooter.vue';
 import { tsStore } from '@statslib/mzts-store';
 
 let optionsTabs = ref(null);

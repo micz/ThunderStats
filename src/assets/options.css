@@ -12,6 +12,16 @@ div#miczDonation{
     text-align: center;
     font-size: 14px;
     font-weight: bold;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgb(228, 255, 255);
+    border: 1px solid rgb(212, 255, 255);
+    padding: 5px;
+}
+
+.paddingbottom30{
+    padding-bottom: 30px;
 }
 
 table#miczPrefs {

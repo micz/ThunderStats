@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <select v-model="current_idn" v-bind="$attrs">
+    <select v-model="current_account" v-bind="$attrs">
         <option v-for="item in identities_options" v-bind:value="item.id">{{item.text}}</option>
     </select>
 </template>
@@ -30,14 +30,14 @@ import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsStore } from '@statslib/mzts-store';
 
 const props = defineProps({
-  current_idn: {
+  current_account: {
     type: String,
     default: 0
   }
 });
 
 let identities_options = ref([]);
-let current_idn = ref(props.current_idn);
+let current_account = ref(props.current_account);
 
 const tsLog = new tsLogger("SelectAccount", tsStore.do_debug);
 
@@ -52,7 +52,7 @@ onMounted(async () => {
 });
 
 const updateCurrentIdn = (new_value) => {
-  current_idn.value = new_value;
+  current_account.value = new_value;
 };
 
 defineExpose({ updateCurrentIdn });

@@ -21,7 +21,7 @@
 <template>
     <div id="heading_wrapper">
 		  <div id="mzts-idnt_sel">__MSG_ChooseAccount__:&nbsp;
-          <SelectAccount id="identities_selector" v-model="current_idn" ref="SelectAccount_ref"/>
+          <SelectAccount id="identities_selector" v-model="current_account" ref="SelectAccount_ref"/>
 			<button type="button" @click="update()">__MSG_Update__</button>
 		  </div>
 		<div id="mzts-setup_icon">
@@ -43,21 +43,21 @@ import SelectAccount from './SelectAccount.vue';
 
 const emit = defineEmits(['chooseAccount']);
 
-let current_idn = ref(0);
+let current_account = ref(0);
 let SelectAccount_ref = ref(null);
 
 let tsLog = null;
 
 onMounted(async () => {
   tsLog = new tsLogger("HeadingNAV", tsStore.do_debug);
-  current_idn.value = await TS_prefs.getPref("startup_account");
-  tsLog.log("onMounted: " + current_idn.value);
-  SelectAccount_ref.value.updateCurrentIdn(current_idn.value);
+  current_account.value = await TS_prefs.getPref("startup_account");
+  tsLog.log("onMounted: " + current_account.value);
+  SelectAccount_ref.value.updateCurrentIdn(current_account.value);
 });
 
 function update(){
-  tsLog.log("update: " + current_idn.value);
-  emit('chooseAccount', current_idn.value);
+  tsLog.log("update: " + current_account.value);
+  emit('chooseAccount', current_account.value);
 }
 
 function openOptions(){
@@ -74,7 +74,7 @@ function openOptions(){
 }
 
 function getCurrentIdn(){
-  return current_idn.value;
+  return current_account.value;
 }
 
 defineExpose({ getCurrentIdn });

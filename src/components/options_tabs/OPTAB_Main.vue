@@ -22,7 +22,7 @@
     <div>__MSG_GlobalDescSettingTab__</div>
     
   <label>__MSG_StartupAccount__:
-    <SelectAccount v-model="current_idn" id="startup_account" name="startup_account" class="option-input"/>
+    <SelectAccount v-model="current_account" id="startup_account" name="startup_account" class="option-input"/>
   </label>
   <br>
   <label>
@@ -57,7 +57,7 @@
   import { tsLogger } from '@statslib/mzts-logger';
   import { tsStore } from '@statslib/mzts-store';
   
-  let current_idn = ref(0);
+  let current_account = ref(0);
   let tsLog = null;
   
   onMounted(() => {

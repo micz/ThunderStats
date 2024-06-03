@@ -111,7 +111,7 @@ import { tsStore } from '@statslib/mzts-store';
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
     nextTick(() => {
       let curr_tab = statsTabs.value.activeTabHash;
-      console.log(">>>>>>>>>>> curr_tab: " + curr_tab);
+      tsLog.log("curr_tab: " + curr_tab);
       switch(curr_tab) {
         case "#tab-today":
           TAB_Today_ref.value.updateData();
@@ -129,7 +129,7 @@ import { tsStore } from '@statslib/mzts-store';
   }
 
   async function tabChanged(id) {
-    console.log(">>>>>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
+    tsLog.log("tabChanged: " + JSON.stringify(id));
     // if(!stats_done[id.tab.computedId]) {
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());
     // }

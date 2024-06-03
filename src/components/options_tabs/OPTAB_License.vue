@@ -19,12 +19,7 @@
 -->
 
 <template>
-  <div>
-    __MSG_InfoMainDesc__
-	<div>
-    <a href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_DonateLink__</a>
-  </div>
-  </div>
+    <OptionDonationHeader />
     <div>
       <h1>__MSG_License__</h1>
       <p>ThunderStats is licensed under a <a href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.</p>
@@ -71,7 +66,7 @@
   
   
 <script setup>
-
+import OptionDonationHeader from '../OptionDonationHeader.vue';
 
 </script>
   

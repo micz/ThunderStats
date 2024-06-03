@@ -203,14 +203,6 @@
     "message": "More features will be added in the future, but if you have an idea, send it",
     "description": ""
   },
-  "AboutText_DebugMessage_1": {
-    "message": "Are you having trouble using this addon?",
-    "description": ""
-  },
-  "AboutText_DebugMessage_2": {
-    "message": "Run the Debugger and send us the report, we will check how to fix it. Thank you!",
-    "description": ""
-  },
   "InboxZeroTitle": {
     "message": "What is Inbox Zero?",
     "description": ""
@@ -424,15 +416,7 @@
     "description": ""
   },
   "ActivateDebug": {
-    "message": "Activate the debug system.",
-    "description": ""
-  },
-  "runDebuggerBtn.label": {
-    "message": "Run the Debugger",
-    "description": ""
-  },
-  "DebugWarnShow": {
-    "message": "Show the debug warning message if no mails are sent or received today.",
+    "message": "Activate the debug system",
     "description": ""
   },
   "InboxSearchOnlyCurrAccount": {
@@ -452,7 +436,7 @@
     "description": ""
   },
   "TimeGraphProgressive": {
-    "message": "Show cumulative data bars in the today and yesterday time graphs.",
+    "message": "Show cumulative data bars in the today and yesterday time graphs",
     "description": ""
   },
   "AggregateAverageNotRounded": {
@@ -464,7 +448,7 @@
     "description": ""
   },
   "ManyDays": {
-    "message": "Number of days to be shown.",
+    "message": "Number of days to be shown",
     "description": ""
   },
   "ManyDaysSmallLabels": {
@@ -572,11 +556,11 @@
     "description": ""
   },
   "folderspreadgraph_openinfirsttab": {
-    "message": "From the mails folder locations chart, open the folder always in the first tab.",
+    "message": "From the mails folder locations chart, open the folder always in the first tab",
     "description": ""
   },
   "InvolvedNum": {
-    "message": "Number of recipients or senders to be shown in \"Top\" tables.",
+    "message": "Number of recipients or senders to be shown in \"Top\" tables",
     "description": ""
   },
   "involvedtable_forceidentityname": {
@@ -588,11 +572,11 @@
     "description": ""
   },
   "prefs_remember_last_tab": {
-    "message": "Remember the last opened tab.",
+    "message": "Remember the last opened tab",
     "description": ""
   },
   "prefs_always_reload_tab_data": {
-    "message": "Always reload data when changing tab.",
+    "message": "Always reload data when changing tab",
     "description": ""
   },
   "prefsInfoTitle": {

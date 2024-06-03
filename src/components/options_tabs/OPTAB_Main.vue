@@ -19,33 +19,53 @@
 -->
 
 <template>
-    <div>__MSG_GlobalDescSettingTab__</div>
-    
-  <label>__MSG_StartupAccount__:
-    <SelectAccount v-model="current_account" id="startup_account" name="startup_account" class="option-input"/>
-  </label>
-  <br>
-  <label>
-    <input type="checkbox" id="_time_graph_progressive" name="_time_graph_progressive" class="option-input" />
-     &nbsp;<span class="dims_label">__MSG_TimeGraphProgressive__</span>
-  </label>
-  <br>
-  <label>
-    <input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" />
-     &nbsp;<span class="dims_label">__MSG_folderspreadgraph_openinfirsttab__</span>
-  </label>
-  <br>
-  <label>
-    <input type="checkbox" id="always_reload_tab_data" name="always_reload_tab_data" class="option-input" />
-     &nbsp;<span class="dims_label">__MSG_prefs_always_reload_tab_data__</span>
-  </label>
-  <br>
-  <label>
-    <input type="checkbox" id="remember_last_tab" name="remember_last_tab" class="option-input" />
-     &nbsp;<span class="dims_label">__MSG_prefs_remember_last_tab__</span>
-  </label>
+    <div class="intro_main">__MSG_GlobalDescSettingTab__</div>
+  <table class="miczPrefs">
+    <tr>
+      <td style="padding-right: 10px;">
+        <label>__MSG_StartupAccount__:</label>
+      </td>
+      <td>
+        <label><SelectAccount v-model="current_account" id="startup_account" name="startup_account" class="option-input"/></label>
+      </td>
+    </tr>
+  </table>
+    <table class="miczPrefs" style="margin-top: 10px;">
+    <tr>
+      <td>
+        <label><input type="checkbox" id="_time_graph_progressive" name="_time_graph_progressive" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label">__MSG_TimeGraphProgressive__</span></label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label">__MSG_folderspreadgraph_openinfirsttab__</span></label>
+      </td>
+    </tr>
+    <tr>
+     <td>
+        <label><input type="checkbox" id="always_reload_tab_data" name="always_reload_tab_data" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label">__MSG_prefs_always_reload_tab_data__</span></label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="remember_last_tab" name="remember_last_tab" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label">__MSG_prefs_remember_last_tab__</span></label>
+      </td>
+    </tr>
+  </table>
 
-  <br><br><br><br>
+ <br><br><br><br>
       <div id="miczDescription">
         <h1>__MSG_prefsInfoTitle__</h1>
         <p>__MSG_prefsInfoDesc_1__<br/>

@@ -19,25 +19,38 @@
 -->
 
 <template>
-  <h2>__MSG_TabAdvanced.label__</h2>
-  <p>__MSG_ManyDaysGraph__
-    <br>
-  <label>
-    <input type="textbox" id="_many_days" name="_many_days" class="option-input" />
-     &nbsp;<span class="dims_label">__MSG_ManyDays__</span>
-  </label>
-  </p>
-  <p>
-  <label>
-    <input type="textbox" id="_involved_num" name="_involved_num" class="option-input" />
-     &nbsp;<span class="dims_label">__MSG_InvolvedNum__</span>
-  </label>
-  <br>
-  <label>
-    <input type="checkbox" id="do_debug" name="do_debug" class="option-input" />
-     &nbsp;<span class="dims_label">Debug</span>
-  </label>
-  </p>
+  <table class="miczPrefs">
+    <tr>
+      <td colspan="2" class="grouptitle">__MSG_ManyDaysGraph__</td>
+    </tr>
+    <tr>
+      <td class="td_padding_right">
+        <label><input type="number" id="_many_days" name="_many_days" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_ManyDays__</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="td_padding_right">
+        <label><input type="number" id="_involved_num" name="_involved_num" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_InvolvedNum__</span>
+      </td>
+    </tr>
+    </table>
+    <table class="miczPrefs" style="margin-top: 50px;">
+    <tr>
+      <td>
+        <label><input type="checkbox" id="do_debug" name="do_debug" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_ActivateDebug__</span>
+      </td>
+    </tr>
+  </table>
+  
   </template>
 
 

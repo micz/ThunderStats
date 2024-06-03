@@ -24,25 +24,30 @@ div#miczDonation{
     padding-bottom: 30px;
 }
 
-table#miczPrefs {
-    font-size: 13px;
+table.miczPrefs {
     padding: 10px;
     border-spacing: 0px;
-    
 }
 
-table#miczPrefs td{
+table.miczPrefs td{
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     vertical-align: top;
     padding: 2px;
 }
 
-table#miczPrefs tr:first-child td {
+table.miczPrefs td.grouptitle{
+    border:0;
+    vertical-align: top;
+    padding: 2px;
+    font-weight: bold;
+}
+
+table.miczPrefs tr:first-child td {
     border-top: none;
 }
   
-table#miczPrefs  tr:last-child td {
+table.miczPrefs  tr:last-child td {
     border-bottom: none;
 }
 
@@ -56,14 +61,32 @@ div#miczDescription p{
     margin-top: 0px;
 }
 
-input#chatgpt_win_width{
-    width: 100px;
-}
-
-input#chatgpt_win_height{
-    width: 100px;
-}
-
 span.dims_label{
     display: inline-block;
+}
+
+input#_involved_num, input#_many_days{
+    width: 60px;
+}
+
+.td_padding_right{
+    padding-right: 15px !important
+}
+
+div.intro_main{
+  margin-bottom: 10px;
+  margin-left: 12px;
+  font-style: italic;
+}
+
+div.intro_info{
+    margin: 0px auto 10px auto;
+    width: 47vw;
+    text-align: center;
+    font-style: italic;
+}
+
+div.intro_info_link{
+    margin-top:10px;
+    font-size: large;
 }

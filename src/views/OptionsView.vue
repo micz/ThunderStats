@@ -31,10 +31,10 @@
         CUSTOM IDENTITIES
       </tab>
       <tab id="tab-info" name="__MSG_Info__">
-          <OPTAB_Info ref="OPTAB_Info_ref"/>
+          <OPTAB_Info/>
       </tab>
       <tab id="tab-license" name="__MSG_License__">
-          LICENSE
+        <OPTAB_License/>
       </tab>
   </tabs>
   </main>
@@ -50,14 +50,13 @@ import OPTAB_Main from '@/components/options_tabs/OPTAB_Main.vue';
 import OPTAB_Advanced from '@/components/options_tabs/OPTAB_Advanced.vue';
 //import OPTAB_CustomIds from '@/components/options_tabs/OPTAB_CustomIds.vue';
 import OPTAB_Info from '@/components/options_tabs/OPTAB_Info.vue';
-//import OPTAB_License from '@/components/options_tabs/OPTAB_License.vue';
+import OPTAB_License from '@/components/options_tabs/OPTAB_License.vue';
 import { tsStore } from '@statslib/mzts-store';
 
 let optionsTabs = ref(null);
 let OPTAB_Main_ref = ref(null);
 let OPTAB_Advanced_ref = ref(null);
 //let OPTAB_CustomIds_ref = ref(null);
-let OPTAB_Info_ref = ref(null);
 
 //let do_debug = ref(false);
 let tsLog = null;

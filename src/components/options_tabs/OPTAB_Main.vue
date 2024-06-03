@@ -34,6 +34,11 @@
     <input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" />
      &nbsp;<span class="dims_label">__MSG_folderspreadgraph_openinfirsttab__</span>
   </label>
+  <br>
+  <label>
+    <input type="checkbox" id="remember_last_tab" name="remember_last_tab" class="option-input" />
+     &nbsp;<span class="dims_label">__MSG_prefs_remember_last_tab__</span>
+  </label>
 
   <br><br><br><br>
       <div id="miczDescription">

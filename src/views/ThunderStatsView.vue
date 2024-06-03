@@ -22,7 +22,7 @@
     <HeadingNAV @chooseAccount="updateStats" ref="HeadingNAV_ref"/>
   
     <main>
-      <tabs :options="{ defaultTabHash: 'tab-today' }"  cache-lifetime="120000"  @changed="tabChanged" ref="statsTabs">
+      <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs">
         <tab id="tab-today" name="__MSG_Today__">
             <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_Today_ref" />
         </tab>
@@ -44,7 +44,7 @@
   
   
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, onBeforeMount } from 'vue'
 import HeadingNAV from "@/components/HeadingNAV.vue";
 import TAB_Info from "@/components/tabs/TAB_Info.vue";
 import TAB_Today from '@/components/tabs/TAB_Today.vue';
@@ -68,10 +68,12 @@ import { tsStore } from '@statslib/mzts-store';
   let activeAccount = ref(0);
   let accountEmails = ref([]);
   let _many_days_text = ref("");
+  let cache_lifetime = ref(120000);
 
   //let do_debug = ref(false);
   let tsLog = null;
   let tsCore = null
+  let remember_last_tab = false;
 
   // let stats_done = {
   //   "tab-today": false,
@@ -85,12 +87,25 @@ import { tsStore } from '@statslib/mzts-store';
   //   stats_done[id] = true;
   // }
 
+  onBeforeMount(async () => {
+    tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
+    remember_last_tab = await TS_prefs.getPref("remember_last_tab");
+    if(remember_last_tab) {
+      cache_lifetime.value = 120000;
+    } else {
+      cache_lifetime.value = 0;
+      //localStorage.removeItem('tabs-storage-key');
+      //localStorage.setItem('tabs-storage-key', JSON.stringify({ value: 'tab-today', expires: 10 }))
+    }
+    //console.log(">>>>>>>>>>>>>>>>> cache_lifetime: " + cache_lifetime.value);
+  });
+
   onMounted(async () => {
     //test_output.value = await thunderStatsCore.test_core_accounts();
+    //if(cache_lifetime.value == 0) { statsTabs.value.selectTab('#tab-today') }
     let _many_days = await TS_prefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     //tsStore.do_debug = await TS_prefs.getPref("do_debug");
-    tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     i18n.updateDocument();
     updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
@@ -135,7 +150,7 @@ import { tsStore } from '@statslib/mzts-store';
     // }
     // stats_done[id.tab.computedId] = true;
   }
-  
+
   </script>
   
   

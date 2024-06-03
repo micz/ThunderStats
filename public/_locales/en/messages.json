@@ -587,36 +587,8 @@
     "message": "Release Notes",
     "description": ""
   },
-  "prefs_OptionText_chatgpt_win_text": {
-    "message": "ChatGPT window dimensions",
-    "description": ""
-  },
-  "prefs_OptionText_chatgpt_win_height": {
-    "message": "Height",
-    "description": ""
-  },
-  "prefs_OptionText_chatgpt_win_width": {
-    "message": "Width",
-    "description": ""
-  },
-  "prefs_OptionText_default_sign_name": {
-    "message": "Default signature name",
-    "description": ""
-  },
-  "prefs_OptionText_default_chatgpt_lang": {
-    "message": "Default language for ChatGPT responses",
-    "description": ""
-  },
-  "prefs_OptionText_reply_all": {
-    "message": "Reply to All",
-    "description": ""
-  },
-  "prefs_OptionText_reply_sender": {
-    "message": "Reply to Sender",
-    "description": ""
-  },
-  "prefs_OptionText_reply_type": {
-    "message": "Reply type",
+  "prefs_remember_last_tab": {
+    "message": "Remember the last opened tab.",
     "description": ""
   },
   "prefsInfoTitle": {

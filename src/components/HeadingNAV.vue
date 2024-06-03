@@ -21,7 +21,7 @@
 <template>
     <div id="heading_wrapper">
 		  <div id="mzts-idnt_sel">__MSG_ChooseAccount__:&nbsp;
-          <SelectAccount id="identities_selector" :do_debug="props.do_debug" v-model="current_idn" ref="SelectAccount_ref"/>
+          <SelectAccount id="identities_selector" :do_debug="tsStore.do_debug" v-model="current_idn" ref="SelectAccount_ref"/>
 			<button type="button" @click="update()">__MSG_Update__</button>
 		  </div>
 		<div id="mzts-setup_icon">
@@ -38,23 +38,18 @@
 import { ref, onMounted } from 'vue';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { TS_prefs } from "@statslib/mzts-options.js";
+import { tsStore } from "@statslib/mzts-store.js";
 import SelectAccount from './SelectAccount.vue';
 
 const emit = defineEmits(['chooseAccount']);
 
-const props = defineProps({
-  do_debug: {
-    type: Boolean,
-    default: false
-  }
-});
-
 let current_idn = ref(0);
 let SelectAccount_ref = ref(null);
 
-const tsLog = new tsLogger("HeadingNAV", props.do_debug);
+let tsLog = null;
 
 onMounted(async () => {
+  tsLog = new tsLogger("HeadingNAV", tsStore.do_debug);
   current_idn.value = await TS_prefs.getPref("startup_account");
   tsLog.log("onMounted: " + current_idn.value);
   SelectAccount_ref.value.updateCurrentIdn(current_idn.value);

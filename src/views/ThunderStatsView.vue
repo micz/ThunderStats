@@ -19,21 +19,21 @@
 -->
 
 <template>
-    <HeadingNAV @chooseAccount="updateStats" :do_debug="do_debug" ref="HeadingNAV_ref"/>
+    <HeadingNAV @chooseAccount="updateStats" ref="HeadingNAV_ref"/>
   
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today' }"  cache-lifetime="120000"  @changed="tabChanged" ref="statsTabs">
         <tab id="tab-today" name="__MSG_Today__">
-            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="do_debug" ref="TAB_Today_ref" />
+            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="tsStore.do_debug" ref="TAB_Today_ref" />
         </tab>
         <tab id="tab-yesterday" name="__MSG_Yesterday__">
-          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="do_debug" ref="TAB_Yesterday_ref" />
+          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="tsStore.do_debug" ref="TAB_Yesterday_ref" />
         </tab>
         <tab id="tab-manydays" :name="_many_days_text">
-          <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="do_debug" ref="TAB_ManyDays_ref" />
+          <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="tsStore.do_debug" ref="TAB_ManyDays_ref" />
         </tab>
         <tab id="tab-customqry" name="__MSG_CustomQry__">
-          <TAB_CustomQry :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="do_debug" ref="TAB_CustomQry_ref" />
+          <TAB_CustomQry :activeAccount="activeAccount" :accountEmails="accountEmails" :do_debug="tsStore.do_debug" ref="TAB_CustomQry_ref" />
         </tab>
         <tab id="tab-info" name="__MSG_Info__">
             <TAB_Info />
@@ -55,6 +55,7 @@ import { thunderStastsCore } from "@statslib/mzts-statscore.js";
 import { i18n } from "@statslib/mzts-i18n.js";
 import { TS_prefs } from '@statslib/mzts-options.js';
 import { tsLogger } from "@statslib/mzts-logger.js";
+import { tsStore } from '@statslib/mzts-store';
 
   let statsTabs = ref(null);
   let TAB_Today_ref = ref(null);
@@ -68,7 +69,7 @@ import { tsLogger } from "@statslib/mzts-logger.js";
   let accountEmails = ref([]);
   let _many_days_text = ref("");
 
-  let do_debug = ref(false);
+  //let do_debug = ref(false);
   let tsLog = null;
   let tsCore = null
 
@@ -88,21 +89,21 @@ import { tsLogger } from "@statslib/mzts-logger.js";
     //test_output.value = await thunderStatsCore.test_core_accounts();
     let _many_days = await TS_prefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
-    do_debug.value = await TS_prefs.getPref("do_debug");
-    tsLog = new tsLogger("ThunderStatsView", do_debug.value);
-    tsCore = new thunderStastsCore({do_debug: do_debug.value});
+    //tsStore.do_debug = await TS_prefs.getPref("do_debug");
+    tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
+    tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     i18n.updateDocument();
-    updateStats(HeadingNAV_ref.value.getCurrentIdn());
+    updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
   });
   
 
   async function updateStats(account_id) {
-    if((tsLog == null) || (tsCore == null)) { do_debug.value = await TS_prefs.getPref("do_debug"); }
+    if((tsLog == null) || (tsCore == null)) { tsStore.do_debug = await TS_prefs.getPref("do_debug"); }
     if(tsLog == null) {
-      tsLog = new tsLogger("ThunderStatsView", do_debug.value);
+      tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     }
     if(tsCore == null) {
-      tsCore = new thunderStastsCore({do_debug: do_debug.value});
+      tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     }
     tsLog.log("updateStats", account_id);
     activeAccount.value = account_id;

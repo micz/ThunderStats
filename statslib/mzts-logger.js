@@ -24,13 +24,16 @@ export class tsLogger {
         this.do_debug = do_debug;
         this.prefix = "[tsLogger|" + prefix + "] ";
     }
-    log(msg) {
+    log(msg, do_debug = -1) {
+        if(do_debug !== -1) this.do_debug = do_debug;
         if(this.do_debug === true) console.log(this.prefix + msg);
     }
-    error(msg) {
+    error(msg, do_debug = -1) {
+        if(do_debug !== -1) this.do_debug = do_debug;
         if(this.do_debug === true) console.error(this.prefix + msg);
     }
-    warn(msg) {
+    warn(msg, do_debug = -1) {
+        if(do_debug !== -1) this.do_debug = do_debug;
         if(this.do_debug === true) console.warn(this.prefix + msg);
     }  
 };

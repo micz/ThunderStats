@@ -1,5 +1,5 @@
 import './assets/options.css';
-import './assets/tabs-component.css';
+import './assets/options-tabs-component.css';
 
 import { createApp } from 'vue';
 import {Tabs, Tab} from 'vue3-tabs-component';

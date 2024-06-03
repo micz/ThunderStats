@@ -32,6 +32,11 @@
     <input type="textbox" id="_involved_num" name="_involved_num" class="option-input" />
      &nbsp;<span class="dims_label">__MSG_InvolvedNum__</span>
   </label>
+  <br>
+  <label>
+    <input type="checkbox" id="do_debug" name="do_debug" class="option-input" />
+     &nbsp;<span class="dims_label">Debug</span>
+  </label>
   </p>
   </template>
 

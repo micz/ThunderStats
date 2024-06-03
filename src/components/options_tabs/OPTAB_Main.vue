@@ -26,11 +26,6 @@
   </label>
   <br>
   <label>
-    <input type="checkbox" id="do_debug" name="do_debug" class="option-input" />
-     &nbsp;<span class="dims_label">Debug</span>
-  </label>
-  <br>
-  <label>
     <input type="checkbox" id="_time_graph_progressive" name="_time_graph_progressive" class="option-input" />
      &nbsp;<span class="dims_label">__MSG_TimeGraphProgressive__</span>
   </label>

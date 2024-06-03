@@ -47,18 +47,18 @@
   import { TS_prefs } from "@statslib/mzts-options.js";
 
   onMounted(() => {
-    TS_prefs.restoreOptions();
+    /*TS_prefs.restoreOptions();
     i18n.updateDocument();
     document.querySelectorAll(".option-input").forEach(element => {
       element.addEventListener("change", TS_prefs.saveOptions);
-    });
+    });*/
     console.log(">>>>>>>>>> OPTAB_Advanced mounted");
   });
   
   onUnmounted(() => {
-    document.querySelectorAll('.option-input').forEach(element => {
+   /* document.querySelectorAll('.option-input').forEach(element => {
       element.removeEventListener('change', TS_prefs.saveOptions);
-    });
+    });*/
     console.log(">>>>>>>>>> OPTAB_Advanced unmounted");
   });
   

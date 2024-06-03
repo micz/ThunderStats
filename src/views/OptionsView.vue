@@ -42,7 +42,7 @@
 
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { i18n } from "@statslib/mzts-i18n.js";
 import { TS_prefs } from "@statslib/mzts-options.js";
 import { tsLogger } from "@statslib/mzts-logger.js";
@@ -64,7 +64,20 @@ let tsLog = null;
 onMounted(async () => {
     do_debug.value = await TS_prefs.getPref("do_debug");
     tsLog = new tsLogger("OptionsView", do_debug.value);
+    TS_prefs.restoreOptions();
     i18n.updateDocument();
+    document.querySelectorAll(".option-input").forEach(element => {
+      element.addEventListener("change", TS_prefs.saveOptions);
+    });
+    //i18n.updateDocument();
+    console.log(">>>>>>>>>> OptionsView mounted");
+  });
+
+onUnmounted(() => {
+    document.querySelectorAll('.option-input').forEach(element => {
+      element.removeEventListener('change', TS_prefs.saveOptions);
+    });
+    console.log(">>>>>>>>>> OptionsView unmounted");
   });
 
 </script>

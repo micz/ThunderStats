@@ -60,18 +60,18 @@
   let current_idn = ref(0);
   
   onMounted(() => {
-    TS_prefs.restoreOptions();
+    /*TS_prefs.restoreOptions();
     i18n.updateDocument();
     document.querySelectorAll(".option-input").forEach(element => {
       element.addEventListener("change", TS_prefs.saveOptions);
-    });
+    });*/
     console.log(">>>>>>>>>> OPTAB_Main mounted");
   });
   
   onUnmounted(() => {
-    document.querySelectorAll('.option-input').forEach(element => {
+    /*document.querySelectorAll('.option-input').forEach(element => {
       element.removeEventListener('change', TS_prefs.saveOptions);
-    });
+    });*/
     console.log(">>>>>>>>>> OPTAB_Main unmounted");
   });
   

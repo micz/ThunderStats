@@ -20,9 +20,9 @@
 
 <template>
     <div id="heading_wrapper">
-		  <div id="mzts-idnt_sel">__MSG_ChooseAccount__:&nbsp;
-          <SelectAccount id="identities_selector" v-model="current_account" ref="SelectAccount_ref"/>
-			<button type="button" @click="update()">__MSG_Update__</button>
+		  <div id="mzts-account-sel">__MSG_ChooseAccount__:
+          <SelectAccount id="account_selector" v-model="current_account" ref="SelectAccount_ref"/>
+			<div id="mzts-btn-update"><button type="button" @click="update()">__MSG_Update__</button></div>
 		  </div>
 		<div id="mzts-setup_icon">
 			<img src="@/assets/images/mzts-setup.png" alt="__MSG_Setup__" title="__MSG_Setup__" class="tooltip" @click="openOptions()"/>

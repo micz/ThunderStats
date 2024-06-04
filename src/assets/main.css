@@ -8,17 +8,28 @@
     background-image: -moz-linear-gradient(rgba(242,242,240,0),    /*#94b6db*/
                                            rgba(242,242,240,.25)); /*#78a3d1*/
     background-color: Highlight;
-    color: HighlightText; /*white*/
+    color: HighlightText;
     z-index: 101;
-    padding:2px;
     top:0px;
     height:24px;
   }
   
 #mzts-setup_icon{float:right;cursor:pointer;display:flex;align-items:center;height:28px;}
-#mzts-idnt_sel{float:left;display:flex;align-items:center;height:28px;font-size:0.8em;z-index:105;}
-#mzts-idnt_sel select{z-index:inherit;}
-#mzts-idnt_sel button{z-index:inherit;}
+#mzts-account-sel{
+  float: left;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  height: 28px;
+}
+#account_selector{
+  display: inline;
+  margin-left: 10px;
+}
+#mzts-btn-update{
+  display: inline;
+  margin-left: 10px;
+}
 #mzts-main-error{align-items:center;float:left;display:none;color:red;font-weight:bold;font-size:24px;height:28px;width:80%;text-align:center;margin:auto;}
 #mzts-updates{float:right;font-size:0.75em;align-items:center;height:28px;text-align:right;margin-top:-1px;position:absolute;right:32px;z-index:102;}
 #mzts-last_run{float:left;width:100%;}

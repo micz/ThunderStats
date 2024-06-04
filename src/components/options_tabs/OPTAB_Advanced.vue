@@ -19,7 +19,6 @@
 -->
 
 <template>
-  <div class="intro_advanced" v-if="new_changes" v-text="reopenTabDesc"></div>
   <table class="miczPrefs">
     <tr>
       <td colspan="2" class="grouptitle">__MSG_ManyDaysGraph__</td>
@@ -64,6 +63,7 @@
       </td>
     </tr>
   </table>
+  <div class="intro_change_warn" v-if="new_changes" v-text="reopenTabDesc"></div>
   
   </template>
 

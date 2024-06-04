@@ -19,9 +19,7 @@
 -->
 
 <template>
-    <div class="intro_main">__MSG_GlobalDescSettingTab__
-      <br><span class="intro_main_normal" v-if="new_changes" v-text="reopenTabDesc"></span>
-    </div>
+    <div class="intro_main">__MSG_GlobalDescSettingTab__</div>
   <table class="miczPrefs">
     <tr>
       <td style="padding-right: 10px;">
@@ -74,14 +72,15 @@
       </td>
     </tr>
   </table>
+  <div class="intro_change_warn" v-if="new_changes" v-text="reopenTabDesc"></div>
 
- <br><br><br><br>
+ <!--<br><br><br><br>
       <div id="miczDescription">
         <h1>__MSG_prefsInfoTitle__</h1>
         <p>__MSG_prefsInfoDesc_1__<br/>
           __MSG_prefsInfoDesc_2__<br/>
           __MSG_prefsInfoDesc_3__</p>
-      </div>
+      </div>-->
 </template>
 
 

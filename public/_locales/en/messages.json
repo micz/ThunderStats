@@ -432,7 +432,7 @@
     "description": ""
   },
   "CustomQueryBookmarkImmediateUpdate": {
-    "message": "When selecting a custom date range view, update the statistics immediately.",
+    "message": "When selecting a custom date range view, update the statistics immediately",
     "description": ""
   },
   "TabBusinessDays.label": {

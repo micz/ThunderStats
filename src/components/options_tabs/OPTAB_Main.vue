@@ -48,14 +48,6 @@
       </td>
     </tr>
     <tr>
-      <td>
-        <label><input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label">__MSG_folderspreadgraph_openinfirsttab__</span></label>
-      </td>
-    </tr>
-    <tr>
      <td>
         <label><input type="checkbox" id="always_reload_tab_data" name="always_reload_tab_data" class="option-input" /></label>
       </td>

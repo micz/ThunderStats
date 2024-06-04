@@ -575,8 +575,8 @@
     "message": "Consider to make a donation!",
     "description": ""
   },
-  "backToOptionsText": {
-    "message": "Options",
+  "InboxZeroGraph": {
+    "message": "Inbox Zero Graph",
     "description": ""
   }
 }

@@ -41,6 +41,19 @@
       </td>
     </tr>
     </table>
+    <table class="miczPrefs">
+    <tr>
+      <td colspan="2" class="grouptitle">__MSG_CustomQryTabGroupbox__</td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="customqry_loaddata_when_selectingrange" name="customqry_loaddata_when_selectingrange" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_CustomQueryBookmarkImmediateUpdate__</span>
+      </td>
+    </tr>
+    </table>
     <table class="miczPrefs" style="margin-top: 50px;">
     <tr>
       <td>

@@ -8,4 +8,5 @@ export const prefs_default = {
     'startup_account': 0,
     'remember_last_tab': false,
     'always_reload_tab_data': false,
+    'customqry_loaddata_when_selectingrange': false,
 }

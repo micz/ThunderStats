@@ -351,7 +351,7 @@ function loadingDo(){
     is_loading_rcvd_graph.value = true;
 }
 
-defineExpose({ updateData });
+defineExpose({ doQry });
 
 </script>
 

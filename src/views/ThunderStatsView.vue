@@ -135,6 +135,7 @@ import { tsStore } from '@statslib/mzts-store';
           TAB_ManyDays_ref.value.updateData();
           break;
         case "#tab-customqry":
+          TAB_CustomQry_ref.value.doQry();
           break;
       }
     });
@@ -145,10 +146,10 @@ import { tsStore } from '@statslib/mzts-store';
     // console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
     tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));
     // console.log(">>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id.tab.computedId));
-     if((!stats_done[id.tab.computedId]) || always_reload_tab_data) {
+     if((id.tab.computedId != "tab-customqry") && ((!stats_done[id.tab.computedId]) || always_reload_tab_data)) {
       tsLog.log("tabChanged ==> Loading Data...");
       // console.log(">>>>>>>>>>>>>> tabChanged ==> Loading Data...");
-      await updateStats(HeadingNAV_ref.value.getCurrentIdn());
+      await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
      }
      statsDone(id.tab.computedId);
   }

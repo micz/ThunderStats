@@ -176,4 +176,8 @@ export const tsUtils = {
         return last_year_day;
     },
 
+    safeConcat(dataArray, index) {
+        return (dataArray[index] && dataArray[index].data) ? dataArray[index].data : [];
+    },
+
 }

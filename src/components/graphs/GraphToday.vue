@@ -42,6 +42,7 @@ import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineEl
 import { externalTooltipTimeGraphLines } from '@statslib/chartjs-lib/external-tooltip-timegraphlines';
 import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsUtils } from '@statslib/mzts-utils';
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title );
 
@@ -67,7 +68,11 @@ let maxY = ref(0);
 watch(props.chartData, (newChartData) => {
     //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
-        let data = newChartData.datasets[0].data.concat(newChartData.datasets[1].data).concat(newChartData.datasets[2].data).concat(newChartData.datasets[3].data);
+        //let data = newChartData.datasets[0].data.concat(newChartData.datasets[1].data).concat(newChartData.datasets[2].data).concat(newChartData.datasets[3].data);
+        let data = tsUtils.safeConcat(newChartData.datasets, 0)
+                  .concat(tsUtils.safeConcat(newChartData.datasets, 1))
+                  .concat(tsUtils.safeConcat(newChartData.datasets, 2))
+                  .concat(tsUtils.safeConcat(newChartData.datasets, 3));
         maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(data) / 5) * 5;
     } else {
         maxY.value = 5;

@@ -43,6 +43,14 @@
     </tr>
     <tr>
       <td>
+        <label><input type="checkbox" id="today_time_graph_show_yesterday" name="today_time_graph_show_yesterday" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label">__MSG_TodayTimeGraphShowYesterday__</span></label>
+      </td>
+    </tr>
+    <tr>
+      <td>
         <label><input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" /></label>
       </td>
       <td>

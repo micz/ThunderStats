@@ -97,6 +97,7 @@ let no_mails_sent_today = ref("");
 let no_mails_inbox = ref("");
 
 let do_progressive = true;
+let today_time_graph_show_yesterday = true;
 let inbox0_openFolderInFirstTab = ref(false);
 
 let is_loading_counter_sent_rcvd = ref(true);
@@ -167,6 +168,8 @@ onMounted(async () => {
 async function updateData() {
     loadingDo();
     do_progressive = await TS_prefs.getPref("_time_graph_progressive");
+    today_time_graph_show_yesterday = await TS_prefs.getPref("today_time_graph_show_yesterday");
+    console.log(">>>>>>>>>>>>>>>> updateData: do_progressive: " + do_progressive + " today_time_graph_show_yesterday: " + today_time_graph_show_yesterday);
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
@@ -194,24 +197,26 @@ async function updateData() {
         borderWidth: 2,
         pointRadius: 1,
     })
-    chartData_Today.value.datasets.push({
-        label: 'ysent',
-        data: graphdata_yesterday_hours_sent.value,
-        borderColor: '#17becf',
-        backgroundColor: '#17becf',
-        borderDash: [12, 3, 3],
-        pointStyle: false,
-        borderWidth: 2,
-    })
-    chartData_Today.value.datasets.push({
-        label: 'yrcvd',
-        data: graphdata_yesterday_hours_rcvd.value,
-        borderColor: '#ffbb78',
-        backgroundColor: '#ffbb78',
-        borderDash: [12, 3, 3],
-        pointStyle: false,
-        borderWidth: 2,
-    })
+    if(today_time_graph_show_yesterday){
+        chartData_Today.value.datasets.push({
+            label: 'ysent',
+            data: graphdata_yesterday_hours_sent.value,
+            borderColor: '#17becf',
+            backgroundColor: '#17becf',
+            borderDash: [12, 3, 3],
+            pointStyle: false,
+            borderWidth: 2,
+        })
+        chartData_Today.value.datasets.push({
+            label: 'yrcvd',
+            data: graphdata_yesterday_hours_rcvd.value,
+            borderColor: '#ffbb78',
+            backgroundColor: '#ffbb78',
+            borderDash: [12, 3, 3],
+            pointStyle: false,
+            borderWidth: 2,
+        })
+    }
     // graph inbox zero folders
     let folders_data = tsCoreUtils.getFoldersLabelsColors(graphdata_inboxzero_folders.value);
     chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
@@ -272,7 +277,8 @@ async function updateData() {
     };
 
     // get yesterday data
-    function getYesterdayData () {
+    async function getYesterdayData () {
+        if(!today_time_graph_show_yesterday) { return; }
         return new Promise(async (resolve) => {
             let result_yesterday = await tsCore.getToday_YesterdayData(props.activeAccount, props.accountEmails);
             tsLog.log("result_today_yesterday_data: " + JSON.stringify(result_yesterday, null, 2));

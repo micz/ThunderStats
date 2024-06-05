@@ -33,14 +33,14 @@
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run">{{ sent_total }}</span></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg"/>
                       </div>
-                      <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" />
+                      <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length"/>
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run">{{ rcvd_total }}</span></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg"/>
 					  </div>
-					  <GraphCustomQry v-if="do_run" :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" />
+					  <GraphCustomQry v-if="do_run" :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph"  :key="chartData_Rcvd_length"/>
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
@@ -62,7 +62,7 @@
 
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, nextTick, computed } from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
@@ -135,12 +135,13 @@ let chartData_Sent = ref({
     labels: [],
     datasets: []
 });
+let chartData_Sent_length = computed(() => (chartData_Sent.value.datasets.length + Math.floor(Math.random() * 101)));
 
 let chartData_Rcvd = ref({
     labels: [],
     datasets: []
 });
-
+let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
 onMounted(async () => {
     const endDate = new Date();
@@ -255,13 +256,12 @@ async function setPeriod(period){
     }
 }
 
-function doQry(){
+async function doQry(){
     customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
     customqry_current_account.value = props.accountEmails.join(", ");
     do_run.value = true;
-    nextTick(() => {
-        i18n.updateDocument();
-    });
+    await nextTick(); 
+    i18n.updateDocument();
     updateData();
 }
 
@@ -274,7 +274,7 @@ async function updateData() {
     tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
-    await Promise.all([getCustomQryData()]);
+    await getCustomQryData();
     chartData_Sent.value.datasets = [];
     chartData_Sent.value.datasets.push({
         label: 'Sent',

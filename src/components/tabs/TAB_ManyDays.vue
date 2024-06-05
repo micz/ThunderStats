@@ -24,14 +24,14 @@
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span>{{ sent_total }}</span> <span v-if="sent_today > 0">(+<span>{{ sent_today }}</span> __MSG_today_small__)</span></h2>
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_max="counter_many_days_sent_max" :_min="counter_many_days_sent_min" :_avg="counter_many_days_sent_avg"/>
                       </div>
-                      <GraphManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" />
+                      <GraphManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span>{{ rcvd_total }}</span> <span v-if="rcvd_today > 0">(+<span>{{ rcvd_today }}</span> __MSG_today_small__)</span></h2>
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_max="counter_many_days_rcvd_max" :_min="counter_many_days_rcvd_min" :_avg="counter_many_days_rcvd_avg"/>
 					  </div>
-					  <GraphManyDays :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" />
+					  <GraphManyDays :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" :key="chartData_Rcvd_length" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
@@ -53,7 +53,7 @@
 
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, nextTick, computed } from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsUtils } from '@statslib/mzts-utils';
@@ -119,11 +119,13 @@ let chartData_Sent = ref({
     labels: [],
     datasets: []
 });
+let chartData_Sent_length = computed(() => (chartData_Sent.value.datasets.length + Math.floor(Math.random() * 101)));
 
 let chartData_Rcvd = ref({
     labels: [],
     datasets: []
 });
+let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
 
 

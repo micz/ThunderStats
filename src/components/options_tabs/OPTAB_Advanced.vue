@@ -31,14 +31,6 @@
         <span class="dims_label">__MSG_ManyDays__</span>
       </td>
     </tr>
-    <tr>
-      <td class="td_padding_right">
-        <label><input type="number" id="_involved_num" name="_involved_num" class="option-input" /></label>
-      </td>
-      <td>
-        <span class="dims_label">__MSG_InvolvedNum__</span>
-      </td>
-    </tr>
     </table>
     <table class="miczPrefs">
     <tr>
@@ -68,6 +60,31 @@
     </table>
     <table class="miczPrefs" style="margin-top: 50px;">
     <tr>
+      <td colspan="2" class="grouptitle">__MSG_Other__</td>
+    </tr>
+    <tr>
+      <td class="td_padding_right">
+        <label>
+        <select id="first_day_week" name="first_day_week" class="option-input">
+          <option value="0">__MSG_WeekDay0__</option>
+          <option value="1">__MSG_WeekDay1__</option>
+          <option value="6">__MSG_WeekDay6__</option>
+        </select>
+        </label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_prefs_FirstDayWeek__</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="td_padding_right">
+        <label><input type="number" id="_involved_num" name="_involved_num" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_InvolvedNum__</span>
+      </td>
+    </tr>
+    <tr>
       <td>
         <label><input type="checkbox" id="do_debug" name="do_debug" class="option-input" /></label>
       </td>
@@ -76,6 +93,7 @@
       </td>
     </tr>
   </table>
+  
   <div class="intro_change_warn" v-if="new_changes" v-text="reopenTabDesc"></div>
   
   </template>

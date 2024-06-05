@@ -9,4 +9,5 @@ export const prefs_default = {
     'remember_last_tab': false,
     'always_reload_tab_data': false,
     'customqry_loaddata_when_selectingrange': false,
+    'first_day_week': 1,
 }

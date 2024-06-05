@@ -539,6 +539,14 @@
     "message": "Always show the account name in the top senders and recipient tables when the shown mail is associated with a Thunderbird account.",
     "description": ""
   },
+  "Other": {
+    "message": "Other",
+    "description": ""
+  },
+  "prefs_FirstDayWeek": {
+    "message": "Choose the first day of the week",
+    "description": ""
+  },
   "prefs_OptionText_release_notes": {
     "message": "Release Notes",
     "description": ""

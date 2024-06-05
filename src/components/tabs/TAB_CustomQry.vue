@@ -221,7 +221,7 @@ function openBookmarkMenu(e){
   });
 }
 
-function setPeriod(period){
+async function setPeriod(period){
     switch(period){
         case "currentweek": //TODO after implementing #249 use the correct first day of the week
         console.log(">>>>>>>>>>> getLastMonday: "+JSON.stringify(tsUtils.getLastMonday()));
@@ -249,6 +249,9 @@ function setPeriod(period){
         case "lastyear":
             dateQry.value = [tsUtils.getFirstDayOfLastYear(), tsUtils.getLastDayOfLastYear()];
             break;
+    }
+    if(await TS_prefs.getPref("customqry_loaddata_when_selectingrange")){
+      doQry();
     }
 }
 

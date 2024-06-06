@@ -169,7 +169,7 @@ async function updateData() {
     loadingDo();
     do_progressive = await TS_prefs.getPref("_time_graph_progressive");
     today_time_graph_show_yesterday = await TS_prefs.getPref("today_time_graph_show_yesterday");
-    console.log(">>>>>>>>>>>>>>>> updateData: do_progressive: " + do_progressive + " today_time_graph_show_yesterday: " + today_time_graph_show_yesterday);
+    //console.log(">>>>>>>>>>>>>>>> updateData: do_progressive: " + do_progressive + " today_time_graph_show_yesterday: " + today_time_graph_show_yesterday);
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }

@@ -23,7 +23,7 @@
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
-                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker dark="true" v-model="dateQry" @update:model-value="rangeChoosen" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
+                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker dark="true" v-model="dateQry" @update:model-value="rangeChoosen" :format="datepickerFormat" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <button type="button" id="customqry_update_btn" @click="doQry()">__MSG_UpdateCustomQry__</button>
                 <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
                 <span v-if="do_run">__MSG_CustomQryDataMsg__: <span v-text="customqry_current_account"></span> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></span>
@@ -62,7 +62,7 @@
 
 
 <script setup>
-import { ref, onMounted, nextTick, computed } from 'vue';
+import { ref, onMounted, onBeforeMount, nextTick, computed } from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
@@ -98,6 +98,8 @@ let dateQry = ref();
 let do_run = ref(false);
 let customqry_current_account = ref("");
 let customqry_totaldays_num = ref(0);
+
+let datepickerFormat = ref("dd-MM-YYYY");
 
 let top_recipients_title = ref("");
 let top_senders_title = ref("");
@@ -143,6 +145,10 @@ let chartData_Rcvd = ref({
     datasets: []
 });
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
+
+onBeforeMount(async () => {
+  datepickerFormat.value = tsUtils.formatDateStringLocale(await TS_prefs.getPref("datepicker_locale"));
+})
 
 onMounted(async () => {
     const endDate = new Date();

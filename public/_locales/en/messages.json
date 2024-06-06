@@ -471,6 +471,10 @@
     "message": "Weekdays",
     "description": ""
   },
+  "DatePickerLocale": {
+    "message": "Locale setting for the date picker",
+    "description": ""
+  },
   "WeekDays.desc": {
     "message": "Check which weekdays are business days.",
     "description": ""

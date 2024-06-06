@@ -44,6 +44,14 @@
         <span class="dims_label">__MSG_CustomQueryBookmarkImmediateUpdate__</span>
       </td>
     </tr>
+    <tr>
+      <td class="td_padding_right">
+        <label><input type="text" id="datepicker_locale" name="datepicker_locale" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_DatePickerLocale__</span>
+      </td>
+    </tr>
     </table>
     <table class="miczPrefs">
     <tr>

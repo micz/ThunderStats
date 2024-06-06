@@ -10,4 +10,5 @@ export const prefs_default = {
     'always_reload_tab_data': false,
     'customqry_loaddata_when_selectingrange': false,
     'first_day_week': 1,
+    'datepicker_locale': 'en-US',
 }

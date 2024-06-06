@@ -65,7 +65,7 @@ span.dims_label{
     display: inline-block;
 }
 
-input#_involved_num, input#_many_days{
+input#_involved_num, input#_many_days, input#datepicker_locale{
     width: 60px;
 }
 

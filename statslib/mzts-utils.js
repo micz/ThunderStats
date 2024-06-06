@@ -176,6 +176,25 @@ export const tsUtils = {
         return last_year_day;
     },
 
+    formatDateStringLocale(locale) {
+        const date = new Date(2000, 6, 27);
+
+        const formatter = new Intl.DateTimeFormat(locale, {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+
+        const formattedDate = formatter.format(date);
+        //console.log(">>>>>>>>>>>>>> formattedDate: " + formattedDate);
+        const formatString = formattedDate.replace('27', 'dd')
+                                          .replace('07', 'MM')
+                                          .replace('2000', 'yyyy');
+
+        //console.log(">>>>>>>>>>>>>> formatString: " + formatString);
+        return formatString;
+    },
+
     safeConcat(dataArray, index) {
         return (dataArray[index] && dataArray[index].data) ? dataArray[index].data : [];
     },

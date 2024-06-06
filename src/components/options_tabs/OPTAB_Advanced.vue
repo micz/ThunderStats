@@ -119,6 +119,7 @@
     inputs.forEach(input => {
       input.addEventListener('click', somethingChanged);
     });
+    document.getElementById('first_day_week').addEventListener('change', somethingChanged);
     reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
     tsLog.log("onMounted");
   });

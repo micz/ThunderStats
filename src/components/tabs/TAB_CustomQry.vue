@@ -232,16 +232,16 @@ function openBookmarkMenu(e){
 
 async function setPeriod(period){
     switch(period){
-        case "currentweek": //TODO after implementing #249 use the correct first day of the week
+        case "currentweek":
         //console.log(">>>>>>>>>>> getLastMonday: "+JSON.stringify(tsUtils.getLastMonday()));
             dateQry.value = [tsUtils.getLastWeekday(first_day_week), new Date()];
             break;
-        case "lastweek": //TODO after implementing #249 use the correct first day of the week
+        case "lastweek":
             let last_weekday = tsUtils.getLastWeekday(first_day_week);
             last_weekday = new Date(last_weekday.setDate(last_weekday.getDate() - 1));
             dateQry.value = [tsUtils.getPreviousWeekday(last_weekday, 1), last_weekday];
             break;
-        case "last2week": //TODO after implementing #249 use the correct first day of the week
+        case "last2week":
             let last_weekday2 = tsUtils.getLastWeekday(first_day_week);
             last_weekday2 = new Date(last_weekday2.setDate(last_weekday2.getDate() - 1));
             dateQry.value = [tsUtils.getPreviousWeekday(last_weekday2, 1), new Date()];

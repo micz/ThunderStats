@@ -129,6 +129,7 @@ let graphdata_customqry_rcvd = ref([]);
 let graphdata_customqry_labels = ref([]);
 
 let _involved_num = 10;
+let first_day_week = 1;
 
 
 let chartData_Sent = ref({
@@ -147,6 +148,7 @@ onMounted(async () => {
     const endDate = new Date();
     const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
     dateQry.value = [startDate, endDate];
+    first_day_week = await TS_prefs.getPref("first_day_week");
     _involved_num = await TS_prefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
@@ -225,16 +227,16 @@ function openBookmarkMenu(e){
 async function setPeriod(period){
     switch(period){
         case "currentweek": //TODO after implementing #249 use the correct first day of the week
-        console.log(">>>>>>>>>>> getLastMonday: "+JSON.stringify(tsUtils.getLastMonday()));
-            dateQry.value = [tsUtils.getLastMonday(), new Date()];
+        //console.log(">>>>>>>>>>> getLastMonday: "+JSON.stringify(tsUtils.getLastMonday()));
+            dateQry.value = [tsUtils.getLastWeekday(first_day_week), new Date()];
             break;
         case "lastweek": //TODO after implementing #249 use the correct first day of the week
-            let last_weekday = tsUtils.getLastMonday();
+            let last_weekday = tsUtils.getLastWeekday(first_day_week);
             last_weekday = new Date(last_weekday.setDate(last_weekday.getDate() - 1));
             dateQry.value = [tsUtils.getPreviousWeekday(last_weekday, 1), last_weekday];
             break;
         case "last2week": //TODO after implementing #249 use the correct first day of the week
-            let last_weekday2 = tsUtils.getLastMonday();
+            let last_weekday2 = tsUtils.getLastWeekday(first_day_week);
             last_weekday2 = new Date(last_weekday2.setDate(last_weekday2.getDate() - 1));
             dateQry.value = [tsUtils.getPreviousWeekday(last_weekday2, 1), new Date()];
             break;

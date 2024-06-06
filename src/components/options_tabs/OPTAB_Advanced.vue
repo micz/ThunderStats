@@ -125,7 +125,7 @@
     });*/
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
-      input.addEventListener('click', somethingChanged);
+      input.addEventListener('change', somethingChanged);
     });
     document.getElementById('first_day_week').addEventListener('change', somethingChanged);
     reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");

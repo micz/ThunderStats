@@ -96,7 +96,7 @@
     });*/
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
-      input.addEventListener('click', somethingChanged);
+      input.addEventListener('change', somethingChanged);
     });
     reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
     tsLog.log("onMounted");

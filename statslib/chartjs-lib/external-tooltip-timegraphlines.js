@@ -129,7 +129,7 @@ export const externalTooltipTimeGraphLines = (context) => {
         //body[0] = body[0].substring(0, body[0].lastIndexOf(':'));
         text.innerHTML = replaceTooltipString(body);
 
-        //console.log('>>>>>>>>>>>>>>>>>>> body: ', JSON.stringify(body));
+        //console.log('>>>>>>>>>>>>>>>>>>> bodyLines: ', JSON.stringify(bodyLines));
 
         if((i == 0) || (i == 2)) {
           const tr_ty = document.createElement('tr');
@@ -139,7 +139,7 @@ export const externalTooltipTimeGraphLines = (context) => {
           td_ty.classList.add('tooltip-content');
           td_ty.style.borderWidth = 0;
           const text_ty = document.createElement('span');
-          text_ty.innerHTML = i == 0 ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
+          text_ty.innerHTML = ((i == 0) && (bodyLines.length > 2)) ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
           td_ty.appendChild(text_ty);
           tr_ty.appendChild(td_ty);
           tableBody.appendChild(tr_ty);

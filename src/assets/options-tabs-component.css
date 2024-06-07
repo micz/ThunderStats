@@ -16,7 +16,7 @@
         justify-content: flex-start;
         margin-bottom: -1px;
         position: fixed;
-        top: 0px;
+        top: 1px;
         border-bottom: solid 1px #ddd;
         padding-inline-start: 0px;
         margin-block-start: 0em;
@@ -62,9 +62,9 @@
     }
 
     .tabs-component-tab.is-active, .tabs-component-tab--custom.is-active {
-        border-bottom: solid 1px #fff;
+        /*border-bottom: solid 1px #fff;*/
         z-index: 2;
-        transform: translateY(0);
+        /*transform: translateY(0);*/
     }
 }
 
@@ -78,6 +78,7 @@
 
 .tabs-component-panels {
     padding: 4em 0;
+    background-color: #d4ebff;
 }
 
 @media (min-width: 700px) {
@@ -92,7 +93,7 @@
     }
 
     .tabs-component-panel{
-        padding: 1em 0;
+        padding: 1em 15px;
     }
 }
 
@@ -130,4 +131,12 @@
     color: #39739d;
     border-color: #7aa7c7;
     border-bottom: solid 1px #fff;
+}
+
+li.tabs-component-tab.is-inactive{
+    background-color: #eff8ff;
+}
+
+li.tabs-component-tab.is-active{
+    background-color: #d4ebff;
 }

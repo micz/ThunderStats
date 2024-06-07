@@ -15,8 +15,8 @@ div#miczDonation{
     position: fixed;
     bottom: 0px;
     left: 0px;
-    background-color: rgb(228, 255, 255);
-    border: 1px solid rgb(212, 255, 255);
+    background-color: #eff8ff;
+    border: 1px solid #eff8ff;
     padding: 5px;
 }
 

@@ -32,7 +32,7 @@
         "16": "images/mzts-icon-16px.png"
     },
     "options_ui": {
-		"page": "/index.options.html",
+		"page": "/index.ts-options.html",
         "open_in_tab": true
 	}
 }

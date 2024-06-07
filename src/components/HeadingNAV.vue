@@ -62,13 +62,13 @@ function update(){
 
 function openOptions(){
   // check if the tab is already there
-    browser.tabs.query({url: browser.runtime.getURL("./index.options.html")}).then((tabs) => {
+    browser.tabs.query({url: browser.runtime.getURL("./index.ts-options.html")}).then((tabs) => {
       if (tabs.length > 0) {
         // if the tab is already there, focus it
         browser.tabs.update(tabs[0].id, {active: true});
       } else {
         // if the tab is not there, create it
-        browser.tabs.create({url: browser.runtime.getURL("./index.options.html")});
+        browser.tabs.create({url: browser.runtime.getURL("./index.ts-options.html")});
       }
     })
 }

@@ -20,7 +20,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.thunderstats.html'),
-        options: resolve(__dirname, 'index.options.html')
+        options: resolve(__dirname, 'index.ts-options.html')
       }
     }
   },

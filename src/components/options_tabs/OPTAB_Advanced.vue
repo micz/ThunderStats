@@ -103,8 +103,8 @@
     </tr>
   </table>
   
-  <div class="intro_change_warn" v-if="new_changes" v-text="reopenTabDesc"></div>
-  
+  <div class="intro_change_warn" v-if="new_changes"><span v-text="reopenTabDesc"></span><button v-on:click="reloadThunderStats" class="marginleft10">Reload ThunderStats</button></div>
+
   </template>
 
 
@@ -148,6 +148,10 @@
 
   async function somethingChanged() {
     new_changes.value = true;
+  }
+
+  function reloadThunderStats() {
+    browser.runtime.sendMessage({command: "reloadThunderStats" });
   }
   
 </script>

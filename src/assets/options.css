@@ -28,6 +28,10 @@ div#miczDonation{
     margin-right: 10px;
 }
 
+.marginleft10{
+    margin-left: 10px;
+}
+
 table.miczPrefs {
     padding: 10px;
     border-spacing: 0px;

@@ -51,11 +51,11 @@ onMounted(async () => {
       tsLog.log(JSON.stringify(accounts_options.value));
 });
 
-const updateCurrentIdn = (new_value) => {
+const updateCurrentAccount = (new_value) => {
   current_account.value = new_value;
 };
 
-defineExpose({ updateCurrentIdn });
+defineExpose({ updateCurrentAccount });
 </script>
 
 

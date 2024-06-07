@@ -52,7 +52,7 @@ onMounted(async () => {
   tsLog = new tsLogger("HeadingNAV", tsStore.do_debug);
   current_account.value = await TS_prefs.getPref("startup_account");
   tsLog.log("onMounted: " + current_account.value);
-  SelectAccount_ref.value.updateCurrentIdn(current_account.value);
+  SelectAccount_ref.value.updateCurrentAccount(current_account.value);
 });
 
 function update(){

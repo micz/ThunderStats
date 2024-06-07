@@ -99,7 +99,7 @@ let do_run = ref(false);
 let customqry_current_account = ref("");
 let customqry_totaldays_num = ref(0);
 
-let datepickerFormat = ref("dd-MM-YYYY");
+let datepickerFormat = ref("dd-MM-yyyy");
 
 let top_recipients_title = ref("");
 let top_senders_title = ref("");

@@ -20,7 +20,7 @@
 
 <template>
     <select v-model="current_account" v-bind="$attrs">
-        <option v-for="item in identities_options" v-bind:value="item.id">{{item.text}}</option>
+        <option v-for="item in accounts_options" v-bind:value="item.id">{{item.text}}</option>
     </select>
 </template>
 
@@ -36,19 +36,19 @@ const props = defineProps({
   }
 });
 
-let identities_options = ref([]);
+let accounts_options = ref([]);
 let current_account = ref(props.current_account);
 
 const tsLog = new tsLogger("SelectAccount", tsStore.do_debug);
 
 onMounted(async () => {
   tsLog.log("onMounted");
-  identities_options.value.push({ id: 0, text: browser.i18n.getMessage('AllAccounts') });
+  accounts_options.value.push({ id: 0, text: browser.i18n.getMessage('AllAccounts') });
   let accounts = await browser.accounts.list();
       for (let account of accounts) {
-        identities_options.value.push({ id: account.id, text: account.name });
+        accounts_options.value.push({ id: account.id, text: account.name });
       }
-      tsLog.log(JSON.stringify(identities_options.value));
+      tsLog.log(JSON.stringify(accounts_options.value));
 });
 
 const updateCurrentIdn = (new_value) => {

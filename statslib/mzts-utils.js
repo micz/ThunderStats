@@ -189,7 +189,7 @@ export const tsUtils = {
         //console.log(">>>>>>>>>>>>>> formattedDate: " + formattedDate);
         const formatString = formattedDate.replace('27', 'dd')
                                           .replace('07', 'MM')
-                                          .replace('2000', 'YYYY');
+                                          .replace('2000', 'yyyy');
 
         //console.log(">>>>>>>>>>>>>> formatString: " + formatString);
         return formatString;

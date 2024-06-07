@@ -33,6 +33,10 @@ const props = defineProps({
   current_account: {
     type: String,
     default: 0
+  },
+  hide_AllAccount_option: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -43,7 +47,9 @@ const tsLog = new tsLogger("SelectAccount", tsStore.do_debug);
 
 onMounted(async () => {
   tsLog.log("onMounted");
-  accounts_options.value.push({ id: 0, text: browser.i18n.getMessage('AllAccounts') });
+  if(!props.hide_AllAccount_option) {
+    accounts_options.value.push({ id: 0, text: browser.i18n.getMessage('AllAccounts') });
+  }
   let accounts = await browser.accounts.list();
       for (let account of accounts) {
         accounts_options.value.push({ id: account.id, text: account.name });

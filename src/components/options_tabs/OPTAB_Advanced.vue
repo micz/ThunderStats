@@ -49,6 +49,7 @@
         <label><input type="text" id="datepicker_locale" name="datepicker_locale" class="option-input" /></label>
       </td>
       <td>
+        <button type="button" @click="setDefaultDatePickerLocale" class="marginright10">__MSG_SetDefault__</button>
         <span class="dims_label">__MSG_DatePickerLocale__</span>
       </td>
     </tr>
@@ -138,6 +139,12 @@
     });*/
     tsLog.log("onUnmounted");
   });
+
+  function setDefaultDatePickerLocale() {
+    const datepicker = document.getElementById('datepicker_locale');
+    datepicker.value = navigator.language;
+    datepicker.dispatchEvent(new Event('change', { 'bubbles': true }));
+  }
 
   async function somethingChanged() {
     new_changes.value = true;

@@ -475,6 +475,10 @@
     "message": "Locale setting for the date picker",
     "description": ""
   },
+  "setDefault": {
+    "message": "Set default",
+    "description": ""
+  },
   "WeekDays.desc": {
     "message": "Check which weekdays are business days.",
     "description": ""

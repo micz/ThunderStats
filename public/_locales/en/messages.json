@@ -420,7 +420,7 @@
     "description": ""
   },
   "TimeGraphProgressive": {
-    "message": "Show cumulative data bars in the today and yesterday time graphs",
+    "message": "Show cumulative values in the today and yesterday time graphs",
     "description": ""
   },
   "ManyDaysGraph": {

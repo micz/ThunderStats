@@ -41,11 +41,19 @@ export const TS_prefs = {
     browser.storage.sync.set(options);
   },
 
+  async setPref(pref_id, value){
+    let obj = {};
+    obj[pref_id] = value;
+    console.log('Saving option: ' + pref_id + ' = ' + JSON.stringify(value));
+    browser.storage.sync.set(obj)
+  },
+
   async getPref(pref_id){
     let obj = {};
     obj[pref_id] = prefs_default[pref_id];
     let prefs = await browser.storage.sync.get(obj)
-    console.log("TS_prefs.getPref: " + JSON.stringify(prefs));
+    // console.log(">>>>>>>>>>>> getPref prefs: " + JSON.stringify(prefs));
+    // console.log(">>>>>>>>>>>> getPref prefs[pref_id]: " + JSON.stringify(prefs[pref_id]));
     return prefs[pref_id];
   },
 

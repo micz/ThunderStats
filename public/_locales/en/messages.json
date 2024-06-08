@@ -404,11 +404,7 @@
     "description": ""
   },
   "CustomIdentititesAccount.Info": {
-    "message": "Add an email address per line.",
-    "description": ""
-  },
-  "ChangesSavedWarn": {
-    "message": "The changes made here are saved immediately.",
+    "message": "Add an email address per line, or separated by a comma.",
     "description": ""
   },
   "ActivateDebug": {

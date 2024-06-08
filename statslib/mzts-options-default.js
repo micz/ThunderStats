@@ -11,4 +11,5 @@ export const prefs_default = {
     'customqry_loaddata_when_selectingrange': false,
     'first_day_week': 1,
     'datepicker_locale': 'en-US',
+    'custom_identities': {},
 }

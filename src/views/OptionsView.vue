@@ -28,7 +28,7 @@
          <OPTAB_Advanced ref="OPTAB_Advanced_ref"/>
       </tab>
       <tab id="tab-customids" name="__MSG_TabCustomIdentities.label__">
-        CUSTOM IDENTITIES
+        <OPTAB_CustomIds ref="OPTAB_CustomIds_ref"/>
       </tab>
       <tab id="tab-info" name="__MSG_Info__">
           <OPTAB_Info/>
@@ -49,7 +49,7 @@ import { TS_prefs } from "@statslib/mzts-options.js";
 import { tsLogger } from "@statslib/mzts-logger.js";
 import OPTAB_Main from '@/components/options_tabs/OPTAB_Main.vue';
 import OPTAB_Advanced from '@/components/options_tabs/OPTAB_Advanced.vue';
-//import OPTAB_CustomIds from '@/components/options_tabs/OPTAB_CustomIds.vue';
+import OPTAB_CustomIds from '@/components/options_tabs/OPTAB_CustomIds.vue';
 import OPTAB_Info from '@/components/options_tabs/OPTAB_Info.vue';
 import OPTAB_License from '@/components/options_tabs/OPTAB_License.vue';
 import OptionDonationFooter from '@/components/OptionDonationFooter.vue';
@@ -58,7 +58,7 @@ import { tsStore } from '@statslib/mzts-store';
 let optionsTabs = ref(null);
 let OPTAB_Main_ref = ref(null);
 let OPTAB_Advanced_ref = ref(null);
-//let OPTAB_CustomIds_ref = ref(null);
+let OPTAB_CustomIds_ref = ref(null);
 
 //let do_debug = ref(false);
 let tsLog = null;

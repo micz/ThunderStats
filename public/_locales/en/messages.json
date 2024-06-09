@@ -371,6 +371,10 @@
     "message": "Custom Identities",
     "description": ""
   },
+  "Identities": {
+    "message": "Identities",
+    "description": ""
+  },
   "TabInfo.label": {
     "message": "Info",
     "description": ""

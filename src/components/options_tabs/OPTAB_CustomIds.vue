@@ -27,7 +27,9 @@
     <tr>
         <td colspan="2">
             __MSG_Account__:
-            <SelectAccount id="account_selector" v-model="current_account" :hide_AllAccount_option="true" ref="SelectAccount_ref" class="marginleft10" @change="loadCustomIds"/>
+            <SelectAccount id="account_selector" v-model="current_account" :hide_AllAccount_option="true" ref="SelectAccount_ref" class="marginleft10" @change="accountChanged"/>
+            <br>
+            <div class="account_emails" v-text="account_emails"></div>
         </td>
     </tr>
     <tr><td colspan="2">&nbsp;</td></tr>
@@ -57,25 +59,40 @@ import SelectAccount from '../SelectAccount.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { tsLogger } from '@statslib/mzts-logger';
 import { tsStore } from '@statslib/mzts-store';
+import { thunderStastsCore } from "@statslib/mzts-statscore.js";
 
 let tsLog = null;
+let tsCore = null;
 let current_account = ref(0);
 let SelectAccount_ref = ref(null);
 let account_custom_ids = ref("");
 let new_changes = ref(false);
 let reopenTabDesc = ref('');
+let account_emails = ref(browser.i18n.getMessage("Identities") + ": -");
 
 let prefCustomIds = {};
 
 onMounted(async () => {
     tsLog = new tsLogger("OPTAB_CustomIds", tsStore.do_debug);
     TS_prefs.logger = tsLog;
+    tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     document.getElementById('account_custom_ids').addEventListener('change', somethingChanged);
     reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
     prefCustomIds = await TS_prefs.getPref("custom_identities");
     tsLog.log("prefCustomIds = " + JSON.stringify(prefCustomIds));
     tsLog.log("onMounted");
   });
+
+function accountChanged(){
+    tsLog.log("accountChanged: " + current_account.value);
+    loadAccountEmails();
+    loadCustomIds();
+}
+
+async function loadAccountEmails(){
+    account_emails.value = browser.i18n.getMessage("Identities") + ": " + (await tsCore.getAccountEmails(current_account.value)).join(", ");
+    tsLog.log("loadAccountEmails => account_emails.value: " + account_emails.value);
+}
 
 function loadCustomIds(){
     // console.log(">>>>>>>>>>> current_account: " + current_account.value);

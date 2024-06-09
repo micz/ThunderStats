@@ -106,3 +106,9 @@ div.intro_info_link{
     margin-top:10px;
     font-size: large;
 }
+
+div.account_emails{
+    font-style: italic;
+    font-size: small;
+    color:rgb(51, 51, 51);
+}

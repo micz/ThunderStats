@@ -19,6 +19,7 @@
 import { tsLogger } from "./mzts-logger";
 import { tsCoreUtils } from "./mzts-statscore.utils";
 import { tsUtils } from "./mzts-utils";
+import { TS_prefs } from "./mzts-options";
 
 export class thunderStastsCore {
 
@@ -30,6 +31,7 @@ export class thunderStastsCore {
   constructor(options = {}) {
     this.do_debug = options.hasOwnProperty('do_debug') ? options.do_debug : false;
     this.tsLog = new tsLogger("thunderStastsCore",this.do_debug);
+    TS_prefs.logger = this.tsLog;
     this._involved_num = options.hasOwnProperty('_involved_num') ? options._involved_num : 10;
     this._many_days = options.hasOwnProperty('_many_days') ? options._many_days : 7;
   }
@@ -39,24 +41,46 @@ export class thunderStastsCore {
       let account_emails = [];
 
       if(account_id == 0) {
-      for (let account of accounts) {
-          for (let identity of account.identities) {
-              account_emails.push(identity.email);
-          }
+        for (let account of accounts) {
+            for (let identity of account.identities) {
+                account_emails.push(identity.email);
+            }
+        }
+        let custom_ids = await this.getAccountCustomIdentities();
+        for(let cids_account in custom_ids) {
+          // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account: " + JSON.stringify(cids_account));
+          custom_ids[cids_account].forEach(element => {
+            // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account element: " + JSON.stringify(element));
+            account_emails.push(element);
+          });
         }
       }else{
         for (let account of accounts) {
           if(account.id == account_id) {
             for (let identity of account.identities) {
               account_emails.push(identity.email);
+              let custom_ids = await this.getAccountCustomIdentities(account_id);
+              for(let custom_id in custom_ids) {
+                account_emails.push(custom_ids[custom_id]);
+              }
             }
           }
         }
       }
-
-     return account_emails;
+      this.tsLog.log("getAccountEmails => account_emails: " + JSON.stringify(account_emails));
+      return account_emails;
     }
 
+    async getAccountCustomIdentities(account_id = 0) {
+      let prefCustomIds = await TS_prefs.getPref("custom_identities");
+      // console.log(">>>>>>>>>>>>> getAccountCustomIdentities prefCustomIds: " + JSON.stringify(prefCustomIds));
+      if(account_id == 0){ return prefCustomIds; }
+      if(prefCustomIds.hasOwnProperty(account_id)){
+        return prefCustomIds[account_id];
+      } else {
+          return {};
+      }
+    }
 
     // ================ TODAY TAB =====================
     async getToday(account_id = 0, account_emails = []) {

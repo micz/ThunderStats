@@ -196,11 +196,4 @@ div.account_emails{
         color: #79bcff;
     }
 
-    a:hover {
-        color: #ff6347;
-    }
-
-    a:active {
-        color: #ff4500;
-    }
 }

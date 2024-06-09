@@ -100,6 +100,8 @@ function loadCustomIds(){
     if(prefCustomIds.hasOwnProperty(current_account.value)){
         account_custom_ids.value = prefCustomIds[current_account.value].join("\n");
         tsLog.log("loadCustomIds => account_custom_ids.value: " + account_custom_ids.value);
+    } else {
+        account_custom_ids.value = "";
     }
     tsLog.log("loadCustomIds done!");
 }

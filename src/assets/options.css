@@ -112,3 +112,95 @@ div.account_emails{
     font-size: small;
     color:rgb(51, 51, 51);
 }
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+
+    body{
+        background-color: #333;
+    }
+
+    div#miczDescription{
+        color: #ccc;
+        background-color: #333;
+    }
+
+    div#miczDescription h1{
+        color: #fff;
+    }
+
+    div#miczDonation{
+        background-color: #444;
+        border: 1px solid #444;
+        color: #ccc;
+    }
+
+    table.miczPrefs {
+        background-color: #333;
+        color: #ccc;
+    }
+
+    table.miczPrefs td{
+        border-top: 1px solid #555;
+        border-bottom: 1px solid #555;
+    }
+
+    table.miczPrefs td.grouptitle{
+        color: #fff;
+    }
+
+    div#miczDescription h1{
+        color: #fff;
+    }
+
+    div#miczDescription p{
+        color: #ccc;
+    }
+
+    span.dims_label{
+        color: #ccc;
+    }
+
+    input#_involved_num, input#_many_days, input#datepicker_locale{
+        background-color: #444;
+        color: #fff;
+        border: 1px solid #555;
+    }
+
+    div.intro_main{
+        color: #ccc;
+    }
+
+    div.intro_change_warn{
+        color: darkred;
+        background-color: #553333;
+    }
+
+    div.intro_info{
+        color: #ccc;
+    }
+
+    div.intro_info_link{
+        color: #fff;
+    }
+
+    div.account_emails{
+        color: #aaa;
+    }
+
+    a {
+        color: #79bcff;
+    }
+
+    a:visited {
+        color: #79bcff;
+    }
+
+    a:hover {
+        color: #ff6347;
+    }
+
+    a:active {
+        color: #ff4500;
+    }
+}

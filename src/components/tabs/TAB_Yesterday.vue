@@ -139,6 +139,8 @@ let graphdata_inboxzero_folders = ref([]);
 let graphdata_inboxzero_dates = ref([]);
 
 onMounted(async () => {
+    tsLog = new tsLogger("TAB_Yesterday", tsStore.do_debug);
+    TS_prefs.logger = tsLog;
     yesterday_date.value = new Date(Date.now() - (1000 * 60 * 60 * 24)).toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
     _involved_num = await TS_prefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
@@ -156,7 +158,6 @@ async function updateData() {
         await new Promise(r => setTimeout(r, 100));
     }
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days});
-    tsLog = new tsLogger("TAB_Yesterday", tsStore.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     await Promise.all([getYesterdayData(), getInboxZeroData()]);
     tsLog.log("graphdata_yesterday_hours_sent.value: " + JSON.stringify(graphdata_yesterday_hours_sent.value));

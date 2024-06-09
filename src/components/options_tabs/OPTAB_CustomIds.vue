@@ -69,6 +69,7 @@ let prefCustomIds = {};
 
 onMounted(async () => {
     tsLog = new tsLogger("OPTAB_CustomIds", tsStore.do_debug);
+    TS_prefs.logger = tsLog;
     document.getElementById('account_custom_ids').addEventListener('change', somethingChanged);
     reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
     prefCustomIds = await TS_prefs.getPref("custom_identities");

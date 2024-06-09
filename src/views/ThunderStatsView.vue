@@ -88,6 +88,7 @@ import { tsStore } from '@statslib/mzts-store';
 
   onBeforeMount(async () => {
     tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
+    TS_prefs.logger = tsLog;
     remember_last_tab = await TS_prefs.getPref("remember_last_tab");
     always_reload_tab_data = await TS_prefs.getPref("always_reload_tab_data");
     if(remember_last_tab) {

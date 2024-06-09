@@ -147,6 +147,8 @@ let chartData_Rcvd = ref({
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
 onBeforeMount(async () => {
+  tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
+  TS_prefs.logger = tsLog;
   datepickerFormat.value = tsUtils.formatDateStringLocale(await TS_prefs.getPref("datepicker_locale"));
 })
 
@@ -279,7 +281,6 @@ async function updateData() {
         await new Promise(r => setTimeout(r, 100));
     }
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num});
-    tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
     await getCustomQryData();

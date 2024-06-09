@@ -66,6 +66,7 @@ let tsLog = null;
 onMounted(async () => {
     //do_debug.value = await TS_prefs.getPref("do_debug");
     tsLog = new tsLogger("OptionsView", tsStore.do_debug);
+    TS_prefs.logger = tsLog;
     TS_prefs.restoreOptions();
     document.querySelectorAll(".option-input").forEach(element => {
       element.addEventListener("change", TS_prefs.saveOptions);

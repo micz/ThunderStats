@@ -130,6 +130,8 @@ let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length
 
 
 onMounted(async () => {
+    tsLog = new tsLogger("TAB_ManyDays", tsStore.do_debug);
+    TS_prefs.logger = tsLog;
     today_date.value = new Date().toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
     _involved_num = await TS_prefs.getPref("_involved_num");
     _many_days = await TS_prefs.getPref("_many_days");
@@ -144,7 +146,6 @@ async function updateData() {
         await new Promise(r => setTimeout(r, 100));
     }
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days});
-    tsLog = new tsLogger("TAB_ManyDays", tsStore.do_debug);
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     await Promise.all([getManyDaysData()]);
     chartData_Sent.value.datasets = [];

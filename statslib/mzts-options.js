@@ -13,6 +13,9 @@
 import { prefs_default } from './mzts-options-default.js';
 
 export const TS_prefs = {
+
+  logger: console,
+
   saveOptions(e) {
     e.preventDefault();
     let options = {};
@@ -20,22 +23,22 @@ export const TS_prefs = {
       switch (element.type) {
         case 'checkbox':
           options[element.id] = element.checked;
-          console.log('Saving option: ' + element.id + ' = ' + element.checked);
+          TS_prefs.logger.log('Saving option: ' + element.id + ' = ' + element.checked);
           break;
         case 'number':
           options[element.id] = element.valueAsNumber;
-          console.log('Saving option: ' + element.id + ' = ' + element.valueAsNumber);
+          TS_prefs.logger.log('Saving option: ' + element.id + ' = ' + element.valueAsNumber);
           break;
         case 'text':
           options[element.id] = element.value.trim();
-          console.log('Saving option: ' + element.id + ' = ' + element.value);
+          TS_prefs.logger.log('Saving option: ' + element.id + ' = ' + element.value);
           break;
         default:
           if (element.tagName === 'SELECT') {
             options[element.id] = element.value;
-            console.log('Saving option: ' + element.id + ' = ' + element.value);
+            TS_prefs.logger.log('Saving option: ' + element.id + ' = ' + element.value);
           }else{
-            console.log('Unhandled input type:', element.type);
+            TS_prefs.logger.log('Unhandled input type:', element.type);
           }
       }
     browser.storage.sync.set(options);
@@ -44,7 +47,7 @@ export const TS_prefs = {
   async setPref(pref_id, value){
     let obj = {};
     obj[pref_id] = value;
-    console.log('Saving option: ' + pref_id + ' = ' + JSON.stringify(value));
+    TS_prefs.logger.log('Saving option: ' + pref_id + ' = ' + JSON.stringify(value));
     browser.storage.sync.set(obj)
   },
 
@@ -52,8 +55,7 @@ export const TS_prefs = {
     let obj = {};
     obj[pref_id] = prefs_default[pref_id];
     let prefs = await browser.storage.sync.get(obj)
-    // console.log(">>>>>>>>>>>> getPref prefs: " + JSON.stringify(prefs));
-    // console.log(">>>>>>>>>>>> getPref prefs[pref_id]: " + JSON.stringify(prefs[pref_id]));
+    TS_prefs.logger.log("getPref prefs: " + JSON.stringify(prefs));
     return prefs[pref_id];
   },
 
@@ -64,7 +66,7 @@ export const TS_prefs = {
       obj[pref_id] = prefs_default[pref_id];
     });
     let prefs = await browser.storage.sync.get(obj)
-    console.log("TS_prefs.getPrefs: " + JSON.stringify(prefs));
+    TS_prefs.logger.log("getPrefs: " + JSON.stringify(prefs));
     let result = {};
     pref_ids.forEach(pref_id => {
       result[pref_id] = prefs[pref_id];
@@ -75,7 +77,7 @@ export const TS_prefs = {
 
   restoreOptions() {
     function setCurrentChoice(result) {
-      console.log("restoreOptions: " + JSON.stringify(result));
+      TS_prefs.logger.log("restoreOptions: " + JSON.stringify(result));
       document.querySelectorAll(".option-input").forEach(element => {
         const defaultValue = prefs_default[element.id];
         switch (element.type) {
@@ -99,14 +101,14 @@ export const TS_prefs = {
               element.selectedIndex = -1;
             }
           }else{
-            console.log('Unhandled input type:', element.type);
+            TS_prefs.logger.log('Unhandled input type:', element.type);
           }
         }
       });
     }
 
     function onError(error) {
-      console.log(`Error: ${error}`);
+      TS_prefs.logger.log(`Error: ${error}`);
     }
 
     let getting = browser.storage.sync.get(prefs_default);

@@ -86,6 +86,15 @@ import { tsStore } from '@statslib/mzts-store';
     stats_done[id] = true;
   }
 
+  function resetStatsDone() {
+    stats_done = {
+      "tab-today": false,
+      "tab-yesterday": false,
+      "tab-manydays": false,
+      "tab-customqry": false,
+    }
+  }
+
   onBeforeMount(async () => {
     tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     TS_prefs.logger = tsLog;
@@ -122,6 +131,7 @@ import { tsStore } from '@statslib/mzts-store';
     activeAccount.value = account_id;
     accountEmails.value = await tsCore.getAccountEmails(account_id);
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
+    resetStatsDone();
     nextTick(() => {
       let curr_tab = statsTabs.value.activeTabHash;
       tsLog.log("curr_tab: " + curr_tab);

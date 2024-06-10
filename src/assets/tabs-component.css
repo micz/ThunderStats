@@ -64,7 +64,7 @@
     }
 
     .tabs-component-tab.is-active, .tabs-component-tab--custom.is-active {
-        border-bottom: solid 1px #fff;
+        /* border-bottom: solid 1px #fff; */
         z-index: 2;
         /* transform: translateY(0); */
     }

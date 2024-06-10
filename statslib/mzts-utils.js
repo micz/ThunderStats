@@ -199,4 +199,8 @@ export const tsUtils = {
         return (dataArray[index] && dataArray[index].data) ? dataArray[index].data : [];
     },
 
+    isDarkMode() {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    },
+
 }

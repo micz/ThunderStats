@@ -23,7 +23,7 @@
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
-                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :format="datepickerFormat" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
+                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
                 <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
                 <span v-if="do_run">__MSG_CustomQryDataMsg__: <span v-text="customqry_current_account"></span> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></span>
@@ -99,6 +99,7 @@ let dateQry = ref();
 let do_run = ref(false);
 let customqry_current_account = ref("");
 let customqry_totaldays_num = ref(0);
+let isDark = ref(false);
 
 let datepickerFormat = ref("dd-MM-yyyy");
 
@@ -151,6 +152,7 @@ onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
   TS_prefs.logger = tsLog;
   datepickerFormat.value = tsUtils.formatDateStringLocale(await TS_prefs.getPref("datepicker_locale"));
+  isDark.value = tsUtils.isDarkMode();
 })
 
 onMounted(async () => {

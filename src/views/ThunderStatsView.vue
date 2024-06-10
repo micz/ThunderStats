@@ -33,7 +33,7 @@
           <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_ManyDays_ref" />
         </tab>
         <tab id="tab-customqry" name="__MSG_CustomQry__">
-          <TAB_CustomQry :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_CustomQry_ref" />
+          <TAB_CustomQry @updateCustomQry="updateCustomQry" :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_CustomQry_ref" />
         </tab>
         <tab id="tab-info" name="__MSG_Info__">
             <TAB_Info />
@@ -163,6 +163,10 @@ import { tsStore } from '@statslib/mzts-store';
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
      }
      statsDone(id.tab.computedId);
+  }
+
+  function updateCustomQry() {
+    updateStats(HeadingNAV_ref.value.getCurrentIdn());
   }
 
   </script>

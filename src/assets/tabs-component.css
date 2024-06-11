@@ -144,3 +144,121 @@ li.tabs-component-tab.is-inactive{
 li.tabs-component-tab.is-active{
     background-color: #d4ebff;
 }
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    .tabs-component {
+        margin: 10px 0;
+    }
+
+    .tabs-component-tabs {
+        border-color: #555;
+        background: #333;
+    }
+
+    @media (min-width: 700px) {
+        .tabs-component-tabs {
+            border-bottom-color: #555;
+            background: #333;
+        }
+    }
+
+    .tabs-component-tab, .tabs-component-tab--custom {
+        color: #ccc;
+    }
+
+    .tabs-component-tab:not(:last-child) {
+        border-bottom: dotted 1px #555;
+    }
+
+    .tabs-component-tab:hover {
+        color: #fff;
+    }
+
+    .tabs-component-tab.is-active {
+        color: #fff;
+    }
+
+    .tabs-component-tab.is-disabled *, .tabs-component-tab--custom.is-disabled * {
+        color: #777;
+    }
+
+    @media (min-width: 700px) {
+        .tabs-component-tab, .tabs-component-tab--custom {
+            background-color: #444;
+            border: solid 1px #555;
+        }
+
+        .tabs-component-tab.is-active, .tabs-component-tab--custom.is-active {
+            border-color: #444;
+        }
+    }
+
+    .tabs-component-tab-a, .tabs-component-tab-a--custom {
+        background: #3a3a3a; /* Dark gray background color */
+        color: #ffffff; /* White text color */
+    }
+    
+    .tabs-component-tab-a.is-inactive{
+        color:#b9b9b9;
+    }
+
+    .tabs-component-panels {
+        background-color: #222;
+        color: #ccc;
+    }
+
+    @media (min-width: 700px) {
+        .tabs-component-panels {
+            box-shadow: 0 0 10px rgba(255, 255, 255, .1);
+        }
+
+        .tabs-component-panel {
+            background-color: #333;
+        }
+    }
+
+    .tabs-component-btn {
+        background: #555;
+        border: 1px solid #888;
+        color: #ccc;
+    }
+
+    .tabs-component-btn:hover {
+        background-color: #666;
+        color: #fff;
+    }
+
+    .tabs-component-btn:active {
+        background-color: #777;
+        color: #fff;
+    }
+
+    .tabs-component-tab--custom {
+        border-color: #555;
+        color: #aaa;
+    }
+
+    .tabs-component-tab--custom:hover {
+        border-color: #666;
+        color: #fff;
+    }
+
+    .tabs-component-tab--custom.is-active {
+        color: #fff;
+        border-color: #888;
+    }
+
+    li.tabs-component-tab.is-inactive {
+        background-color: #444;
+    }
+
+    li.tabs-component-tab.is-active {
+        background-color: #555;
+    }
+
+    .tabs-component-tab-a.is-active {
+        background-color: #2a2a2a;
+        color: #ffffff;
+    }
+}

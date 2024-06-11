@@ -4,6 +4,7 @@
     grid-template-columns: auto auto; /* two columns */
     gap: 0px;
     color: black;
+    margin-top: 1.4em;
 }
 
 .square_item {

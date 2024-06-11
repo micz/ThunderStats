@@ -386,7 +386,7 @@ defineExpose({ doQry });
 
 
 <style scoped>
-.square_container {
-  margin-top: 3em;
-}
+  .square_container {
+    margin-top: 4.6em;
+  }
 </style>

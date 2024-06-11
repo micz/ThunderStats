@@ -19,6 +19,9 @@
 -->
 
 <template>
+  <div class="intro_main">
+    __MSG_AdvancedSettingTabDesc__
+  </div>
   <table class="miczPrefs">
     <tr>
       <td colspan="2" class="grouptitle">__MSG_ManyDaysGraph__</td>

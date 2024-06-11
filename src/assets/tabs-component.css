@@ -3,6 +3,8 @@
 }
 
 .tabs-component-tabs {
+    border-top: solid 1px #ddd;
+    border-bottom: dotted 1px #ddd;
     border-radius: 6px;
     margin-bottom: 5px;
 }
@@ -133,4 +135,12 @@
     color: #39739d;
     border-color: #7aa7c7;
     border-bottom: solid 1px #fff;
+}
+
+li.tabs-component-tab.is-inactive{
+    background-color: #eff8ff;
+}
+
+li.tabs-component-tab.is-active{
+    background-color: #d4ebff;
 }

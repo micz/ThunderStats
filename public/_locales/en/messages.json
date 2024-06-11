@@ -359,6 +359,10 @@
     "message": "Use these options to customize your ThunderStats experience!",
     "description": ""
   },
+  "AdvancedSettingTabDesc": {
+    "message": "These are advanced options, use them if you know what you're doing.",
+    "description": ""
+  },
   "TabSettings.label": {
     "message": "General",
     "description": ""
@@ -395,8 +399,12 @@
     "message": "Manage your custom identitites here",
     "description": ""
   },
-  "ManageCustomIdentititesDesc": {
-    "message": "A custom identity is an email address, different from the ones registered for the account, with which you receive mails. Usually these are email addresses of mailing lists that you're subscribed to, where your email address is not used in any 'to' or 'cc' fields.",
+  "ManageCustomIdentititesDesc_1": {
+    "message": "A custom identity is an email address, different from the ones registered for the account, with which you receive mails.",
+    "description": ""
+  },
+  "ManageCustomIdentititesDesc_2": {
+    "message": "Usually these are email addresses of mailing lists that you're subscribed to, where your email address is not used in any 'to' or 'cc' fields.",
     "description": ""
   },
   "Account": {

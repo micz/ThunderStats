@@ -19,14 +19,15 @@
 -->
 
 <template>
-<div>
-    <p><b>__MSG_ManageCustomIdentitites__</b><br>
-    __MSG_ManageCustomIdentititesDesc__</p>
+<div class="intro_main">
+    <b>__MSG_ManageCustomIdentitites__</b><br>
+    __MSG_ManageCustomIdentititesDesc_1__<br>
+    __MSG_ManageCustomIdentititesDesc_2__
 </div>
 <table>
     <tr>
         <td colspan="2">
-            __MSG_Account__:
+            <b>__MSG_Account__:</b>
             <SelectAccount id="account_selector" v-model="current_account" :hide_AllAccount_option="true" ref="SelectAccount_ref" class="marginleft10" @change="accountChanged"/>
             <br>
             <div class="account_emails" v-text="account_emails"></div>
@@ -35,7 +36,7 @@
     <tr><td colspan="2">&nbsp;</td></tr>
     <tr>
         <td colspan="2">
-            __MSG_CustomIdentititesAccount__<br>
+            <b>__MSG_CustomIdentititesAccount__</b><br>
             <textarea rows="6" cols="50" v-model="account_custom_ids" id="account_custom_ids"></textarea>
         </td>
     </tr>

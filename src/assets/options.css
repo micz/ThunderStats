@@ -1,5 +1,6 @@
 body{
-    background-color: #d4ebff;
+    background-color: #f1f9fd;
+    font-size: 15px;
 }
 
 div#miczDescription{
@@ -37,8 +38,8 @@ div#miczDonation{
 }
 
 table.miczPrefs {
-    padding: 10px;
     border-spacing: 0px;
+    margin-top: 20px;
 }
 
 table.miczPrefs td{

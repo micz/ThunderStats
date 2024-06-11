@@ -11,7 +11,7 @@
     background-color: lightgray;
     padding: 5px;
     width: 49.2vw;
-    height: 33vw;
+    min-height: 22vw;
 }
 
 .square_item:nth-child(1),

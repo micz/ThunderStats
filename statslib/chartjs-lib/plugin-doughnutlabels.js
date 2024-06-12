@@ -52,7 +52,7 @@ export const tsDoughnutLabelsLine = {
           ctx.lineTo(xLine, yLine);
           ctx.lineTo(xLine + extraLine, yLine);
           // ctx.strokeStyle = dataset.backgroundColor[index];
-          ctx.strokeStyle = "black";
+          ctx.strokeStyle = chart.options.borderColor;
           ctx.stroke();
 
           // text
@@ -64,7 +64,7 @@ export const tsDoughnutLabelsLine = {
           ctx.textAlign = textXPosition;
           ctx.textBaseline = "middle";
           // ctx.fillStyle = dataset.backgroundColor[index];
-          ctx.fillStyle = "black";
+          ctx.fillStyle = chart.options.color;
 
           ctx.fillText(
             //((chart.data.datasets[0].data[index] * 100) / sum).toFixed(2) + "%",

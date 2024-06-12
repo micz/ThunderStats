@@ -80,6 +80,11 @@ watch(props.chartData, (newChartData) => {
       chartOptions.value.scales.y.ticks.stepSize = 5;
     }
     chartOptions.value.scales.y.max = maxY.value;
+
+    if(tsStore.darkmode) {
+      Chart.defaults.color = 'white';
+      Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.2)';
+    }
 }, { immediate: true });
 
 var chartOptions = ref({

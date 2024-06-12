@@ -43,6 +43,7 @@ import { externalTooltipTimeGraphLines } from '@statslib/chartjs-lib/external-to
 import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsUtils } from '@statslib/mzts-utils';
+import { tsStore } from '@statslib/mzts-store';
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title );
 
@@ -85,6 +86,11 @@ watch(props.chartData, (newChartData) => {
       chartOptions.value.scales.y.ticks.stepSize = 5;
     }
     chartOptions.value.scales.y.max = maxY.value;
+
+    if(tsStore.darkmode) {
+      Chart.defaults.color = 'white';
+      Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.2)';
+    }
 }, { immediate: true });
 
 var chartOptions = ref({
@@ -93,6 +99,9 @@ var chartOptions = ref({
         maintainAspectRatio: false,
         categoryPercentage: 1,
         barPercentage: 1,
+        gridLines: {
+          color: 'rgba(255, 255, 255, 0.2)'
+        },
         scales: {
           x: {
             title: {

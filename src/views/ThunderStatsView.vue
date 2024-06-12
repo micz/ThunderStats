@@ -56,6 +56,7 @@ import { i18n } from "@statslib/mzts-i18n.js";
 import { TS_prefs } from '@statslib/mzts-options.js';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsStore } from '@statslib/mzts-store';
+import { tsUtils } from '@statslib/mzts-utils';
 
   let statsTabs = ref(null);
   let TAB_Today_ref = ref(null);
@@ -108,6 +109,7 @@ import { tsStore } from '@statslib/mzts-store';
       //localStorage.setItem('tabs-storage-key', JSON.stringify({ value: 'tab-today', expires: 10 }))
     }
     //console.log(">>>>>>>>>>>>>>>>> cache_lifetime: " + cache_lifetime.value);
+    tsStore.darkmode = tsUtils.isDarkMode();
   });
 
   onMounted(async () => {

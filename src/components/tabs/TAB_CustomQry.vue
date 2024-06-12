@@ -152,7 +152,7 @@ onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
   TS_prefs.logger = tsLog;
   datepickerFormat.value = tsUtils.formatDateStringLocale(await TS_prefs.getPref("datepicker_locale"));
-  isDark.value = tsUtils.isDarkMode();
+  isDark.value = tsStore.darkmode;
 })
 
 onMounted(async () => {
@@ -183,60 +183,61 @@ function openBookmarkMenu(e){
     let x = menu_icon.x + menu_icon.width/2;
     let y = menu_icon.y + menu_icon.height/2;
     ContextMenu.showContextMenu({
-    x: x,
-    y: y,
-    items: [
-      { 
-        label: browser.i18n.getMessage("CurrentWeek"), 
-        onClick: () => {
-          setPeriod("currentweek");
-        }
-      },
-      { 
-        label: browser.i18n.getMessage("LastWeek"), 
-        onClick: () => {
-          setPeriod("lastweek");
-        }
-      },
-      { 
-        label: browser.i18n.getMessage("Last2Week"), 
-        onClick: () => {
-          setPeriod("last2week");
-        }
-      },
-      { 
-        label: browser.i18n.getMessage("CurrentMonth"), 
-        onClick: () => {
-          setPeriod("currentmonth");
-        }
-      },
-      { 
-        label: browser.i18n.getMessage("LastMonth"),
-        onClick: () => {
-          setPeriod("lastmonth");
-        }
-      },
-      { 
-        label: browser.i18n.getMessage("CurrentYear"),
-        onClick: () => {
-          setPeriod("currentyear");
-        }
-      },
-      { 
-        label: browser.i18n.getMessage("LastYear"),
-        onClick: () => {
-          setPeriod("lastyear");
-        }
-      },
-      /*{
-        label: "A submenu", 
-        children: [
-          { label: "Item1" },
-          { label: "Item2" },
-          { label: "Item3" },
-        ]
-      },*/
-    ]
+      theme: tsStore.darkmode ? "mac dark" : "mac",
+      x: x,
+      y: y,
+      items: [
+        { 
+          label: browser.i18n.getMessage("CurrentWeek"), 
+          onClick: () => {
+            setPeriod("currentweek");
+          }
+        },
+        { 
+          label: browser.i18n.getMessage("LastWeek"), 
+          onClick: () => {
+            setPeriod("lastweek");
+          }
+        },
+        { 
+          label: browser.i18n.getMessage("Last2Week"), 
+          onClick: () => {
+            setPeriod("last2week");
+          }
+        },
+        { 
+          label: browser.i18n.getMessage("CurrentMonth"), 
+          onClick: () => {
+            setPeriod("currentmonth");
+          }
+        },
+        { 
+          label: browser.i18n.getMessage("LastMonth"),
+          onClick: () => {
+            setPeriod("lastmonth");
+          }
+        },
+        { 
+          label: browser.i18n.getMessage("CurrentYear"),
+          onClick: () => {
+            setPeriod("currentyear");
+          }
+        },
+        { 
+          label: browser.i18n.getMessage("LastYear"),
+          onClick: () => {
+            setPeriod("lastyear");
+          }
+        },
+        /*{
+          label: "A submenu", 
+          children: [
+            { label: "Item1" },
+            { label: "Item2" },
+            { label: "Item3" },
+          ]
+        },*/
+      ]
   });
 }
 

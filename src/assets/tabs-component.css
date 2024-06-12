@@ -66,7 +66,7 @@
     }
 
     .tabs-component-tab.is-active, .tabs-component-tab--custom.is-active {
-        /* border-bottom: solid 1px #fff; */
+        border-bottom: solid 1px #f1f9fd;
         z-index: 2;
         /* transform: translateY(0); */
     }
@@ -142,7 +142,7 @@ li.tabs-component-tab.is-inactive{
 }
 
 li.tabs-component-tab.is-active{
-    background-color: #d4ebff;
+    background-color: #f1f9fd;
 }
 
 /* Dark mode styles */
@@ -257,5 +257,9 @@ li.tabs-component-tab.is-active{
     .tabs-component-tab-a.is-active {
         background-color: #2a2a2a;
         color: #ffffff;
+    }
+
+    .tabs-component-tab.is-active {
+        border-bottom-color: #2a2a2a;
     }
 }

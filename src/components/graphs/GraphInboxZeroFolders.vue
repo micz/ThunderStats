@@ -37,7 +37,6 @@ import { ref, computed } from 'vue'
 import { Doughnut } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from 'chart.js'
 import { tsDoughnutLabelsLine } from '@statslib/chartjs-lib/plugin-doughnutlabels';
-import { getRelativePosition } from 'chart.js/helpers';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);

@@ -70,6 +70,21 @@
       </td>
     </tr>
     </table>
+    <table class="miczPrefs">
+    <tr>
+      <td colspan="2" class="grouptitle">__MSG_IncludeArchiveFolders__
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">__MSG_IncludeArchiveFolders_Desc__
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <IncludeArchiveAccountList :accounts="include_archive_accounts" ref="AccountList_ref" @updateIncludeArchive="accountListChanged"/>
+      </td>
+    </tr>
+    </table>
     <table class="miczPrefs" style="margin-top: 50px;">
     <tr>
       <td colspan="2" class="grouptitle">__MSG_Other__</td>
@@ -115,31 +130,32 @@
   import { onMounted, onUnmounted, ref } from 'vue'
   import { tsLogger } from '@statslib/mzts-logger';
   import { tsStore } from '@statslib/mzts-store';
+  import { TS_prefs } from "@statslib/mzts-options";
+  import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+  import { tsUtils } from '@statslib/mzts-utils';
+  import IncludeArchiveAccountList from '../IncludeArchiveAccountList.vue';
 
   let tsLog = null;
   let new_changes = ref(false);
   let reopenTabDesc = ref('');
+  let include_archive_accounts = ref([]);
 
-  onMounted(() => {
+  onMounted(async () => {
     tsLog = new tsLogger("OPTAB_Advanced", tsStore.do_debug);
-    /*TS_prefs.restoreOptions();
-    i18n.updateDocument();
-    document.querySelectorAll(".option-input").forEach(element => {
-      element.addEventListener("change", TS_prefs.saveOptions);
-    });*/
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
       input.addEventListener('change', somethingChanged);
     });
     document.getElementById('first_day_week').addEventListener('change', somethingChanged);
     reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
+    let archive_accounts = await TS_prefs.getPref("include_archive_accounts");
+    let all_accounts = await tsCoreUtils.getAccountsList();
+    include_archive_accounts.value = tsUtils.mergeAccountsIncludeArchive(all_accounts, archive_accounts);
+    tsLog.log("include_archive_accounts: " + JSON.stringify(include_archive_accounts.value));
     tsLog.log("onMounted");
   });
   
   onUnmounted(() => {
-   /* document.querySelectorAll('.option-input').forEach(element => {
-      element.removeEventListener('change', TS_prefs.saveOptions);
-    });*/
     tsLog.log("onUnmounted");
   });
 
@@ -155,6 +171,10 @@
 
   function reloadThunderStats() {
     browser.runtime.sendMessage({command: "reloadThunderStats" });
+  }
+
+  function accountListChanged(accountsList) {
+    TS_prefs.setPref("include_archive_accounts", accountsList);
   }
   
 </script>

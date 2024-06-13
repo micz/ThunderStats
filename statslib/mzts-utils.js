@@ -206,10 +206,11 @@ export const tsUtils = {
     mergeAccountsIncludeArchive(accounts, include_archive_accounts) {
         let output = [];
         for(let account of accounts) {
+            let include_archive = include_archive_accounts.find(element => element.id === account.id)?.include_archive || false;
             output.push({
                 id: account.id,
                 name: account.name,
-                include_archive: include_archive_accounts[account.id] || false
+                include_archive: include_archive || false
             });
         }
         output = output.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);

@@ -602,5 +602,17 @@
   "InboxZeroGraph": {
     "message": "Inbox Zero Graph",
     "description": ""
+  },
+  "IncludeArchiveFolders": {
+    "message": "Include Archive folders",
+    "description": ""
+  },
+  "IncludeArchive": {
+    "message": "Include Archive",
+    "description": ""
+  },
+  "IncludeArchiveFolders_Desc": {
+    "message": "Some email providers, such as Gmail, have an \"Archive\" folder that contains all messages. However, the same messages are also present in individual folders. ThunderStats is not considering \"Archive\" folders in the statistics, otherwise, they would be counted twice. Below, by selecting the flag for an account, you can set it so that messages in the archive folders are also counted in the statistics.",
+    "description": ""
   }
 }

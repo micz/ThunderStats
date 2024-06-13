@@ -19,8 +19,8 @@
 -->
 
 <template>
-<p><span>__MSG_SentMails__: </span><span  v-if="!is_loading">{{ _sent }}</span><img src="@/assets/images/mzts-wait_line.gif" alt="__MSG_Loading__..." v-if="is_loading"/></p>
-<p><span>__MSG_ReceivedMails__: </span><span  v-if="!is_loading">{{ _rcvd }}</span><img src="@/assets/images/mzts-wait_line.gif" alt="__MSG_Loading__..." v-if="is_loading"/></p>
+<p><span>__MSG_SentMails__: </span><span  v-if="!is_loading">{{ _sent }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/></p>
+<p><span>__MSG_ReceivedMails__: </span><span  v-if="!is_loading">{{ _rcvd }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/></p>
 </template>
 
 

@@ -19,7 +19,7 @@
 -->
 
 <template>
-<div>__MSG_TotalInbox__: <span class="inbox0_inboxmsg" v-if="!is_loading">{{ inbox_total }}</span><img src="@/assets/images/mzts-wait_line.gif" alt="__MSG_Loading__..." v-if="is_loading" /><span class="inbox0_inboxmsg_unread">&nbsp;&nbsp;&nbsp;&nbsp;__MSG_TotalInboxUnread__: <span class="inbox0_inboxmsg_unread" v-if="!is_loading">{{ inbox_unread }}</span></span><img src="@/assets/images/mzts-wait_line.gif" alt="__MSG_Loading__..." v-if="is_loading"/></div>
+<div>__MSG_TotalInbox__: <span class="inbox0_inboxmsg" v-if="!is_loading">{{ inbox_total }}</span><img class="spinner_small" src="@/assets/images/mzts-wait_line.svg" alt="__MSG_Loading__..." v-if="is_loading" /><span class="inbox0_inboxmsg_unread">&nbsp;&nbsp;&nbsp;&nbsp;__MSG_TotalInboxUnread__: <span class="inbox0_inboxmsg_unread" v-if="!is_loading">{{ inbox_unread }}</span></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/></div>
 </template>
 
 

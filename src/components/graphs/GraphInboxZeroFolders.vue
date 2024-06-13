@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.gif" alt="__MSG_Loading__..." id="today_hours_graph_wait"/></div>
+    <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." id="today_hours_graph_wait"/></div>
     <Doughnut
         :options="chartOptions"
         :data="chartData"

@@ -33,7 +33,7 @@
             <td>{{element.count}}</td>
         </tr>
     </table>
-    <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.gif" alt="__MSG_Loading__..." /></div>
+    <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
 </template>
 
 

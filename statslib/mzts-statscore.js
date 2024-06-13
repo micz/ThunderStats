@@ -204,6 +204,7 @@ export class thunderStastsCore {
       }
 
       for await (let message of messages) {
+          if(this.excludeMessage(message)) continue;
           // this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
           let hour_message = date_message.getHours();
@@ -333,6 +334,7 @@ export class thunderStastsCore {
       }
 
       for await (let message of messages) {
+          if(this.excludeMessage(message)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
           let hour_message = date_message.getHours();
@@ -383,6 +385,7 @@ export class thunderStastsCore {
       this.tsLog.log("[getAggregatedStatsData] msg_days: " + JSON.stringify(msg_days));
 
       for await (let message of messages) {
+          if(this.excludeMessage(message)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
           let day_message = tsUtils.dateToYYYYMMDD(date_message);
@@ -443,6 +446,15 @@ export class thunderStastsCore {
         }
       }
       return {max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, max_received: max_received, min_received: min_received, avg_received: avg_received};
+    }
+
+    excludeMessage(message){    // Returns true if the message should be excluded from the stats
+      // do not include messages from drafts, trash, junk folders
+      if(message.folder.specialUse && ['drafts', 'trash', 'junk'].some(specialUse => message.folder.specialUse.includes(specialUse))){
+        return true;
+      }
+
+      return false;
     }
 
     async getInboxZeroDates(account_id = 0) {

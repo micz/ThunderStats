@@ -20,7 +20,7 @@
 
 <template>
     <select v-model="current_account" v-bind="$attrs">
-        <option v-for="item in accounts_options" v-bind:value="item.id">{{item.text}}</option>
+        <option v-for="item in accounts_options" v-bind:value="item.id">{{item.name}}</option>
     </select>
 </template>
 
@@ -28,6 +28,7 @@
 import { ref, onMounted } from 'vue';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsStore } from '@statslib/mzts-store';
+import { tsCoreUtils } from "@statslib/mzts-statscore.utils";
 
 const props = defineProps({
   current_account: {
@@ -48,12 +49,9 @@ const tsLog = new tsLogger("SelectAccount", tsStore.do_debug);
 onMounted(async () => {
     tsLog.log("onMounted");
     if(!props.hide_AllAccount_option) {
-      accounts_options.value.push({ id: 0, text: browser.i18n.getMessage('AllAccounts') });
+      accounts_options.value.push({ id: 0, name: browser.i18n.getMessage('AllAccounts') });
     }
-    let accounts = await browser.accounts.list();
-    for (let account of accounts) {
-      accounts_options.value.push({ id: account.id, text: account.name });
-    }
+    accounts_options.value = await tsCoreUtils.getAccountsList();
     tsLog.log(JSON.stringify(accounts_options.value));
 });
 

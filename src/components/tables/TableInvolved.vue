@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <table class='mzts-tinvolved' >
+    <table class='mzts-tinvolved' v-if="!is_loading" >
         <tr class='mzts-thead'>
             <td class='mzts-row-num'>#</td>
             <td>__MSG_Name__</td>

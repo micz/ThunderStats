@@ -261,6 +261,15 @@ export const tsCoreUtils = {
         if(name == '') name = this.getNameFromAddress(address);
         //console.log(">>>>>>>>>>>>>> [getCorrespondantName] name 2: " + name);
         return name;
+    },
+
+    async getAccountsList(){    // Returns an array of { id: account.id, text: account.name }
+        let output = [];
+        let accounts = await browser.accounts.list();
+        for (let account of accounts) {
+          output.push({ id: account.id, text: account.name });
+        }
+        return output;
     }
 
 }

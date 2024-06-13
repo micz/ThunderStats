@@ -21,14 +21,14 @@
 <template>
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
-                        <h2 class="list_heading cropped">__MSG_SentMails__: <span>{{ sent_total }}</span> <span v-if="sent_today > 0">(+<span>{{ sent_today }}</span> __MSG_today_small__)</span></h2>
+                        <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ sent_total }}</span><span v-if="sent_today > 0"> (+<span>{{ sent_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_max="counter_many_days_sent_max" :_min="counter_many_days_sent_min" :_avg="counter_many_days_sent_avg"/>
                       </div>
                       <GraphManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span>{{ rcvd_total }}</span> <span v-if="rcvd_today > 0">(+<span>{{ rcvd_today }}</span> __MSG_today_small__)</span></h2>
+						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ rcvd_total }}</span><span v-if="rcvd_today > 0"> (+<span>{{ rcvd_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_max="counter_many_days_rcvd_max" :_min="counter_many_days_rcvd_min" :_avg="counter_many_days_rcvd_avg"/>
 					  </div>
 					  <GraphManyDays :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" :key="chartData_Rcvd_length" />

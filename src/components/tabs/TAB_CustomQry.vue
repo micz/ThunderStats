@@ -30,14 +30,14 @@
             </div>
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
-                        <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run">{{ sent_total }}</span></h2>
+                        <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg"/>
                       </div>
                       <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length"/>
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run">{{ rcvd_total }}</span></h2>
+						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg"/>
 					  </div>
 					  <GraphCustomQry v-if="do_run" :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph"  :key="chartData_Rcvd_length"/>
@@ -276,16 +276,16 @@ async function setPeriod(period){
 }
 
 async function doQry(){
-    customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
-    customqry_current_account.value = props.accountEmails.join(", ");
-    do_run.value = true;
-    await nextTick(); 
-    i18n.updateDocument();
-    updateData();
+  loadingDo();
+  customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
+  customqry_current_account.value = props.accountEmails.join(", ");
+  do_run.value = true;
+  await nextTick(); 
+  i18n.updateDocument();
+  updateData();
 }
 
 async function updateData() {
-    loadingDo();
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }

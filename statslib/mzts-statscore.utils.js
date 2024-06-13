@@ -267,7 +267,7 @@ export const tsCoreUtils = {
         let output = [];
         let accounts = await browser.accounts.list();
         for (let account of accounts) {
-          output.push({ id: account.id, text: account.name });
+          output.push({ id: account.id, name: account.name });
         }
         return output;
     }

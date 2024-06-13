@@ -46,15 +46,15 @@ let current_account = ref(props.current_account);
 const tsLog = new tsLogger("SelectAccount", tsStore.do_debug);
 
 onMounted(async () => {
-  tsLog.log("onMounted");
-  if(!props.hide_AllAccount_option) {
-    accounts_options.value.push({ id: 0, text: browser.i18n.getMessage('AllAccounts') });
-  }
-  let accounts = await browser.accounts.list();
-      for (let account of accounts) {
-        accounts_options.value.push({ id: account.id, text: account.name });
-      }
-      tsLog.log(JSON.stringify(accounts_options.value));
+    tsLog.log("onMounted");
+    if(!props.hide_AllAccount_option) {
+      accounts_options.value.push({ id: 0, text: browser.i18n.getMessage('AllAccounts') });
+    }
+    let accounts = await browser.accounts.list();
+    for (let account of accounts) {
+      accounts_options.value.push({ id: account.id, text: account.name });
+    }
+    tsLog.log(JSON.stringify(accounts_options.value));
 });
 
 const updateCurrentAccount = (new_value) => {

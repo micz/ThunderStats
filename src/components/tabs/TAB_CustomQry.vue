@@ -152,7 +152,7 @@ onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
   TS_prefs.logger = tsLog;
   datepickerFormat.value = tsUtils.formatDateStringLocale(await TS_prefs.getPref("datepicker_locale"));
-  isDark.value = tsStore.darkmode;
+  isDark.value = tsUtils.isDarkMode();
 })
 
 onMounted(async () => {

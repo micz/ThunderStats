@@ -82,6 +82,15 @@ export class thunderStastsCore {
       }
     }
 
+    async getAccountsList(){    // Returns an array of { id: account.id, text: account.name }
+      let output = [];
+      let accounts = await browser.accounts.list();
+      for (let account of accounts) {
+        output.push({ id: account.id, text: account.name });
+      }
+      return output;
+    }
+
     // ================ TODAY TAB =====================
     async getToday(account_id = 0, account_emails = []) {
 

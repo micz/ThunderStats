@@ -203,4 +203,15 @@ export const tsUtils = {
         return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     },
 
+    mergeAccountsIncludeArchive(accounts, include_archive_accounts) {
+        let output = [];
+        for(let account of accounts) {
+            output[account.id] = {
+                name: account.name,
+                include_archive: include_archive_accounts[account.id] || false
+            }
+        }
+        return output;
+    }
+
 }

@@ -1,5 +1,5 @@
 export const prefs_default = {
-    'do_debug': true, //false,
+    'do_debug': false,
     '_many_days': 7,
     '_involved_num': 10,
     'today_time_graph_show_yesterday': true,

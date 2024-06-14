@@ -62,10 +62,10 @@ export class thunderStastsCore {
           if(account.id == account_id) {
             for (let identity of account.identities) {
               account_emails.push(identity.email);
-              let custom_ids = await this.getAccountCustomIdentities(account_id);
-              for(let custom_id in custom_ids) {
-                account_emails.push(custom_ids[custom_id]);
-              }
+            }
+            let custom_ids = await this.getAccountCustomIdentities(account_id);
+            for(let custom_id in custom_ids) {
+              account_emails.push(custom_ids[custom_id]);
             }
           }
         }

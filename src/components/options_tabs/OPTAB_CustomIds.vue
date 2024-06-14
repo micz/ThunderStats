@@ -36,13 +36,22 @@
     <tr><td>&nbsp;</td></tr>
     <tr>
         <td>
-            <b>__MSG_CustomIdentititesAccount__</b><br>
-            <textarea rows="6" cols="50" v-model="account_custom_ids" id="account_custom_ids"></textarea>
-        </td>
-    </tr>
-    <tr>
-        <td style="font-size: small;">
-            __MSG_CustomIdentititesAccount.Info__ <button v-on:click="updateCustomIds" style="margin-left:5px;">__MSG_Save__</button>
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <b>__MSG_CustomIdentititesAccount__</b><br>
+                        <textarea rows="6" cols="50" v-model="account_custom_ids" id="account_custom_ids" :disabled="current_account == 0" :class="{'has-changes': new_custom_ids_changes}" @input="customIdsChanged"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: small;">
+                        __MSG_CustomIdentititesAccount.Info__
+                    </td>
+                    <td style="text-align: right;">
+                        <button v-on:click="updateCustomIds" style="margin-left:5px;" :disabled="!new_custom_ids_changes">__MSG_Save__</button>
+                    </td>
+                </tr>
+            </table>
         </td>
     </tr>
 </table>
@@ -66,6 +75,7 @@ let current_account = ref(0);
 let SelectAccount_ref = ref(null);
 let account_custom_ids = ref("");
 let new_changes = ref(false);
+let new_custom_ids_changes = ref(false);
 let account_emails = ref(browser.i18n.getMessage("Identities") + ": -");
 
 let prefCustomIds = {};
@@ -109,7 +119,12 @@ function updateCustomIds(){
     account_custom_ids.value = current_custom_ids.join("\n");
     prefCustomIds[current_account.value] = current_custom_ids;
     TS_prefs.setPref("custom_identities", prefCustomIds);
+    new_custom_ids_changes.value = false;
     somethingChanged();
+}
+
+function customIdsChanged(){
+    new_custom_ids_changes.value = true;
 }
 
 async function somethingChanged() {
@@ -118,10 +133,10 @@ async function somethingChanged() {
 }
 
 </script>
-  
-  
-  
-  
-<style scoped>
 
+
+<style scoped>
+.has-changes {
+    border: 1px solid blue;
+}
 </style>

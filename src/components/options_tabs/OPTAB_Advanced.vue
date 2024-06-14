@@ -44,7 +44,7 @@
         <label><input type="checkbox" id="customqry_loaddata_when_selectingrange" name="customqry_loaddata_when_selectingrange" class="option-input" /></label>
       </td>
       <td>
-        <span class="dims_label">__MSG_CustomQueryBookmarkImmediateUpdate__</span>
+        <span class="dims_label" @click="toggle_options">__MSG_CustomQueryBookmarkImmediateUpdate__</span>
       </td>
     </tr>
     <tr>
@@ -66,7 +66,7 @@
         <label><input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" /></label>
       </td>
       <td>
-     <label><span class="dims_label">__MSG_folderspreadgraph_openinfirsttab__</span></label>
+     <label><span class="dims_label" @click="toggle_options">__MSG_folderspreadgraph_openinfirsttab__</span></label>
       </td>
     </tr>
     </table>
@@ -116,7 +116,7 @@
         <label><input type="checkbox" id="do_debug" name="do_debug" class="option-input" /></label>
       </td>
       <td>
-        <span class="dims_label">__MSG_ActivateDebug__</span>
+        <span class="dims_label" @click="toggle_options">__MSG_ActivateDebug__</span>
       </td>
     </tr>
   </table>
@@ -169,12 +169,20 @@
     new_changes.value = true;
   }
 
+  function toggle_options(e) {
+    let row = e.target.closest('tr');
+    let checkbox = row.querySelector('input[type="checkbox"]');
+    checkbox.checked = !checkbox.checked;
+    checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
+  }
+
   function reloadThunderStats() {
     browser.runtime.sendMessage({command: "reloadThunderStats" });
   }
 
   function accountListChanged(accountsList) {
     TS_prefs.setPref("include_archive_accounts", accountsList);
+    somethingChanged();
   }
   
 </script>

@@ -289,7 +289,8 @@ async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num});
+    let include_archive = await TS_prefs.getPref("include_archive_accounts");
+    tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, include_archive: include_archive});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
     await getCustomQryData();

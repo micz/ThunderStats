@@ -27,6 +27,7 @@ export class thunderStastsCore {
   do_debug = false;
   _involved_num = 10;
   _many_days = 7;
+  include_archive = [];
 
   constructor(options = {}) {
     this.do_debug = options.hasOwnProperty('do_debug') ? options.do_debug : false;
@@ -34,6 +35,8 @@ export class thunderStastsCore {
     TS_prefs.logger = this.tsLog;
     this._involved_num = options.hasOwnProperty('_involved_num') ? options._involved_num : 10;
     this._many_days = options.hasOwnProperty('_many_days') ? options._many_days : 7;
+    this.include_archive = options.hasOwnProperty('include_archive') ? options.include_archive : [];
+    // this.include_archive = await TS_prefs.getPref("include_archive_accounts");
   }
 
     async getAccountEmails(account_id = 0) {
@@ -204,7 +207,7 @@ export class thunderStastsCore {
       }
 
       for await (let message of messages) {
-          if(this.excludeMessage(message)) continue;
+          if(this.excludeMessage(message,account_id)) continue;
           // this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
           let hour_message = date_message.getHours();
@@ -334,7 +337,7 @@ export class thunderStastsCore {
       }
 
       for await (let message of messages) {
-          if(this.excludeMessage(message)) continue;
+          if(this.excludeMessage(message,account_id)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
           let hour_message = date_message.getHours();
@@ -385,7 +388,7 @@ export class thunderStastsCore {
       this.tsLog.log("[getAggregatedStatsData] msg_days: " + JSON.stringify(msg_days));
 
       for await (let message of messages) {
-          if(this.excludeMessage(message)) continue;
+          if(this.excludeMessage(message,account_id)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
           let day_message = tsUtils.dateToYYYYMMDD(date_message);
@@ -448,10 +451,18 @@ export class thunderStastsCore {
       return {max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, max_received: max_received, min_received: min_received, avg_received: avg_received};
     }
 
-    excludeMessage(message){    // Returns true if the message should be excluded from the stats
+    excludeMessage(message, account_id = 0){    // Returns true if the message should be excluded from the stats
       // do not include messages from drafts, trash, junk folders
       if(message.folder.specialUse && ['drafts', 'trash', 'junk'].some(specialUse => message.folder.specialUse.includes(specialUse))){
         return true;
+      }
+      
+      // check if we have to include this message even if it is in a "archives" folder
+      if(message.folder.specialUse && message.folder.specialUse.includes('archives')){
+        // console.log(">>>>>>>>>>>>>>>> include_archive: " + JSON.stringify(this.include_archive));
+        // console.log(">>>>>>>>>>>>>>>> this.include_archive.find(account => account.id == account_id): " + JSON.stringify(this.include_archive.find(account => account.id == account_id)));
+        let element = this.include_archive.find(account => account.id == account_id);
+        return !element.include_archive || false;
       }
 
       return false;

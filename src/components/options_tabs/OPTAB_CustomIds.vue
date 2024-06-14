@@ -26,26 +26,23 @@
 </div>
 <table>
     <tr>
-        <td colspan="2">
+        <td>
             <b>__MSG_Account__:</b>
             <SelectAccount id="account_selector" v-model="current_account" :hide_AllAccount_option="true" ref="SelectAccount_ref" class="marginleft10" @change="accountChanged"/>
             <br>
             <div class="account_emails" v-text="account_emails"></div>
         </td>
     </tr>
-    <tr><td colspan="2">&nbsp;</td></tr>
+    <tr><td>&nbsp;</td></tr>
     <tr>
-        <td colspan="2">
+        <td>
             <b>__MSG_CustomIdentititesAccount__</b><br>
             <textarea rows="6" cols="50" v-model="account_custom_ids" id="account_custom_ids"></textarea>
         </td>
     </tr>
     <tr>
         <td style="font-size: small;">
-            __MSG_CustomIdentititesAccount.Info__
-        </td>
-        <td style="text-align:right">
-            <button v-on:click="updateCustomIds">__MSG_Update__</button>
+            __MSG_CustomIdentititesAccount.Info__ <button v-on:click="updateCustomIds" style="margin-left:5px;">__MSG_Update__</button>
         </td>
     </tr>
 </table>

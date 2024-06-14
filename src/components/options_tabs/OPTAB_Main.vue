@@ -65,14 +65,6 @@
     </tr>
   </table>
   <div class="intro_change_warn" v-if="new_changes"><span v-text="reopenTabDesc"></span><button v-on:click="reloadThunderStats" class="marginleft10">Reload ThunderStats</button></div>
-
- <!--<br><br><br><br>
-      <div id="miczDescription">
-        <h1>__MSG_prefsInfoTitle__</h1>
-        <p>__MSG_prefsInfoDesc_1__<br/>
-          __MSG_prefsInfoDesc_2__<br/>
-          __MSG_prefsInfoDesc_3__</p>
-      </div>-->
 </template>
 
 
@@ -89,11 +81,6 @@
   
   onMounted(() => {
     tsLog = new tsLogger("OPTAB_Main", tsStore.do_debug);
-    /*TS_prefs.restoreOptions();
-    i18n.updateDocument();
-    document.querySelectorAll(".option-input").forEach(element => {
-      element.addEventListener("change", TS_prefs.saveOptions);
-    });*/
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
       input.addEventListener('change', somethingChanged);
@@ -103,9 +90,6 @@
   });
   
   onUnmounted(() => {
-    /*document.querySelectorAll('.option-input').forEach(element => {
-      element.removeEventListener('change', TS_prefs.saveOptions);
-    });*/
     tsLog.log("onUnmounted");
   });
 

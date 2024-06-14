@@ -42,6 +42,7 @@ import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineEl
 import { externalTooltipTimeGraphLines } from '@statslib/chartjs-lib/external-tooltip-timegraphlines';
 import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsStore } from '@statslib/mzts-store';
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Title );
 

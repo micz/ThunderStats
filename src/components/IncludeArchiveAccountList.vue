@@ -7,7 +7,7 @@
         </tr>
         <tr v-for="account in accounts" :key="account.accountID" class="checkbox-item">
           <td>
-            <label :for="account.accountID">{{ account.name }}</label>
+            <label :for="account.accountID"><span class="dims_label" @click="toggle_options">{{ account.name }}</span></label>
           </td>
           <td class="td_checkbox">
             <input
@@ -52,9 +52,15 @@
     if (index !== -1) {
       localAccounts.value[index].include_archive = event.target.checked;
       emit('updateIncludeArchive', localAccounts.value);
-      console.log(">>>>>>>>>>>>> updateCheckbox => localAccounts.value[index].include_archive: " + JSON.stringify(localAccounts.value[index].include_archive));
     }
   };
+
+  function toggle_options(e) {
+    let row = e.target.closest('tr');
+    let checkbox = row.querySelector('input[type="checkbox"]');
+    checkbox.checked = !checkbox.checked;
+    checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
+  }
   </script>
   
   <style scoped>

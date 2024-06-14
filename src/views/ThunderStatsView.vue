@@ -105,15 +105,17 @@ import { tsUtils } from '@statslib/mzts-utils';
       cache_lifetime.value = 120000;
     } else {
       cache_lifetime.value = 0;
-      //localStorage.removeItem('tabs-storage-key');
-      //localStorage.setItem('tabs-storage-key', JSON.stringify({ value: 'tab-today', expires: 10 }))
+      localStorage.removeItem('tabs-storage-key');
+      // localStorage.setItem('tabs-storage-key', JSON.stringify({ value: 'tab-today', expires: 10 }));
     }
-    //console.log(">>>>>>>>>>>>>>>>> cache_lifetime: " + cache_lifetime.value);
+    // console.log(">>>>>>>>>>>>>>>>> cache_lifetime: " + cache_lifetime.value);
+    // console.log(">>>>>>>>>>>>>>>>> tabs-storage-key: " + JSON.stringify(localStorage.getItem('tabs-storage-key')));
     tsStore.darkmode = tsUtils.isDarkMode();
   });
 
   onMounted(async () => {
-    //if(cache_lifetime.value == 0) { statsTabs.value.selectTab('#tab-today') }
+    remember_last_tab = await TS_prefs.getPref("remember_last_tab");
+    if(!remember_last_tab) { statsTabs.value.selectTab('#tab-today'); }
     let _many_days = await TS_prefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});

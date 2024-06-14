@@ -42,7 +42,7 @@
     </tr>
     <tr>
         <td style="font-size: small;">
-            __MSG_CustomIdentititesAccount.Info__ <button v-on:click="updateCustomIds" style="margin-left:5px;">__MSG_Update__</button>
+            __MSG_CustomIdentititesAccount.Info__ <button v-on:click="updateCustomIds" style="margin-left:5px;">__MSG_Save__</button>
         </td>
     </tr>
 </table>

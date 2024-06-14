@@ -71,6 +71,10 @@
     "message": "Update",
     "description": ""
   },
+  "Save": {
+    "message": "Save",
+    "description": ""
+  },
   "Setup": {
     "message": "Open options tab",
     "description": ""

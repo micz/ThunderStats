@@ -118,6 +118,10 @@ div.account_emails{
     color:rgb(51, 51, 51);
 }
 
+span.dims_label{
+    cursor: pointer;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
 
@@ -177,7 +181,7 @@ div.account_emails{
     }
 
     div.intro_change_warn{
-        color: darkred;
+        color: #ddbebe;
         background-color: #553333;
     }
 

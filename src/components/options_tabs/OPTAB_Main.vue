@@ -36,7 +36,7 @@
         <label><input type="checkbox" id="_time_graph_progressive" name="_time_graph_progressive" class="option-input" /></label>
       </td>
       <td>
-     <label><span class="dims_label">__MSG_TimeGraphProgressive__</span></label>
+     <label><span class="dims_label" @click="toggle_options">__MSG_TimeGraphProgressive__</span></label>
       </td>
     </tr>
     <tr>
@@ -44,7 +44,7 @@
         <label><input type="checkbox" id="today_time_graph_show_yesterday" name="today_time_graph_show_yesterday" class="option-input" /></label>
       </td>
       <td>
-     <label><span class="dims_label">__MSG_TodayTimeGraphShowYesterday__</span></label>
+     <label><span class="dims_label" @click="toggle_options">__MSG_TodayTimeGraphShowYesterday__</span></label>
       </td>
     </tr>
     <tr>
@@ -52,7 +52,7 @@
         <label><input type="checkbox" id="always_reload_tab_data" name="always_reload_tab_data" class="option-input" /></label>
       </td>
       <td>
-     <label><span class="dims_label">__MSG_prefs_always_reload_tab_data__</span></label>
+     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_always_reload_tab_data__</span></label>
       </td>
     </tr>
     <tr>
@@ -60,7 +60,7 @@
         <label><input type="checkbox" id="remember_last_tab" name="remember_last_tab" class="option-input" /></label>
       </td>
       <td>
-     <label><span class="dims_label">__MSG_prefs_remember_last_tab__</span></label>
+     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_remember_last_tab__</span></label>
       </td>
     </tr>
   </table>
@@ -111,6 +111,13 @@
 
   async function somethingChanged() {
     new_changes.value = true;
+  }
+
+  function toggle_options(e) {
+    let row = e.target.closest('tr');
+    let checkbox = row.querySelector('input[type="checkbox"]');
+    checkbox.checked = !checkbox.checked;
+    checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
   }
 
   function reloadThunderStats() {

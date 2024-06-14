@@ -64,7 +64,6 @@
       </td>
     </tr>
   </table>
-  <div class="intro_change_warn" v-if="new_changes"><span v-text="reopenTabDesc"></span><button v-on:click="reloadThunderStats" class="marginleft10">Reload ThunderStats</button></div>
 </template>
 
 
@@ -74,10 +73,11 @@
   import { tsLogger } from '@statslib/mzts-logger';
   import { tsStore } from '@statslib/mzts-store';
   
+  const emit = defineEmits(['new_changes']);
+
   let current_account = ref(0);
   let tsLog = null;
   let new_changes = ref(false);
-  let reopenTabDesc = ref('');
   
   onMounted(() => {
     tsLog = new tsLogger("OPTAB_Main", tsStore.do_debug);
@@ -85,7 +85,6 @@
     inputs.forEach(input => {
       input.addEventListener('change', somethingChanged);
     });
-    reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
     tsLog.log("onMounted");
   });
   
@@ -95,6 +94,7 @@
 
   async function somethingChanged() {
     new_changes.value = true;
+    emit('new_changes', new_changes.value);
   }
 
   function toggle_options(e) {
@@ -103,11 +103,6 @@
     checkbox.checked = !checkbox.checked;
     checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
   }
-
-  function reloadThunderStats() {
-    browser.runtime.sendMessage({command: "reloadThunderStats" });
-  }
-  
 </script>
 
 

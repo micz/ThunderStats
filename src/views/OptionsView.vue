@@ -22,13 +22,13 @@
   <main>
     <tabs :options="{ defaultTabHash: 'tab-main' }"  cache-lifetime="0"  @changed="tabChanged" ref="optionsTabs" class="paddingbottom30">
       <tab id="tab-main" name="__MSG_TabSettings.label__">
-         <OPTAB_Main ref="OPTAB_Main_ref"/>
+         <OPTAB_Main ref="OPTAB_Main_ref" v-on:new_changes="somethingChanged"/>
       </tab>
       <tab id="tab-advanced" name="__MSG_TabAdvanced.label__">
-         <OPTAB_Advanced ref="OPTAB_Advanced_ref"/>
+         <OPTAB_Advanced ref="OPTAB_Advanced_ref" v-on:new_changes="somethingChanged"/>
       </tab>
       <tab id="tab-customids" name="__MSG_TabCustomIdentities.label__">
-        <OPTAB_CustomIds ref="OPTAB_CustomIds_ref"/>
+        <OPTAB_CustomIds ref="OPTAB_CustomIds_ref" v-on:new_changes="somethingChanged"/>
       </tab>
       <tab id="tab-info" name="__MSG_Info__">
           <OPTAB_Info/>
@@ -37,7 +37,7 @@
         <OPTAB_License/>
       </tab>
   </tabs>
-  <OptionDonationFooter/>
+  <OptionDonationFooter :new_changes="new_changes"/>
   </main>
 </template>
 
@@ -60,7 +60,7 @@ let OPTAB_Main_ref = ref(null);
 let OPTAB_Advanced_ref = ref(null);
 let OPTAB_CustomIds_ref = ref(null);
 
-//let do_debug = ref(false);
+let new_changes = ref(false);
 let tsLog = null;
 
 onMounted(async () => {
@@ -82,6 +82,10 @@ onUnmounted(() => {
     });
     tsLog.log("onUnmounted");
   });
+
+  function somethingChanged() {
+    new_changes.value = true;
+  }
 
 </script>
 

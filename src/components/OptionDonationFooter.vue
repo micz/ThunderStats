@@ -19,13 +19,40 @@
 -->
 
 <template>
-    <div id="miczDonation">__MSG_prefsDonation_1__<br/><a href="https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_prefsDonation_2__</a></div>
+    <div id="miczDonation">
+        <div class="intro_change_warn" v-if="new_changes">
+            <span v-text="reopenTabDesc"></span> <button v-on:click="reloadThunderStats" class="marginleft10">Reload ThunderStats</button>
+        </div>
+        <div v-if="!new_changes">
+          __MSG_prefsDonation_1__<br/><a href="https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_prefsDonation_2__</a>
+        </div>
+    </div>
 </template>
 
 
 <script setup>
+import { ref, onMounted, computed } from 'vue';
 
+let reopenTabDesc = ref('');
 
+const props = defineProps({
+    new_changes: {
+        type: Boolean,
+        default: false
+    }
+});
+
+let new_changes = computed(() => {
+    return props.new_changes
+});
+
+onMounted(() => {
+    reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
+});
+
+function reloadThunderStats() {
+    browser.runtime.sendMessage({command: "reloadThunderStats" });
+}
 </script>
 
 

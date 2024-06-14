@@ -120,10 +120,7 @@
       </td>
     </tr>
   </table>
-  
-  <div class="intro_change_warn" v-if="new_changes"><span v-text="reopenTabDesc"></span><button v-on:click="reloadThunderStats" class="marginleft10">Reload ThunderStats</button></div>
-
-  </template>
+</template>
 
 
 <script setup>
@@ -135,9 +132,10 @@
   import { tsUtils } from '@statslib/mzts-utils';
   import IncludeArchiveAccountList from '../IncludeArchiveAccountList.vue';
 
+  const emit = defineEmits(['new_changes']);
+
   let tsLog = null;
   let new_changes = ref(false);
-  let reopenTabDesc = ref('');
   let include_archive_accounts = ref([]);
 
   onMounted(async () => {
@@ -147,7 +145,6 @@
       input.addEventListener('change', somethingChanged);
     });
     document.getElementById('first_day_week').addEventListener('change', somethingChanged);
-    reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
     let archive_accounts = await TS_prefs.getPref("include_archive_accounts");
     let all_accounts = await tsCoreUtils.getAccountsList();
     include_archive_accounts.value = tsUtils.mergeAccountsIncludeArchive(all_accounts, archive_accounts);
@@ -167,6 +164,7 @@
 
   async function somethingChanged() {
     new_changes.value = true;
+    emit('new_changes', new_changes.value);
   }
 
   function toggle_options(e) {
@@ -174,10 +172,6 @@
     let checkbox = row.querySelector('input[type="checkbox"]');
     checkbox.checked = !checkbox.checked;
     checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
-  }
-
-  function reloadThunderStats() {
-    browser.runtime.sendMessage({command: "reloadThunderStats" });
   }
 
   function accountListChanged(accountsList) {

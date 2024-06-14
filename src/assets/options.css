@@ -95,9 +95,10 @@ div.intro_main{
 div.intro_change_warn{
     color: darkred;
     background-color: rgb(255, 240, 240);
-    padding: 15px;
+    padding: 3px 15px;
     border-radius: 8px;
     width: fit-content;
+    display: inline-block;
 }
 
 div.intro_info{

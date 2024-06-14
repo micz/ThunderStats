@@ -49,7 +49,6 @@
         </td>
     </tr>
 </table>
-<div class="intro_change_warn" v-if="new_changes"><span v-text="reopenTabDesc"></span><button v-on:click="reloadThunderStats" :disabled="current_account != 0" class="marginleft10">Reload ThunderStats</button></div>
 </template>
   
   
@@ -62,13 +61,14 @@ import { tsLogger } from '@statslib/mzts-logger';
 import { tsStore } from '@statslib/mzts-store';
 import { thunderStastsCore } from "@statslib/mzts-statscore.js";
 
+const emit = defineEmits(['new_changes']);
+
 let tsLog = null;
 let tsCore = null;
 let current_account = ref(0);
 let SelectAccount_ref = ref(null);
 let account_custom_ids = ref("");
 let new_changes = ref(false);
-let reopenTabDesc = ref('');
 let account_emails = ref(browser.i18n.getMessage("Identities") + ": -");
 
 let prefCustomIds = {};
@@ -77,8 +77,6 @@ onMounted(async () => {
     tsLog = new tsLogger("OPTAB_CustomIds", tsStore.do_debug);
     TS_prefs.logger = tsLog;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
-    document.getElementById('account_custom_ids').addEventListener('change', somethingChanged);
-    reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
     prefCustomIds = await TS_prefs.getPref("custom_identities");
     tsLog.log("prefCustomIds = " + JSON.stringify(prefCustomIds));
     tsLog.log("onMounted");
@@ -113,16 +111,13 @@ function updateCustomIds(){
     tsLog.log("current_custom_ids: " + JSON.stringify(current_custom_ids));
     account_custom_ids.value = current_custom_ids.join("\n");
     prefCustomIds[current_account.value] = current_custom_ids;
-
     TS_prefs.setPref("custom_identities", prefCustomIds);
+    somethingChanged();
 }
 
 async function somethingChanged() {
     new_changes.value = true;
-}
-
-function reloadThunderStats() {
-    browser.runtime.sendMessage({command: "reloadThunderStats" });
+    emit('new_changes', new_changes.value);
 }
 
 </script>

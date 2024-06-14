@@ -14,7 +14,7 @@
     height:24px;
   }
   
-#mzts-setup_icon{float:right;cursor:pointer;display:flex;align-items:center;height:28px;position:relative;top:2px;right:5px;}
+#mzts-setup_icon{float:right;cursor:pointer;display:flex;align-items:center;height:28px;position:relative;top:3px;right:7px;}
 #mzts-account-sel{
   float: left;
   display: flex;

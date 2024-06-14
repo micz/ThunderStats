@@ -39,7 +39,7 @@ export class thunderStastsCore {
     // this.include_archive = await TS_prefs.getPref("include_archive_accounts");
   }
 
-    async getAccountEmails(account_id = 0) {
+    async getAccountEmails(account_id = 0, no_custom_identities = false) {
       let accounts = await browser.accounts.list();
       let account_emails = [];
 
@@ -49,13 +49,15 @@ export class thunderStastsCore {
                 account_emails.push(identity.email);
             }
         }
-        let custom_ids = await this.getAccountCustomIdentities();
-        for(let cids_account in custom_ids) {
-          // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account: " + JSON.stringify(cids_account));
-          custom_ids[cids_account].forEach(element => {
-            // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account element: " + JSON.stringify(element));
-            account_emails.push(element);
-          });
+        if(!no_custom_identities) {
+          let custom_ids = await this.getAccountCustomIdentities();
+          for(let cids_account in custom_ids) {
+            // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account: " + JSON.stringify(cids_account));
+            custom_ids[cids_account].forEach(element => {
+              // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account element: " + JSON.stringify(element));
+              account_emails.push(element);
+            });
+          }
         }
       }else{
         for (let account of accounts) {
@@ -63,9 +65,11 @@ export class thunderStastsCore {
             for (let identity of account.identities) {
               account_emails.push(identity.email);
             }
-            let custom_ids = await this.getAccountCustomIdentities(account_id);
-            for(let custom_id in custom_ids) {
-              account_emails.push(custom_ids[custom_id]);
+            if(!no_custom_identities) {
+              let custom_ids = await this.getAccountCustomIdentities(account_id);
+              for(let custom_id in custom_ids) {
+                account_emails.push(custom_ids[custom_id]);
+              }
             }
           }
         }

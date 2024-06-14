@@ -96,7 +96,7 @@ function accountChanged(){
 }
 
 async function loadAccountEmails(){
-    account_emails.value = browser.i18n.getMessage("Identities") + ": " + (await tsCore.getAccountEmails(current_account.value)).join(", ");
+    account_emails.value = browser.i18n.getMessage("Identities") + ": " + (await tsCore.getAccountEmails(current_account.value,true)).join(", ");
     tsLog.log("loadAccountEmails => account_emails.value: " + account_emails.value);
 }
 

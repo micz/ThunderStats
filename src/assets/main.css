@@ -114,7 +114,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {
-      background-image: -moz-linear-gradient(rgba(50, 50, 50, 0), rgba(50, 50, 50, .25));
+      background-image: -moz-linear-gradient(rgba(134, 129, 129, 0), rgb(79, 79, 79));
       background-color: #333;
       color: #f0f0f0;
   }

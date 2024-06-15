@@ -33,14 +33,14 @@
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg"/>
                       </div>
-                      <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length"/>
+                      <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length"/>
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg"/>
 					  </div>
-					  <GraphCustomQry v-if="do_run" :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph"  :key="chartData_Rcvd_length"/>
+					  <GraphCustomQry v-if="do_run" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_graph"  :key="chartData_Rcvd_length"/>
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
@@ -100,6 +100,7 @@ let do_run = ref(false);
 let customqry_current_account = ref("");
 let customqry_totaldays_num = ref(0);
 let isDark = ref(false);
+let chart_width = ref("1500px");
 
 let datepickerFormat = ref("dd-MM-yyyy");
 
@@ -294,6 +295,13 @@ async function updateData() {
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
     await getCustomQryData();
+    let chart_container_width = document.querySelector('.chart_customqry').clientWidth;
+    let chart_ipotetic_width = graphdata_customqry_labels.value.length * 30;
+    if(chart_container_width < chart_ipotetic_width){
+      chart_width.value = String(chart_ipotetic_width) + "px";
+    } else {
+      chart_width.value = String(chart_container_width) + "px";
+    }
     chartData_Sent.value.datasets = [];
     chartData_Sent.value.datasets.push({
         label: 'Sent',

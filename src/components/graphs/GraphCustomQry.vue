@@ -37,11 +37,12 @@
 
 
 <script setup>
-import { ref, computed, watch, nextTick} from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsStore } from '@statslib/mzts-store';
 
 Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, BarController);
 
@@ -51,6 +52,10 @@ let props = defineProps({
         type: Object,
         default: () => ({}),
         required: true
+    },
+    chart_width: {
+        type: String,
+        default: '1500px'
     },
     is_loading: {
         type: Boolean,
@@ -62,45 +67,9 @@ let customQryChartBar_ref = ref(null);
 
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
+let chart_width = computed(() => props.chart_width)
 
 let maxY = ref(0);
-let chart_width = ref('1500px');
-
-const updateChartWidth = () => {
-  if (customQryChartBar_ref.value) {
-    const newChartWidth = 30 * props.chartData.labels.length;
-    const parentElement = customQryChartBar_ref.value.$el.parentNode;
-    if (newChartWidth > parentElement.clientWidth) {
-      chart_width.value = newChartWidth + 'px';
-    } else {
-      chart_width.value = parentElement.clientWidth + 'px';
-    }
-    //console.log(">>>>>>>>>>>>>>>>>> chart_width: " + chart_width.value);
-  }
-};
-
-watch(props.chartData, (newChartData) => {
-    //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
-    if (newChartData.datasets && newChartData.datasets.length > 0) {
-        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
-    } else {
-        maxY.value = 5;
-    }
-    if(!chartOptions) return;
-    if(maxY.value < 20) {
-      chartOptions.value.scales.y.ticks.stepSize = 1;
-    }else{
-      chartOptions.value.scales.y.ticks.stepSize = 5;
-    }
-    chartOptions.value.scales.y.max = maxY.value;
-
-    if(tsStore.darkmode) {
-      Chart.defaults.color = 'white';
-      Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.2)';
-    }
-
-    nextTick(updateChartWidth);
-}, { immediate: true });
 
 var chartOptions = ref({
         responsive: false,
@@ -171,8 +140,28 @@ var chartOptions = ref({
         },
       });
 
-
 var chartPlugins = [ChartDataLabels];
+
+watch(props.chartData, (newChartData) => {
+    // console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
+    if (newChartData.datasets && newChartData.datasets.length > 0) {
+        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
+    } else {
+        maxY.value = 5;
+    }
+    if(!chartOptions) return;
+    if(maxY.value < 20) {
+      chartOptions.value.scales.y.ticks.stepSize = 1;
+    }else{
+      chartOptions.value.scales.y.ticks.stepSize = 5;
+    }
+    chartOptions.value.scales.y.max = maxY.value;
+
+    if(tsStore.darkmode) {
+      Chart.defaults.color = 'white';
+      Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.2)';
+    }
+}, { immediate: true });
 
 </script>
 

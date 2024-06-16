@@ -21,7 +21,7 @@
 <template>
     <div id="heading_wrapper">
 		  <div id="mzts-account-sel">__MSG_ChooseAccount__:
-          <SelectAccount id="account_selector" v-model="current_account" ref="SelectAccount_ref"/>
+          <SelectAccount id="account_selector" @change="accountSelected()" v-model="current_account" ref="SelectAccount_ref"/>
 			<div id="mzts-btn-update"><button type="button" @click="update()">__MSG_Update__</button></div>
 		  </div>
 		<div id="mzts-setup_icon">
@@ -58,6 +58,13 @@ onMounted(async () => {
 function update(){
   tsLog.log("update: " + current_account.value);
   emit('chooseAccount', current_account.value);
+}
+
+async function accountSelected(){
+  tsLog.log("accountSelected: " + current_account.value);
+  if(await TS_prefs.getPref("load_data_changing_account")){
+    emit('chooseAccount', current_account.value);
+  }
 }
 
 function openOptions(){

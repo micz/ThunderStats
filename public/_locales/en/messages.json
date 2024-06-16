@@ -583,6 +583,10 @@
     "message": "Reload data when changing tab",
     "description": ""
   },
+  "prefs_load_data_changing_account": {
+    "message": "Reload data when changing the account",
+    "description": ""
+  },
   "prefsInfoTitle": {
     "message": "Important Information",
     "description": ""

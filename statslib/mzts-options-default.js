@@ -8,6 +8,7 @@ export const prefs_default = {
     'startup_account': 0,
     'remember_last_tab': false,
     'always_reload_tab_data': false,
+    'load_data_changing_account': true,
     'customqry_loaddata_when_selectingrange': false,
     'first_day_week': 1,
     'datepicker_locale': 'en-US',

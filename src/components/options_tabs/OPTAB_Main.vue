@@ -49,6 +49,14 @@
     </tr>
     <tr>
      <td>
+        <label><input type="checkbox" id="load_data_changing_account" name="load_data_changing_account" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_load_data_changing_account__</span></label>
+      </td>
+    </tr>
+    <tr>
+     <td>
         <label><input type="checkbox" id="always_reload_tab_data" name="always_reload_tab_data" class="option-input" /></label>
       </td>
       <td>

@@ -40,6 +40,7 @@ import { Bar } from 'vue-chartjs'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsStore } from '@statslib/mzts-store';
 
 Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, BarController);
 
@@ -147,7 +148,8 @@ var chartOptions = ref({
             color: function(context) {
               let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
               //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
-              return height > 25 ? '#fff' : 'grey';
+              //console.log(">>>>>>>>>>>>>>>>>>>>> darkMode: " + JSON.stringify(tsStore.darkmode));
+              return height > 25 ? '#fff' : tsStore.darkmode?'#bbb':'grey';
             },
             font: {
               weight: 'bold',

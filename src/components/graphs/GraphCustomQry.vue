@@ -131,7 +131,7 @@ var chartOptions = ref({
             color: function(context) {
               let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
               //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
-              return height > 25 ? '#fff' : 'grey';
+              return height > 25 ? '#fff' : tsStore.darkmode?'#bbb':'grey';
             },
             font: {
               weight: 'bold',

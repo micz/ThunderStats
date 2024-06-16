@@ -26,7 +26,7 @@
                 <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
                 <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
-                <span v-if="do_run">__MSG_CustomQryDataMsg__: <span v-text="customqry_current_account"></span> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></span>
+                <span v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></span>
             </div>
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
@@ -98,9 +98,11 @@ var tsCore = null;
 let dateQry = ref();
 let do_run = ref(false);
 let customqry_current_account = ref("");
+let customqry_current_account_tooltip = ref("");
 let customqry_totaldays_num = ref(0);
 let isDark = ref(false);
 let chart_width = ref("1500px");
+let emailListTooltipVisible = ref(false);
 
 let datepickerFormat = ref("dd-MM-yyyy");
 
@@ -279,7 +281,13 @@ async function setPeriod(period){
 async function doQry(){
   loadingDo();
   customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
-  customqry_current_account.value = props.accountEmails.join(", ");
+  if(props.accountEmails.length > 3){
+    customqry_current_account.value = props.accountEmails.length + " " + browser.i18n.getMessage("EmailAddresses");
+    customqry_current_account_tooltip.value = props.accountEmails.join(" ");
+  } else {
+    customqry_current_account.value = props.accountEmails.join(", ");
+    customqry_current_account_tooltip.value = "";
+  }
   do_run.value = true;
   await nextTick(); 
   i18n.updateDocument();
@@ -378,7 +386,6 @@ async function updateData() {
         });
     };
 
-
 function loadingDo(){
     is_loading_counter_sent_rcvd.value = true;
     is_loading_counter_customqry.value = true;
@@ -388,15 +395,21 @@ function loadingDo(){
     is_loading_rcvd_graph.value = true;
 }
 
+function showEmailListTooltip(){
+  emailListTooltipVisible.value = (customqry_current_account_tooltip.value != "");
+}
+
+function hideEmailListTooltip(){
+  emailListTooltipVisible.value = false;
+}
+
 defineExpose({ doQry });
 
 </script>
 
 
-
-
 <style scoped>
-  .square_container {
+.square_container {
     margin-top: 4.6em;
-  }
+}
 </style>

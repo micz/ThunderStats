@@ -447,6 +447,10 @@
     "message": "When selecting a custom date range view, update the statistics immediately",
     "description": ""
   },
+  "EmailAddresses": {
+    "message": "email addresses",
+    "description": ""
+  },
   "TabBusinessDays.label": {
     "message": "Business Days",
     "description": ""

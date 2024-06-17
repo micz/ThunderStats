@@ -366,8 +366,8 @@ defineExpose({ updateData });
 </script>
 
 
-
-
 <style scoped>
-
+:deep(.day_today_title_yesterday){
+    margin-top: 15px;
+}
 </style>

@@ -50,6 +50,9 @@ const getOrCreateLegendList = (chart, id) => {
         if((i == 0) || (i == 2)) {
             const li_ty = document.createElement('li');
             li_ty.classList.add('day_today_title');
+            if(i==2){
+              li_ty.classList.add('day_today_title_yesterday');
+            }
             li_ty.innerHTML = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
             ul.appendChild(li_ty);
           }

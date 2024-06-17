@@ -110,6 +110,8 @@ export class thunderStastsCore {
       let yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       yesterday.setHours(new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(), new Date().getMilliseconds());
+      // console.log(">>>>>>>>>>>>>> getToday_YesterdayData yesterday_midnight: " + JSON.stringify(yesterday_midnight));
+      // console.log(">>>>>>>>>>>>>> getToday_YesterdayData yesterday: " + JSON.stringify(yesterday));
       let fromDate = new Date(yesterday_midnight);
       let toDate = new Date(yesterday);
       // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
@@ -144,6 +146,9 @@ export class thunderStastsCore {
       let lastMidnight = new Date();
       lastMidnight.setHours(0, 0, 0, 0);
       //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
+
+      // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
+      // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
 
       return this.getFullStatsData(yesterdayMidnight, lastMidnight, account_id, account_emails);
     }

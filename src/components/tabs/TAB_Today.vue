@@ -179,7 +179,9 @@ async function updateData() {
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, include_archive: include_archive});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     getManyDaysData();
-    await Promise.all([getTodayData(), getYesterdayData(), getInboxZeroData()]);
+    getInboxZeroData();
+    await Promise.all([getTodayData(), getYesterdayData()]);
+    // await Promise.all([getTodayData(), getYesterdayData(), getInboxZeroData()]);
     tsLog.log("graphdata_today_hours_sent.value: " + JSON.stringify(graphdata_today_hours_sent.value));
     tsLog.log("graphdata_today_hours_rcvd.value: " + JSON.stringify(graphdata_today_hours_rcvd.value));
     chartData_Today.value.datasets = [];
@@ -228,14 +230,14 @@ async function updateData() {
     tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
     // graph inbox zero dates
     inbox0_openFolderInFirstTab.value = await TS_prefs.getPref("inbox0_openFolderInFirstTab");
-    chartData_InboxZeroDates.value.labels = ['date'];
-    chartData_InboxZeroDates.value.datasets = [];
-    chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
-    tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
+    // chartData_InboxZeroDates.value.labels = ['date'];
+    // chartData_InboxZeroDates.value.datasets = [];
+    // chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
+    // tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
     nextTick(() => {
         is_loading_today_graph.value = false;
         is_loading_inbox_graph_folders.value = false;
-        is_loading_inbox_graph_dates.value = false;
+        // is_loading_inbox_graph_dates.value = false;
         i18n.updateDocument();
     });
 };
@@ -274,6 +276,13 @@ async function updateData() {
             // inbox zero dates
             graphdata_inboxzero_dates.value = result_inbox.dates;
             is_loading_counter_inbox.value = false;
+            chartData_InboxZeroDates.value.labels = ['date'];
+            chartData_InboxZeroDates.value.datasets = [];
+            chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
+            tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
+            nextTick(() => {
+                is_loading_inbox_graph_dates.value = false;
+            });
             resolve(true);
         });
     };
@@ -296,7 +305,7 @@ async function updateData() {
     };
 
   // get 7 days data
-    function getManyDaysData () {
+    async function getManyDaysData () {
         return new Promise(async (resolve) => {
             let result_many_days = await tsCore.getToday_manyDaysData(props.activeAccount, props.accountEmails);
             tsLog.log("result_today_manydays_data: " + JSON.stringify(result_many_days, null, 2));

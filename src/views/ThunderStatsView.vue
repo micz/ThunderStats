@@ -33,7 +33,7 @@
           <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_ManyDays_ref" />
         </tab>
         <tab id="tab-customqry" name="__MSG_CustomQry__">
-          <TAB_CustomQry @updateCustomQry="updateCustomQry" :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_CustomQry_ref" />
+          <TAB_CustomQry @updateCustomQry="updateCustomQry" :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_CustomQry_ref" />
         </tab>
         <tab id="tab-info" name="__MSG_Info__">
             <TAB_Info />
@@ -158,6 +158,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   }
 
   async function tabChanged(id) {
+    elapsed_time.value = 0;
     // console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
     // console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
     tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));

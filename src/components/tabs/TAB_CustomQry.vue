@@ -78,7 +78,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 
-const emit = defineEmits(['updateCustomQry']);
+const emit = defineEmits(['updateCustomQry'],['updateElapsed']);
 
 const props = defineProps({
     activeAccount: {
@@ -344,6 +344,7 @@ async function updateData() {
  // get many days data
     function getCustomQryData () {
         return new Promise(async (resolve) => {
+            let start_time = performance.now();
             let fromDate = dateQry.value[0];
             let toDate = dateQry.value[1];
             let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails);
@@ -382,6 +383,8 @@ async function updateData() {
             // received graph
             graphdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
             is_loading_rcvd_graph.value = false;
+            let stop_time = performance.now();
+            updateElapsed(stop_time - start_time);
             resolve(true);
         });
     };
@@ -393,6 +396,10 @@ function loadingDo(){
     is_loading_involved_table_senders.value = true;
     is_loading_sent_graph.value = true;
     is_loading_rcvd_graph.value = true;
+}
+
+function updateElapsed(elapsed) {
+    emit('updateElapsed', elapsed);
 }
 
 function showEmailListTooltip(){

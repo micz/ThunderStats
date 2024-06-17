@@ -56,7 +56,7 @@ let elapsed_time = computed(() => {
   return props.elapsed_time;
 })
 
-let elapsed_time_string = computed(() => { console.log(">>>>>>>>>>>>>>>>>>>> props.elapsed_time: " + props.elapsed_time);
+let elapsed_time_string = computed(() => {
   return tsUtils.convertFromMilliseconds(props.elapsed_time);
 })
 

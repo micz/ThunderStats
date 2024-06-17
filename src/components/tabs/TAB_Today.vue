@@ -354,7 +354,7 @@ function loadingDo(){
 
 function updateElapsed(function_name, time) {
     elapsed[function_name] = tsUtils.convertToMilliseconds(time);
-    console.log(">>>>>>>>>>>>> updateElapsed: " + JSON.stringify(elapsed));
+    //console.log(">>>>>>>>>>>>> updateElapsed: " + JSON.stringify(elapsed));
     const allNonZero = Object.values(elapsed).every(value => value !== 0);
     if (allNonZero) {
         emit('updateElapsed', Math.max(...Object.values(elapsed)));

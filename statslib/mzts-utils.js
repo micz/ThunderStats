@@ -209,16 +209,16 @@ export const tsUtils = {
         return output;
     },
 
-    convertToMilliseconds(timeStr) {
-        const parts = timeStr.split(' ');
-        const hours = parts[0].includes('h') ? parseInt(parts[0].slice(0, -1)) : 0;
-        const minutes = parts[1].includes('m') ? parseInt(parts[1].slice(0, -1)) : 0;
-        const seconds = parts[2].includes('s') ? parseInt(parts[2].slice(0, -1)) : 0;
-        const milliseconds = parts[3].includes('ms') ? parseInt(parts[3].slice(0, -2)) : 0;
+    // convertToMilliseconds(timeStr) {
+    //     const parts = timeStr.split(' ');
+    //     const hours = parts[0].includes('h') ? parseInt(parts[0].slice(0, -1)) : 0;
+    //     const minutes = parts[1].includes('m') ? parseInt(parts[1].slice(0, -1)) : 0;
+    //     const seconds = parts[2].includes('s') ? parseInt(parts[2].slice(0, -1)) : 0;
+    //     const milliseconds = parts[3].includes('ms') ? parseInt(parts[3].slice(0, -2)) : 0;
     
-        const totalMilliseconds = (hours * 3600000) + (minutes * 60000) + (seconds * 1000) + milliseconds;
-        return totalMilliseconds;
-    },
+    //     const totalMilliseconds = (hours * 3600000) + (minutes * 60000) + (seconds * 1000) + milliseconds;
+    //     return totalMilliseconds;
+    // },
 
     convertFromMilliseconds(milliseconds) {
         const hours = Math.floor(milliseconds / 3600000);

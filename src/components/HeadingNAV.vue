@@ -22,8 +22,12 @@
     <div id="heading_wrapper">
 		  <div id="mzts-account-sel">__MSG_ChooseAccount__:
           <SelectAccount id="account_selector" @change="accountSelected()" v-model="current_account" ref="SelectAccount_ref"/>
-			<div id="mzts-btn-update"><button type="button" @click="update()">__MSG_Update__</button></div>
-      <div class="mzts-execution-time" v-if="is_loading">__MSG_ExecutionTime__: <span v-text="elapsed_time_string" v-if="elapsed_time != 0"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="elapsed_time == 0"/></div>
+			<div id="mzts-btn-update">
+        <button type="button" @click="update()">__MSG_Update__</button>
+      </div>
+      <div class="mzts-execution-time" v-if="is_loading">
+        __MSG_ExecutionTime__: <span v-text="elapsed_time_string" v-if="elapsed_time != 0"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="elapsed_time == 0"/>
+      </div>
 		  </div>
 		<div id="mzts-setup_icon">
 			<img src="@/assets/images/mzts-setup.png" alt="__MSG_Setup__" title="__MSG_Setup__" class="tooltip" @click="openOptions()"/>

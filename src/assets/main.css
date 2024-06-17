@@ -70,7 +70,8 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   font-size: smaller;
   position: absolute;
   right: 46px;
-  top: 2px;
+  top: 6px;
+  min-width: 11em;
 }
 #customqry_menu{
   display: inline-block;
@@ -116,6 +117,10 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .spinner_small{
   position: relative;
   top: 4px;
+}
+
+.spinner_small_absolute{
+  position: absolute;
 }
 
 .email_list_container {

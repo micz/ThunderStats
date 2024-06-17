@@ -20,14 +20,6 @@ export const tsUtils = {
 
     regexEmail: /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
     
-    humanReadableMilliseconds(tot_milliseconds) {
-        let hours = Math.floor(tot_milliseconds / 3600000);
-        let minutes = Math.floor((tot_milliseconds - (hours * 3600000)) / 60000);
-        let seconds = Math.floor((tot_milliseconds - (hours * 3600000) - (minutes * 60000)) / 1000);
-        let milliseconds = tot_milliseconds - (hours * 3600000) - (minutes * 60000) - (seconds * 1000);
-        return hours + "h " + minutes + "m " + seconds + "s " + milliseconds + "ms";
-    },
-
     dateToYYYYMMDD(originalDate) {
         // Extract the year from the date
         let year = originalDate.getFullYear();

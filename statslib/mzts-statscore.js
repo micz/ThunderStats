@@ -308,7 +308,7 @@ export class thunderStastsCore {
 
       let stop_time = performance.now();
 
-      output.elapsed = tsUtils.humanReadableMilliseconds(stop_time - start_time);
+      output.elapsed = stop_time - start_time;
 
       return output;
     }
@@ -365,7 +365,7 @@ export class thunderStastsCore {
 
       let stop_time = performance.now();
 
-      return {sent: sent, received: received, count: count, msg_hours: msg_hours, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
+      return {sent: sent, received: received, count: count, msg_hours: msg_hours, elapsed: stop_time - start_time};
     }
 
      async getAggregatedStatsData(fromDate, toDate, account_id = 0, account_emails = []) {
@@ -421,7 +421,7 @@ export class thunderStastsCore {
 
       let stop_time = performance.now();
 
-      output.elapsed = tsUtils.humanReadableMilliseconds(stop_time - start_time);
+      output.elapsed = stop_time - start_time;
 
       return output;
     }
@@ -513,7 +513,7 @@ export class thunderStastsCore {
 
       let stop_time = performance.now();
 
-      return {total: total, unread: unread, dates: dates, elapsed: tsUtils.humanReadableMilliseconds(stop_time - start_time)};
+      return {total: total, unread: unread, dates: dates, elapsed: stop_time - start_time};
     }
 
 

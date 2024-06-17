@@ -76,6 +76,8 @@ const props = defineProps({
     },
 });
 
+const emit = defineEmits(['updateElapsed']);
+
 
 let tsLog = null;
 var tsCore = null;
@@ -187,6 +189,7 @@ async function updateData() {
  // get many days data
     function getManyDaysData () {
         return new Promise(async (resolve) => {
+            let start_time = performance.now();
             let result_many_days = await tsCore.getManyDaysData(props.activeAccount, props.accountEmails);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_many_days, null, 2));
             //top senders list
@@ -237,6 +240,8 @@ async function updateData() {
             // received graph
             graphdata_manydays_rcvd.value = many_days_data.dataset_rcvd;
             is_loading_rcvd_graph.value = false;
+            let stop_time = performance.now();
+            updateElapsed(stop_time - start_time);
             resolve(true);
         });
     };
@@ -249,6 +254,10 @@ function loadingDo(){
     is_loading_involved_table_senders.value = true;
     is_loading_sent_graph.value = true;
     is_loading_rcvd_graph.value = true;
+}
+
+function updateElapsed(elapsed) {
+    emit('updateElapsed', elapsed);
 }
 
 defineExpose({ updateData });

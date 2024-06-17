@@ -75,6 +75,10 @@
     "message": "Save",
     "description": ""
   },
+  "ExecutionTime": {
+    "message": "Execution time",
+    "description": ""
+  },
   "Setup": {
     "message": "Open options tab",
     "description": ""

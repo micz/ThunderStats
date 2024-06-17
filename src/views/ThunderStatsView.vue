@@ -19,12 +19,12 @@
 -->
 
 <template>
-    <HeadingNAV @chooseAccount="updateStats" ref="HeadingNAV_ref"/>
+    <HeadingNAV @chooseAccount="updateStats" :elapsed_time="elapsed_time" ref="HeadingNAV_ref"/>
   
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs">
         <tab id="tab-today" name="__MSG_Today__">
-            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_Today_ref" />
+            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_Today_ref" />
         </tab>
         <tab id="tab-yesterday" name="__MSG_Yesterday__">
           <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" ref="TAB_Yesterday_ref" />
@@ -70,6 +70,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   let accountEmails = ref([]);
   let _many_days_text = ref("");
   let cache_lifetime = ref(120000);
+  let elapsed_time = ref(0);
 
   var tsLog = null;
   let tsCore = null
@@ -171,6 +172,11 @@ import { tsUtils } from '@statslib/mzts-utils';
 
   function updateCustomQry() {
     updateStats(HeadingNAV_ref.value.getCurrentIdn());
+  }
+
+  function updateElapsed(elapsed) {
+    tsLog.log("updateElapsed: " + elapsed);
+    elapsed_time.value = elapsed;
   }
 
   </script>

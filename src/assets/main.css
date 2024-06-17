@@ -65,6 +65,13 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .bookmarkmenu{
   cursor: pointer;
 }
+.mzts-execution-time{
+  font-style: italic;
+  font-size: smaller;
+  position: absolute;
+  right: 46px;
+  top: 5px;
+}
 #customqry_menu{
   display: inline-block;
   position: relative;

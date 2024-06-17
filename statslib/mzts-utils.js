@@ -215,6 +215,44 @@ export const tsUtils = {
         }
         output = output.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
         return output;
-    }
+    },
 
+    convertToMilliseconds(timeStr) {
+        const parts = timeStr.split(' ');
+        const hours = parts[0].includes('h') ? parseInt(parts[0].slice(0, -1)) : 0;
+        const minutes = parts[1].includes('m') ? parseInt(parts[1].slice(0, -1)) : 0;
+        const seconds = parts[2].includes('s') ? parseInt(parts[2].slice(0, -1)) : 0;
+        const milliseconds = parts[3].includes('ms') ? parseInt(parts[3].slice(0, -2)) : 0;
+    
+        const totalMilliseconds = (hours * 3600000) + (minutes * 60000) + (seconds * 1000) + milliseconds;
+        return totalMilliseconds;
+    },
+
+    convertFromMilliseconds(milliseconds) {
+        const hours = Math.floor(milliseconds / 3600000);
+        const minutes = Math.floor((milliseconds % 3600000) / 60000);
+        const seconds = Math.floor((milliseconds % 60000) / 1000);
+        const remainingMilliseconds = milliseconds % 1000;
+        
+        let result = '';
+    
+        if (hours !== 0) {
+            result += hours + 'h ';
+        }
+    
+        if (minutes !== 0) {
+            result += minutes + 'm ';
+        }
+    
+        if (seconds !== 0) {
+            result += seconds + 's ';
+        }
+    
+        if (remainingMilliseconds !== 0) {
+            result += remainingMilliseconds + 'ms';
+        }
+    
+        return result.trim();
+    },
+  
 }

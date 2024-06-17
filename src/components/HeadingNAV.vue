@@ -23,6 +23,7 @@
 		  <div id="mzts-account-sel">__MSG_ChooseAccount__:
           <SelectAccount id="account_selector" @change="accountSelected()" v-model="current_account" ref="SelectAccount_ref"/>
 			<div id="mzts-btn-update"><button type="button" @click="update()">__MSG_Update__</button></div>
+      <div class="mzts-execution-time" v-if="is_loading">__MSG_ExecutionTime__: <span v-text="elapsed_time_string" v-if="elapsed_time != 0"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="elapsed_time == 0"/></div>
 		  </div>
 		<div id="mzts-setup_icon">
 			<img src="@/assets/images/mzts-setup.png" alt="__MSG_Setup__" title="__MSG_Setup__" class="tooltip" @click="openOptions()"/>
@@ -35,18 +36,32 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { TS_prefs } from "@statslib/mzts-options.js";
 import { tsStore } from "@statslib/mzts-store.js";
+import { tsUtils } from "@statslib/mzts-utils.js";
 import SelectAccount from './SelectAccount.vue';
 
 const emit = defineEmits(['chooseAccount']);
 
+const props = defineProps({
+  elapsed_time: { type: Number, default:0 },
+})
+
 let current_account = ref(0);
 let SelectAccount_ref = ref(null);
 
+let elapsed_time = computed(() => {
+  return props.elapsed_time;
+})
+
+let elapsed_time_string = computed(() => { console.log(">>>>>>>>>>>>>>>>>>>> props.elapsed_time: " + props.elapsed_time);
+  return tsUtils.convertFromMilliseconds(props.elapsed_time);
+})
+
 let tsLog = null;
+let is_loading = ref(false);
 
 onMounted(async () => {
   tsLog = new tsLogger("HeadingNAV", tsStore.do_debug);
@@ -58,12 +73,16 @@ onMounted(async () => {
 function update(){
   tsLog.log("update: " + current_account.value);
   emit('chooseAccount', current_account.value);
+  is_loading.value = true;
+  props.elapsed_time = 0;
 }
 
 async function accountSelected(){
   tsLog.log("accountSelected: " + current_account.value);
   if(await TS_prefs.getPref("load_data_changing_account")){
     emit('chooseAccount', current_account.value);
+    is_loading.value = true;
+    props.elapsed_time = 0;
   }
 }
 
@@ -81,6 +100,8 @@ function openOptions(){
 }
 
 function getCurrentIdn(){
+  is_loading.value = true;
+  props.elapsed_time = 0;
   return current_account.value;
 }
 

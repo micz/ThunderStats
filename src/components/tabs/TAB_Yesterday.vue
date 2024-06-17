@@ -70,6 +70,7 @@ import CounterInbox from '../counters/CounterInbox.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
+import { tsUtils } from '@statslib/mzts-utils';
 
 const props = defineProps({
     activeAccount: {
@@ -82,6 +83,7 @@ const props = defineProps({
     },
 });
 
+const emit = defineEmits(['updateElapsed']);
 
 let tsLog = null;
 var tsCore = null;
@@ -95,6 +97,11 @@ let no_mails_inbox = ref("");
 
 let do_progressive = true;
 let inbox0_openFolderInFirstTab = ref(false);
+
+let elapsed = {
+    'getInboxZeroData':0,
+    'getYesterdayData':0
+}
 
 let is_loading_counter_sent_rcvd = ref(true);
 let is_loading_yesterday_graph = ref(true);
@@ -224,6 +231,7 @@ async function updateData() {
             is_loading_involved_table_recipients.value = false;
             // inbox zero folders
             graphdata_inboxzero_folders.value = result_yesterday.folders;
+            updateElapsed('getYesterdayData', result_yesterday.elapsed);
             resolve(true);
         });
     };
@@ -243,6 +251,7 @@ async function updateData() {
             nextTick(() => {
                 is_loading_inbox_graph_dates.value = false;
             });
+            updateElapsed('getInboxZeroData', result_inbox.elapsed);
             resolve(true);
         });
     };
@@ -257,7 +266,20 @@ function loadingDo(){
     is_loading_counter_inbox.value = true;
     is_loading_inbox_graph_folders.value = true;
     is_loading_inbox_graph_dates.value = true;
+    elapsed = {
+            'getInboxZeroData':0,
+            'getYesterdayData':0
+        }
 }
+
+function updateElapsed(function_name, time) {
+    elapsed[function_name] = tsUtils.convertToMilliseconds(time);
+    const allNonZero = Object.values(elapsed).every(value => value !== 0);
+    if (allNonZero) {
+        emit('updateElapsed', Math.max(...Object.values(elapsed)));
+    }
+}
+
 
 defineExpose({ updateData });
 

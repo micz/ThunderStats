@@ -228,11 +228,11 @@
     "description": ""
   },
   "OtherInfoText_1": {
-    "message": "All the statistics are calculated from the internal Thunderbird database and are associated with the mail addresses of the selected account.",
+    "message": "All the statistics are calculated from the mails that are in the Thunderbird folders, associated with the mail addresses of the selected account.",
     "description": ""
   },
   "OtherInfoText_2b": {
-    "message": "The statistics will be updated as soon as the Thunderbird Indexer has processed all new messages. The dates in the top right corner show how up-to-date the statistics are.",
+    "message": "The statistics will be updated as soon as Thunderbird has updated the folders from the mail server.",
     "description": ""
   },
   "OtherInfoText_3": {

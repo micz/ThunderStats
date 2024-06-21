@@ -350,18 +350,31 @@ export const tsCoreUtils = {
         return account_emails.some(email => email.toLowerCase().endsWith("@gmail.com"));
     },
 
-    async getFilterDuplicatesPreference(account_id) {
-       if(account_id == 0) {
-          return await TS_prefs.getPref("filter_duplicates_multi_account");
-       } else {
-          let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
-        //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
-          let element = accounts_adv_settings.find(account => account.id == account_id);
-        //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
-          if(!element) return false;
-          return element.filter_duplicates || false;
-       }
-    },
+    async getIncludeArchivePreference(account_id) {
+        if(account_id == 0) {
+           return await TS_prefs.getPref("include_archive_multi_account");
+        } else {
+           let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+         //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
+           let element = accounts_adv_settings.find(account => account.id == account_id);
+         //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
+           if(!element) return true;
+           return element.include_archive === undefined ? true : element.include_archive;
+        }
+     },
+
+     async getFilterDuplicatesPreference(account_id) {
+        if(account_id == 0) {
+           return await TS_prefs.getPref("filter_duplicates_multi_account");
+        } else {
+           let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+         //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
+           let element = accounts_adv_settings.find(account => account.id == account_id);
+         //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
+           if(!element) return false;
+           return element.filter_duplicates || false;
+        }
+     },
 
 }
 

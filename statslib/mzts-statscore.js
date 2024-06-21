@@ -482,11 +482,7 @@ export class thunderStastsCore {
       
       // check if we have to include this message even if it is in a "archives" folder
       if(message.folder.specialUse && message.folder.specialUse.includes('archives')){
-        //  console.log(">>>>>>>>>>>>>>>> this.accounts_adv_settings: " + JSON.stringify(this.accounts_adv_settings));
-        //  console.log(">>>>>>>>>>>>>>>> this.accounts_adv_settings.find(account => account.id == account_id): " + JSON.stringify(this.accounts_adv_settings.find(account => account.id == account_id)));
-        let element = this.accounts_adv_settings.find(account => account.id == account_id); //TODO if account_id == 0 ???
-        if(!element) return true;
-        return !element.include_archive || false;
+        return !tsCoreUtils.getIncludeArchivePreference(account_id);
       }
 
       return false;

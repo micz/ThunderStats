@@ -32,17 +32,17 @@ export const tsDoughnutLabelsLine = {
       const centerY = doughnutMeta.controller.chart.chartArea.top + (doughnutMeta.controller.chart.chartArea.bottom - doughnutMeta.controller.chart.chartArea.top) / 2;
 
       chart.data.datasets.forEach((dataset, i) => {
-        let onlyOne = (chart.getDatasetMeta(i).data.length == 1);
+        //let onlyOne = (chart.getDatasetMeta(i).data.length == 1);
         chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
           const { x: a, y: b } = datapoint.tooltipPosition();
-          let x = 127.5;
-          let y = 155;
+          // let x = 127.5;
+          // let y = 155;
 
-          if(!onlyOne) {
+          // if(!onlyOne) {
             const { newX, newY } = moveTooltipPoint(centerX, centerY, a, b, thickness / 2);
-            x = newX;
-            y = newY;
-          }
+            let x = newX;
+            let y = newY;
+          // }
 
           // draw line
           const halfwidth = width / 2;

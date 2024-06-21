@@ -270,6 +270,7 @@ export const tsCoreUtils = {
         for (let account of accounts) {
           output.push({ id: account.id, name: account.name });
         }
+        output = output.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
         return output;
     },
 

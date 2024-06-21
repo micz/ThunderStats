@@ -595,6 +595,10 @@
     "message": "Filter duplicate messages when multiple accounts are selected",
     "description": ""
   },
+  "prefs_include_archive_multi_account": {
+    "message": "Include archives when multiple accounts are selected",
+    "description": ""
+  },
   "prefsInfoTitle": {
     "message": "Important Information",
     "description": ""

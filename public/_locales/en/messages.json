@@ -636,7 +636,7 @@
     "description": ""
   },
   "AdvancedAccountList_Desc": {
-    "message": "Some email providers, such as Gmail, have an \"Archive\" folder that contains all messages. However, the same messages are also present in individual folders. Considering the \"Archive\" folders in the statistics could lead to counting them twice. Below, you can choose to ignore the archive folders or filter out the duplicate messages. Filtering messages will increase the time required to calculate the statistics, but it will yield better results. If you do not use Gmail's archiving function, you can choose not to activate this feature and simply exclude the archive folders directly.",
+    "message": "Some email providers, such as Gmail, have an \"Archive\" folder that contains all messages. However, the same messages are also present in individual folders. Considering the \"Archive\" folders in the statistics could lead to counting them twice. Below, you can choose to ignore the archive folders or filter out the duplicate messages. Filtering messages will increase the time required to calculate the statistics, but it will yield better results. If you do not use Gmail's archiving function, you can choose not to activate this feature and simply exclude the archive folders directly. The Inbox Zero folder locations chart will always display all emails. Therefore, if an email is received and appears in two folders, it will be shown in both folders on the chart.",
     "description": ""
   }
 }

@@ -90,16 +90,16 @@ export class thunderStastsCore {
     }
 
     // ================ TODAY TAB =====================
-    async getToday(account_id = 0, account_emails = [], filter_duplicate = false) {
+    async getToday(account_id = 0, account_emails = [], filter_duplicates = false) {
 
       let lastMidnight = new Date();
       lastMidnight.setHours(0, 0, 0, 0);
       //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
 
-      return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails, filter_duplicate);
+      return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails, filter_duplicates);
     }
 
-    async getToday_YesterdayData(account_id = 0, account_emails = [], count_data_to_current_time = true, filter_duplicate = false) {
+    async getToday_YesterdayData(account_id = 0, account_emails = [], count_data_to_current_time = true, filter_duplicates = false) {
 
       let yesterday_midnight = new Date();
       yesterday_midnight.setDate(yesterday_midnight.getDate() - 1);
@@ -115,10 +115,10 @@ export class thunderStastsCore {
       // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
       // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
 
-      return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicate);
+      return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates);
     }
 
-    async getToday_manyDaysData(account_id = 0, account_emails = [], filter_duplicate = false) {
+    async getToday_manyDaysData(account_id = 0, account_emails = [], filter_duplicates = false) {
 
       let fromDate = new Date();
       let start_date = fromDate.getDate() - this._many_days; // we get 7 days without today
@@ -131,12 +131,12 @@ export class thunderStastsCore {
 
       this.tsLog.log("[getToday_manyDaysData] fromDate: " + fromDate + " - toDate: " + toDate);
 
-      return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicate);
+      return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates);
      }
     // ================ TODAY TAB - END =====================
 
     // ================ YESTERDAY TAB =====================
-    async getYesterday(account_id = 0, account_emails = [], filter_duplicate = false) {
+    async getYesterday(account_id = 0, account_emails = [], filter_duplicates = false) {
 
       let yesterdayMidnight = new Date();
       yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
@@ -148,12 +148,12 @@ export class thunderStastsCore {
       // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
       // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
 
-      return this.getFullStatsData(yesterdayMidnight, lastMidnight, account_id, account_emails, filter_duplicate);
+      return this.getFullStatsData(yesterdayMidnight, lastMidnight, account_id, account_emails, filter_duplicates);
     }
     // ================ YESTERDAY TAB - END =====================
 
     // ================ MANY DAYS TAB =====================
-    async getManyDaysData(account_id = 0, account_emails = [], filter_duplicate = false) {
+    async getManyDaysData(account_id = 0, account_emails = [], filter_duplicates = false) {
 
       let fromDate = new Date();
       let start_date = fromDate.getDate() - this._many_days; // we get 7 days + today
@@ -164,24 +164,24 @@ export class thunderStastsCore {
       toDate.setDate(stop_date);
       toDate.setHours(23, 59, 59, 999);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicate);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
     // ================ MANY DAYS TAB - END =====================
 
     // ================ CUSTOM QUERY TAB =====================
-    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicate = false) {
+    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicates = false) {
 
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicate);   // the "true" is to aggregate
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates);   // the "true" is to aggregate
     }
     // ================ CUSTOM QUERY TAB - END =====================
 
     // ================ BASE METHODS ========================
-    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicate = false) {
+    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false) {
 
-      filter_duplicate= true; // for testing
+      filter_duplicates= true; // for testing
 
       let start_time = performance.now();
 
@@ -234,14 +234,14 @@ export class thunderStastsCore {
             }
           }
           //console.log(">>>>>>>>>>>>>>>> message.folder: " + JSON.stringify(message.folder));
-          if(filter_duplicate){
-            // console.log(">>>>>>>>>>>>>> filter_duplicate: message.headerMessageId: " + message.headerMessageId);
+          if(filter_duplicates){
+            // console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
             if(messages_hash.has(message.headerMessageId)){ 
-              // console.log(">>>>>>>>>>>>>> filter_duplicate: found message.headerMessageId: " + message.headerMessageId);
+              // console.log(">>>>>>>>>>>>>> filter_duplicates: found message.headerMessageId: " + message.headerMessageId);
               continue;
             }
             messages_hash.set(message.headerMessageId, true);
-            // console.log(">>>>>>>>>>>>>> filter_duplicate: size: " + messages_hash.size);
+            // console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
           }
           // dates
           let date_message_string = tsUtils.dateToYYYYMMDD(message.date);
@@ -331,9 +331,9 @@ export class thunderStastsCore {
     }
 
 
-    async getCountStatsData(fromDate, toDate, account_id = 0, account_emails = [], count_data_to_current_time = true, filter_duplicate = false) {
+    async getCountStatsData(fromDate, toDate, account_id = 0, account_emails = [], count_data_to_current_time = true, filter_duplicates = false) {
 
-      //filter_duplicate = true; // to test
+      //filter_duplicates = true; // to test
 
       let start_time = performance.now();
 
@@ -362,16 +362,16 @@ export class thunderStastsCore {
       }
 
       for await (let message of messages) {
-        //console.log(">>>>>>>>>>>>>> filter_duplicate: iterating message.headerMessageId: " + message.headerMessageId);
+        //console.log(">>>>>>>>>>>>>> filter_duplicates: iterating message.headerMessageId: " + message.headerMessageId);
           if(this.excludeMessage(message,account_id)) continue;
-          if(filter_duplicate){
-            //console.log(">>>>>>>>>>>>>> filter_duplicate: message.headerMessageId: " + message.headerMessageId);
+          if(filter_duplicates){
+            //console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
             if(messages_hash.has(message.headerMessageId)){ 
-              //console.log(">>>>>>>>>>>>>> filter_duplicate: found message.headerMessageId: " + message.headerMessageId);
+              //console.log(">>>>>>>>>>>>>> filter_duplicates: found message.headerMessageId: " + message.headerMessageId);
               continue;
             }
             messages_hash.set(message.headerMessageId, true);
-            //console.log(">>>>>>>>>>>>>> filter_duplicate: size: " + messages_hash.size);
+            //console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
           }
           //this.tsLog.log("message: " + JSON.stringify(message));
           let now = new Date();
@@ -406,9 +406,9 @@ export class thunderStastsCore {
       return {sent: sent, received: received, count: count, msg_hours: msg_hours, elapsed: stop_time - start_time};
     }
 
-     async getAggregatedStatsData(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicate = false) {
+     async getAggregatedStatsData(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicates = false) {
 
-      //filter_duplicate = true; // to test
+      //filter_duplicates = true; // to test
 
       let start_time = performance.now();
 
@@ -436,14 +436,14 @@ export class thunderStastsCore {
       for await (let message of messages) {
           if(this.excludeMessage(message,account_id)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
-          if(filter_duplicate){
-            // console.log(">>>>>>>>>>>>>> filter_duplicate: message.headerMessageId: " + message.headerMessageId);
+          if(filter_duplicates){
+            // console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
             if(messages_hash.has(message.headerMessageId)){ 
-              // console.log(">>>>>>>>>>>>>> filter_duplicate: found message.headerMessageId: " + message.headerMessageId);
+              // console.log(">>>>>>>>>>>>>> filter_duplicates: found message.headerMessageId: " + message.headerMessageId);
               continue;
             }
             messages_hash.set(message.headerMessageId, true);
-            // console.log(">>>>>>>>>>>>>> filter_duplicate: size: " + messages_hash.size);
+            // console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
           }
           let date_message = new Date(message.date);
           let day_message = tsUtils.dateToYYYYMMDD(date_message);

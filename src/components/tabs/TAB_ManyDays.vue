@@ -147,7 +147,7 @@ async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    let include_archive = await TS_prefs.getPref("include_archive_accounts");
+    let include_archive = await TS_prefs.getPref("accounts_adv_settings");
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, include_archive: include_archive});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     await Promise.all([getManyDaysData()]);

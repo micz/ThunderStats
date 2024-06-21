@@ -76,6 +76,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   let tsCore = null
   let remember_last_tab = false;
   let always_reload_tab_data = false;
+  let mounted_ok = false;
 
   let stats_done = {
     "tab-today": false,
@@ -98,6 +99,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   }
 
   onBeforeMount(async () => {
+    // console.log(">>>>>>>>>>>> ThunderStatsView onBeforeMount");
     tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     TS_prefs.logger = tsLog;
     remember_last_tab = await TS_prefs.getPref("remember_last_tab");
@@ -117,6 +119,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   });
 
   onMounted(async () => {
+    // console.log(">>>>>>>>>>>> ThunderStatsView onMounted");
     remember_last_tab = await TS_prefs.getPref("remember_last_tab");
     if(!remember_last_tab) { statsTabs.value.selectTab('#tab-today'); }
     let _many_days = await TS_prefs.getPref("_many_days");
@@ -124,10 +127,12 @@ import { tsUtils } from '@statslib/mzts-utils';
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     i18n.updateDocument();
     updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
+    mounted_ok = true;
   });
   
 
   async function updateStats(account_id) {
+    // console.log(">>>>>>>>>>>> ThunderStatsView updateStats");
     if(tsLog == null) {
       tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     }
@@ -160,6 +165,8 @@ import { tsUtils } from '@statslib/mzts-utils';
   }
 
   async function tabChanged(id) {
+    // console.log(">>>>>>>>>>>> ThunderStatsView tabChanged");
+    if(!mounted_ok) { return; }
     elapsed_time.value = 0;
     // console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
     // console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));

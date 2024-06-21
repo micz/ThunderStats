@@ -24,6 +24,7 @@
         <span id="yesterday_date" class="list_heading_date" v-html="yesterday_date"></span></div>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_yesterday_sent" :_rcvd="counter_yesterday_rcvd" />
         <div id="yesterday_spacing"></div>
+        <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <GraphYesterday :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_graph" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
@@ -70,7 +71,7 @@ import CounterInbox from '../counters/CounterInbox.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
-import { tsUtils } from '@statslib/mzts-utils';
+import CounterManyDays_Table from '../counters/CounterManyDays_Table.vue';
 
 const props = defineProps({
     activeAccount: {
@@ -99,6 +100,7 @@ let do_progressive = true;
 let inbox0_openFolderInFirstTab = ref(false);
 
 let elapsed = {
+    'getManyDaysData':0,
     'getInboxZeroData':0,
     'getYesterdayData':0
 }
@@ -110,9 +112,16 @@ let is_loading_involved_table_senders = ref(true);
 let is_loading_counter_inbox = ref(true);
 let is_loading_inbox_graph_folders = ref(true);
 let is_loading_inbox_graph_dates = ref(true);
+let is_loading_counter_many_days = ref(true);
 
 let counter_yesterday_sent = ref(0);
 let counter_yesterday_rcvd = ref(0);
+let counter_many_days_sent_max = ref(0);
+let counter_many_days_sent_min = ref(0);
+let counter_many_days_sent_avg = ref(0);
+let counter_many_days_rcvd_max = ref(0);
+let counter_many_days_rcvd_min = ref(0);
+let counter_many_days_rcvd_avg = ref(0);
 
 let table_involved_recipients = ref([]);
 let table_involved_senders = ref([]);
@@ -167,6 +176,7 @@ async function updateData() {
     let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
+    getManyDaysData();
     getInboxZeroData();
     await Promise.all([getYesterdayData()]);
     tsLog.log("graphdata_yesterday_hours_sent.value: " + JSON.stringify(graphdata_yesterday_hours_sent.value));
@@ -256,7 +266,22 @@ async function updateData() {
         });
     };
 
-
+    // get 7 days data
+    async function getManyDaysData () {
+        return new Promise(async (resolve) => {
+            let result_many_days = await tsCore.getToday_manyDaysData(props.activeAccount, props.accountEmails);
+            tsLog.log("result_today_manydays_data: " + JSON.stringify(result_many_days, null, 2));
+            counter_many_days_rcvd_max.value = result_many_days.aggregate.max_received;
+            counter_many_days_rcvd_min.value = result_many_days.aggregate.min_received;
+            counter_many_days_rcvd_avg.value = result_many_days.aggregate.avg_received;
+            counter_many_days_sent_max.value = result_many_days.aggregate.max_sent;
+            counter_many_days_sent_min.value = result_many_days.aggregate.min_sent;
+            counter_many_days_sent_avg.value = result_many_days.aggregate.avg_sent;
+            is_loading_counter_many_days.value = false;
+            updateElapsed('getManyDaysData', result_many_days.elapsed);
+            resolve(true);
+        });
+    };
 
 function loadingDo(){
     is_loading_counter_sent_rcvd.value = true;
@@ -266,7 +291,9 @@ function loadingDo(){
     is_loading_counter_inbox.value = true;
     is_loading_inbox_graph_folders.value = true;
     is_loading_inbox_graph_dates.value = true;
+    is_loading_counter_many_days.value = true;
     elapsed = {
+            'getManyDaysData':0,
             'getInboxZeroData':0,
             'getYesterdayData':0
         }

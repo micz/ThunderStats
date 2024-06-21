@@ -34,7 +34,7 @@
 #mzts-updates{float:right;font-size:0.75em;align-items:center;height:28px;text-align:right;margin-top:-1px;position:absolute;right:32px;z-index:102;}
 #mzts-last_run{float:left;width:100%;}
 #mzts-last_msg{float:left;width:100%;margin-top:-3px;}
-#yesterday_spacing{height:7.85vw;}
+#yesterday_spacing{height:0.85vw;}
 
 table.mzts-tinvolved{width:100%;text-align:right;}
 table.mzts-tinvolved tr.mzts-thead{padding:2px;font-weight:bold;background:steelblue;color:#bae0fa;}

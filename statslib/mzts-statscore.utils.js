@@ -17,6 +17,7 @@
  */
 
 import { tsUtils } from "./mzts-utils";
+import { TS_prefs } from "./mzts-options";
 
 export const tsCoreUtils = {
 
@@ -270,7 +271,57 @@ export const tsCoreUtils = {
           output.push({ id: account.id, name: account.name });
         }
         return output;
-    }
+    },
+
+    async getAccountEmails(account_id = 0, no_custom_identities = false) {
+        let accounts = await browser.accounts.list();
+        let account_emails = [];
+  
+        if(account_id == 0) {
+          for (let account of accounts) {
+              for (let identity of account.identities) {
+                  account_emails.push(identity.email);
+              }
+          }
+          if(!no_custom_identities) {
+            let custom_ids = await this.getAccountCustomIdentities();
+            for(let cids_account in custom_ids) {
+              // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account: " + JSON.stringify(cids_account));
+              custom_ids[cids_account].forEach(element => {
+                // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account element: " + JSON.stringify(element));
+                account_emails.push(element);
+              });
+            }
+          }
+        }else{
+          for (let account of accounts) {
+            if(account.id == account_id) {
+              for (let identity of account.identities) {
+                account_emails.push(identity.email);
+              }
+              if(!no_custom_identities) {
+                let custom_ids = await this.getAccountCustomIdentities(account_id);
+                for(let custom_id in custom_ids) {
+                  account_emails.push(custom_ids[custom_id]);
+                }
+              }
+            }
+          }
+        }
+
+        return account_emails;
+    },
+
+    async getAccountCustomIdentities(account_id = 0) {
+        let prefCustomIds = await TS_prefs.getPref("custom_identities");
+        // console.log(">>>>>>>>>>>>> getAccountCustomIdentities prefCustomIds: " + JSON.stringify(prefCustomIds));
+        if(account_id == 0){ return prefCustomIds; }
+        if(prefCustomIds.hasOwnProperty(account_id)){
+          return prefCustomIds[account_id];
+        } else {
+            return {};
+        }
+    },
 
 }
 

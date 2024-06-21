@@ -591,6 +591,10 @@
     "message": "Reload data when changing the account",
     "description": ""
   },
+  "prefs_filter_duplicates_multi_account": {
+    "message": "Filter duplicate messages when multiple accounts are selected",
+    "description": ""
+  },
   "prefsInfoTitle": {
     "message": "Important Information",
     "description": ""

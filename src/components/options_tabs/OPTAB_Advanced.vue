@@ -80,6 +80,14 @@
       </td>
     </tr>
     <tr>
+      <td>
+        <label><input type="checkbox" id="filter_duplicates_multi_account" name="filter_duplicates_multi_account" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_filter_duplicates_multi_account__</span></label>
+      </td>
+    </tr>
+    <tr>
       <td colspan="2">
         <AdvancedAccountList :accounts="accounts_adv_settings" ref="AccountList_ref" @updateAccounts="accountListChanged"/>
       </td>

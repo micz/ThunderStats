@@ -323,6 +323,32 @@ export const tsCoreUtils = {
         }
     },
 
+    async mergeAccountsAdvSettings(accounts, accounts_adv_settings) {
+        let output = [];
+        for(let account of accounts) {
+            let include_archive = true;
+            let filter_duplicates = await this.getAccountFilterDuplicatesOption(account);
+            if(accounts_adv_settings.length >= 0) {
+                include_archive = accounts_adv_settings.find(element => element.id === account.id)?.include_archive || true;
+                filter_duplicates = accounts_adv_settings.find(element => element.id === account.id)?.filter_duplicates || await this.getAccountFilterDuplicatesOption(account);
+            }
+            output.push({
+                id: account.id,
+                name: account.name,
+                include_archive: include_archive || true,
+                filter_duplicates: filter_duplicates || await this.getAccountFilterDuplicatesOption(account)
+            });
+        }
+        output = output.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
+        return output;
+    },
+
+    async getAccountFilterDuplicatesOption(account){
+        let account_emails = await this.getAccountEmails(account.id,true);
+        console.log(">>>>>>>>>>>>> getAccountFilterDuplicatesOption account_emails: " + JSON.stringify(account_emails));
+        return account_emails.some(email => email.toLowerCase().endsWith("@gmail.com"));
+    },
+
 }
 
 const inboxZeroColors = [

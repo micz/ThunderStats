@@ -4,17 +4,26 @@
         <tr>
           <th style="text-align:left;">__MSG_Account__</th>
           <th>__MSG_IncludeArchive__</th>
+          <th>__MSG_FilterDuplicateMessages__</th>
         </tr>
         <tr v-for="account in accounts" :key="account.accountID" class="checkbox-item">
           <td>
-            <label :for="account.accountID"><span class="dims_label" @click="toggle_options">{{ account.name }}</span></label>
+            <label :for="account.accountID"><span class="dims_label">{{ account.name }}</span></label>
           </td>
           <td class="td_checkbox">
             <input
               type="checkbox"
               :id="account.id"
               :checked="account.include_archive"
-              @change="updateCheckbox(account.id, $event)"
+              @change="updateCheckbox(account.id, $event, 'include_archive')"
+            />
+          </td>
+          <td class="td_checkbox">
+            <input
+              type="checkbox"
+              :id="account.id"
+              :checked="account.filter_duplicates"
+              @change="updateCheckbox(account.id, $event, 'filter_duplicates')"
             />
           </td>
         </tr>
@@ -33,7 +42,7 @@
     },
   });
 
-  const emit = defineEmits(['updateIncludeArchive']);
+  const emit = defineEmits(['updateAccounts']);
   
   // Local state
   const localAccounts = ref([...props.accounts]);
@@ -47,21 +56,15 @@
   );
   
   // Update checkbox state
-  const updateCheckbox = (accountID, event) => {
+  const updateCheckbox = (accountID, event, type) => {
     const index = localAccounts.value.findIndex((acc) => acc.id === accountID);
     if (index !== -1) {
-      localAccounts.value[index].include_archive = event.target.checked;
-      emit('updateIncludeArchive', localAccounts.value);
+      localAccounts.value[index][type] = event.target.checked;
+      emit('updateAccounts', localAccounts.value);
     }
   };
 
-  function toggle_options(e) {
-    let row = e.target.closest('tr');
-    let checkbox = row.querySelector('input[type="checkbox"]');
-    checkbox.checked = !checkbox.checked;
-    checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
-  }
-  </script>
+ </script>
   
   <style scoped>
   .checkbox-container {

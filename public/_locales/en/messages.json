@@ -619,16 +619,20 @@
     "message": "Inbox Zero Graph",
     "description": ""
   },
-  "IncludeArchiveFolders": {
-    "message": "Include Archive folders",
+  "AdvancedAccountList": {
+    "message": "Account List Advanced Settings",
     "description": ""
   },
   "IncludeArchive": {
     "message": "Include Archive",
     "description": ""
   },
-  "IncludeArchiveFolders_Desc": {
-    "message": "Some email providers, such as Gmail, have an \"Archive\" folder that contains all messages. However, the same messages are also present in individual folders. ThunderStats is not considering \"Archive\" folders in the statistics, otherwise, they would be counted twice. Below, by selecting the flag for an account, you can set it so that messages in the archive folders are also counted in the statistics.",
+  "FilterDuplicateMessages": {
+    "message": "Filter duplicate messages",
+    "description": ""
+  },
+  "AdvancedAccountList_Desc": {
+    "message": "Some email providers, such as Gmail, have an \"Archive\" folder that contains all messages. However, the same messages are also present in individual folders. Considering the \"Archive\" folders in the statistics could let to count them twice. could lead to counting them twice. Below, you can choose to ignore the archive folders or filter out the duplicate messages. Filtering messages will increase the time required to calculate the statistics, but it will yield better results. If you do not use Gmail's archiving function, you can choose not to activate this feature and simply exclude the archive folders directly.",
     "description": ""
   }
 }

@@ -195,20 +195,6 @@ export const tsUtils = {
         return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     },
 
-    mergeAccountsIncludeArchive(accounts, include_archive_accounts) {
-        let output = [];
-        for(let account of accounts) {
-            let include_archive = include_archive_accounts.find(element => element.id === account.id)?.include_archive || false;
-            output.push({
-                id: account.id,
-                name: account.name,
-                include_archive: include_archive || false
-            });
-        }
-        output = output.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
-        return output;
-    },
-
     // convertToMilliseconds(timeStr) {
     //     const parts = timeStr.split(' ');
     //     const hours = parts[0].includes('h') ? parseInt(parts[0].slice(0, -1)) : 0;

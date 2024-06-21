@@ -72,16 +72,16 @@
     </table>
     <table class="miczPrefs">
     <tr>
-      <td colspan="2" class="grouptitle">__MSG_IncludeArchiveFolders__
+      <td colspan="2" class="grouptitle">__MSG_AdvancedAccountList__
       </td>
     </tr>
     <tr>
-      <td colspan="2">__MSG_IncludeArchiveFolders_Desc__
+      <td colspan="2">__MSG_AdvancedAccountList_Desc__
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <IncludeArchiveAccountList :accounts="include_archive_accounts" ref="AccountList_ref" @updateIncludeArchive="accountListChanged"/>
+        <AdvancedAccountList :accounts="accounts_adv_settings" ref="AccountList_ref" @updateAccounts="accountListChanged"/>
       </td>
     </tr>
     </table>
@@ -130,13 +130,13 @@
   import { TS_prefs } from "@statslib/mzts-options";
   import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
   import { tsUtils } from '@statslib/mzts-utils';
-  import IncludeArchiveAccountList from '../IncludeArchiveAccountList.vue';
+  import AdvancedAccountList from '../AdvancedAccountList.vue';
 
   const emit = defineEmits(['new_changes']);
 
   let tsLog = null;
   let new_changes = ref(false);
-  let include_archive_accounts = ref([]);
+  let accounts_adv_settings = ref([]);
 
   onMounted(async () => {
     tsLog = new tsLogger("OPTAB_Advanced", tsStore.do_debug);
@@ -145,10 +145,10 @@
       input.addEventListener('change', somethingChanged);
     });
     document.getElementById('first_day_week').addEventListener('change', somethingChanged);
-    let archive_accounts = await TS_prefs.getPref("include_archive_accounts");
+    let archive_accounts = await TS_prefs.getPref("accounts_adv_settings");
     let all_accounts = await tsCoreUtils.getAccountsList();
-    include_archive_accounts.value = tsUtils.mergeAccountsIncludeArchive(all_accounts, archive_accounts);
-    tsLog.log("include_archive_accounts: " + JSON.stringify(include_archive_accounts.value));
+    accounts_adv_settings.value = await tsCoreUtils.mergeAccountsAdvSettings(all_accounts, archive_accounts);
+    tsLog.log("accounts_adv_settings: " + JSON.stringify(accounts_adv_settings.value));
     tsLog.log("onMounted");
   });
   
@@ -175,7 +175,7 @@
   }
 
   function accountListChanged(accountsList) {
-    TS_prefs.setPref("include_archive_accounts", accountsList);
+    TS_prefs.setPref("accounts_adv_settings", accountsList);
     somethingChanged();
   }
   

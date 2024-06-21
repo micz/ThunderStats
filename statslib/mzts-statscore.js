@@ -36,7 +36,6 @@ export class thunderStastsCore {
     this._involved_num = options.hasOwnProperty('_involved_num') ? options._involved_num : 10;
     this._many_days = options.hasOwnProperty('_many_days') ? options._many_days : 7;
     this.include_archive = options.hasOwnProperty('include_archive') ? options.include_archive : [];
-    // this.include_archive = await TS_prefs.getPref("include_archive_accounts");
   }
 
     async getAccountEmails(account_id = 0, no_custom_identities = false) {
@@ -47,16 +46,18 @@ export class thunderStastsCore {
     }
 
     // ================ TODAY TAB =====================
-    async getToday(account_id = 0, account_emails = [], filter_duplicates = false) {
+    async getToday(account_id = 0, account_emails = []) {
 
       let lastMidnight = new Date();
       lastMidnight.setHours(0, 0, 0, 0);
       //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
 
+      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
       return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails, filter_duplicates);
     }
 
-    async getToday_YesterdayData(account_id = 0, account_emails = [], count_data_to_current_time = true, filter_duplicates = false) {
+    async getToday_YesterdayData(account_id = 0, account_emails = [], count_data_to_current_time = true) {
 
       let yesterday_midnight = new Date();
       yesterday_midnight.setDate(yesterday_midnight.getDate() - 1);
@@ -72,10 +73,12 @@ export class thunderStastsCore {
       // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
       // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
 
+      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
       return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates);
     }
 
-    async getToday_manyDaysData(account_id = 0, account_emails = [], filter_duplicates = false) {
+    async getToday_manyDaysData(account_id = 0, account_emails = []) {
 
       let fromDate = new Date();
       let start_date = fromDate.getDate() - this._many_days; // we get 7 days without today
@@ -88,12 +91,14 @@ export class thunderStastsCore {
 
       this.tsLog.log("[getToday_manyDaysData] fromDate: " + fromDate + " - toDate: " + toDate);
 
+      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
       return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates);
      }
     // ================ TODAY TAB - END =====================
 
     // ================ YESTERDAY TAB =====================
-    async getYesterday(account_id = 0, account_emails = [], filter_duplicates = false) {
+    async getYesterday(account_id = 0, account_emails = []) {
 
       let yesterdayMidnight = new Date();
       yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
@@ -105,12 +110,14 @@ export class thunderStastsCore {
       // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
       // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
 
+      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
       return this.getFullStatsData(yesterdayMidnight, lastMidnight, account_id, account_emails, filter_duplicates);
     }
     // ================ YESTERDAY TAB - END =====================
 
     // ================ MANY DAYS TAB =====================
-    async getManyDaysData(account_id = 0, account_emails = [], filter_duplicates = false) {
+    async getManyDaysData(account_id = 0, account_emails = []) {
 
       let fromDate = new Date();
       let start_date = fromDate.getDate() - this._many_days; // we get 7 days + today
@@ -121,15 +128,19 @@ export class thunderStastsCore {
       toDate.setDate(stop_date);
       toDate.setHours(23, 59, 59, 999);
 
+      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
     // ================ MANY DAYS TAB - END =====================
 
     // ================ CUSTOM QUERY TAB =====================
-    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicates = false) {
+    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = []) {
 
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
+
+      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates);   // the "true" is to aggregate
     }
@@ -137,8 +148,6 @@ export class thunderStastsCore {
 
     // ================ BASE METHODS ========================
     async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false) {
-
-      filter_duplicates= true; // for testing
 
       let start_time = performance.now();
 
@@ -473,7 +482,7 @@ export class thunderStastsCore {
       if(message.folder.specialUse && message.folder.specialUse.includes('archives')){
         // console.log(">>>>>>>>>>>>>>>> include_archive: " + JSON.stringify(this.include_archive));
         // console.log(">>>>>>>>>>>>>>>> this.include_archive.find(account => account.id == account_id): " + JSON.stringify(this.include_archive.find(account => account.id == account_id)));
-        let element = this.include_archive.find(account => account.id == account_id);
+        let element = this.include_archive.find(account => account.id == account_id); //TODO if account_id == 0 ???
         if(!element) return true;
         return !element.include_archive || false;
       }

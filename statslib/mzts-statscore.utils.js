@@ -327,26 +327,37 @@ export const tsCoreUtils = {
         let output = [];
         for(let account of accounts) {
             let include_archive = true;
-            let filter_duplicates = await this.getAccountFilterDuplicatesOption(account);
+            let filter_duplicates = await this.getDefaultAccountFilterDuplicatesOption(account);
             if(accounts_adv_settings.length >= 0) {
                 include_archive = accounts_adv_settings.find(element => element.id === account.id)?.include_archive || true;
-                filter_duplicates = accounts_adv_settings.find(element => element.id === account.id)?.filter_duplicates || await this.getAccountFilterDuplicatesOption(account);
+                filter_duplicates = accounts_adv_settings.find(element => element.id === account.id)?.filter_duplicates || await this.getDefaultAccountFilterDuplicatesOption(account);
             }
             output.push({
                 id: account.id,
                 name: account.name,
                 include_archive: include_archive || true,
-                filter_duplicates: filter_duplicates || await this.getAccountFilterDuplicatesOption(account)
+                filter_duplicates: filter_duplicates || await this.getDefaultAccountFilterDuplicatesOption(account)
             });
         }
         output = output.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
         return output;
     },
 
-    async getAccountFilterDuplicatesOption(account){
+    async getDefaultAccountFilterDuplicatesOption(account){
         let account_emails = await this.getAccountEmails(account.id,true);
-        console.log(">>>>>>>>>>>>> getAccountFilterDuplicatesOption account_emails: " + JSON.stringify(account_emails));
+        console.log(">>>>>>>>>>>>> getDefaultAccountFilterDuplicatesOption account_emails: " + JSON.stringify(account_emails));
         return account_emails.some(email => email.toLowerCase().endsWith("@gmail.com"));
+    },
+
+    async getFilterDuplicatesPreference(account_id) {
+       if(account_id == 0) {
+          return await TS_prefs.getPref("filter_duplicates_multi_account");
+       } else {
+          let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+          let element = accounts_adv_settings.find(account => account.id == account_id);
+        if(!element) return false;
+        return element.filter_duplicates || false;
+       }
     },
 
 }

@@ -54,7 +54,7 @@ export class thunderStastsCore {
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      console.log(">>>>>>>> [getToday] filter_duplicates: " + filter_duplicates);
+      // console.log(">>>>>>>> [getToday] filter_duplicates: " + filter_duplicates);
 
       return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
@@ -152,7 +152,7 @@ export class thunderStastsCore {
     async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false) {
 
       let start_time = performance.now();
-      console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
+      // console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
       let messages_hash = new Map();
 
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));

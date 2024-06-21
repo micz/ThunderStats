@@ -111,7 +111,9 @@ import { tsUtils } from '@statslib/mzts-utils';
     }
     // console.log(">>>>>>>>>>>>>>>>> cache_lifetime: " + cache_lifetime.value);
     // console.log(">>>>>>>>>>>>>>>>> tabs-storage-key: " + JSON.stringify(localStorage.getItem('tabs-storage-key')));
-    tsStore.darkmode = tsUtils.isDarkMode();
+    if(tsStore.darkmode === undefined) {
+      tsStore.darkmode = tsUtils.isDarkMode();
+    }
   });
 
   onMounted(async () => {

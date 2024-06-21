@@ -27,7 +27,7 @@ export class thunderStastsCore {
   do_debug = false;
   _involved_num = 10;
   _many_days = 7;
-  include_archive = [];
+  accounts_adv_settings = [];
 
   constructor(options = {}) {
     this.do_debug = options.hasOwnProperty('do_debug') ? options.do_debug : false;
@@ -35,7 +35,7 @@ export class thunderStastsCore {
     TS_prefs.logger = this.tsLog;
     this._involved_num = options.hasOwnProperty('_involved_num') ? options._involved_num : 10;
     this._many_days = options.hasOwnProperty('_many_days') ? options._many_days : 7;
-    this.include_archive = options.hasOwnProperty('include_archive') ? options.include_archive : [];
+    this.accounts_adv_settings = options.hasOwnProperty('accounts_adv_settings') ? options.accounts_adv_settings : [];
   }
 
     async getAccountEmails(account_id = 0, no_custom_identities = false) {
@@ -480,11 +480,11 @@ export class thunderStastsCore {
       
       // check if we have to include this message even if it is in a "archives" folder
       if(message.folder.specialUse && message.folder.specialUse.includes('archives')){
-        // console.log(">>>>>>>>>>>>>>>> include_archive: " + JSON.stringify(this.include_archive));
-        // console.log(">>>>>>>>>>>>>>>> this.include_archive.find(account => account.id == account_id): " + JSON.stringify(this.include_archive.find(account => account.id == account_id)));
-        let element = this.include_archive.find(account => account.id == account_id); //TODO if account_id == 0 ???
+        // console.log(">>>>>>>>>>>>>>>> accounts_adv_settings: " + JSON.stringify(this.accounts_adv_settings));
+        // console.log(">>>>>>>>>>>>>>>> this.accounts_adv_settings.find(account => account.id == account_id): " + JSON.stringify(this.accounts_adv_settings.find(account => account.id == account_id)));
+        let element = this.accounts_adv_settings.find(account => account.id == account_id); //TODO if account_id == 0 ???
         if(!element) return true;
-        return !element.include_archive || false;
+        return !element.accounts_adv_settings || false;
       }
 
       return false;

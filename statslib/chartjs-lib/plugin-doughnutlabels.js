@@ -60,7 +60,7 @@ export const tsDoughnutLabelsLine = {
           ctx.lineTo(xLine, yLine);
           ctx.lineTo(xLine + extraLine, yLine);
           // ctx.strokeStyle = dataset.backgroundColor[index];
-          ctx.strokeStyle = chart.options.borderColor;
+          ctx.strokeStyle = chart.options.color;
           ctx.stroke();
 
           // text

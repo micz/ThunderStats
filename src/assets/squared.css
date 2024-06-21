@@ -41,7 +41,10 @@
     margin: 0;
 }
 
-h2.list_heading{text-transform:capitalize;}
+h2.list_heading{
+    text-transform:capitalize;
+    color: #2F61A1;
+}
 
 .list_heading_date{
     font-size:12px;
@@ -84,5 +87,9 @@ h2.list_heading{text-transform:capitalize;}
 
     .list_heading_date {
         color: lightgrey;
+    }
+
+    h2.list_heading{
+        color: #a3d1ff;
     }
 }

@@ -13,5 +13,5 @@ export const prefs_default = {
     'first_day_week': 1,
     'datepicker_locale': 'en-US',
     'custom_identities': {},
-    'include_archive_accounts': {},
+    'accounts_adv_settings': {},
 }

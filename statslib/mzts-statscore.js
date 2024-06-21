@@ -52,9 +52,11 @@ export class thunderStastsCore {
       lastMidnight.setHours(0, 0, 0, 0);
       //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
 
-      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails, filter_duplicates);
+      console.log(">>>>>>>> [getToday] filter_duplicates: " + filter_duplicates);
+
+      return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
 
     async getToday_YesterdayData(account_id = 0, account_emails = [], count_data_to_current_time = true) {
@@ -73,7 +75,7 @@ export class thunderStastsCore {
       // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
       // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
 
-      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
       return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates);
     }
@@ -91,7 +93,7 @@ export class thunderStastsCore {
 
       this.tsLog.log("[getToday_manyDaysData] fromDate: " + fromDate + " - toDate: " + toDate);
 
-      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
       return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates);
      }
@@ -110,9 +112,9 @@ export class thunderStastsCore {
       // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
       // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
 
-      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(yesterdayMidnight, lastMidnight, account_id, account_emails, filter_duplicates);
+      return this.getFullStatsData(yesterdayMidnight, lastMidnight, account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
     // ================ YESTERDAY TAB - END =====================
 
@@ -128,7 +130,7 @@ export class thunderStastsCore {
       toDate.setDate(stop_date);
       toDate.setHours(23, 59, 59, 999);
 
-      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
@@ -140,7 +142,7 @@ export class thunderStastsCore {
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
 
-      let filter_duplicates = tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates);   // the "true" is to aggregate
     }
@@ -150,7 +152,7 @@ export class thunderStastsCore {
     async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false) {
 
       let start_time = performance.now();
-
+      console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
       let messages_hash = new Map();
 
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));

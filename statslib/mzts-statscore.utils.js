@@ -354,9 +354,11 @@ export const tsCoreUtils = {
           return await TS_prefs.getPref("filter_duplicates_multi_account");
        } else {
           let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+          console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
           let element = accounts_adv_settings.find(account => account.id == account_id);
-        if(!element) return false;
-        return element.filter_duplicates || false;
+          console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
+          if(!element) return false;
+          return element.filter_duplicates || false;
        }
     },
 

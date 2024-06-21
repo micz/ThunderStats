@@ -99,17 +99,15 @@ export class thunderStastsCore {
       return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails);
     }
 
-    async getToday_YesterdayData(account_id = 0, account_emails = []) {
-
-      let lastMidnight = new Date();
-      lastMidnight.setHours(0, 0, 0, 0);
+    async getToday_YesterdayData(account_id = 0, account_emails = [], count_data_to_current_time = true) {
 
       let yesterday_midnight = new Date();
       yesterday_midnight.setDate(yesterday_midnight.getDate() - 1);
       yesterday_midnight.setHours(0, 0, 0, 0);
       let yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(), new Date().getMilliseconds());
+      yesterday.setHours(23, 59, 59, 999);
+      //yesterday.setHours(new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(), new Date().getMilliseconds());
       // console.log(">>>>>>>>>>>>>> getToday_YesterdayData yesterday_midnight: " + JSON.stringify(yesterday_midnight));
       // console.log(">>>>>>>>>>>>>> getToday_YesterdayData yesterday: " + JSON.stringify(yesterday));
       let fromDate = new Date(yesterday_midnight);
@@ -117,7 +115,7 @@ export class thunderStastsCore {
       // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
       // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
 
-      return this.getCountStatsData(fromDate, toDate, account_id, account_emails);
+      return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time);
     }
 
     async getToday_manyDaysData(account_id = 0, account_emails = []) {
@@ -319,7 +317,7 @@ export class thunderStastsCore {
     }
 
 
-    async getCountStatsData(fromDate, toDate, account_id = 0, account_emails = []) {
+    async getCountStatsData(fromDate, toDate, account_id = 0, account_emails = [], count_data_to_current_time = true) {
 
       let start_time = performance.now();
 
@@ -348,24 +346,32 @@ export class thunderStastsCore {
       for await (let message of messages) {
           if(this.excludeMessage(message,account_id)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
+          let now = new Date();
           let date_message = new Date(message.date);
+          let date_message_normalized = new Date(message.date);
+          date_message_normalized.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
           let hour_message = date_message.getHours();
           // check sender
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0];
             if(account_emails.includes(key_author)) {
-              sent++;
+              if((count_data_to_current_time)&&(date_message_normalized <= now)){
+                sent++;
+              }
               // group by hour
               msg_hours[hour_message].sent++;
             }else{
-              received++;
+              if((count_data_to_current_time)&&(date_message_normalized <= now)){
+                received++;
+              }
               // group by hour
               msg_hours[hour_message].received++;
             }
           }
-        
-        count++;
+          if((count_data_to_current_time)&&(date_message_normalized <= now)){
+            count++;
+          }
       }
 
       let stop_time = performance.now();
@@ -471,6 +477,7 @@ export class thunderStastsCore {
         // console.log(">>>>>>>>>>>>>>>> include_archive: " + JSON.stringify(this.include_archive));
         // console.log(">>>>>>>>>>>>>>>> this.include_archive.find(account => account.id == account_id): " + JSON.stringify(this.include_archive.find(account => account.id == account_id)));
         let element = this.include_archive.find(account => account.id == account_id);
+        if(!element) return true;
         return !element.include_archive || false;
       }
 

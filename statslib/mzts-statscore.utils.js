@@ -346,7 +346,7 @@ export const tsCoreUtils = {
 
     async getDefaultAccountFilterDuplicatesOption(account){
         let account_emails = await this.getAccountEmails(account.id,true);
-        console.log(">>>>>>>>>>>>> getDefaultAccountFilterDuplicatesOption account_emails: " + JSON.stringify(account_emails));
+        // console.log(">>>>>>>>>>>>> getDefaultAccountFilterDuplicatesOption account_emails: " + JSON.stringify(account_emails));
         return account_emails.some(email => email.toLowerCase().endsWith("@gmail.com"));
     },
 

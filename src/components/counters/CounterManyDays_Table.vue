@@ -21,12 +21,12 @@
 <template>
 <table>
     <tr>
-        <td><span class="additional_info_text"><span class="_many_days" v-html="_many_days_text"></span> __MSG_sent__:</span></td>
-        <td><span class="additional_info_text"><span id="aggregate_max_sent" v-if="!is_loading">{{ sent_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="aggregate_max_sent_wait" v-if="is_loading"/> __MSG_max__ / <span id="aggregate_min_sent" v-if="!is_loading">{{ sent_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="aggregate_min_sent_wait" v-if="is_loading"/> __MSG_min__ / <span id="aggregate_avg_sent" v-if="!is_loading">{{ sent_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="aggregate_avg_sent_wait" v-if="is_loading"/> __MSG_average__</span></td>
+        <td><span class="additional_info_text"><span class="_many_days" v-html="_many_days_text"></span> <span class="count_sent">__MSG_sent__</span>:</span></td>
+        <td><span class="additional_info_text"><span v-if="!is_loading">{{ sent_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ sent_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ sent_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__</span></td>
     </tr>
     <tr>
-        <td><span class="additional_info_text"><span class="invisible_text"></span>__MSG_received__:</span></td>
-        <td><span class="additional_info_text"><span id="aggregate_max_rcvd" v-if="!is_loading">{{ rcvd_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="aggregate_max_rcvd_wait" v-if="is_loading"/> __MSG_max__ / <span id="aggregate_min_rcvd" v-if="!is_loading">{{ rcvd_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="aggregate_min_rcvd_wait" v-if="is_loading"/> __MSG_min__ / <span id="aggregate_avg_rcvd" v-if="!is_loading">{{ rcvd_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="aggregate_avg_rcvd_wait" v-if="is_loading"/> __MSG_average__</span></td>
+        <td class="align_end"><span class="additional_info_text"><span class="invisible_text"></span><span class="count_rcvd">__MSG_received__</span>:</span></td>
+        <td><span class="additional_info_text"><span v-if="!is_loading">{{ rcvd_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ rcvd_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ rcvd_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__</span></td>
     </tr>
 </table>
 </template>

@@ -279,10 +279,6 @@
     "message": "Last two weeks",
     "description": ""
   },
-  "OnlyBDCustomQry": {
-    "message": "Consider business days only",
-    "description": ""
-  },
   "NoMailsSent": {
     "message": "No mails sent",
     "description": ""

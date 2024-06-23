@@ -27,19 +27,19 @@
     "message": "Mails",
     "description": ""
   },
-  "TimeGraph.Time": {
+  "TimeChart.Time": {
     "message": "Time",
     "description": ""
   },
-  "TimeGraph.Sent": {
+  "TimeChart.Sent": {
     "message": "Sent",
     "description": ""
   },
-  "TimeGraph.Rcvd": {
+  "TimeChart.Rcvd": {
     "message": "Received",
     "description": ""
   },
-  "TimeGraph.until": {
+  "TimeChart.until": {
     "message": "until",
     "description": ""
   },
@@ -435,15 +435,15 @@
     "message": "Activate the debug system",
     "description": ""
   },
-  "TodayTimeGraphShowYesterday": {
+  "TodayTimeChartShowYesterday": {
     "message": "Show also yesterday's mails in the today time chart",
     "description": ""
   },
-  "TimeGraphProgressive": {
+  "TimeChartProgressive": {
     "message": "Show cumulative values in the today and yesterday time charts",
     "description": ""
   },
-  "ManyDaysGraph": {
+  "ManyDaysChart": {
     "message": "Multiple Days Chart",
     "description": ""
   },
@@ -559,7 +559,7 @@
     "message": "Always check &quot;Business Days Only&quot; option at startup.",
     "description": ""
   },
-  "folderspreadgraph_openinfirsttab": {
+  "folderspreadchart_openinfirsttab": {
     "message": "From the mails folder locations chart, open the folder always in the first tab",
     "description": ""
   },
@@ -639,7 +639,7 @@
     "message": "Consider to make a donation!",
     "description": ""
   },
-  "InboxZeroGraph": {
+  "InboxZeroChart": {
     "message": "Inbox Zero Chart",
     "description": ""
   },

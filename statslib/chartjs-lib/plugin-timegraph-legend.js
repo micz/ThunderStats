@@ -19,11 +19,11 @@ const getOrCreateLegendList = (chart, id) => {
     switch (newValue) {
       case 'tsent':
       case 'ysent':
-        newValue = browser.i18n.getMessage('TimeGraph.Sent');
+        newValue = browser.i18n.getMessage('TimeChart.Sent');
         break;
       case 'trcvd':
       case 'yrcvd':
-        newValue = browser.i18n.getMessage('TimeGraph.Rcvd');
+        newValue = browser.i18n.getMessage('TimeChart.Rcvd');
         break;
       default:
         break;

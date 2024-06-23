@@ -69,7 +69,7 @@ let chartOptions = ref({
           x: {
             // title: {
             //   display: true,
-            //   text: browser.i18n.getMessage('TimeGraph.Time')
+            //   text: browser.i18n.getMessage('TimeChart.Time')
             // },
             beginAtZero: true,
             min: 0,

@@ -20,7 +20,7 @@
 
 <template>
 <div class="square_container">
-    <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_AboutTitle__</h2></div>
+    <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped lowercase">__MSG_AboutTitle__</h2></div>
         <p>__MSG_AboutText_1__<br/>
             __MSG_AboutText_2__</p>
 			<p><span class="info_subtitle">__MSG_HowDoesItWorkSubtitle__</span><br>

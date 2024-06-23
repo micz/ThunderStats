@@ -44,14 +44,14 @@
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped" v-text="top_recipients_title"></h2>
+						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="do_run && (is_loading_involved_table_recipients || show_table_involved_recipients)" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
     </div>
     
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped" v-text="top_senders_title"></h2>
+						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="do_run && (is_loading_involved_table_senders || show_table_involved_senders)"/>
                       <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__</p>

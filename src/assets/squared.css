@@ -46,6 +46,10 @@ h2.list_heading{
     color: #2F61A1;
 }
 
+h2.lowercase{
+    text-transform:none !important;
+}
+
 .list_heading_date{
     font-size:12px;
     font-weight:normal;

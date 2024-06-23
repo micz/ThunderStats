@@ -44,5 +44,3 @@ Locale Translations:
 - Italian (it)		: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - French (fr)		: Goofy and ChatGPT (for version 2.0 new text)
 - German (de)		: [Axel Grude](https://addons.thunderbird.net/thunderbird/user/realraven/) and ChatGPT (for version 2.0 new text)
-
-

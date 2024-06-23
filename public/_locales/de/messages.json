@@ -1,0 +1,330 @@
+{
+  "extensionDescription": {
+    "message": "Erinnern Sie sich an die guten alten Statistiken von Eudora? Vermissen Sie sie? Mit dieser Erweiterung können Sie endlich die Benutzung Ihres geliebten Thunderbird im Auge behalten!",
+    "description": ""
+  },
+  "AllAccounts": {
+    "message": "Alle Konten",
+    "description": ""
+  },
+  "Name": {
+    "message": "Name",
+    "description": ""
+  },
+  "Mail": {
+    "message": "Email",
+    "description": ""
+  },
+  "Total": {
+    "message": "Gesamt",
+    "description": ""
+  },
+  "Before": {
+    "message": "Vor",
+    "description": ""
+  },
+  "Mails": {
+    "message": "Mails",
+    "description": ""
+  },
+  "DonateLink": {
+    "message": "Etwas spenden!",
+    "description": ""
+  },
+  "ChooseAccount": {
+    "message": "Konto auswählen",
+    "description": ""
+  },
+  "Update": {
+    "message": "Aktualisieren",
+    "description": ""
+  },
+  "Setup": {
+    "message": "Konfiguration",
+    "description": ""
+  },
+  "Today": {
+    "message": "Heute",
+    "description": ""
+  },
+  "Yesterday": {
+    "message": "Gestern",
+    "description": ""
+  },
+  "days": {
+    "message": "Tage",
+    "description": ""
+  },
+  "TotalDays": {
+    "message": "Tage gesamt",
+    "description": ""
+  },
+  "Info": {
+    "message": "Info",
+    "description": ""
+  },
+  "Loading": {
+    "message": "Lade",
+    "description": ""
+  },
+  "SentMails": {
+    "message": "Gesendete Mails",
+    "description": ""
+  },
+  "ReceivedMails": {
+    "message": "Empfangene Mails",
+    "description": ""
+  },
+  "InboxZeroStatus": {
+    "message": "'Inbox Zero' Status",
+    "description": ""
+  },
+  "TotalInbox": {
+    "message": "Gesamte Mails Posteingang",
+    "description": ""
+  },
+  "TotalInboxUnread": {
+    "message": "ungelesen",
+    "description": ""
+  },
+  "YesterdayThisTime": {
+    "message": "Gestern um diese Zeit",
+    "description": ""
+  },
+  "sent": {
+    "message": "gesendet",
+    "description": ""
+  },
+  "received": {
+    "message": "empfangen",
+    "description": ""
+  },
+  "FolderLocation": {
+    "message": "Verzeichnis-Diagram",
+    "description": ""
+  },
+  "NoMailsReceived": {
+    "message": "Keine Emails empfangen!",
+    "description": ""
+  },
+  "InboxMailsDateSpreading": {
+    "message": "Zeit-Verteilung der empfangenen Mails",
+    "description": ""
+  },
+  "NoMailsInbox": {
+    "message": "Keine Mails im Eingangsordner!",
+    "description": ""
+  },
+  "TopRecipients": {
+    "message": "Top Empfänger",
+    "description": "",
+    "placeholders": {
+      "numtop": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "TopSenders": {
+    "message": "Top Absender",
+    "description": "",
+    "placeholders": {
+      "numtop": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "clickhere": {
+    "message": "hier klicken",
+    "description": ""
+  },
+  "clickheremoreinfo": {
+    "message": "Für mehr Info hier klicken",
+    "description": ""
+  },
+  "AboutTitle": {
+    "message": "Über dieses Addon",
+    "description": ""
+  },
+  "AboutText_1": {
+    "message": "Erinnern Sie sich an die guten alten Eudora Statistiken? Vermissen Sie sie?",
+    "description": ""
+  },
+  "AboutText_2": {
+    "message": "Mit dieser Erweiterung können Sie endlich die Benutzung Ihres geliebten Thunderbird im Auge behalten!",
+    "description": ""
+  },
+  "AboutText_3": {
+    "message": "Weitere Funktionen werden in Zukunft hinzugefügt werden, falls Sie eine Idee haben, bitte schicken Sie mir diese",
+    "description": ""
+  },
+  "InboxZeroTitle": {
+    "message": "Was ist 'Inbox Zero'?",
+    "description": ""
+  },
+  "InboxZeroText_1": {
+    "message": "'Inbox Zero' ist ein gründlicher Ansatz für das Mail Management dessen Ziel ein permanent leerer (oder fast leerer) Eingangsordner ist.",
+    "description": ""
+  },
+  "InboxZeroText_2": {
+    "message": "ThunderStats gibt Ihnen Einblicke darin wie Sie ihren Posteingang verwalten.",
+    "description": ""
+  },
+  "OtherInfoText_1": {
+    "message": "Alle Statistiken werden mit Hilfe der internen Datenbank von Thunderbird errechnet und sind mit den EMail Adressen des gewählten Kontos verbunden.",
+    "description": ""
+  },
+  "OtherInfoText_2b": {
+    "message": "Warten Sie bis der Indexer alle neuen Mails verarbeitet hat um die Statistik zu aktualisieren. Das Datum in der oberen rechten Ecke zeigt, wie aktuell die Daten sind.",
+    "description": ""
+  },
+  "DonationsTitle": {
+    "message": "Spenden",
+    "description": ""
+  },
+  "max": {
+    "message": "max",
+    "description": ""
+  },
+  "min": {
+    "message": "min",
+    "description": ""
+  },
+  "average": {
+    "message": "Durchschnitt",
+    "description": ""
+  },
+  "CustomQry": {
+    "message": "Benutzerdefiniert",
+    "description": ""
+  },
+  "UpdateCustomQry": {
+    "message": "Daten ermitteln",
+    "description": ""
+  },
+  "CustomQryDataMsg": {
+    "message": "Daten extrahieren für",
+    "description": ""
+  },
+  "CurrentWeek": {
+    "message": "Aktuelle Woche",
+    "description": ""
+  },
+  "CurrentMonth": {
+    "message": "Aktueller Monat",
+    "description": ""
+  },
+  "CurrentYear": {
+    "message": "Laufendes Jahr",
+    "description": ""
+  },
+  "LastWeek": {
+    "message": "Letzte Woche",
+    "description": ""
+  },
+  "LastMonth": {
+    "message": "Letzter Monat",
+    "description": ""
+  },
+  "LastYear": {
+    "message": "Letztes Jahr",
+    "description": ""
+  },
+  "Last2Week": {
+    "message": "Letzte zwei Wochen",
+    "description": ""
+  },
+  "NoMailsSent": {
+    "message": "Keine Emails abgschickt!",
+    "description": ""
+  },
+  "InTheLastNumDays": {
+    "message": "In den letzten {0} Tagen",
+    "description": "",
+    "placeholders": {
+      "numdays": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "LastNumDays": {
+    "message": "Letzte {0} Tage",
+    "description": "",
+    "placeholders": {
+      "numdays": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "GlobalDescSettingTab": {
+    "message": "Benutzen Sie diese Einstellungen um ihr persönliches Thunderstats-Erlebnis anzupassen!",
+    "description": ""
+  },
+  "TabSettings.label": {
+    "message": "Allgemein",
+    "description": ""
+  },
+  "TabAdvanced.label": {
+    "message": "Fortgeschritten",
+    "description": ""
+  },
+  "TabCustomIdentities.label": {
+    "message": "Zusätzliche Identitäten",
+    "description": ""
+  },
+  "InfoMainDesc": {
+    "message": "Diese Erweiterung ist frei und wird in meiner Freizeit entwickelt. Falls Sie es täglich nutzen, können Sie diese gerne mit einer kleinen Spende unterstützen. Klicken Sie einfach auf den Link unten - vielen Dank!!",
+    "description": ""
+  },
+  "ReopenTabDesc": {
+    "message": "Für diese Änderung muss der ThunderStats Tab geschlossen und neu geöffnet werden.",
+    "description": ""
+  },
+  "StartupAccount": {
+    "message": "Start Konto",
+    "description": ""
+  },
+  "ManageCustomIdentitites": {
+    "message": "Verwalten sie hier zusätzliche Identitäten.",
+    "description": ""
+  },
+  "Account": {
+    "message": "Konto",
+    "description": ""
+  },
+  "CustomIdentititesAccount": {
+    "message": "Zusätzliche Identitäten für das selektierte Konto",
+    "description": ""
+  },
+  "CustomIdentititesAccount.Info": {
+    "message": "Eine Emailadresse pro Zeile hinzufügen.",
+    "description": ""
+  },
+  "ActivateDebug": {
+    "message": "Diagnose System aktivieren.",
+    "description": ""
+  },
+  "ManyDays": {
+    "message": "Anzahl der Tage die angezeigt werden sollen.",
+    "description": ""
+  },
+  "CustomQueryBookmarkImmediateUpdate": {
+    "message": "Bei Verwendung benutzerdefinierter Szenarien Statistiken sofort aktualisieren.",
+    "description": ""
+  },
+  "License": {
+    "message": "Lizenz",
+    "description": ""
+  },
+  "CustomQryTabGroupbox": {
+    "message": "Statistik mit benutzerdefiniertes Datumsbereich",
+    "description": ""
+  },
+  "InvolvedNum": {
+    "message": "Anzahl der Empfänger / Absender die in den &quot;Top&quot; Tabellen angezeigt werden sollen.",
+    "description": ""
+  }
+}

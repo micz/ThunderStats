@@ -39,26 +39,6 @@
     "message": "Received",
     "description": ""
   },
-  "TimeChart.until": {
-    "message": "until",
-    "description": ""
-  },
-  "LastBusinessDay": {
-    "message": "Last business day",
-    "description": ""
-  },
-  "LastBusinessDay_short": {
-    "message": "Last B Day",
-    "description": ""
-  },
-  "NoValidBusinessDays": {
-    "message": "There are no valid business days in the selection you made.",
-    "description": ""
-  },
-  "TABTitle": {
-    "message": "ThunderStats Settings",
-    "description": ""
-  },
   "DonateLink": {
     "message": "Make a donation!",
     "description": ""
@@ -97,10 +77,6 @@
   },
   "yesterday_small": {
     "message": "yesterday",
-    "description": ""
-  },
-  "Last": {
-    "message": "Last",
     "description": ""
   },
   "days": {
@@ -239,14 +215,6 @@
     "message": "The statistics will be updated as soon as Thunderbird has updated the folders from the mail server.",
     "description": ""
   },
-  "OtherInfoText_3": {
-    "message": "Take a look at what's going on with the development of this addon",
-    "description": ""
-  },
-  "SubmitNewIssue": {
-    "message": "Submit a new issue",
-    "description": ""
-  },
   "DonationsTitle": {
     "message": "Donations",
     "description": ""
@@ -277,18 +245,6 @@
   },
   "DateRange": {
     "message": "Date Range",
-    "description": ""
-  },
-  "From": {
-    "message": "From",
-    "description": ""
-  },
-  "To": {
-    "message": "To",
-    "description": ""
-  },
-  "Views": {
-    "message": "Views",
     "description": ""
   },
   "Bookmarks_Menu": {
@@ -331,10 +287,6 @@
     "message": "No mails sent",
     "description": ""
   },
-  "LastIndexedMessage": {
-    "message": "Last indexed message",
-    "description": ""
-  },
   "InTheLastNumDays": {
     "message": "In the last $NUMDAYS$ days",
     "description": "",
@@ -354,18 +306,6 @@
         "example": "7"
       }
     }
-  },
-  "Warning": {
-    "message": "Warning!",
-    "description": ""
-  },
-  "CustomViewTooMuchDays": {
-    "message": "This date interval is {0} days long and the statistic could need some time to complete.\\r\\nDo you want to continue?",
-    "description": ""
-  },
-  "SettingsTitle": {
-    "message": "ThunderStats Settings",
-    "description": ""
   },
   "GlobalDescSettingTab": {
     "message": "Use these options to customize your ThunderStats experience!",
@@ -389,10 +329,6 @@
   },
   "Identities": {
     "message": "Identities",
-    "description": ""
-  },
-  "TabInfo.label": {
-    "message": "Info",
     "description": ""
   },
   "InfoMainDesc": {
@@ -459,10 +395,6 @@
     "message": "email addresses",
     "description": ""
   },
-  "TabBusinessDays.label": {
-    "message": "Business Days",
-    "description": ""
-  },
   "WeekDay0": {
     "message": "Sunday",
     "description": ""
@@ -491,56 +423,8 @@
     "message": "Saturday",
     "description": ""
   },
-  "WeekDays.groupbox": {
-    "message": "Weekdays",
-    "description": ""
-  },
   "DatePickerLocale": {
     "message": "Locale setting for the date picker",
-    "description": ""
-  },
-  "setDefault": {
-    "message": "Set default",
-    "description": ""
-  },
-  "WeekDays.desc": {
-    "message": "Check which weekdays are business days.",
-    "description": ""
-  },
-  "NoBusinessDaysList.groupbox": {
-    "message": "Non-Business Days",
-    "description": ""
-  },
-  "newButtonNBD.label": {
-    "message": "New...",
-    "description": ""
-  },
-  "editButtonNBD.label": {
-    "message": "Edit...",
-    "description": ""
-  },
-  "deleteButtonNBD.label": {
-    "message": "Delete",
-    "description": ""
-  },
-  "EasterNoBusinessDay.label": {
-    "message": "Easter and Easter Monday are non-business days.",
-    "description": ""
-  },
-  "UseLastBusinessDay": {
-    "message": "If yesterday is not a business day, show the last business day instead.",
-    "description": ""
-  },
-  "ListHeader.Desc": {
-    "message": "Description",
-    "description": ""
-  },
-  "ListHeader.Date": {
-    "message": "Date",
-    "description": ""
-  },
-  "ReleaseNotes": {
-    "message": "Release Notes",
     "description": ""
   },
   "ShowRelNotes1x": {
@@ -555,10 +439,6 @@
     "message": "Custom Range Statistics",
     "description": ""
   },
-  "CustomQueryDefaultOnlyBD": {
-    "message": "Always check &quot;Business Days Only&quot; option at startup.",
-    "description": ""
-  },
   "folderspreadchart_openinfirsttab": {
     "message": "From the mails folder locations chart, open the folder always in the first tab",
     "description": ""
@@ -567,20 +447,12 @@
     "message": "Number of recipients or senders to be shown in \"Top\" tables",
     "description": ""
   },
-  "involvedtable_forceidentityname": {
-    "message": "Always show the account name in the top senders and recipient tables when the shown mail is associated with a Thunderbird account.",
-    "description": ""
-  },
   "Other": {
     "message": "Other",
     "description": ""
   },
   "prefs_FirstDayWeek": {
     "message": "Choose the first day of the week",
-    "description": ""
-  },
-  "prefs_OptionText_release_notes": {
-    "message": "Release Notes",
     "description": ""
   },
   "prefs_remember_last_tab": {

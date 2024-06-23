@@ -155,6 +155,10 @@
     "message": "Mails folder locations chart",
     "description": ""
   },
+  "InboxZeroFolderLocationNote": {
+    "message": "In this chart, all messages are considered, including duplicates that are filtered in the other charts. So, for example, if you use Gmail, you will see messages both in the folder they are in and in the \"All Mail\" folder.",
+    "description": ""
+  },
   "NoMailsReceived": {
     "message": "No mails received",
     "description": ""

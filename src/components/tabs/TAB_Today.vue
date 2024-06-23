@@ -32,7 +32,7 @@
 					  </div>
 					  <CounterInbox :is_loading="is_loading_counter_inbox" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
                       <div class="chart_inbox0">
-                        <p class="chart_info">__MSG_FolderLocation__</p><p class="chart_info_nomail" id="today_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_today_rcvd == 0)" v-text="no_mails_received_today"></p>
+                        <p class="chart_info">__MSG_FolderLocation__<sup v-if="showFolderLocationNoteAnchor" @mouseover="showFolderLocationNoteTooltip" @mouseleave="hideFolderLocationNoteTooltip">(?)</sup><span class="inbox0_folder_note_tooltip_text" v-if="folderLocationNoteTooltipVisible" v-text="folderLocationNote_text"></span></p><p class="chart_info_nomail" id="today_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_today_rcvd == 0)" v-text="no_mails_received_today"></p>
                         <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_graph_folders" />
                       </div>
                       <div class="chart_inbox0_datemsg">
@@ -96,6 +96,10 @@ let top_senders_title = ref("");
 let no_mails_received_today = ref("");
 let no_mails_sent_today = ref("");
 let no_mails_inbox = ref("");
+
+let folderLocationNoteTooltipVisible = ref(false);
+let folderLocationNote_text = ref("");
+let showFolderLocationNoteAnchor = ref(false);
 
 let do_progressive = true;
 let today_time_graph_show_yesterday = true;
@@ -172,6 +176,7 @@ onMounted(async () => {
     no_mails_received_today.value = browser.i18n.getMessage("NoMailsReceived")+" "+browser.i18n.getMessage("today_small");
     no_mails_sent_today.value = browser.i18n.getMessage("NoMailsSent")+" "+browser.i18n.getMessage("today_small");
     no_mails_inbox.value = browser.i18n.getMessage("NoMailsInbox");
+    folderLocationNote_text.value = browser.i18n.getMessage("InboxZeroFolderLocationNote");
 });
 
 
@@ -242,11 +247,12 @@ async function updateData() {
     // chartData_InboxZeroDates.value.datasets = [];
     // chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
     // tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
-    nextTick(() => {
+    nextTick(async () => {
         is_loading_today_graph.value = false;
         is_loading_inbox_graph_folders.value = false;
         // is_loading_inbox_graph_dates.value = false;
         i18n.updateDocument();
+        showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(props.activeAccount)
     });
 };
 
@@ -358,6 +364,14 @@ function updateElapsed(function_name, time) {
     if (allNonZero) {
         emit('updateElapsed', Math.max(...Object.values(elapsed)));
     }
+}
+
+function showFolderLocationNoteTooltip(){
+  folderLocationNoteTooltipVisible.value = true;
+}
+
+function hideFolderLocationNoteTooltip(){
+    folderLocationNoteTooltipVisible.value = false;
 }
 
 defineExpose({ updateData });

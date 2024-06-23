@@ -32,7 +32,7 @@
 					  </div>
 					  <p>__MSG_InboxZeroText_1__</p>
 						<p>__MSG_InboxZeroText_2__</p>
-						<p><a href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/what-is-inbox-0/">__MSG_clickheremoreinfo__</a></p></div>
+						<p><i><a href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/what-is-inbox-0/">__MSG_clickheremoreinfo__</a></i></p></div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ImportantInfoTitle__</h2>
 					  </div>
@@ -40,12 +40,12 @@
 						__MSG_ImportantInfoText_1__ __MSG_ImportantInfoText_1b__</p>
 						<p><span class="info_subtitle">__MSG_ImportantInfoSubtitle_2__</span><br>
 							__MSG_ImportantInfoText_2__<br>
-							<a href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/translate/">__MSG_ImportantInfoText_2b__</a></p></div>
+						<i><a href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/translate/">__MSG_ImportantInfoText_2b__</a></i></p></div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_DonationsTitle__</h2>
 					  </div>
 					  <p>__MSG_InfoMainDesc__</p>
-					  <p><a class="outlink" href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_DonateLink__</a></p></div>
+					  <p><i><a class="outlink" href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_DonateLink__</a></i></p></div>
   </div>
 </template>
 

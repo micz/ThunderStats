@@ -1,7 +1,7 @@
 {
   "extensionDescription": {
     "message": "Erinnern Sie sich an die guten alten Statistiken von Eudora? Vermissen Sie sie? Mit dieser Erweiterung können Sie endlich die Benutzung Ihres geliebten Thunderbird im Auge behalten!",
-    "description": ""
+    "description": "Description of the extension."
   },
   "AllAccounts": {
     "message": "Alle Konten",
@@ -27,6 +27,18 @@
     "message": "Mails",
     "description": ""
   },
+  "TimeChart.Time": {
+    "message": "Zeit",
+    "description": ""
+  },
+  "TimeChart.Sent": {
+    "message": "Gesendet",
+    "description": ""
+  },
+  "TimeChart.Rcvd": {
+    "message": "Empfangen",
+    "description": ""
+  },
   "DonateLink": {
     "message": "Etwas spenden!",
     "description": ""
@@ -39,6 +51,14 @@
     "message": "Aktualisieren",
     "description": ""
   },
+  "Save": {
+    "message": "Speichern",
+    "description": ""
+  },
+  "ExecutionTime": {
+    "message": "Ausführungszeit",
+    "description": ""
+  },
   "Setup": {
     "message": "Konfiguration",
     "description": ""
@@ -49,6 +69,14 @@
   },
   "Yesterday": {
     "message": "Gestern",
+    "description": ""
+  },
+  "today_small": {
+    "message": "heute",
+    "description": ""
+  },
+  "yesterday_small": {
+    "message": "gestern",
     "description": ""
   },
   "days": {
@@ -101,6 +129,10 @@
   },
   "FolderLocation": {
     "message": "Verzeichnis-Diagram",
+    "description": ""
+  },
+  "InboxZeroFolderLocationNote": {
+    "message": "In diesem Diagramm werden alle Nachrichten berücksichtigt, einschließlich Duplikate, die in den anderen Diagrammen gefiltert werden. Wenn Sie also Gmail verwenden, sehen Sie Nachrichten sowohl im Ordner, in dem sie sich befinden, als auch im Ordner \"Alle Nachrichten\".",
     "description": ""
   },
   "NoMailsReceived": {
@@ -171,6 +203,10 @@
     "message": "ThunderStats gibt Ihnen Einblicke darin wie Sie ihren Posteingang verwalten.",
     "description": ""
   },
+  "HowDoesItWorkSubtitle": {
+    "message": "Wie funktioniert es?",
+    "description": ""
+  },
   "OtherInfoText_1": {
     "message": "Alle Statistiken werden mit Hilfe der internen Datenbank von Thunderbird errechnet und sind mit den EMail Adressen des gewählten Kontos verbunden.",
     "description": ""
@@ -207,6 +243,14 @@
     "message": "Daten extrahieren für",
     "description": ""
   },
+  "DateRange": {
+    "message": "Datumsbereich",
+    "description": ""
+  },
+  "Bookmarks_Menu": {
+    "message": "Wählen Sie einen vordefinierten Zeitraum",
+    "description": ""
+  },
   "CurrentWeek": {
     "message": "Aktuelle Woche",
     "description": ""
@@ -236,11 +280,11 @@
     "description": ""
   },
   "NoMailsSent": {
-    "message": "Keine Emails abgschickt!",
+    "message": "Keine Emails abgschickt",
     "description": ""
   },
   "InTheLastNumDays": {
-    "message": "In den letzten {0} Tagen",
+    "message": "In den letzten $NUMDAYS$ Tagen",
     "description": "",
     "placeholders": {
       "numdays": {
@@ -250,7 +294,7 @@
     }
   },
   "LastNumDays": {
-    "message": "Letzte {0} Tage",
+    "message": "Letzte $NUMDAYS$ Tage",
     "description": "",
     "placeholders": {
       "numdays": {
@@ -263,6 +307,10 @@
     "message": "Benutzen Sie diese Einstellungen um ihr persönliches Thunderstats-Erlebnis anzupassen!",
     "description": ""
   },
+  "AdvancedSettingTabDesc": {
+    "message": "Dies sind erweiterte Optionen, verwenden Sie sie, wenn Sie wissen, was Sie tun.",
+    "description": ""
+  },
   "TabSettings.label": {
     "message": "Allgemein",
     "description": ""
@@ -273,6 +321,10 @@
   },
   "TabCustomIdentities.label": {
     "message": "Zusätzliche Identitäten",
+    "description": ""
+  },
+  "Identities": {
+    "message": "Identitäten",
     "description": ""
   },
   "InfoMainDesc": {
@@ -288,7 +340,15 @@
     "description": ""
   },
   "ManageCustomIdentitites": {
-    "message": "Verwalten sie hier zusätzliche Identitäten.",
+    "message": "Verwalten sie hier zusätzliche Identitäten",
+    "description": ""
+  },
+  "ManageCustomIdentititesDesc_1": {
+    "message": "Eine benutzerdefinierte Identität ist eine E-Mail-Adresse, die sich von den für das Konto registrierten Adressen unterscheidet und mit der Sie E-Mails empfangen.",
+    "description": ""
+  },
+  "ManageCustomIdentititesDesc_2": {
+    "message": "In der Regel handelt es sich dabei um E-Mail-Adressen von Mailinglisten, bei denen Ihre E-Mail-Adresse in keinem \"An\"- oder \"CC\"-Feld verwendet wird.",
     "description": ""
   },
   "Account": {
@@ -304,15 +364,67 @@
     "description": ""
   },
   "ActivateDebug": {
-    "message": "Diagnose System aktivieren.",
+    "message": "Diagnose System aktivieren",
+    "description": ""
+  },
+  "TodayTimeChartShowYesterday": {
+    "message": "Zeigen Sie auch die gestrigen E-Mails im heutigen Zeitdiagramm an",
+    "description": ""
+  },
+  "TimeChartProgressive": {
+    "message": "Zeigen Sie kumulative Werte in den Zeitdiagrammen für heute und gestern an",
+    "description": ""
+  },
+  "ManyDaysChart": {
+    "message": "Mehrere-Tage-Diagramm",
     "description": ""
   },
   "ManyDays": {
-    "message": "Anzahl der Tage die angezeigt werden sollen.",
+    "message": "Anzahl der Tage die angezeigt werden sollen",
     "description": ""
   },
   "CustomQueryBookmarkImmediateUpdate": {
-    "message": "Bei Verwendung benutzerdefinierter Szenarien Statistiken sofort aktualisieren.",
+    "message": "Bei Verwendung benutzerdefinierter Szenarien Statistiken sofort aktualisieren",
+    "description": ""
+  },
+  "EmailAddresses": {
+    "message": "e-mail-adressen",
+    "description": ""
+  },
+  "WeekDay0": {
+    "message": "Sonntag",
+    "description": ""
+  },
+  "WeekDay1": {
+    "message": "Montag",
+    "description": ""
+  },
+  "WeekDay2": {
+    "message": "Dienstag",
+    "description": ""
+  },
+  "WeekDay3": {
+    "message": "Mittwoch",
+    "description": ""
+  },
+  "WeekDay4": {
+    "message": "Donnerstag",
+    "description": ""
+  },
+  "WeekDay5": {
+    "message": "Freitag",
+    "description": ""
+  },
+  "WeekDay6": {
+    "message": "Samstag",
+    "description": ""
+  },
+  "DatePickerLocale": {
+    "message": "Ländereinstellung für den Datumsauswahl-Widget",
+    "description": ""
+  },
+  "ShowRelNotes1x": {
+    "message": "Anzeigen der Versionshinweise für Version 1.x",
     "description": ""
   },
   "License": {
@@ -323,8 +435,96 @@
     "message": "Statistik mit benutzerdefiniertes Datumsbereich",
     "description": ""
   },
+  "folderspreadchart_openinfirsttab": {
+    "message": "Öffnen Sie im Diagramm der E-Mail-Ordnerstandorte den Ordner immer im ersten Tab",
+    "description": ""
+  },
   "InvolvedNum": {
     "message": "Anzahl der Empfänger / Absender die in den &quot;Top&quot; Tabellen angezeigt werden sollen.",
+    "description": ""
+  },
+  "Other": {
+    "message": "Andere",
+    "description": ""
+  },
+  "prefs_FirstDayWeek": {
+    "message": "Wählen Sie den ersten Tag der Woche aus",
+    "description": ""
+  },
+  "prefs_remember_last_tab": {
+    "message": "Den zuletzt geöffneten Tab merken",
+    "description": ""
+  },
+  "prefs_always_reload_tab_data": {
+    "message": "Daten neu laden, wenn der Tab gewechselt wird",
+    "description": ""
+  },
+  "prefs_load_data_changing_account": {
+    "message": "Daten neu laden, wenn das Konto gewechselt wird",
+    "description": ""
+  },
+  "prefs_filter_duplicates_multi_account": {
+    "message": "Duplikate Nachrichten filtern, wenn mehrere Konten ausgewählt sind",
+    "description": ""
+  },
+  "prefs_include_archive_multi_account": {
+    "message": "Archive einbeziehen, wenn mehrere Konten ausgewählt sind",
+    "description": ""
+  },
+  "ImportantInfoTitle": {
+    "message": "Wichtige Informationen",
+    "description": ""
+  },
+  "ImportantInfoSubtitle_1": {
+    "message": "Duplikate Nachrichten filtern",
+    "description": ""
+  },
+  "ImportantInfoText_1": {
+    "message": "Einige E-Mail-Anbieter, wie Gmail, haben einen \"Archiv\"-Ordner, der alle Nachrichten enthält. Dieselben Nachrichten sind jedoch auch in einzelnen Ordnern vorhanden. Die Berücksichtigung der \"Archiv\"-Ordner in den Statistiken könnte dazu führen, dass sie doppelt gezählt werden.",
+    "description": ""
+  },
+  "ImportantInfoText_1b": {
+    "message": "Auf der Seite für erweiterte Optionen können Sie festlegen, wie diese Konten verwaltet werden sollen. Wenn ein Konto eine \"gmail.com\"-Adresse hat, wird es korrekt eingerichtet; andernfalls müssen Sie es manuell einrichten.",
+    "description": ""
+  },
+  "ImportantInfoSubtitle_2": {
+    "message": "Hilfe beim Übersetzen",
+    "description": ""
+  },
+  "ImportantInfoText_2": {
+    "message": "Wenn Sie dabei helfen möchten, ThunderStats in eine neue Sprache zu übersetzen oder eine bestehende Übersetzung zu verbessern, können Sie dies tun! Ihre Beiträge sind von unschätzbarem Wert, um dieses Addon einem breiteren Publikum zugänglich zu machen.",
+    "description": ""
+  },
+  "ImportantInfoText_2b": {
+    "message": "Erfahren Sie, wie, indem Sie hier klicken!",
+    "description": ""
+  },
+  "prefsDonation_1": {
+    "message": "Mögen Sie dieses Addon?",
+    "description": ""
+  },
+  "prefsDonation_2": {
+    "message": "Erwägen Sie, eine Spende zu machen!",
+    "description": ""
+  },
+  "InboxZeroChart": {
+    "message": "'Inbox Zero' Diagramm",
+    "description": ""
+  },
+  "AdvancedAccountList": {
+    "message": "Kontoeinstellungen (Erweitert)",
+    "description": ""
+  },
+  "IncludeArchive": {
+    "message": "Archiv einbeziehen",
+    "description": ""
+  },
+  "FilterDuplicateMessages": {
+    "message": "Duplikate Nachrichten filtern",
+    "description": ""
+  },
+  "AdvancedAccountList_Desc": {
+    "message": "Unten können Sie wählen, ob Sie die Archivordner ignorieren oder die doppelten Nachrichten herausfiltern möchten. Das Filtern von Nachrichten erhöht die Zeit, die zur Berechnung der Statistiken benötigt wird, liefert jedoch bessere Ergebnisse. Wenn Sie die Archivierungsfunktion von Gmail nicht verwenden, können Sie diese Funktion deaktivieren und die Archivordner direkt ausschließen. Das 'Inbox Zero' Ordnerstandorte-Diagramm zeigt immer alle E-Mails an. Wenn also eine E-Mail empfangen wird und in zwei Ordnern erscheint, wird sie in beiden Ordnern im Diagramm angezeigt.",
     "description": ""
   }
 }

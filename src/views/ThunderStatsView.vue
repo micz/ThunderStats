@@ -22,7 +22,7 @@
     <HeadingNAV @chooseAccount="updateStats" :elapsed_time="elapsed_time" ref="HeadingNAV_ref"/>
   
     <main>
-      <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs">
+      <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
         <tab id="tab-today" name="__MSG_Today__">
             <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_Today_ref" />
         </tab>
@@ -58,7 +58,7 @@ import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
 
-  let statsTabs = ref(null);
+  let statsTabs_ref = ref(null);
   let TAB_Today_ref = ref(null);
   let TAB_Yesterday_ref = ref(null);
   let TAB_ManyDays_ref = ref(null);
@@ -121,7 +121,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   onMounted(async () => {
     // console.log(">>>>>>>>>>>> ThunderStatsView onMounted");
     remember_last_tab = await TS_prefs.getPref("remember_last_tab");
-    if(!remember_last_tab) { statsTabs.value.selectTab('#tab-today'); }
+    if(!remember_last_tab) { statsTabs_ref.value.selectTab('#tab-today'); }
     let _many_days = await TS_prefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
@@ -145,7 +145,7 @@ import { tsUtils } from '@statslib/mzts-utils';
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
     resetStatsDone();
     nextTick(() => {
-      let curr_tab = statsTabs.value.activeTabHash;
+      let curr_tab = statsTabs_ref.value.activeTabHash;
       tsLog.log("curr_tab: " + curr_tab);
       switch(curr_tab) {
         case "#tab-today":

@@ -158,6 +158,10 @@ td.align_end {
   color:rgb(255, 127, 14);
   font-weight: bold;
 }
+.info_subtitle{
+  font-weight: bold;
+  font-size: 1.1em;
+}
 
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {

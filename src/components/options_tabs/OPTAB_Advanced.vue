@@ -76,7 +76,7 @@
       </td>
     </tr>
     <tr>
-      <td colspan="2">__MSG_AdvancedAccountList_Desc__
+      <td colspan="2">__MSG_ImportantInfoText_1__ __MSG_AdvancedAccountList_Desc__
       </td>
     </tr>
     <tr>

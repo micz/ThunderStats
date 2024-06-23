@@ -223,8 +223,8 @@
     "message": "ThunderStats gives you some insights on how you're managing your inbox.",
     "description": ""
   },
-  "OtherInfoTitle": {
-    "message": "How does this addon works?",
+  "HowDoesItWorkSubtitle": {
+    "message": "How does it work?",
     "description": ""
   },
   "OtherInfoText_1": {
@@ -599,20 +599,32 @@
     "message": "Include archives when multiple accounts are selected",
     "description": ""
   },
-  "prefsInfoTitle": {
+  "ImportantInfoTitle": {
     "message": "Important Information",
     "description": ""
   },
-  "prefsInfoDesc_1": {
-    "message": " ",
+  "ImportantInfoSubtitle_1": {
+    "message": "Filter duplicate messages",
     "description": ""
   },
-  "prefsInfoDesc_2": {
-    "message": " ",
+  "ImportantInfoText_1": {
+    "message": "Some email providers, such as Gmail, have an \"Archive\" folder that contains all messages. However, the same messages are also present in individual folders. Considering the \"Archive\" folders in the statistics could lead to counting them twice.",
     "description": ""
   },
-  "prefsInfoDesc_3": {
-    "message": " ",
+  "ImportantInfoText_1b": {
+    "message": "On the advanced options page, you can choose how to manage these accounts. If an account has a \"gmail.com\" address, it will be set up correctly; otherwise, you will have to set it up manually.",
+    "description": ""
+  },
+  "ImportantInfoSubtitle_2": {
+    "message": "Help translate",
+    "description": ""
+  },
+  "ImportantInfoText_2": {
+    "message": "If you want to help translate ThunderStats into a new language or improve an existing translation, you can do so! Your contributions are invaluable in making this addon accessible to a wider audience.",
+    "description": ""
+  },
+  "ImportantInfoText_2b": {
+    "message": "  Find out how clicking here!",
     "description": ""
   },
   "prefsDonation_1": {
@@ -640,7 +652,7 @@
     "description": ""
   },
   "AdvancedAccountList_Desc": {
-    "message": "Some email providers, such as Gmail, have an \"Archive\" folder that contains all messages. However, the same messages are also present in individual folders. Considering the \"Archive\" folders in the statistics could lead to counting them twice. Below, you can choose to ignore the archive folders or filter out the duplicate messages. Filtering messages will increase the time required to calculate the statistics, but it will yield better results. If you do not use Gmail's archiving function, you can choose not to activate this feature and simply exclude the archive folders directly. The Inbox Zero folder locations chart will always display all emails. Therefore, if an email is received and appears in two folders, it will be shown in both folders on the chart.",
+    "message": "Below, you can choose to ignore the archive folders or filter out the duplicate messages. Filtering messages will increase the time required to calculate the statistics, but it will yield better results. If you do not use Gmail's archiving function, you can choose not to activate this feature and simply exclude the archive folders directly. The Inbox Zero folder locations chart will always display all emails. Therefore, if an email is received and appears in two folders, it will be shown in both folders on the chart.",
     "description": ""
   }
 }

@@ -436,15 +436,15 @@
     "description": ""
   },
   "TodayTimeGraphShowYesterday": {
-    "message": "Show also yesterday's mails in the today time graph",
+    "message": "Show also yesterday's mails in the today time chart",
     "description": ""
   },
   "TimeGraphProgressive": {
-    "message": "Show cumulative values in the today and yesterday time graphs",
+    "message": "Show cumulative values in the today and yesterday time charts",
     "description": ""
   },
   "ManyDaysGraph": {
-    "message": "Multiple Days Graph",
+    "message": "Multiple Days Chart",
     "description": ""
   },
   "ManyDays": {
@@ -640,7 +640,7 @@
     "description": ""
   },
   "InboxZeroGraph": {
-    "message": "Inbox Zero Graph",
+    "message": "Inbox Zero Chart",
     "description": ""
   },
   "AdvancedAccountList": {

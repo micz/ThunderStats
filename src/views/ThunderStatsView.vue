@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <HeadingNAV @chooseAccount="updateStats" :elapsed_time="elapsed_time" ref="HeadingNAV_ref"/>
+    <HeadingNAV @chooseAccount="updateStats" :elapsed_time="elapsed_time" :currentTab="currentTab" ref="HeadingNAV_ref"/>
   
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
@@ -63,7 +63,6 @@ import { tsUtils } from '@statslib/mzts-utils';
   let TAB_Yesterday_ref = ref(null);
   let TAB_ManyDays_ref = ref(null);
   let TAB_CustomQry_ref = ref(null);
-
   let HeadingNAV_ref = ref(null);
   
   let activeAccount = ref(0);
@@ -71,6 +70,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   let _many_days_text = ref("");
   let cache_lifetime = ref(120000);
   let elapsed_time = ref(0);
+  let currentTab = ref("tab-today");
 
   var tsLog = null;
   let tsCore = null
@@ -99,7 +99,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   }
 
   onBeforeMount(async () => {
-    // console.log(">>>>>>>>>>>> ThunderStatsView onBeforeMount");
+//    console.log(">>>>>>>>>>>> ThunderStatsView onBeforeMount tsStore.do_debug: " + tsStore.do_debug);
     tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     TS_prefs.logger = tsLog;
     remember_last_tab = await TS_prefs.getPref("remember_last_tab");
@@ -165,14 +165,16 @@ import { tsUtils } from '@statslib/mzts-utils';
   }
 
   async function tabChanged(id) {
-    // console.log(">>>>>>>>>>>> ThunderStatsView tabChanged");
+    //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsStore.do_debug: " + tsStore.do_debug);
+    //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsLog: " + JSON.stringify(tsLog));
+    currentTab.value = id.tab.computedId;
     if(!mounted_ok) { return; }
     elapsed_time.value = 0;
     // console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
     // console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
     tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));
     // console.log(">>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id.tab.computedId));
-     if((id.tab.computedId != "tab-customqry") && ((!stats_done[id.tab.computedId]) || always_reload_tab_data)) {
+     if((id.tab.computedId != "tab-customqry") && (id.tab.computedId != "tab-info") && ((!stats_done[id.tab.computedId]) || always_reload_tab_data)) {
       tsLog.log("tabChanged ==> Loading Data...");
       // console.log(">>>>>>>>>>>>>> tabChanged ==> Loading Data...");
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore

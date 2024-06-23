@@ -25,8 +25,8 @@
 			<div id="mzts-btn-update">
         <button type="button" @click="update()">__MSG_Update__</button>
       </div>
-      <div class="mzts-execution-time" v-if="is_loading">
-        __MSG_ExecutionTime__: <span v-text="elapsed_time_string" v-if="elapsed_time != 0"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="elapsed_time == 0"/>
+      <div class="mzts-execution-time" v-if="is_loading && currentTab != 'tab-info'">
+        <span v-text="elapsed_time_label"></span>: <span v-text="elapsed_time_string" v-if="elapsed_time != 0"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="elapsed_time == 0"/>
       </div>
 		  </div>
 		<div id="mzts-setup_icon">
@@ -51,6 +51,7 @@ const emit = defineEmits(['chooseAccount']);
 
 const props = defineProps({
   elapsed_time: { type: Number, default:0 },
+  currentTab: { type: String, default:'' }
 })
 
 let current_account = ref(0);
@@ -64,8 +65,14 @@ let elapsed_time_string = computed(() => {
   return tsUtils.convertFromMilliseconds(props.elapsed_time);
 })
 
+let currentTab = computed(() => {
+  if(props.currentTab == 'tab-info') { is_loading.value = false; }
+  return props.currentTab;
+})
+
 let tsLog = null;
 let is_loading = ref(false);
+let elapsed_time_label = ref("");
 
 onMounted(async () => {
   tsLog = new tsLogger("HeadingNAV", tsStore.do_debug);
@@ -77,16 +84,14 @@ onMounted(async () => {
 function update(){
   tsLog.log("update: " + current_account.value);
   emit('chooseAccount', current_account.value);
-  is_loading.value = true;
-  props.elapsed_time = 0;
+  doAgain();
 }
 
 async function accountSelected(){
   tsLog.log("accountSelected: " + current_account.value);
   if(await TS_prefs.getPref("load_data_changing_account")){
     emit('chooseAccount', current_account.value);
-    is_loading.value = true;
-    props.elapsed_time = 0;
+    doAgain();
   }
 }
 
@@ -104,9 +109,14 @@ function openOptions(){
 }
 
 function getCurrentIdn(){
-  is_loading.value = true;
-  props.elapsed_time = 0;
+  doAgain();
   return current_account.value;
+}
+
+async function doAgain(){
+  is_loading.value = true;
+  elapsed_time_label.value = await browser.i18n.getMessage("ExecutionTime");
+  props.elapsed_time = 0;
 }
 
 defineExpose({ getCurrentIdn });

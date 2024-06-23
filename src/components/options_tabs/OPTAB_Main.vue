@@ -36,7 +36,7 @@
         <label><input type="checkbox" id="_time_graph_progressive" name="_time_graph_progressive" class="option-input" /></label>
       </td>
       <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_TimeGraphProgressive__</span></label>
+     <label><span class="dims_label" @click="toggle_options">__MSG_TimeChartProgressive__</span></label>
       </td>
     </tr>
     <tr>
@@ -44,7 +44,7 @@
         <label><input type="checkbox" id="today_time_graph_show_yesterday" name="today_time_graph_show_yesterday" class="option-input" /></label>
       </td>
       <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_TodayTimeGraphShowYesterday__</span></label>
+     <label><span class="dims_label" @click="toggle_options">__MSG_TodayTimeChartShowYesterday__</span></label>
       </td>
     </tr>
     <tr>

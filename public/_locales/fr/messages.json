@@ -136,7 +136,7 @@
     "description": ""
   },
   "NoMailsReceived": {
-    "message": "Aucun courrier reçu !",
+    "message": "Aucun courrier reçu!",
     "description": ""
   },
   "InboxMailsDateSpreading": {
@@ -144,11 +144,11 @@
     "description": ""
   },
   "NoMailsInbox": {
-    "message": "Pas de messages dans la boîte de réception !",
+    "message": "Pas de messages dans la boîte de réception!",
     "description": ""
   },
   "TopRecipients": {
-    "message": "Principaux destinataires",
+    "message": "$NUMTOP$ Principaux destinataires",
     "description": "",
     "placeholders": {
       "numtop": {
@@ -158,7 +158,7 @@
     }
   },
   "TopSenders": {
-    "message": "Principaux expéditeurs",
+    "message": "$NUMTOP$ Principaux expéditeurs",
     "description": "",
     "placeholders": {
       "numtop": {
@@ -180,11 +180,11 @@
     "description": ""
   },
   "AboutText_1": {
-    "message": "Vous vous souvenez des statistiques d'Eudora ? ils vous manquent ?",
+    "message": "Vous vous souvenez des statistiques d'Eudora? ils vous manquent?",
     "description": ""
   },
   "AboutText_2": {
-    "message": "En utilisant ce module vous pouvez enfin garder un œil sur l'usage que vous faites de votre Thunderbird adoré !",
+    "message": "En utilisant ce module vous pouvez enfin garder un œil sur l'usage que vous faites de votre Thunderbird adoré!",
     "description": ""
   },
   "AboutText_3": {
@@ -192,11 +192,11 @@
     "description": ""
   },
   "InboxZeroTitle": {
-    "message": "Qu'est-ce que Inbox Zero ?",
+    "message": "Qu'est-ce que Inbox Zero?",
     "description": ""
   },
   "InboxZeroText_1": {
-    "message": "« Inbox Zero » (zéro courrier en attente) est une politique de gestion rigoureuse des courriers qui vise à n'avoir aucun message dans sa boîte de réception, pour qu'elle reste toujours vide.",
+    "message": "«Inbox Zero» (zéro courrier en attente) est une politique de gestion rigoureuse des courriers qui vise à n'avoir aucun message dans sa boîte de réception, pour qu'elle reste toujours vide.",
     "description": ""
   },
   "InboxZeroText_2": {
@@ -280,11 +280,11 @@
     "description": ""
   },
   "NoMailsSent": {
-    "message": "Aucun courrier envoyé !",
+    "message": "Aucun courrier envoyé!",
     "description": ""
   },
   "InTheLastNumDays": {
-    "message": "Les {0} derniers jours",
+    "message": "Les $NUMDAYS$ derniers jours",
     "description": "",
     "placeholders": {
       "numdays": {
@@ -294,7 +294,7 @@
     }
   },
   "LastNumDays": {
-    "message": "{0} derniers jours",
+    "message": "$NUMDAYS$ derniers jours",
     "description": "",
     "placeholders": {
       "numdays": {
@@ -304,7 +304,7 @@
     }
   },
   "GlobalDescSettingTab": {
-    "message": "Utiliser ces options pour personnaliser votre usage de ThunderStats !",
+    "message": "Utiliser ces options pour personnaliser votre usage de ThunderStats!",
     "description": ""
   },
   "AdvancedSettingTabDesc": {
@@ -328,7 +328,7 @@
     "description": ""
   },
   "InfoMainDesc": {
-    "message": "Ce module est gratuit et développé sur mon temps libre. Si vous l'utilisez chaque jour, merci d'envisager un petit don en cliquant sur le lien ci-dessous. Merci !!",
+    "message": "Ce module est gratuit et développé sur mon temps libre. Si vous l'utilisez chaque jour, merci d'envisager un petit don en cliquant sur le lien ci-dessous. Merci!!",
     "description": ""
   },
   "ReopenTabDesc": {
@@ -348,7 +348,7 @@
     "description": ""
   },
   "ManageCustomIdentititesDesc_2": {
-    "message": "Il s'agit généralement d'adresses e-mail de listes de diffusion auxquelles vous êtes abonné, où votre adresse e-mail n'est utilisée dans aucun champ « à » ou « cc ».",
+    "message": "Il s'agit généralement d'adresses e-mail de listes de diffusion auxquelles vous êtes abonné, où votre adresse e-mail n'est utilisée dans aucun champ «à» ou «cc».",
     "description": ""
   },
   "Account": {
@@ -440,7 +440,7 @@
     "description": ""
   },
   "InvolvedNum": {
-    "message": "Nombre de destinataires et expéditeurs à afficher dans les tableaux au &quot;Top&quot;.",
+    "message": "Nombre de destinataires et expéditeurs à afficher dans les tableaux au \"Top\".",
     "description": ""
   },
   "Other": {
@@ -480,11 +480,11 @@
     "description": ""
   },
   "ImportantInfoText_1": {
-    "message": "Certains fournisseurs de messagerie, tels que Gmail, disposent d'un dossier « Archive » qui contient tous les messages. Cependant, les mêmes messages sont également présents dans des dossiers individuels. La prise en compte des dossiers « Archive » dans les statistiques pourrait conduire à les compter deux fois.",
+    "message": "Certains fournisseurs de messagerie, tels que Gmail, disposent d'un dossier «Archive» qui contient tous les messages. Cependant, les mêmes messages sont également présents dans des dossiers individuels. La prise en compte des dossiers «Archive» dans les statistiques pourrait conduire à les compter deux fois.",
     "description": ""
   },
   "ImportantInfoText_1b": {
-    "message": "Sur la page des options avancées, vous pouvez choisir comment gérer ces comptes. Si un compte possède une adresse « gmail.com », il sera configuré correctement ; sinon, vous devrez le configurer manuellement.",
+    "message": "Sur la page des options avancées, vous pouvez choisir comment gérer ces comptes. Si un compte possède une adresse «gmail.com», il sera configuré correctement ; sinon, vous devrez le configurer manuellement.",
     "description": ""
   },
   "ImportantInfoSubtitle_2": {
@@ -492,7 +492,7 @@
     "description": ""
   },
   "ImportantInfoText_2": {
-    "message": "Si vous souhaitez contribuer à traduire ThunderStats dans une nouvelle langue ou améliorer une traduction existante, vous pouvez le faire ! Vos contributions sont inestimables pour rendre cet addon accessible à un public plus large.",
+    "message": "Si vous souhaitez contribuer à traduire ThunderStats dans une nouvelle langue ou améliorer une traduction existante, vous pouvez le faire! Vos contributions sont inestimables pour rendre cet addon accessible à un public plus large.",
     "description": ""
   },
   "ImportantInfoText_2b": {
@@ -508,7 +508,7 @@
     "description": ""
   },
   "InboxZeroChart": {
-    "message": "Graphique zéro de la boîte de réception",
+    "message": "Graphique Inbox Zero",
     "description": ""
   },
   "AdvancedAccountList": {

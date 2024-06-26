@@ -19,6 +19,12 @@ More info on [#194](https://github.com/micz/ThunderStats/issues/194) and [#195](
 
 <br>
 
+## Privacy
+All data processing is performed locally on your device. No data is transmitted, shared, or stored on any external servers or third-party services.
+This ensures that your information remains private and secure at all times.
+
+<br>
+
 ## Issues & Questions
 Post any issues or questions for ThunderStats under [Issues](https://github.com/micz/ThunderStats/issues), please refer only to version 2.0.
 

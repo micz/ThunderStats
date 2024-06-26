@@ -1,6 +1,6 @@
 {
   "extensionDescription": {
-    "message": "Vous vous souvenez des bonnes vieilles statistiques d'Eudora? Elles vous manquent? Utiliser cette extension vous permettra enfin de garder un œil sur la façon dont vous utilisez votre bien-aimé Thunderbird!",
+    "message": "Vous vous souvenez des bonnes vieilles statistiques d'Eudora ? Elles vous manquent ? Utiliser cette extension vous permettra enfin de garder un œil sur la façon dont vous utilisez votre bien-aimé Thunderbird !",
     "description": "Description of the extension."
   },
   "AllAccounts": {
@@ -136,7 +136,7 @@
     "description": ""
   },
   "NoMailsReceived": {
-    "message": "Aucun courrier reçu!",
+    "message": "Aucun courrier reçu !",
     "description": ""
   },
   "InboxMailsDateSpreading": {
@@ -144,7 +144,7 @@
     "description": ""
   },
   "NoMailsInbox": {
-    "message": "Pas de messages dans la boîte de réception!",
+    "message": "Pas de messages dans la boîte de réception !",
     "description": ""
   },
   "TopRecipients": {
@@ -180,11 +180,11 @@
     "description": ""
   },
   "AboutText_1": {
-    "message": "Vous vous souvenez des statistiques d'Eudora? ils vous manquent?",
+    "message": "Vous vous souvenez des statistiques d'Eudora ? ils vous manquent ?",
     "description": ""
   },
   "AboutText_2": {
-    "message": "En utilisant ce module vous pouvez enfin garder un œil sur l'usage que vous faites de votre Thunderbird adoré!",
+    "message": "En utilisant ce module vous pouvez enfin garder un œil sur l'usage que vous faites de votre Thunderbird adoré !",
     "description": ""
   },
   "AboutText_3": {
@@ -192,7 +192,7 @@
     "description": ""
   },
   "InboxZeroTitle": {
-    "message": "Qu'est-ce que Inbox Zero?",
+    "message": "Qu'est-ce que Inbox Zero ?",
     "description": ""
   },
   "InboxZeroText_1": {
@@ -204,7 +204,7 @@
     "description": ""
   },
   "HowDoesItWorkSubtitle": {
-    "message": "Comment ça marche?",
+    "message": "Comment ça marche ?",
     "description": ""
   },
   "OtherInfoText_1": {
@@ -280,7 +280,7 @@
     "description": ""
   },
   "NoMailsSent": {
-    "message": "Aucun courrier envoyé!",
+    "message": "Aucun courrier envoyé !",
     "description": ""
   },
   "InTheLastNumDays": {
@@ -304,7 +304,7 @@
     }
   },
   "GlobalDescSettingTab": {
-    "message": "Utiliser ces options pour personnaliser votre usage de ThunderStats!",
+    "message": "Utiliser ces options pour personnaliser votre usage de ThunderStats !",
     "description": ""
   },
   "AdvancedSettingTabDesc": {
@@ -328,7 +328,7 @@
     "description": ""
   },
   "InfoMainDesc": {
-    "message": "Ce module est gratuit et développé sur mon temps libre. Si vous l'utilisez chaque jour, merci d'envisager un petit don en cliquant sur le lien ci-dessous. Merci!!",
+    "message": "Ce module est gratuit et développé sur mon temps libre. Si vous l'utilisez chaque jour, merci d'envisager un petit don en cliquant sur le lien ci-dessous. Merci ! !",
     "description": ""
   },
   "ReopenTabDesc": {
@@ -492,19 +492,19 @@
     "description": ""
   },
   "ImportantInfoText_2": {
-    "message": "Si vous souhaitez contribuer à traduire ThunderStats dans une nouvelle langue ou améliorer une traduction existante, vous pouvez le faire! Vos contributions sont inestimables pour rendre cet addon accessible à un public plus large.",
+    "message": "Si vous souhaitez contribuer à traduire ThunderStats dans une nouvelle langue ou améliorer une traduction existante, vous pouvez le faire ! Vos contributions sont inestimables pour rendre cet addon accessible à un public plus large.",
     "description": ""
   },
   "ImportantInfoText_2b": {
-    "message": "Découvrez comment en cliquant ici!",
+    "message": "Découvrez comment en cliquant ici !",
     "description": ""
   },
   "prefsDonation_1": {
-    "message": "Aimez-vous cet add-on?",
+    "message": "Aimez-vous cet add-on ?",
     "description": ""
   },
   "prefsDonation_2": {
-    "message": "Pensez à faire un don!",
+    "message": "Pensez à faire un don !",
     "description": ""
   },
   "InboxZeroChart": {

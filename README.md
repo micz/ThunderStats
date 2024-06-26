@@ -44,9 +44,24 @@ Contributing Author: [Christopher Leidigh](https://addons.thunderbird.net/thunde
 
 <br>
 
-Locale Translations:
+# ATTRIBUTIONS
 
+## Translations
 - English (en-US)	: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - Italian (it)		: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - French (fr)		: Goofy and Vittorio
 - German (de)		: [Axel Grude](https://addons.thunderbird.net/thunderbird/user/realraven/) and ChatGPT (for version 2.0 new text)
+
+<br>
+
+## Javascript Libraries
+See the [package.json](/package.json) file.
+
+<br>
+
+## Graphics
+Addon icon thanks to http://hopstarter.deviantart.com/
+
+Custom Query Bookmark Icon thanks to http://www.iconarchive.com/artist/graphicrating.html
+
+Loading SVGs thanks to https://loading.io

@@ -4,10 +4,17 @@ This addon adds awesome statistics to your beloved Thunderbird!
 
 > [!IMPORTANT]
 > **ThunderStats is coming back!**
+>
+> **The first pre-release of Thunderbird 2.0 is ready!**
 > 
-> **[Read here!](https://github.com/micz/ThunderStats/issues/195)**
+> Get it from here: https://github.com/micz/ThunderStats/releases
 > 
-> **[UPDATE 2024/06/02](https://github.com/micz/ThunderStats/issues/195#issuecomment-2143861383)**
+> 
+> **[Read the announcement!](https://github.com/micz/ThunderStats/issues/195)**
+> 
+> **[UPDATE 2024/06/26](https://github.com/micz/ThunderStats/issues/195#issuecomment-2192508072)**
+>
+> [UPDATE 2024/06/02](https://github.com/micz/ThunderStats/issues/195#issuecomment-2143861383)
 > 
 
 More info on the homepage: http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/

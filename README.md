@@ -44,7 +44,7 @@ Contributing Author: [Christopher Leidigh](https://addons.thunderbird.net/thunde
 
 <br>
 
-# ATTRIBUTIONS
+## ATTRIBUTIONS
 
 ## Translations
 - English (en-US)	: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)

@@ -22,9 +22,9 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
-      <h3>Version 2.0 - ??/??/2024</h3>
+      <h3>Version 2.0.0pre1 - ??/??/2024</h3>
       <ul>
-       <li>First release of the new ThunderStats 2.0.</li>
+       <li>...</li>
       </ul>
       <p>This is a complete rewrite of the original addon as a MailExtension, using Vue.js.</p>
     </div>

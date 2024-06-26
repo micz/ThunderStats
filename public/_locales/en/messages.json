@@ -526,5 +526,13 @@
   "AdvancedAccountList_Desc": {
     "message": "Below, you can choose to ignore the archive folders or filter out the duplicate messages. Filtering messages will increase the time required to calculate the statistics, but it will yield better results. If you do not use Gmail's archiving function, you can choose not to activate this feature and simply exclude the archive folders directly. The Inbox Zero folder locations chart will always display all emails. Therefore, if an email is received and appears in two folders, it will be shown in both folders on the chart.",
     "description": ""
+  },
+  "PrivacySubtitle": {
+    "message": "Privacy",
+    "description": ""
+  },
+  "PrivacyInfoText_1": {
+    "message": "All data processing is performed locally on your device. No data is transmitted, shared, or stored on any external servers or third-party services. This ensures that your information remains private and secure at all times.",
+    "description": ""
   }
 }

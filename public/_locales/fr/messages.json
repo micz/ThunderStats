@@ -526,5 +526,13 @@
   "AdvancedAccountList_Desc": {
     "message": "Ci-dessous, vous pouvez choisir d'ignorer les dossiers d'archives ou de filtrer les messages en double. Le filtrage des messages augmentera le temps nécessaire au calcul des statistiques, mais donnera de meilleurs résultats. Si vous n'utilisez pas la fonction d'archivage de Gmail, vous pouvez choisir de ne pas activer cette fonctionnalité et simplement exclure directement les dossiers d'archives. Le tableau des emplacements des dossiers Inbox Zero affichera toujours tous les e-mails. Par conséquent, si un e-mail est reçu et apparaît dans deux dossiers, il sera affiché dans les deux dossiers du graphique.",
     "description": ""
+  },
+  "PrivacySubtitle": {
+    "message": "Confidentialité",
+    "description": ""
+  },
+  "PrivacyInfoText_1": {
+    "message": "Le traitement des données est effectué localement sur votre appareil. Aucune donnée n'est transmise, partagée ou stockée sur des serveurs externes ou des services tiers. Cela garantit que vos informations restent privées et sécurisées à tout moment.",
+    "description": ""
   }
 }

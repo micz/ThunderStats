@@ -526,5 +526,13 @@
   "AdvancedAccountList_Desc": {
     "message": "Unten können Sie wählen, ob Sie die Archivordner ignorieren oder die doppelten Nachrichten herausfiltern möchten. Das Filtern von Nachrichten erhöht die Zeit, die zur Berechnung der Statistiken benötigt wird, liefert jedoch bessere Ergebnisse. Wenn Sie die Archivierungsfunktion von Gmail nicht verwenden, können Sie diese Funktion deaktivieren und die Archivordner direkt ausschließen. Das 'Inbox Zero' Ordnerstandorte-Diagramm zeigt immer alle E-Mails an. Wenn also eine E-Mail empfangen wird und in zwei Ordnern erscheint, wird sie in beiden Ordnern im Diagramm angezeigt.",
     "description": ""
+  },
+  "PrivacySubtitle": {
+    "message": "Privatsphäre",
+    "description": ""
+  },
+  "PrivacyInfoText_1": {
+    "message": "Die Datenverarbeitung erfolgt vollständig lokal auf Ihrem Gerät. Es werden keine Daten an externe Server oder Drittanbieterdienste übertragen, geteilt oder gespeichert. Dies stellt sicher, dass Ihre Informationen jederzeit privat und sicher bleiben.",
+    "description": ""
   }
 }

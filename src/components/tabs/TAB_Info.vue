@@ -26,7 +26,9 @@
 			<p><span class="info_subtitle">__MSG_HowDoesItWorkSubtitle__</span><br>
 			__MSG_OtherInfoText_1__<br>
 			__MSG_OtherInfoText_2b__</p>
-		<p><br><i>__MSG_AboutText_3__: <a href="https://github.com/micz/ThunderStats/issues">__MSG_clickhere__</a>!</i></p></div>
+			<p><span class="info_subtitle">__MSG_PrivacySubtitle__</span><br>
+			__MSG_PrivacyInfoText_1__</p>
+		<p><i>__MSG_AboutText_3__: <a href="https://github.com/micz/ThunderStats/issues">__MSG_clickhere__</a>!</i></p></div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroTitle__</h2>
 					  </div>

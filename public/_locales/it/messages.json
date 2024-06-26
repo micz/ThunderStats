@@ -526,5 +526,13 @@
   "AdvancedAccountList_Desc": {
     "message": "Di seguito, puoi scegliere di ignorare le cartelle di archivio o filtrare i messaggi duplicati. Filtrare i messaggi aumenterà il tempo necessario per calcolare le statistiche, ma darà risultati migliori. Se non utilizzi la funzione di archiviazione di Gmail, puoi scegliere di non attivare questa funzione e semplicemente escludere direttamente le cartelle di archivio. Il grafico delle posizioni delle cartelle di Inbox Zero mostrerà sempre tutte le email. Pertanto, se un'email viene ricevuta e appare in due cartelle, sarà mostrata in entrambe le cartelle nel grafico.",
     "description": ""
+  },
+  "PrivacySubtitle": {
+    "message": "Privacy",
+    "description": ""
+  },
+  "PrivacyInfoText_1": {
+    "message": "Tutte le elaborazioni vengono eseguite localmente sul tuo dispositivo. Nessun dato viene trasmesso, condiviso o memorizzato su server esterni o servizi di terze parti. Questo garantisce che le tue informazioni rimangano sempre private e sicure.",
+    "description": ""
   }
 }

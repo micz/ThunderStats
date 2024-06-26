@@ -1,7 +1,7 @@
 {
   "extensionDescription": {
     "message": "Vous vous souvenez des bonnes vieilles statistiques d'Eudora? Elles vous manquent? Utiliser cette extension vous permettra enfin de garder un œil sur la façon dont vous utilisez votre bien-aimé Thunderbird!",
-    "description": ""
+    "description": "Description of the extension."
   },
   "AllAccounts": {
     "message": "Tous les comptes",
@@ -27,6 +27,18 @@
     "message": "Courriels",
     "description": ""
   },
+  "TimeChart.Time": {
+    "message": "Temps",
+    "description": ""
+  },
+  "TimeChart.Sent": {
+    "message": "Envoyé",
+    "description": ""
+  },
+  "TimeChart.Rcvd": {
+    "message": "Reçu",
+    "description": ""
+  },
   "DonateLink": {
     "message": "Faire un don",
     "description": ""
@@ -39,6 +51,14 @@
     "message": "Mise à jour",
     "description": ""
   },
+  "Save": {
+    "message": "Sauvegarder",
+    "description": ""
+  },
+  "ExecutionTime": {
+    "message": "Temps d'exécution",
+    "description": ""
+  },
   "Setup": {
     "message": "installation",
     "description": ""
@@ -49,6 +69,14 @@
   },
   "Yesterday": {
     "message": "Hier",
+    "description": ""
+  },
+  "today_small": {
+    "message": "aujourd'hui",
+    "description": ""
+  },
+  "yesterday_small": {
+    "message": "hier",
     "description": ""
   },
   "days": {
@@ -101,6 +129,10 @@
   },
   "FolderLocation": {
     "message": "Statistique de provenance des dossiers de courriels",
+    "description": ""
+  },
+  "InboxZeroFolderLocationNote": {
+    "message": "Dans ce graphique, tous les messages sont pris en compte, y compris les doublons filtrés dans les autres graphiques. Ainsi, par exemple, si vous utilisez Gmail, vous verrez les messages à la fois dans le dossier dans lequel ils se trouvent et dans le dossier «Tous les messages».",
     "description": ""
   },
   "NoMailsReceived": {
@@ -171,6 +203,10 @@
     "message": "ThunderStats vous donne des astuces pour savoir comment gérer votre boîte de réception.",
     "description": ""
   },
+  "HowDoesItWorkSubtitle": {
+    "message": "Comment ça marche?",
+    "description": ""
+  },
   "OtherInfoText_1": {
     "message": "Toutes le statistiques sont calculées à partir de la base de données interne de Thunderbird et sont associées avec les adresses électroniques du compte sélectionné.",
     "description": ""
@@ -205,6 +241,14 @@
   },
   "CustomQryDataMsg": {
     "message": "Données extraites depuis",
+    "description": ""
+  },
+  "DateRange": {
+    "message": "Plage de dates",
+    "description": ""
+  },
+  "Bookmarks_Menu": {
+    "message": "Choisissez une période prédéfinie",
     "description": ""
   },
   "CurrentWeek": {
@@ -263,6 +307,10 @@
     "message": "Utiliser ces options pour personnaliser votre usage de ThunderStats !",
     "description": ""
   },
+  "AdvancedSettingTabDesc": {
+    "message": "Ce sont des options avancées, utilisez-les si vous savez ce que vous faites.",
+    "description": ""
+  },
   "TabSettings.label": {
     "message": "Générales",
     "description": ""
@@ -273,6 +321,10 @@
   },
   "TabCustomIdentities.label": {
     "message": "Identités personnalisées",
+    "description": ""
+  },
+  "Identities": {
+    "message": "Identités",
     "description": ""
   },
   "InfoMainDesc": {
@@ -291,6 +343,14 @@
     "message": "Gérez ici vos identités personnalisées.",
     "description": ""
   },
+  "ManageCustomIdentititesDesc_1": {
+    "message": "Une identité personnalisée est une adresse email, différente de celles enregistrées pour le compte, avec laquelle vous recevez des mails.",
+    "description": ""
+  },
+  "ManageCustomIdentititesDesc_2": {
+    "message": "Il s'agit généralement d'adresses e-mail de listes de diffusion auxquelles vous êtes abonné, où votre adresse e-mail n'est utilisée dans aucun champ « à » ou « cc ».",
+    "description": ""
+  },
   "Account": {
     "message": "Compte",
     "description": ""
@@ -307,12 +367,64 @@
     "message": "Activer le système de débogage.",
     "description": ""
   },
+  "TodayTimeChartShowYesterday": {
+    "message": "Afficher également les mails d'hier dans le chronogramme d'aujourd'hui",
+    "description": ""
+  },
+  "TimeChartProgressive": {
+    "message": "Afficher les valeurs cumulées dans les graphiques temporels d'aujourd'hui et d'hier",
+    "description": ""
+  },
+  "ManyDaysChart": {
+    "message": "Graphique sur plusieurs jours",
+    "description": ""
+  },
   "ManyDays": {
     "message": "Nombre de jours à afficher",
     "description": ""
   },
   "CustomQueryBookmarkImmediateUpdate": {
     "message": "Quand une échelle de temps personnalisée est choisie, mettre à jour immédiatement les statistiques.",
+    "description": ""
+  },
+  "EmailAddresses": {
+    "message": "adresses mail",
+    "description": ""
+  },
+  "WeekDay0": {
+    "message": "Dimanche",
+    "description": ""
+  },
+  "WeekDay1": {
+    "message": "Lundi",
+    "description": ""
+  },
+  "WeekDay2": {
+    "message": "Mardi",
+    "description": ""
+  },
+  "WeekDay3": {
+    "message": "Mercredi",
+    "description": ""
+  },
+  "WeekDay4": {
+    "message": "Jeudi",
+    "description": ""
+  },
+  "WeekDay5": {
+    "message": "Vendredi",
+    "description": ""
+  },
+  "WeekDay6": {
+    "message": "Samedi",
+    "description": ""
+  },
+  "DatePickerLocale": {
+    "message": "Paramètres régionaux pour le sélecteur de date",
+    "description": ""
+  },
+  "ShowRelNotes1x": {
+    "message": "Afficher les notes de version pour la version 1.x",
     "description": ""
   },
   "License": {
@@ -323,8 +435,96 @@
     "message": "Échelles personnalisées des statistiques",
     "description": ""
   },
+  "folderspreadchart_openinfirsttab": {
+    "message": "À partir du tableau des emplacements des dossiers de courrier, ouvrez toujours le dossier dans le premier onglet",
+    "description": ""
+  },
   "InvolvedNum": {
     "message": "Nombre de destinataires et expéditeurs à afficher dans les tableaux au &quot;Top&quot;.",
+    "description": ""
+  },
+  "Other": {
+    "message": "Autre",
+    "description": ""
+  },
+  "prefs_FirstDayWeek": {
+    "message": "Choisissez le premier jour de la semaine",
+    "description": ""
+  },
+  "prefs_remember_last_tab": {
+    "message": "Rappelez-vous le dernier onglet ouvert",
+    "description": ""
+  },
+  "prefs_always_reload_tab_data": {
+    "message": "Recharger les données lors du changement d'onglet",
+    "description": ""
+  },
+  "prefs_load_data_changing_account": {
+    "message": "Recharger les données lors du changement de compte",
+    "description": ""
+  },
+  "prefs_filter_duplicates_multi_account": {
+    "message": "Filtrer les messages en double lorsque plusieurs comptes sont sélectionnés",
+    "description": ""
+  },
+  "prefs_include_archive_multi_account": {
+    "message": "Inclure les archives lorsque plusieurs comptes sont sélectionnés",
+    "description": ""
+  },
+  "ImportantInfoTitle": {
+    "message": "Une information important",
+    "description": ""
+  },
+  "ImportantInfoSubtitle_1": {
+    "message": "Filtrer les messages en double",
+    "description": ""
+  },
+  "ImportantInfoText_1": {
+    "message": "Certains fournisseurs de messagerie, tels que Gmail, disposent d'un dossier « Archive » qui contient tous les messages. Cependant, les mêmes messages sont également présents dans des dossiers individuels. La prise en compte des dossiers « Archive » dans les statistiques pourrait conduire à les compter deux fois.",
+    "description": ""
+  },
+  "ImportantInfoText_1b": {
+    "message": "Sur la page des options avancées, vous pouvez choisir comment gérer ces comptes. Si un compte possède une adresse « gmail.com », il sera configuré correctement ; sinon, vous devrez le configurer manuellement.",
+    "description": ""
+  },
+  "ImportantInfoSubtitle_2": {
+    "message": "Aidez à traduire",
+    "description": ""
+  },
+  "ImportantInfoText_2": {
+    "message": "Si vous souhaitez contribuer à traduire ThunderStats dans une nouvelle langue ou améliorer une traduction existante, vous pouvez le faire ! Vos contributions sont inestimables pour rendre cet addon accessible à un public plus large.",
+    "description": ""
+  },
+  "ImportantInfoText_2b": {
+    "message": "Découvrez comment en cliquant ici!",
+    "description": ""
+  },
+  "prefsDonation_1": {
+    "message": "Aimez-vous cet add-on?",
+    "description": ""
+  },
+  "prefsDonation_2": {
+    "message": "Pensez à faire un don!",
+    "description": ""
+  },
+  "InboxZeroChart": {
+    "message": "Graphique zéro de la boîte de réception",
+    "description": ""
+  },
+  "AdvancedAccountList": {
+    "message": "Paramètres avancés du compte",
+    "description": ""
+  },
+  "IncludeArchive": {
+    "message": "Inclure l'archive",
+    "description": ""
+  },
+  "FilterDuplicateMessages": {
+    "message": "Filtrer les messages en double",
+    "description": ""
+  },
+  "AdvancedAccountList_Desc": {
+    "message": "Ci-dessous, vous pouvez choisir d'ignorer les dossiers d'archives ou de filtrer les messages en double. Le filtrage des messages augmentera le temps nécessaire au calcul des statistiques, mais donnera de meilleurs résultats. Si vous n'utilisez pas la fonction d'archivage de Gmail, vous pouvez choisir de ne pas activer cette fonctionnalité et simplement exclure directement les dossiers d'archives. Le tableau des emplacements des dossiers Inbox Zero affichera toujours tous les e-mails. Par conséquent, si un e-mail est reçu et apparaît dans deux dossiers, il sera affiché dans les deux dossiers du graphique.",
     "description": ""
   }
 }

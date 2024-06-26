@@ -534,5 +534,9 @@
   "PrivacyInfoText_1": {
     "message": "Tutte le elaborazioni vengono eseguite localmente sul tuo dispositivo. Nessun dato viene trasmesso, condiviso o memorizzato su server esterni o servizi di terze parti. Questo garantisce che le tue informazioni rimangano sempre private e sicure.",
     "description": ""
+  },
+  "SetDefault": {
+    "message": "Imposta predefinito",
+    "description": ""
   }
 }

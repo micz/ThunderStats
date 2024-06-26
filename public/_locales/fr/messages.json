@@ -534,5 +534,9 @@
   "PrivacyInfoText_1": {
     "message": "Le traitement des données est effectué localement sur votre appareil. Aucune donnée n'est transmise, partagée ou stockée sur des serveurs externes ou des services tiers. Cela garantit que vos informations restent privées et sécurisées à tout moment.",
     "description": ""
+  },
+  "SetDefault": {
+    "message": "Définir par défaut",
+    "description": ""
   }
 }

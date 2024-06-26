@@ -534,5 +534,9 @@
   "PrivacyInfoText_1": {
     "message": "All data processing is performed locally on your device. No data is transmitted, shared, or stored on any external servers or third-party services. This ensures that your information remains private and secure at all times.",
     "description": ""
+  },
+  "SetDefault": {
+    "message": "Set default",
+    "description": ""
   }
 }

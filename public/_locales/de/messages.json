@@ -534,5 +534,9 @@
   "PrivacyInfoText_1": {
     "message": "Die Datenverarbeitung erfolgt vollständig lokal auf Ihrem Gerät. Es werden keine Daten an externe Server oder Drittanbieterdienste übertragen, geteilt oder gespeichert. Dies stellt sicher, dass Ihre Informationen jederzeit privat und sicher bleiben.",
     "description": ""
+  },
+  "SetDefault": {
+    "message": "Standard festlegen",
+    "description": ""
   }
 }

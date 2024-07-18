@@ -402,6 +402,7 @@ function loadingDo(){
 }
 
 function updateElapsed(elapsed) {
+    tsLog.log("updateElapsed: " + elapsed);
     emit('updateElapsed', elapsed);
 }
 

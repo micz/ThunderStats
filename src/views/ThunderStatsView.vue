@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <HeadingNAV @chooseAccount="updateStats" :elapsed_time="elapsed_time" :currentTab="currentTab" ref="HeadingNAV_ref"/>
+    <HeadingNAV @chooseAccount="updateStats" :is_loading="is_loading" :elapsed_time="elapsed_time" :currentTab="currentTab" ref="HeadingNAV_ref"/>
   
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
@@ -70,6 +70,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   let _many_days_text = ref("");
   let cache_lifetime = ref(120000);
   let elapsed_time = ref(0);
+  let is_loading = ref(false);
   let currentTab = ref("tab-today");
 
   var tsLog = null;
@@ -132,7 +133,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   
 
   async function updateStats(account_id) {
-    // console.log(">>>>>>>>>>>> ThunderStatsView updateStats");
+     console.log(">>>>>>>>>>>> ThunderStatsView updateStats");
     if(tsLog == null) {
       tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     }
@@ -147,6 +148,7 @@ import { tsUtils } from '@statslib/mzts-utils';
     nextTick(() => {
       let curr_tab = statsTabs_ref.value.activeTabHash;
       tsLog.log("curr_tab: " + curr_tab);
+      is_loading.value = true;
       switch(curr_tab) {
         case "#tab-today":
           TAB_Today_ref.value.updateData();
@@ -165,11 +167,13 @@ import { tsUtils } from '@statslib/mzts-utils';
   }
 
   async function tabChanged(id) {
+    console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id) + " stats_done[id.tab.computedId]: " + stats_done[id.tab.computedId]);
     //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsStore.do_debug: " + tsStore.do_debug);
     //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsLog: " + JSON.stringify(tsLog));
     currentTab.value = id.tab.computedId;
     if(!mounted_ok) { return; }
-    elapsed_time.value = 0;
+    updateElapsed(0);
+    is_loading.value = false;
     // console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
     // console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
     tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));
@@ -178,12 +182,15 @@ import { tsUtils } from '@statslib/mzts-utils';
       tsLog.log("tabChanged ==> Loading Data...");
       // console.log(">>>>>>>>>>>>>> tabChanged ==> Loading Data...");
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
+      statsDone(id.tab.computedId);
      }
-     statsDone(id.tab.computedId);
   }
 
-  function updateCustomQry() {
-    updateStats(HeadingNAV_ref.value.getCurrentIdn());
+  async function updateCustomQry() {
+    console.log(">>>>>>>>>>>>> stats_done[id.tab.computedId]: " + stats_done["tab-customqry"]);
+    stats_done["tab-customqry"] = false;
+    await updateStats(HeadingNAV_ref.value.getCurrentIdn());
+    statsDone("tab-customqry");
   }
 
   function updateElapsed(elapsed) {

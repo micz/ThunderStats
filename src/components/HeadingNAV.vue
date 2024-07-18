@@ -51,7 +51,8 @@ const emit = defineEmits(['chooseAccount']);
 
 const props = defineProps({
   elapsed_time: { type: Number, default:0 },
-  currentTab: { type: String, default:'' }
+  currentTab: { type: String, default:'' },
+  is_loading: { type: Boolean, default:false }
 })
 
 let current_account = ref(0);
@@ -66,13 +67,16 @@ let elapsed_time_string = computed(() => {
 })
 
 let currentTab = computed(() => {
-  if(props.currentTab == 'tab-info') { is_loading.value = false; }
   return props.currentTab;
 })
 
-let tsLog = null;
-let is_loading = ref(false);
+let is_loading = computed(() => {
+  return props.is_loading;
+})
+
 let elapsed_time_label = ref("");
+
+let tsLog = null;
 
 onMounted(async () => {
   tsLog = new tsLogger("HeadingNAV", tsStore.do_debug);

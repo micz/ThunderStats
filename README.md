@@ -65,3 +65,4 @@ Addon icon thanks to http://hopstarter.deviantart.com/
 Custom Query Bookmark Icon thanks to http://www.iconarchive.com/artist/graphicrating.html
 
 Loading SVGs thanks to https://loading.io
+

@@ -1,9 +1,5 @@
 # ![TS] ThunderStats Release Notes
 
-### Version 2.0.0pre1 - ??/??/2024
-- ...
-
-
 <h3>Version 2.0.0pre1 - ??/??/2024</h3>
       <ul>
        <li>This is a complete rewrite of the original addon as a MailExtension, using Vue.js.</li>

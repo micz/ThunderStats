@@ -1,0 +1,542 @@
+{
+  "extensionDescription": {
+    "message": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
+    "description": "Description of the extension."
+  },
+  "AllAccounts": {
+    "message": "All Accounts",
+    "description": ""
+  },
+  "Name": {
+    "message": "Name",
+    "description": ""
+  },
+  "Mail": {
+    "message": "Mail",
+    "description": ""
+  },
+  "Total": {
+    "message": "Total",
+    "description": ""
+  },
+  "Before": {
+    "message": "Before",
+    "description": ""
+  },
+  "Mails": {
+    "message": "Mails",
+    "description": ""
+  },
+  "TimeChart.Time": {
+    "message": "Time",
+    "description": ""
+  },
+  "TimeChart.Sent": {
+    "message": "Sent",
+    "description": ""
+  },
+  "TimeChart.Rcvd": {
+    "message": "Received",
+    "description": ""
+  },
+  "DonateLink": {
+    "message": "Make a donation!",
+    "description": ""
+  },
+  "ChooseAccount": {
+    "message": "Choose Account",
+    "description": ""
+  },
+  "Update": {
+    "message": "Update",
+    "description": ""
+  },
+  "Save": {
+    "message": "Save",
+    "description": ""
+  },
+  "ExecutionTime": {
+    "message": "Execution time",
+    "description": ""
+  },
+  "Setup": {
+    "message": "Open options tab",
+    "description": ""
+  },
+  "Today": {
+    "message": "Today",
+    "description": ""
+  },
+  "Yesterday": {
+    "message": "Yesterday",
+    "description": ""
+  },
+  "today_small": {
+    "message": "today",
+    "description": ""
+  },
+  "yesterday_small": {
+    "message": "yesterday",
+    "description": ""
+  },
+  "days": {
+    "message": "days",
+    "description": ""
+  },
+  "TotalDays": {
+    "message": "Total days",
+    "description": ""
+  },
+  "Info": {
+    "message": "Info",
+    "description": ""
+  },
+  "Loading": {
+    "message": "Loading",
+    "description": ""
+  },
+  "SentMails": {
+    "message": "Sent Mails",
+    "description": ""
+  },
+  "ReceivedMails": {
+    "message": "Received Mails",
+    "description": ""
+  },
+  "InboxZeroStatus": {
+    "message": "Inbox Zero Status",
+    "description": ""
+  },
+  "TotalInbox": {
+    "message": "Total mails in the inbox",
+    "description": ""
+  },
+  "TotalInboxUnread": {
+    "message": "unread",
+    "description": ""
+  },
+  "YesterdayThisTime": {
+    "message": "Yesterday at this time",
+    "description": ""
+  },
+  "sent": {
+    "message": "sent",
+    "description": ""
+  },
+  "received": {
+    "message": "received",
+    "description": ""
+  },
+  "FolderLocation": {
+    "message": "Mails folder locations chart",
+    "description": ""
+  },
+  "InboxZeroFolderLocationNote": {
+    "message": "In this chart, all messages are considered, including duplicates that are filtered in the other charts. So, for example, if you use Gmail, you will see messages both in the folder they are in and in the \"All Mail\" folder.",
+    "description": ""
+  },
+  "NoMailsReceived": {
+    "message": "No mails received",
+    "description": ""
+  },
+  "InboxMailsDateSpreading": {
+    "message": "Inbox mails date spreading chart",
+    "description": ""
+  },
+  "NoMailsInbox": {
+    "message": "No mails in the Inbox!",
+    "description": ""
+  },
+  "TopRecipients": {
+    "message": "Top $NUMTOP$ Recipients",
+    "description": "",
+    "placeholders": {
+      "numtop": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "TopSenders": {
+    "message": "Top $NUMTOP$ Senders",
+    "description": "",
+    "placeholders": {
+      "numtop": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "clickhere": {
+    "message": "click here",
+    "description": ""
+  },
+  "clickheremoreinfo": {
+    "message": "Click here for more info",
+    "description": ""
+  },
+  "AboutTitle": {
+    "message": "About this addon",
+    "description": ""
+  },
+  "AboutText_1": {
+    "message": "Do you remember the old good Eudora statistics? Do you miss them?",
+    "description": ""
+  },
+  "AboutText_2": {
+    "message": "Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
+    "description": ""
+  },
+  "AboutText_3": {
+    "message": "More features will be added in the future, but if you have an idea, send it",
+    "description": ""
+  },
+  "InboxZeroTitle": {
+    "message": "What is Inbox Zero?",
+    "description": ""
+  },
+  "InboxZeroText_1": {
+    "message": "Inbox Zero is a rigorous approach to email management aimed at keeping the inbox empty — or almost empty — at all times.",
+    "description": ""
+  },
+  "InboxZeroText_2": {
+    "message": "ThunderStats gives you some insights on how you're managing your inbox.",
+    "description": ""
+  },
+  "HowDoesItWorkSubtitle": {
+    "message": "How does it work?",
+    "description": ""
+  },
+  "OtherInfoText_1": {
+    "message": "All the statistics are calculated from the mails that are in the Thunderbird folders, associated with the mail addresses of the selected account.",
+    "description": ""
+  },
+  "OtherInfoText_2b": {
+    "message": "The statistics will be updated as soon as Thunderbird has updated the folders from the mail server.",
+    "description": ""
+  },
+  "DonationsTitle": {
+    "message": "Donations",
+    "description": ""
+  },
+  "max": {
+    "message": "max",
+    "description": ""
+  },
+  "min": {
+    "message": "min",
+    "description": ""
+  },
+  "average": {
+    "message": "average",
+    "description": ""
+  },
+  "CustomQry": {
+    "message": "Custom View",
+    "description": ""
+  },
+  "UpdateCustomQry": {
+    "message": "Get Data",
+    "description": ""
+  },
+  "CustomQryDataMsg": {
+    "message": "Data extract for",
+    "description": ""
+  },
+  "DateRange": {
+    "message": "Date Range",
+    "description": ""
+  },
+  "Bookmarks_Menu": {
+    "message": "Choose a predefined period",
+    "description": ""
+  },
+    "CurrentWeek": {
+    "message": "Current week",
+    "description": ""
+  },
+  "CurrentMonth": {
+    "message": "Current month",
+    "description": ""
+  },
+  "CurrentYear": {
+    "message": "Current year",
+    "description": ""
+  },
+  "LastWeek": {
+    "message": "Last week",
+    "description": ""
+  },
+  "LastMonth": {
+    "message": "Last month",
+    "description": ""
+  },
+  "LastYear": {
+    "message": "Last year",
+    "description": ""
+  },
+  "Last2Week": {
+    "message": "Last two weeks",
+    "description": ""
+  },
+  "NoMailsSent": {
+    "message": "No mails sent",
+    "description": ""
+  },
+  "InTheLastNumDays": {
+    "message": "In the last $NUMDAYS$ days",
+    "description": "",
+    "placeholders": {
+      "numdays": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "LastNumDays": {
+    "message": "Last $NUMDAYS$ days",
+    "description": "",
+    "placeholders": {
+      "numdays": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "GlobalDescSettingTab": {
+    "message": "Use these options to customize your ThunderStats experience!",
+    "description": ""
+  },
+  "AdvancedSettingTabDesc": {
+    "message": "These are advanced options, use them if you know what you're doing.",
+    "description": ""
+  },
+  "TabSettings.label": {
+    "message": "General",
+    "description": ""
+  },
+  "TabAdvanced.label": {
+    "message": "Advanced",
+    "description": ""
+  },
+  "TabCustomIdentities.label": {
+    "message": "Custom Identities",
+    "description": ""
+  },
+  "Identities": {
+    "message": "Identities",
+    "description": ""
+  },
+  "InfoMainDesc": {
+    "message": "This addon is free and developed in my spare time. If you're using it in your every day routine, feel free to support it with a little donation clicking on the link below. Thanks!!",
+    "description": ""
+  },
+  "ReopenTabDesc": {
+    "message": "You need to close and reopen the ThunderStats tab to make the changes effective.",
+    "description": ""
+  },
+  "StartupAccount": {
+    "message": "Startup Account",
+    "description": ""
+  },
+  "ManageCustomIdentitites": {
+    "message": "Manage your custom identitites here",
+    "description": ""
+  },
+  "ManageCustomIdentititesDesc_1": {
+    "message": "A custom identity is an email address, different from the ones registered for the account, with which you receive mails.",
+    "description": ""
+  },
+  "ManageCustomIdentititesDesc_2": {
+    "message": "Usually these are email addresses of mailing lists that you're subscribed to, where your email address is not used in any 'to' or 'cc' fields.",
+    "description": ""
+  },
+  "Account": {
+    "message": "Account",
+    "description": ""
+  },
+  "CustomIdentititesAccount": {
+    "message": "Custom Identitites for the selected Account",
+    "description": ""
+  },
+  "CustomIdentititesAccount.Info": {
+    "message": "Add an email address per line, or separated by a comma.",
+    "description": ""
+  },
+  "ActivateDebug": {
+    "message": "Activate the debug system",
+    "description": ""
+  },
+  "TodayTimeChartShowYesterday": {
+    "message": "Show also yesterday's mails in the today time chart",
+    "description": ""
+  },
+  "TimeChartProgressive": {
+    "message": "Show cumulative values in the today and yesterday time charts",
+    "description": ""
+  },
+  "ManyDaysChart": {
+    "message": "Multiple Days Chart",
+    "description": ""
+  },
+  "ManyDays": {
+    "message": "Number of days to be shown",
+    "description": ""
+  },
+  "CustomQueryBookmarkImmediateUpdate": {
+    "message": "When selecting a custom date range view, update the statistics immediately",
+    "description": ""
+  },
+  "EmailAddresses": {
+    "message": "email addresses",
+    "description": ""
+  },
+  "WeekDay0": {
+    "message": "Sunday",
+    "description": ""
+  },
+  "WeekDay1": {
+    "message": "Monday",
+    "description": ""
+  },
+  "WeekDay2": {
+    "message": "Tuesday",
+    "description": ""
+  },
+  "WeekDay3": {
+    "message": "Wednesday",
+    "description": ""
+  },
+  "WeekDay4": {
+    "message": "Thursday",
+    "description": ""
+  },
+  "WeekDay5": {
+    "message": "Friday",
+    "description": ""
+  },
+  "WeekDay6": {
+    "message": "Saturday",
+    "description": ""
+  },
+  "DatePickerLocale": {
+    "message": "Locale setting for the date picker",
+    "description": ""
+  },
+  "ShowRelNotes1x": {
+    "message": "Show release notes for version 1.x",
+    "description": ""
+  },
+  "License": {
+    "message": "License",
+    "description": ""
+  },
+  "CustomQryTabGroupbox": {
+    "message": "Custom Range Statistics",
+    "description": ""
+  },
+  "folderspreadchart_openinfirsttab": {
+    "message": "From the mails folder locations chart, open the folder always in the first tab",
+    "description": ""
+  },
+  "InvolvedNum": {
+    "message": "Number of recipients or senders to be shown in \"Top\" tables",
+    "description": ""
+  },
+  "Other": {
+    "message": "Other",
+    "description": ""
+  },
+  "prefs_FirstDayWeek": {
+    "message": "Choose the first day of the week",
+    "description": ""
+  },
+  "prefs_remember_last_tab": {
+    "message": "Remember the last opened tab",
+    "description": ""
+  },
+  "prefs_always_reload_tab_data": {
+    "message": "Reload data when changing tab",
+    "description": ""
+  },
+  "prefs_load_data_changing_account": {
+    "message": "Reload data when changing the account",
+    "description": ""
+  },
+  "prefs_filter_duplicates_multi_account": {
+    "message": "Filter duplicate messages when multiple accounts are selected",
+    "description": ""
+  },
+  "prefs_include_archive_multi_account": {
+    "message": "Include archives when multiple accounts are selected",
+    "description": ""
+  },
+  "ImportantInfoTitle": {
+    "message": "Important Information",
+    "description": ""
+  },
+  "ImportantInfoSubtitle_1": {
+    "message": "Filter duplicate messages",
+    "description": ""
+  },
+  "ImportantInfoText_1": {
+    "message": "Some email providers, such as Gmail, have an \"Archive\" folder that contains all messages. However, the same messages are also present in individual folders. Considering the \"Archive\" folders in the statistics could lead to counting them twice.",
+    "description": ""
+  },
+  "ImportantInfoText_1b": {
+    "message": "On the advanced options page, you can choose how to manage these accounts. If an account has a \"gmail.com\" address, it will be set up correctly; otherwise, you will have to set it up manually.",
+    "description": ""
+  },
+  "ImportantInfoSubtitle_2": {
+    "message": "Help translate",
+    "description": ""
+  },
+  "ImportantInfoText_2": {
+    "message": "If you want to help translate ThunderStats into a new language or improve an existing translation, you can do so! Your contributions are invaluable in making this addon accessible to a wider audience.",
+    "description": ""
+  },
+  "ImportantInfoText_2b": {
+    "message": "  Find out how clicking here!",
+    "description": ""
+  },
+  "prefsDonation_1": {
+    "message": "Do you like this addon?",
+    "description": ""
+  },
+  "prefsDonation_2": {
+    "message": "Consider to make a donation!",
+    "description": ""
+  },
+  "InboxZeroChart": {
+    "message": "Inbox Zero Chart",
+    "description": ""
+  },
+  "AdvancedAccountList": {
+    "message": "Account Advanced Settings",
+    "description": ""
+  },
+  "IncludeArchive": {
+    "message": "Include Archive",
+    "description": ""
+  },
+  "FilterDuplicateMessages": {
+    "message": "Filter duplicate messages",
+    "description": ""
+  },
+  "AdvancedAccountList_Desc": {
+    "message": "Below, you can choose to ignore the archive folders or filter out the duplicate messages. Filtering messages will increase the time required to calculate the statistics, but it will yield better results. If you do not use Gmail's archiving function, you can choose not to activate this feature and simply exclude the archive folders directly. The Inbox Zero folder locations chart will always display all emails. Therefore, if an email is received and appears in two folders, it will be shown in both folders on the chart.",
+    "description": ""
+  },
+  "PrivacySubtitle": {
+    "message": "Privacy",
+    "description": ""
+  },
+  "PrivacyInfoText_1": {
+    "message": "All data processing is performed locally on your device. No data is transmitted, shared, or stored on any external servers or third-party services. This ensures that your information remains private and secure at all times.",
+    "description": ""
+  },
+  "SetDefault": {
+    "message": "Set default",
+    "description": ""
+  }
+}

@@ -1,0 +1,209 @@
+body{
+    background-color: #f1f9fd;
+    font-size: 15px;
+}
+
+div#miczDescription{
+    padding:0px 15px 0px 15px;
+    font-size: 13px;
+}
+
+div#miczDescription h1{
+    font-size: 15px;
+}
+
+div#miczDonation{
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    background-color: #eff8ff;
+    border: 1px solid #eff8ff;
+    padding: 5px;
+}
+
+.paddingbottom30{
+    padding-bottom: 30px;
+}
+
+.marginright10{
+    margin-right: 10px;
+}
+
+.marginleft10{
+    margin-left: 10px;
+}
+
+table.miczPrefs {
+    border-spacing: 0px;
+    margin-top: 20px;
+}
+
+table.miczPrefs td{
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    vertical-align: top;
+    padding: 2px;
+}
+
+table.miczPrefs td.grouptitle{
+    border:0;
+    vertical-align: top;
+    padding: 2px;
+    font-weight: bold;
+}
+
+table.miczPrefs tr:first-child td {
+    border-top: none;
+}
+  
+table.miczPrefs  tr:last-child td {
+    border-bottom: none;
+}
+
+div#miczDescription h1{
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+div#miczDescription p{
+    text-align: justify;
+    margin-top: 0px;
+}
+
+span.dims_label{
+    display: inline-block;
+}
+
+input#_involved_num, input#_many_days, input#datepicker_locale{
+    width: 60px;
+}
+
+.td_padding_right{
+    padding-right: 15px !important
+}
+
+div.intro_main{
+  margin-bottom: 10px;
+  margin-left: 12px;
+  font-style: italic;
+}
+
+div.intro_change_warn{
+    color: darkred;
+    background-color: rgb(255, 240, 240);
+    padding: 3px 15px;
+    border-radius: 8px;
+    width: fit-content;
+    display: inline-block;
+}
+
+div.intro_info{
+    margin: 0px auto 10px auto;
+    width: 47vw;
+    text-align: center;
+    font-style: italic;
+}
+
+div.intro_info_link{
+    margin-top:10px;
+    font-size: large;
+}
+
+div.account_emails{
+    font-style: italic;
+    font-size: small;
+    color:rgb(51, 51, 51);
+}
+
+span.dims_label{
+    cursor: pointer;
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+
+    body{
+        background-color: #333;
+    }
+
+    div#miczDescription{
+        color: #ccc;
+        background-color: #333;
+    }
+
+    div#miczDescription h1{
+        color: #fff;
+    }
+
+    div#miczDonation{
+        background-color: #444;
+        border: 1px solid #444;
+        color: #ccc;
+    }
+
+    table.miczPrefs {
+        background-color: #333;
+        color: #ccc;
+    }
+
+    table.miczPrefs td{
+        border-top: 1px solid #555;
+        border-bottom: 1px solid #555;
+    }
+
+    table.miczPrefs td.grouptitle{
+        color: #fff;
+    }
+
+    div#miczDescription h1{
+        color: #fff;
+    }
+
+    div#miczDescription p{
+        color: #ccc;
+    }
+
+    span.dims_label{
+        color: #ccc;
+    }
+
+    input#_involved_num, input#_many_days, input#datepicker_locale{
+        background-color: #444;
+        color: #fff;
+        border: 1px solid #555;
+    }
+
+    div.intro_main{
+        color: #ccc;
+    }
+
+    div.intro_change_warn{
+        color: #ddbebe;
+        background-color: #553333;
+    }
+
+    div.intro_info{
+        color: #ccc;
+    }
+
+    div.intro_info_link{
+        color: #fff;
+    }
+
+    div.account_emails{
+        color: #aaa;
+    }
+
+    a {
+        color: #79bcff;
+    }
+
+    a:visited {
+        color: #79bcff;
+    }
+
+}

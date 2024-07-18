@@ -1,6 +1,0 @@
-<!ENTITY ThunderStats.NBDEditor.window.title "Editor Giorni Non Lavorativi">
-<!ENTITY ThunderStats.desc.label "Descrizione">
-<!ENTITY ThunderStats.date.label "Data">
-<!ENTITY ThunderStats.every_year.label "Annuale">
-<!ENTITY ThunderStats.every_year.desc "Questo giorno sarà non lavorativo ogni anno.">
-<!ENTITY ThunderStats.optional.label "Opzionale">

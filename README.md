@@ -1,71 +1,68 @@
-# ![ThunderStats icon](rep-resources/images/mzts-icon.png "ThunderStats")  ThunderStats
+# ![ThunderStats icon](public/images/mzts-icon-32px.png "ThunderStats")  ThunderStats
 
 This addon adds awesome statistics to your beloved Thunderbird!
 
-> [!IMPORTANT]
-> **ThunderStats is coming back!**
->
-> **The first pre-release of Thunderbird 2.0 is ready!**
-> 
-> Get it from here: https://github.com/micz/ThunderStats/releases
-> 
-> 
-> **[Read the announcement!](https://github.com/micz/ThunderStats/issues/195)**
-> 
-> **[UPDATE 2024/06/26](https://github.com/micz/ThunderStats/issues/195#issuecomment-2192508072)**
->
-> [UPDATE 2024/06/02](https://github.com/micz/ThunderStats/issues/195#issuecomment-2143861383)
-> 
 
-More info on the homepage: http://micz.it/thunderdbird-addon-thunderstats-your-thunderbird-statistics/
+<br>
 
-This add-on is the original work of Micz and with his permission I will be updating
-the code for compatibility going forward and possible improvements.
 
-![ThunderStats_version](https://img.shields.io/badge/version-v1.4.5-darkorange.png?label=ThunderStats)
-![ThunderStats_tb_version](https://img.shields.io/badge/version-v1.4.5-blue.png?label=Thunderbird%20Add-On)
-![Thunderbird_version](https://img.shields.io/badge/version-v60.0_--_73.*-blue.png?label=Thunderbird)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-red.png)](./LICENSE.txt)
-![Release Status](https://img.shields.io/badge/Release%20Status-v1.4.4%20Latest-brightgreen.png)
-#
+## The path to Version 2.0
+In this branch is present the source code for the new ThunderStats 2.0!
 
-## ThunderStats Add-On Installation
+The addon is being rewritten from scratch using Vue.js.
 
-Normal install from Thunderbird Add-On site:
-- Download and install from the add-on menu
-- Within Thunderbird ``Tools\Add-ons`` search for 'ThunderStats' install and reload.
+Check the issues assigned to [Milestone 2.0](https://github.com/micz/ThunderStats/milestone/2) for more detailed updates on the progress and the features that will be included in the first 2.0 release.
 
-Install XPI directly:
-- Download desired version package from the [XPI](xpi) folder.
-- Within Thunderbird ``Tools\Add-ons`` click the gear icon and choose ``Install Add-ons From File..``
-- Choose XPI file, install and reload.
+Features from the previous version 1.4.5 have been assigned the label "[road to 2.0](https://github.com/micz/ThunderStats/labels/road%20to%202.0)".
 
-## XPI Add-On Package Build instructions (WIP)
+More info on [#194](https://github.com/micz/ThunderStats/issues/194) and [#195](https://github.com/micz/ThunderStats/issues/195)
 
-1. Have Node, npm, 7zip-min archiver installed and in PATH (used globally)
-2. Open a terminal in the repository root dir
-3. Using root level package.json and npm scripts now
-4. Run ``npm run build-xpi-bat`` to make the xpi
+<br>
 
-Notes : 
-- ``install.rdf`` is used for TB60.*
-- A ``manifest.json`` file is also introduced for testing in TB60+.
+## Privacy
+All data processing is performed locally on your device. No data is transmitted, shared, or stored on any external servers or third-party services.
+This ensures that your information remains private and secure at all times.
+
+<br>
 
 ## Issues & Questions
-Post any issues or questions for ThunderStats under [Issues](https://github.com/micz/ThunderStats/issues)
+Post any issues or questions for ThunderStats under [Issues](https://github.com/micz/ThunderStats/issues), please refer only to version 2.0.
+
+<br>
+
 
 ## Changelog
 ThunderStats's changes are logged [here](CHANGELOG.md).
 
+
+<br>
+
 ## Credits
-Original Author: [Micz](https://addons.thunderbird.net/en-US/thunderbird/user/Micz/ "Micz")  
-Contributing Author: [cleidigh](https://addons.thunderbird.net/en-US/thunderbird/user/cleidigh/ "Cleidigh")
+Original Author: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 
-Locale Translations:
+Contributing Author: [Christopher Leidigh](https://addons.thunderbird.net/thunderbird/user/cleidigh/)
 
-- English (en-US)	: Micz (m@micz.it)
-- Italian (it)		: Micz (m@micz.it)
-- French (fr)		: Goofy
-- German (de)		: Axel Grude
+<br>
 
+## ATTRIBUTIONS
+
+## Translations
+- English (en-US)	: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
+- Italian (it)		: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
+- French (fr)		: Goofy and Vittorio
+- German (de)		: [Axel Grude](https://addons.thunderbird.net/thunderbird/user/realraven/) and ChatGPT (for version 2.0 new text)
+
+<br>
+
+## Javascript Libraries
+See the [package.json](/package.json) file.
+
+<br>
+
+## Graphics
+Addon icon thanks to http://hopstarter.deviantart.com/
+
+Custom Query Bookmark Icon thanks to http://www.iconarchive.com/artist/graphicrating.html
+
+Loading SVGs thanks to https://loading.io
 

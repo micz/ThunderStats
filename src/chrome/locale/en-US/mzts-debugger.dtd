@@ -1,5 +1,0 @@
-<!ENTITY ThunderStats.Debugger.window.title "ThunderStats Debugger">
-<!ENTITY ThunderStats.Debugger.Working "Working...">
-<!ENTITY ThunderStats.Debugger.Loading "Loading...">
-<!ENTITY ThunderStats.Debugger.SendReport "Send Report">
-<!ENTITY ThunderStats.Debugger.UserMsgTitle "Before sending the report, describe your problem here.">

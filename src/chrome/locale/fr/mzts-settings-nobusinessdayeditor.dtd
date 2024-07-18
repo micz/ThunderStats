@@ -1,6 +1,0 @@
-<!ENTITY ThunderStats.NBDEditor.window.title "Modifier le jour">
-<!ENTITY ThunderStats.desc.label "Étiquette">
-<!ENTITY ThunderStats.date.label "Date">
-<!ENTITY ThunderStats.every_year.label "Annuellement">
-<!ENTITY ThunderStats.every_year.desc "Cette journée sera une journée non travaillée par an.">
-<!ENTITY ThunderStats.optional.label "Facultatif">

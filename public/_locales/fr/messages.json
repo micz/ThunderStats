@@ -1,0 +1,542 @@
+{
+  "extensionDescription": {
+    "message": "Vous vous souvenez des bonnes vieilles statistiques d'Eudora ? Elles vous manquent ? Utiliser cette extension vous permettra enfin de garder un œil sur la façon dont vous utilisez votre bien-aimé Thunderbird !",
+    "description": "Description of the extension."
+  },
+  "AllAccounts": {
+    "message": "Tous les comptes",
+    "description": ""
+  },
+  "Name": {
+    "message": "Nom",
+    "description": ""
+  },
+  "Mail": {
+    "message": "Courriel",
+    "description": ""
+  },
+  "Total": {
+    "message": "Total",
+    "description": ""
+  },
+  "Before": {
+    "message": "Avant",
+    "description": ""
+  },
+  "Mails": {
+    "message": "Courriels",
+    "description": ""
+  },
+  "TimeChart.Time": {
+    "message": "Temps",
+    "description": ""
+  },
+  "TimeChart.Sent": {
+    "message": "Envoyé",
+    "description": ""
+  },
+  "TimeChart.Rcvd": {
+    "message": "Reçu",
+    "description": ""
+  },
+  "DonateLink": {
+    "message": "Faire un don",
+    "description": ""
+  },
+  "ChooseAccount": {
+    "message": "Choisir un compte",
+    "description": ""
+  },
+  "Update": {
+    "message": "Mise à jour",
+    "description": ""
+  },
+  "Save": {
+    "message": "Sauvegarder",
+    "description": ""
+  },
+  "ExecutionTime": {
+    "message": "Temps d'exécution",
+    "description": ""
+  },
+  "Setup": {
+    "message": "installation",
+    "description": ""
+  },
+  "Today": {
+    "message": "Aujourd'hui",
+    "description": ""
+  },
+  "Yesterday": {
+    "message": "Hier",
+    "description": ""
+  },
+  "today_small": {
+    "message": "aujourd'hui",
+    "description": ""
+  },
+  "yesterday_small": {
+    "message": "hier",
+    "description": ""
+  },
+  "days": {
+    "message": "jours",
+    "description": ""
+  },
+  "TotalDays": {
+    "message": "Nombre total de jours",
+    "description": ""
+  },
+  "Info": {
+    "message": "Information",
+    "description": ""
+  },
+  "Loading": {
+    "message": "Chargement",
+    "description": ""
+  },
+  "SentMails": {
+    "message": "Courriers envoyés",
+    "description": ""
+  },
+  "ReceivedMails": {
+    "message": "Courriers reçus",
+    "description": ""
+  },
+  "InboxZeroStatus": {
+    "message": "Boîte de réception vide",
+    "description": ""
+  },
+  "TotalInbox": {
+    "message": "Nombre total de messages dans la boîte de réception",
+    "description": ""
+  },
+  "TotalInboxUnread": {
+    "message": "non lus",
+    "description": ""
+  },
+  "YesterdayThisTime": {
+    "message": "Hier à cette heure-ci",
+    "description": ""
+  },
+  "sent": {
+    "message": "envoyés",
+    "description": ""
+  },
+  "received": {
+    "message": "reçus",
+    "description": ""
+  },
+  "FolderLocation": {
+    "message": "Statistique de provenance des dossiers de courriels",
+    "description": ""
+  },
+  "InboxZeroFolderLocationNote": {
+    "message": "Dans ce graphique, tous les messages sont pris en compte, y compris les doublons filtrés dans les autres graphiques. Ainsi, par exemple, si vous utilisez Gmail, vous verrez les messages à la fois dans le dossier dans lequel ils se trouvent et dans le dossier «Tous les messages».",
+    "description": ""
+  },
+  "NoMailsReceived": {
+    "message": "Aucun courrier reçu !",
+    "description": ""
+  },
+  "InboxMailsDateSpreading": {
+    "message": "Graphique des courriers de la boîte de réception en fonction de la date",
+    "description": ""
+  },
+  "NoMailsInbox": {
+    "message": "Pas de messages dans la boîte de réception !",
+    "description": ""
+  },
+  "TopRecipients": {
+    "message": "$NUMTOP$ Principaux destinataires",
+    "description": "",
+    "placeholders": {
+      "numtop": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "TopSenders": {
+    "message": "$NUMTOP$ Principaux expéditeurs",
+    "description": "",
+    "placeholders": {
+      "numtop": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "clickhere": {
+    "message": "cliquez ici",
+    "description": ""
+  },
+  "clickheremoreinfo": {
+    "message": "Cliquez ici pour en savoir plus",
+    "description": ""
+  },
+  "AboutTitle": {
+    "message": "À propos de ce module",
+    "description": ""
+  },
+  "AboutText_1": {
+    "message": "Vous vous souvenez des statistiques d'Eudora ? ils vous manquent ?",
+    "description": ""
+  },
+  "AboutText_2": {
+    "message": "En utilisant ce module vous pouvez enfin garder un œil sur l'usage que vous faites de votre Thunderbird adoré !",
+    "description": ""
+  },
+  "AboutText_3": {
+    "message": "Davantage de fonctions seront développées à l'avenir, mais si vous avez une suggestion, dites-le moi.",
+    "description": ""
+  },
+  "InboxZeroTitle": {
+    "message": "Qu'est-ce que Inbox Zero ?",
+    "description": ""
+  },
+  "InboxZeroText_1": {
+    "message": "«Inbox Zero» (zéro courrier en attente) est une politique de gestion rigoureuse des courriers qui vise à n'avoir aucun message dans sa boîte de réception, pour qu'elle reste toujours vide.",
+    "description": ""
+  },
+  "InboxZeroText_2": {
+    "message": "ThunderStats vous donne des astuces pour savoir comment gérer votre boîte de réception.",
+    "description": ""
+  },
+  "HowDoesItWorkSubtitle": {
+    "message": "Comment ça marche ?",
+    "description": ""
+  },
+  "OtherInfoText_1": {
+    "message": "Toutes le statistiques sont calculées à partir de la base de données interne de Thunderbird et sont associées avec les adresses électroniques du compte sélectionné.",
+    "description": ""
+  },
+  "OtherInfoText_2b": {
+    "message": "Les statistiques seront mises à jour dès que l'indexeur de Thunderbird  aura traité les nouveaux messages. Les dates dans l'angle supérieur droit indiquent les récentes mise à jour des statistiques.",
+    "description": ""
+  },
+  "DonationsTitle": {
+    "message": "Dons",
+    "description": ""
+  },
+  "max": {
+    "message": "max",
+    "description": ""
+  },
+  "min": {
+    "message": "min",
+    "description": ""
+  },
+  "average": {
+    "message": "moyenne",
+    "description": ""
+  },
+  "CustomQry": {
+    "message": "Personnalisées",
+    "description": ""
+  },
+  "UpdateCustomQry": {
+    "message": "Extraire les données",
+    "description": ""
+  },
+  "CustomQryDataMsg": {
+    "message": "Données extraites depuis",
+    "description": ""
+  },
+  "DateRange": {
+    "message": "Plage de dates",
+    "description": ""
+  },
+  "Bookmarks_Menu": {
+    "message": "Choisissez une période prédéfinie",
+    "description": ""
+  },
+  "CurrentWeek": {
+    "message": "La semaine en cours",
+    "description": ""
+  },
+  "CurrentMonth": {
+    "message": "Le mois en cours",
+    "description": ""
+  },
+  "CurrentYear": {
+    "message": "Année courante",
+    "description": ""
+  },
+  "LastWeek": {
+    "message": "La semaine dernière",
+    "description": ""
+  },
+  "LastMonth": {
+    "message": "Le mois dernier",
+    "description": ""
+  },
+  "LastYear": {
+    "message": "Année précédente",
+    "description": ""
+  },
+  "Last2Week": {
+    "message": "Les deux dernières semaines",
+    "description": ""
+  },
+  "NoMailsSent": {
+    "message": "Aucun courrier envoyé !",
+    "description": ""
+  },
+  "InTheLastNumDays": {
+    "message": "Les $NUMDAYS$ derniers jours",
+    "description": "",
+    "placeholders": {
+      "numdays": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "LastNumDays": {
+    "message": "$NUMDAYS$ derniers jours",
+    "description": "",
+    "placeholders": {
+      "numdays": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "GlobalDescSettingTab": {
+    "message": "Utiliser ces options pour personnaliser votre usage de ThunderStats !",
+    "description": ""
+  },
+  "AdvancedSettingTabDesc": {
+    "message": "Ce sont des options avancées, utilisez-les si vous savez ce que vous faites.",
+    "description": ""
+  },
+  "TabSettings.label": {
+    "message": "Générales",
+    "description": ""
+  },
+  "TabAdvanced.label": {
+    "message": "Avancé",
+    "description": ""
+  },
+  "TabCustomIdentities.label": {
+    "message": "Identités personnalisées",
+    "description": ""
+  },
+  "Identities": {
+    "message": "Identités",
+    "description": ""
+  },
+  "InfoMainDesc": {
+    "message": "Ce module est gratuit et développé sur mon temps libre. Si vous l'utilisez chaque jour, merci d'envisager un petit don en cliquant sur le lien ci-dessous. Merci ! !",
+    "description": ""
+  },
+  "ReopenTabDesc": {
+    "message": "Vous devez fermer puis relancer l'onglet de ThunderStats pour que les changements soient effectifs.",
+    "description": ""
+  },
+  "StartupAccount": {
+    "message": "Compte au démarrage",
+    "description": ""
+  },
+  "ManageCustomIdentitites": {
+    "message": "Gérez ici vos identités personnalisées.",
+    "description": ""
+  },
+  "ManageCustomIdentititesDesc_1": {
+    "message": "Une identité personnalisée est une adresse email, différente de celles enregistrées pour le compte, avec laquelle vous recevez des mails.",
+    "description": ""
+  },
+  "ManageCustomIdentititesDesc_2": {
+    "message": "Il s'agit généralement d'adresses e-mail de listes de diffusion auxquelles vous êtes abonné, où votre adresse e-mail n'est utilisée dans aucun champ «à» ou «cc».",
+    "description": ""
+  },
+  "Account": {
+    "message": "Compte",
+    "description": ""
+  },
+  "CustomIdentititesAccount": {
+    "message": "identités personnalisées pour le compte sélectionné",
+    "description": ""
+  },
+  "CustomIdentititesAccount.Info": {
+    "message": "Ajouter une adresse électronique par ligne.",
+    "description": ""
+  },
+  "ActivateDebug": {
+    "message": "Activer le système de débogage.",
+    "description": ""
+  },
+  "TodayTimeChartShowYesterday": {
+    "message": "Afficher également les mails d'hier dans le chronogramme d'aujourd'hui",
+    "description": ""
+  },
+  "TimeChartProgressive": {
+    "message": "Afficher les valeurs cumulées dans les graphiques temporels d'aujourd'hui et d'hier",
+    "description": ""
+  },
+  "ManyDaysChart": {
+    "message": "Graphique sur plusieurs jours",
+    "description": ""
+  },
+  "ManyDays": {
+    "message": "Nombre de jours à afficher",
+    "description": ""
+  },
+  "CustomQueryBookmarkImmediateUpdate": {
+    "message": "Quand une échelle de temps personnalisée est choisie, mettre à jour immédiatement les statistiques.",
+    "description": ""
+  },
+  "EmailAddresses": {
+    "message": "adresses mail",
+    "description": ""
+  },
+  "WeekDay0": {
+    "message": "Dimanche",
+    "description": ""
+  },
+  "WeekDay1": {
+    "message": "Lundi",
+    "description": ""
+  },
+  "WeekDay2": {
+    "message": "Mardi",
+    "description": ""
+  },
+  "WeekDay3": {
+    "message": "Mercredi",
+    "description": ""
+  },
+  "WeekDay4": {
+    "message": "Jeudi",
+    "description": ""
+  },
+  "WeekDay5": {
+    "message": "Vendredi",
+    "description": ""
+  },
+  "WeekDay6": {
+    "message": "Samedi",
+    "description": ""
+  },
+  "DatePickerLocale": {
+    "message": "Paramètres régionaux pour le sélecteur de date",
+    "description": ""
+  },
+  "ShowRelNotes1x": {
+    "message": "Afficher les notes de version pour la version 1.x",
+    "description": ""
+  },
+  "License": {
+    "message": "Licence",
+    "description": ""
+  },
+  "CustomQryTabGroupbox": {
+    "message": "Échelles personnalisées des statistiques",
+    "description": ""
+  },
+  "folderspreadchart_openinfirsttab": {
+    "message": "À partir du tableau des emplacements des dossiers de courrier, ouvrez toujours le dossier dans le premier onglet",
+    "description": ""
+  },
+  "InvolvedNum": {
+    "message": "Nombre de destinataires et expéditeurs à afficher dans les tableaux au \"Top\".",
+    "description": ""
+  },
+  "Other": {
+    "message": "Autre",
+    "description": ""
+  },
+  "prefs_FirstDayWeek": {
+    "message": "Choisissez le premier jour de la semaine",
+    "description": ""
+  },
+  "prefs_remember_last_tab": {
+    "message": "Rappelez-vous le dernier onglet ouvert",
+    "description": ""
+  },
+  "prefs_always_reload_tab_data": {
+    "message": "Recharger les données lors du changement d'onglet",
+    "description": ""
+  },
+  "prefs_load_data_changing_account": {
+    "message": "Recharger les données lors du changement de compte",
+    "description": ""
+  },
+  "prefs_filter_duplicates_multi_account": {
+    "message": "Filtrer les messages en double lorsque plusieurs comptes sont sélectionnés",
+    "description": ""
+  },
+  "prefs_include_archive_multi_account": {
+    "message": "Inclure les archives lorsque plusieurs comptes sont sélectionnés",
+    "description": ""
+  },
+  "ImportantInfoTitle": {
+    "message": "Une information important",
+    "description": ""
+  },
+  "ImportantInfoSubtitle_1": {
+    "message": "Filtrer les messages en double",
+    "description": ""
+  },
+  "ImportantInfoText_1": {
+    "message": "Certains fournisseurs de messagerie, tels que Gmail, disposent d'un dossier «Archive» qui contient tous les messages. Cependant, les mêmes messages sont également présents dans des dossiers individuels. La prise en compte des dossiers «Archive» dans les statistiques pourrait conduire à les compter deux fois.",
+    "description": ""
+  },
+  "ImportantInfoText_1b": {
+    "message": "Sur la page des options avancées, vous pouvez choisir comment gérer ces comptes. Si un compte possède une adresse «gmail.com», il sera configuré correctement ; sinon, vous devrez le configurer manuellement.",
+    "description": ""
+  },
+  "ImportantInfoSubtitle_2": {
+    "message": "Aidez à traduire",
+    "description": ""
+  },
+  "ImportantInfoText_2": {
+    "message": "Si vous souhaitez contribuer à traduire ThunderStats dans une nouvelle langue ou améliorer une traduction existante, vous pouvez le faire ! Vos contributions sont inestimables pour rendre cet addon accessible à un public plus large.",
+    "description": ""
+  },
+  "ImportantInfoText_2b": {
+    "message": "Découvrez comment en cliquant ici !",
+    "description": ""
+  },
+  "prefsDonation_1": {
+    "message": "Aimez-vous cet add-on ?",
+    "description": ""
+  },
+  "prefsDonation_2": {
+    "message": "Pensez à faire un don !",
+    "description": ""
+  },
+  "InboxZeroChart": {
+    "message": "Graphique Inbox Zero",
+    "description": ""
+  },
+  "AdvancedAccountList": {
+    "message": "Paramètres avancés du compte",
+    "description": ""
+  },
+  "IncludeArchive": {
+    "message": "Inclure l'archive",
+    "description": ""
+  },
+  "FilterDuplicateMessages": {
+    "message": "Filtrer les messages en double",
+    "description": ""
+  },
+  "AdvancedAccountList_Desc": {
+    "message": "Ci-dessous, vous pouvez choisir d'ignorer les dossiers d'archives ou de filtrer les messages en double. Le filtrage des messages augmentera le temps nécessaire au calcul des statistiques, mais donnera de meilleurs résultats. Si vous n'utilisez pas la fonction d'archivage de Gmail, vous pouvez choisir de ne pas activer cette fonctionnalité et simplement exclure directement les dossiers d'archives. Le tableau des emplacements des dossiers Inbox Zero affichera toujours tous les e-mails. Par conséquent, si un e-mail est reçu et apparaît dans deux dossiers, il sera affiché dans les deux dossiers du graphique.",
+    "description": ""
+  },
+  "PrivacySubtitle": {
+    "message": "Confidentialité",
+    "description": ""
+  },
+  "PrivacyInfoText_1": {
+    "message": "Le traitement des données est effectué localement sur votre appareil. Aucune donnée n'est transmise, partagée ou stockée sur des serveurs externes ou des services tiers. Cela garantit que vos informations restent privées et sécurisées à tout moment.",
+    "description": ""
+  },
+  "SetDefault": {
+    "message": "Définir par défaut",
+    "description": ""
+  }
+}

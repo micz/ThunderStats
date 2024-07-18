@@ -1,6 +1,6 @@
 # ![TS] ThunderStats Release Notes
 
-<h3>Version 2.0.0pre1 - ??/??/2024</h3>
+<h3>Version 2.0.0 - 18/07/2024</h3>
       <ul>
        <li>This is a complete rewrite of the original addon as a MailExtension, using Vue.js.</li>
        <li>Added dark mode [<a href="https://github.com/micz/ThunderStats/issues/197">#197</a>].</li>

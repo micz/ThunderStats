@@ -20,7 +20,7 @@ This ensures that your information remains private and secure at all times.
 <br>
 
 ## Issues & Questions
-Post any issues or questions for ThunderStats under [Issues](https://github.com/micz/ThunderStats/issues), please refer only to version 2.0.
+Post any issues or questions for ThunderStats under [Issues](https://github.com/micz/ThunderStats/issues).
 
 <br>
 

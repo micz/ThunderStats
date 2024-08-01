@@ -186,7 +186,7 @@ export class thunderStastsCore {
       }
 
       for await (let message of messages) {
-          if(!this.filterAccountMessage(message,account_id)) continue;
+          if(!await this.filterAccountMessage(message,account_id)) continue;
           if(this.excludeMessage(message,account_id)) continue;
           // this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
@@ -331,7 +331,7 @@ export class thunderStastsCore {
       }
 
       for await (let message of messages) {
-          if(!this.filterAccountMessage(message,account_id)) continue;
+          if(!await this.filterAccountMessage(message,account_id)) continue;
         //console.log(">>>>>>>>>>>>>> filter_duplicates: iterating message.headerMessageId: " + message.headerMessageId);
           if(this.excludeMessage(message,account_id)) continue;
           if(filter_duplicates){
@@ -404,7 +404,7 @@ export class thunderStastsCore {
       this.tsLog.log("[getAggregatedStatsData] msg_days: " + JSON.stringify(msg_days));
 
       for await (let message of messages) {
-          if(!this.filterAccountMessage(message,account_id)) continue;
+          if(!await this.filterAccountMessage(message,account_id)) continue;
           if(this.excludeMessage(message,account_id)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
           if(filter_duplicates){
@@ -491,13 +491,13 @@ export class thunderStastsCore {
       return false;
     }
 
-    filterAccountMessage(message, account_id = 0) {     // Returns true if the message should be included in the stats
+    async filterAccountMessage(message, account_id = 0) {     // Returns true if the message should be included in the stats
       if(account_id == 0) return true;
 
       //get account emails
-      let account_emails = tsCoreUtils.getAccountEmails(account_id);
+      let account_emails = await tsCoreUtils.getAccountEmails(account_id);
 
-      console.log(">>>>>>>>>>>>> account_emails: " + JSON.stringify(account_emails));
+      console.log(">>>>>>>>>>>>> [filterAccountMessage] account_emails: " + JSON.stringify(account_emails));
 
       const match_author = message.author.match(tsUtils.regexEmail);
       if (match_author) {
@@ -558,7 +558,7 @@ export class thunderStastsCore {
           let messages = this.getMessages(browser.messages.query(queryInfo_InboxZeroData));
 
           for await (let message of messages) {
-            if(!this.filterAccountMessage(message,account_id)) continue;
+            if(!await this.filterAccountMessage(message,account_id)) continue;
             total++;
             if (!message.read) {
               unread++;

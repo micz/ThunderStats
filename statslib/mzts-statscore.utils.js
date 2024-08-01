@@ -329,7 +329,7 @@ export const tsCoreUtils = {
         for(let account of accounts) {
             let include_archive = true;
             let filter_duplicates = await this.getDefaultAccountFilterDuplicatesOption(account);
-            if(accounts_adv_settings.length >= 0) {
+            if(accounts_adv_settings.length > 0) {
                 include_archive = accounts_adv_settings.find(element => element.id === account.id)?.include_archive;
                 filter_duplicates = accounts_adv_settings.find(element => element.id === account.id)?.filter_duplicates || filter_duplicates;
             }
@@ -356,7 +356,10 @@ export const tsCoreUtils = {
         } else {
            let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
          //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
-           let element = accounts_adv_settings.find(account => account.id == account_id);
+         let element = null;
+         if(accounts_adv_settings.length > 0) {
+           element = accounts_adv_settings.find(account => account.id == account_id);
+         }
          //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
            if(!element) return true;
            return element.include_archive === undefined ? true : element.include_archive;
@@ -369,7 +372,10 @@ export const tsCoreUtils = {
         } else {
            let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
          //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
-           let element = accounts_adv_settings.find(account => account.id == account_id);
+         let element = null;
+         if(accounts_adv_settings.length > 0) {
+           element = accounts_adv_settings.find(account => account.id == account_id);
+         }
          //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
            if(!element) return false;
            return element.filter_duplicates || false;

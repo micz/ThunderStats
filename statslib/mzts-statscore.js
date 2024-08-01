@@ -158,7 +158,7 @@ export class thunderStastsCore {
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
 
       let queryInfo_FullStatsData = {
-        accountId: account_id == 0?'':account_id,
+        //accountId: account_id == 0?'':account_id,
         fromDate: fromDate,
         toDate: toDate,
       }
@@ -186,6 +186,7 @@ export class thunderStastsCore {
       }
 
       for await (let message of messages) {
+          if(!this.filterAccountMessage(message,account_id)) continue;
           if(this.excludeMessage(message,account_id)) continue;
           // this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
@@ -310,7 +311,7 @@ export class thunderStastsCore {
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
 
       let queryInfo_CountStatsData = {
-        accountId: account_id == 0?'':account_id,
+        //accountId: account_id == 0?'':account_id,
         fromDate: fromDate,
         toDate: toDate,
       }
@@ -330,6 +331,7 @@ export class thunderStastsCore {
       }
 
       for await (let message of messages) {
+          if(!this.filterAccountMessage(message,account_id)) continue;
         //console.log(">>>>>>>>>>>>>> filter_duplicates: iterating message.headerMessageId: " + message.headerMessageId);
           if(this.excludeMessage(message,account_id)) continue;
           if(filter_duplicates){
@@ -385,7 +387,7 @@ export class thunderStastsCore {
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
 
       let queryInfo_getAggregatedStatsData = {
-        accountId: account_id == 0?'':account_id,
+        //accountId: account_id == 0?'':account_id,
         fromDate: fromDate,
         toDate: toDate,
       }
@@ -402,6 +404,7 @@ export class thunderStastsCore {
       this.tsLog.log("[getAggregatedStatsData] msg_days: " + JSON.stringify(msg_days));
 
       for await (let message of messages) {
+          if(!this.filterAccountMessage(message,account_id)) continue;
           if(this.excludeMessage(message,account_id)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
           if(filter_duplicates){
@@ -488,6 +491,50 @@ export class thunderStastsCore {
       return false;
     }
 
+    filterAccountMessage(message, account_id = 0) {     // Returns true if the message should be included in the stats
+      if(account_id == 0) return true;
+
+      //get account emails
+      let account_emails = tsCoreUtils.getAccountEmails(account_id);
+
+      console.log(">>>>>>>>>>>>> account_emails: " + JSON.stringify(account_emails));
+
+      const match_author = message.author.match(tsUtils.regexEmail);
+      if (match_author) {
+        const key_author = match_author[0];
+        if(account_emails.includes(key_author)) {
+          return true;
+        }
+      }
+
+      const ccList = message.ccList;
+      ccList.forEach((cc, index) => {
+        const matches = cc.match(tsUtils.regexEmail);
+        if(matches && matches.length > 1) {
+          ccList[index] = matches[0];
+        }
+      });
+      const account_emails_matches = ccList.filter(cc => account_emails.includes(cc));
+      if(account_emails_matches.length > 0) {
+        return true;
+      }
+
+      const recipientList = message.recipientList;
+      recipientList.forEach((recipient, index) => {
+        const matches = recipient.match(tsUtils.regexEmail);
+        if(matches && matches.length > 1) {
+          recipientList[index] = matches[0];
+        }
+      })
+      const account_emails_recipients = recipientList.filter(recipient => account_emails.includes(recipient));
+      if(account_emails_recipients.length > 0) {
+        return true;
+      }
+
+      return false;
+    }
+
+
     async getInboxZeroDates(account_id = 0) {
 
       let start_time = performance.now();
@@ -503,14 +550,15 @@ export class thunderStastsCore {
       for(let folder of inboxFolders) {
 
           let queryInfo_InboxZeroData = {
-            accountId: account_id == 0?'':account_id,
-            folderId: folder.id,
+            //accountId: account_id == 0?'':account_id,
+            folder: folder,
           }
           this.tsLog.log("queryInfo_InboxZeroData: " + JSON.stringify(queryInfo_InboxZeroData));
           
           let messages = this.getMessages(browser.messages.query(queryInfo_InboxZeroData));
 
           for await (let message of messages) {
+            if(!this.filterAccountMessage(message,account_id)) continue;
             total++;
             if (!message.read) {
               unread++;
@@ -541,7 +589,14 @@ export class thunderStastsCore {
 
       // let folders = await browser.folders.query(queryInfo_InboxFolders);
 
-      let account = await browser.accounts.get(account_id, true);
+      let account = null;
+
+      if(account_id == 0) {
+          account = await browser.accounts.list(true);
+      } else {
+        account = await browser.accounts.get(account_id, true);
+      }
+
       let folders = account.folders.filter(folder => folder.type == 'inbox');
 
       this.tsLog.log("folders: " + JSON.stringify(folders));

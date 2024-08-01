@@ -157,9 +157,6 @@ export class thunderStastsCore {
 
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
 
-      let account_folders = await browser.folders.getSubFolders(account_id);
-      console.log(">>>>>>>>>>>>>>> account_folders: " + JSON.stringify(account_folders));
-
       let queryInfo_FullStatsData = {
         //accountId: account_id == 0?'':account_id,
         fromDate: fromDate,
@@ -594,10 +591,14 @@ export class thunderStastsCore {
       let account = null;
 
       if(account_id == 0) {
-          account = await browser.accounts.list(true);
+        account = await browser.accounts.list(true);
       } else {
         account = await browser.accounts.get(account_id, true);
       }
+
+      //test code to print the account_folders
+      // let account_folders = await browser.folders.getSubFolders(await browser.accounts.get(account_id));
+      // console.log(">>>>>>>>>>>>>>> account_folders: " + JSON.stringify(account_folders));
 
       let folders = account.folders.filter(folder => folder.type == 'inbox');
 

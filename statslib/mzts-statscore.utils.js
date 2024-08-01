@@ -294,6 +294,7 @@ export const tsCoreUtils = {
               });
             }
           }
+          //console.log(">>>>>>>>>>>>> getAccountEmails (all account) account_emails: " + JSON.stringify(account_emails));
         }else{
           for (let account of accounts) {
             if(account.id == account_id) {
@@ -308,6 +309,7 @@ export const tsCoreUtils = {
               }
             }
           }
+          //console.log(">>>>>>>>>>>> getAccountEmails (one account) account_emails: " + JSON.stringify(account_emails));
         }
 
         return account_emails;

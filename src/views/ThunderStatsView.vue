@@ -133,7 +133,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   
 
   async function updateStats(account_id) {
-     console.log(">>>>>>>>>>>> ThunderStatsView updateStats");
+     //console.log(">>>>>>>>>>>> ThunderStatsView updateStats");
     if(tsLog == null) {
       tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     }
@@ -187,7 +187,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   }
 
   async function updateCustomQry() {
-    console.log(">>>>>>>>>>>>> stats_done[id.tab.computedId]: " + stats_done["tab-customqry"]);
+    //console.log(">>>>>>>>>>>>> stats_done[id.tab.computedId]: " + stats_done["tab-customqry"]);
     stats_done["tab-customqry"] = false;
     await updateStats(HeadingNAV_ref.value.getCurrentIdn());
     statsDone("tab-customqry");

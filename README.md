@@ -1,4 +1,4 @@
-# ![ThunderStats icon](public/images/mzts-icon-32px.png "ThunderStats")  ThunderStats 2.0
+# ![ThunderStats icon](public/images/mzts-icon-32px.png "ThunderStats")  ThunderStats 1.9 (a 2.0 backport to Thunderbird 115)
 
 This addon adds awesome statistics to your beloved Thunderbird!
 

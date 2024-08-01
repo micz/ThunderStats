@@ -534,12 +534,16 @@ export class thunderStastsCore {
 
 
     async getInboxFolders(account_id = 0){
-      let queryInfo_InboxFolders = {
-        accountId: account_id == 0?'':account_id,
-        specialUse: ['inbox']
-      }
+      // let queryInfo_InboxFolders = {
+      //   accountId: account_id == 0?'':account_id,
+      //   specialUse: ['inbox']
+      // }
 
-      let folders = await browser.folders.query(queryInfo_InboxFolders);
+      // let folders = await browser.folders.query(queryInfo_InboxFolders);
+
+      let account = await browser.accounts.get(account_id, true);
+      let folders = account.folders.filter(folder => folder.type == 'inbox');
+
       this.tsLog.log("folders: " + JSON.stringify(folders));
       return folders;
     }

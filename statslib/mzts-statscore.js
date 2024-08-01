@@ -519,7 +519,7 @@ export class thunderStastsCore {
         return true;
       }
 
-      const recipientList = message.recipient;
+      const recipientList = message.recipients;
       recipientList.forEach((recipient, index) => {
         const matches = recipient.match(tsUtils.regexEmail);
         if(matches && matches.length > 1) {

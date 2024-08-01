@@ -22,6 +22,10 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
+      <h3>Version 2.0.1 - 01/08/2024</h3>
+      <ul>
+       <li>Fixed a bug in getting the advanced account settings.</li>
+      </ul>
       <h3>Version 2.0.0 - 18/07/2024</h3>
       <ul>
        <li>This is a complete rewrite of the original addon as a MailExtension, using Vue.js.</li>

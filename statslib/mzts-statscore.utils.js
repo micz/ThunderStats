@@ -282,7 +282,7 @@ export const tsCoreUtils = {
         if(account_id == 0) {
           for (let account of accounts) {
               for (let identity of account.identities) {
-                  account_emails.push(identity.email);
+                  account_emails.push(identity.email.toLowerCase());
               }
           }
           if(!no_custom_identities) {
@@ -291,7 +291,7 @@ export const tsCoreUtils = {
               // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account: " + JSON.stringify(cids_account));
               custom_ids[cids_account].forEach(element => {
                 // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account element: " + JSON.stringify(element));
-                account_emails.push(element);
+                account_emails.push(element.toLowerCase());
               });
             }
           }
@@ -299,12 +299,12 @@ export const tsCoreUtils = {
           for (let account of accounts) {
             if(account.id == account_id) {
               for (let identity of account.identities) {
-                account_emails.push(identity.email);
+                account_emails.push(identity.email.toLowerCase());
               }
               if(!no_custom_identities) {
                 let custom_ids = await this.getAccountCustomIdentities(account_id);
                 for(let custom_id in custom_ids) {
-                  account_emails.push(custom_ids[custom_id]);
+                  account_emails.push(custom_ids[custom_id].toLowerCase());
                 }
               }
             }

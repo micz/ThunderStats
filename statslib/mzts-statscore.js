@@ -217,7 +217,7 @@ export class thunderStastsCore {
           // check sender
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
-            const key_author = match_author[0];
+            const key_author = match_author[0].toLowerCase();
             if(account_emails.includes(key_author)) {
               //messageids_sent.push(message.id);
               sent++;
@@ -230,7 +230,7 @@ export class thunderStastsCore {
               for (let recipient of message.recipients) {
                 const match_recipient = recipient.match(tsUtils.regexEmail);
                 if (match_recipient) {
-                  const key_recipient = match_recipient[0];
+                  const key_recipient = match_recipient[0].toLowerCase();
                   //if(!(account_emails.includes(key_recipient) || messageids_sent.includes(message.id))) {
                   if(!(account_emails.includes(key_recipient))) {
                     if (recipients[key_recipient]) {
@@ -246,7 +246,7 @@ export class thunderStastsCore {
               for (let cc of message.ccList) {
                 const match_cc = cc.match(tsUtils.regexEmail);
                 if (match_cc) {
-                  const key_cc = match_cc[0];
+                  const key_cc = match_cc[0].toLowerCase();
                   //if(!(account_emails.includes(key_cc) || messageids_sent.includes(message.id))) {
                   if(!(account_emails.includes(key_cc))) {
                     if (recipients[key_cc]) {
@@ -350,7 +350,7 @@ export class thunderStastsCore {
           // check sender
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
-            const key_author = match_author[0];
+            const key_author = match_author[0].toLowerCase();
             if(account_emails.includes(key_author)) {
               if((count_data_to_current_time)&&(date_message_normalized <= now)){
                 sent++;
@@ -419,7 +419,7 @@ export class thunderStastsCore {
           // check sender
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
-            const key_author = match_author[0];
+            const key_author = match_author[0].toLowerCase();
             if(account_emails.includes(key_author)) {
               sent++;
               // group by hour

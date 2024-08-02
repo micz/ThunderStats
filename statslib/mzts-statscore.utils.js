@@ -264,9 +264,10 @@ export const tsCoreUtils = {
         return name;
     },
 
-    async getAccountsList(){    // Returns an array of { id: account.id, text: account.name }
+    async getAccountsList(hide_AllAccounts = true){    // Returns an array of { id: account.id, text: account.name }
         let output = [];
         let accounts = await browser.accounts.list();
+        if(!hide_AllAccounts) output.push({ id: 0, name: browser.i18n.getMessage('AllAccounts') });
         for (let account of accounts) {
           output.push({ id: account.id, name: account.name });
         }

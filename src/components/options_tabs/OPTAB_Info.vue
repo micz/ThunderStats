@@ -24,6 +24,7 @@
       <h1>ThunderStats Release Notes</h1>
       <h3>Version 2.0.2 - ??/??/2024</h3>
       <ul>
+       <li>Fixed a bug in showing the "All Accounts" option in the account selector.</li>
        <li>...</li>
       </ul>
       <h3>Version 2.0.1 - 01/08/2024</h3>

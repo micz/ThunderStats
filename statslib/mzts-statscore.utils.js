@@ -331,8 +331,8 @@ export const tsCoreUtils = {
             let include_archive = true;
             let filter_duplicates = await this.getDefaultAccountFilterDuplicatesOption(account);
             if(accounts_adv_settings.length > 0) {
-                include_archive = accounts_adv_settings.find(element => element.id === account.id)?.include_archive;
-                filter_duplicates = accounts_adv_settings.find(element => element.id === account.id)?.filter_duplicates || filter_duplicates;
+                include_archive = accounts_adv_settings.find(element => element.id === account.id)?.include_archive ?? include_archive;
+                filter_duplicates = accounts_adv_settings.find(element => element.id === account.id)?.filter_duplicates ?? filter_duplicates;
             }
             output.push({
                 id: account.id,

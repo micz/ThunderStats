@@ -45,7 +45,7 @@ Then, in the root folder of the project use these commands:
 
 You'll find the compiled addon in the `dist folder`.
 
-Change the `minify` (`true`|`false`) properties in the `vite.config.js` file to choose whether to minify the final code.
+Change the `minify` (`true`|`false`) property in the `vite.config.js` file to choose whether to minify the final code.
 
 <br>
 

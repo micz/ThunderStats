@@ -218,7 +218,7 @@ export class thunderStastsCore {
           // check sender
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
-            const key_author = match_author[0];
+            const key_author = match_author[0].toLowerCase();
             if(account_emails.includes(key_author)) {
               //messageids_sent.push(message.id);
               sent++;
@@ -231,7 +231,7 @@ export class thunderStastsCore {
               for (let recipient of message.recipients) {
                 const match_recipient = recipient.match(tsUtils.regexEmail);
                 if (match_recipient) {
-                  const key_recipient = match_recipient[0];
+                  const key_recipient = match_recipient[0].toLowerCase();
                   //if(!(account_emails.includes(key_recipient) || messageids_sent.includes(message.id))) {
                   if(!(account_emails.includes(key_recipient))) {
                     if (recipients[key_recipient]) {
@@ -247,7 +247,7 @@ export class thunderStastsCore {
               for (let cc of message.ccList) {
                 const match_cc = cc.match(tsUtils.regexEmail);
                 if (match_cc) {
-                  const key_cc = match_cc[0];
+                  const key_cc = match_cc[0].toLowerCase();
                   //if(!(account_emails.includes(key_cc) || messageids_sent.includes(message.id))) {
                   if(!(account_emails.includes(key_cc))) {
                     if (recipients[key_cc]) {
@@ -353,7 +353,7 @@ export class thunderStastsCore {
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0];
-            if(account_emails.includes(key_author)) {
+            if(account_emails.includes(key_author.toLowerCase())) {
               if((count_data_to_current_time)&&(date_message_normalized <= now)){
                 sent++;
               }
@@ -423,7 +423,7 @@ export class thunderStastsCore {
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0];
-            if(account_emails.includes(key_author)) {
+            if(account_emails.includes(key_author.toLowerCase())) {
               sent++;
               // group by hour
               msg_days[day_message].sent++;
@@ -495,21 +495,27 @@ export class thunderStastsCore {
       if(account_id == 0) return true;
 
       const match_author = message.author.match(tsUtils.regexEmail);
+      console.log(">>>>>>>>>> message.author: " + message.author);
+      console.log(">>>>>>>> match_author: " + JSON.stringify(match_author));
       if (match_author) {
         const key_author = match_author[0];
-        if(account_emails.includes(key_author)) {
+        if(account_emails.includes(key_author.toLowerCase())) {
           return true;
         }
       }
 
-      const ccList = message.ccList;
-      ccList.forEach((cc, index) => {
+      const ccList = [];
+      message.ccList.forEach((cc, index) => {
+        console.log(">>>>>>>>>> cc: " + cc);
         const matches = cc.match(tsUtils.regexEmail);
-        if(matches && matches.length > 1) {
-          ccList[index] = matches[0];
+        console.log(">>>>>>>>>> matches cc: " + JSON.stringify(matches));
+        if(matches && matches.length > 0) {
+          ccList.push(matches[0]);
         }
       });
-      const account_emails_matches = ccList.filter(cc => account_emails.includes(cc));
+      console.log(">>>>>>>>>> ccList: " + JSON.stringify(ccList));
+      const account_emails_matches = ccList.filter(cc => account_emails.includes(cc.toLowerCase()));
+      console.log(">>>>>>>>>> account_emails_matches cc: " + JSON.stringify(account_emails_matches));
       if(account_emails_matches.length > 0) {
         return true;
       }
@@ -517,11 +523,11 @@ export class thunderStastsCore {
       const recipientList = message.recipients;
       recipientList.forEach((recipient, index) => {
         const matches = recipient.match(tsUtils.regexEmail);
-        if(matches && matches.length > 1) {
+        if(matches && matches.length > 0) {
           recipientList[index] = matches[0];
         }
       })
-      const account_emails_recipients = recipientList.filter(recipient => account_emails.includes(recipient));
+      const account_emails_recipients = recipientList.filter(recipient => account_emails.includes(recipient.toLowerCase()));
       if(account_emails_recipients.length > 0) {
         return true;
       }

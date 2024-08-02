@@ -1,5 +1,9 @@
 # ![TS] ThunderStats Release Notes
 
+<h3>Version 2.0.2 - ??/??/2024</h3>
+      <ul>
+       <li>...</li>
+      </ul>
 <h3>Version 2.0.1 - 01/08/2024</h3>
       <ul>
        <li>Fixed a bug in getting the advanced account settings.</li>

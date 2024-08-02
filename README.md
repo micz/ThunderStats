@@ -35,7 +35,7 @@ ThunderStats's changes are logged [here](CHANGELOG.md).
 
 ## Build Instructions
 
-Ensure you have the following installed [Node.js and npm](https://nodejs.org/).
+Ensure you have installed [Node.js and npm](https://nodejs.org/).
 
 Then, in the root folder of the project use these commands:
 

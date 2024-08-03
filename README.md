@@ -43,7 +43,7 @@ Then, in the root folder of the project use these commands:
 
 `npm run build`
 
-You'll find the compiled addon in the `dist folder`.
+You'll find the compiled addon in the `dist` folder.
 
 Change the `minify` (`true`|`false`) property in the `vite.config.js` file to choose whether to minify the final code.
 

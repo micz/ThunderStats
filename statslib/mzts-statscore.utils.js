@@ -264,9 +264,10 @@ export const tsCoreUtils = {
         return name;
     },
 
-    async getAccountsList(){    // Returns an array of { id: account.id, text: account.name }
+    async getAccountsList(hide_AllAccounts = true){    // Returns an array of { id: account.id, text: account.name }
         let output = [];
         let accounts = await browser.accounts.list();
+        if(!hide_AllAccounts) output.push({ id: 0, name: browser.i18n.getMessage('AllAccounts') });
         for (let account of accounts) {
           output.push({ id: account.id, name: account.name });
         }
@@ -281,7 +282,7 @@ export const tsCoreUtils = {
         if(account_id == 0) {
           for (let account of accounts) {
               for (let identity of account.identities) {
-                  account_emails.push(identity.email);
+                  account_emails.push(identity.email.toLowerCase());
               }
           }
           if(!no_custom_identities) {
@@ -290,7 +291,7 @@ export const tsCoreUtils = {
               // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account: " + JSON.stringify(cids_account));
               custom_ids[cids_account].forEach(element => {
                 // console.log(">>>>>>>>>>>>> getAccountEmails (all account) cids_account element: " + JSON.stringify(element));
-                account_emails.push(element);
+                account_emails.push(element.toLowerCase());
               });
             }
           }
@@ -299,12 +300,12 @@ export const tsCoreUtils = {
           for (let account of accounts) {
             if(account.id == account_id) {
               for (let identity of account.identities) {
-                account_emails.push(identity.email);
+                account_emails.push(identity.email.toLowerCase());
               }
               if(!no_custom_identities) {
                 let custom_ids = await this.getAccountCustomIdentities(account_id);
                 for(let custom_id in custom_ids) {
-                  account_emails.push(custom_ids[custom_id]);
+                  account_emails.push(custom_ids[custom_id].toLowerCase());
                 }
               }
             }
@@ -332,8 +333,8 @@ export const tsCoreUtils = {
             let include_archive = true;
             let filter_duplicates = await this.getDefaultAccountFilterDuplicatesOption(account);
             if(accounts_adv_settings.length > 0) {
-                include_archive = accounts_adv_settings.find(element => element.id === account.id)?.include_archive;
-                filter_duplicates = accounts_adv_settings.find(element => element.id === account.id)?.filter_duplicates || filter_duplicates;
+                include_archive = accounts_adv_settings.find(element => element.id === account.id)?.include_archive ?? include_archive;
+                filter_duplicates = accounts_adv_settings.find(element => element.id === account.id)?.filter_duplicates ?? filter_duplicates;
             }
             output.push({
                 id: account.id,

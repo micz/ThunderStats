@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsCoreUtils } from "@statslib/mzts-statscore.utils";
@@ -43,15 +43,13 @@ const props = defineProps({
 
 let accounts_options = ref([]);
 let current_account = ref(props.current_account);
+let hide_AllAccount = computed(() => props.hide_AllAccount_option);
 
 const tsLog = new tsLogger("SelectAccount", tsStore.do_debug);
 
 onMounted(async () => {
     tsLog.log("onMounted");
-    if(!props.hide_AllAccount_option) {
-      accounts_options.value.push({ id: 0, name: browser.i18n.getMessage('AllAccounts') });
-    }
-    accounts_options.value = await tsCoreUtils.getAccountsList();
+    accounts_options.value = await tsCoreUtils.getAccountsList(hide_AllAccount.value);
     tsLog.log(JSON.stringify(accounts_options.value));
 });
 

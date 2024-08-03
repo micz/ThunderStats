@@ -352,8 +352,8 @@ export class thunderStastsCore {
           // check sender
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
-            const key_author = match_author[0];
-            if(account_emails.includes(key_author.toLowerCase())) {
+            const key_author = match_author[0].toLowerCase();
+            if(account_emails.includes(key_author)) {
               if((count_data_to_current_time)&&(date_message_normalized <= now)){
                 sent++;
               }
@@ -422,8 +422,8 @@ export class thunderStastsCore {
           // check sender
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
-            const key_author = match_author[0];
-            if(account_emails.includes(key_author.toLowerCase())) {
+            const key_author = match_author[0].toLowerCase();
+            if(account_emails.includes(key_author)) {
               sent++;
               // group by hour
               msg_days[day_message].sent++;

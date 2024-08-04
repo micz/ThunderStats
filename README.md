@@ -9,7 +9,7 @@ The addon has been rewritten from scratch using Vue.js.
 
 Features from the previous version 1.4.5, not already implemented, have been assigned the label "[road to 2.0](https://github.com/micz/ThunderStats/labels/road%20to%202.0)".
 
-More info on [#194](https://github.com/micz/ThunderStats/issues/194) and [#195](https://github.com/micz/ThunderStats/issues/195)
+More info on [#194](https://github.com/micz/ThunderStats/issues/194), [#195](https://github.com/micz/ThunderStats/issues/195) and [#286](https://github.com/micz/ThunderStats/issues/286)
 
 <br>
 

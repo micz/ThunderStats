@@ -284,7 +284,7 @@ function nbDaysSaveEdit() {
 function nbDaysDelete() {
     if(!confirm(browser.i18n.getMessage("deletePromptNBD_text"))) return;
 
-    customNBusinessDays.value.splice(selectedNBDay.value, 1);
+    customNBusinessDays.value = customNBusinessDays.value.filter(obj => obj.id !== selectedNBDay.value.id);
     //save bday_custom_days pref
     TS_prefs.setPref("bday_custom_days", customNBusinessDays.value);
     somethingChanged();

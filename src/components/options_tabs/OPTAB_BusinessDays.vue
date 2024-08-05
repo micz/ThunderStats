@@ -30,6 +30,14 @@
       </div>
     </tr>
 </table>
+<table class="table_panel">
+    <tr>
+      <td class="grouptitle">__MSG_Non-BDays__</td>
+    </tr>
+    <tr>
+      
+    </tr>
+</table>
 </template>
 
 <script setup>

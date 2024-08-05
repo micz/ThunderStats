@@ -554,5 +554,9 @@
   "Label_bday_default_only": {
     "message": "Consider Business Days only in aggregate statistics (max, min, average).",
     "description": ""
+  },
+  "Non-BDays": {
+    "message": "Non-Business Days",
+    "description": ""
   }
 }

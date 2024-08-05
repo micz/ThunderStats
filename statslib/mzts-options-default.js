@@ -25,4 +25,5 @@ export const prefs_default = {
     'bday_weekdays_4': true,   //Thursday
     'bday_weekdays_5': true,   //Friday
     'bday_weekdays_6': false,   //Saturday
+    'bday_custom_days': [],
 }

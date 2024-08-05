@@ -137,6 +137,29 @@ span.dims_label{
     border-radius: 5px;
     padding: 5px 10px 10px 10px;
     margin: 10px 0;
+    min-width: 37rem;
+}
+
+.p-datatable{
+    min-width: 20rem;
+}
+
+.bday_btn{
+    min-width: 5rem;
+    margin-bottom: 5px;
+}
+
+.bday_btns_new{
+    text-align: right;
+    margin-top: 10px;
+}
+
+.bday_btns_new button{
+    margin-left: 5px;
+}
+
+.bday_table_new td{
+    padding: 10px 5px 10px 15px !important;
 }
 
 /* Dark mode styles */

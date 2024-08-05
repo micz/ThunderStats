@@ -558,5 +558,41 @@
   "Non-BDays": {
     "message": "Non-Business Days",
     "description": ""
+  },
+  "Date": {
+    "message": "Date",
+    "description": ""
+  },
+  "Description": {
+    "message": "Description",
+    "description": ""
+  },
+  "New": {
+    "message": "New",
+    "description": ""
+  },
+  "Edit": {
+    "message": "Edit",
+    "description": ""
+  },
+  "Delete": {
+    "message": "Delete",
+    "description": ""
+  },
+  "Yearly": {
+    "message": "Yearly",
+    "description": ""
+  },
+  "Yearly_Desc": {
+    "message": "This day will be a non-business day on every year.",
+    "description": ""
+  },
+  "Cancel": {
+    "message": "Cancel",
+    "description": ""
+  },
+  "Non-Business_Day": {
+    "message": "Non-Business Day",
+    "description": ""
   }
 }

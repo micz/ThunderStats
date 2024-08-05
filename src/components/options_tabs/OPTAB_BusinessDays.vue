@@ -34,15 +34,16 @@
     <tr>
       <td class="grouptitle" colspan="2">__MSG_Non-BDays__</td>
     </tr>
-    <tr>
-        <DataTable :value="customBusinessDays" showGridlines stripedRows selectionMode="single" :metaKeySelection="false" dataKey="id"@rowSelect="bDaysOnRowSelect" @rowUnselect="bDaysOnRowUnselect">
+    <tr><td>
+        <DataTable v-model:selection="selectedBDay" :value="customBusinessDays" showGridlines stripedRows selectionMode="single" :metaKeySelection="false" dataKey="id" @rowSelect="bDaysOnRowSelect" @rowUnselect="bDaysOnRowUnselect">
             <Column field="date" header="__MSG_Date__"></Column>
             <Column field="description" header="__MSG_Description__"></Column>
         </DataTable>
-      <td style="text-align: right;">
+    </td>
+      <td style="text-align: right; vertical-align: top;">
         <button class="bday_btn" @click="bDaysShowDialogNew">__MSG_New__...</button><br>
         <button class="bday_btn" :disabled="!bDayRowSelected">__MSG_Edit__...</button><br>
-        <button class="bday_btn" :disabled="!bDayRowSelected">__MSG_Delete__</button>
+        <button class="bday_btn" :disabled="!bDayRowSelected" @click="bDaysDelete">__MSG_Delete__</button>
       </td>
     </tr>
 </table>
@@ -117,6 +118,7 @@ const bDayShowDialogNew = ref(false);
 const bday_new_description = ref("");
 const nbday_new_date = ref(null);
 const bday_new_yearly = ref(false);
+const selectedBDay = ref(null);
 
 
 onMounted(async () => {
@@ -193,10 +195,28 @@ function bDaysSaveNew() {
     }else{
         date_output = date.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit'}) + '/year';
     }
-    customBusinessDays.value.push({date: date_output, description: description});
-    //safe bday_custom_days pref
+    customBusinessDays.value.push({id: bDaysCreateId(), date: date_output, description: description});
+    //save bday_custom_days pref
     TS_prefs.setPref("bday_custom_days", customBusinessDays.value);
     somethingChanged();
+}
+
+function bDaysCreateId() {
+    let max_id = 0;
+    customBusinessDays.value.forEach(elem => {
+        if (elem.id > max_id) max_id = elem.id;
+    });
+    return max_id + 1;
+}
+
+function bDaysDelete() {
+    if(!confirm(browser.i18n.getMessage("deletePromptNBD_text"))) return;
+
+    customBusinessDays.value.splice(selectedBDay.value, 1);
+    //save bday_custom_days pref
+    TS_prefs.setPref("bday_custom_days", customBusinessDays.value);
+    somethingChanged();
+    bDaysOnRowUnselect(null);
 }
 
 

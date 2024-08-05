@@ -268,7 +268,6 @@ function nbDaysHideDialogEdit() {
 
 function nbDaysSaveEdit() {
     let date = new Date(nbday_edit_date.value);
-    console.log(">>>>>>>> nbDaysSaveEdit date: " + JSON.stringify(date));
     selectedNBDay.value.description = nbday_edit_description.value;
     selectedNBDay.value.yearly = nbday_edit_yearly.value;
     nbDaysHideDialogEdit();

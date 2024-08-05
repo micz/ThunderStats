@@ -49,7 +49,7 @@ table.miczPrefs td{
     padding: 2px;
 }
 
-table.miczPrefs td.grouptitle{
+table.miczPrefs td.grouptitle, table.table_panel td.grouptitle{
     border:0;
     vertical-align: top;
     padding: 2px;
@@ -60,7 +60,7 @@ table.miczPrefs tr:first-child td {
     border-top: none;
 }
   
-table.miczPrefs  tr:last-child td {
+table.miczPrefs tr:last-child td {
     border-bottom: none;
 }
 
@@ -121,6 +121,22 @@ div.account_emails{
 
 span.dims_label{
     cursor: pointer;
+}
+
+.weekdays {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.day-checkbox {
+    margin-right: 10px;
+}
+
+.table_panel{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px 10px 10px;
+    margin: 10px 0;
 }
 
 /* Dark mode styles */

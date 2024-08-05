@@ -395,6 +395,10 @@
     "message": "email addresses",
     "description": ""
   },
+  "Weekdays": {
+    "message": "Weekdays",
+    "description": ""
+  },
   "WeekDay0": {
     "message": "Sunday",
     "description": ""

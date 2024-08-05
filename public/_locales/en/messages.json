@@ -598,5 +598,9 @@
   "deletePromptNBD_text": {
     "message": "Are you sure you want to delete this non-business day?",
     "description": ""
+  },
+  "EasterNoBusinessDay": {
+    "message": "Easter and Easter Monday are non-business days.",
+    "description": ""
   }
 }

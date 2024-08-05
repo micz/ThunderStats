@@ -46,6 +46,12 @@
         <button class="bday_btn" :disabled="!bDayRowSelected" @click="bDaysDelete">__MSG_Delete__</button>
       </td>
     </tr>
+    <tr>
+        <td colspan="2">
+            <label><input type="checkbox" id="bday_easter" name="bday_easter" class="option-input" /></label>&nbsp;
+            <label><span class="dims_label" @click="toggle_options">__MSG_EasterNoBusinessDay__</span></label>
+        </td>
+    </tr>
 </table>
 
 <Dialog v-model:visible="bDayShowDialogNew" modal header="__MSG_New__ __MSG_Non-Business_Day__" :style="{ width: '25rem' }">

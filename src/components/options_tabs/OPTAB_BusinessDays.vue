@@ -35,15 +35,15 @@
       <td class="grouptitle" colspan="2">__MSG_Non-BDays__</td>
     </tr>
     <tr><td>
-        <DataTable v-model:selection="selectedBDay" :value="customBusinessDays" showGridlines stripedRows selectionMode="single" :metaKeySelection="false" dataKey="id" @rowSelect="bDaysOnRowSelect" @rowUnselect="bDaysOnRowUnselect">
+        <DataTable v-model:selection="selectedNBDay" :value="customNBusinessDays" showGridlines stripedRows selectionMode="single" :metaKeySelection="false" dataKey="id" @rowSelect="nbDaysOnRowSelect" @rowUnselect="nbDaysOnRowUnselect">
             <Column field="date" header="__MSG_Date__"></Column>
             <Column field="description" header="__MSG_Description__"></Column>
         </DataTable>
     </td>
       <td style="text-align: right; vertical-align: top;">
-        <button class="bday_btn" @click="bDaysShowDialogNew">__MSG_New__...</button><br>
-        <button class="bday_btn" :disabled="!bDayRowSelected">__MSG_Edit__...</button><br>
-        <button class="bday_btn" :disabled="!bDayRowSelected" @click="bDaysDelete">__MSG_Delete__</button>
+        <button class="bday_btn" @click="nbDaysShowDialogNew">__MSG_New__...</button><br>
+        <button class="bday_btn" :disabled="!nbDayRowSelected" @click="nbDaysShowDialogEdit">__MSG_Edit__...</button><br>
+        <button class="bday_btn" :disabled="!nbDayRowSelected" @click="nbDaysDelete">__MSG_Delete__</button>
       </td>
     </tr>
     <tr>
@@ -54,14 +54,14 @@
     </tr>
 </table>
 
-<Dialog v-model:visible="bDayShowDialogNew" modal header="__MSG_New__ __MSG_Non-Business_Day__" :style="{ width: '25rem' }">
+<Dialog v-model:visible="nbDayShowDialogNew" modal header="__MSG_New__ __MSG_Non-Business_Day__" :style="{ width: '25rem' }">
     <table class="miczPrefs bday_table_new">
         <tr>
       <td>
         <label><span class="dims_label" >__MSG_Description__</span></label>
       </td>
       <td>
-        <input type="text" v-model="bday_new_description"/>
+        <input type="text" v-model="nbday_new_description"/>
       </td>
     </tr>
     <tr>
@@ -77,13 +77,46 @@
         <label><span class="dims_label" >__MSG_Yearly__</span></label>
       </td>
       <td>
-        <label><input type="checkbox" v-model="bday_new_yearly"/> __MSG_Yearly_Desc__</label>
+        <label><input type="checkbox" v-model="nbday_new_yearly"/> __MSG_Yearly_Desc__</label>
       </td>
     </tr>
     </table>
     <div class="bday_btns_new">
-        <button type="button" label="Save" @click="bDaysSaveNew" :disabled="nbday_new_date === null">__MSG_Save__</button>
-        <button type="button" label="Cancel" severity="secondary" @click="bDaysHideDialogNew">__MSG_Cancel__</button>
+        <button type="button" label="Save" @click="nbDaysSaveNew" :disabled="nbday_new_date === null">__MSG_Save__</button>
+        <button type="button" label="Cancel" severity="secondary" @click="nbDaysHideDialogNew">__MSG_Cancel__</button>
+    </div>
+</Dialog>
+
+<Dialog v-model:visible="nbDayShowDialogEdit" modal header="__MSG_Edit__ __MSG_Non-Business_Day__" :style="{ width: '25rem' }">
+    <table class="miczPrefs bday_table_new">
+        <tr>
+      <td>
+        <label><span class="dims_label" >__MSG_Description__</span></label>
+      </td>
+      <td>
+        <input type="text" v-model="nbday_edit_description"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><span class="dims_label" >__MSG_Date__</span></label>
+      </td>
+      <td>
+        <DatePicker v-model="nbday_edit_date" showIcon />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><span class="dims_label" >__MSG_Yearly__</span></label>
+      </td>
+      <td>
+        <label><input type="checkbox" v-model="nbday_edit_yearly"/> __MSG_Yearly_Desc__</label>
+      </td>
+    </tr>
+    </table>
+    <div class="bday_btns_new">
+        <button type="button" label="Save" @click="nbDaysSaveEdit" :disabled="nbday_edit_date === null">__MSG_Save__</button>
+        <button type="button" label="Cancel" severity="secondary" @click="nbDaysHideDialogEdit">__MSG_Cancel__</button>
     </div>
 </Dialog>
 
@@ -118,13 +151,18 @@ const emit = defineEmits(['new_changes']);
 
 let new_changes = ref(false);
 const selectedDays = ref([]);
-const customBusinessDays = ref([]);
-const bDayRowSelected = ref(false);
-const bDayShowDialogNew = ref(false);
-const bday_new_description = ref("");
+const selectedNBDay = ref(null);
+const customNBusinessDays = ref([]);
+const nbDayRowSelected = ref(false);
+const nbDayShowDialogNew = ref(false);
+const nbday_new_description = ref("");
 const nbday_new_date = ref(null);
-const bday_new_yearly = ref(false);
-const selectedBDay = ref(null);
+const nbday_new_yearly = ref(false);
+const nbDayShowDialogEdit = ref(false);
+const nbday_edit_description = ref("");
+const nbday_edit_date = ref(null);
+const nbday_edit_yearly = ref(false);
+
 
 
 onMounted(async () => {
@@ -137,8 +175,7 @@ onMounted(async () => {
     
     const prefs = await TS_prefs.getPrefs(["bday_custom_days","bday_weekdays_0", "bday_weekdays_1", "bday_weekdays_2", "bday_weekdays_3", "bday_weekdays_4", "bday_weekdays_5", "bday_weekdays_6", "first_day_week"]);
 
-    console.log(">>>>>> BDays onMounted: prefs: " + JSON.stringify(prefs));
-    customBusinessDays.value = prefs.bday_custom_days;
+    customNBusinessDays.value = prefs.bday_custom_days;
     
     selectedDays.value = [];
     days.forEach(day => {
@@ -168,63 +205,100 @@ async function somethingChanged() {
     emit('new_changes', new_changes.value);
   }
 
-function bDaysOnRowSelect(event) {
-    bDayRowSelected.value = true;
+function nbDaysOnRowSelect(event) {
+    nbDayRowSelected.value = true;
+    //console.log("nbDaysOnRowSelect selectedNBDay.value: " + JSON.stringify(selectedNBDay.value));
 }
 
-function bDaysOnRowUnselect(event) {
-    bDayRowSelected.value = false;
+function nbDaysOnRowUnselect(event) {
+    nbDayRowSelected.value = false;
 }
 
-function bDaysShowDialogNew() {
-    bDayShowDialogNew.value = true;
+function nbDaysShowDialogNew() {
+    nbDayShowDialogNew.value = true;
     nextTick(() => {
         i18n.updateDocument();
     })
 }
 
-function bDaysHideDialogNew() {
-    bDayShowDialogNew.value = false;
-    bday_new_description.value ="";
+function nbDaysHideDialogNew() {
+    nbDayShowDialogNew.value = false;
+    nbday_new_description.value ="";
     nbday_new_date.value = null;
-    bday_new_yearly.value = false;
+    nbday_new_yearly.value = false;
 }
 
-function bDaysSaveNew() {
+function nbDaysSaveNew() {
     let date = new Date(nbday_new_date.value);
-    let description = bday_new_description.value;
-    let yearly = bday_new_yearly.value;
-    bDaysHideDialogNew();
-    let date_output = '';
-    if (yearly === false) {
-        date_output = date.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
-    }else{
-        date_output = date.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit'}) + '/year';
-    }
-    customBusinessDays.value.push({id: bDaysCreateId(), date: date_output, description: description});
+    let description = nbday_new_description.value;
+    let yearly = nbday_new_yearly.value;
+    nbDaysHideDialogNew();
+    let date_output = getNBDDateString(date, yearly);
+    customNBusinessDays.value.push({id: nbDaysCreateId(), date: date_output, description: description});
     //save bday_custom_days pref
-    TS_prefs.setPref("bday_custom_days", customBusinessDays.value);
+    TS_prefs.setPref("bday_custom_days", customNBusinessDays.value);
     somethingChanged();
 }
 
-function bDaysCreateId() {
+function nbDaysCreateId() {
     let max_id = 0;
-    customBusinessDays.value.forEach(elem => {
+    customNBusinessDays.value.forEach(elem => {
         if (elem.id > max_id) max_id = elem.id;
     });
     return max_id + 1;
 }
 
-function bDaysDelete() {
-    if(!confirm(browser.i18n.getMessage("deletePromptNBD_text"))) return;
-
-    customBusinessDays.value.splice(selectedBDay.value, 1);
-    //save bday_custom_days pref
-    TS_prefs.setPref("bday_custom_days", customBusinessDays.value);
-    somethingChanged();
-    bDaysOnRowUnselect(null);
+function nbDaysShowDialogEdit() {
+    nbday_edit_description.value = selectedNBDay.value.description;
+    let curr_year = new Date().getFullYear();
+    nbday_edit_date.value = selectedNBDay.value.date.replace(/year/g, curr_year);
+    nbday_edit_yearly.value = selectedNBDay.value.date.includes('year');
+    nbDayShowDialogEdit.value = true;
+    nextTick(() => {
+        i18n.updateDocument();
+    })
 }
 
+function nbDaysHideDialogEdit() {
+    nbDayShowDialogEdit.value = false;
+    nbday_edit_description.value ="";
+    nbday_edit_date.value = null;
+    nbday_edit_yearly.value = false;
+}
+
+function nbDaysSaveEdit() {
+    let date = new Date(nbday_edit_date.value);
+    console.log(">>>>>>>> nbDaysSaveEdit date: " + JSON.stringify(date));
+    selectedNBDay.value.description = nbday_edit_description.value;
+    selectedNBDay.value.yearly = nbday_edit_yearly.value;
+    nbDaysHideDialogEdit();
+    selectedNBDay.value.date = getNBDDateString(date, selectedNBDay.value.yearly);
+    const index = customNBusinessDays.value.findIndex(item => item.id === selectedNBDay.value.id);
+    if (index !== -1) {
+        customNBusinessDays.value[index] = selectedNBDay.value;
+    }
+    //save bday_custom_days pref
+    TS_prefs.setPref("bday_custom_days", customNBusinessDays.value);
+    somethingChanged();
+}
+
+function nbDaysDelete() {
+    if(!confirm(browser.i18n.getMessage("deletePromptNBD_text"))) return;
+
+    customNBusinessDays.value.splice(selectedNBDay.value, 1);
+    //save bday_custom_days pref
+    TS_prefs.setPref("bday_custom_days", customNBusinessDays.value);
+    somethingChanged();
+    nbDaysOnRowUnselect(null);
+}
+
+function getNBDDateString(date, yearly) {
+    if (yearly === false) {
+        return date.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
+    }else{
+        return date.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit'}) + '/year';
+    }
+}
 
 function toggle_options(e) {
     let row = e.target.closest('tr');

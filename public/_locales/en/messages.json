@@ -319,6 +319,10 @@
     "message": "Advanced",
     "description": ""
   },
+  "TabBusinessDays.label": {
+    "message": "Business Days",
+    "description": ""
+  },
   "TabCustomIdentities.label": {
     "message": "Custom Identities",
     "description": ""
@@ -537,6 +541,14 @@
   },
   "SetDefault": {
     "message": "Set default",
+    "description": ""
+  },
+  "Label_bday_use_last_business_day": {
+    "message": "If yesterday is not a business day, show the last business day instead.",
+    "description": ""
+  },
+  "Label_bday_default_only": {
+    "message": "Consider Business Days only in aggregate statistics (max, min, average).",
     "description": ""
   }
 }

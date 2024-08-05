@@ -16,4 +16,6 @@ export const prefs_default = {
     'include_archive_multi_account': true,
     'filter_duplicates_multi_account': false,
     'accounts_adv_settings': {},
+    'bday_use_last_business_day': false,
+    'bday_default_only': false,
 }

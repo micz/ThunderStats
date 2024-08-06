@@ -176,7 +176,8 @@ export class thunderStastsCore {
 
       //let messageids_sent = [];
 
-      let messages = this.getMessages(browser.messages.query(queryInfo_FullStatsData));
+      //let messages = this.getMessages(browser.messages.query(queryInfo_FullStatsData));
+      let messages = this.getAccountMessages(queryInfo_FullStatsData, account_id);
 
       let msg_hours = {};
       for(let i = 0; i < 24; i++) {
@@ -193,13 +194,15 @@ export class thunderStastsCore {
           let hour_message = date_message.getHours();
           // folder
           if(message.folder){
-            if(message.folder.specialUse=='sent') { continue; }
-            if (folders[message.folder.id]) {
-              folders[message.folder.id].count ++;
-            } else {
-              folders[message.folder.id] = {};
-              folders[message.folder.id].count = 1;
-              folders[message.folder.id].folder_data = message.folder;
+            console.log(">>>>>>>>>>>>>>>> message.folder: " + JSON.stringify(message.folder));
+            if(message.folder.type!='sent') {
+              if (folders[message.folder.name]) {
+                folders[message.folder.name].count ++;
+              } else {
+                folders[message.folder.name] = {};
+                folders[message.folder.name].count = 1;
+                folders[message.folder.name].folder_data = message.folder;
+              }
             }
           }
           //console.log(">>>>>>>>>>>>>>>> message.folder: " + JSON.stringify(message.folder));
@@ -321,7 +324,8 @@ export class thunderStastsCore {
       let sent = 0;
       let received = 0;
 
-      let messages = this.getMessages(browser.messages.query(queryInfo_CountStatsData));
+      //let messages = this.getMessages(browser.messages.query(queryInfo_CountStatsData));
+      let messages = this.getAccountMessages(queryInfo_CountStatsData, account_id);
 
       let msg_hours = {};
       for(let i = 0; i < 24; i++) {
@@ -397,7 +401,8 @@ export class thunderStastsCore {
       let sent = 0;
       let received = 0;
 
-      let messages = this.getMessages(browser.messages.query(queryInfo_getAggregatedStatsData));
+      //let messages = this.getMessages(browser.messages.query(queryInfo_getAggregatedStatsData));
+      let messages = this.getAccountMessages(queryInfo_getAggregatedStatsData, account_id);
 
       let msg_days = tsUtils.getDateArray(fromDate,toDate);
 
@@ -478,13 +483,17 @@ export class thunderStastsCore {
     }
 
     excludeMessage(message, account_id = 0){    // Returns true if the message should be excluded from the stats
+      return this.excludeFolder(message.folder, account_id);
+    }
+
+    excludeFolder(folder, account_id = 0){    // Returns true if the folder should be excluded from the stats
       // do not include messages from drafts, trash, junk folders
-      if(message.folder.specialUse && ['drafts', 'trash', 'junk'].some(specialUse => message.folder.specialUse.includes(specialUse))){
+      if(folder.type && ['drafts', 'trash', 'junk'].some(type => folder.type.includes(type))){
         return true;
       }
       
-      // check if we have to include this message even if it is in a "archives" folder
-      if(message.folder.specialUse && message.folder.specialUse.includes('archives')){
+      // check if we have to include this folder even if it is in a "archives" folder
+      if(folder.type && folder.type.includes('archives')){
         return !tsCoreUtils.getIncludeArchivePreference(account_id);
       }
 
@@ -495,8 +504,8 @@ export class thunderStastsCore {
       if(account_id == 0) return true;
 
       const match_author = message.author.match(tsUtils.regexEmail);
-      console.log(">>>>>>>>>> message.author: " + message.author);
-      console.log(">>>>>>>> match_author: " + JSON.stringify(match_author));
+      //console.log(">>>>>>>>>> message.author: " + message.author);
+      //console.log(">>>>>>>> match_author: " + JSON.stringify(match_author));
       if (match_author) {
         const key_author = match_author[0];
         if(account_emails.includes(key_author.toLowerCase())) {
@@ -506,16 +515,16 @@ export class thunderStastsCore {
 
       const ccList = [];
       message.ccList.forEach((cc, index) => {
-        console.log(">>>>>>>>>> cc: " + cc);
+        //console.log(">>>>>>>>>> cc: " + cc);
         const matches = cc.match(tsUtils.regexEmail);
-        console.log(">>>>>>>>>> matches cc: " + JSON.stringify(matches));
+        //console.log(">>>>>>>>>> matches cc: " + JSON.stringify(matches));
         if(matches && matches.length > 0) {
           ccList.push(matches[0]);
         }
       });
-      console.log(">>>>>>>>>> ccList: " + JSON.stringify(ccList));
+      //console.log(">>>>>>>>>> ccList: " + JSON.stringify(ccList));
       const account_emails_matches = ccList.filter(cc => account_emails.includes(cc.toLowerCase()));
-      console.log(">>>>>>>>>> account_emails_matches cc: " + JSON.stringify(account_emails_matches));
+      //console.log(">>>>>>>>>> account_emails_matches cc: " + JSON.stringify(account_emails_matches));
       if(account_emails_matches.length > 0) {
         return true;
       }
@@ -560,7 +569,7 @@ export class thunderStastsCore {
 
           //get account emails
           let account_emails = await tsCoreUtils.getAccountEmails(account_id);
-          console.log(">>>>>>>>>>>>> [filterAccountMessage] account_emails: " + JSON.stringify(account_emails));
+          //console.log(">>>>>>>>>>>>> [filterAccountMessage] account_emails: " + JSON.stringify(account_emails));
 
           for await (let message of messages) {
             if(!await this.filterAccountMessage(message,account_id,account_emails)) continue;
@@ -610,6 +619,37 @@ export class thunderStastsCore {
 
       this.tsLog.log("folders: " + JSON.stringify(folders));
       return folders;
+    }
+
+
+    async *getAccountMessages(queryInfo, account_id = 0) {
+      if(account_id == 0) {
+        yield* this.getMessages(browser.messages.query(queryInfo));
+        return;
+      }
+
+      let account = await browser.accounts.get(account_id, true);
+      let folders = await browser.folders.getSubFolders(account);
+
+      console.log(">>>>>>>>>> getAccountMessages folders: " + JSON.stringify(folders));
+
+      for (let folder of folders) {
+        yield* this.processFolderAndSubfolders(folder, queryInfo, account_id);
+      }
+    }
+
+    async *processFolderAndSubfolders(folder, queryInfo, account_id) {
+      if (this.excludeFolder(folder, account_id)) return;
+  
+      console.log(`>>>>>>>> processFolderAndSubfolders Listing messages for folder: ${folder.name}, path: ${folder.path}`);
+      queryInfo.folder = folder;
+      console.log(">>>>>>>>>> processFolderAndSubfolders queryInfo: " + JSON.stringify(queryInfo));
+      yield* this.getMessages(browser.messages.query(queryInfo));
+  
+      let subfolders = await browser.folders.getSubFolders(folder);
+      for (let subfolder of subfolders) {
+          yield* this.processFolderAndSubfolders(subfolder, queryInfo, account_id);
+      }
     }
 
 

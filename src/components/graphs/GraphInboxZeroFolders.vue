@@ -116,10 +116,10 @@ let chartOptions = ref({
                   break;
                 }
               }
-              browser.mailTabs.update(currTab.id, {displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
+              browser.mailTabs.update(currTab.id, {displayedFolder: {...chartData.value.folder_paths[activeEls[0].index]}});
               browser.tabs.update(currTab.id, {active: true});
             } else {
-              browser.mailTabs.create({displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
+              browser.mailTabs.create({displayedFolder: {...chartData.value.folder_paths[activeEls[0].index]}});
             }
           },
           onHover: async (e, activeEls, chart) => {

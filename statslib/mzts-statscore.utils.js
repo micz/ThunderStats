@@ -60,7 +60,8 @@ export const tsCoreUtils = {
         let output_paths = [];
         for(let key in folders) {
             output_labels.push(folders[key].folder_data.name);
-            output_paths.push(folders[key].folder_data.id);
+            //console.log(">>>>>>>>>>>>>> [getFoldersLabelsColors] folders[key].folder_data: " + JSON.stringify(folders[key].folder_data.name));
+            output_paths.push(folders[key].folder_data);
             if(folders[key].folder_data.type == 'inbox') {
                 output_colors.push(inboxZeroInboxColor);
             } else {

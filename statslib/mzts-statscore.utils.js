@@ -75,10 +75,19 @@ export const tsCoreUtils = {
         return {labels: output_labels, colors: output_colors, folder_paths: output_paths};
     },
 
-    getFoldersCounts(folders) {
+    getFoldersCounts(folders, type = 'rcvd') {  //type is 'sent' or 'rcvd'
         let output = [];
-        for(let key in folders) {
-            output.push(folders[key].count);
+        switch(type) {
+            case 'sent':
+                for(let key in folders) {
+                    output.push(folders[key].sent);
+                }
+                break;
+            case 'rcvd':
+                for(let key in folders) {
+                    output.push(folders[key].received);
+                }
+                break;
         }
         return output;
     },

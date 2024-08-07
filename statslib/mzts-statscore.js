@@ -195,36 +195,50 @@ export class thunderStastsCore {
           // folder
           if(message.folder){
             console.log(">>>>>>>>>>>>>>>> message.folder: " + JSON.stringify(message.folder));
-            if(message.folder.type!='sent') {
-              if (folders[message.folder.path]) {
-                folders[message.folder.path].count ++;
-              } else {
-                folders[message.folder.path] = {};
-                folders[message.folder.path].count = 1;
-                folders[message.folder.path].folder_data = message.folder;
-              }
-            }
+	          if (folders[message.folder.path]) {
+	            folders[message.folder.path].count ++;
+	          } else {
+	            folders[message.folder.path] = {};
+	            folders[message.folder.path].count = 1;
+				      folders[message.folder.path].sent = 0;
+              folders[message.folder.path].received = 0;
+	            folders[message.folder.path].folder_data = message.folder;
+	          }
           }
+
+          const match_author = message.author.match(tsUtils.regexEmail);
+
           //console.log(">>>>>>>>>>>>>>>> message.folder: " + JSON.stringify(message.folder));
           if(filter_duplicates){
             // console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
             if(messages_hash.has(message.headerMessageId)){ 
               // console.log(">>>>>>>>>>>>>> filter_duplicates: found message.headerMessageId: " + message.headerMessageId);
-              continue;
-            }
-            messages_hash.set(message.headerMessageId, true);
+              //count sent and received per folder
+              if (match_author) {
+                const key_author = match_author[0].toLowerCase();
+                if(account_emails.includes(key_author)) {
+                  // group by folder
+                  folders[message.folder.path].sent++;
+                }else{
+                  folders[message.folder.path].received++;
+                }
+                  continue;
+                }
+              }
+              messages_hash.set(message.headerMessageId, true);
             // console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
           }
           // dates
           let date_message_string = tsUtils.dateToYYYYMMDD(message.date);
           dates[date_message_string].count++;
           // check sender
-          const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0].toLowerCase();
             if(account_emails.includes(key_author)) {
               //messageids_sent.push(message.id);
               sent++;
+              // group by folder
+              folders[message.folder.path].sent++;
               // group by date
               dates[date_message_string].sent++;
               // group by hour
@@ -272,6 +286,8 @@ export class thunderStastsCore {
                 senders[key_author].name = await tsCoreUtils.getCorrespondantName(message.author);
               }
               received++;
+              // group by folder
+              folders[message.folder.path].received++;
               // group by date
               dates[date_message_string].received++;
               // group by hour

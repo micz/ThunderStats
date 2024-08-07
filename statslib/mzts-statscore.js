@@ -631,7 +631,7 @@ export class thunderStastsCore {
       let account = await browser.accounts.get(account_id, true);
       let folders = await browser.folders.getSubFolders(account);
 
-      console.log(">>>>>>>>>> getAccountMessages folders: " + JSON.stringify(folders));
+      //console.log(">>>>>>>>>> getAccountMessages folders: " + JSON.stringify(folders));
 
       for (let folder of folders) {
         yield* this.processFolderAndSubfolders(folder, queryInfo, account_id);
@@ -641,9 +641,9 @@ export class thunderStastsCore {
     async *processFolderAndSubfolders(folder, queryInfo, account_id) {
       if (this.excludeFolder(folder, account_id)) return;
   
-      console.log(`>>>>>>>> processFolderAndSubfolders Listing messages for folder: ${folder.name}, path: ${folder.path}`);
+      //console.log(`>>>>>>>> processFolderAndSubfolders Listing messages for folder: ${folder.name}, path: ${folder.path}`);
       queryInfo.folder = folder;
-      console.log(">>>>>>>>>> processFolderAndSubfolders queryInfo: " + JSON.stringify(queryInfo));
+      //console.log(">>>>>>>>>> processFolderAndSubfolders queryInfo: " + JSON.stringify(queryInfo));
       yield* this.getMessages(browser.messages.query(queryInfo));
   
       let subfolders = await browser.folders.getSubFolders(folder);

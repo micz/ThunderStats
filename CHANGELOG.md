@@ -7,6 +7,8 @@
       <ul>
        <li>Using the correct locale for the datepicker [<a href="https://github.com/micz/ThunderStats/issues/295">#295</a>].</li>
        <li>Small graphic fixes [<a href="https://github.com/micz/ThunderStats/issues/303">#303</a>, <a href="https://github.com/micz/ThunderStats/issues/305">#305</a>].</li>
+       <li>Correctly counting received messages for the Inbox Zero Folder chart [<a href="https://github.com/micz/ThunderStats/issues/298">#298</a>].</li>
+       <li>Fixed statistics elaboration in sent folders under some circumstances.</li>
        <li>...</li>
       </ul>
 <h3>Version 2.0.2 - 03/08/2024</h3>

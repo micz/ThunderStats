@@ -542,5 +542,9 @@
   "Version": {
     "message": "Version",
     "description": ""
+  },
+  "AccountWithNoEmails": {
+    "message": "Das ausgewählte Konto hat keine zugeordneten E-Mails. Sie müssen eine benutzerdefinierte Identität auf der Optionsseite hinzufügen.",
+    "description": ""
   }
 }

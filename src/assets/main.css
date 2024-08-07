@@ -188,6 +188,14 @@ td.align_end {
   font-size: smaller;
 }
 
+#mzts-warn-msg{
+  background: #df3d3d;
+  color: white;
+  PADDING: 2px 1rem;
+  margin-left: 3rem;
+  border-radius: 8px;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {

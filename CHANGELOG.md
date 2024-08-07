@@ -6,6 +6,7 @@
 <h3>Version 2.0.3 - ??/??/2024</h3>
       <ul>
        <li>Using the correct locale for the datepicker [<a href="https://github.com/micz/ThunderStats/issues/295">#295</a>].</li>
+       <li>Small graphic fixes [<a href="https://github.com/micz/ThunderStats/issues/303">#303</a>, <a href="https://github.com/micz/ThunderStats/issues/305">#305</a>].</li>
        <li>...</li>
       </ul>
 <h3>Version 2.0.2 - 03/08/2024</h3>

@@ -192,12 +192,13 @@ export class thunderStastsCore {
           let hour_message = date_message.getHours();
           // folder
           if(message.folder){
-            if(message.folder.specialUse=='sent') { continue; }
             if (folders[message.folder.id]) {
               folders[message.folder.id].count ++;
             } else {
               folders[message.folder.id] = {};
               folders[message.folder.id].count = 1;
+              folders[message.folder.id].sent = 0;
+              folders[message.folder.id].received = 0;
               folders[message.folder.id].folder_data = message.folder;
             }
           }
@@ -221,6 +222,8 @@ export class thunderStastsCore {
             if(account_emails.includes(key_author)) {
               //messageids_sent.push(message.id);
               sent++;
+              // group by folder
+              folders[message.folder.id].sent++;
               // group by date
               dates[date_message_string].sent++;
               // group by hour
@@ -268,6 +271,8 @@ export class thunderStastsCore {
                 senders[key_author].name = await tsCoreUtils.getCorrespondantName(message.author);
               }
               received++;
+              // group by folder
+              folders[message.folder.id].received++;
               // group by date
               dates[date_message_string].received++;
               // group by hour

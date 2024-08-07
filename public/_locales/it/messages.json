@@ -538,5 +538,9 @@
   "SetDefault": {
     "message": "Imposta predefinito",
     "description": ""
+  },
+  "Version": {
+    "message": "Versione",
+    "description": ""
   }
 }

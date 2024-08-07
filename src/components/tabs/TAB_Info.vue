@@ -48,10 +48,21 @@
 					  </div>
 					  <p>__MSG_InfoMainDesc__</p>
 					  <p><i><a class="outlink" href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_DonateLink__</a></i></p></div>
+					  <div id="thstats_ver_info">__MSG_Version__: {{ thstats_version }}</div>
   </div>
 </template>
 
 <script setup>
+
+import { ref, onMounted } from 'vue'
+
+const thstats_version = ref("");
+
+onMounted(() => {
+  const manifest = browser.runtime.getManifest();
+  const version = manifest.version;
+  thstats_version.value = version;
+});
 
 </script>
 

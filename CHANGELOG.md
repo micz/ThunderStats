@@ -2,7 +2,7 @@
 
 <h3>Version 1.9.0 - ??/??/2024</h3>
       <ul>
-       <li><b><i>This version 1.9 has been backported from version 2.0.0 to Thunderbird 115.</i></b></li>
+       <li><b><i>This version 1.9 has been backported from version 2.0 to Thunderbird 115.</i></b></li>
        <li>This is a complete rewrite of the original addon as a MailExtension, using Vue.js.</li>
        <li>Added dark mode [<a href="https://github.com/micz/ThunderStats/issues/197">#197</a>].</li>
        <li>It's now possibile to define a locale for the datepicker different from the default one [<a href="https://github.com/micz/ThunderStats/issues/238">#238</a>].</li>

@@ -196,12 +196,12 @@ export class thunderStastsCore {
           if(message.folder){
             console.log(">>>>>>>>>>>>>>>> message.folder: " + JSON.stringify(message.folder));
             if(message.folder.type!='sent') {
-              if (folders[message.folder.name]) {
-                folders[message.folder.name].count ++;
+              if (folders[message.folder.path]) {
+                folders[message.folder.path].count ++;
               } else {
-                folders[message.folder.name] = {};
-                folders[message.folder.name].count = 1;
-                folders[message.folder.name].folder_data = message.folder;
+                folders[message.folder.path] = {};
+                folders[message.folder.path].count = 1;
+                folders[message.folder.path].folder_data = message.folder;
               }
             }
           }

@@ -1,5 +1,12 @@
 # ![TS] ThunderStats Release Notes
 
+
+
+
+<h3>Version 2.0.3 - ??/??/2024</h3>
+      <ul>
+       <li>...</li>
+      </ul>
 <h3>Version 2.0.2 - 03/08/2024</h3>
       <ul>
        <li>Fixed a bug in showing the "All Accounts" option in the account selector.</li>

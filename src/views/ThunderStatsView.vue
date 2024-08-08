@@ -144,7 +144,7 @@ import { tsUtils } from '@statslib/mzts-utils';
     activeAccount.value = account_id;
     accountEmails.value = await tsCore.getAccountEmails(account_id);
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
-    resetStatsDone();
+    //resetStatsDone();
     nextTick(() => {
       let curr_tab = statsTabs_ref.value.activeTabHash;
       tsLog.log("curr_tab: " + curr_tab);
@@ -163,6 +163,7 @@ import { tsUtils } from '@statslib/mzts-utils';
           TAB_CustomQry_ref.value.doQry();
           break;
       }
+      statsDone(curr_tab.substring(1));
     });
   }
 

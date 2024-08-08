@@ -183,7 +183,6 @@ import { tsUtils } from '@statslib/mzts-utils';
       tsLog.log("tabChanged ==> Loading Data...");
       // console.log(">>>>>>>>>>>>>> tabChanged ==> Loading Data...");
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
-      statsDone(id.tab.computedId);
      }
   }
 

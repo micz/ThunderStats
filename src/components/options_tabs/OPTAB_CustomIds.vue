@@ -113,7 +113,7 @@ function loadCustomIds(){
 }
 
 function updateCustomIds(){
-    let current_custom_ids = account_custom_ids.value.split(/[\n,]+/);
+    let current_custom_ids = account_custom_ids.value.split(/[\n,]+/).filter(id => id.trim() !== '');;
     current_custom_ids = current_custom_ids.map(part => part.trim());
     tsLog.log("current_custom_ids: " + JSON.stringify(current_custom_ids));
     account_custom_ids.value = current_custom_ids.join("\n");

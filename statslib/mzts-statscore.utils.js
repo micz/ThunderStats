@@ -75,12 +75,32 @@ export const tsCoreUtils = {
         return {labels: output_labels, colors: output_colors, folder_paths: output_paths};
     },
 
-    getFoldersCounts(folders) {
+    getFoldersCounts(folders, type = 'rcvd') {  //type is 'sent' or 'rcvd'
         let output = [];
-        for(let key in folders) {
-            output.push(folders[key].count);
+        switch(type) {
+            case 'sent':
+                for(let key in folders) {
+                    output.push(folders[key].sent);
+                }
+                break;
+            case 'rcvd':
+                for(let key in folders) {
+                    output.push(folders[key].received);
+                }
+                break;
         }
         return output;
+    },
+
+    // Function to filter folders with received > 0
+    filterReceivedFolders(folders) {
+        let result = {};
+        for (let key in folders) {
+            if (folders[key].received > 0) {
+                result[key] = folders[key];
+            }
+        }
+        return result;
     },
 
     // getManyDaysLabels(labels) {

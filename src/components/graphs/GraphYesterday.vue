@@ -30,7 +30,7 @@
       v-if="!is_loading"
     />
 </div>
-<div id="yesterday-time-legend-container" class="legend-time"></div>
+<div id="yesterday-time-legend-container" class="legend-time" v-if="!is_loading"></div>
 </template>
 
 

@@ -144,7 +144,7 @@ import { tsUtils } from '@statslib/mzts-utils';
     activeAccount.value = account_id;
     accountEmails.value = await tsCore.getAccountEmails(account_id);
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
-    resetStatsDone();
+//    resetStatsDone();
     nextTick(() => {
       let curr_tab = statsTabs_ref.value.activeTabHash;
       tsLog.log("curr_tab: " + curr_tab);
@@ -163,6 +163,7 @@ import { tsUtils } from '@statslib/mzts-utils';
           TAB_CustomQry_ref.value.doQry();
           break;
       }
+      statsDone(curr_tab.substring(1));
     });
   }
 
@@ -175,14 +176,14 @@ import { tsUtils } from '@statslib/mzts-utils';
     updateElapsed(0);
     is_loading.value = false;
     // console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
-    // console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
+     console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
     tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));
-    // console.log(">>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id.tab.computedId));
+     console.log(">>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id.tab.computedId));
+     console.log(">>>>>>>>>>>>> stats_done[id.tab.computedId]: " + stats_done[id.tab.computedId]);
      if((id.tab.computedId != "tab-customqry") && (id.tab.computedId != "tab-info") && ((!stats_done[id.tab.computedId]) || always_reload_tab_data)) {
       tsLog.log("tabChanged ==> Loading Data...");
       // console.log(">>>>>>>>>>>>>> tabChanged ==> Loading Data...");
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
-      statsDone(id.tab.computedId);
      }
   }
 

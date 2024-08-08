@@ -10,7 +10,7 @@
         "gecko": {
             "id": "thunderstats@micz.it",
             "strict_min_version": "115.0",
-            "strict_max_version": "115.13"
+            "strict_max_version": "115.*"
         }
     },
     "browser_action": {

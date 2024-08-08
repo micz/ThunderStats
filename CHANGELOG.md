@@ -9,7 +9,7 @@
        <li>Small graphic fixes [<a href="https://github.com/micz/ThunderStats/issues/303">#303</a>, <a href="https://github.com/micz/ThunderStats/issues/305">#305</a>].</li>
        <li>Correctly counting received messages for the Inbox Zero Folder chart [<a href="https://github.com/micz/ThunderStats/issues/298">#298</a>].</li>
        <li>Fixed statistics elaboration in sent folders under some circumstances.</li>
-       <li>...</li>
+       <li>Correctly using the option to reload data when changing tab. It was always reloading data [<a href="https://github.com/micz/ThunderStats/issues/310">#310</a>].</li>
       </ul>
 <h3>Version 2.0.2 - 03/08/2024</h3>
       <ul>

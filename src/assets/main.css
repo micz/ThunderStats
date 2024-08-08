@@ -180,6 +180,13 @@ td.align_end {
   font-size: 1.1em;
 }
 
+#thstats_ver_info{
+  position: absolute;
+  right: 5px;
+  bottom: 2px;
+  font-style: italic;
+  font-size: smaller;
+}
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {

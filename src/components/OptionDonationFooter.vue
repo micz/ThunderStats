@@ -26,6 +26,7 @@
         <div v-if="!new_changes">
           __MSG_prefsDonation_1__<br/><a href="https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_prefsDonation_2__</a>
         </div>
+        <div id="thstats_ver_info">__MSG_Version__: {{ thstats_version }}</div>
     </div>
 </template>
 
@@ -46,8 +47,13 @@ let new_changes = computed(() => {
     return props.new_changes
 });
 
+const thstats_version = ref("");
+
 onMounted(() => {
     reopenTabDesc.value = browser.i18n.getMessage("ReopenTabDesc");
+    const manifest = browser.runtime.getManifest();
+    const version = manifest.version;
+    thstats_version.value = version;
 });
 
 function reloadThunderStats() {

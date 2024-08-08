@@ -40,7 +40,7 @@
 
 <h1>Attributions</h1>
 
-See <a href="https://github.com/micz/ThunderStats/blob/new_2.0/README.md#attributions">https://github.com/micz/ThunderStats/blob/new_2.0/README.md#attributions</a>
+See <a href="https://github.com/micz/ThunderStats/blob/master/README.md#attributions">https://github.com/micz/ThunderStats/blob/master/README.md#attributions</a>
     </div>
 </template>
   

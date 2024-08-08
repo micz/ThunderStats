@@ -25,6 +25,9 @@
 			<div id="mzts-btn-update">
         <button type="button" @click="update()">__MSG_Update__</button>
       </div>
+      <div id="mzts-warn-msg" v-if="warn_message != ''">
+        {{ warn_message }}
+      </div>
       <div class="mzts-execution-time" v-if="is_loading && currentTab != 'tab-info'">
         <span v-text="elapsed_time_label"></span>: <span v-text="elapsed_time_string" v-if="elapsed_time != 0"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="elapsed_time == 0"/>
       </div>
@@ -45,6 +48,7 @@ import { tsLogger } from "@statslib/mzts-logger.js";
 import { TS_prefs } from "@statslib/mzts-options.js";
 import { tsStore } from "@statslib/mzts-store.js";
 import { tsUtils } from "@statslib/mzts-utils.js";
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import SelectAccount from './SelectAccount.vue';
 
 const emit = defineEmits(['chooseAccount']);
@@ -75,6 +79,8 @@ let is_loading = computed(() => {
 })
 
 let elapsed_time_label = ref("");
+let warn_message = ref("");
+
 
 let tsLog = null;
 
@@ -121,6 +127,11 @@ async function doAgain(){
   is_loading.value = true;
   elapsed_time_label.value = await browser.i18n.getMessage("ExecutionTime");
   props.elapsed_time = 0;
+  let account_emails = await tsCoreUtils.getAccountEmails(current_account.value);
+  warn_message.value = "";
+  if(account_emails.length == 0){
+    warn_message.value = await browser.i18n.getMessage("AccountWithNoEmails");
+  }
 }
 
 defineExpose({ getCurrentIdn });

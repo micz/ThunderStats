@@ -167,7 +167,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   }
 
   async function tabChanged(id) {
-    console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id) + " stats_done[id.tab.computedId]: " + stats_done[id.tab.computedId]);
+    //console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id) + " stats_done[id.tab.computedId]: " + stats_done[id.tab.computedId]);
     //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsStore.do_debug: " + tsStore.do_debug);
     //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsLog: " + JSON.stringify(tsLog));
     currentTab.value = id.tab.computedId;

@@ -580,7 +580,7 @@
     "description": ""
   },
   "Yearly": {
-    "message": "Yearly",
+    "message": "Every year",
     "description": ""
   },
   "Yearly_Desc": {
@@ -601,6 +601,18 @@
   },
   "EasterNoBusinessDay": {
     "message": "Easter and Easter Monday are non-business days.",
+    "description": ""
+  },
+  "Year": {
+    "message": "Year",
+    "description": ""
+  },
+  "Month": {
+    "message": "Month",
+    "description": ""
+  },
+  "Day": {
+    "message": "Day",
     "description": ""
   }
 }

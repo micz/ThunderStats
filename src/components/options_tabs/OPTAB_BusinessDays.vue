@@ -35,10 +35,25 @@
       <td class="grouptitle" colspan="2">__MSG_Non-BDays__</td>
     </tr>
     <tr><td>
-        <DataTable v-model:selection="selectedNBDay" :value="customNBusinessDays" showGridlines stripedRows selectionMode="single" :metaKeySelection="false" dataKey="id" @rowSelect="nbDaysOnRowSelect" @rowUnselect="nbDaysOnRowUnselect">
-            <Column field="date" header="__MSG_Date__"></Column>
-            <Column field="description" header="__MSG_Description__"></Column>
-        </DataTable>
+        <table>
+            <tr>
+                <th>__MSG_Year__</th>
+                <th>__MSG_Month__</th>
+                <th>__MSG_Day__</th>
+                <th>__MSG_Description__</th>
+            </tr>
+            <tr
+            v-for="day in customNBusinessDays"
+            :key="day.id"
+            @click="nbDaySelectDay(day)"
+            :class="{ selected: nbDayRowSelected && nbDayRowSelected.id === day.id }"
+            >
+                <td>{{ day.year == 'every_year' ? '__MSG_Yearly__' : day.year }}</td>
+                <td>{{ day.month + 1 }}</td>
+                <td>{{ day.day }}</td>
+                <td>{{ day.description }}</td>
+            </tr>
+        </table>
     </td>
       <td style="text-align: right; vertical-align: top;">
         <button class="bday_btn" @click="nbDaysShowDialogNew">__MSG_New__...</button><br>
@@ -54,8 +69,11 @@
     </tr>
 </table>
 
-<Dialog v-model:visible="nbDayShowDialogNew" modal header="__MSG_New__ __MSG_Non-Business_Day__" :style="{ width: '25rem' }">
+<div v-if="nbDayShowDialogNew" >
     <table class="miczPrefs bday_table_new">
+      <tr>
+      <td colspan="2" class="grouptitle">__MSG_New__ __MSG_Non-Business_Day__</td>
+      </tr>
         <tr>
       <td>
         <label><span class="dims_label" >__MSG_Description__</span></label>
@@ -69,7 +87,7 @@
         <label><span class="dims_label" >__MSG_Date__</span></label>
       </td>
       <td>
-        <DatePicker v-model="nbday_new_date" showIcon />
+        <VueDatePicker v-model="nbday_new_date" :enable-time-picker="false" :clearable="false" auto-apply :dark="isDark" :format="datepickerFormat" ></VueDatePicker>
       </td>
     </tr>
     <tr>
@@ -85,10 +103,13 @@
         <button type="button" label="Save" @click="nbDaysSaveNew" :disabled="nbday_new_date === null">__MSG_Save__</button>
         <button type="button" label="Cancel" severity="secondary" @click="nbDaysHideDialogNew">__MSG_Cancel__</button>
     </div>
-</Dialog>
+  </div>
 
-<Dialog v-model:visible="nbDayShowDialogEdit" modal header="__MSG_Edit__ __MSG_Non-Business_Day__" :style="{ width: '25rem' }">
+<div v-if="nbDayShowDialogEdit">
     <table class="miczPrefs bday_table_new">
+      <tr>
+      <td colspan="2" class="grouptitle">__MSG_Edit__ __MSG_Non-Business_Day__</td>
+      </tr>
         <tr>
       <td>
         <label><span class="dims_label" >__MSG_Description__</span></label>
@@ -102,7 +123,7 @@
         <label><span class="dims_label" >__MSG_Date__</span></label>
       </td>
       <td>
-        <DatePicker v-model="nbday_edit_date" showIcon />
+        <VueDatePicker v-model="nbday_edit_date" :enable-time-picker="false" :clearable="false" auto-apply :dark="isDark" :format="datepickerFormat" ></VueDatePicker>
       </td>
     </tr>
     <tr>
@@ -118,20 +139,20 @@
         <button type="button" label="Save" @click="nbDaysSaveEdit" :disabled="nbday_edit_date === null">__MSG_Save__</button>
         <button type="button" label="Cancel" severity="secondary" @click="nbDaysHideDialogEdit">__MSG_Cancel__</button>
     </div>
-</Dialog>
+  </div>
 
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onBeforeMount, onMounted, nextTick } from 'vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { tsLogger } from '@statslib/mzts-logger';
 import { tsStore } from '@statslib/mzts-store';
+import { tsUtils } from '@statslib/mzts-utils';
 import { i18n } from "@statslib/mzts-i18n.js";
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Dialog from 'primevue/dialog';
-import DatePicker from 'primevue/datepicker';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
 
 let tsLog = null;
 
@@ -162,12 +183,21 @@ const nbDayShowDialogEdit = ref(false);
 const nbday_edit_description = ref("");
 const nbday_edit_date = ref(null);
 const nbday_edit_yearly = ref(false);
+let isDark = ref(false);
+let datepickerFormat = ref("dd-MM-yyyy");
 
 
+onBeforeMount(async () => {
+  tsLog = new tsLogger("OPTAB_BusinessDays", tsStore.do_debug);
+  TS_prefs.logger = tsLog;
+  datepickerFormat.value = tsUtils.formatDateStringLocale(await TS_prefs.getPref("datepicker_locale"));
+  if(tsStore.darkmode === undefined) {
+    tsStore.darkmode = tsUtils.isDarkMode();
+  }
+  isDark.value = tsStore.darkmode;
+})
 
 onMounted(async () => {
-    tsLog = new tsLogger("OPTAB_BusinessDays", tsStore.do_debug);
-
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
       input.addEventListener('change', somethingChanged);
@@ -198,6 +228,9 @@ onMounted(async () => {
         });
     }
     tsLog.log("onMounted");
+    nextTick(() => {
+        i18n.updateDocument();
+    })
 });
 
 async function somethingChanged() {
@@ -205,9 +238,9 @@ async function somethingChanged() {
     emit('new_changes', new_changes.value);
   }
 
-function nbDaysOnRowSelect(event) {
-    nbDayRowSelected.value = true;
-    //console.log("nbDaysOnRowSelect selectedNBDay.value: " + JSON.stringify(selectedNBDay.value));
+function nbDaySelectDay(day){
+  selectedNBDay.value = day;
+  nbDayRowSelected.value = true;
 }
 
 function nbDaysOnRowUnselect(event) {
@@ -233,11 +266,16 @@ function nbDaysSaveNew() {
     let description = nbday_new_description.value;
     let yearly = nbday_new_yearly.value;
     nbDaysHideDialogNew();
-    let date_output = getNBDDateString(date, yearly);
-    customNBusinessDays.value.push({id: nbDaysCreateId(), date: date_output, description: description});
+    let year = yearly ? 'every_year' : date.getFullYear();
+    let month = date.getMonth();
+    let day = date.getDate();
+    customNBusinessDays.value.push({id: nbDaysCreateId(), year: year, month: month, day: day, description: description});
     //save bday_custom_days pref
     TS_prefs.setPref("bday_custom_days", customNBusinessDays.value);
     somethingChanged();
+    nextTick(() => {
+        i18n.updateDocument();
+    })
 }
 
 function nbDaysCreateId() {
@@ -250,9 +288,8 @@ function nbDaysCreateId() {
 
 function nbDaysShowDialogEdit() {
     nbday_edit_description.value = selectedNBDay.value.description;
-    let curr_year = new Date().getFullYear();
-    nbday_edit_date.value = selectedNBDay.value.date.replace(/year/g, curr_year);
-    nbday_edit_yearly.value = selectedNBDay.value.date.includes('year');
+    nbday_edit_date.value = new Date(selectedNBDay.value.year == 'every_year' ? new Date().getFullYear() : selectedNBDay.value.year, selectedNBDay.value.month, selectedNBDay.value.day);
+    nbday_edit_yearly.value = selectedNBDay.value.year == 'every_year';
     nbDayShowDialogEdit.value = true;
     nextTick(() => {
         i18n.updateDocument();
@@ -291,13 +328,6 @@ function nbDaysDelete() {
     nbDaysOnRowUnselect(null);
 }
 
-function getNBDDateString(date, yearly) {
-    if (yearly === false) {
-        return date.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
-    }else{
-        return date.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit'}) + '/year';
-    }
-}
 
 function toggle_options(e) {
     let row = e.target.closest('tr');
@@ -309,5 +339,7 @@ function toggle_options(e) {
 </script>
 
 <style scoped>
-
+.selected {
+  background-color: #f0f0f0; /* Colore di evidenziazione per la riga selezionata */
+}
 </style>

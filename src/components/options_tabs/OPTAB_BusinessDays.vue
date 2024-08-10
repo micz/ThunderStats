@@ -308,7 +308,9 @@ function nbDaysSaveEdit() {
     selectedNBDay.value.description = nbday_edit_description.value;
     selectedNBDay.value.yearly = nbday_edit_yearly.value;
     nbDaysHideDialogEdit();
-    selectedNBDay.value.date = getNBDDateString(date, selectedNBDay.value.yearly);
+    selectedNBDay.value.year = selectedNBDay.value.yearly ? 'every_year' : date.getFullYear();
+    selectedNBDay.value.month = date.getMonth();
+    selectedNBDay.value.day = date.getDate();
     const index = customNBusinessDays.value.findIndex(item => item.id === selectedNBDay.value.id);
     if (index !== -1) {
         customNBusinessDays.value[index] = selectedNBDay.value;

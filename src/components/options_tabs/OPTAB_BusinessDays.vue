@@ -35,7 +35,7 @@
       <td class="grouptitle" colspan="2">__MSG_Non-BDays__</td>
     </tr>
     <tr><td>
-        <table>
+        <table class="bday_table">
             <tr>
                 <th>__MSG_Year__</th>
                 <th>__MSG_Month__</th>
@@ -46,7 +46,7 @@
             v-for="day in customNBusinessDays"
             :key="day.id"
             @click="nbDaySelectDay(day)"
-            :class="{ selected: nbDayRowSelected && nbDayRowSelected.id === day.id }"
+            :class="{ selected: nbDayRowSelected && selectedNBDay.id === day.id }"
             >
                 <td>{{ day.year == 'every_year' ? '__MSG_Yearly__' : day.year }}</td>
                 <td>{{ day.month + 1 }}</td>
@@ -320,6 +320,9 @@ function nbDaysSaveEdit() {
     //save bday_custom_days pref
     TS_prefs.setPref("bday_custom_days", customNBusinessDays.value);
     somethingChanged();
+    nextTick(() => {
+        i18n.updateDocument();
+    })
 }
 
 function nbDaysDelete() {
@@ -343,7 +346,5 @@ function toggle_options(e) {
 </script>
 
 <style scoped>
-.selected {
-  background-color: #f0f0f0; /* Colore di evidenziazione per la riga selezionata */
-}
+
 </style>

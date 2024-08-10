@@ -162,6 +162,24 @@ span.dims_label{
     padding: 10px 5px 10px 15px !important;
 }
 
+table.bday_table {
+    border: 1px solid #7FB5DA;
+    border-spacing: 0px;
+    width: -moz-available;
+  }
+  table.bday_table tr.selected {
+    background-color: #b5e6ff;
+  }
+  table.bday_table th, table.bday_table td{
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #7FB5DA;
+  }
+  table.bday_table th {
+    background-color: #7FB5DA;
+    color: white;
+  }
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
 

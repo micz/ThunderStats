@@ -293,6 +293,7 @@ function nbDaysCreateId() {
 }
 
 function nbDaysShowDialogEdit() {
+  //console.log(">>>>>>>>>>>>>>>> nbDaysShowDialogEdit selectedNBDay: " + JSON.stringify(selectedNBDay.value));
     nbday_edit_description.value = selectedNBDay.value.description;
     nbday_edit_date.value = new Date(selectedNBDay.value.year == 'every_year' ? new Date().getFullYear() : selectedNBDay.value.year, selectedNBDay.value.month, selectedNBDay.value.day);
     nbday_edit_yearly.value = selectedNBDay.value.year == 'every_year';

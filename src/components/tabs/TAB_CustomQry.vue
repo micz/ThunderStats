@@ -25,7 +25,7 @@
             </div>
                 <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
-                <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
+                <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" /> __MSG_OnlyBDCustomQry__
                 <span v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></span>
             </div>
     <div class="square_container">
@@ -138,6 +138,8 @@ let graphdata_customqry_labels = ref([]);
 let _involved_num = 10;
 let first_day_week = 1;
 
+let doOnlyBD = ref(false);
+
 
 let chartData_Sent = ref({
     labels: [],
@@ -165,10 +167,13 @@ onMounted(async () => {
     const endDate = new Date();
     const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
     dateQry.value = [startDate, endDate];
-    first_day_week = await TS_prefs.getPref("first_day_week");
-    _involved_num = await TS_prefs.getPref("_involved_num");
+    let prefs = await TS_prefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only"]);
+    console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
+    first_day_week = prefs.first_day_week;
+    _involved_num = prefs._involved_num;
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
+    doOnlyBD.value = prefs.bday_default_only;
 });
 
 function update(){

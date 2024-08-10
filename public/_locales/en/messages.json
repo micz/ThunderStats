@@ -614,5 +614,9 @@
   "Day": {
     "message": "Day",
     "description": ""
+  },
+  "OnlyBDCustomQry": {
+    "message": "Consider business days only",
+    "description": ""
   }
 }

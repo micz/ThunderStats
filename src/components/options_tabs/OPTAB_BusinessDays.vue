@@ -69,7 +69,8 @@
     </tr>
 </table>
 
-<div v-if="nbDayShowDialogNew" >
+<div v-if="nbDayShowDialogNew" class="modal" @click="nbDaysHideDialogNew" >
+  <div class="modal-content" @click.stop>
     <table class="miczPrefs bday_table_new">
       <tr>
       <td colspan="2" class="grouptitle">__MSG_New__ __MSG_Non-Business_Day__</td>
@@ -104,8 +105,10 @@
         <button type="button" label="Cancel" severity="secondary" @click="nbDaysHideDialogNew">__MSG_Cancel__</button>
     </div>
   </div>
+</div>
 
-<div v-if="nbDayShowDialogEdit">
+<div v-if="nbDayShowDialogEdit" class="modal" @click="nbDaysHideDialogEdit">
+  <div class="modal-content" @click.stop>
     <table class="miczPrefs bday_table_new">
       <tr>
       <td colspan="2" class="grouptitle">__MSG_Edit__ __MSG_Non-Business_Day__</td>
@@ -140,6 +143,7 @@
         <button type="button" label="Cancel" severity="secondary" @click="nbDaysHideDialogEdit">__MSG_Cancel__</button>
     </div>
   </div>
+</div>
 
 </template>
 

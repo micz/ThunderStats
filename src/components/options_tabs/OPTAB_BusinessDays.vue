@@ -212,6 +212,20 @@ onMounted(async () => {
     const prefs = await TS_prefs.getPrefs(["bday_custom_days","bday_weekdays_0", "bday_weekdays_1", "bday_weekdays_2", "bday_weekdays_3", "bday_weekdays_4", "bday_weekdays_5", "bday_weekdays_6", "first_day_week"]);
 
     customNBusinessDays.value = prefs.bday_custom_days;
+    customNBusinessDays.value.sort((a, b) => {
+    // Handling  special case "every_year"
+    const yearA = a.year === "every_year" ? 9999 : a.year;
+    const yearB = b.year === "every_year" ? 9999 : b.year;
+    
+    // Sorting by year, month and day
+    if (yearA !== yearB) {
+        return yearA - yearB;
+    } else if (a.month !== b.month) {
+        return a.month - b.month;
+    } else {
+        return a.day - b.day;
+    }
+});
     
     selectedDays.value = [];
     days.forEach(day => {

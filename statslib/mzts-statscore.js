@@ -288,7 +288,7 @@ export class thunderStastsCore {
       let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates };
 
       if(do_aggregate_stats) {
-        output.aggregate = this.aggregateData(dates, sent, received);
+        output.aggregate = await this.aggregateData(dates);
       }
 
       let stop_time = performance.now();
@@ -436,7 +436,7 @@ export class thunderStastsCore {
 
       let output = {sent: sent, received: received, count: count, msg_days: msg_days};
 
-      output.aggregate = this.aggregateData(msg_days, sent, received);
+      output.aggregate = await this.aggregateData(msg_days);
 
       let stop_time = performance.now();
 
@@ -445,32 +445,54 @@ export class thunderStastsCore {
       return output;
     }
 
-    aggregateData(dates, sent, received) {
-      // dates must be popolated with all the days, even with 0 value
-      let num_days = Object.keys(dates).length;
+    async aggregateData(dates) {
+      
+      let filtered_dates = {};
+
+      let prefs_bday_default_only = await TS_prefs.getPref(['bday_default_only']);
+
+      console.log(">>>>>>>>>>> bday_default_only: " + prefs_bday_default_only);
+      if(prefs_bday_default_only == true){
+        for (let day_message in dates) {
+          if (tsCoreUtils.checkBusinessDay(day_message)) {
+            filtered_dates[day_message] = dates[day_message];
+          }
+        }
+        console.log(">>>>>>>>>>> filtered_dates: " + JSON.stringify(filtered_dates));
+      }else{
+        filtered_dates = dates;
+      }
+
+      let total_sent = 0;
+      let total_received = 0;
       let max_sent = 0;
       let min_sent = 0;
-      //let avg_sent = parseFloat((sent / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
-      let avg_sent = parseFloat((sent / num_days).toFixed(2));
       let max_received = 0;
       let min_received = 0;
-      //let avg_received = parseFloat((received / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
-      let avg_received = parseFloat((received / num_days).toFixed(2));
 
-      for(let i in dates) {
-        if(dates[i].sent > max_sent) {
-          max_sent = dates[i].sent;
+      for(let i in filtered_dates) {
+        total_sent += filtered_dates[i].sent;
+        total_received += filtered_dates[i].received;
+
+        if(filtered_dates[i].sent > max_sent) {
+          max_sent = filtered_dates[i].sent;
         }
-        if(dates[i].sent < min_sent) {
-          min_sent = dates[i].sent;
+        if(filtered_dates[i].sent < min_sent) {
+          min_sent = filtered_dates[i].sent;
         }
-        if(dates[i].received > max_received) {
-          max_received = dates[i].received;
+        if(filtered_dates[i].received > max_received) {
+          max_received = filtered_dates[i].received;
         }
-        if(dates[i].received < min_received) {
-          min_received = dates[i].received;
+        if(filtered_dates[i].received < min_received) {
+          min_received = filtered_dates[i].received;
         }
       }
+
+      // filtered_dates must be popolated with all the days, even with 0 value
+      let num_days = Object.keys(filtered_dates).length;
+      let avg_sent = parseFloat((total_sent / num_days).toFixed(2));
+      let avg_received = parseFloat((total_received / num_days).toFixed(2));
+      
       return {max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, max_received: max_received, min_received: min_received, avg_received: avg_received};
     }
 

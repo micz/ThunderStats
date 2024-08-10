@@ -220,7 +220,7 @@ async function updateData() {
             // remove today from the dates
             let dates_copy = Object.assign({}, result_many_days.dates);
             delete dates_copy[today_date_string];
-            let aggregate = tsCore.aggregateData(dates_copy, sent_total.value, rcvd_total.value);
+            let aggregate = await tsCore.aggregateData(dates_copy);
             tsLog.log("dates_copy: " + JSON.stringify(dates_copy, null, 2));
             tsLog.log("aggregate: " + JSON.stringify(aggregate, null, 2));
             counter_many_days_rcvd_max.value = aggregate.max_received;

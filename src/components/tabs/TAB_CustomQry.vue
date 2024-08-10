@@ -366,7 +366,7 @@ async function updateData() {
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
             //aggregated data
-            let aggregate = tsCore.aggregateData(result_customqry.dates, sent_total.value, rcvd_total.value);
+            let aggregate = await tsCore.aggregateData(result_customqry.dates);
             tsLog.log("dates: " + JSON.stringify(result_customqry.dates, null, 2));
             tsLog.log("aggregate: " + JSON.stringify(aggregate, null, 2));
             counter_customqry_rcvd_max.value = aggregate.max_received;

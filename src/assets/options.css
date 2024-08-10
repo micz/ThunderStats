@@ -293,4 +293,24 @@ table.bday_table th {
         color: #79bcff;
     }
 
+    table.bday_table {
+        border: 1px solid #5A9BB5;
+    }
+    table.bday_table tr.selected {
+        background-color: #1E292F;
+    }
+    table.bday_table th, table.bday_table td {
+        border: 1px solid #5A9BB5;
+    }
+    table.bday_table th {
+        background-color: #5A9BB5;
+        color: #E0E0E0;
+    }
+      
+    .modal-content {
+        background-color: #333;
+        color: #E0E0E0;
+        box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.3);
+    }
+
 }

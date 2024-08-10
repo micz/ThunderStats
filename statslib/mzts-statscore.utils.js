@@ -387,7 +387,7 @@ export const tsCoreUtils = {
         let date = tsUtils.parseYYYYMMDDToDate(datestr);
         let date_weekday = date.getDay();
 
-        console.log(">>>>>>>>>>>>>> checkBusinessDay: " + datestr);
+        // console.log(">>>>>>>>>>>>>> checkBusinessDay: " + datestr);
 
         // check weekeday preference
         if(await TS_prefs.getPref("bday_weekdays_" + date_weekday) == false) {
@@ -410,16 +410,16 @@ export const tsCoreUtils = {
                 let nbd_datestr = String(element.year == 'every_year' ? (new Date()).getFullYear() : element.year) + 
                                   String(element.month + 1).padStart(2, '0') + 
                                   String(element.day).padStart(2, '0');
-                console.log(">>>>>>>>>>>>>> nbd_datestr: " + nbd_datestr);
-                console.log(">>>>>>>>>>>>>> datestr: " + datestr);
+                // console.log(">>>>>>>>>>>>>> nbd_datestr: " + nbd_datestr);
+                // console.log(">>>>>>>>>>>>>> datestr: " + datestr);
                 if (nbd_datestr == datestr) {
-                    console.log(">>>>>>>>>>>>>> nbd_datestr == datestr: " + nbd_datestr + " == " + datestr);
+                    // console.log(">>>>>>>>>>>>>> nbd_datestr == datestr: " + nbd_datestr + " == " + datestr);
                     return false;
                 }
             }
         }
 
-        console.log(">>>>>>>>>>>>>> checkBusinessDay ["+datestr+"]: return true");
+        // console.log(">>>>>>>>>>>>>> checkBusinessDay ["+datestr+"]: return true");
         return true;
     },
 

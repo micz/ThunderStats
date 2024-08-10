@@ -454,8 +454,11 @@ export class thunderStastsCore {
       console.log(">>>>>>>>>>> bday_default_only: " + prefs_bday_default_only);
       if(prefs_bday_default_only == true){
         for (let day_message in dates) {
-          if (tsCoreUtils.checkBusinessDay(day_message)) {
+          if (await tsCoreUtils.checkBusinessDay(day_message)) {
             filtered_dates[day_message] = dates[day_message];
+            console.log(">>>>>>>>>>>>> added day_message: " + JSON.stringify(day_message));
+          }else{
+            console.log(">>>>>>>>>>>>> filtered day_message: " + JSON.stringify(day_message));
           }
         }
         console.log(">>>>>>>>>>> filtered_dates: " + JSON.stringify(filtered_dates));

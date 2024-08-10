@@ -87,7 +87,7 @@
         <label><span class="dims_label" >__MSG_Date__</span></label>
       </td>
       <td>
-        <VueDatePicker v-model="nbday_new_date" :enable-time-picker="false" :clearable="false" auto-apply :dark="isDark" :format="datepickerFormat" ></VueDatePicker>
+        <VueDatePicker v-model="nbday_new_date" :enable-time-picker="false" :clearable="false" auto-apply :dark="isDark" :format="datepickerFormat" :locale="prefLocale" ></VueDatePicker>
       </td>
     </tr>
     <tr>
@@ -123,7 +123,7 @@
         <label><span class="dims_label" >__MSG_Date__</span></label>
       </td>
       <td>
-        <VueDatePicker v-model="nbday_edit_date" :enable-time-picker="false" :clearable="false" auto-apply :dark="isDark" :format="datepickerFormat" ></VueDatePicker>
+        <VueDatePicker v-model="nbday_edit_date" :enable-time-picker="false" :clearable="false" auto-apply :dark="isDark" :format="datepickerFormat" :locale="prefLocale" ></VueDatePicker>
       </td>
     </tr>
     <tr>
@@ -185,12 +185,14 @@ const nbday_edit_date = ref(null);
 const nbday_edit_yearly = ref(false);
 let isDark = ref(false);
 let datepickerFormat = ref("dd-MM-yyyy");
+let prefLocale = ref("en-GB");
 
 
 onBeforeMount(async () => {
   tsLog = new tsLogger("OPTAB_BusinessDays", tsStore.do_debug);
   TS_prefs.logger = tsLog;
-  datepickerFormat.value = tsUtils.formatDateStringLocale(await TS_prefs.getPref("datepicker_locale"));
+  prefLocale.value = await TS_prefs.getPref("datepicker_locale");
+  datepickerFormat.value = tsUtils.formatDateStringLocale(prefLocale.value);
   if(tsStore.darkmode === undefined) {
     tsStore.darkmode = tsUtils.isDarkMode();
   }

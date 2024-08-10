@@ -10,6 +10,7 @@ import { TS_prefs } from '@statslib/mzts-options';
 async function main() {
 
     tsStore.do_debug = await TS_prefs.getPref("do_debug");
+    tsStore.darkmode = undefined;
 
     createApp(App_Options)
         .component('tabs', Tabs)

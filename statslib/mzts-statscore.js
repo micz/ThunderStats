@@ -137,19 +137,19 @@ export class thunderStastsCore {
     // ================ MANY DAYS TAB - END =====================
 
     // ================ CUSTOM QUERY TAB =====================
-    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = []) {
+    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], only_businessdays = -99) {
 
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates);   // the "true" is to aggregate
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays);   // the "true" is to aggregate
     }
     // ================ CUSTOM QUERY TAB - END =====================
 
     // ================ BASE METHODS ========================
-    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false) {
+    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99) {
 
       let start_time = performance.now();
       // console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
@@ -288,7 +288,7 @@ export class thunderStastsCore {
       let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates };
 
       if(do_aggregate_stats) {
-        output.aggregate = await this.aggregateData(dates);
+        output.aggregate = await this.aggregateData(dates, only_businessdays);
       }
 
       let stop_time = performance.now();
@@ -445,11 +445,16 @@ export class thunderStastsCore {
       return output;
     }
 
-    async aggregateData(dates) {
+    async aggregateData(dates, only_businessdays = -99) {
       
       let filtered_dates = {};
+      let prefs_bday_default_only = false;
 
-      let prefs_bday_default_only = await TS_prefs.getPref(['bday_default_only']);
+      if(only_businessdays == -99) {
+        prefs_bday_default_only = await TS_prefs.getPref(['bday_default_only']);
+      } else {
+        prefs_bday_default_only = only_businessdays;
+      }
 
       // console.log(">>>>>>>>>>> bday_default_only: " + prefs_bday_default_only);
       if(prefs_bday_default_only == true){

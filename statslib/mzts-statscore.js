@@ -100,13 +100,12 @@ export class thunderStastsCore {
     // ================ TODAY TAB - END =====================
 
     // ================ YESTERDAY TAB =====================
-    async getYesterday(account_id = 0, account_emails = []) {
+    async getSingleDay(theDay, account_id = 0, account_emails = []) {
 
-      let yesterdayMidnight = new Date();
-      yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
-      yesterdayMidnight.setHours(0, 0, 0, 0);
-      let lastMidnight = new Date();
-      lastMidnight.setHours(0, 0, 0, 0);
+      theDay.setHours(0, 0, 0, 0);
+      let theMidnightAfter = new Date(theDay);
+      theMidnightAfter.setDate(theMidnightAfter.getDate() + 1);
+      theMidnightAfter.setHours(0, 0, 0, 0);
       //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
 
       // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
@@ -114,7 +113,16 @@ export class thunderStastsCore {
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(yesterdayMidnight, lastMidnight, account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+    }
+
+    async getYesterday(account_id = 0, account_emails = []) {
+
+      let yesterdayMidnight = new Date();
+      yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
+      yesterdayMidnight.setHours(0, 0, 0, 0);
+
+      return this.getSingleDay(yesterdayMidnight, account_id, account_emails);
     }
     // ================ YESTERDAY TAB - END =====================
 

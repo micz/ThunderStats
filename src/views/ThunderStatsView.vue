@@ -178,12 +178,12 @@ import { tsUtils } from '@statslib/mzts-utils';
     // console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
     tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));
     // console.log(">>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id.tab.computedId));
-     if((id.tab.computedId != "tab-customqry") && (id.tab.computedId != "tab-info") && ((!stats_done[id.tab.computedId]) || always_reload_tab_data)) {
+    if((id.tab.computedId != "tab-customqry") && (id.tab.computedId != "tab-info") && ((!stats_done[id.tab.computedId]) || always_reload_tab_data)) {
       tsLog.log("tabChanged ==> Loading Data...");
       // console.log(">>>>>>>>>>>>>> tabChanged ==> Loading Data...");
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
       statsDone(id.tab.computedId);
-     }
+    }
   }
 
   async function updateCustomQry() {

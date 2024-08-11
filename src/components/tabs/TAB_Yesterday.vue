@@ -238,6 +238,8 @@ async function updateData() {
                     result_yesterday = await tsCore.getSingleDay(last_bday,props.activeAccount, props.accountEmails);
                     tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
                 }
+            }else{
+                result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);
             }
             tsLog.log("result_yesterday: " + JSON.stringify(result_yesterday, null, 2));
             counter_yesterday_rcvd.value = result_yesterday.received;

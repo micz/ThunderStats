@@ -383,6 +383,18 @@ export const tsCoreUtils = {
         }
     },
 
+    // This function finds the first previous business day before the given date
+    async findPreviousBusinessDay(date) {
+        let previousDate = new Date(date); // Create a copy of the original date
+
+        // Loop until a business day is found
+        do {
+            previousDate.setDate(previousDate.getDate() - 1); // Move to the previous day
+        } while (!await this.checkBusinessDay(tsUtils.dateToYYYYMMDD(previousDate)));
+
+        return previousDate;
+    },
+
     async checkBusinessDay(datestr) {    //datestr is a string like YYYYMMDD
         let date = tsUtils.parseYYYYMMDDToDate(datestr);
         let date_weekday = date.getDay();

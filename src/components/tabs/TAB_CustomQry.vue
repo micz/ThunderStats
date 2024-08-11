@@ -355,7 +355,7 @@ async function updateData() {
             let start_time = performance.now();
             let fromDate = dateQry.value[0];
             let toDate = dateQry.value[1];
-            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails);
+            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails, doOnlyBD.value);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
@@ -371,7 +371,7 @@ async function updateData() {
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
             //aggregated data
-            let aggregate = await tsCore.aggregateData(result_customqry.dates);
+            let aggregate = await tsCore.aggregateData(result_customqry.dates, doOnlyBD.value);
             tsLog.log("dates: " + JSON.stringify(result_customqry.dates, null, 2));
             tsLog.log("aggregate: " + JSON.stringify(aggregate, null, 2));
             counter_customqry_rcvd_max.value = aggregate.max_received;

@@ -180,6 +180,13 @@ td.align_end {
   font-size: 1.1em;
 }
 
+#customqry_datamsg{
+  display: inline-block;
+  position: absolute;
+  right: 5px;
+  top: 1rem;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {

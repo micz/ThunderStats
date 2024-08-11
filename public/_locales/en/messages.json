@@ -552,7 +552,7 @@
     "description": ""
   },
   "Label_bday_default_only": {
-    "message": "Consider Business Days only in aggregate statistics (max, min, average).",
+    "message": "Consider business days only in aggregate statistics (max, min, average).",
     "description": ""
   },
   "Non-BDays": {
@@ -621,6 +621,10 @@
   },
   "BusinessDayOnlyWarning": {
     "message": "Considering business days only",
+    "description": ""
+  },
+  "LastBusinessDay": {
+    "message": "Last business day",
     "description": ""
   }
 }

@@ -26,8 +26,8 @@
         <tab id="tab-today" name="__MSG_Today__">
             <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_Today_ref" />
         </tab>
-        <tab id="tab-yesterday" name="__MSG_Yesterday__">
-          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_Yesterday_ref" />
+        <tab id="tab-yesterday" :name="_yesterday_text">
+          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateTabName="updateYesterdayTabName" ref="TAB_Yesterday_ref" />
         </tab>
         <tab id="tab-manydays" :name="_many_days_text">
           <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_ManyDays_ref" />
@@ -68,6 +68,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   let activeAccount = ref(0);
   let accountEmails = ref([]);
   let _many_days_text = ref("");
+  let _yesterday_text = ref("__MSG_Yesterday__");
   let cache_lifetime = ref(120000);
   let elapsed_time = ref(0);
   let is_loading = ref(false);
@@ -198,6 +199,10 @@ import { tsUtils } from '@statslib/mzts-utils';
   function updateElapsed(elapsed) {
     tsLog.log("updateElapsed: " + elapsed);
     elapsed_time.value = elapsed;
+  }
+
+  function updateYesterdayTabName(name) {
+    _yesterday_text.value = name;
   }
 
   </script>

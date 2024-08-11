@@ -64,20 +64,8 @@ export class thunderStastsCore {
       let yesterday_midnight = new Date();
       yesterday_midnight.setDate(yesterday_midnight.getDate() - 1);
       yesterday_midnight.setHours(0, 0, 0, 0);
-      let yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(23, 59, 59, 999);
-      //yesterday.setHours(new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(), new Date().getMilliseconds());
-      // console.log(">>>>>>>>>>>>>> getToday_YesterdayData yesterday_midnight: " + JSON.stringify(yesterday_midnight));
-      // console.log(">>>>>>>>>>>>>> getToday_YesterdayData yesterday: " + JSON.stringify(yesterday));
-      let fromDate = new Date(yesterday_midnight);
-      let toDate = new Date(yesterday);
-      // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
-      // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
-
-      return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates);
+      return this.getToday_SingleDayData(yesterday_midnight, account_id, account_emails, count_data_to_current_time);
     }
 
     async getToday_manyDaysData(account_id = 0, account_emails = []) {
@@ -100,22 +88,6 @@ export class thunderStastsCore {
     // ================ TODAY TAB - END =====================
 
     // ================ YESTERDAY TAB =====================
-    async getSingleDay(theDay, account_id = 0, account_emails = []) {
-
-      theDay.setHours(0, 0, 0, 0);
-      let theMidnightAfter = new Date(theDay);
-      theMidnightAfter.setDate(theMidnightAfter.getDate() + 1);
-      theMidnightAfter.setHours(0, 0, 0, 0);
-      //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
-
-      // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
-      // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
-
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
-
-      return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
-    }
-
     async getYesterday(account_id = 0, account_emails = []) {
 
       let yesterdayMidnight = new Date();
@@ -155,6 +127,41 @@ export class thunderStastsCore {
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays);   // the "true" is to aggregate
     }
     // ================ CUSTOM QUERY TAB - END =====================
+
+    // ================ SINGLE DAY METHODS =====================
+    async getSingleDay(theDay, account_id = 0, account_emails = []) {
+
+      theDay.setHours(0, 0, 0, 0);
+      let theMidnightAfter = new Date(theDay);
+      theMidnightAfter.setDate(theMidnightAfter.getDate() + 1);
+      theMidnightAfter.setHours(0, 0, 0, 0);
+      //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
+
+      // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
+      // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
+
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
+      return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+    }
+
+    async getToday_SingleDayData(theDay, account_id = 0, account_emails = [], count_data_to_current_time = true) {
+
+      theDay.setHours(0, 0, 0, 0);
+      let theMidnightAfter = new Date(theDay);
+      theMidnightAfter.setDate(theMidnightAfter.getDate() + 1);
+      theMidnightAfter.setHours(0, 0, 0, 0);
+
+      let fromDate = new Date(theDay);
+      let toDate = new Date(theMidnightAfter);
+      // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
+      // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
+
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
+      return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates);
+    }
+    // ================ SINGLE DAY METHODS - END =====================
 
     // ================ BASE METHODS ========================
     async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99) {

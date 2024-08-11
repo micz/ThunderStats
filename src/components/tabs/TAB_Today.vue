@@ -23,7 +23,7 @@
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         <span id="today_date" class="list_heading_date" v-html="today_date"></span></div>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_today_sent" :_rcvd="counter_today_rcvd" />
-        <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" />
+        <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" :is_last_business_day="is_last_business_day" />
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <GraphToday :chartData="chartData_Today" :is_loading="is_loading_today_graph" />
     </div>
@@ -73,6 +73,7 @@ import CounterInbox from '../counters/CounterInbox.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
+import { tsUtils } from '@statslib/mzts-utils';
 
 const props = defineProps({
     activeAccount: {
@@ -96,6 +97,7 @@ let top_senders_title = ref("");
 let no_mails_received_today = ref("");
 let no_mails_sent_today = ref("");
 let no_mails_inbox = ref("");
+let is_last_business_day = ref(false);
 
 let folderLocationNoteTooltipVisible = ref(false);
 let folderLocationNote_text = ref("");
@@ -307,7 +309,24 @@ async function updateData() {
     async function getYesterdayData () {
         if(!today_time_graph_show_yesterday) { return; }
         return new Promise(async (resolve) => {
-            let result_yesterday = await tsCore.getToday_YesterdayData(props.activeAccount, props.accountEmails);
+            let result_yesterday = null;
+            let yesterday_date = new Date();
+            // check Business Days
+            let prefs_bday_default_only = await TS_prefs.getPref("bday_default_only");
+            if(prefs_bday_default_only == true){
+                if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date)) == true){
+                    is_last_business_day.value = false;
+                    result_yesterday = await tsCore.getToday_YesterdayData(props.activeAccount, props.accountEmails);
+                }else{
+                    is_last_business_day.value = true;
+                    let last_bday = await tsCoreUtils.findPreviousBusinessDay(yesterday_date);
+                    result_yesterday = await tsCore.getToday_SingleDayData(last_bday,props.activeAccount, props.accountEmails);
+                    tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
+                }
+            }else{
+                is_last_business_day.value = false;
+                result_yesterday = await tsCore.getToday_YesterdayData(props.activeAccount, props.accountEmails);
+            }
             tsLog.log("result_today_yesterday_data: " + JSON.stringify(result_yesterday, null, 2));
             counter_yesterday_thistime_rcvd.value = result_yesterday.received;
             counter_yesterday_thistime_sent.value = result_yesterday.sent;

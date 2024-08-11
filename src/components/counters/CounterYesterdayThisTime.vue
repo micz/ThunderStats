@@ -19,7 +19,7 @@
 -->
 
 <template>
-<p class="additional_info_text"><span class="additional_info_text">__MSG_YesterdayThisTime__: <span id="yesterday_incremental_sent" v-if="!is_loading">{{ sent }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="yesterday_incremental_sent_wait" v-if="is_loading"/> __MSG_sent__ / <span id="yesterday_incremental_rcvd" v-if="!is_loading">{{ rcvd }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading;..." id="yesterday_incremental_rcvd_wait" v-if="is_loading"/> __MSG_received__</span></p>
+<p class="additional_info_text"><span class="additional_info_text"><span v-text="is_last_business_day ? '__MSG_LastBusinessDay__' : '__MSG_Yesterday__'"></span> __MSG_YesterdayThisTime__: <span id="yesterday_incremental_sent" v-if="!is_loading">{{ sent }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="yesterday_incremental_sent_wait" v-if="is_loading"/> __MSG_sent__ / <span id="yesterday_incremental_rcvd" v-if="!is_loading">{{ rcvd }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading;..." id="yesterday_incremental_rcvd_wait" v-if="is_loading"/> __MSG_received__</span></p>
 </template>
 
 
@@ -38,6 +38,10 @@ let props = defineProps({
     is_loading: {
         type: Boolean,
         default: true
+    },
+    is_last_business_day: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -49,6 +53,9 @@ let rcvd = computed(() => {
 })
 let is_loading = computed(() => {
     return props.is_loading
+})
+let is_last_business_day = computed(() => {
+    return props.is_last_business_day
 })
 
 </script>

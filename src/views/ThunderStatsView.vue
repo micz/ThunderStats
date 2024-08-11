@@ -24,7 +24,7 @@
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
         <tab id="tab-today" name="__MSG_Today__">
-            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_Today_ref" />
+            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateYesterdayTabName="updateYesterdayTabName" ref="TAB_Today_ref" />
         </tab>
         <tab id="tab-yesterday" :name="_yesterday_text">
           <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateTabName="updateYesterdayTabName" ref="TAB_Yesterday_ref" />

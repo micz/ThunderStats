@@ -187,6 +187,17 @@ td.align_end {
   top: 1rem;
 }
 
+.bday_icon{
+  margin-left: 10px;
+  position: relative;
+  top: 2px;
+}
+
+.bday_icon img{
+  width: 16px;
+  height: 16px;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {

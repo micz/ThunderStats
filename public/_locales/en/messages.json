@@ -618,5 +618,9 @@
   "OnlyBDCustomQry": {
     "message": "Consider business days only",
     "description": ""
+  },
+  "BusinessDayOnlyWarning": {
+    "message": "Considering business days only",
+    "description": ""
   }
 }

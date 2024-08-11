@@ -103,8 +103,10 @@ import { tsUtils } from '@statslib/mzts-utils';
 //    console.log(">>>>>>>>>>>> ThunderStatsView onBeforeMount tsStore.do_debug: " + tsStore.do_debug);
     tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     TS_prefs.logger = tsLog;
-    remember_last_tab = await TS_prefs.getPref("remember_last_tab");
-    always_reload_tab_data = await TS_prefs.getPref("always_reload_tab_data");
+    let prefs = await TS_prefs.getPrefs(["remember_last_tab", "always_reload_tab_data", "bday_default_only"]);
+    remember_last_tab = prefs.remember_last_tab;
+    always_reload_tab_data = prefs.always_reload_tab_data;
+    tsStore.businessdays_only = prefs.bday_default_only;
     if(remember_last_tab) {
       cache_lifetime.value = 120000;
     } else {

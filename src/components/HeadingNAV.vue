@@ -23,7 +23,7 @@
 		  <div id="mzts-account-sel">__MSG_ChooseAccount__:
           <SelectAccount id="account_selector" @change="accountSelected()" v-model="current_account" ref="SelectAccount_ref"/>
 			<div id="mzts-btn-update">
-        <button type="button" @click="update()">__MSG_Update__</button>
+        <button type="button" @click="update()">__MSG_Update__</button><span class="bday_icon" v-if="businessdays_only"><img src="@/assets/images/mzts-businessdays.png" alt="__MSG_BusinessDayOnlyWarning__" title="__MSG_BusinessDayOnlyWarning__"/></span>
       </div>
       <div class="mzts-execution-time" v-if="is_loading && currentTab != 'tab-info'">
         <span v-text="elapsed_time_label"></span>: <span v-text="elapsed_time_string" v-if="elapsed_time != 0"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="elapsed_time == 0"/>
@@ -52,11 +52,19 @@ const emit = defineEmits(['chooseAccount']);
 const props = defineProps({
   elapsed_time: { type: Number, default:0 },
   currentTab: { type: String, default:'' },
-  is_loading: { type: Boolean, default:false }
+  is_loading: { type: Boolean, default:false },
 })
 
 let current_account = ref(0);
 let SelectAccount_ref = ref(null);
+
+let businessdays_only = computed(() => {
+  if((props.currentTab != "tab-info") && (props.currentTab != "tab-customqry")){
+    return tsStore.businessdays_only;
+  }else{
+    return false;
+  }
+})
 
 let elapsed_time = computed(() => {
   return props.elapsed_time;

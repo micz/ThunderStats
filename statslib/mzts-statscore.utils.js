@@ -419,7 +419,7 @@ export const tsCoreUtils = {
 
         if(custom_nbd && custom_nbd.length > 0) {
             for (let element of custom_nbd) {
-                let nbd_datestr = String(element.year == 'every_year' ? (new Date()).getFullYear() : element.year) + 
+                let nbd_datestr = String(element.year == 'every_year' ? date.getFullYear() : element.year) + 
                                   String(element.month + 1).padStart(2, '0') + 
                                   String(element.day).padStart(2, '0');
                 // console.log(">>>>>>>>>>>>>> nbd_datestr: " + nbd_datestr);

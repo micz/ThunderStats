@@ -149,7 +149,8 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 
 ._note_tooltip_text {
   visibility: visible;
-  width: 23em;
+  max-width: 23em;
+  width: fit-content;
   background-color: #fff;
   color: #555;
   text-align: center;
@@ -162,6 +163,10 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   transition: opacity 0.3s;
   border: 1px #555 solid;
   display: block;
+  font-weight: normal;
+  font-size: 14px;
+  text-transform: none;
+  white-space: normal;
 }
 
 td.align_end {

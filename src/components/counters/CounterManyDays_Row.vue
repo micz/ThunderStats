@@ -20,7 +20,7 @@
 
 <template>
 
-<div class="_7days_aggregate_data">[<span v-if="!is_loading">{{ _max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ _min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ _avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__]</div>
+<div class="_7days_aggregate_data">[<span v-if="!is_loading">{{ _total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_total__ / <span v-if="!is_loading">{{ _max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ _min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ _avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__]</div>
 
 </template>
 
@@ -28,6 +28,10 @@
 import { computed } from 'vue';
 
 let props = defineProps({
+    _total: {
+        type: Number,
+        default: 0
+    },
     _max: {
         type: Number,
         default: 0
@@ -46,6 +50,9 @@ let props = defineProps({
     },
 });
 
+let _total = computed(() => {
+    return props._total
+})
 let _max = computed(() => {
     return props._max
 })

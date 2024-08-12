@@ -21,15 +21,15 @@
 <template>
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
-                        <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ sent_total }}</span><span v-if="sent_today > 0"> (+<span>{{ sent_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/></h2>
-                        <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_total="counter_many_days_sent_total" :_max="counter_many_days_sent_max" :_min="counter_many_days_sent_min" :_avg="counter_many_days_sent_avg"/>
+                        <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ sent_total }}</span><span v-if="sent_today > 0"> (+<span>{{ sent_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/><InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalInfoTooltip_text"></InfoTooltip></h2>
+                        <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_total="counter_many_days_sent_total" :_max="counter_many_days_sent_max" :_min="counter_many_days_sent_min" :_avg="counter_many_days_sent_avg" :showTotalInfoTooltip="showTotalInfoTooltip" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
                       <GraphManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ rcvd_total }}</span><span v-if="rcvd_today > 0"> (+<span>{{ rcvd_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/></h2>
-                        <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_total="counter_many_days_rcvd_total" :_max="counter_many_days_rcvd_max" :_min="counter_many_days_rcvd_min" :_avg="counter_many_days_rcvd_avg"/>
+						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ rcvd_total }}</span><span v-if="rcvd_today > 0"> (+<span>{{ rcvd_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/><InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalInfoTooltip_text"></InfoTooltip></h2>
+                        <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_total="counter_many_days_rcvd_total" :_max="counter_many_days_rcvd_max" :_min="counter_many_days_rcvd_min" :_avg="counter_many_days_rcvd_avg" :showTotalInfoTooltip="showTotalInfoTooltip" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
 					  <GraphManyDays :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" :key="chartData_Rcvd_length" />
     </div>
@@ -61,6 +61,7 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import TableInvolved from '../tables/TableInvolved.vue';
 import GraphManyDays from '../graphs/GraphManyDays.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
+import InfoTooltip from '../InfoTooltip.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
@@ -118,6 +119,9 @@ let graphdata_manydays_labels = ref([]);
 let _involved_num = 10;
 let _many_days = 7;
 
+let showTotalInfoTooltip = ref(false);
+let totalInfoTooltip_text = ref("");
+let totalBDInfoTooltip_text = ref("");
 
 let chartData_Sent = ref({
     labels: [],
@@ -141,6 +145,9 @@ onMounted(async () => {
     _many_days = await TS_prefs.getPref("_many_days");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
+    showTotalInfoTooltip.value = tsStore.businessdays_only;
+    totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
+    totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
 });
 
 

@@ -90,6 +90,11 @@ var chartOptions = ref({
                             return tsCoreUtils.getCustomQryLabel(this.getLabelForValue(value));
                         },
               align: 'center',
+              color: function(context) {
+                            const labelIndex = context['tick']['value'];
+                            const label = context.chart.data.labels[labelIndex];
+                            return tsCoreUtils.getDaysLabelColor(label);
+                        },
               // maxRotation: 0,
               //minRotation: 90
             },

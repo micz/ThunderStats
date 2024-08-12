@@ -108,6 +108,16 @@ export const tsCoreUtils = {
     //     });
     // },
 
+    getDaysLabelColor(label) {
+        let isBusinessDay = true;
+        if(tsStore.businessdays_only) isBusinessDay = this.checkBusinessDay(label);
+
+        const bd_color = tsStore.darkmode ? "white" : "black";
+        const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
+
+        return (isBusinessDay ? bd_color : nbd_color);
+    },
+
     getCustomQryLabel(label) {
         const year = parseInt(label.slice(0, 4));
         const month = parseInt(label.slice(4, 6));
@@ -135,7 +145,6 @@ export const tsCoreUtils = {
 
         const date = new Date(year, month - 1, day);
         const dayOfWeek = browser.i18n.getMessage(daysOfWeek[date.getDay()]);
-        const isBusinessDay = this.checkBusinessDay(label);
 
         const dateFormatter = new Intl.DateTimeFormat(undefined, {
             day: '2-digit',
@@ -150,7 +159,7 @@ export const tsCoreUtils = {
             dayOfWeek,
             formattedDate,
             (tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : ""),
-            (isBusinessDay ? "\n[B]" : "")];
+        ];
     },
 
     getManyDaysBarColor(ctx, totalBars) {

@@ -533,7 +533,7 @@ export class thunderStastsCore {
       let avg_sent = parseFloat((total_sent / num_days).toFixed(2));
       let avg_received = parseFloat((total_received / num_days).toFixed(2));
       
-      return {max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, max_received: max_received, min_received: min_received, avg_received: avg_received};
+      return {total_sent: total_sent, max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, total_received: total_received, max_received: max_received, min_received: min_received, avg_received: avg_received};
     }
 
     excludeMessage(message, account_id = 0){    // Returns true if the message should be excluded from the stats

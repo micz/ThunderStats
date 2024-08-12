@@ -180,6 +180,24 @@ td.align_end {
   font-size: 1.1em;
 }
 
+#customqry_datamsg{
+  display: inline-block;
+  position: absolute;
+  right: 5px;
+  top: 1rem;
+}
+
+.bday_icon{
+  margin-left: 10px;
+  position: relative;
+  top: 2px;
+}
+
+.bday_icon img{
+  width: 16px;
+  height: 16px;
+}
+
 #thstats_ver_info{
   position: absolute;
   right: 5px;

@@ -25,8 +25,8 @@
             </div>
                 <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
-                <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
-                <span v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></span>
+                <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" /> __MSG_OnlyBDCustomQry__
+                <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
             </div>
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
@@ -139,6 +139,8 @@ let graphdata_customqry_labels = ref([]);
 let _involved_num = 10;
 let first_day_week = 1;
 
+let doOnlyBD = ref(false);
+
 
 let chartData_Sent = ref({
     labels: [],
@@ -167,10 +169,13 @@ onMounted(async () => {
     const endDate = new Date();
     const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
     dateQry.value = [startDate, endDate];
-    first_day_week = await TS_prefs.getPref("first_day_week");
-    _involved_num = await TS_prefs.getPref("_involved_num");
+    let prefs = await TS_prefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only"]);
+    console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
+    first_day_week = prefs.first_day_week;
+    _involved_num = prefs._involved_num;
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
+    doOnlyBD.value = prefs.bday_default_only;
 });
 
 function update(){
@@ -352,7 +357,7 @@ async function updateData() {
             let start_time = performance.now();
             let fromDate = dateQry.value[0];
             let toDate = dateQry.value[1];
-            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails);
+            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails, doOnlyBD.value);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
@@ -368,7 +373,7 @@ async function updateData() {
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
             //aggregated data
-            let aggregate = tsCore.aggregateData(result_customqry.dates, sent_total.value, rcvd_total.value);
+            let aggregate = result_customqry.aggregate;
             tsLog.log("dates: " + JSON.stringify(result_customqry.dates, null, 2));
             tsLog.log("aggregate: " + JSON.stringify(aggregate, null, 2));
             counter_customqry_rcvd_max.value = aggregate.max_received;

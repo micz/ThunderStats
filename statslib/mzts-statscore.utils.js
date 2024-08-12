@@ -18,6 +18,7 @@
 
 import { tsUtils } from "./mzts-utils";
 import { TS_prefs } from "./mzts-options";
+import { tsStore } from "./mzts-store";
 
 export const tsCoreUtils = {
 
@@ -127,6 +128,16 @@ export const tsCoreUtils = {
     //     });
     // },
 
+    getDaysLabelColor(label) {
+        let isBusinessDay = true;
+        if(tsStore.businessdays_only) isBusinessDay = this.checkBusinessDay(label);
+
+        const bd_color = tsStore.darkmode ? "white" : "black";
+        const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
+
+        return (isBusinessDay ? bd_color : nbd_color);
+    },
+
     getCustomQryLabel(label) {
         const year = parseInt(label.slice(0, 4));
         const month = parseInt(label.slice(4, 6));
@@ -164,7 +175,11 @@ export const tsCoreUtils = {
         const formattedDate = dateFormatter.format(date);
 
         // return dayOfWeek + "\n" + formattedDate + (tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : "");
-        return [dayOfWeek,formattedDate,(tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : "")];
+        return [
+            dayOfWeek,
+            formattedDate,
+            (tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : ""),
+        ];
     },
 
     getManyDaysBarColor(ctx, totalBars) {
@@ -387,23 +402,102 @@ export const tsCoreUtils = {
         }
      },
 
-     async getFilterDuplicatesPreference(account_id) {
+    async getFilterDuplicatesPreference(account_id) {
         if(account_id == 0) {
-           return await TS_prefs.getPref("filter_duplicates_multi_account");
+            return await TS_prefs.getPref("filter_duplicates_multi_account");
         } else {
-           let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
-         //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
-         let element = null;
-         if(accounts_adv_settings.length > 0) {
-           element = accounts_adv_settings.find(account => account.id == account_id);
-         }
-         //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
-           if(!element) return false;
-           return element.filter_duplicates || false;
+            let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+            //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
+            let element = null;
+            if(accounts_adv_settings.length > 0) {
+            element = accounts_adv_settings.find(account => account.id == account_id);
+            }
+            //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
+            if(!element) return false;
+            return element.filter_duplicates || false;
         }
-     },
+    },
+
+    // This function finds the first previous business day before the given date
+    findPreviousBusinessDay(date) {
+        let previousDate = new Date(date); // Create a copy of the original date
+
+        // Loop until a business day is found
+        do {
+            previousDate.setDate(previousDate.getDate() - 1); // Move to the previous day
+        } while (!this.checkBusinessDay(tsUtils.dateToYYYYMMDD(previousDate)));
+
+        return previousDate;
+    },
+
+    checkBusinessDay(datestr) {    //datestr is a string like YYYYMMDD
+        let date = tsUtils.parseYYYYMMDDToDate(datestr);
+        let date_weekday = date.getDay();
+
+        // console.log(">>>>>>>>>>>>>> checkBusinessDay: " + datestr);
+
+        // check weekeday preference
+        if(tsStore["bday_weekdays_" + date_weekday] == false) {
+            return false;
+        }
+
+        // check easter preference
+        if(tsStore.bday_easter == true) {
+            if(this.isEasterOrEasterMonday(date)) {
+                return false;
+            }
+        }
+
+
+        // check custom non-business days preference
+        let custom_nbd = tsStore.bday_custom_days;
+
+        if(custom_nbd && custom_nbd.length > 0) {
+            for (let element of custom_nbd) {
+                let nbd_datestr = String(element.year == 'every_year' ? date.getFullYear() : element.year) + 
+                                  String(element.month + 1).padStart(2, '0') + 
+                                  String(element.day).padStart(2, '0');
+                // console.log(">>>>>>>>>>>>>> nbd_datestr: " + nbd_datestr);
+                // console.log(">>>>>>>>>>>>>> datestr: " + datestr);
+                if (nbd_datestr == datestr) {
+                    // console.log(">>>>>>>>>>>>>> nbd_datestr == datestr: " + nbd_datestr + " == " + datestr);
+                    return false;
+                }
+            }
+        }
+
+        // console.log(">>>>>>>>>>>>>> checkBusinessDay ["+datestr+"]: return true");
+        return true;
+    },
+
+    isEasterOrEasterMonday(date) {
+        const year = date.getFullYear();
+        const easterDate = this.calculateEaster(year);
+    
+        // Calculate Easter Monday
+        const easterMonday = new Date(easterDate);
+        easterMonday.setDate(easterDate.getDate() + 1);
+    
+        // Compare the provided date with Easter and Easter Monday
+        return (date.toDateString() === easterDate.toDateString()) ||
+               (date.toDateString() === easterMonday.toDateString());
+    },
+
+    calculateEaster(year) {
+        const f = Math.floor;
+        const G = year % 19;
+        const C = f(year / 100);
+        const H = (C - f(C / 4) - f((8 * C + 13) / 25) + 19 * G + 15) % 30;
+        const I = H - f(H / 28) * (1 - f(29 / (H + 1)) * f((21 - G) / 11));
+        const J = (year + f(year / 4) + I + 2 - C + f(C / 4)) % 7;
+        const L = I - J;
+        const month = 3 + f((L + 40) / 44);  // March = 3, April = 4
+        const day = L + 28 - 31 * f(month / 4);
+        return new Date(year, month - 1, day);
+    },
 
 }
+
 
 const inboxZeroColors = [
     "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", 

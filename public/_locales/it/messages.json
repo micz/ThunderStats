@@ -319,6 +319,10 @@
     "message": "Avanzato",
     "description": ""
   },
+  "TabBusinessDays.label": {
+    "message": "Giorni Lavorativi",
+    "description": ""
+  },
   "TabCustomIdentities.label": {
     "message": "Identità Personalizzate",
     "description": ""
@@ -389,6 +393,10 @@
   },
   "EmailAddresses": {
     "message": "indirizzi email",
+    "description": ""
+  },
+  "Weekdays": {
+    "message": "Giorni della settimana",
     "description": ""
   },
   "WeekDay0": {
@@ -537,6 +545,86 @@
   },
   "SetDefault": {
     "message": "Imposta predefinito",
+    "description": ""
+  },
+  "Label_bday_use_last_business_day": {
+    "message": "Se ieri non era lavorativo, mostra l'ultimo giorno lavorativo.",
+    "description": ""
+  },
+  "Label_bday_default_only": {
+    "message": "Considera solo i giorni lavorativi nelle statistiche aggregate (max, min, media)",
+    "description": ""
+  },
+  "Non-BDays": {
+    "message": "Giorni Non Lavorativi",
+    "description": ""
+  },
+  "Date": {
+    "message": "Data",
+    "description": ""
+  },
+  "Description": {
+    "message": "Descrizione",
+    "description": ""
+  },
+  "New": {
+    "message": "Nuovo",
+    "description": ""
+  },
+  "Edit": {
+    "message": "Modifica",
+    "description": ""
+  },
+  "Delete": {
+    "message": "Cancella",
+    "description": ""
+  },
+  "Yearly": {
+    "message": "Ogni anno",
+    "description": ""
+  },
+  "Yearly_Desc": {
+    "message": "Questo giorno sarà non lavorativo ogni anno.",
+    "description": ""
+  },
+  "Cancel": {
+    "message": "Annulla",
+    "description": ""
+  },
+  "Non-Business_Day": {
+    "message": "Giorno Non Lavorativo",
+    "description": ""
+  },
+  "deletePromptNBD_text": {
+    "message": "Sei sicuro di voler cancellare questo giorno non lavorativo?",
+    "description": ""
+  },
+  "EasterNoBusinessDay": {
+    "message": "Pasqua e il Lunedì di Pasqua sono sempre non lavorativi.",
+    "description": ""
+  },
+  "Year": {
+    "message": "Anno",
+    "description": ""
+  },
+  "Month": {
+    "message": "Mese",
+    "description": ""
+  },
+  "Day": {
+    "message": "Giorno",
+    "description": ""
+  },
+  "OnlyBDCustomQry": {
+    "message": "Considera solo i giorni lavorativi",
+    "description": ""
+  },
+  "BusinessDayOnlyWarning": {
+    "message": "Si stanno considerando solo i giorni non lavorativi",
+    "description": ""
+  },
+  "LastBusinessDay": {
+    "message": "Ultimo giorno lavorativo",
     "description": ""
   },
   "Version": {

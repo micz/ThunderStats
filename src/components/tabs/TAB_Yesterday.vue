@@ -21,7 +21,7 @@
 <template>
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
-        <span id="yesterday_date" class="list_heading_date" v-html="yesterday_date"></span></div>
+        <span id="yesterday_date" class="list_heading_date" v-html="yesterday_date_str"></span></div>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_yesterday_sent" :_rcvd="counter_yesterday_rcvd" />
         <div id="yesterday_spacing"></div>
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
@@ -62,6 +62,7 @@ import { ref, onMounted, nextTick } from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsUtils } from '@statslib/mzts-utils';
 import CounterSentReceived from '../counters/CounterSentReceived.vue';
 import GraphYesterday from '../graphs/GraphYesterday.vue';
 import GraphInboxZeroFolders from '../graphs/GraphInboxZeroFolders.vue';
@@ -84,12 +85,13 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['updateElapsed']);
+const emit = defineEmits(['updateElapsed','updateTabName']);
 
 let tsLog = null;
 var tsCore = null;
 
-let yesterday_date = ref("");
+let yesterday_date = ref(new Date(Date.now() - (1000 * 60 * 60 * 24)));
+let yesterday_date_str = ref("");
 let top_recipients_title = ref("");
 let top_senders_title = ref("");
 let no_mails_sent_yesterday = ref("");
@@ -157,7 +159,7 @@ let graphdata_inboxzero_dates = ref([]);
 onMounted(async () => {
     tsLog = new tsLogger("TAB_Yesterday", tsStore.do_debug);
     TS_prefs.logger = tsLog;
-    yesterday_date.value = new Date(Date.now() - (1000 * 60 * 60 * 24)).toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
+    yesterday_date_str.value = yesterday_date.value.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
     _involved_num = await TS_prefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
@@ -169,11 +171,12 @@ onMounted(async () => {
 
 async function updateData() {
     loadingDo();
-    do_progressive = await TS_prefs.getPref("_time_graph_progressive");
+    let prefs = await TS_prefs.getPrefs(["_time_graph_progressive", "accounts_adv_settings"]);
+    do_progressive = prefs._time_graph_progressive;
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+    let accounts_adv_settings = prefs.accounts_adv_settings;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     getManyDaysData();
@@ -223,7 +226,22 @@ async function updateData() {
     // get Yesterday
     function getYesterdayData () {
         return new Promise(async (resolve) => {
-            let result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);
+            let result_yesterday = null;
+            // check Business Days
+            let prefs_bday_use_last_business_day = await TS_prefs.getPref("bday_use_last_business_day");
+            if(prefs_bday_use_last_business_day == true){
+                if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date.value)) == true){
+                    result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);
+                }else{
+                    let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date.value);
+                    yesterday_date_str.value = last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
+                    emit('updateTabName', browser.i18n.getMessage("LastBusinessDay"));
+                    result_yesterday = await tsCore.getSingleDay(last_bday,props.activeAccount, props.accountEmails);
+                    tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
+                }
+            }else{
+                result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);
+            }
             tsLog.log("result_yesterday: " + JSON.stringify(result_yesterday, null, 2));
             counter_yesterday_rcvd.value = result_yesterday.received;
             counter_yesterday_sent.value = result_yesterday.sent;

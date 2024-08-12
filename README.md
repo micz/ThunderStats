@@ -78,3 +78,5 @@ Custom Query Bookmark Icon thanks to http://www.iconarchive.com/artist/graphicra
 
 Loading SVGs thanks to https://loading.io
 
+Business Days Icon thanks to https://www.iconarchive.com/artist/custom-icon-design.html
+

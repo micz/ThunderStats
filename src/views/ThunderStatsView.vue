@@ -24,10 +24,10 @@
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
         <tab id="tab-today" name="__MSG_Today__">
-            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_Today_ref" />
+            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateYesterdayTabName="updateYesterdayTabName" ref="TAB_Today_ref" />
         </tab>
-        <tab id="tab-yesterday" name="__MSG_Yesterday__">
-          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_Yesterday_ref" />
+        <tab id="tab-yesterday" :name="_yesterday_text">
+          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateTabName="updateYesterdayTabName" ref="TAB_Yesterday_ref" />
         </tab>
         <tab id="tab-manydays" :name="_many_days_text">
           <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_ManyDays_ref" />
@@ -68,6 +68,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   let activeAccount = ref(0);
   let accountEmails = ref([]);
   let _many_days_text = ref("");
+  let _yesterday_text = ref("__MSG_Yesterday__");
   let cache_lifetime = ref(120000);
   let elapsed_time = ref(0);
   let is_loading = ref(false);
@@ -103,8 +104,32 @@ import { tsUtils } from '@statslib/mzts-utils';
 //    console.log(">>>>>>>>>>>> ThunderStatsView onBeforeMount tsStore.do_debug: " + tsStore.do_debug);
     tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     TS_prefs.logger = tsLog;
-    remember_last_tab = await TS_prefs.getPref("remember_last_tab");
-    always_reload_tab_data = await TS_prefs.getPref("always_reload_tab_data");
+    let prefs = await TS_prefs.getPrefs([
+      "remember_last_tab",
+      "always_reload_tab_data",
+      "bday_default_only",
+      "bday_easter",
+      "bday_custom_days",
+      "bday_weekdays_0",
+      "bday_weekdays_1",
+      "bday_weekdays_2",
+      "bday_weekdays_3",
+      "bday_weekdays_4",
+      "bday_weekdays_5",
+      "bday_weekdays_6",
+    ]);
+    remember_last_tab = prefs.remember_last_tab;
+    always_reload_tab_data = prefs.always_reload_tab_data;
+    tsStore.businessdays_only = prefs.bday_default_only;
+    tsStore.bday_easter = prefs.bday_easter;
+    tsStore.bday_custom_days = prefs.bday_custom_days;
+    tsStore.bday_weekdays_0 = prefs.bday_weekdays_0;
+    tsStore.bday_weekdays_1 = prefs.bday_weekdays_1;
+    tsStore.bday_weekdays_2 = prefs.bday_weekdays_2;
+    tsStore.bday_weekdays_3 = prefs.bday_weekdays_3;
+    tsStore.bday_weekdays_4 = prefs.bday_weekdays_4;
+    tsStore.bday_weekdays_5 = prefs.bday_weekdays_5;
+    tsStore.bday_weekdays_6 = prefs.bday_weekdays_6;
     if(remember_last_tab) {
       cache_lifetime.value = 120000;
     } else {
@@ -178,13 +203,14 @@ import { tsUtils } from '@statslib/mzts-utils';
     // console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
      //console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
     tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));
-     //console.log(">>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id.tab.computedId));
+    //console.log(">>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id.tab.computedId));
      //console.log(">>>>>>>>>>>>> stats_done[id.tab.computedId]: " + stats_done[id.tab.computedId]);
-     if((id.tab.computedId != "tab-customqry") && (id.tab.computedId != "tab-info") && ((!stats_done[id.tab.computedId]) || always_reload_tab_data)) {
+    if((id.tab.computedId != "tab-customqry") && (id.tab.computedId != "tab-info") && ((!stats_done[id.tab.computedId]) || always_reload_tab_data)) {
       tsLog.log("tabChanged ==> Loading Data...");
       // console.log(">>>>>>>>>>>>>> tabChanged ==> Loading Data...");
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
-     }
+      //statsDone(id.tab.computedId);
+    }
   }
 
   async function updateCustomQry() {
@@ -197,6 +223,10 @@ import { tsUtils } from '@statslib/mzts-utils';
   function updateElapsed(elapsed) {
     tsLog.log("updateElapsed: " + elapsed);
     elapsed_time.value = elapsed;
+  }
+
+  function updateYesterdayTabName(name) {
+    _yesterday_text.value = name;
   }
 
   </script>

@@ -129,8 +129,7 @@ export const tsCoreUtils = {
     // },
 
     getDaysLabelColor(label) {
-        let isBusinessDay = true;
-        if(tsStore.businessdays_only) isBusinessDay = this.checkBusinessDay(label);
+        let isBusinessDay = this.checkBusinessDay(label);
 
         const bd_color = tsStore.darkmode ? "white" : "black";
         const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";

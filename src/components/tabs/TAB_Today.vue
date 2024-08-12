@@ -24,7 +24,7 @@
         <span id="today_date" class="list_heading_date" v-html="today_date"></span></div>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_today_sent" :_rcvd="counter_today_rcvd" />
         <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" :is_last_business_day="is_last_business_day" />
-        <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
+        <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <GraphToday :chartData="chartData_Today" :is_loading="is_loading_today_graph" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
@@ -128,9 +128,11 @@ let counter_today_sent = ref(0);
 let counter_today_rcvd = ref(0);
 let counter_yesterday_thistime_sent = ref(0);
 let counter_yesterday_thistime_rcvd = ref(0);
+let counter_many_days_sent_total = ref(0);
 let counter_many_days_sent_max = ref(0);
 let counter_many_days_sent_min = ref(0);
 let counter_many_days_sent_avg = ref(0);
+let counter_many_days_rcvd_total = ref(0);
 let counter_many_days_rcvd_max = ref(0);
 let counter_many_days_rcvd_min = ref(0);
 let counter_many_days_rcvd_avg = ref(0);
@@ -349,9 +351,11 @@ async function updateData() {
         return new Promise(async (resolve) => {
             let result_many_days = await tsCore.getToday_manyDaysData(props.activeAccount, props.accountEmails);
             tsLog.log("result_today_manydays_data: " + JSON.stringify(result_many_days, null, 2));
+            counter_many_days_rcvd_total.value = result_many_days.aggregate.total_received;
             counter_many_days_rcvd_max.value = result_many_days.aggregate.max_received;
             counter_many_days_rcvd_min.value = result_many_days.aggregate.min_received;
             counter_many_days_rcvd_avg.value = result_many_days.aggregate.avg_received;
+            counter_many_days_sent_total.value = result_many_days.aggregate.total_sent;
             counter_many_days_sent_max.value = result_many_days.aggregate.max_sent;
             counter_many_days_sent_min.value = result_many_days.aggregate.min_sent;
             counter_many_days_sent_avg.value = result_many_days.aggregate.avg_sent;

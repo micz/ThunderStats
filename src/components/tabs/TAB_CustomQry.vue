@@ -31,14 +31,14 @@
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
-                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg"/>
+                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg"/>
                       </div>
                       <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length"/>
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
-                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg"/>
+                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg"/>
 					  </div>
 					  <GraphCustomQry v-if="do_run" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_graph"  :key="chartData_Rcvd_length"/>
     </div>
@@ -120,9 +120,11 @@ let is_loading_involved_table_senders = ref(true);
 let is_loading_sent_graph = ref(true);
 let is_loading_rcvd_graph = ref(true);
 
+let counter_customqry_sent_total = ref(0);
 let counter_customqry_sent_max = ref(0);
 let counter_customqry_sent_min = ref(0);
 let counter_customqry_sent_avg = ref(0);
+let counter_customqry_rcvd_total = ref(0);
 let counter_customqry_rcvd_max = ref(0);
 let counter_customqry_rcvd_min = ref(0);
 let counter_customqry_rcvd_avg = ref(0);
@@ -170,7 +172,7 @@ onMounted(async () => {
     const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
     dateQry.value = [startDate, endDate];
     let prefs = await TS_prefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only"]);
-    console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
+    //console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
     first_day_week = prefs.first_day_week;
     _involved_num = prefs._involved_num;
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
@@ -376,9 +378,11 @@ async function updateData() {
             let aggregate = result_customqry.aggregate;
             tsLog.log("dates: " + JSON.stringify(result_customqry.dates, null, 2));
             tsLog.log("aggregate: " + JSON.stringify(aggregate, null, 2));
+            counter_customqry_rcvd_total.value = aggregate.total_received;
             counter_customqry_rcvd_max.value = aggregate.max_received;
             counter_customqry_rcvd_min.value = aggregate.min_received;
             counter_customqry_rcvd_avg.value = aggregate.avg_received;
+            counter_customqry_sent_total.value = aggregate.total_sent;
             counter_customqry_sent_max.value = aggregate.max_sent;
             counter_customqry_sent_min.value = aggregate.min_sent;
             counter_customqry_sent_avg.value = aggregate.avg_sent;

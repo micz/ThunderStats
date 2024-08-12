@@ -312,8 +312,8 @@ async function updateData() {
             let result_yesterday = null;
             let yesterday_date = new Date();
             // check Business Days
-            let prefs_bday_default_only = await TS_prefs.getPref("bday_default_only");
-            if(prefs_bday_default_only == true){
+            let prefs_bday_use_last_business_day = await TS_prefs.getPref("bday_use_last_business_day");
+            if(prefs_bday_use_last_business_day == true){
                 if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date)) == true){
                     is_last_business_day.value = false;
                     result_yesterday = await tsCore.getToday_YesterdayData(props.activeAccount, props.accountEmails);

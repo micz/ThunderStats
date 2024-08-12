@@ -227,8 +227,8 @@ async function updateData() {
         return new Promise(async (resolve) => {
             let result_yesterday = null;
             // check Business Days
-            let prefs_bday_default_only = await TS_prefs.getPref("bday_default_only");
-            if(prefs_bday_default_only == true){
+            let prefs_bday_use_last_business_day = await TS_prefs.getPref("bday_use_last_business_day");
+            if(prefs_bday_use_last_business_day == true){
                 if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date.value)) == true){
                     result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);
                 }else{

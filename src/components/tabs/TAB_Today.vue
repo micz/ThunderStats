@@ -312,6 +312,8 @@ async function updateData() {
         return new Promise(async (resolve) => {
             let result_yesterday = null;
             let yesterday_date = new Date();
+            yesterday_date.setDate(yesterday_date.getDate() - 1);
+            yesterday_date.setHours(0, 0, 0, 0);
             // check Business Days
             let prefs_bday_use_last_business_day = await TS_prefs.getPref("bday_use_last_business_day");
             if(prefs_bday_use_last_business_day == true){

@@ -104,10 +104,32 @@ import { tsUtils } from '@statslib/mzts-utils';
 //    console.log(">>>>>>>>>>>> ThunderStatsView onBeforeMount tsStore.do_debug: " + tsStore.do_debug);
     tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     TS_prefs.logger = tsLog;
-    let prefs = await TS_prefs.getPrefs(["remember_last_tab", "always_reload_tab_data", "bday_default_only"]);
+    let prefs = await TS_prefs.getPrefs([
+      "remember_last_tab",
+      "always_reload_tab_data",
+      "bday_default_only",
+      "bday_easter",
+      "bday_custom_days",
+      "bday_weekdays_0",
+      "bday_weekdays_1",
+      "bday_weekdays_2",
+      "bday_weekdays_3",
+      "bday_weekdays_4",
+      "bday_weekdays_5",
+      "bday_weekdays_6",
+    ]);
     remember_last_tab = prefs.remember_last_tab;
     always_reload_tab_data = prefs.always_reload_tab_data;
     tsStore.businessdays_only = prefs.bday_default_only;
+    tsStore.bday_easter = prefs.bday_easter;
+    tsStore.bday_custom_days = prefs.bday_custom_days;
+    tsStore.bday_weekdays_0 = prefs.bday_weekdays_0;
+    tsStore.bday_weekdays_1 = prefs.bday_weekdays_1;
+    tsStore.bday_weekdays_2 = prefs.bday_weekdays_2;
+    tsStore.bday_weekdays_3 = prefs.bday_weekdays_3;
+    tsStore.bday_weekdays_4 = prefs.bday_weekdays_4;
+    tsStore.bday_weekdays_5 = prefs.bday_weekdays_5;
+    tsStore.bday_weekdays_6 = prefs.bday_weekdays_6;
     if(remember_last_tab) {
       cache_lifetime.value = 120000;
     } else {

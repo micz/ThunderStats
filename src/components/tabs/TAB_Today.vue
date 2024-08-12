@@ -320,7 +320,7 @@ async function updateData() {
                 }else{
                     is_last_business_day.value = true;
                     emit('updateYesterdayTabName', browser.i18n.getMessage("LastBusinessDay"));
-                    let last_bday = await tsCoreUtils.findPreviousBusinessDay(yesterday_date);
+                    let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date);
                     result_yesterday = await tsCore.getToday_SingleDayData(last_bday,props.activeAccount, props.accountEmails);
                     tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
                 }

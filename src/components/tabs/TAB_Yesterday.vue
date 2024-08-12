@@ -232,7 +232,7 @@ async function updateData() {
                 if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date.value)) == true){
                     result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);
                 }else{
-                    let last_bday = await tsCoreUtils.findPreviousBusinessDay(yesterday_date.value);
+                    let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date.value);
                     yesterday_date_str.value = last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
                     emit('updateTabName', browser.i18n.getMessage("LastBusinessDay"));
                     result_yesterday = await tsCore.getSingleDay(last_bday,props.activeAccount, props.accountEmails);

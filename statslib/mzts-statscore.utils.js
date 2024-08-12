@@ -18,6 +18,7 @@
 
 import { tsUtils } from "./mzts-utils";
 import { TS_prefs } from "./mzts-options";
+import { tsStore } from "./mzts-store";
 
 export const tsCoreUtils = {
 
@@ -134,6 +135,7 @@ export const tsCoreUtils = {
 
         const date = new Date(year, month - 1, day);
         const dayOfWeek = browser.i18n.getMessage(daysOfWeek[date.getDay()]);
+        const isBusinessDay = this.checkBusinessDay(label);
 
         const dateFormatter = new Intl.DateTimeFormat(undefined, {
             day: '2-digit',
@@ -144,7 +146,11 @@ export const tsCoreUtils = {
         const formattedDate = dateFormatter.format(date);
 
         // return dayOfWeek + "\n" + formattedDate + (tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : "");
-        return [dayOfWeek,formattedDate,(tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : "")];
+        return [
+            dayOfWeek,
+            formattedDate,
+            (tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : ""),
+            (isBusinessDay ? "\n[B]" : "")];
     },
 
     getManyDaysBarColor(ctx, totalBars) {
@@ -384,30 +390,30 @@ export const tsCoreUtils = {
     },
 
     // This function finds the first previous business day before the given date
-    async findPreviousBusinessDay(date) {
+    findPreviousBusinessDay(date) {
         let previousDate = new Date(date); // Create a copy of the original date
 
         // Loop until a business day is found
         do {
             previousDate.setDate(previousDate.getDate() - 1); // Move to the previous day
-        } while (!await this.checkBusinessDay(tsUtils.dateToYYYYMMDD(previousDate)));
+        } while (!this.checkBusinessDay(tsUtils.dateToYYYYMMDD(previousDate)));
 
         return previousDate;
     },
 
-    async checkBusinessDay(datestr) {    //datestr is a string like YYYYMMDD
+    checkBusinessDay(datestr) {    //datestr is a string like YYYYMMDD
         let date = tsUtils.parseYYYYMMDDToDate(datestr);
         let date_weekday = date.getDay();
 
         // console.log(">>>>>>>>>>>>>> checkBusinessDay: " + datestr);
 
         // check weekeday preference
-        if(await TS_prefs.getPref("bday_weekdays_" + date_weekday) == false) {
+        if(tsStore["bday_weekdays_" + date_weekday] == false) {
             return false;
         }
 
         // check easter preference
-        if(await TS_prefs.getPref("bday_easter") == true) {
+        if(tsStore.bday_easter == true) {
             if(this.isEasterOrEasterMonday(date)) {
                 return false;
             }
@@ -415,7 +421,7 @@ export const tsCoreUtils = {
 
 
         // check custom non-business days preference
-        let custom_nbd = await TS_prefs.getPref("bday_custom_days");
+        let custom_nbd = tsStore.bday_custom_days;
 
         if(custom_nbd && custom_nbd.length > 0) {
             for (let element of custom_nbd) {

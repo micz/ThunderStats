@@ -32,7 +32,7 @@
 					  </div>
 					  <CounterInbox :is_loading="is_loading_counter_inbox" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
                       <div class="chart_inbox0">
-                        <p class="chart_info">__MSG_FolderLocation__<sup v-if="showFolderLocationNoteAnchor" @mouseover="showFolderLocationNoteTooltip" @mouseleave="hideFolderLocationNoteTooltip">(?)</sup><span class="inbox0_folder_note_tooltip_text" v-if="folderLocationNoteTooltipVisible" v-text="folderLocationNote_text"></span></p><p class="chart_info_nomail" id="today_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_today_rcvd == 0)" v-text="no_mails_received_today"></p>
+                        <p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="today_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_today_rcvd == 0)" v-text="no_mails_received_today"></p>
                         <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_graph_folders" />
                       </div>
                       <div class="chart_inbox0_datemsg">
@@ -74,6 +74,7 @@ import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
+import InfoTooltip from '../InfoTooltip.vue';
 
 const props = defineProps({
     activeAccount: {
@@ -99,7 +100,6 @@ let no_mails_sent_today = ref("");
 let no_mails_inbox = ref("");
 let is_last_business_day = ref(false);
 
-let folderLocationNoteTooltipVisible = ref(false);
 let folderLocationNote_text = ref("");
 let showFolderLocationNoteAnchor = ref(false);
 
@@ -391,14 +391,6 @@ function updateElapsed(function_name, time) {
     if (allNonZero) {
         emit('updateElapsed', Math.max(...Object.values(elapsed)));
     }
-}
-
-function showFolderLocationNoteTooltip(){
-  folderLocationNoteTooltipVisible.value = true;
-}
-
-function hideFolderLocationNoteTooltip(){
-    folderLocationNoteTooltipVisible.value = false;
 }
 
 defineExpose({ updateData });

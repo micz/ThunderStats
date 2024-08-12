@@ -147,7 +147,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   border: 1px #555 solid;
 }
 
-.inbox0_folder_note_tooltip_text {
+._note_tooltip_text {
   visibility: visible;
   width: 23em;
   background-color: #fff;
@@ -257,7 +257,7 @@ td.align_end {
       color: #aaa;
   }
 
-  .email_list_tooltip_text, .inbox0_folder_note_tooltip_text {
+  .email_list_tooltip_text, ._note_tooltip_text {
     background-color: #555;
     color: #fff;
     border-color: white;

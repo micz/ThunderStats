@@ -237,11 +237,12 @@ async function updateData() {
         })
     }
     // graph inbox zero folders
-    let folders_data = tsCoreUtils.getFoldersLabelsColors(graphdata_inboxzero_folders.value);
+    let given_folders = tsCoreUtils.filterReceivedFolders(graphdata_inboxzero_folders.value);
+    let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
     chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
     chartData_InboxZeroFolders.value.labels = folders_data.labels;
     chartData_InboxZeroFolders.value.datasets = [];
-    chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(graphdata_inboxzero_folders.value), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
+    chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(given_folders), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
     tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
     // graph inbox zero dates
     inbox0_openFolderInFirstTab.value = await TS_prefs.getPref("inbox0_openFolderInFirstTab");

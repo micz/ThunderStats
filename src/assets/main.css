@@ -198,6 +198,22 @@ td.align_end {
   height: 16px;
 }
 
+#thstats_ver_info{
+  position: absolute;
+  right: 5px;
+  bottom: 2px;
+  font-style: italic;
+  font-size: smaller;
+}
+
+#mzts-warn-msg{
+  background: #df3d3d;
+  color: white;
+  PADDING: 2px 1rem;
+  margin-left: 3rem;
+  border-radius: 8px;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {

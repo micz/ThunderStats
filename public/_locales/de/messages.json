@@ -601,7 +601,7 @@
   },
   "EasterNoBusinessDay": {
     "message": "Easter and Easter Monday are non-business days.",
-    "description": ""
+    "description": "" 
   },
   "Year": {
     "message": "Year",
@@ -625,6 +625,14 @@
   },
   "LastBusinessDay": {
     "message": "Last business day",
+    "description": ""
+  },
+  "Version": {
+    "message": "Version",
+    "description": ""
+  },
+  "AccountWithNoEmails": {
+    "message": "Das ausgewählte Konto hat keine zugeordneten E-Mails. Sie müssen eine benutzerdefinierte Identität auf der Optionsseite hinzufügen.",
     "description": ""
   }
 }

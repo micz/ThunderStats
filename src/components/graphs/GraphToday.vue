@@ -30,7 +30,7 @@
       v-if="!is_loading"
     />
 </div>
-<div id="today-time-legend-container" class="legend-time"></div>
+<div id="today-time-legend-container" class="legend-time" v-if="!is_loading"></div>
 </template>
 
 
@@ -74,7 +74,11 @@ watch(props.chartData, (newChartData) => {
                   .concat(tsUtils.safeConcat(newChartData.datasets, 1))
                   .concat(tsUtils.safeConcat(newChartData.datasets, 2))
                   .concat(tsUtils.safeConcat(newChartData.datasets, 3));
-        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(data) / 5) * 5;
+        let maxData = tsCoreUtils.getMaxFromData(data);
+        maxY.value = (Math.ceil(maxData / 5) * 5);
+        if(maxY.value == maxData) {
+          maxY.value = maxY.value + 3;
+        }
     } else {
         maxY.value = 5;
     }

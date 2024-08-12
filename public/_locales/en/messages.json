@@ -626,5 +626,13 @@
   "LastBusinessDay": {
     "message": "Last business day",
     "description": ""
+  },
+  "Version": {
+    "message": "Version",
+    "description": ""
+  },
+  "AccountWithNoEmails": {
+    "message": "The selected account has no associated emails. You need to add a custom identity in the options page.",
+    "description": ""
   }
 }

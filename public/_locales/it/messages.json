@@ -626,5 +626,13 @@
   "LastBusinessDay": {
     "message": "Ultimo giorno lavorativo",
     "description": ""
+  },
+  "Version": {
+    "message": "Versione",
+    "description": ""
+  },
+  "AccountWithNoEmails": {
+    "message": "L'account selezionato non ha email associate. Devi aggiungere un'identità personalizzata nella pagina delle opzioni.",
+    "description": ""
   }
 }

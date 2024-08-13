@@ -56,9 +56,9 @@ Contributing Author: [Christopher Leidigh](https://github.com/cleidigh)
 
 <br>
 
-## ATTRIBUTIONS
+## Attributions
 
-## Translations
+### Translations
 - English (en-US)	: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - Italian (it)		: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - French (fr)		: Goofy and Vittorio
@@ -66,12 +66,12 @@ Contributing Author: [Christopher Leidigh](https://github.com/cleidigh)
 
 <br>
 
-## Javascript Libraries
+### Javascript Libraries
 See the [package.json](/package.json) file.
 
 <br>
 
-## Graphics
+### Graphics
 Addon icon thanks to http://hopstarter.deviantart.com/
 
 Custom Query Bookmark Icon thanks to http://www.iconarchive.com/artist/graphicrating.html

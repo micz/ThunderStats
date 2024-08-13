@@ -50,9 +50,9 @@ Change the `minify` (`true`|`false`) property in the `vite.config.js` file to ch
 <br>
 
 ## Credits
-Original Author: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
+Original Author: [Mic](https://github.com/micz)
 
-Contributing Author: [Christopher Leidigh](https://addons.thunderbird.net/thunderbird/user/cleidigh/)
+Contributing Author: [Christopher Leidigh](https://github.com/cleidigh)
 
 <br>
 

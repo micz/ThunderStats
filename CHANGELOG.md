@@ -6,6 +6,7 @@
       <ul>
        <li>It's now possible to define non-business days, allowing them to be excluded from aggregated statistics [<a href="https://github.com/micz/ThunderStats/issues/206">#206</a>].</li>
        <li>Added the total number of mails in aggregate stats in Today Tab, Yesterday Tab, 7 Days Tab and Custom View Tabs. This total also considers business days only if the corresponing option is active [<a href="https://github.com/micz/ThunderStats/issues/323">#323</a>].</li>
+       <li>Added an option to display today's time graph lines only up to the current hour [<a href="https://github.com/micz/ThunderStats/issues/302">#302</a>].</li>
        <li>...</li>
       </ul>
 <h3>Version 2.0.3 - 08/08/2024</h3>

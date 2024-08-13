@@ -211,12 +211,12 @@ table.bday_table th {
 }
 
 #thstats_ver_info{
-    position: absolute;
-    right: 15px;
-    bottom: 0px;
-    font-style: italic;
-    font-size: smaller;
-  }
+  position: absolute;
+  right: 15px;
+  bottom: 0px;
+  font-style: italic;
+  font-size: smaller;
+}
 
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {

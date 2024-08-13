@@ -3,6 +3,7 @@ export const prefs_default = {
     '_many_days': 7,
     '_involved_num': 10,
     'today_time_graph_show_yesterday': true,
+    'today_time_graph_do_no_show_future': true,
     '_time_graph_progressive': false,
     'inbox0_openFolderInFirstTab': false,
     'startup_account': 0,

@@ -642,5 +642,9 @@
   "InfoTotal_BDMails_Only": {
     "message": "These values account for business days only.",
     "description": ""
+  },
+  "TimeChartNoFutureHours": {
+    "message": "Do not show future hours in the today time chart, when cumulative value is set",
+    "description": ""
   }
 }

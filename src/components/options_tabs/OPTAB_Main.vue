@@ -31,12 +31,20 @@
     </tr>
   </table>
     <table class="miczPrefs" style="margin-top: 10px;">
-    <tr>
+      <tr>
       <td>
         <label><input type="checkbox" id="_time_graph_progressive" name="_time_graph_progressive" class="option-input" /></label>
       </td>
       <td>
      <label><span class="dims_label" @click="toggle_options">__MSG_TimeChartProgressive__</span></label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        &nbsp;
+      </td>
+      <td><label><input type="checkbox" id="today_time_graph_do_no_show_future" name="today_time_graph_do_no_show_future" class="option-input" /></label> 
+     &nbsp;&nbsp;<label><span class="dims_label" @click="toggle_options">__MSG_TimeChartNoFutureHours__</span></label>
       </td>
     </tr>
     <tr>
@@ -76,10 +84,10 @@
 
 
 <script setup>
-  import { onMounted, onUnmounted, ref } from 'vue'
-  import SelectAccount from '@/components/SelectAccount.vue';
-  import { tsLogger } from '@statslib/mzts-logger';
-  import { tsStore } from '@statslib/mzts-store';
+import { onMounted, onUnmounted, ref } from 'vue'
+import SelectAccount from '@/components/SelectAccount.vue';
+import { tsLogger } from '@statslib/mzts-logger';
+import { tsStore } from '@statslib/mzts-store';
   
   const emit = defineEmits(['new_changes']);
 
@@ -105,7 +113,7 @@
     emit('new_changes', new_changes.value);
   }
 
-  function toggle_options(e) {
+    function toggle_options(e) {
     let row = e.target.closest('tr');
     let checkbox = row.querySelector('input[type="checkbox"]');
     checkbox.checked = !checkbox.checked;

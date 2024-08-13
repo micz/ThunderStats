@@ -271,8 +271,9 @@ async function updateData() {
             is_loading_counter_sent_rcvd.value = false;
             // graph today hours
             const today_hours_data = tsCoreUtils.transformCountDataToDataset(result_today.msg_hours, do_progressive);
-            graphdata_today_hours_sent.value = today_hours_data.dataset_sent;
-            graphdata_today_hours_rcvd.value = today_hours_data.dataset_rcvd;
+            let pref_today_time_graph_do_no_show_future = await TS_prefs.getPref("today_time_graph_do_no_show_future");
+            graphdata_today_hours_sent.value = pref_today_time_graph_do_no_show_future ? tsCoreUtils.filterTodayNextHours(today_hours_data.dataset_sent) : today_hours_data.dataset_sent;
+            graphdata_today_hours_rcvd.value = pref_today_time_graph_do_no_show_future ? tsCoreUtils.filterTodayNextHours(today_hours_data.dataset_rcvd) : today_hours_data.dataset_rcvd;
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_today.senders).length > 0;
             table_involved_senders.value = result_today.senders;

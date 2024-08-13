@@ -193,7 +193,7 @@ function update(){
 async function rangeChoosen(modelData){
   //console.log(">>>>>>>>>>>>>>> rangeChoosen: " + JSON.stringify(modelData));
   if(await TS_prefs.getPref("customqry_loaddata_when_selectingrange")){
-    doQry();
+    update();
   }
 }
 
@@ -291,7 +291,7 @@ async function setPeriod(period){
             break;
     }
     if(await TS_prefs.getPref("customqry_loaddata_when_selectingrange")){
-      doQry();
+      update();
     }
 }
 

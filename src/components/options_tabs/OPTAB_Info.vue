@@ -28,6 +28,7 @@
        <li>Added the total number of mails in aggregate stats in Today Tab, Yesterday Tab, 7 Days Tab and Custom View Tabs. This total also considers business days only if the corresponing option is active [<a href="https://github.com/micz/ThunderStats/issues/323">#323</a>].</li>
        <li>Added an option to display today's time graph lines only up to the current hour [<a href="https://github.com/micz/ThunderStats/issues/302">#302</a>].</li>
        <li>In today's time graph, a vertical line has been added to indicate the current hour [<a href="https://github.com/micz/ThunderStats/issues/79">#79</a>].</li>
+       <li>Some options have been moved from the options page "Advanced" tab to the "General" tab.</li>
        <li>...</li>
       </ul>
       <h3>Version 2.0.3 - 08/08/2024</h3>

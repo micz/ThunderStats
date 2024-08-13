@@ -56,7 +56,7 @@
     "description": ""
   },
   "ExecutionTime": {
-    "message": "Execution time",
+    "message": "Total time",
     "description": ""
   },
   "Setup": {
@@ -653,6 +653,10 @@
   },
   "TimeChart": {  
     "message": "Time Chart",
+    "description": ""
+  },
+  "LastExecution": {
+    "message": "Last execution",
     "description": ""
   }
 }

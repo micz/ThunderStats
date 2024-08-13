@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <HeadingNAV @chooseAccount="updateStats" :is_loading="is_loading" :elapsed_time="elapsed_time" :currentTab="currentTab" ref="HeadingNAV_ref"/>
+    <HeadingNAV @chooseAccount="updateStats" :is_loading="is_loading" :elapsed_time="elapsed_time" :last_exec_datetime="last_exec_datetime" :currentTab="currentTab" ref="HeadingNAV_ref"/>
   
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
@@ -71,6 +71,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   let _yesterday_text = ref("__MSG_Yesterday__");
   let cache_lifetime = ref(120000);
   let elapsed_time = ref(0);
+  let last_exec_datetime = ref([]);
   let is_loading = ref(false);
   let currentTab = ref("tab-today");
 
@@ -91,14 +92,14 @@ import { tsUtils } from '@statslib/mzts-utils';
     stats_done[id] = true;
   }
 
-  function resetStatsDone() {
-    stats_done = {
-      "tab-today": false,
-      "tab-yesterday": false,
-      "tab-manydays": false,
-      "tab-customqry": false,
-    }
-  }
+  // function resetStatsDone() {
+  //   stats_done = {
+  //     "tab-today": false,
+  //     "tab-yesterday": false,
+  //     "tab-manydays": false,
+  //     "tab-customqry": false,
+  //   }
+  // }
 
   onBeforeMount(async () => {
 //    console.log(">>>>>>>>>>>> ThunderStatsView onBeforeMount tsStore.do_debug: " + tsStore.do_debug);
@@ -223,6 +224,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   function updateElapsed(elapsed) {
     tsLog.log("updateElapsed: " + elapsed);
     elapsed_time.value = elapsed;
+    if(elapsed > 0) last_exec_datetime.value[currentTab.value] = (new Date()).toLocaleTimeString();
   }
 
   function updateYesterdayTabName(name) {

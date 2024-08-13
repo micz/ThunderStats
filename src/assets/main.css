@@ -70,7 +70,15 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   font-size: smaller;
   position: absolute;
   right: 46px;
-  top: 6px;
+  top: 13px;
+  min-width: 11em;
+}
+.mzts-last-exec{
+  font-style: italic;
+  font-size: smaller;
+  position: absolute;
+  right: 46px;
+  top: 0px;
   min-width: 11em;
 }
 #customqry_menu{

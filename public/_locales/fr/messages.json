@@ -56,7 +56,7 @@
     "description": ""
   },
   "ExecutionTime": {
-    "message": "Temps d'exécution",
+    "message": "Temps total",
     "description": ""
   },
   "Setup": {

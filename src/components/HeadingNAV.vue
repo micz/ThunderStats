@@ -31,6 +31,9 @@
       <div class="mzts-execution-time" v-if="is_loading && currentTab != 'tab-info'">
         <span v-text="elapsed_time_label"></span>: <span v-text="elapsed_time_string" v-if="elapsed_time != 0"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="elapsed_time == 0"/>
       </div>
+      <div class="mzts-last-exec" v-if="(is_loading && currentTab != 'tab-info') || (last_exec_datetime != '')">
+        <span v-text="last_exec_label"></span>: <span v-text="last_exec_datetime"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="last_exec_datetime == ''"/>
+      </div>
 		  </div>
 		<div id="mzts-setup_icon">
 			<img src="@/assets/images/mzts-setup.png" alt="__MSG_Setup__" title="__MSG_Setup__" class="tooltip" @click="openOptions()"/>
@@ -55,6 +58,7 @@ const emit = defineEmits(['chooseAccount']);
 
 const props = defineProps({
   elapsed_time: { type: Number, default:0 },
+  last_exec_datetime: { type: Array, default: '' },
   currentTab: { type: String, default:'' },
   is_loading: { type: Boolean, default:false },
 })
@@ -70,6 +74,14 @@ let businessdays_only = computed(() => {
   }
 })
 
+let currentTab = computed(() => {
+  return props.currentTab;
+})
+
+let last_exec_datetime = computed(() => {
+  return props.last_exec_datetime[currentTab.value];
+})
+
 let elapsed_time = computed(() => {
   return props.elapsed_time;
 })
@@ -78,15 +90,12 @@ let elapsed_time_string = computed(() => {
   return tsUtils.convertFromMilliseconds(props.elapsed_time);
 })
 
-let currentTab = computed(() => {
-  return props.currentTab;
-})
-
 let is_loading = computed(() => {
   return props.is_loading;
 })
 
 let elapsed_time_label = ref("");
+let last_exec_label = ref("");
 let warn_message = ref("");
 
 
@@ -134,6 +143,7 @@ function getCurrentIdn(){
 async function doAgain(){
   is_loading.value = true;
   elapsed_time_label.value = await browser.i18n.getMessage("ExecutionTime");
+  last_exec_label.value = await browser.i18n.getMessage("LastExecution");
   props.elapsed_time = 0;
   let account_emails = await tsCoreUtils.getAccountEmails(current_account.value);
   warn_message.value = "";

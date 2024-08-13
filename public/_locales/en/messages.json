@@ -644,7 +644,7 @@
     "description": ""
   },
   "TimeChartNoFutureHours": {
-    "message": "Do not show future hours in the today time chart, when cumulative value is set",
+    "message": "Do not show future hours in the today time chart",
     "description": ""
   }
 }

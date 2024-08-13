@@ -41,10 +41,10 @@
     </tr>
     <tr>
       <td>
-        &nbsp;
+        <label><input type="checkbox" id="today_time_graph_do_no_show_future" name="today_time_graph_do_no_show_future" class="option-input" /></label> 
       </td>
-      <td><label><input type="checkbox" id="today_time_graph_do_no_show_future" name="today_time_graph_do_no_show_future" class="option-input" /></label> 
-     &nbsp;&nbsp;<label><span class="dims_label" @click="toggle_options">__MSG_TimeChartNoFutureHours__</span></label>
+      <td>
+        <label><span class="dims_label" @click="toggle_options">__MSG_TimeChartNoFutureHours__</span></label>
       </td>
     </tr>
     <tr>

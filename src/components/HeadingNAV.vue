@@ -79,6 +79,9 @@ let currentTab = computed(() => {
 })
 
 let last_exec_datetime = computed(() => {
+  if(props.last_exec_datetime[currentTab.value] == undefined){
+    return "";
+  }
   return props.last_exec_datetime[currentTab.value];
 })
 

@@ -166,6 +166,7 @@ import { tsUtils } from '@statslib/mzts-utils';
     if(tsCore == null) {
       tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     }
+    last_exec_datetime.value[currentTab.value] = '';
     tsLog.log("updateStats", account_id);
     activeAccount.value = account_id;
     accountEmails.value = await tsCore.getAccountEmails(account_id);

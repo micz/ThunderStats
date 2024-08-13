@@ -22,54 +22,6 @@
   <div class="intro_main">
     __MSG_AdvancedSettingTabDesc__
   </div>
-  <table class="miczPrefs">
-    <tr>
-      <td colspan="2" class="grouptitle">__MSG_ManyDaysChart__</td>
-    </tr>
-    <tr>
-      <td class="td_padding_right">
-        <label><input type="number" id="_many_days" name="_many_days" class="option-input" /></label>
-      </td>
-      <td>
-        <span class="dims_label">__MSG_ManyDays__</span>
-      </td>
-    </tr>
-    </table>
-    <table class="miczPrefs">
-    <tr>
-      <td colspan="2" class="grouptitle">__MSG_CustomQryTabGroupbox__</td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="customqry_loaddata_when_selectingrange" name="customqry_loaddata_when_selectingrange" class="option-input" /></label>
-      </td>
-      <td>
-        <span class="dims_label" @click="toggle_options">__MSG_CustomQueryBookmarkImmediateUpdate__</span>
-      </td>
-    </tr>
-    <tr>
-      <td class="td_padding_right">
-        <label><input type="text" id="datepicker_locale" name="datepicker_locale" class="option-input" /></label>
-      </td>
-      <td>
-        <button type="button" @click="setDefaultDatePickerLocale" class="marginright10">__MSG_SetDefault__</button>
-        <span class="dims_label">__MSG_DatePickerLocale__</span>
-      </td>
-    </tr>
-    </table>
-    <table class="miczPrefs">
-    <tr>
-      <td colspan="2" class="grouptitle">__MSG_InboxZeroChart__</td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_folderspreadchart_openinfirsttab__</span></label>
-      </td>
-    </tr>
-    </table>
     <table class="miczPrefs">
     <tr>
       <td colspan="2" class="grouptitle">__MSG_AdvancedAccountList__
@@ -170,12 +122,6 @@
   onUnmounted(() => {
     tsLog.log("onUnmounted");
   });
-
-  function setDefaultDatePickerLocale() {
-    const datepicker = document.getElementById('datepicker_locale');
-    datepicker.value = navigator.language;
-    datepicker.dispatchEvent(new Event('change', { 'bubbles': true }));
-  }
 
   async function somethingChanged() {
     new_changes.value = true;

@@ -646,5 +646,13 @@
   "TimeChartNoFutureHours": {
     "message": "Do not show future hours in the today time chart",
     "description": ""
+  },
+  "Miscellaneous": {
+    "message": "Miscellaneous",
+    "description": ""
+  },
+  "TimeChart": {  
+    "message": "Time Chart",
+    "description": ""
   }
 }

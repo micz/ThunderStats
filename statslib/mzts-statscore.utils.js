@@ -104,6 +104,15 @@ export const tsCoreUtils = {
         return result;
     },
 
+    filterTodayNextHours(hours) {
+        // Get the current time
+        const now = new Date();
+        const currentHour = now.getHours();
+
+        // Iterate over the array and set null for hours after the current hour
+        return hours.map((value, index) => index > currentHour ? null : value);
+    },
+
     // getManyDaysLabels(labels) {
     //     const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
 

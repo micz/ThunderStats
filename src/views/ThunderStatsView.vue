@@ -80,6 +80,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   let remember_last_tab = false;
   let always_reload_tab_data = false;
   let mounted_ok = false;
+  let last_account_id = -1;
 
   let stats_done = {
     "tab-today": false,
@@ -202,6 +203,10 @@ import { tsUtils } from '@statslib/mzts-utils';
     if(!mounted_ok) { return; }
     updateElapsed(0);
     is_loading.value = false;
+    if(last_account_id != activeAccount.value) {
+      last_account_id = activeAccount.value;
+      stats_done[id.tab.computedId] = false;
+    }
     // console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
      //console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
     tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));

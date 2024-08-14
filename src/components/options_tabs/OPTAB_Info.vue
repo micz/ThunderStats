@@ -30,6 +30,7 @@
        <li>In today's time graph, a vertical line has been added to indicate the current hour [<a href="https://github.com/micz/ThunderStats/issues/79">#79</a>].</li>
        <li>Some options have been moved from the options page "Advanced" tab to the "General" tab.</li>
        <li>Displaying the last execution time for each tab [<a href="https://github.com/micz/ThunderStats/issues/314">#314</a>].</li>
+       <li>Changed the color of the 'Today' bar in the 7-Days Tab Chart [<a href="https://github.com/micz/ThunderStats/issues/326">#326</a>].</li>
        <li>...</li>
       </ul>
       <h3>Version 2.0.3 - 08/08/2024</h3>

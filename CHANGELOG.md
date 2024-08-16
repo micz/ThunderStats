@@ -5,6 +5,11 @@
 <h3>Version 2.1.0 - ??/??/2024</h3>
       <ul>
        <li>It's now possible to define non-business days, allowing them to be excluded from aggregated statistics [<a href="https://github.com/micz/ThunderStats/issues/206">#206</a>].</li>
+       <li>Implemented data export in CSV format [<a href="https://github.com/micz/ThunderStats/issues/287">#287</a>].</li>
+       <ul>
+        <li>Added data export of every correpondents table [<a href="https://github.com/micz/ThunderStats/issues/288">#288</a>].</li>
+        <li>...</li>
+       </ul>
        <li>Added the total number of mails in aggregate stats in Today Tab, Yesterday Tab, 7 Days Tab and Custom View Tabs. This total also considers business days only if the corresponing option is active [<a href="https://github.com/micz/ThunderStats/issues/323">#323</a>].</li>
        <li>Added an option to display today's time graph lines only up to the current hour [<a href="https://github.com/micz/ThunderStats/issues/302">#302</a>].</li>
        <li>In today's time graph, a vertical line has been added to indicate the current hour [<a href="https://github.com/micz/ThunderStats/issues/79">#79</a>].</li>

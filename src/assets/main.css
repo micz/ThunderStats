@@ -229,6 +229,7 @@ td.align_end {
 
 .export_data{
   cursor: pointer;
+  font-size: small;
 }
 
 .export_data:hover{

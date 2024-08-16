@@ -34,7 +34,7 @@ function exportData(data, export_name) {
 
     switch(export_type.value) {
         case "correspondents":
-            let output_data = tsExport.transformCorrespondantsJsonToArray(data);
+            let output_data = tsExport.transformCorrespondentsJsonToArray(data);
             tsExport.downloadCSV(output_data, export_name);
           break;
         default: alert("export error: " + export_type.value);

@@ -73,15 +73,15 @@ export const tsExport = {
         return `${year}${month}${day}${hours}${minutes}${seconds}`;
     },
 
-    transformCorrespondantsJsonToArray(json) {
+    transformCorrespondentsJsonToArray(json) {
         const resultArray = [];
-        // console.log(">>>>>>>>>>>>> transformCorrespondantsJsonToArray json: " + JSON.stringify(json));
+        // console.log(">>>>>>>>>>>>> transformCorrespondentsJsonToArray json: " + JSON.stringify(json));
         const nameKey = browser.i18n.getMessage('Name');
         const mailKey = browser.i18n.getMessage('Mail');
         const totalKey = browser.i18n.getMessage('Total');
 
         for (const email in json) {
-            // console.log(">>>>>>>>>>>>> transformCorrespondantsJsonToArray email: " + JSON.stringify(email));
+            // console.log(">>>>>>>>>>>>> transformCorrespondentsJsonToArray email: " + JSON.stringify(email));
             if (json.hasOwnProperty(email)) {
                 const obj = {};
                 obj[nameKey] = json[email].name;

@@ -52,7 +52,21 @@ export const tsExport = {
             .replace(/[^\w\-_.]/g, '_')     // Replace non-alphanumeric characters (except underscore, period, and hyphen)
             .replace(/_+/g, '_')            // Replace multiple consecutive underscores with a single one
             .trim();                        // Remove whitespace from the beginning and end
-    },    
+    },
+
+    getCurrentTimestamp() {
+        const now = new Date();
+    
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // getMonth() returns 0-11, so we add 1
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+        // Combine all parts into the desired format
+        return `${year}${month}${day}${hours}${minutes}${seconds}`;
+    },
 
     transformCorrespondantsJsonToArray(json) {
         const resultArray = [];

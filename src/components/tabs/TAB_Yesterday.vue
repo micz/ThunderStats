@@ -43,12 +43,14 @@
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
+                        <ExportButton :export_data="table_involved_recipients" :export_name="_involved_recipients_export_name" />
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients" v-text="no_mails_sent_yesterday"></p>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
+                        <ExportButton :export_data="table_involved_senders" :export_name="_involved_senders_export_name" />
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
                       <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders" v-text="no_mails_received_yesterday"></p>
@@ -75,6 +77,7 @@ import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import CounterManyDays_Table from '../counters/CounterManyDays_Table.vue';
 import InfoTooltip from '../InfoTooltip.vue';
+import ExportButton from '../ExportButton.vue';
 
 const props = defineProps({
     activeAccount: {
@@ -135,6 +138,8 @@ let table_involved_recipients = ref([]);
 let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
+let _involved_recipients_export_name = ref('');
+let _involved_senders_export_name = ref('');
 
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
@@ -169,6 +174,8 @@ onMounted(async () => {
     _involved_num = await TS_prefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
+    _involved_recipients_export_name.value = top_recipients_title.value;
+    _involved_senders_export_name.value = top_senders_title.value;
     no_mails_sent_yesterday.value = browser.i18n.getMessage("NoMailsSent")+" "+browser.i18n.getMessage("yesterday_small");
     no_mails_received_yesterday.value = browser.i18n.getMessage("NoMailsReceived")+" "+browser.i18n.getMessage("yesterday_small");
     no_mails_inbox.value = browser.i18n.getMessage("NoMailsInbox");

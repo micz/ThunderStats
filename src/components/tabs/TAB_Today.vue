@@ -43,14 +43,14 @@
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
-                        <div @click="exportData(table_involved_recipients, _involved_recipients_export_name)" class="export_data">Export</div>
+                        <ExportButton :export_data="table_involved_recipients" :export_name="_involved_recipients_export_name" />
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients" v-text="no_mails_sent_today"></p>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
-                        <div @click="exportData(table_involved_senders, _involved_senders_export_name)" class="export_data">Export</div>
+                        <ExportButton :export_data="table_involved_senders" :export_name="_involved_senders_export_name" />
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
                       <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders" v-text="no_mails_received_today"></p>
@@ -73,11 +73,11 @@ import GraphInboxZeroFolders from '../graphs/GraphInboxZeroFolders.vue';
 import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
 import TableInvolved from '../tables/TableInvolved.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
+import ExportButton from '../ExportButton.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
-import { tsExport } from '@statslib/mzts-export';
 import InfoTooltip from '../InfoTooltip.vue';
 
 const props = defineProps({
@@ -400,12 +400,6 @@ function updateElapsed(function_name, time) {
     if (allNonZero) {
         emit('updateElapsed', Math.max(...Object.values(elapsed)));
     }
-}
-
-function exportData(data, export_name) {
-    // console.log(">>>>>>>>>>>>> exportData data: " + JSON.stringify(data));
-    let output_data = tsExport.transformCorrespondantsJsonToArray(data);
-    tsExport.downloadCSV(output_data, export_name);
 }
 
 defineExpose({ updateData });

@@ -16,6 +16,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+
 export const tsExport = {
 
     getExportPrefix() {
@@ -90,6 +92,27 @@ export const tsExport = {
 
                 resultArray.push(obj);
             }
+        }
+    
+        return resultArray;
+    },
+
+    transformDailyMailsJsonToArray(json) {
+        let resultArray = [];
+
+        const dateKey = browser.i18n.getMessage('Date');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+    
+        for (let date in json) {
+            let mailData = json[date];
+            const obj = {};
+            let formatted_date = tsCoreUtils.getManyDaysLabel(date);
+            obj[dateKey] = formatted_date[1];
+            obj[sentKey] = mailData.sent;
+            obj[rcvdKey] = mailData.received;
+            
+            resultArray.push(obj);
         }
     
         return resultArray;

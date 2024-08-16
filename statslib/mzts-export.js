@@ -76,14 +76,19 @@ export const tsExport = {
     transformCorrespondantsJsonToArray(json) {
         const resultArray = [];
         // console.log(">>>>>>>>>>>>> transformCorrespondantsJsonToArray json: " + JSON.stringify(json));
+        const nameKey = browser.i18n.getMessage('Name');
+        const mailKey = browser.i18n.getMessage('Mail');
+        const totalKey = browser.i18n.getMessage('Total');
+
         for (const email in json) {
             // console.log(">>>>>>>>>>>>> transformCorrespondantsJsonToArray email: " + JSON.stringify(email));
             if (json.hasOwnProperty(email)) {
-                resultArray.push({
-                    name: json[email].name,
-                    email: email,
-                    number: json[email].count
-                });
+                const obj = {};
+                obj[nameKey] = json[email].name;
+                obj[mailKey] = email;
+                obj[totalKey] = json[email].count;
+
+                resultArray.push(obj);
             }
         }
     

@@ -31,6 +31,7 @@
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
+                        <ExportButton :export_data="export_data_daily_mails" :export_name="_daily_mails_export_name" export_type="daily_mails" additional_css_class="export_main_btn" :link_text="_daily_mails_link_text" v-if="!is_loading_sent_graph && !is_loading_rcvd_graph" />
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
                       <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length"/>
@@ -144,6 +145,10 @@ let graphdata_customqry_sent = ref([]);
 let graphdata_customqry_rcvd = ref([]);
 let graphdata_customqry_labels = ref([]);
 
+let export_data_daily_mails = ref([]);
+let _daily_mails_export_name = ref('');
+let _daily_mails_link_text = ref('');
+
 let _involved_num = 10;
 let first_day_week = 1;
 
@@ -188,6 +193,8 @@ onMounted(async () => {
     let export_define = browser.i18n.getMessage("CustomQry");
     _involved_recipients_export_name.value = export_define + "_" + top_recipients_title.value;
     _involved_senders_export_name.value = export_define + "_" + top_senders_title.value;
+    _daily_mails_export_name.value = export_define + "_Daily_Mails";
+    _daily_mails_link_text.value = browser.i18n.getMessage("ExportDailyMailsLinkText");
     doOnlyBD.value = prefs.bday_default_only;
     totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
     totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
@@ -374,6 +381,7 @@ async function updateData() {
             let toDate = dateQry.value[1];
             let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails, doOnlyBD.value);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
+            export_data_daily_mails.value = result_customqry.dates
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
             table_involved_senders.value = result_customqry.senders;

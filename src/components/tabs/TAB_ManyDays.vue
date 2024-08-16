@@ -36,6 +36,7 @@
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
+                        <ExportButton :export_data="table_involved_recipients" :export_name="_involved_recipients_export_name" export_type="correspondents" v-if="!is_loading_involved_table_senders && show_table_involved_senders" />
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
@@ -43,6 +44,7 @@
     
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
+                        <ExportButton :export_data="table_involved_senders" :export_name="_involved_senders_export_name" export_type="correspondents" v-if="!is_loading_involved_table_senders && show_table_involved_senders" />
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
                       <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__</p>
@@ -61,6 +63,7 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import TableInvolved from '../tables/TableInvolved.vue';
 import GraphManyDays from '../graphs/GraphManyDays.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
+import ExportButton from '../ExportButton.vue';
 import InfoTooltip from '../InfoTooltip.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
@@ -111,6 +114,8 @@ let table_involved_recipients = ref([]);
 let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
+let _involved_recipients_export_name = ref('');
+let _involved_senders_export_name = ref('');
 
 let graphdata_manydays_sent = ref([]);
 let graphdata_manydays_rcvd = ref([]);
@@ -145,6 +150,8 @@ onMounted(async () => {
     _many_days = await TS_prefs.getPref("_many_days");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
+    _involved_recipients_export_name.value = top_recipients_title.value;
+    _involved_senders_export_name.value = top_senders_title.value;
     showTotalInfoTooltip.value = tsStore.businessdays_only;
     totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
     totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");

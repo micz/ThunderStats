@@ -45,6 +45,15 @@ export const tsExport = {
         this.downloadBlob(this.arrayToCsv(data), filename, 'text/csv;charset=utf-8;');
     },
 
+    makeSafeForFilePath(input) {
+        // Replace unsafe characters with an underscore
+        return input
+            .replace(/[\/\\:*?"<>|]/g, '_') // Replace special characters
+            .replace(/[^\w\-_.]/g, '_')     // Replace non-alphanumeric characters (except underscore, period, and hyphen)
+            .replace(/_+/g, '_')            // Replace multiple consecutive underscores with a single one
+            .trim();                        // Remove whitespace from the beginning and end
+    },    
+
     transformCorrespondantsJsonToArray(json) {
         const resultArray = [];
         // console.log(">>>>>>>>>>>>> transformCorrespondantsJsonToArray json: " + JSON.stringify(json));

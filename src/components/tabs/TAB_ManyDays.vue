@@ -22,6 +22,7 @@
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ sent_total }}</span><span v-if="sent_today > 0"> (+<span>{{ sent_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/><InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalInfoTooltip_text"></InfoTooltip></h2>
+                        <ExportButton :export_data="export_data_daily_mails" :export_name="_daily_mails_export_name" export_type="daily_mails" additional_css_class="export_main_btn" :link_text="_daily_mails_link_text" v-if="!is_loading_sent_graph && !is_loading_rcvd_graph" />
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_total="counter_many_days_sent_total" :_max="counter_many_days_sent_max" :_min="counter_many_days_sent_min" :_avg="counter_many_days_sent_avg" :showTotalInfoTooltip="showTotalInfoTooltip" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
                       <GraphManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length" />
@@ -121,6 +122,10 @@ let graphdata_manydays_sent = ref([]);
 let graphdata_manydays_rcvd = ref([]);
 let graphdata_manydays_labels = ref([]);
 
+let export_data_daily_mails = ref([]);
+let _daily_mails_export_name = ref('');
+let _daily_mails_link_text = ref('');
+
 let _involved_num = 10;
 let _many_days = 7;
 
@@ -153,6 +158,8 @@ onMounted(async () => {
     let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
     _involved_recipients_export_name.value = export_define + "_" + top_recipients_title.value;
     _involved_senders_export_name.value = export_define + "_" + top_senders_title.value;
+    _daily_mails_export_name.value = export_define + "_Daily_Mails";
+    _daily_mails_link_text.value = browser.i18n.getMessage("ExportDailyMailsLinkText");
     showTotalInfoTooltip.value = tsStore.businessdays_only;
     totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
     totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
@@ -209,6 +216,7 @@ async function updateData() {
             let start_time = performance.now();
             let result_many_days = await tsCore.getManyDaysData(props.activeAccount, props.accountEmails);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_many_days, null, 2));
+            export_data_daily_mails.value = result_many_days.dates
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_many_days.senders).length > 0;
             table_involved_senders.value = result_many_days.senders;

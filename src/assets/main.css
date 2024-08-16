@@ -236,6 +236,13 @@ td.align_end {
   text-decoration: underline;
 }
 
+.export_main_btn{
+  position: absolute;
+  right: 15px;
+  top: 0rem;
+  z-index: 1000;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {

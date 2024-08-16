@@ -43,14 +43,14 @@
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
-                        <ExportButton :export_data="table_involved_recipients" :export_name="_involved_recipients_export_name" />
+                        <ExportButton :export_data="table_involved_recipients" :export_name="_involved_recipients_export_name" export_type="correspondents" />
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients" v-text="no_mails_sent_today"></p>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
-                        <ExportButton :export_data="table_involved_senders" :export_name="_involved_senders_export_name" />
+                        <ExportButton :export_data="table_involved_senders" :export_name="_involved_senders_export_name" export_type="correspondents" />
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
                       <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders" v-text="no_mails_received_today"></p>

@@ -17,17 +17,29 @@ const props = defineProps({
   export_name: {
     type: String,
     default: ""
+  },
+  export_type: {
+    type: String,
+    default: ""
   }
 });
 
 let export_data = computed(() => props.export_data)
 let export_name = computed(() => props.export_name)
+let export_type = computed(() => props.export_type)
 
 
 function exportData(data, export_name) {
     // console.log(">>>>>>>>>>>>> exportData data: " + JSON.stringify(data));
-    let output_data = tsExport.transformCorrespondantsJsonToArray(data);
-    tsExport.downloadCSV(output_data, export_name);
+
+    switch(export_type.value) {
+        case "correspondents":
+            let output_data = tsExport.transformCorrespondantsJsonToArray(data);
+            tsExport.downloadCSV(output_data, export_name);
+          break;
+        default: alert("export error: " + export_type.value);
+          break;
+    }
 }
 
 </script>

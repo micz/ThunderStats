@@ -227,6 +227,14 @@ td.align_end {
   border-radius: 8px;
 }
 
+.export_data{
+  cursor: pointer;
+}
+
+.export_data:hover{
+  text-decoration: underline;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {

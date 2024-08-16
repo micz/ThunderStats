@@ -18,6 +18,10 @@
 
 export const tsExport = {
 
+    getExportPrefix() {
+        return 'ThunderStats_Export_';
+    },
+
     /* https://stackoverflow.com/a/58769574 */
     arrayToCsv(data) {
         const array = [Object.keys(data[0])].concat(data)

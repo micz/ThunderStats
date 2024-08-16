@@ -45,8 +45,9 @@ export const tsExport = {
         pom.click();
     },
 
-    downloadCSV(data, filename) {
-        this.downloadBlob(this.arrayToCsv(data), filename, 'text/csv;charset=utf-8;');
+    downloadCSV(data, export_name) {
+        let output_filename = tsExport.getExportPrefix() + tsExport.makeSafeForFilePath(export_name) + '_' + tsExport.getCurrentTimestamp() + '.csv';
+        this.downloadBlob(this.arrayToCsv(data), output_filename, 'text/csv;charset=utf-8;');
     },
 
     makeSafeForFilePath(input) {

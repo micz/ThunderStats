@@ -27,6 +27,7 @@
         <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" :is_last_business_day="is_last_business_day" />
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <GraphToday :chartData="chartData_Today" :is_loading="is_loading_today_graph" />
+        <ExportButton :export_data="_time_emails_export_data" :export_name="_time_emails_export_name" export_type="time_emails" v-if="!is_loading_today_graph" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
@@ -148,6 +149,9 @@ let show_table_involved_senders = ref(false);
 let _involved_recipients_export_name = ref('');
 let _involved_senders_export_name = ref('');
 
+let _time_emails_export_name = ref('');
+let _time_emails_export_data = ref({});
+
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
 
@@ -186,6 +190,7 @@ onMounted(async () => {
     let export_define = browser.i18n.getMessage("Today");
     _involved_recipients_export_name.value = export_define + "_" + top_recipients_title.value;
     _involved_senders_export_name.value = export_define + "_" + top_senders_title.value;
+    _time_emails_export_name.value = export_define + "_Time_Emails";
     no_mails_received_today.value = browser.i18n.getMessage("NoMailsReceived")+" "+browser.i18n.getMessage("today_small");
     no_mails_sent_today.value = browser.i18n.getMessage("NoMailsSent")+" "+browser.i18n.getMessage("today_small");
     no_mails_inbox.value = browser.i18n.getMessage("NoMailsInbox");
@@ -278,6 +283,7 @@ async function updateData() {
             counter_today_rcvd.value = result_today.received;
             counter_today_sent.value = result_today.sent;
             is_loading_counter_sent_rcvd.value = false;
+            _time_emails_export_data.value = result_today.msg_hours;
             // graph today hours
             const today_hours_data = tsCoreUtils.transformCountDataToDataset(result_today.msg_hours, do_progressive);
             let pref_today_time_graph_do_no_show_future = await TS_prefs.getPref("today_time_graph_do_no_show_future");

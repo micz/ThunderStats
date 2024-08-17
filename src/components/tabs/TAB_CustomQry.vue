@@ -19,15 +19,7 @@
 -->
 
 <template>
-        <div id="customqry_dashboard">
-            <div id="customqry_menu">
-                <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
-            </div>
-                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
-                <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
-                <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" /> __MSG_OnlyBDCustomQry__
-                <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
-            </div>
+    <SearchFilters @update="update" @rangeChoosen="rangeChoosen" :do_run="do_run" :customqry_current_account="customqry_current_account" :customqry_current_account_tooltip="customqry_current_account_tooltip" :customqry_totaldays_num="customqry_totaldays_num" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
@@ -78,10 +70,7 @@ import InfoTooltip from '../InfoTooltip.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-import ContextMenu from '@imengyu/vue3-context-menu'
-import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
+import SearchFilters from '../SearchFilters.vue';
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']);
 
@@ -105,12 +94,7 @@ let do_run = ref(false);
 let customqry_current_account = ref("");
 let customqry_current_account_tooltip = ref("");
 let customqry_totaldays_num = ref(0);
-let isDark = ref(false);
 let chart_width = ref("1500px");
-let emailListTooltipVisible = ref(false);
-
-let datepickerFormat = ref("dd-MM-yyyy");
-let prefLocale = ref("en-GB");
 
 let top_recipients_title = ref("");
 let top_senders_title = ref("");
@@ -150,7 +134,6 @@ let _daily_mails_export_name = ref('');
 let _daily_mails_link_text = ref('');
 
 let _involved_num = 10;
-let first_day_week = 1;
 
 let totalInfoTooltip_text = ref("");
 let totalBDInfoTooltip_text = ref("");
@@ -172,21 +155,11 @@ let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length
 onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
   TS_prefs.logger = tsLog;
-  prefLocale.value = await TS_prefs.getPref("datepicker_locale");
-  datepickerFormat.value = tsUtils.formatDateStringLocale(prefLocale.value);
-  if(tsStore.darkmode === undefined) {
-    tsStore.darkmode = tsUtils.isDarkMode();
-  }
-  isDark.value = tsStore.darkmode;
 })
 
 onMounted(async () => {
-    const endDate = new Date();
-    const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
-    dateQry.value = [startDate, endDate];
-    let prefs = await TS_prefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only"]);
+    let prefs = await TS_prefs.getPrefs(["_involved_num"]);
     //console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
-    first_day_week = prefs.first_day_week;
     _involved_num = prefs._involved_num;
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
@@ -195,7 +168,6 @@ onMounted(async () => {
     _involved_senders_export_name.value = export_define + "_" + top_senders_title.value;
     _daily_mails_export_name.value = export_define + "_Daily_Mails";
     _daily_mails_link_text.value = browser.i18n.getMessage("ExportDailyMailsLinkText");
-    doOnlyBD.value = prefs.bday_default_only;
     totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
     totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
 });
@@ -212,105 +184,9 @@ async function rangeChoosen(modelData){
   }
 }
 
-function openBookmarkMenu(e){
-    e.preventDefault();
-    let menu_icon = document.getElementById("customqry_menu").getBoundingClientRect();
-    let x = menu_icon.x + menu_icon.width/2;
-    let y = menu_icon.y + menu_icon.height/2;
-    ContextMenu.showContextMenu({
-      theme: tsStore.darkmode ? "mac dark" : "mac",
-      x: x,
-      y: y,
-      items: [
-        { 
-          label: browser.i18n.getMessage("CurrentWeek"), 
-          onClick: () => {
-            setPeriod("currentweek");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("LastWeek"), 
-          onClick: () => {
-            setPeriod("lastweek");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("Last2Week"), 
-          onClick: () => {
-            setPeriod("last2week");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("CurrentMonth"), 
-          onClick: () => {
-            setPeriod("currentmonth");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("LastMonth"),
-          onClick: () => {
-            setPeriod("lastmonth");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("CurrentYear"),
-          onClick: () => {
-            setPeriod("currentyear");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("LastYear"),
-          onClick: () => {
-            setPeriod("lastyear");
-          }
-        },
-        /*{
-          label: "A submenu", 
-          children: [
-            { label: "Item1" },
-            { label: "Item2" },
-            { label: "Item3" },
-          ]
-        },*/
-      ]
-  });
-}
-
-async function setPeriod(period){
-    switch(period){
-        case "currentweek":
-        //console.log(">>>>>>>>>>> getLastMonday: "+JSON.stringify(tsUtils.getLastMonday()));
-            dateQry.value = [tsUtils.getLastWeekday(first_day_week), new Date()];
-            break;
-        case "lastweek":
-            let last_weekday = tsUtils.getLastWeekday(first_day_week);
-            last_weekday = new Date(last_weekday.setDate(last_weekday.getDate() - 1));
-            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday, 1), last_weekday];
-            break;
-        case "last2week":
-            let last_weekday2 = tsUtils.getLastWeekday(first_day_week);
-            last_weekday2 = new Date(last_weekday2.setDate(last_weekday2.getDate() - 1));
-            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday2, 1), new Date()];
-            break;
-        case "currentmonth":
-            dateQry.value = [tsUtils.getFirstDayOfCurrentMonth(), new Date()];
-            break;
-        case "lastmonth":
-            dateQry.value = [tsUtils.getFirstDayOfLastMonth(), tsUtils.getLastDayOfLastMonth()];
-            break;
-        case "currentyear":
-            dateQry.value = [tsUtils.getFirstDayOfCurrentYear(), new Date()];
-            break;
-        case "lastyear":
-            dateQry.value = [tsUtils.getFirstDayOfLastYear(), tsUtils.getLastDayOfLastYear()];
-            break;
-    }
-    if(await TS_prefs.getPref("customqry_loaddata_when_selectingrange")){
-      update();
-    }
-}
-
 async function doQry(){
+  dateQry.value = tsStore.current_search_filters.dateQry;
+  doOnlyBD.value = tsStore.current_search_filters.doOnlyBD;
   loadingDo();
   customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
   if(props.accountEmails.length > 3){
@@ -436,14 +312,6 @@ function loadingDo(){
 function updateElapsed(elapsed) {
     tsLog.log("updateElapsed: " + elapsed);
     emit('updateElapsed', elapsed);
-}
-
-function showEmailListTooltip(){
-  emailListTooltipVisible.value = (customqry_current_account_tooltip.value != "");
-}
-
-function hideEmailListTooltip(){
-  emailListTooltipVisible.value = false;
 }
 
 defineExpose({ doQry });

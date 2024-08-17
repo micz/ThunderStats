@@ -81,7 +81,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   top: 0px;
   min-width: 11em;
 }
-#customqry_menu{
+.customqry_menu{
   display: inline-block;
   position: relative;
   top: 11px;
@@ -109,7 +109,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   white-space: nowrap;
 }
 
-#customqry_dashboard{
+.customqry_dashboard{
   position: fixed;
   top:4em;
   background-color: #f1f9fd;
@@ -193,7 +193,7 @@ td.align_end {
   font-size: 1.1em;
 }
 
-#customqry_datamsg{
+.customqry_datamsg{
   display: inline-block;
   position: absolute;
   right: 5px;
@@ -278,7 +278,7 @@ td.align_end {
       color: #ddd;
   }
 
-  #customqry_dashboard {
+  .customqry_dashboard {
       background-color: #222;
   }
 

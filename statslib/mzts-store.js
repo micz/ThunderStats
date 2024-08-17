@@ -13,4 +13,5 @@ export const tsStore = reactive({
     'bday_weekdays_4': true,   //Thursday
     'bday_weekdays_5': true,   //Friday
     'bday_weekdays_6': false,   //Saturday
+    'current_search_filters': {},
 });

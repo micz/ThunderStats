@@ -27,6 +27,7 @@
         <div id="yesterday_spacing"></div>
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <GraphYesterday :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_graph" />
+        <ExportButton :export_data="_time_emails_export_data" :export_name="_time_emails_export_name" export_type="time_emails" v-if="!is_loading_yesterday_graph" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
@@ -141,6 +142,9 @@ let show_table_involved_senders = ref(false);
 let _involved_recipients_export_name = ref('');
 let _involved_senders_export_name = ref('');
 
+let _time_emails_export_name = ref('');
+let _time_emails_export_data = ref({});
+
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
 
@@ -174,9 +178,10 @@ onMounted(async () => {
     _involved_num = await TS_prefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
-    let export_define = browser.i18n.getMessage("Yesterday");
+    let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(yesterday_date.value);
     _involved_recipients_export_name.value = export_define + "_" + top_recipients_title.value;
     _involved_senders_export_name.value = export_define + "_" + top_senders_title.value;
+    _time_emails_export_name.value = export_define + "_Time_Emails";
     no_mails_sent_yesterday.value = browser.i18n.getMessage("NoMailsSent")+" "+browser.i18n.getMessage("yesterday_small");
     no_mails_received_yesterday.value = browser.i18n.getMessage("NoMailsReceived")+" "+browser.i18n.getMessage("yesterday_small");
     no_mails_inbox.value = browser.i18n.getMessage("NoMailsInbox");
@@ -262,6 +267,7 @@ async function updateData() {
             counter_yesterday_rcvd.value = result_yesterday.received;
             counter_yesterday_sent.value = result_yesterday.sent;
             is_loading_counter_sent_rcvd.value = false;
+            _time_emails_export_data.value = result_yesterday.msg_hours;
             // graph yesterday hours
             const yesterday_hours_data = tsCoreUtils.transformCountDataToDataset(result_yesterday.msg_hours, do_progressive);
             graphdata_yesterday_hours_sent.value = yesterday_hours_data.dataset_sent;

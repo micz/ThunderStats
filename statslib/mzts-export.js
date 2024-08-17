@@ -116,5 +116,26 @@ export const tsExport = {
         }
     
         return resultArray;
-    }
+    },
+
+    transformTimeMailsJsonToArray(json) {
+        let resultArray = [];
+
+        const timeKey = browser.i18n.getMessage('TimeChart.Time');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+    
+        const transformedArray = [];
+
+            for (let hour in json) {
+                const obj = {};
+                obj[timeKey] = parseInt(hour);
+                obj[sentKey] = json[hour].sent;
+                obj[rcvdKey] = json[hour].received;
+    
+            resultArray.push(obj);
+        }
+    
+        return resultArray;
+    },
 }

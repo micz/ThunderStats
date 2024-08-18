@@ -147,6 +147,35 @@ let export_menu = {
         // },
       ],
       //========================================== ManyDays Tab - END
+      //========================================== CustomQry Tab - END
+      "tab-customqry": [
+        { 
+          label: browser.i18n.getMessage("Correspondents"), 
+          onClick: () => {
+            let export_define = browser.i18n.getMessage("CustomQry");
+            let export_type = tsExport.export["correspondents"].type;
+            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+          }
+        },
+        { 
+          label: browser.i18n.getMessage("DailyMails"), 
+          onClick: () => {
+            let export_define = browser.i18n.getMessage("CustomQry");
+            let export_type = tsExport.export["daily_mails"].type;
+            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+          }
+        },
+        // { 
+        //   label: browser.i18n.getMessage("MailsInADay"), 
+        //   onClick: async () => {
+        //     let _many_days = await TS_prefs.getPref("_many_days");
+        //     let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
+        //     let export_type = tsExport.export["time_emails"].type;
+        //     exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        //   }
+        // },
+      ],
+      //========================================== CustomQry Tab - END
 };
 
 

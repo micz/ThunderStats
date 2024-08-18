@@ -19,10 +19,10 @@
 -->
 
 <template>
+    <ExportMenu :export_data="_export_data" currentTab="tab-manydays" v-if="job_done" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ sent_total }}</span><span v-if="sent_today > 0"> (+<span>{{ sent_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/><InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalInfoTooltip_text"></InfoTooltip></h2>
-                        <ExportButton :export_data="export_data_daily_mails" :export_name="_daily_mails_export_name" export_type="daily_mails" additional_css_class="export_main_btn" :link_text="_daily_mails_link_text" v-if="!is_loading_sent_graph && !is_loading_rcvd_graph" />
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_total="counter_many_days_sent_total" :_max="counter_many_days_sent_max" :_min="counter_many_days_sent_min" :_avg="counter_many_days_sent_avg" :showTotalInfoTooltip="showTotalInfoTooltip" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
                       <GraphManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length" />
@@ -37,7 +37,6 @@
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
-                        <ExportButton :export_data="table_involved_recipients" :export_name="_involved_recipients_export_name" export_type="correspondents" v-if="!is_loading_involved_table_recipients && show_table_involved_recipients" />
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
@@ -45,7 +44,6 @@
     
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
-                        <ExportButton :export_data="table_involved_senders" :export_name="_involved_senders_export_name" export_type="correspondents" v-if="!is_loading_involved_table_senders && show_table_involved_senders" />
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
                       <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__</p>
@@ -64,11 +62,12 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import TableInvolved from '../tables/TableInvolved.vue';
 import GraphManyDays from '../graphs/GraphManyDays.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
-import ExportButton from '../ExportButton.vue';
+import ExportMenu from '../ExportMenu.vue';
 import InfoTooltip from '../InfoTooltip.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
+import { tsExport } from '@statslib/mzts-export';
 
 const props = defineProps({
     activeAccount: {
@@ -115,16 +114,12 @@ let table_involved_recipients = ref([]);
 let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
-let _involved_recipients_export_name = ref('');
-let _involved_senders_export_name = ref('');
 
 let graphdata_manydays_sent = ref([]);
 let graphdata_manydays_rcvd = ref([]);
 let graphdata_manydays_labels = ref([]);
 
-let export_data_daily_mails = ref([]);
-let _daily_mails_export_name = ref('');
-let _daily_mails_link_text = ref('');
+let _export_data = ref({});
 
 let _involved_num = 10;
 let _many_days = 7;
@@ -145,7 +140,14 @@ let chartData_Rcvd = ref({
 });
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
-
+let job_done = computed(() => {
+    return !(is_loading_counter_sent_rcvd.value &&
+    is_loading_counter_many_days.value &&
+    is_loading_involved_table_recipients.value &&
+    is_loading_involved_table_senders.value &&
+    is_loading_sent_graph.value &&
+    is_loading_rcvd_graph.value);
+});
 
 onMounted(async () => {
     tsLog = new tsLogger("TAB_ManyDays", tsStore.do_debug);
@@ -155,11 +157,6 @@ onMounted(async () => {
     _many_days = await TS_prefs.getPref("_many_days");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
-    let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
-    _involved_recipients_export_name.value = export_define + "_" + top_recipients_title.value;
-    _involved_senders_export_name.value = export_define + "_" + top_senders_title.value;
-    _daily_mails_export_name.value = export_define + "_Daily_Mails";
-    _daily_mails_link_text.value = browser.i18n.getMessage("ExportDailyMailsLinkText");
     showTotalInfoTooltip.value = tsStore.businessdays_only;
     totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
     totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
@@ -216,7 +213,9 @@ async function updateData() {
             let start_time = performance.now();
             let result_many_days = await tsCore.getManyDaysData(props.activeAccount, props.accountEmails);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_many_days, null, 2));
-            export_data_daily_mails.value = result_many_days.dates
+            // export data
+            _export_data.value[tsExport.export.daily_mails.type] = result_many_days.dates;
+            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_many_days.senders, result_many_days.recipients);
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_many_days.senders).length > 0;
             table_involved_senders.value = result_many_days.senders;

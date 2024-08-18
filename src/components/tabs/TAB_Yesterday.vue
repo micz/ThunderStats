@@ -19,6 +19,7 @@
 -->
 
 <template>
+    <ExportMenu :export_data="_export_data" currentTab="tab-today" v-if="job_done" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
@@ -27,7 +28,6 @@
         <div id="yesterday_spacing"></div>
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <GraphYesterday :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_graph" />
-        <ExportButton :export_data="_time_emails_export_data" :export_name="_time_emails_export_name" export_type="time_emails" v-if="!is_loading_yesterday_graph" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
@@ -44,14 +44,12 @@
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
-                        <ExportButton :export_data="table_involved_recipients" :export_name="_involved_recipients_export_name" export_type="correspondents" v-if="!is_loading_involved_table_recipients && show_table_involved_recipients" />
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients" v-text="no_mails_sent_yesterday"></p>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
-                        <ExportButton :export_data="table_involved_senders" :export_name="_involved_senders_export_name" export_type="correspondents" v-if="!is_loading_involved_table_senders && show_table_involved_senders" />
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
                       <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders" v-text="no_mails_received_yesterday"></p>
@@ -62,7 +60,7 @@
 
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, nextTick, computed} from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
@@ -76,9 +74,10 @@ import CounterInbox from '../counters/CounterInbox.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
+import { tsExport } from '@statslib/mzts-export';
 import CounterManyDays_Table from '../counters/CounterManyDays_Table.vue';
 import InfoTooltip from '../InfoTooltip.vue';
-import ExportButton from '../ExportButton.vue';
+import ExportMenu from '../ExportMenu.vue';
 
 const props = defineProps({
     activeAccount: {
@@ -139,11 +138,8 @@ let table_involved_recipients = ref([]);
 let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
-let _involved_recipients_export_name = ref('');
-let _involved_senders_export_name = ref('');
 
-let _time_emails_export_name = ref('');
-let _time_emails_export_data = ref({});
+let _export_data = ref({});
 
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
@@ -171,6 +167,18 @@ let graphdata_yesterday_hours_rcvd = ref([]);
 let graphdata_inboxzero_folders = ref([]);
 let graphdata_inboxzero_dates = ref([]);
 
+let job_done = computed(() => {
+    return !(is_loading_counter_sent_rcvd.value &&
+    is_loading_counter_yesterday_thistime.value &&
+    is_loading_counter_many_days.value &&
+    is_loading_yesterday_graph.value &&
+    is_loading_involved_table_recipients.value &&
+    is_loading_involved_table_senders.value &&
+    is_loading_counter_inbox.value &&
+    is_loading_inbox_graph_folders.value &&
+    is_loading_inbox_graph_dates.value);
+})
+
 onMounted(async () => {
     tsLog = new tsLogger("TAB_Yesterday", tsStore.do_debug);
     TS_prefs.logger = tsLog;
@@ -178,10 +186,6 @@ onMounted(async () => {
     _involved_num = await TS_prefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
-    let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(yesterday_date.value);
-    _involved_recipients_export_name.value = export_define + "_" + top_recipients_title.value;
-    _involved_senders_export_name.value = export_define + "_" + top_senders_title.value;
-    _time_emails_export_name.value = export_define + "_Time_Emails";
     no_mails_sent_yesterday.value = browser.i18n.getMessage("NoMailsSent")+" "+browser.i18n.getMessage("yesterday_small");
     no_mails_received_yesterday.value = browser.i18n.getMessage("NoMailsReceived")+" "+browser.i18n.getMessage("yesterday_small");
     no_mails_inbox.value = browser.i18n.getMessage("NoMailsInbox");
@@ -267,7 +271,9 @@ async function updateData() {
             counter_yesterday_rcvd.value = result_yesterday.received;
             counter_yesterday_sent.value = result_yesterday.sent;
             is_loading_counter_sent_rcvd.value = false;
-            _time_emails_export_data.value = result_yesterday.msg_hours;
+            // export data
+            _export_data.value[tsExport.export.time_emails.type] = result_yesterday.msg_hours;
+            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_yesterday.senders, result_yesterday.recipients);
             // graph yesterday hours
             const yesterday_hours_data = tsCoreUtils.transformCountDataToDataset(result_yesterday.msg_hours, do_progressive);
             graphdata_yesterday_hours_sent.value = yesterday_hours_data.dataset_sent;

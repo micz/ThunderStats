@@ -38,7 +38,8 @@ let exportdata_menu_dom_id = ref("exportdata_menu_" + currentTab.value);
 
 
 let export_menu = {
-    "tab-today": [     //========================================== Today Tab
+    //========================================== Today Tab
+    "tab-today": [
         { 
           label: browser.i18n.getMessage("Correspondents"), 
           onClick: () => {
@@ -93,7 +94,27 @@ let export_menu = {
             { label: "Item3" },
           ]
         },*/
-      ], //========================================== Today Tab - END
+      ],
+      //========================================== Today Tab - END
+      //========================================== Yesterday Tab
+      "tab-yesterday": [
+        { 
+          label: browser.i18n.getMessage("Correspondents"), 
+          onClick: () => {
+            let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date(Date.now() - (1000 * 60 * 60 * 24)));
+            let export_type = tsExport.export["correspondents"].type;
+            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+          }
+        },
+        { 
+          label: browser.i18n.getMessage("MailsInADay"), 
+          onClick: () => {
+            let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date(Date.now() - (1000 * 60 * 60 * 24)));
+            let export_type = tsExport.export["time_emails"].type;
+            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+          }
+        },
+      ], //========================================== Yesterday Tab - END
 };
 
 

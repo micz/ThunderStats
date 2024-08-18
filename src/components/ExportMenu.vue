@@ -160,14 +160,14 @@ function exportData(data, export_type, export_name) {
 
 <style scoped>
 .exportdata_menu{
-  position: absolute;
+  position: fixed;
   right: 5px;
-  top: -0.5rem;
-  z-index: 1500;
+  top: 1.8rem;
 }
 .exportmenu{
   height: 24px;
   width: 24px;
   cursor: pointer;
+  z-index:99;
 }
 </style>

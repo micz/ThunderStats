@@ -20,12 +20,27 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 
 export const tsExport = {
 
+    export: {
+        correspondents: {
+            type: 'correspondents',
+            name: 'Correspondents',
+        },
+        time_emails: {
+            type: 'time_emails',
+            name: 'Time Emails',
+        },
+    },
+
     getExportPrefix() {
         return 'ThunderStats_Export_';
     },
 
     /* https://stackoverflow.com/a/58769574 */
     arrayToCsv(data) {
+        if (!data || data.length === 0) {
+            return '';
+        }
+        
         const array = [Object.keys(data[0])].concat(data)
 
         return array.map(it => {
@@ -73,6 +88,38 @@ export const tsExport = {
     
         // Combine all parts into the desired format
         return `${year}${month}${day}${hours}${minutes}${seconds}`;
+    },
+
+    mergeRecipientsAndSenders(recipients, senders) {
+        const correspondents = {};
+    
+        // Process recipients
+        for (const [email, details] of Object.entries(recipients)) {
+            if (!correspondents[email]) {
+                correspondents[email] = {
+                    sent: 0,
+                    received: details.count,
+                    name: details.name
+                };
+            } else {
+                correspondents[email].received = details.count;
+            }
+        }
+    
+        // Process senders
+        for (const [email, details] of Object.entries(senders)) {
+            if (!correspondents[email]) {
+                correspondents[email] = {
+                    sent: details.count,
+                    received: 0,
+                    name: details.name
+                };
+            } else {
+                correspondents[email].sent = details.count;
+            }
+        }
+    
+        return correspondents;
     },
 
     transformCorrespondentsJsonToArray(json) {

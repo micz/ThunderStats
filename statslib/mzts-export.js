@@ -29,6 +29,10 @@ export const tsExport = {
             type: 'time_emails',
             name: 'Time Emails',
         },
+        daily_mails: {
+            type: 'daily_mails',
+            name: 'Daily Emails',
+        },
     },
 
     getExportPrefix() {

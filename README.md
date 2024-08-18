@@ -74,9 +74,9 @@ See the [package.json](/package.json) file.
 ### Graphics
 Addon icon thanks to http://hopstarter.deviantart.com/
 
-Custom Query Bookmark Icon thanks to http://www.iconarchive.com/artist/graphicrating.html
+Custom Query Bookmark icon thanks to http://www.iconarchive.com/artist/graphicrating.html
 
 Loading SVGs thanks to https://loading.io
 
-Business Days Icon thanks to https://www.iconarchive.com/artist/custom-icon-design.html
+Business Days and Export Data icons thanks to https://www.iconarchive.com/artist/custom-icon-design.html
 

@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <ExportMenu :export_data="_export_data" currentTab="tab-today" v-if="job_done" />
+    <ExportMenu :export_data="_export_data" currentTab="tab-yesterday" v-if="job_done" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>

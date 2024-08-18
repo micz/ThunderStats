@@ -659,12 +659,20 @@
     "message": "Last execution",
     "description": ""
   },
-  "Export": {
-    "message": "Export",
+  "ExportData": {
+    "message": "ExportData",
     "description": ""
   },
-  "ExportDailyMailsLinkText": {
-    "message": "Daily Mails Export",
+  "DailyMails": {
+    "message": "Daily Mails",
+    "description": ""
+  },
+  "Correspondents": {
+    "message": "Correspondents",
+    "description": ""
+  },
+  "MailsInADay": {
+    "message": "Mails in a day",
     "description": ""
   }
 }

@@ -19,15 +19,15 @@
 -->
 
 <template>
+    <ExportMenu :export_data="_export_data" currentTab="tab-today" v-if="job_done" />
     <div class="square_container">
-    <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
+        <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
         <span id="today_date" class="list_heading_date" v-html="today_date"></span>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_today_sent" :_rcvd="counter_today_rcvd" />
         <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" :is_last_business_day="is_last_business_day" />
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <GraphToday :chartData="chartData_Today" :is_loading="is_loading_today_graph" />
-        <ExportButton :export_data="_time_emails_export_data" :export_name="_time_emails_export_name" export_type="time_emails" v-if="!is_loading_today_graph" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
@@ -62,7 +62,7 @@
 
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, nextTick, computed } from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
@@ -74,12 +74,13 @@ import GraphInboxZeroFolders from '../graphs/GraphInboxZeroFolders.vue';
 import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
 import TableInvolved from '../tables/TableInvolved.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
-import ExportButton from '../ExportButton.vue';
+import ExportMenu from '../ExportMenu.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
 import InfoTooltip from '../InfoTooltip.vue';
+import { tsExport } from '@statslib/mzts-export';
 
 const props = defineProps({
     activeAccount: {
@@ -146,11 +147,8 @@ let table_involved_recipients = ref([]);
 let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
-let _involved_recipients_export_name = ref('');
-let _involved_senders_export_name = ref('');
 
-let _time_emails_export_name = ref('');
-let _time_emails_export_data = ref({});
+let _export_data = ref({});
 
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
@@ -180,6 +178,18 @@ let graphdata_yesterday_hours_rcvd = ref([]);
 let graphdata_inboxzero_folders = ref([]);
 let graphdata_inboxzero_dates = ref([]);
 
+let job_done = computed(() => {
+    return !(is_loading_counter_sent_rcvd.value &&
+    is_loading_counter_yesterday_thistime.value &&
+    is_loading_counter_many_days.value &&
+    is_loading_today_graph.value &&
+    is_loading_involved_table_recipients.value &&
+    is_loading_involved_table_senders.value &&
+    is_loading_counter_inbox.value &&
+    is_loading_inbox_graph_folders.value &&
+    is_loading_inbox_graph_dates.value);
+})
+
 onMounted(async () => {
     tsLog = new tsLogger("TAB_Today", tsStore.do_debug);
     TS_prefs.logger = tsLog;
@@ -188,10 +198,6 @@ onMounted(async () => {
     _involved_num = await TS_prefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
-    let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(_now);
-    _involved_recipients_export_name.value = export_define + "_" + top_recipients_title.value;
-    _involved_senders_export_name.value = export_define + "_" + top_senders_title.value;
-    _time_emails_export_name.value = export_define + "_Time_Emails";
     no_mails_received_today.value = browser.i18n.getMessage("NoMailsReceived")+" "+browser.i18n.getMessage("today_small");
     no_mails_sent_today.value = browser.i18n.getMessage("NoMailsSent")+" "+browser.i18n.getMessage("today_small");
     no_mails_inbox.value = browser.i18n.getMessage("NoMailsInbox");
@@ -284,7 +290,9 @@ async function updateData() {
             counter_today_rcvd.value = result_today.received;
             counter_today_sent.value = result_today.sent;
             is_loading_counter_sent_rcvd.value = false;
-            _time_emails_export_data.value = result_today.msg_hours;
+            // export data
+            _export_data.value[tsExport.export.time_emails.type] = result_today.msg_hours;
+            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_today.senders, result_today.recipients);
             // graph today hours
             const today_hours_data = tsCoreUtils.transformCountDataToDataset(result_today.msg_hours, do_progressive);
             let pref_today_time_graph_do_no_show_future = await TS_prefs.getPref("today_time_graph_do_no_show_future");

@@ -40,7 +40,7 @@ export const tsExport = {
         if (!data || data.length === 0) {
             return '';
         }
-        
+
         const array = [Object.keys(data[0])].concat(data)
 
         return array.map(it => {
@@ -127,7 +127,8 @@ export const tsExport = {
         // console.log(">>>>>>>>>>>>> transformCorrespondentsJsonToArray json: " + JSON.stringify(json));
         const nameKey = browser.i18n.getMessage('Name');
         const mailKey = browser.i18n.getMessage('Mail');
-        const totalKey = browser.i18n.getMessage('Total');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
 
         for (const email in json) {
             // console.log(">>>>>>>>>>>>> transformCorrespondentsJsonToArray email: " + JSON.stringify(email));
@@ -135,7 +136,8 @@ export const tsExport = {
                 const obj = {};
                 obj[nameKey] = json[email].name;
                 obj[mailKey] = email;
-                obj[totalKey] = json[email].count;
+                obj[sentKey] = json[email].sent;
+                obj[rcvdKey] = json[email].received;
 
                 resultArray.push(obj);
             }

@@ -169,14 +169,13 @@ let graphdata_inboxzero_dates = ref([]);
 
 let job_done = computed(() => {
     return !(is_loading_counter_sent_rcvd.value &&
-    is_loading_counter_yesterday_thistime.value &&
-    is_loading_counter_many_days.value &&
     is_loading_yesterday_graph.value &&
     is_loading_involved_table_recipients.value &&
     is_loading_involved_table_senders.value &&
     is_loading_counter_inbox.value &&
     is_loading_inbox_graph_folders.value &&
-    is_loading_inbox_graph_dates.value);
+    is_loading_inbox_graph_dates.value &&
+    is_loading_counter_many_days.value);
 })
 
 onMounted(async () => {

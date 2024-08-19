@@ -9,7 +9,7 @@
                                            rgba(242,242,240,.25)); /*#78a3d1*/
     background-color: Highlight;
     color: HighlightText;
-    z-index: 101;
+    z-index: 1000;
     top:0px;
     height:24px;
   }

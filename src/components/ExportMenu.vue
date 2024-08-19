@@ -188,6 +188,7 @@ function openExportMenu(e){
       theme: tsStore.darkmode ? "mac dark" : "mac",
       x: x,
       y: y,
+      zIndex: 1100,
       items: export_menu[currentTab.value],
   });
 }

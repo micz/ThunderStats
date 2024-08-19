@@ -25,13 +25,12 @@
       <h3>Version 2.1.0 - ??/??/2024</h3>
       <ul>
        <li>It's now possible to define non-business days, allowing them to be excluded from aggregated statistics [<a href="https://github.com/micz/ThunderStats/issues/206">#206</a>].</li>
-       <li>Implemented data export in CSV format [<a href="https://github.com/micz/ThunderStats/issues/287">#287</a>].</li>
+       <li>Implemented the data export in CSV format [<a href="https://github.com/micz/ThunderStats/issues/287">#287</a>].</li>
        <ul>
         <li>Added a menu in every data tab to export data [<a href="https://github.com/micz/ThunderStats/issues/333">#333</a>].</li>
         <li>Added the correspondents data extract.</li>
         <li>Added the daily emails data extract in the 7 Days and Custom Qery tabs.</li>
         <li>Added an hourly email extract divider in the Today and Yesterday tabs.</li>
-        <li>...</li>
        </ul>
        <li>Added the total number of mails in aggregate stats in Today Tab, Yesterday Tab, 7 Days Tab and Custom View Tabs. This total also considers business days only if the corresponing option is active [<a href="https://github.com/micz/ThunderStats/issues/323">#323</a>].</li>
        <li>Added an option to display today's time graph lines only up to the current hour [<a href="https://github.com/micz/ThunderStats/issues/302">#302</a>].</li>
@@ -40,6 +39,7 @@
        <li>Displaying the last execution time for each tab [<a href="https://github.com/micz/ThunderStats/issues/314">#314</a>].</li>
        <li>Changed the color of the 'Today' bar in the 7-Days Tab Chart [<a href="https://github.com/micz/ThunderStats/issues/326">#326</a>].</li>
        <li>If the chosen account has been changed, switching to another tab reloads the data even if the "Reload data when changing tab" option is set to false [<a href="https://github.com/micz/ThunderStats/issues/327">#327</a>].</li>
+       <li>Fixes the correct default duplicate messages filtering for Gmail account.</li>
        <li>...</li>
       </ul>
       <h3>Version 2.0.3 - 08/08/2024</h3>

@@ -372,7 +372,7 @@ export const tsCoreUtils = {
         let output = [];
         for(let account of accounts) {
             let include_archive = true;
-            let filter_duplicates = await this.getDefaultAccountFilterDuplicatesOption(account);
+            let filter_duplicates = await this.getDefaultAccountFilterDuplicatesOption(account.id);
             if(accounts_adv_settings.length > 0) {
                 include_archive = accounts_adv_settings.find(element => element.id === account.id)?.include_archive ?? include_archive;
                 filter_duplicates = accounts_adv_settings.find(element => element.id === account.id)?.filter_duplicates ?? filter_duplicates;
@@ -388,8 +388,8 @@ export const tsCoreUtils = {
         return output;
     },
 
-    async getDefaultAccountFilterDuplicatesOption(account){
-        let account_emails = await this.getAccountEmails(account.id,true);
+    async getDefaultAccountFilterDuplicatesOption(account_id){
+        let account_emails = await this.getAccountEmails(account_id,true);
         // console.log(">>>>>>>>>>>>> getDefaultAccountFilterDuplicatesOption account_emails: " + JSON.stringify(account_emails));
         return account_emails.some(email => email.toLowerCase().endsWith("@gmail.com"));
     },
@@ -415,14 +415,15 @@ export const tsCoreUtils = {
             return await TS_prefs.getPref("filter_duplicates_multi_account");
         } else {
             let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
-            //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
+            console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
             let element = null;
             if(accounts_adv_settings.length > 0) {
-            element = accounts_adv_settings.find(account => account.id == account_id);
+                element = accounts_adv_settings.find(account => account.id == account_id);
             }
-            //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
-            if(!element) return false;
-            return element.filter_duplicates || false;
+            console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
+            let filter_duplicates_defaults = await this.getDefaultAccountFilterDuplicatesOption(account_id);
+            if(!element) return filter_duplicates_defaults;
+            return element.filter_duplicates ?? filter_duplicates_defaults;
         }
     },
 

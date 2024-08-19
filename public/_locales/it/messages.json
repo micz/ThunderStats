@@ -634,5 +634,45 @@
   "AccountWithNoEmails": {
     "message": "L'account selezionato non ha email associate. Devi aggiungere un'identità personalizzata nella pagina delle opzioni.",
     "description": ""
+  },
+  "InfoTotal_AllMails": {
+    "message": "Questo valore totale tiene conto sia dei giorni lavorativi che dei giorni non lavorativi.",
+    "description": ""
+  },
+  "InfoTotal_BDMails_Only": {
+    "message": "Questi valori tengono conto solo dei giorni lavorativi.",
+    "description": ""
+  },
+  "TimeChartNoFutureHours": {
+    "message": "Non mostrare le ore future nel grafico temporale di oggi.",
+    "description": ""
+  },
+  "Miscellaneous": {
+    "message": "Varie",
+    "description": ""
+  },
+  "TimeChart": {
+    "message": "Grafico temporale",
+    "description": ""
+  },
+  "LastExecution": {
+    "message": "Ultima esecuzione",
+    "description": ""
+  },
+  "ExportData": {
+    "message": "Esportazione Dati",
+    "description": ""
+  },
+  "DailyMails": {
+    "message": "Mail Giornaliere",
+    "description": ""
+  },
+  "Correspondents": {
+    "message": "Corrispondenti",
+    "description": ""
+  },
+  "MailsInADay": {
+    "message": "Mail in un giorno",
+    "description": ""
   }
 }

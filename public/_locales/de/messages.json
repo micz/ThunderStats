@@ -601,7 +601,7 @@
   },
   "EasterNoBusinessDay": {
     "message": "Easter and Easter Monday are non-business days.",
-    "description": "" 
+    "description": ""
   },
   "Year": {
     "message": "Year",
@@ -633,6 +633,46 @@
   },
   "AccountWithNoEmails": {
     "message": "Das ausgewählte Konto hat keine zugeordneten E-Mails. Sie müssen eine benutzerdefinierte Identität auf der Optionsseite hinzufügen.",
+    "description": ""
+  },
+  "InfoTotal_AllMails": {
+    "message": "Diese Gesamtsumme berücksichtigt sowohl Werktage als auch Nicht-Werktage.",
+    "description": ""
+  },
+  "InfoTotal_BDMails_Only": {
+    "message": "Diese Werte berücksichtigen nur Werktage.",
+    "description": ""
+  },
+  "TimeChartNoFutureHours": {
+    "message": "Zeigen Sie keine zukünftigen Stunden im heutigen Zeitdiagramm an.",
+    "description": ""
+  },
+  "Miscellaneous": {
+    "message": "Verschiedenes",
+    "description": ""
+  },
+  "TimeChart": {
+    "message": "Zeitdiagramm",
+    "description": ""
+  },
+  "LastExecution": {
+    "message": "Letzte Ausführung",
+    "description": ""
+  },
+  "ExportData": {
+    "message": "Datenexport",
+    "description": ""
+  },
+  "DailyMails": {
+    "message": "Tägliche E-Mails",
+    "description": ""
+  },
+  "Correspondents": {
+    "message": "Korrespondenten",
+    "description": ""
+  },
+  "MailsInADay": {
+    "message": "E-Mails pro Tag",
     "description": ""
   }
 }

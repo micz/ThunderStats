@@ -48,7 +48,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref, nextTick } from 'vue'
 import { i18n } from "@statslib/mzts-i18n.js";
-import { TS_prefs } from "@statslib/mzts-options.js";
+import { tsPrefs } from "@statslib/mzts-options.js";
 import { tsLogger } from "@statslib/mzts-logger.js";
 import OPTAB_Main from '@/components/options_tabs/OPTAB_Main.vue';
 import OPTAB_Advanced from '@/components/options_tabs/OPTAB_Advanced.vue';
@@ -69,12 +69,12 @@ let new_changes = ref(false);
 let tsLog = null;
 
 onMounted(async () => {
-    //do_debug.value = await TS_prefs.getPref("do_debug");
+    //do_debug.value = await tsPrefs.getPref("do_debug");
     tsLog = new tsLogger("OptionsView", tsStore.do_debug);
-    TS_prefs.logger = tsLog;
-    TS_prefs.restoreOptions();
+    tsPrefs.logger = tsLog;
+    tsPrefs.restoreOptions();
     document.querySelectorAll(".option-input").forEach(element => {
-      element.addEventListener("change", TS_prefs.saveOptions);
+      element.addEventListener("change", tsPrefs.saveOptions);
     });
     await nextTick();
     i18n.updateDocument();
@@ -83,7 +83,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
     document.querySelectorAll('.option-input').forEach(element => {
-      element.removeEventListener('change', TS_prefs.saveOptions);
+      element.removeEventListener('change', tsPrefs.saveOptions);
     });
     tsLog.log("onUnmounted");
   });

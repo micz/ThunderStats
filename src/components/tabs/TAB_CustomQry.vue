@@ -73,7 +73,7 @@ import GraphCustomQry from '../graphs/GraphCustomQry.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
 import ExportMenu from '../ExportMenu.vue';
 import InfoTooltip from '../InfoTooltip.vue';
-import { TS_prefs } from '@statslib/mzts-options';
+import { tsPrefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
@@ -175,8 +175,8 @@ let job_done = computed(() => {
 
 onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
-  TS_prefs.logger = tsLog;
-  prefLocale.value = await TS_prefs.getPref("datepicker_locale");
+  tsPrefs.logger = tsLog;
+  prefLocale.value = await tsPrefs.getPref("datepicker_locale");
   datepickerFormat.value = tsUtils.formatDateStringLocale(prefLocale.value);
   if(tsStore.darkmode === undefined) {
     tsStore.darkmode = tsUtils.isDarkMode();
@@ -188,7 +188,7 @@ onMounted(async () => {
     const endDate = new Date();
     const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
     dateQry.value = [startDate, endDate];
-    let prefs = await TS_prefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only"]);
+    let prefs = await tsPrefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only"]);
     //console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
     first_day_week = prefs.first_day_week;
     _involved_num = prefs._involved_num;
@@ -206,7 +206,7 @@ function update(){
 
 async function rangeChoosen(modelData){
   //console.log(">>>>>>>>>>>>>>> rangeChoosen: " + JSON.stringify(modelData));
-  if(await TS_prefs.getPref("customqry_loaddata_when_selectingrange")){
+  if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
     update();
   }
 }
@@ -304,7 +304,7 @@ async function setPeriod(period){
             dateQry.value = [tsUtils.getFirstDayOfLastYear(), tsUtils.getLastDayOfLastYear()];
             break;
     }
-    if(await TS_prefs.getPref("customqry_loaddata_when_selectingrange")){
+    if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
       update();
     }
 }
@@ -329,7 +329,7 @@ async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+    let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));

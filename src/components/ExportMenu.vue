@@ -11,7 +11,7 @@ import { ref, computed, onMounted, h } from 'vue';
 import { tsExport } from '@statslib/mzts-export';
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
-import { TS_prefs } from '@statslib/mzts-options';
+import { tsPrefs } from '@statslib/mzts-options';
 import ContextMenu from '@imengyu/vue3-context-menu'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 
@@ -132,7 +132,7 @@ let export_menu = {
         { 
           label: browser.i18n.getMessage("Correspondents"), 
           onClick: async () => {
-            let _many_days = await TS_prefs.getPref("_many_days");
+            let _many_days = await tsPrefs.getPref("_many_days");
             let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
             let export_type = tsExport.export["correspondents"].type;
             exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
@@ -141,7 +141,7 @@ let export_menu = {
         { 
           label: browser.i18n.getMessage("DailyMails"), 
           onClick: async () => {
-            let _many_days = await TS_prefs.getPref("_many_days");
+            let _many_days = await tsPrefs.getPref("_many_days");
             let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
             let export_type = tsExport.export["daily_mails"].type;
             exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
@@ -150,7 +150,7 @@ let export_menu = {
         // { 
         //   label: browser.i18n.getMessage("MailsInADay"), 
         //   onClick: async () => {
-        //     let _many_days = await TS_prefs.getPref("_many_days");
+        //     let _many_days = await tsPrefs.getPref("_many_days");
         //     let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
         //     let export_type = tsExport.export["time_emails"].type;
         //     exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
@@ -179,7 +179,7 @@ let export_menu = {
         // { 
         //   label: browser.i18n.getMessage("MailsInADay"), 
         //   onClick: async () => {
-        //     let _many_days = await TS_prefs.getPref("_many_days");
+        //     let _many_days = await tsPrefs.getPref("_many_days");
         //     let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
         //     let export_type = tsExport.export["time_emails"].type;
         //     exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)

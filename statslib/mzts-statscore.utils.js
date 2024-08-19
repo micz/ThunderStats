@@ -17,7 +17,7 @@
  */
 
 import { tsUtils } from "./mzts-utils";
-import { TS_prefs } from "./mzts-options";
+import { tsPrefs } from "./mzts-options";
 import { tsStore } from "./mzts-store";
 
 export const tsCoreUtils = {
@@ -358,7 +358,7 @@ export const tsCoreUtils = {
     },
 
     async getAccountCustomIdentities(account_id = 0) {
-        let prefCustomIds = await TS_prefs.getPref("custom_identities");
+        let prefCustomIds = await tsPrefs.getPref("custom_identities");
         // console.log(">>>>>>>>>>>>> getAccountCustomIdentities prefCustomIds: " + JSON.stringify(prefCustomIds));
         if(account_id == 0){ return prefCustomIds; }
         if(prefCustomIds.hasOwnProperty(account_id)){
@@ -396,9 +396,9 @@ export const tsCoreUtils = {
 
     async getIncludeArchivePreference(account_id) {
         if(account_id == 0) {
-           return await TS_prefs.getPref("include_archive_multi_account");
+           return await tsPrefs.getPref("include_archive_multi_account");
         } else {
-           let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+           let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
          //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
          let element = null;
          if(accounts_adv_settings.length > 0) {
@@ -412,9 +412,9 @@ export const tsCoreUtils = {
 
     async getFilterDuplicatesPreference(account_id) {
         if(account_id == 0) {
-            return await TS_prefs.getPref("filter_duplicates_multi_account");
+            return await tsPrefs.getPref("filter_duplicates_multi_account");
         } else {
-            let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+            let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
             console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
             let element = null;
             if(accounts_adv_settings.length > 0) {

@@ -19,7 +19,7 @@
 import { tsLogger } from "./mzts-logger";
 import { tsCoreUtils } from "./mzts-statscore.utils";
 import { tsUtils } from "./mzts-utils";
-import { TS_prefs } from "./mzts-options";
+import { tsPrefs } from "./mzts-options";
 
 export class thunderStastsCore {
 
@@ -32,7 +32,7 @@ export class thunderStastsCore {
   constructor(options = {}) {
     this.do_debug = options.hasOwnProperty('do_debug') ? options.do_debug : false;
     this.tsLog = new tsLogger("thunderStastsCore",this.do_debug);
-    TS_prefs.logger = this.tsLog;
+    tsPrefs.logger = this.tsLog;
     this._involved_num = options.hasOwnProperty('_involved_num') ? options._involved_num : 10;
     this._many_days = options.hasOwnProperty('_many_days') ? options._many_days : 7;
     this.accounts_adv_settings = options.hasOwnProperty('accounts_adv_settings') ? options.accounts_adv_settings : [];
@@ -495,7 +495,7 @@ export class thunderStastsCore {
       let prefs_bday_default_only = false;
 
       if(only_businessdays == -99) {
-        prefs_bday_default_only = await TS_prefs.getPref(['bday_default_only']);
+        prefs_bday_default_only = await tsPrefs.getPref(['bday_default_only']);
       } else {
         prefs_bday_default_only = only_businessdays;
       }

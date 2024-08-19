@@ -75,7 +75,7 @@ import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
 import TableInvolved from '../tables/TableInvolved.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
 import ExportMenu from '../ExportMenu.vue';
-import { TS_prefs } from '@statslib/mzts-options';
+import { tsPrefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
@@ -192,10 +192,10 @@ let job_done = computed(() => {
 
 onMounted(async () => {
     tsLog = new tsLogger("TAB_Today", tsStore.do_debug);
-    TS_prefs.logger = tsLog;
+    tsPrefs.logger = tsLog;
     let _now = new Date();
     today_date.value = (_now).toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
-    _involved_num = await TS_prefs.getPref("_involved_num");
+    _involved_num = await tsPrefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
     no_mails_received_today.value = browser.i18n.getMessage("NoMailsReceived")+" "+browser.i18n.getMessage("today_small");
@@ -207,13 +207,13 @@ onMounted(async () => {
 
 async function updateData() {
     loadingDo();
-    do_progressive = await TS_prefs.getPref("_time_graph_progressive");
-    today_time_graph_show_yesterday = await TS_prefs.getPref("today_time_graph_show_yesterday");
+    do_progressive = await tsPrefs.getPref("_time_graph_progressive");
+    today_time_graph_show_yesterday = await tsPrefs.getPref("today_time_graph_show_yesterday");
     //console.log(">>>>>>>>>>>>>>>> updateData: do_progressive: " + do_progressive + " today_time_graph_show_yesterday: " + today_time_graph_show_yesterday);
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+    let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     getManyDaysData();
@@ -268,7 +268,7 @@ async function updateData() {
     chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(given_folders), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
     tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
     // graph inbox zero dates
-    inbox0_openFolderInFirstTab.value = await TS_prefs.getPref("inbox0_openFolderInFirstTab");
+    inbox0_openFolderInFirstTab.value = await tsPrefs.getPref("inbox0_openFolderInFirstTab");
     // chartData_InboxZeroDates.value.labels = ['date'];
     // chartData_InboxZeroDates.value.datasets = [];
     // chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
@@ -295,7 +295,7 @@ async function updateData() {
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_today.senders, result_today.recipients);
             // graph today hours
             const today_hours_data = tsCoreUtils.transformCountDataToDataset(result_today.msg_hours, do_progressive);
-            let pref_today_time_graph_do_no_show_future = await TS_prefs.getPref("today_time_graph_do_no_show_future");
+            let pref_today_time_graph_do_no_show_future = await tsPrefs.getPref("today_time_graph_do_no_show_future");
             graphdata_today_hours_sent.value = pref_today_time_graph_do_no_show_future ? tsCoreUtils.filterTodayNextHours(today_hours_data.dataset_sent) : today_hours_data.dataset_sent;
             graphdata_today_hours_rcvd.value = pref_today_time_graph_do_no_show_future ? tsCoreUtils.filterTodayNextHours(today_hours_data.dataset_rcvd) : today_hours_data.dataset_rcvd;
             //top senders list
@@ -342,7 +342,7 @@ async function updateData() {
             yesterday_date.setDate(yesterday_date.getDate() - 1);
             yesterday_date.setHours(0, 0, 0, 0);
             // check Business Days
-            let prefs_bday_use_last_business_day = await TS_prefs.getPref("bday_use_last_business_day");
+            let prefs_bday_use_last_business_day = await tsPrefs.getPref("bday_use_last_business_day");
             if(prefs_bday_use_last_business_day == true){
                 if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date)) == true){
                     is_last_business_day.value = false;

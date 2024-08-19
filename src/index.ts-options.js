@@ -5,11 +5,11 @@ import { createApp } from 'vue';
 import {Tabs, Tab} from 'vue3-tabs-component';
 import App_Options from './App_Options.vue';
 import { tsStore } from '@statslib/mzts-store.js';
-import { TS_prefs } from '@statslib/mzts-options';
+import { tsPrefs } from '@statslib/mzts-options';
 
 async function main() {
 
-    tsStore.do_debug = await TS_prefs.getPref("do_debug");
+    tsStore.do_debug = await tsPrefs.getPref("do_debug");
     tsStore.darkmode = undefined;
 
     createApp(App_Options)

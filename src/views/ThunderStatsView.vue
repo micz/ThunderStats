@@ -53,7 +53,7 @@ import TAB_ManyDays from '@/components/tabs/TAB_ManyDays.vue';
 import TAB_CustomQry from '@/components/tabs/TAB_CustomQry.vue';
 import { thunderStastsCore } from "@statslib/mzts-statscore.js";
 import { i18n } from "@statslib/mzts-i18n.js";
-import { TS_prefs } from '@statslib/mzts-options.js';
+import { tsPrefs } from '@statslib/mzts-options.js';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
@@ -105,8 +105,8 @@ import { tsUtils } from '@statslib/mzts-utils';
   onBeforeMount(async () => {
 //    console.log(">>>>>>>>>>>> ThunderStatsView onBeforeMount tsStore.do_debug: " + tsStore.do_debug);
     tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
-    TS_prefs.logger = tsLog;
-    let prefs = await TS_prefs.getPrefs([
+    tsPrefs.logger = tsLog;
+    let prefs = await tsPrefs.getPrefs([
       "remember_last_tab",
       "always_reload_tab_data",
       "bday_default_only",
@@ -148,9 +148,9 @@ import { tsUtils } from '@statslib/mzts-utils';
 
   onMounted(async () => {
     // console.log(">>>>>>>>>>>> ThunderStatsView onMounted");
-    remember_last_tab = await TS_prefs.getPref("remember_last_tab");
+    remember_last_tab = await tsPrefs.getPref("remember_last_tab");
     if(!remember_last_tab) { statsTabs_ref.value.selectTab('#tab-today'); }
-    let _many_days = await TS_prefs.getPref("_many_days");
+    let _many_days = await tsPrefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     i18n.updateDocument();

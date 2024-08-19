@@ -149,7 +149,7 @@
 
 <script setup>
 import { ref, onBeforeMount, onMounted, nextTick } from 'vue';
-import { TS_prefs } from '@statslib/mzts-options';
+import { tsPrefs } from '@statslib/mzts-options';
 import { tsLogger } from '@statslib/mzts-logger';
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
@@ -194,8 +194,8 @@ let prefLocale = ref("en-GB");
 
 onBeforeMount(async () => {
   tsLog = new tsLogger("OPTAB_BusinessDays", tsStore.do_debug);
-  TS_prefs.logger = tsLog;
-  prefLocale.value = await TS_prefs.getPref("datepicker_locale");
+  tsPrefs.logger = tsLog;
+  prefLocale.value = await tsPrefs.getPref("datepicker_locale");
   datepickerFormat.value = tsUtils.formatDateStringLocale(prefLocale.value);
   if(tsStore.darkmode === undefined) {
     tsStore.darkmode = tsUtils.isDarkMode();
@@ -209,7 +209,7 @@ onMounted(async () => {
       input.addEventListener('change', somethingChanged);
     });
     
-    const prefs = await TS_prefs.getPrefs(["bday_custom_days","bday_weekdays_0", "bday_weekdays_1", "bday_weekdays_2", "bday_weekdays_3", "bday_weekdays_4", "bday_weekdays_5", "bday_weekdays_6", "first_day_week"]);
+    const prefs = await tsPrefs.getPrefs(["bday_custom_days","bday_weekdays_0", "bday_weekdays_1", "bday_weekdays_2", "bday_weekdays_3", "bday_weekdays_4", "bday_weekdays_5", "bday_weekdays_6", "first_day_week"]);
 
     customNBusinessDays.value = prefs.bday_custom_days;
     customNBusinessDays.value.sort((a, b) => {
@@ -291,7 +291,7 @@ function nbDaysSaveNew() {
     let day = date.getDate();
     customNBusinessDays.value.push({id: nbDaysCreateId(), year: year, month: month, day: day, description: description});
     //save bday_custom_days pref
-    TS_prefs.setPref("bday_custom_days", customNBusinessDays.value);
+    tsPrefs.setPref("bday_custom_days", customNBusinessDays.value);
     somethingChanged();
     nextTick(() => {
         i18n.updateDocument();
@@ -337,7 +337,7 @@ function nbDaysSaveEdit() {
         customNBusinessDays.value[index] = selectedNBDay.value;
     }
     //save bday_custom_days pref
-    TS_prefs.setPref("bday_custom_days", customNBusinessDays.value);
+    tsPrefs.setPref("bday_custom_days", customNBusinessDays.value);
     somethingChanged();
     nextTick(() => {
         i18n.updateDocument();
@@ -349,7 +349,7 @@ function nbDaysDelete() {
 
     customNBusinessDays.value = customNBusinessDays.value.filter(obj => obj.id !== selectedNBDay.value.id);
     //save bday_custom_days pref
-    TS_prefs.setPref("bday_custom_days", customNBusinessDays.value);
+    tsPrefs.setPref("bday_custom_days", customNBusinessDays.value);
     somethingChanged();
     nbDaysOnRowUnselect(null);
 }

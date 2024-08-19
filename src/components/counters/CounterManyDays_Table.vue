@@ -33,7 +33,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { TS_prefs } from '@statslib/mzts-options';
+import { tsPrefs } from '@statslib/mzts-options';
 
 let props = defineProps({
     sent_total: {
@@ -105,7 +105,7 @@ let is_loading = computed(() => {
 let _many_days_text = ref("");
 
 onMounted(async () => {
-    let _many_days = await TS_prefs.getPref("_many_days");
+    let _many_days = await tsPrefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("InTheLastNumDays", _many_days);
 })
 

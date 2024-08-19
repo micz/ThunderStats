@@ -71,7 +71,7 @@ import GraphInboxZeroFolders from '../graphs/GraphInboxZeroFolders.vue';
 import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
 import TableInvolved from '../tables/TableInvolved.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
-import { TS_prefs } from '@statslib/mzts-options';
+import { tsPrefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
@@ -180,9 +180,9 @@ let job_done = computed(() => {
 
 onMounted(async () => {
     tsLog = new tsLogger("TAB_Yesterday", tsStore.do_debug);
-    TS_prefs.logger = tsLog;
+    tsPrefs.logger = tsLog;
     yesterday_date_str.value = yesterday_date.value.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
-    _involved_num = await TS_prefs.getPref("_involved_num");
+    _involved_num = await tsPrefs.getPref("_involved_num");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
     no_mails_sent_yesterday.value = browser.i18n.getMessage("NoMailsSent")+" "+browser.i18n.getMessage("yesterday_small");
@@ -194,7 +194,7 @@ onMounted(async () => {
 
 async function updateData() {
     loadingDo();
-    let prefs = await TS_prefs.getPrefs(["_time_graph_progressive", "accounts_adv_settings"]);
+    let prefs = await tsPrefs.getPrefs(["_time_graph_progressive", "accounts_adv_settings"]);
     do_progressive = prefs._time_graph_progressive;
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
@@ -233,7 +233,7 @@ async function updateData() {
     chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(given_folders), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
     tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
     // graph inbox zero dates
-    inbox0_openFolderInFirstTab.value = await TS_prefs.getPref("inbox0_openFolderInFirstTab");
+    inbox0_openFolderInFirstTab.value = await tsPrefs.getPref("inbox0_openFolderInFirstTab");
     // chartData_InboxZeroDates.value.labels = ['date'];
     // chartData_InboxZeroDates.value.datasets = [];
     // chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
@@ -252,7 +252,7 @@ async function updateData() {
         return new Promise(async (resolve) => {
             let result_yesterday = null;
             // check Business Days
-            let prefs_bday_use_last_business_day = await TS_prefs.getPref("bday_use_last_business_day");
+            let prefs_bday_use_last_business_day = await tsPrefs.getPref("bday_use_last_business_day");
             if(prefs_bday_use_last_business_day == true){
                 if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date.value)) == true){
                     result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);

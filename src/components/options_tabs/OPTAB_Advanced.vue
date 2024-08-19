@@ -95,7 +95,7 @@
   import { onMounted, onUnmounted, ref } from 'vue'
   import { tsLogger } from '@statslib/mzts-logger';
   import { tsStore } from '@statslib/mzts-store';
-  import { TS_prefs } from "@statslib/mzts-options";
+  import { tsPrefs } from "@statslib/mzts-options";
   import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
   import AdvancedAccountList from '../AdvancedAccountList.vue';
 
@@ -112,7 +112,7 @@
       input.addEventListener('change', somethingChanged);
     });
     document.getElementById('first_day_week').addEventListener('change', somethingChanged);
-    let archive_accounts = await TS_prefs.getPref("accounts_adv_settings");
+    let archive_accounts = await tsPrefs.getPref("accounts_adv_settings");
     let all_accounts = await tsCoreUtils.getAccountsList();
     accounts_adv_settings.value = await tsCoreUtils.mergeAccountsAdvSettings(all_accounts, archive_accounts);
     tsLog.log("accounts_adv_settings: " + JSON.stringify(accounts_adv_settings.value));
@@ -136,7 +136,7 @@
   }
 
   function accountListChanged(accountsList) {
-    TS_prefs.setPref("accounts_adv_settings", accountsList);
+    tsPrefs.setPref("accounts_adv_settings", accountsList);
     somethingChanged();
   }
   

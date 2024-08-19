@@ -48,7 +48,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { tsLogger } from "@statslib/mzts-logger.js";
-import { TS_prefs } from "@statslib/mzts-options.js";
+import { tsPrefs } from "@statslib/mzts-options.js";
 import { tsStore } from "@statslib/mzts-store.js";
 import { tsUtils } from "@statslib/mzts-utils.js";
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
@@ -106,7 +106,7 @@ let tsLog = null;
 
 onMounted(async () => {
   tsLog = new tsLogger("HeadingNAV", tsStore.do_debug);
-  current_account.value = await TS_prefs.getPref("startup_account");
+  current_account.value = await tsPrefs.getPref("startup_account");
   tsLog.log("onMounted: " + current_account.value);
   SelectAccount_ref.value.updateCurrentAccount(current_account.value);
 });
@@ -119,7 +119,7 @@ function update(){
 
 async function accountSelected(){
   tsLog.log("accountSelected: " + current_account.value);
-  if(await TS_prefs.getPref("load_data_changing_account")){
+  if(await tsPrefs.getPref("load_data_changing_account")){
     emit('chooseAccount', current_account.value);
     doAgain();
   }

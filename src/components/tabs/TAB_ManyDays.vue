@@ -64,7 +64,7 @@ import GraphManyDays from '../graphs/GraphManyDays.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
 import ExportMenu from '../ExportMenu.vue';
 import InfoTooltip from '../InfoTooltip.vue';
-import { TS_prefs } from '@statslib/mzts-options';
+import { tsPrefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
@@ -151,10 +151,10 @@ let job_done = computed(() => {
 
 onMounted(async () => {
     tsLog = new tsLogger("TAB_ManyDays", tsStore.do_debug);
-    TS_prefs.logger = tsLog;
+    tsPrefs.logger = tsLog;
     today_date.value = new Date().toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
-    _involved_num = await TS_prefs.getPref("_involved_num");
-    _many_days = await TS_prefs.getPref("_many_days");
+    _involved_num = await tsPrefs.getPref("_involved_num");
+    _many_days = await tsPrefs.getPref("_many_days");
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
     showTotalInfoTooltip.value = tsStore.businessdays_only;
@@ -168,7 +168,7 @@ async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+    let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     await Promise.all([getManyDaysData()]);

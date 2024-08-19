@@ -37,18 +37,21 @@ let currentTab = computed(() => props.currentTab)
 
 let exportdata_menu_dom_id = ref("exportdata_menu_" + currentTab.value);
 
+let export_menu_title = [
+      {
+        label: h('div', { class: 'my-menu-title' }, browser.i18n.getMessage("ExportData")),
+        disabled: true,
+      },
+      {
+        label: h('div', { class: 'my-menu-sperator' }),
+        disabled: true,
+      },
+
+    ];
 
 let export_menu = {
     //========================================== Today Tab
     "tab-today": [
-        {
-          label: h('div', { class: 'my-menu-title' }, "Export"),
-          disabled: true,
-        },
-        {
-          label: h('div', { class: 'my-menu-sperator' }),
-          disabled: true,
-        },
         { 
           label: browser.i18n.getMessage("Correspondents"), 
           onClick: () => {
@@ -199,7 +202,7 @@ function openExportMenu(e){
       zIndex: 1100,
       ignoreClickClassName: 'my-menu-title',
       preserveIconWidth: false,
-      items: export_menu[currentTab.value],
+      items: [...export_menu_title, ...export_menu[currentTab.value]],
   });
 }
 

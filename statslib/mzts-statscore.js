@@ -270,6 +270,9 @@ export class thunderStastsCore {
                       recipients[key_recipient].count = 1;
                       recipients[key_recipient].name = await tsCoreUtils.getCorrespondantName(recipient);
                     }
+                    // console.log(">>>>>>>>>>>>>> message.headerMessageId: " + message.headerMessageId);
+                    // console.log(">>>>>>>> key_recipient: " + key_recipient);
+                    // console.log(">>>>>>>> recipients[key_recipient].count: " + recipients[key_recipient].count);
                   }
                 }
               }
@@ -286,6 +289,9 @@ export class thunderStastsCore {
                       recipients[key_cc].count = 1;
                       recipients[key_cc].name = await tsCoreUtils.getCorrespondantName(cc);
                     }
+                    // console.log(">>>>>>>>>>>>>> message.headerMessageId: " + message.headerMessageId);
+                    // console.log(">>>>>>>> key_cc: " + key_cc);
+                    // console.log(">>>>>>>> recipients[key_cc].count: " + recipients[key_cc].count);
                   }
                 }
               }
@@ -297,6 +303,9 @@ export class thunderStastsCore {
                 senders[key_author].count = 1;
                 senders[key_author].name = await tsCoreUtils.getCorrespondantName(message.author);
               }
+              // console.log(">>>>>>>>>>>>>> message.headerMessageId: " + message.headerMessageId);
+              // console.log(">>>>>>>> key_author: " + key_author);
+              // console.log(">>>>>>>> senders[key_author].count: " + senders[key_author].count);
               received++;
               // group by folder
               folders[message.folder.id].received++;
@@ -316,6 +325,9 @@ export class thunderStastsCore {
 
       recipients = Object.fromEntries(Object.entries(recipients).sort((a, b) => b[1].count - a[1].count));
       recipients = Object.fromEntries(Object.entries(recipients).slice(0,this._involved_num));
+
+      // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
+      // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
       let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates };
 

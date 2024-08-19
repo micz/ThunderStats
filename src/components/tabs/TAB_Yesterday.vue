@@ -19,9 +19,11 @@
 -->
 
 <template>
+    <ExportMenu :export_data="_export_data" currentTab="tab-yesterday" v-if="job_done" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
-        <span id="yesterday_date" class="list_heading_date" v-html="yesterday_date_str"></span></div>
+        </div>
+        <span id="yesterday_date" class="list_heading_date" v-html="yesterday_date_str"></span>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_yesterday_sent" :_rcvd="counter_yesterday_rcvd" />
         <div id="yesterday_spacing"></div>
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
@@ -58,7 +60,7 @@
 
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, nextTick, computed} from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
@@ -72,8 +74,10 @@ import CounterInbox from '../counters/CounterInbox.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
+import { tsExport } from '@statslib/mzts-export';
 import CounterManyDays_Table from '../counters/CounterManyDays_Table.vue';
 import InfoTooltip from '../InfoTooltip.vue';
+import ExportMenu from '../ExportMenu.vue';
 
 const props = defineProps({
     activeAccount: {
@@ -135,6 +139,8 @@ let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
 
+let _export_data = ref({});
+
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
 
@@ -160,6 +166,17 @@ let graphdata_yesterday_hours_sent = ref([]);
 let graphdata_yesterday_hours_rcvd = ref([]);
 let graphdata_inboxzero_folders = ref([]);
 let graphdata_inboxzero_dates = ref([]);
+
+let job_done = computed(() => {
+    return !(is_loading_counter_sent_rcvd.value &&
+    is_loading_yesterday_graph.value &&
+    is_loading_involved_table_recipients.value &&
+    is_loading_involved_table_senders.value &&
+    is_loading_counter_inbox.value &&
+    is_loading_inbox_graph_folders.value &&
+    is_loading_inbox_graph_dates.value &&
+    is_loading_counter_many_days.value);
+})
 
 onMounted(async () => {
     tsLog = new tsLogger("TAB_Yesterday", tsStore.do_debug);
@@ -253,6 +270,9 @@ async function updateData() {
             counter_yesterday_rcvd.value = result_yesterday.received;
             counter_yesterday_sent.value = result_yesterday.sent;
             is_loading_counter_sent_rcvd.value = false;
+            // export data
+            _export_data.value[tsExport.export.time_emails.type] = result_yesterday.msg_hours;
+            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_yesterday.senders, result_yesterday.recipients);
             // graph yesterday hours
             const yesterday_hours_data = tsCoreUtils.transformCountDataToDataset(result_yesterday.msg_hours, do_progressive);
             graphdata_yesterday_hours_sent.value = yesterday_hours_data.dataset_sent;

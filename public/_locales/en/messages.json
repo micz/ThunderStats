@@ -658,5 +658,21 @@
   "LastExecution": {
     "message": "Last execution",
     "description": ""
+  },
+  "ExportData": {
+    "message": "Data Export",
+    "description": ""
+  },
+  "DailyMails": {
+    "message": "Daily Mails",
+    "description": ""
+  },
+  "Correspondents": {
+    "message": "Correspondents",
+    "description": ""
+  },
+  "MailsInADay": {
+    "message": "Mails in a day",
+    "description": ""
   }
 }

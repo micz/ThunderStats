@@ -19,6 +19,7 @@
 -->
 
 <template>
+    <ExportMenu :export_data="_export_data" currentTab="tab-manydays" v-if="job_done" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ sent_total }}</span><span v-if="sent_today > 0"> (+<span>{{ sent_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/><InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalInfoTooltip_text"></InfoTooltip></h2>
@@ -61,10 +62,12 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import TableInvolved from '../tables/TableInvolved.vue';
 import GraphManyDays from '../graphs/GraphManyDays.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
+import ExportMenu from '../ExportMenu.vue';
 import InfoTooltip from '../InfoTooltip.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
+import { tsExport } from '@statslib/mzts-export';
 
 const props = defineProps({
     activeAccount: {
@@ -116,6 +119,8 @@ let graphdata_manydays_sent = ref([]);
 let graphdata_manydays_rcvd = ref([]);
 let graphdata_manydays_labels = ref([]);
 
+let _export_data = ref({});
+
 let _involved_num = 10;
 let _many_days = 7;
 
@@ -135,7 +140,14 @@ let chartData_Rcvd = ref({
 });
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
-
+let job_done = computed(() => {
+    return !(is_loading_counter_sent_rcvd.value &&
+    is_loading_counter_many_days.value &&
+    is_loading_involved_table_recipients.value &&
+    is_loading_involved_table_senders.value &&
+    is_loading_sent_graph.value &&
+    is_loading_rcvd_graph.value);
+});
 
 onMounted(async () => {
     tsLog = new tsLogger("TAB_ManyDays", tsStore.do_debug);
@@ -201,6 +213,9 @@ async function updateData() {
             let start_time = performance.now();
             let result_many_days = await tsCore.getManyDaysData(props.activeAccount, props.accountEmails);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_many_days, null, 2));
+            // export data
+            _export_data.value[tsExport.export.daily_mails.type] = result_many_days.dates;
+            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_many_days.senders, result_many_days.recipients);
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_many_days.senders).length > 0;
             table_involved_senders.value = result_many_days.senders;

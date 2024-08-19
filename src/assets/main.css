@@ -9,7 +9,7 @@
                                            rgba(242,242,240,.25)); /*#78a3d1*/
     background-color: Highlight;
     color: HighlightText;
-    z-index: 101;
+    z-index: 1000;
     top:0px;
     height:24px;
   }
@@ -225,6 +225,50 @@ td.align_end {
   PADDING: 2px 1rem;
   margin-left: 3rem;
   border-radius: 8px;
+}
+
+.export_data{
+  cursor: pointer;
+  font-size: small;
+}
+
+.export_data:hover{
+  text-decoration: underline;
+}
+
+.export_main_btn{
+  position: absolute;
+  right: 15px;
+  top: 0rem;
+  z-index: 1000;
+}
+
+.mx-context-menu-item.disabled {
+  cursor: default !important;
+  color: var(--mx-menu-text) !important;
+}
+
+.my-menu-title{
+  font-weight: bold;
+}
+
+.my-menu-sperator{
+  height: 1px;
+  width: 7em;
+  background-color: var(--mx-menu-disabled-text);
+}
+
+.exportdata_menu{
+  position: fixed;
+  right: 5px;
+  top: 1.8rem;
+  z-index: 1000;
+}
+.exportmenu{
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  z-index: 1000;
 }
 
 /* Dark mode styles */

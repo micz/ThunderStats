@@ -33,6 +33,8 @@
     padding: 0;
     -moz-padding-start: 2px;
     -moz-padding-end: 0;
+    display: flex;
+    justify-content: space-between;
 }
 
 .list_heading {

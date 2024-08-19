@@ -19,6 +19,7 @@
 -->
 
 <template>
+        <ExportMenu :export_data="_export_data" currentTab="tab-customqry" v-if="job_done" />
         <div id="customqry_dashboard">
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
@@ -70,10 +71,12 @@ import { tsUtils } from '@statslib/mzts-utils';
 import TableInvolved from '../tables/TableInvolved.vue';
 import GraphCustomQry from '../graphs/GraphCustomQry.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
+import ExportMenu from '../ExportMenu.vue';
 import InfoTooltip from '../InfoTooltip.vue';
 import { TS_prefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
+import { tsExport } from '@statslib/mzts-export';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
@@ -139,6 +142,8 @@ let graphdata_customqry_sent = ref([]);
 let graphdata_customqry_rcvd = ref([]);
 let graphdata_customqry_labels = ref([]);
 
+let _export_data = ref({});
+
 let _involved_num = 10;
 let first_day_week = 1;
 
@@ -158,6 +163,15 @@ let chartData_Rcvd = ref({
     datasets: []
 });
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
+
+let job_done = computed(() => {
+    return !(is_loading_counter_sent_rcvd.value &&
+    is_loading_counter_customqry.value &&
+    is_loading_involved_table_recipients.value &&
+    is_loading_involved_table_senders.value &&
+    is_loading_sent_graph.value &&
+    is_loading_rcvd_graph.value);
+});
 
 onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
@@ -366,6 +380,9 @@ async function updateData() {
             let toDate = dateQry.value[1];
             let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails, doOnlyBD.value);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
+            // export data
+            _export_data.value[tsExport.export.daily_mails.type] = result_customqry.dates;
+            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_customqry.senders, result_customqry.recipients);
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
             table_involved_senders.value = result_customqry.senders;

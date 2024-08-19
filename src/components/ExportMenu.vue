@@ -7,7 +7,7 @@
 
 <script setup>
 
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, h } from 'vue';
 import { tsExport } from '@statslib/mzts-export';
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
@@ -41,6 +41,14 @@ let exportdata_menu_dom_id = ref("exportdata_menu_" + currentTab.value);
 let export_menu = {
     //========================================== Today Tab
     "tab-today": [
+        {
+          label: h('div', { class: 'my-menu-title' }, "Export"),
+          disabled: true,
+        },
+        {
+          label: h('div', { class: 'my-menu-sperator' }),
+          disabled: true,
+        },
         { 
           label: browser.i18n.getMessage("Correspondents"), 
           onClick: () => {
@@ -189,6 +197,8 @@ function openExportMenu(e){
       x: x,
       y: y,
       zIndex: 1100,
+      ignoreClickClassName: 'my-menu-title',
+      preserveIconWidth: false,
       items: export_menu[currentTab.value],
   });
 }
@@ -221,16 +231,6 @@ function exportData(data, export_type, export_name) {
 
 
 <style scoped>
-.exportdata_menu{
-  position: fixed;
-  right: 5px;
-  top: 1.8rem;
-  z-index: 1000;
-}
-.exportmenu{
-  height: 24px;
-  width: 24px;
-  cursor: pointer;
-  z-index: 1000;
-}
+
+
 </style>

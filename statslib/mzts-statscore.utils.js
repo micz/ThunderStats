@@ -104,6 +104,10 @@ export const tsCoreUtils = {
         return result;
     },
 
+    getFolderId(folder) {
+      return `${folder.accountId}:/${folder.path}`
+    },
+
     // getManyDaysLabels(labels) {
     //     const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
 

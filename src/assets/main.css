@@ -126,6 +126,10 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .email_list_container {
   position: relative;
   display: inline-block;
+}
+
+.email_list_span{
+  cursor: pointer;
   cursor: pointer;
 }
 

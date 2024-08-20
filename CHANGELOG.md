@@ -2,7 +2,7 @@
 
 
 
-<h3>Version 2.1.0 - ??/??/2024</h3>
+<h3>Version 2.1.0 - 20/08/2024</h3>
       <ul>
        <li>It's now possible to define non-business days, allowing them to be excluded from aggregated statistics [<a href="https://github.com/micz/ThunderStats/issues/206">#206</a>].</li>
        <li>Implemented the data export in CSV format [<a href="https://github.com/micz/ThunderStats/issues/287">#287</a>].</li>
@@ -20,7 +20,6 @@
        <li>Changed the color of the 'Today' bar in the 7-Days Tab Chart [<a href="https://github.com/micz/ThunderStats/issues/326">#326</a>].</li>
        <li>If the chosen account has been changed, switching to another tab reloads the data even if the "Reload data when changing tab" option is set to false [<a href="https://github.com/micz/ThunderStats/issues/327">#327</a>].</li>
        <li>Fixes the correct default duplicate messages filtering flag for Gmail account.</li>
-       <li>...</li>
       </ul>
 <h3>Version 2.0.3 - 08/08/2024</h3>
       <ul>

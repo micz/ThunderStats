@@ -193,16 +193,18 @@ export class thunderStastsCore {
           let date_message = new Date(message.date);
           let hour_message = date_message.getHours();
           // folder
+          let folder_id = "0";
           if(message.folder){
-            console.log(">>>>>>>>>>>>>>>> message.folder: " + JSON.stringify(message.folder));
-	          if (folders[message.folder.path]) {
-	            folders[message.folder.path].count ++;
+            //console.log(">>>>>>>>>>>>>>>> message.folder: " + JSON.stringify(message.folder));
+            folder_id = tsCoreUtils.getFolderId(message.folder);
+	          if (folders[folder_id]) {
+	            folders[folder_id].count ++;
 	          } else {
-	            folders[message.folder.path] = {};
-	            folders[message.folder.path].count = 1;
-				      folders[message.folder.path].sent = 0;
-              folders[message.folder.path].received = 0;
-	            folders[message.folder.path].folder_data = message.folder;
+	            folders[folder_id] = {};
+	            folders[folder_id].count = 1;
+				      folders[folder_id].sent = 0;
+              folders[folder_id].received = 0;
+	            folders[folder_id].folder_data = message.folder;
 	          }
           }
 
@@ -218,9 +220,9 @@ export class thunderStastsCore {
                 const key_author = match_author[0].toLowerCase();
                 if(account_emails.includes(key_author)) {
                   // group by folder
-                  folders[message.folder.path].sent++;
+                  folders[folder_id].sent++;
                 }else{
-                  folders[message.folder.path].received++;
+                  folders[folder_id].received++;
                 }
                   continue;
                 }
@@ -238,7 +240,7 @@ export class thunderStastsCore {
               //messageids_sent.push(message.id);
               sent++;
               // group by folder
-              folders[message.folder.path].sent++;
+              folders[folder_id].sent++;
               // group by date
               dates[date_message_string].sent++;
               // group by hour
@@ -287,7 +289,7 @@ export class thunderStastsCore {
               }
               received++;
               // group by folder
-              folders[message.folder.path].received++;
+              folders[folder_id].received++;
               // group by date
               dates[date_message_string].received++;
               // group by hour

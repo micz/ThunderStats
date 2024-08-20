@@ -31,6 +31,24 @@ ThunderStats's changes are logged [here](CHANGELOG.md).
 
 <br>
 
+
+## Build Instructions
+
+Ensure you have installed [Node.js and npm](https://nodejs.org/).
+
+Then, in the root folder of the project use these commands:
+
+`npm install`
+
+`npm run build`
+
+You'll find the compiled addon in the `dist` folder.
+
+Change the `minify` (`true`|`false`) property in the `vite.config.js` file to choose whether to minify the final code.
+
+
+<br>
+
 ## Credits
 Original Author: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 

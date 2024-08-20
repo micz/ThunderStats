@@ -56,7 +56,7 @@
     "description": ""
   },
   "ExecutionTime": {
-    "message": "Ausführungszeit",
+    "message": "Gesamtzeit",
     "description": ""
   },
   "Setup": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "YesterdayThisTime": {
-    "message": "Gestern um diese Zeit",
+    "message": "um diese Zeit",
     "description": ""
   },
   "sent": {
@@ -319,6 +319,10 @@
     "message": "Fortgeschritten",
     "description": ""
   },
+  "TabBusinessDays.label": {
+    "message": "Business Days",
+    "description": ""
+  },
   "TabCustomIdentities.label": {
     "message": "Zusätzliche Identitäten",
     "description": ""
@@ -389,6 +393,10 @@
   },
   "EmailAddresses": {
     "message": "e-mail-adressen",
+    "description": ""
+  },
+  "Weekdays": {
+    "message": "Weekdays",
     "description": ""
   },
   "WeekDay0": {
@@ -539,12 +547,132 @@
     "message": "Standard festlegen",
     "description": ""
   },
+  "Label_bday_use_last_business_day": {
+    "message": "If yesterday is not a business day, show the last business day instead.",
+    "description": ""
+  },
+  "Label_bday_default_only": {
+    "message": "Consider business days only in aggregate statistics (max, min, average).",
+    "description": ""
+  },
+  "Non-BDays": {
+    "message": "Non-Business Days",
+    "description": ""
+  },
+  "Date": {
+    "message": "Date",
+    "description": ""
+  },
+  "Description": {
+    "message": "Description",
+    "description": ""
+  },
+  "New": {
+    "message": "New",
+    "description": ""
+  },
+  "Edit": {
+    "message": "Edit",
+    "description": ""
+  },
+  "Delete": {
+    "message": "Delete",
+    "description": ""
+  },
+  "Yearly": {
+    "message": "Every year",
+    "description": ""
+  },
+  "Yearly_Desc": {
+    "message": "This day will be a non-business day on every year.",
+    "description": ""
+  },
+  "Cancel": {
+    "message": "Cancel",
+    "description": ""
+  },
+  "Non-Business_Day": {
+    "message": "Non-Business Day",
+    "description": ""
+  },
+  "deletePromptNBD_text": {
+    "message": "Are you sure you want to delete this non-business day?",
+    "description": ""
+  },
+  "EasterNoBusinessDay": {
+    "message": "Easter and Easter Monday are non-business days.",
+    "description": ""
+  },
+  "Year": {
+    "message": "Year",
+    "description": ""
+  },
+  "Month": {
+    "message": "Month",
+    "description": ""
+  },
+  "Day": {
+    "message": "Day",
+    "description": ""
+  },
+  "OnlyBDCustomQry": {
+    "message": "Consider business days only",
+    "description": ""
+  },
+  "BusinessDayOnlyWarning": {
+    "message": "Considering business days only",
+    "description": ""
+  },
+  "LastBusinessDay": {
+    "message": "Last business day",
+    "description": ""
+  },
   "Version": {
     "message": "Version",
     "description": ""
   },
   "AccountWithNoEmails": {
     "message": "Das ausgewählte Konto hat keine zugeordneten E-Mails. Sie müssen eine benutzerdefinierte Identität auf der Optionsseite hinzufügen.",
+    "description": ""
+  },
+  "InfoTotal_AllMails": {
+    "message": "Diese Gesamtsumme berücksichtigt sowohl Werktage als auch Nicht-Werktage.",
+    "description": ""
+  },
+  "InfoTotal_BDMails_Only": {
+    "message": "Diese Werte berücksichtigen nur Werktage.",
+    "description": ""
+  },
+  "TimeChartNoFutureHours": {
+    "message": "Zeigen Sie keine zukünftigen Stunden im heutigen Zeitdiagramm an.",
+    "description": ""
+  },
+  "Miscellaneous": {
+    "message": "Verschiedenes",
+    "description": ""
+  },
+  "TimeChart": {
+    "message": "Zeitdiagramm",
+    "description": ""
+  },
+  "LastExecution": {
+    "message": "Letzte Ausführung",
+    "description": ""
+  },
+  "ExportData": {
+    "message": "Datenexport",
+    "description": ""
+  },
+  "DailyMails": {
+    "message": "Tägliche E-Mails",
+    "description": ""
+  },
+  "Correspondents": {
+    "message": "Korrespondenten",
+    "description": ""
+  },
+  "MailsInADay": {
+    "message": "E-Mails pro Tag",
     "description": ""
   }
 }

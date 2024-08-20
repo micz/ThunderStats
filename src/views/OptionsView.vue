@@ -27,6 +27,9 @@
       <tab id="tab-advanced" name="__MSG_TabAdvanced.label__">
          <OPTAB_Advanced ref="OPTAB_Advanced_ref" v-on:new_changes="somethingChanged"/>
       </tab>
+      <tab id="tab-businessdays" name="__MSG_TabBusinessDays.label__">
+        <OPTAB_BusinessDays ref="OPTAB_BusinessDays_ref" v-on:new_changes="somethingChanged"/>
+      </tab>
       <tab id="tab-customids" name="__MSG_TabCustomIdentities.label__">
         <OPTAB_CustomIds ref="OPTAB_CustomIds_ref" v-on:new_changes="somethingChanged"/>
       </tab>
@@ -45,10 +48,11 @@
 <script setup>
 import { onMounted, onUnmounted, ref, nextTick } from 'vue'
 import { i18n } from "@statslib/mzts-i18n.js";
-import { TS_prefs } from "@statslib/mzts-options.js";
+import { tsPrefs } from "@statslib/mzts-options.js";
 import { tsLogger } from "@statslib/mzts-logger.js";
 import OPTAB_Main from '@/components/options_tabs/OPTAB_Main.vue';
 import OPTAB_Advanced from '@/components/options_tabs/OPTAB_Advanced.vue';
+import OPTAB_BusinessDays from '@/components/options_tabs/OPTAB_BusinessDays.vue';
 import OPTAB_CustomIds from '@/components/options_tabs/OPTAB_CustomIds.vue';
 import OPTAB_Info from '@/components/options_tabs/OPTAB_Info.vue';
 import OPTAB_License from '@/components/options_tabs/OPTAB_License.vue';
@@ -58,18 +62,19 @@ import { tsStore } from '@statslib/mzts-store';
 let optionsTabs = ref(null);
 let OPTAB_Main_ref = ref(null);
 let OPTAB_Advanced_ref = ref(null);
+let OPTAB_BusinessDays_ref = ref(null);
 let OPTAB_CustomIds_ref = ref(null);
 
 let new_changes = ref(false);
 let tsLog = null;
 
 onMounted(async () => {
-    //do_debug.value = await TS_prefs.getPref("do_debug");
+    //do_debug.value = await tsPrefs.getPref("do_debug");
     tsLog = new tsLogger("OptionsView", tsStore.do_debug);
-    TS_prefs.logger = tsLog;
-    TS_prefs.restoreOptions();
+    tsPrefs.logger = tsLog;
+    tsPrefs.restoreOptions();
     document.querySelectorAll(".option-input").forEach(element => {
-      element.addEventListener("change", TS_prefs.saveOptions);
+      element.addEventListener("change", tsPrefs.saveOptions);
     });
     await nextTick();
     i18n.updateDocument();
@@ -78,7 +83,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
     document.querySelectorAll('.option-input').forEach(element => {
-      element.removeEventListener('change', TS_prefs.saveOptions);
+      element.removeEventListener('change', tsPrefs.saveOptions);
     });
     tsLog.log("onUnmounted");
   });

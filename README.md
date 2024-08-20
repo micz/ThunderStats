@@ -50,15 +50,15 @@ Change the `minify` (`true`|`false`) property in the `vite.config.js` file to ch
 <br>
 
 ## Credits
-Original Author: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
+Original Author: [Mic](https://github.com/micz)
 
-Contributing Author: [Christopher Leidigh](https://addons.thunderbird.net/thunderbird/user/cleidigh/)
+Contributing Author: [Christopher Leidigh](https://github.com/cleidigh)
 
 <br>
 
-## ATTRIBUTIONS
+## Attributions
 
-## Translations
+### Translations
 - English (en-US)	: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - Italian (it)		: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - French (fr)		: Goofy and Vittorio
@@ -66,15 +66,17 @@ Contributing Author: [Christopher Leidigh](https://addons.thunderbird.net/thunde
 
 <br>
 
-## Javascript Libraries
+### Javascript Libraries
 See the [package.json](/package.json) file.
 
 <br>
 
-## Graphics
+### Graphics
 Addon icon thanks to http://hopstarter.deviantart.com/
 
-Custom Query Bookmark Icon thanks to http://www.iconarchive.com/artist/graphicrating.html
+Custom Query Bookmark icon thanks to http://www.iconarchive.com/artist/graphicrating.html
 
 Loading SVGs thanks to https://loading.io
+
+Business Days and Export Data icons thanks to https://www.iconarchive.com/artist/custom-icon-design.html
 

@@ -19,7 +19,7 @@
 import { tsLogger } from "./mzts-logger";
 import { tsCoreUtils } from "./mzts-statscore.utils";
 import { tsUtils } from "./mzts-utils";
-import { TS_prefs } from "./mzts-options";
+import { tsPrefs } from "./mzts-options";
 
 export class thunderStastsCore {
 
@@ -32,7 +32,7 @@ export class thunderStastsCore {
   constructor(options = {}) {
     this.do_debug = options.hasOwnProperty('do_debug') ? options.do_debug : false;
     this.tsLog = new tsLogger("thunderStastsCore",this.do_debug);
-    TS_prefs.logger = this.tsLog;
+    tsPrefs.logger = this.tsLog;
     this._involved_num = options.hasOwnProperty('_involved_num') ? options._involved_num : 10;
     this._many_days = options.hasOwnProperty('_many_days') ? options._many_days : 7;
     this.accounts_adv_settings = options.hasOwnProperty('accounts_adv_settings') ? options.accounts_adv_settings : [];
@@ -64,20 +64,8 @@ export class thunderStastsCore {
       let yesterday_midnight = new Date();
       yesterday_midnight.setDate(yesterday_midnight.getDate() - 1);
       yesterday_midnight.setHours(0, 0, 0, 0);
-      let yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(23, 59, 59, 999);
-      //yesterday.setHours(new Date().getHours(), new Date().getMinutes(), new Date().getSeconds(), new Date().getMilliseconds());
-      // console.log(">>>>>>>>>>>>>> getToday_YesterdayData yesterday_midnight: " + JSON.stringify(yesterday_midnight));
-      // console.log(">>>>>>>>>>>>>> getToday_YesterdayData yesterday: " + JSON.stringify(yesterday));
-      let fromDate = new Date(yesterday_midnight);
-      let toDate = new Date(yesterday);
-      // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
-      // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
-
-      return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates);
+      return this.getToday_SingleDayData(yesterday_midnight, account_id, account_emails, count_data_to_current_time);
     }
 
     async getToday_manyDaysData(account_id = 0, account_emails = []) {
@@ -105,16 +93,8 @@ export class thunderStastsCore {
       let yesterdayMidnight = new Date();
       yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
       yesterdayMidnight.setHours(0, 0, 0, 0);
-      let lastMidnight = new Date();
-      lastMidnight.setHours(0, 0, 0, 0);
-      //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
 
-      // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
-      // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
-
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
-
-      return this.getFullStatsData(yesterdayMidnight, lastMidnight, account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getSingleDay(yesterdayMidnight, account_id, account_emails);
     }
     // ================ YESTERDAY TAB - END =====================
 
@@ -137,19 +117,54 @@ export class thunderStastsCore {
     // ================ MANY DAYS TAB - END =====================
 
     // ================ CUSTOM QUERY TAB =====================
-    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = []) {
+    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], only_businessdays = -99) {
 
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates);   // the "true" is to aggregate
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays);   // the "true" is to aggregate
     }
     // ================ CUSTOM QUERY TAB - END =====================
 
+    // ================ SINGLE DAY METHODS =====================
+    async getSingleDay(theDay, account_id = 0, account_emails = []) {
+
+      theDay.setHours(0, 0, 0, 0);
+      let theMidnightAfter = new Date(theDay);
+      theMidnightAfter.setDate(theMidnightAfter.getDate() + 1);
+      theMidnightAfter.setHours(0, 0, 0, 0);
+      //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
+
+      // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
+      // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
+
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
+      return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+    }
+
+    async getToday_SingleDayData(theDay, account_id = 0, account_emails = [], count_data_to_current_time = true) {
+
+      theDay.setHours(0, 0, 0, 0);
+      let theMidnightAfter = new Date(theDay);
+      theMidnightAfter.setDate(theMidnightAfter.getDate() + 1);
+      theMidnightAfter.setHours(0, 0, 0, 0);
+
+      let fromDate = new Date(theDay);
+      let toDate = new Date(theMidnightAfter);
+      // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
+      // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
+
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
+      return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates);
+    }
+    // ================ SINGLE DAY METHODS - END =====================
+
     // ================ BASE METHODS ========================
-    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false) {
+    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99) {
 
       let start_time = performance.now();
       // console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
@@ -255,6 +270,9 @@ export class thunderStastsCore {
                       recipients[key_recipient].count = 1;
                       recipients[key_recipient].name = await tsCoreUtils.getCorrespondantName(recipient);
                     }
+                    // console.log(">>>>>>>>>>>>>> message.headerMessageId: " + message.headerMessageId);
+                    // console.log(">>>>>>>> key_recipient: " + key_recipient);
+                    // console.log(">>>>>>>> recipients[key_recipient].count: " + recipients[key_recipient].count);
                   }
                 }
               }
@@ -271,6 +289,9 @@ export class thunderStastsCore {
                       recipients[key_cc].count = 1;
                       recipients[key_cc].name = await tsCoreUtils.getCorrespondantName(cc);
                     }
+                    // console.log(">>>>>>>>>>>>>> message.headerMessageId: " + message.headerMessageId);
+                    // console.log(">>>>>>>> key_cc: " + key_cc);
+                    // console.log(">>>>>>>> recipients[key_cc].count: " + recipients[key_cc].count);
                   }
                 }
               }
@@ -282,6 +303,9 @@ export class thunderStastsCore {
                 senders[key_author].count = 1;
                 senders[key_author].name = await tsCoreUtils.getCorrespondantName(message.author);
               }
+              // console.log(">>>>>>>>>>>>>> message.headerMessageId: " + message.headerMessageId);
+              // console.log(">>>>>>>> key_author: " + key_author);
+              // console.log(">>>>>>>> senders[key_author].count: " + senders[key_author].count);
               received++;
               // group by folder
               folders[message.folder.id].received++;
@@ -302,10 +326,13 @@ export class thunderStastsCore {
       recipients = Object.fromEntries(Object.entries(recipients).sort((a, b) => b[1].count - a[1].count));
       recipients = Object.fromEntries(Object.entries(recipients).slice(0,this._involved_num));
 
+      // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
+      // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
+
       let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates };
 
       if(do_aggregate_stats) {
-        output.aggregate = this.aggregateData(dates, sent, received);
+        output.aggregate = await this.aggregateData(dates, only_businessdays);
       }
 
       let stop_time = performance.now();
@@ -453,7 +480,7 @@ export class thunderStastsCore {
 
       let output = {sent: sent, received: received, count: count, msg_days: msg_days};
 
-      output.aggregate = this.aggregateData(msg_days, sent, received);
+      output.aggregate = await this.aggregateData(msg_days);
 
       let stop_time = performance.now();
 
@@ -462,33 +489,63 @@ export class thunderStastsCore {
       return output;
     }
 
-    aggregateData(dates, sent, received) {
-      // dates must be popolated with all the days, even with 0 value
-      let num_days = Object.keys(dates).length;
+    async aggregateData(dates, only_businessdays = -99) {
+      
+      let filtered_dates = {};
+      let prefs_bday_default_only = false;
+
+      if(only_businessdays == -99) {
+        prefs_bday_default_only = await tsPrefs.getPref(['bday_default_only']);
+      } else {
+        prefs_bday_default_only = only_businessdays;
+      }
+
+      // console.log(">>>>>>>>>>> bday_default_only: " + prefs_bday_default_only);
+      if(prefs_bday_default_only == true){
+        for (let day_message in dates) {
+          if (tsCoreUtils.checkBusinessDay(day_message)) {
+            filtered_dates[day_message] = dates[day_message];
+            // console.log(">>>>>>>>>>>>> added day_message: " + JSON.stringify(day_message));
+          }else{
+            // console.log(">>>>>>>>>>>>> filtered day_message: " + JSON.stringify(day_message));
+          }
+        }
+        // console.log(">>>>>>>>>>> filtered_dates: " + JSON.stringify(filtered_dates));
+      }else{
+        filtered_dates = dates;
+      }
+
+      let total_sent = 0;
+      let total_received = 0;
       let max_sent = 0;
       let min_sent = 0;
-      //let avg_sent = parseFloat((sent / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
-      let avg_sent = parseFloat((sent / num_days).toFixed(2));
       let max_received = 0;
       let min_received = 0;
-      //let avg_received = parseFloat((received / tsUtils.daysBetween(fromDate, toDate)).toFixed(2));
-      let avg_received = parseFloat((received / num_days).toFixed(2));
 
-      for(let i in dates) {
-        if(dates[i].sent > max_sent) {
-          max_sent = dates[i].sent;
+      for(let i in filtered_dates) {
+        total_sent += filtered_dates[i].sent;
+        total_received += filtered_dates[i].received;
+
+        if(filtered_dates[i].sent > max_sent) {
+          max_sent = filtered_dates[i].sent;
         }
-        if(dates[i].sent < min_sent) {
-          min_sent = dates[i].sent;
+        if(filtered_dates[i].sent < min_sent) {
+          min_sent = filtered_dates[i].sent;
         }
-        if(dates[i].received > max_received) {
-          max_received = dates[i].received;
+        if(filtered_dates[i].received > max_received) {
+          max_received = filtered_dates[i].received;
         }
-        if(dates[i].received < min_received) {
-          min_received = dates[i].received;
+        if(filtered_dates[i].received < min_received) {
+          min_received = filtered_dates[i].received;
         }
       }
-      return {max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, max_received: max_received, min_received: min_received, avg_received: avg_received};
+
+      // filtered_dates must be popolated with all the days, even with 0 value
+      let num_days = Object.keys(filtered_dates).length;
+      let avg_sent = parseFloat((total_sent / num_days).toFixed(2));
+      let avg_received = parseFloat((total_received / num_days).toFixed(2));
+      
+      return {total_sent: total_sent, max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, total_received: total_received, max_received: max_received, min_received: min_received, avg_received: avg_received};
     }
 
     excludeMessage(message, account_id = 0){    // Returns true if the message should be excluded from the stats

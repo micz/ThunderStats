@@ -19,26 +19,27 @@
 -->
 
 <template>
+        <ExportMenu :export_data="_export_data" currentTab="tab-customqry" v-if="job_done" />
         <div id="customqry_dashboard">
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
                 <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
-                <!--<input type="checkbox" id="customqry_only_bd"/> __MSG_OnlyBDCustomQry__-->
-                <span v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></span>
+                <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" /> __MSG_OnlyBDCustomQry__
+                <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
             </div>
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
-                        <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
-                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg"/>
+                        <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
+                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
                       <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length"/>
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
-                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg"/>
+						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
+                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
 					  <GraphCustomQry v-if="do_run" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_graph"  :key="chartData_Rcvd_length"/>
     </div>
@@ -70,9 +71,12 @@ import { tsUtils } from '@statslib/mzts-utils';
 import TableInvolved from '../tables/TableInvolved.vue';
 import GraphCustomQry from '../graphs/GraphCustomQry.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
-import { TS_prefs } from '@statslib/mzts-options';
+import ExportMenu from '../ExportMenu.vue';
+import InfoTooltip from '../InfoTooltip.vue';
+import { tsPrefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
+import { tsExport } from '@statslib/mzts-export';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
@@ -91,6 +95,7 @@ const props = defineProps({
     },
 });
 
+let max_direct_accounts = 3;
 
 let tsLog = null;
 var tsCore = null;
@@ -120,9 +125,11 @@ let is_loading_involved_table_senders = ref(true);
 let is_loading_sent_graph = ref(true);
 let is_loading_rcvd_graph = ref(true);
 
+let counter_customqry_sent_total = ref(0);
 let counter_customqry_sent_max = ref(0);
 let counter_customqry_sent_min = ref(0);
 let counter_customqry_sent_avg = ref(0);
+let counter_customqry_rcvd_total = ref(0);
 let counter_customqry_rcvd_max = ref(0);
 let counter_customqry_rcvd_min = ref(0);
 let counter_customqry_rcvd_avg = ref(0);
@@ -136,9 +143,15 @@ let graphdata_customqry_sent = ref([]);
 let graphdata_customqry_rcvd = ref([]);
 let graphdata_customqry_labels = ref([]);
 
+let _export_data = ref({});
+
 let _involved_num = 10;
 let first_day_week = 1;
 
+let totalInfoTooltip_text = ref("");
+let totalBDInfoTooltip_text = ref("");
+
+let doOnlyBD = ref(false);
 
 let chartData_Sent = ref({
     labels: [],
@@ -152,10 +165,19 @@ let chartData_Rcvd = ref({
 });
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
+let job_done = computed(() => {
+    return !(is_loading_counter_sent_rcvd.value &&
+    is_loading_counter_customqry.value &&
+    is_loading_involved_table_recipients.value &&
+    is_loading_involved_table_senders.value &&
+    is_loading_sent_graph.value &&
+    is_loading_rcvd_graph.value);
+});
+
 onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
-  TS_prefs.logger = tsLog;
-  prefLocale.value = await TS_prefs.getPref("datepicker_locale");
+  tsPrefs.logger = tsLog;
+  prefLocale.value = await tsPrefs.getPref("datepicker_locale");
   datepickerFormat.value = tsUtils.formatDateStringLocale(prefLocale.value);
   if(tsStore.darkmode === undefined) {
     tsStore.darkmode = tsUtils.isDarkMode();
@@ -167,10 +189,15 @@ onMounted(async () => {
     const endDate = new Date();
     const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
     dateQry.value = [startDate, endDate];
-    first_day_week = await TS_prefs.getPref("first_day_week");
-    _involved_num = await TS_prefs.getPref("_involved_num");
+    let prefs = await tsPrefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only"]);
+    //console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
+    first_day_week = prefs.first_day_week;
+    _involved_num = prefs._involved_num;
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
+    doOnlyBD.value = prefs.bday_default_only;
+    totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
+    totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
 });
 
 function update(){
@@ -180,8 +207,8 @@ function update(){
 
 async function rangeChoosen(modelData){
   //console.log(">>>>>>>>>>>>>>> rangeChoosen: " + JSON.stringify(modelData));
-  if(await TS_prefs.getPref("customqry_loaddata_when_selectingrange")){
-    doQry();
+  if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
+    update();
   }
 }
 
@@ -278,15 +305,15 @@ async function setPeriod(period){
             dateQry.value = [tsUtils.getFirstDayOfLastYear(), tsUtils.getLastDayOfLastYear()];
             break;
     }
-    if(await TS_prefs.getPref("customqry_loaddata_when_selectingrange")){
-      doQry();
+    if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
+      update();
     }
 }
 
 async function doQry(){
   loadingDo();
   customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
-  if(props.accountEmails.length > 3){
+  if(props.accountEmails.length > max_direct_accounts){
     customqry_current_account.value = props.accountEmails.length + " " + browser.i18n.getMessage("EmailAddresses");
     customqry_current_account_tooltip.value = props.accountEmails.join(" ");
   } else {
@@ -303,7 +330,7 @@ async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+    let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
@@ -352,8 +379,11 @@ async function updateData() {
             let start_time = performance.now();
             let fromDate = dateQry.value[0];
             let toDate = dateQry.value[1];
-            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails);
+            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails, doOnlyBD.value);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
+            // export data
+            _export_data.value[tsExport.export.daily_mails.type] = result_customqry.dates;
+            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_customqry.senders, result_customqry.recipients);
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
             table_involved_senders.value = result_customqry.senders;
@@ -368,12 +398,14 @@ async function updateData() {
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
             //aggregated data
-            let aggregate = tsCore.aggregateData(result_customqry.dates, sent_total.value, rcvd_total.value);
+            let aggregate = result_customqry.aggregate;
             tsLog.log("dates: " + JSON.stringify(result_customqry.dates, null, 2));
             tsLog.log("aggregate: " + JSON.stringify(aggregate, null, 2));
+            counter_customqry_rcvd_total.value = aggregate.total_received;
             counter_customqry_rcvd_max.value = aggregate.max_received;
             counter_customqry_rcvd_min.value = aggregate.min_received;
             counter_customqry_rcvd_avg.value = aggregate.avg_received;
+            counter_customqry_sent_total.value = aggregate.total_sent;
             counter_customqry_sent_max.value = aggregate.max_sent;
             counter_customqry_sent_min.value = aggregate.min_sent;
             counter_customqry_sent_avg.value = aggregate.avg_sent;

@@ -22,20 +22,24 @@
 <table>
     <tr>
         <td><span class="additional_info_text"><span class="_many_days" v-html="_many_days_text"></span> <span class="count_sent">__MSG_sent__</span>:</span></td>
-        <td><span class="additional_info_text"><span v-if="!is_loading">{{ sent_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ sent_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ sent_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__</span></td>
+        <td><span class="additional_info_text"><span v-if="!is_loading">{{ sent_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> <span class="lowercase">__MSG_total__</span> / <span v-if="!is_loading">{{ sent_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ sent_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ sent_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__</span></td>
     </tr>
     <tr>
         <td class="align_end"><span class="additional_info_text"><span class="invisible_text"></span><span class="count_rcvd">__MSG_received__</span>:</span></td>
-        <td><span class="additional_info_text"><span v-if="!is_loading">{{ rcvd_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ rcvd_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ rcvd_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__</span></td>
+        <td><span class="additional_info_text"><span v-if="!is_loading">{{ rcvd_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> <span class="lowercase">__MSG_total__</span> / <span v-if="!is_loading">{{ rcvd_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ rcvd_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ rcvd_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__</span></td>
     </tr>
 </table>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { TS_prefs } from '@statslib/mzts-options';
+import { tsPrefs } from '@statslib/mzts-options';
 
 let props = defineProps({
+    sent_total: {
+        type: Number,
+        default: 0
+    },
     sent_max: {
         type: Number,
         default: 0
@@ -45,6 +49,10 @@ let props = defineProps({
         default: 0
     },
     sent_avg: {
+        type: Number,
+        default: 0
+    },
+    rcvd_total: {
         type: Number,
         default: 0
     },
@@ -66,6 +74,9 @@ let props = defineProps({
     },
 });
 
+let sent_total = computed(() => {
+    return props.sent_total
+})
 let sent_max = computed(() => {
     return props.sent_max
 })
@@ -74,6 +85,9 @@ let sent_min = computed(() => {
 })
 let sent_avg = computed(() => {
     return props.sent_avg
+})
+let rcvd_total = computed(() => {
+    return props.rcvd_total
 })
 let rcvd_max = computed(() => {
     return props.rcvd_max
@@ -91,13 +105,14 @@ let is_loading = computed(() => {
 let _many_days_text = ref("");
 
 onMounted(async () => {
-    let _many_days = await TS_prefs.getPref("_many_days");
+    let _many_days = await tsPrefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("InTheLastNumDays", _many_days);
 })
 
 </script>
 
-
 <style scoped>
-
+.lowercase {
+    text-transform: lowercase;
+}
 </style>

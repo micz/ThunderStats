@@ -9,7 +9,7 @@
                                            rgba(242,242,240,.25)); /*#78a3d1*/
     background-color: Highlight;
     color: HighlightText;
-    z-index: 101;
+    z-index: 1000;
     top:0px;
     height:24px;
   }
@@ -70,7 +70,15 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   font-size: smaller;
   position: absolute;
   right: 46px;
-  top: 6px;
+  top: 13px;
+  min-width: 11em;
+}
+.mzts-last-exec{
+  font-style: italic;
+  font-size: smaller;
+  position: absolute;
+  right: 46px;
+  top: 0px;
   min-width: 11em;
 }
 #customqry_menu{
@@ -126,6 +134,9 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .email_list_container {
   position: relative;
   display: inline-block;
+}
+
+.email_list_span{
   cursor: pointer;
 }
 
@@ -147,9 +158,10 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   border: 1px #555 solid;
 }
 
-.inbox0_folder_note_tooltip_text {
+._note_tooltip_text {
   visibility: visible;
-  width: 23em;
+  max-width: 23em;
+  width: fit-content;
   background-color: #fff;
   color: #555;
   text-align: center;
@@ -162,6 +174,10 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   transition: opacity 0.3s;
   border: 1px #555 solid;
   display: block;
+  font-weight: normal;
+  font-size: 14px;
+  text-transform: none;
+  white-space: normal;
 }
 
 td.align_end {
@@ -180,6 +196,24 @@ td.align_end {
   font-size: 1.1em;
 }
 
+#customqry_datamsg{
+  display: inline-block;
+  position: absolute;
+  right: 5px;
+  top: 1rem;
+}
+
+.bday_icon{
+  margin-left: 10px;
+  position: relative;
+  top: 2px;
+}
+
+.bday_icon img{
+  width: 16px;
+  height: 16px;
+}
+
 #thstats_ver_info{
   position: absolute;
   right: 5px;
@@ -194,6 +228,50 @@ td.align_end {
   PADDING: 2px 1rem;
   margin-left: 3rem;
   border-radius: 8px;
+}
+
+.export_data{
+  cursor: pointer;
+  font-size: small;
+}
+
+.export_data:hover{
+  text-decoration: underline;
+}
+
+.export_main_btn{
+  position: absolute;
+  right: 15px;
+  top: 0rem;
+  z-index: 1000;
+}
+
+.mx-context-menu-item.disabled {
+  cursor: default !important;
+  color: var(--mx-menu-text) !important;
+}
+
+.my-menu-title{
+  font-weight: bold;
+}
+
+.my-menu-sperator{
+  height: 1px;
+  width: 7em;
+  background-color: var(--mx-menu-disabled-text);
+}
+
+.exportdata_menu{
+  position: fixed;
+  right: 5px;
+  top: 1.8rem;
+  z-index: 1000;
+}
+.exportmenu{
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  z-index: 1000;
 }
 
 /* Dark mode styles */
@@ -239,7 +317,7 @@ td.align_end {
       color: #aaa;
   }
 
-  .email_list_tooltip_text, .inbox0_folder_note_tooltip_text {
+  .email_list_tooltip_text, ._note_tooltip_text {
     background-color: #555;
     color: #fff;
     border-color: white;

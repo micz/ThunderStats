@@ -20,20 +20,19 @@ export class tsLogger {
 
     do_debug = false;
     prefix = "";
+
     constructor(prefix,do_debug) {
         this.do_debug = do_debug;
-        this.prefix = "[tsLogger|" + prefix + "] ";
+        this.prefix = "[ThunderStats Logger | " + prefix + "] ";
     }
     log(msg, do_debug = -1) {
         if(do_debug !== -1) this.do_debug = do_debug;
         if(this.do_debug === true) console.log(this.prefix + msg);
     }
-    error(msg, do_debug = -1) {
-        if(do_debug !== -1) this.do_debug = do_debug;
-        if(this.do_debug === true) console.error(this.prefix + msg);
+    error(msg) {
+        console.error(this.prefix + msg);
     }
-    warn(msg, do_debug = -1) {
-        if(do_debug !== -1) this.do_debug = do_debug;
-        if(this.do_debug === true) console.warn(this.prefix + msg);
+    warn(msg) {
+        console.warn(this.prefix + msg);
     }  
 };

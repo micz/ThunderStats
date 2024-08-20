@@ -49,7 +49,7 @@ table.miczPrefs td{
     padding: 2px;
 }
 
-table.miczPrefs td.grouptitle{
+table.miczPrefs td.grouptitle, table.table_panel td.grouptitle{
     border:0;
     vertical-align: top;
     padding: 2px;
@@ -60,7 +60,7 @@ table.miczPrefs tr:first-child td {
     border-top: none;
 }
   
-table.miczPrefs  tr:last-child td {
+table.miczPrefs tr:last-child td {
     border-bottom: none;
 }
 
@@ -123,13 +123,100 @@ span.dims_label{
     cursor: pointer;
 }
 
+.weekdays {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.day-checkbox {
+    margin-right: 10px;
+}
+
+.table_panel{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px 10px 10px;
+    margin: 10px 0;
+    min-width: 37rem;
+}
+
+.p-datatable{
+    min-width: 20rem;
+}
+
+.bday_btn{
+    min-width: 5rem;
+    margin-bottom: 5px;
+}
+
+.bday_btns_new{
+    text-align: right;
+    margin-top: 10px;
+}
+
+.bday_btns_new button{
+    margin-left: 5px;
+}
+
+table.bday_table_new{
+    margin-top: 0px !important;
+}
+
+.bday_table_new td{
+    padding: 10px 5px 10px 15px !important;
+}
+table.bday_table_new td.grouptitle{
+    font-size: 20px;
+}
+
+table.bday_table {
+  border: 1px solid #7FB5DA;
+  border-spacing: 0px;
+  width: -moz-available;
+}
+table.bday_table tr.selected {
+  background-color: #b5e6ff;
+}
+table.bday_table th, table.bday_table td{
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #7FB5DA;
+}
+table.bday_table th {
+  background-color: #7FB5DA;
+  color: white;
+}
+
+.modal {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  padding: 20px;
+  width: 80%;
+  max-width: 26rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
 #thstats_ver_info{
-    position: absolute;
-    right: 15px;
-    bottom: 0px;
-    font-style: italic;
-    font-size: smaller;
-  }
+  position: absolute;
+  right: 15px;
+  bottom: 0px;
+  font-style: italic;
+  font-size: smaller;
+}
 
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
@@ -212,6 +299,26 @@ span.dims_label{
 
     a:visited {
         color: #79bcff;
+    }
+
+    table.bday_table {
+        border: 1px solid #5A9BB5;
+    }
+    table.bday_table tr.selected {
+        background-color: #1E292F;
+    }
+    table.bday_table th, table.bday_table td {
+        border: 1px solid #5A9BB5;
+    }
+    table.bday_table th {
+        background-color: #5A9BB5;
+        color: #E0E0E0;
+    }
+      
+    .modal-content {
+        background-color: #333;
+        color: #E0E0E0;
+        box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.3);
     }
 
 }

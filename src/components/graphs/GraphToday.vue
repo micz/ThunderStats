@@ -41,6 +41,7 @@ import { Line } from 'vue-chartjs'
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
 import { externalTooltipTimeGraphLines } from '@statslib/chartjs-lib/external-tooltip-timegraphlines';
 import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
+import { tsVerticalLinePlugin } from '@statslib/chartjs-lib/plugin-timegraph-vertical-line';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsUtils } from '@statslib/mzts-utils';
 import { tsStore } from '@statslib/mzts-store';
@@ -74,7 +75,11 @@ watch(props.chartData, (newChartData) => {
                   .concat(tsUtils.safeConcat(newChartData.datasets, 1))
                   .concat(tsUtils.safeConcat(newChartData.datasets, 2))
                   .concat(tsUtils.safeConcat(newChartData.datasets, 3));
-        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(data) / 5) * 5;
+        let maxData = tsCoreUtils.getMaxFromData(data);
+        maxY.value = (Math.ceil(maxData / 5) * 5);
+        if(maxY.value == maxData) {
+          maxY.value = maxY.value + 3;
+        }
     } else {
         maxY.value = 5;
     }
@@ -138,6 +143,20 @@ var chartOptions = ref({
             containerID: 'today-time-legend-container',
             is_today: true,
           },
+          tsVerticalLinePlugin: {
+            drawVerticalLineAt: () => {
+              const now = new Date();
+              const hour = now.getHours();
+              let time = hour.toString().padStart(2, '0');
+              return time;
+            },
+            verticalLineColor: () => {
+              if(tsStore.darkmode) {
+                return '#88ff73';
+              }
+              return '#265707';
+            },
+          },
           tooltip: {
               enabled: false,
               mode: 'index',
@@ -148,7 +167,7 @@ var chartOptions = ref({
       });
 
 
-let chartPlugins =  [htmlLegendPlugin];
+let chartPlugins =  [htmlLegendPlugin, tsVerticalLinePlugin];
 
 /*async function updateChart() {
   //console.log("updateChart: " + JSON.stringify(chartData.value));

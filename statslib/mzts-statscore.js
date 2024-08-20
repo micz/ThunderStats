@@ -622,18 +622,19 @@ export class thunderStastsCore {
       // let folders = await browser.folders.query(queryInfo_InboxFolders);
 
       let account = null;
+      let folders = null;
 
       if(account_id == 0) {
         account = await browser.accounts.list(true);
+        folders = account.flatMap(acc => acc.folders.filter(folder => folder.type === 'inbox'));
       } else {
         account = await browser.accounts.get(account_id, true);
+        folders = account.folders.filter(folder => folder.type == 'inbox');
       }
 
       //test code to print the account_folders
       // let account_folders = await browser.folders.getSubFolders(await browser.accounts.get(account_id));
       // console.log(">>>>>>>>>>>>>>> account_folders: " + JSON.stringify(account_folders));
-
-      let folders = account.folders.filter(folder => folder.type == 'inbox');
 
       this.tsLog.log("folders: " + JSON.stringify(folders));
       return folders;

@@ -22,9 +22,9 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
-      <h3>Version 1.9.1 - ??/??/2024</h3>
+      <h3>Version 1.9.1 - 20/08/2024</h3>
       <ul>
-        <li>...</li>
+        <li>Minor bug fixes.</li>
       </ul>
       <h3>Version 1.9.0 - 09/08/2024</h3>
       <ul>

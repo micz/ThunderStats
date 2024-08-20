@@ -1,5 +1,11 @@
 # ![TS] ThunderStats Release Notes
 
+
+
+<h3>Version 1.9.1 - ??/??/2024</h3>
+      <ul>
+        <li>...</li>
+      </ul>
 <h3>Version 1.9.0 - 09/08/2024</h3>
       <ul>
        <li><b><i>This version 1.9 has been backported from ThunderStats version 2.0 to Thunderbird 115.</i></b></li>

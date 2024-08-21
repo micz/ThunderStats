@@ -39,7 +39,7 @@
        <li>Displaying the last execution time for each tab [<a href="https://github.com/micz/ThunderStats/issues/314">#314</a>].</li>
        <li>Changed the color of the 'Today' bar in the 7-Days Tab Chart [<a href="https://github.com/micz/ThunderStats/issues/326">#326</a>].</li>
        <li>If the chosen account has been changed, switching to another tab reloads the data even if the "Reload data when changing tab" option is set to false [<a href="https://github.com/micz/ThunderStats/issues/327">#327</a>].</li>
-       <li>Fixes the correct default duplicate messages filtering flag for Gmail account.</li>
+       <li>Fixed the correct default duplicate messages filtering flag for Gmail account.</li>
       </ul>
       <h3>Version 2.0.3 - 08/08/2024</h3>
       <ul>

@@ -10,7 +10,7 @@ assignees: ''
 **Thunderbird version and OS**
 Report the Thunderbird version and Operating System you're using.
 
-**ThunderAI version**
+**ThunderStats version**
 Report the add-on version you're using.
 
 **Describe the bug**

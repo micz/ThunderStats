@@ -22,6 +22,10 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
+      <h3>Version 2.2.0 - ??/??/2024</h3>
+      <ul>
+        <li>...</li>
+      </ul>
       <h3>Version 2.1.0 - 20/08/2024</h3>
       <ul>
        <li>It's now possible to define non-business days, allowing them to be excluded from aggregated statistics [<a href="https://github.com/micz/ThunderStats/issues/206">#206</a>].</li>

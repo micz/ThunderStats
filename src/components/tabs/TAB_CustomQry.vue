@@ -19,7 +19,7 @@
 -->
 
 <template>
-        <ExportMenu :export_data="_export_data" currentTab="tab-customqry" v-if="job_done" />
+        <ExportMenu :export_data="_export_data" :currentTab="tabId" v-if="job_done" :singleDay="singleDay" />
         <div id="customqry_dashboard">
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
@@ -126,6 +126,8 @@ let max_direct_accounts = 3;
 let tsLog = null;
 var tsCore = null;
 
+let tabId = ref("tab-customqry");
+
 let dateQry = ref();
 let do_run = ref(false);
 let customqry_current_account = ref("");
@@ -139,6 +141,7 @@ let emailListTooltipVisible = ref(false);
 let do_progressive = true;
 let inbox0_openFolderInFirstTab = ref(false);
 let do_single_day = ref(false);
+let singleDay = ref(null);
 let singleday_date_str = ref("");
 
 let is_loading_singleday_graph = ref(true);
@@ -389,7 +392,9 @@ async function doQry(){
   do_single_day.value = (customqry_totaldays_num.value == 1);
   if(do_single_day.value){
     tsLog.log("Doing single day view...");
-    singleday_date_str.value = dateQry.value[0].toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
+    tabId.value = "tab-customqry-single-day";
+    singleDay.value = dateQry.value[0];
+    singleday_date_str.value = singleDay.value.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
   }
   if(props.accountEmails.length > max_direct_accounts){
     customqry_current_account.value = props.accountEmails.length + " " + browser.i18n.getMessage("EmailAddresses");
@@ -502,7 +507,12 @@ async function updateData() {
             let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails, doOnlyBD.value);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
             // export data
-            _export_data.value[tsExport.export.daily_mails.type] = result_customqry.dates;
+            if(!do_single_day.value){
+              _export_data.value[tsExport.export.daily_mails.type] = result_customqry.dates;
+            }else{
+              _export_data.value[tsExport.export.time_emails.type] = result_customqry.msg_hours;
+            }
+            
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_customqry.senders, result_customqry.recipients);
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;

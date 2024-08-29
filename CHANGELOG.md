@@ -5,6 +5,7 @@
 
 <h3>Version 2.2.0 - ??/??/2024</h3>
       <ul>
+        <li>When executing a custom query for a single day, now is used the single day view [<a href="https://github.com/micz/ThunderStats/issues/315">#315</a>].</li>
         <li>...</li>
       </ul>
 <h3>Version 2.1.0 - 20/08/2024</h3>

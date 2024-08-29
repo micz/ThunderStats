@@ -41,6 +41,10 @@ const getOrCreateLegendList = (chart, id) => {
       while (ul.firstChild) {
         ul.firstChild.remove();
       }
+
+      if(options.is_today) options.is_yesterday = false;
+      // console.log(">>>>>>>>>>>>> is_yesterday: " + options.is_yesterday);
+      // console.log(">>>>>>>>>>>>> is_today: " + options.is_today);
   
       // Reuse the built-in legendItems generator
       const items = chart.options.plugins.legend.labels.generateLabels(chart);
@@ -53,7 +57,8 @@ const getOrCreateLegendList = (chart, id) => {
             if(i==2){
               li_ty.classList.add('day_today_title_yesterday');
             }
-            li_ty.innerHTML = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
+            li_ty.innerHTML = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : ((((i > 0) && options.is_today) || options.is_yesterday) ? browser.i18n.getMessage('Yesterday') : browser.i18n.getMessage('Mails'));
+            //li_ty.innerHTML = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
             ul.appendChild(li_ty);
           }
 

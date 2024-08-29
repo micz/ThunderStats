@@ -103,6 +103,10 @@ import ContextMenu from '@imengyu/vue3-context-menu'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import CounterSentReceived from '../counters/CounterSentReceived.vue';
 import GraphYesterday from '../graphs/GraphYesterday.vue';
+import GraphInboxZeroFolders from '../graphs/GraphInboxZeroFolders.vue';
+import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
+import CounterInbox from '../counters/CounterInbox.vue';
+
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']);
 
@@ -133,15 +137,39 @@ let emailListTooltipVisible = ref(false);
 
 // single day view
 let do_progressive = true;
+let inbox0_openFolderInFirstTab = ref(false);
 let do_single_day = ref(false);
 let singleday_date_str = ref("");
+
+let is_loading_singleday_graph = ref(true);
+let is_loading_inbox_graph_folders = ref(true);
+let is_loading_inbox_graph_dates = ref(true);
+let is_loading_counter_inbox = ref(true);
+
+let counter_inbox_total = ref(0);
+let counter_inbox_unread = ref(0);
+
 let chartData_SingleDay = ref({
     labels: Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')),
     datasets: []
 });
-let is_loading_singleday_graph = ref(true);
+
 let graphdata_singleday_hours_sent = ref([]);
 let graphdata_singleday_hours_rcvd = ref([]);
+let chartData_InboxZeroFolders = ref({
+    labels: [],
+    datasets: []
+});
+let chartData_InboxZeroDates = ref({
+    labels: [],
+    datasets: []
+});
+let graphdata_inboxzero_folders = ref([]);
+let graphdata_inboxzero_dates = ref([]);
+
+let showFolderLocationNoteAnchor = ref(false);
+let folderLocationNote_text = ref("");
+// single day view - END
 
 let datepickerFormat = ref("dd-MM-yyyy");
 let prefLocale = ref("en-GB");
@@ -200,12 +228,22 @@ let chartData_Rcvd = ref({
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
 let job_done = computed(() => {
+  if(!do_single_day.value){
     return !(is_loading_counter_sent_rcvd.value &&
     is_loading_counter_customqry.value &&
     is_loading_involved_table_recipients.value &&
     is_loading_involved_table_senders.value &&
     is_loading_sent_graph.value &&
     is_loading_rcvd_graph.value);
+  }else{
+    return !(is_loading_counter_sent_rcvd.value &&
+    is_loading_singleday_graph.value &&
+    is_loading_involved_table_recipients.value &&
+    is_loading_involved_table_senders.value &&
+    is_loading_counter_inbox.value &&
+    is_loading_inbox_graph_folders.value &&
+    is_loading_inbox_graph_dates.value);
+  }
 });
 
 onBeforeMount(async () => {
@@ -232,6 +270,7 @@ onMounted(async () => {
     doOnlyBD.value = prefs.bday_default_only;
     totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
     totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
+    folderLocationNote_text.value = browser.i18n.getMessage("InboxZeroFolderLocationNote");
 });
 
 function update(){
@@ -411,7 +450,7 @@ async function updateData() {
       tsLog.log("graphdata_customqry_rcvd.value: " + JSON.stringify(graphdata_customqry_rcvd.value));
       chartData_Rcvd.value.labels = graphdata_customqry_labels.value;
     }else{
-      //getInboxZeroData();
+      getInboxZeroData();
       // graph single day hours // TODO
       tsLog.log("graphdata_singleday_hours_sent.value: " + JSON.stringify(graphdata_singleday_hours_sent.value));
       tsLog.log("graphdata_singleday_hours_rcvd.value: " + JSON.stringify(graphdata_singleday_hours_rcvd.value));
@@ -433,17 +472,23 @@ async function updateData() {
           pointRadius: 1,
       })
       // graph inbox zero folders
-      // let given_folders = tsCoreUtils.filterReceivedFolders(graphdata_inboxzero_folders.value);
-      // let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
-      // chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
-      // chartData_InboxZeroFolders.value.labels = folders_data.labels;
-      // chartData_InboxZeroFolders.value.datasets = [];
-      // chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(given_folders), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
-      // tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
-      // // graph inbox zero dates
-      // inbox0_openFolderInFirstTab.value = await tsPrefs.getPref("inbox0_openFolderInFirstTab");
+      let given_folders = tsCoreUtils.filterReceivedFolders(graphdata_inboxzero_folders.value);
+      let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
+      chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
+      chartData_InboxZeroFolders.value.labels = folders_data.labels;
+      chartData_InboxZeroFolders.value.datasets = [];
+      chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(given_folders), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
+      tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
+      // graph inbox zero dates
+      inbox0_openFolderInFirstTab.value = await tsPrefs.getPref("inbox0_openFolderInFirstTab");
     }
-    nextTick(() => {
+    nextTick(async () => {
+        if(do_single_day.value){
+          is_loading_singleday_graph.value = false;
+          is_loading_inbox_graph_folders.value = false;
+          // is_loading_inbox_graph_dates.value = false;
+          showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(props.activeAccount)
+        }
         i18n.updateDocument();
     });
 };
@@ -501,9 +546,31 @@ async function updateData() {
               graphdata_singleday_hours_sent.value = singleday_hours_data.dataset_sent;
               graphdata_singleday_hours_rcvd.value = singleday_hours_data.dataset_rcvd;
               is_loading_singleday_graph.value = false;
+              // inbox zero folders
+              graphdata_inboxzero_folders.value = result_customqry.folders;
             }
             let stop_time = performance.now();
             updateElapsed(stop_time - start_time);
+            resolve(true);
+        });
+    };
+
+    function getInboxZeroData () {
+        return new Promise(async (resolve) => {
+            let result_inbox = await tsCore.getInboxZeroDates(props.activeAccount, props.accountEmails);
+            counter_inbox_total.value = result_inbox.total;
+            counter_inbox_unread.value = result_inbox.unread;
+            // inbox zero dates
+            graphdata_inboxzero_dates.value = result_inbox.dates;
+            is_loading_counter_inbox.value = false;
+            chartData_InboxZeroDates.value.labels = ['date'];
+            chartData_InboxZeroDates.value.datasets = [];
+            chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
+            tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
+            nextTick(() => {
+                is_loading_inbox_graph_dates.value = false;
+            });
+            updateElapsed('getInboxZeroData', result_inbox.elapsed);
             resolve(true);
         });
     };
@@ -516,6 +583,9 @@ function loadingDo(){
     is_loading_sent_graph.value = true;
     is_loading_rcvd_graph.value = true;
     is_loading_singleday_graph.value = true;
+    is_loading_counter_inbox.value = true;
+    is_loading_inbox_graph_folders.value = true;
+    is_loading_inbox_graph_dates.value = true;
 }
 
 function updateElapsed(elapsed) {

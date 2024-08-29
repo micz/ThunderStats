@@ -25,6 +25,10 @@ const props = defineProps({
     type: String,
     default: ""
   },
+  singleDay: {
+    type: Date,
+    default: new Date()
+  }
   // additional_css_class: {
   //   type: String,
   //   default: ""
@@ -33,6 +37,7 @@ const props = defineProps({
 
 let export_data = computed(() => props.export_data)
 let currentTab = computed(() => props.currentTab)
+let singleDay = computed(() => props.singleDay)
 // let css_class = computed(() => "export_data " + props.additional_css_class)
 
 let exportdata_menu_dom_id = ref("exportdata_menu_" + currentTab.value);
@@ -176,15 +181,24 @@ let export_menu = {
             exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
           }
         },
-        // { 
-        //   label: browser.i18n.getMessage("MailsInADay"), 
-        //   onClick: async () => {
-        //     let _many_days = await tsPrefs.getPref("_many_days");
-        //     let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
-        //     let export_type = tsExport.export["time_emails"].type;
-        //     exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
-        //   }
-        // },
+      ],
+      "tab-customqry-single-day": [
+        { 
+          label: browser.i18n.getMessage("Correspondents"), 
+          onClick: () => {
+            let export_define = browser.i18n.getMessage("CustomQry");
+            let export_type = tsExport.export["correspondents"].type;
+            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+          }
+        },
+        { 
+          label: browser.i18n.getMessage("MailsInADay"), 
+          onClick: async () => {
+            let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(singleDay.value);
+            let export_type = tsExport.export["time_emails"].type;
+            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+          }
+        },
       ],
       //========================================== CustomQry Tab - END
 };

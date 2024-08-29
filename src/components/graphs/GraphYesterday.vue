@@ -30,7 +30,7 @@
       v-if="!is_loading"
     />
 </div>
-<div id="yesterday-time-legend-container" class="legend-time" v-if="!is_loading"></div>
+<div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </template>
 
 
@@ -55,17 +55,27 @@ let props = defineProps({
     is_loading: {
         type: Boolean,
         default: true
+    },
+    yesterday: {
+      type: Boolean,
+      default: true
     }
 });
 
 let yesterdayChartBar_ref = ref(null);
 
+let legend_id = ref("yesterday-time-legend-container");
+
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
+let do_yesterday = computed(() => props.yesterday)
 
 let maxY = ref(0);
 
 watch(props.chartData, (newChartData) => {
+  if(!do_yesterday.value) {
+    legend_id.value = "singleday-time-legend-container";
+  }
     //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
       let data = newChartData.datasets[0].data.concat(newChartData.datasets[1].data);
@@ -131,8 +141,9 @@ var chartOptions = ref({
           },
           htmlLegend: {
             // ID of the container to put the legend in
-            containerID: 'yesterday-time-legend-container',
+            containerID: legend_id.value,
             is_today: false,
+            is_yesterday: do_yesterday.value,
           },
           tooltip: {
               enabled: false,

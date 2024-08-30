@@ -589,7 +589,7 @@ async function updateData() {
             nextTick(() => {
                 is_loading_inbox_graph_dates.value = false;
             });
-            updateElapsed('getInboxZeroData', result_inbox.elapsed);
+            updateElapsed(result_inbox.elapsed);
             resolve(true);
         });
     };

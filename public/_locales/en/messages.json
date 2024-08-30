@@ -674,5 +674,9 @@
   "MailsInADay": {
     "message": "Mails in a day",
     "description": ""
+  },
+  "FolderLocation_percent_handled": {
+    "message": "Mails moved from the inbox folder",
+    "description": ""
   }
 }

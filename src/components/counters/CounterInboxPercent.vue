@@ -19,7 +19,10 @@
 -->
 
 <template>
-<p class="chart_info">__MSG_FolderLocation_percent_handled__: <span class="inbox0_inboxmsg" v-if="!is_loading">{{ inbox_percent }}</span><img class="spinner_small" src="@/assets/images/mzts-wait_line.svg" alt="__MSG_Loading__..." v-if="is_loading" /><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/></p>
+    <div class="chart_inbox0_percent">
+        <div class="chart_inbox0_percent_text">__MSG_FolderLocation_percent_handled__</div>
+        <div class="chart_inbox0_percent_num"><span v-if="!is_loading">{{ inbox_percent }}</span><img class="spinner_small" src="@/assets/images/mzts-wait_line.svg" alt="__MSG_Loading__..." v-if="is_loading" /></div>
+    </div>
 </template>
 
 <script setup>
@@ -44,7 +47,6 @@ let is_loading = computed(() => {
 })
 
 </script>
-
 
 
 <style scoped>

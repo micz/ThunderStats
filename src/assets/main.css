@@ -117,6 +117,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   background-color: #f1f9fd;
   width: 100%;
   padding-bottom: 5px;
+  z-index: 1;
 }
 
 .dp__input{
@@ -151,7 +152,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   border-radius: 6px;
   padding: 5px 6px;
   position: absolute;
-  z-index: 1;
+  z-index: 100;
   top: 125%;
   left: 50%;
   margin-left: -60px;
@@ -170,7 +171,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   border-radius: 6px;
   padding: 5px 6px;
   position: absolute;
-  z-index: 1;
+  z-index: 100;
   margin-left: -60px;
   opacity: 1;
   transition: opacity 0.3s;
@@ -276,6 +277,22 @@ td.align_end {
   z-index: 1000;
 }
 
+.chart_inbox0_percent{
+  text-align: center;
+  width: fit-content;
+  position: absolute;
+  right: 1em;
+  top: 5.2em;
+  background-color: #4682b4;
+  color:#fff;
+  border-radius: 15px;
+  padding: 9px;
+}
+.chart_inbox0_percent_num{
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {
@@ -331,6 +348,10 @@ td.align_end {
 
   a:visited {
       color: #79bcff;
+  }
+
+  .chart_inbox0_percent{
+    background-color: #555;
   }
 
 }

@@ -50,7 +50,8 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .legend-time{float:right;font-size:12px;padding-top:8px;}
 .legend-time ul{list-style-type:none;margin:0;padding:0;}
 .legend-time ul li.day_today_title{font-weight:bold;}
-.chart_inbox0{width:80%;height:310px;float:left;}
+.chart_inbox0_info{width:100%;float:left;}
+.chart_inbox0{width:80%;height:310px;float:left;overflow:auto;}
 .chart_inbox0_datemsg{float:right;max-width:20%;min-width:90px;height:220px;}
 .inbox0_inboxmsg_unread{color:grey;}
 .chart_many_days{overflow:auto;float:left;height:370px;width:100%;}

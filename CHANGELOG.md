@@ -9,6 +9,7 @@
         <li>The Inbox Zero Folders Chart is no longer partially hidden under the bottom border in certain circumstances.</li>
         <li>The labels on the Inbox Zero Folders graphs no longer overlap [<a href="https://github.com/micz/ThunderStats/issues/341">#341</a>].</li>
         <li>Added the precentage of mails moved from inbox in all the single day views [<a href="https://github.com/micz/ThunderStats/issues/343">#343</a>].</li>
+        <li>Fixed a concurrency bug in displaying the elapsed time. It now always shows the maximum value.</li>
         <li>...</li>
       </ul>
 <h3>Version 2.1.0 - 20/08/2024</h3>

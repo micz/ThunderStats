@@ -54,6 +54,7 @@
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
 					  </div>
 					  <CounterInbox :is_loading="is_loading_counter_inbox" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
+            <CounterInboxPercent :is_loading="is_loading_counter_inbox" :inbox_percent="counter_inbox_percent" />
                       <div class="chart_inbox0_info"><p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="singleday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (rcvd_total == 0)" v-text="no_mails_received_yesterday"></p></div>
                       <div class="chart_inbox0">
                         <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_graph_folders" />
@@ -106,7 +107,7 @@ import GraphYesterday from '../graphs/GraphYesterday.vue';
 import GraphInboxZeroFolders from '../graphs/GraphInboxZeroFolders.vue';
 import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
-
+import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']);
 
@@ -151,6 +152,7 @@ let is_loading_counter_inbox = ref(true);
 
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
+let counter_inbox_percent = ref(0);
 
 let chartData_SingleDay = ref({
     labels: Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')),
@@ -552,6 +554,13 @@ async function updateData() {
               graphdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
               is_loading_rcvd_graph.value = false;
             }else{  // single day view
+              // console.log(">>>>>>>>>>>>>> count_total_rcvd: " + result_customqry.received);
+              // console.log(">>>>>>>>>>>>>> count_in_inbox: " + result_customqry.count_in_inbox);
+              if(result_customqry.received > 0){
+                counter_inbox_percent.value = (Math.round((1 - (result_customqry.count_in_inbox / result_customqry.received)) * 10000) / 100).toFixed(2) + '%';
+              }else{
+                counter_inbox_percent.value = '0%';
+              }
               const singleday_hours_data = tsCoreUtils.transformCountDataToDataset(result_customqry.msg_hours, do_progressive);
               graphdata_singleday_hours_sent.value = singleday_hours_data.dataset_sent;
               graphdata_singleday_hours_rcvd.value = singleday_hours_data.dataset_rcvd;
@@ -619,5 +628,8 @@ defineExpose({ doQry });
 <style scoped>
 .square_container {
     margin-top: 4.6em;
+}
+.chart_inbox0_percent{
+  top: 5.2em;
 }
 </style>

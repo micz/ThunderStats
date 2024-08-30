@@ -229,7 +229,7 @@ import { tsUtils } from '@statslib/mzts-utils';
 
   function updateElapsed(elapsed) {
     tsLog.log("updateElapsed: " + elapsed);
-    elapsed_time.value = elapsed;
+    if(elapsed_time.value < elapsed) elapsed_time.value = elapsed;
     if(elapsed > 0) last_exec_datetime.value[currentTab.value] = (new Date()).toLocaleTimeString();
   }
 

@@ -394,6 +394,35 @@ export const tsCoreUtils = {
         return account_emails.some(email => email.toLowerCase().endsWith("@gmail.com"));
     },
 
+    async getAccountFoldersIds(account_id, ignore_archive_folders = false) {
+        let output = [];
+    
+        async function exploreFolders(folders) {
+            for (let folder of folders) {
+                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
+                if (ignore_archive_folders && folder.type == "archive") {
+                    continue;
+                }
+                if (!output.includes(folder.id)) {
+                    output.push(folder.id);
+                }
+    
+                // Recursively explore subfolders
+                if (folder.subFolders && folder.subFolders.length > 0) {
+                    await exploreFolders(folder.subFolders);
+                }
+            }
+        }
+    
+        let folders = await browser.folders.getSubFolders(account_id);
+    
+        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+    
+        await exploreFolders(folders);
+    
+        return output;
+    },
+
     async getIncludeArchivePreference(account_id) {
         if(account_id == 0) {
            return await tsPrefs.getPref("include_archive_multi_account");

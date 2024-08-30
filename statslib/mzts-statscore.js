@@ -173,10 +173,13 @@ export class thunderStastsCore {
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
 
       let queryInfo_FullStatsData = {
-        accountId: account_id == 0?'':account_id,
+        //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account hass been chosen
         fromDate: fromDate,
         toDate: toDate,
       }
+
+      if(account_id != 0) queryInfo_FullStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
+      
       this.tsLog.log("queryInfo_getFullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
       
       let count = 0;

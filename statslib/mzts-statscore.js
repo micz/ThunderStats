@@ -182,6 +182,7 @@ export class thunderStastsCore {
       let count = 0;
       let sent = 0;
       let received = 0;
+      let count_in_inbox = 0;
 
       let senders = {};
       let recipients = {};
@@ -215,6 +216,9 @@ export class thunderStastsCore {
               folders[message.folder.id].sent = 0;
               folders[message.folder.id].received = 0;
               folders[message.folder.id].folder_data = message.folder;
+            }
+            if(message.folder.specialUse && message.folder.specialUse.includes('inbox')){
+              count_in_inbox++;
             }
           }
 
@@ -329,7 +333,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
       // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates };
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates };
 
       if(do_aggregate_stats) {
         output.aggregate = await this.aggregateData(dates, only_businessdays);

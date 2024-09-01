@@ -232,6 +232,10 @@ let chartData_Rcvd = ref({
 });
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
+let elapsed = {
+    'getCustomQryData':0,
+}
+
 let job_done = computed(() => {
   if(!do_single_day.value){
     return !(is_loading_counter_sent_rcvd.value &&
@@ -392,11 +396,13 @@ async function doQry(){
   loadingDo();
   customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
   do_single_day.value = (customqry_totaldays_num.value == 1);
+  elapsed.getInboxZeroData = 1;
   if(do_single_day.value){
     tsLog.log("Doing single day view...");
     tabId.value = "tab-customqry-single-day";
     singleDay.value = dateQry.value[0];
     singleday_date_str.value = singleDay.value.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
+    elapsed.getInboxZeroData = 0;
   }
   if(props.accountEmails.length > max_direct_accounts){
     customqry_current_account.value = props.accountEmails.length + " " + browser.i18n.getMessage("EmailAddresses");
@@ -569,7 +575,7 @@ async function updateData() {
               graphdata_inboxzero_folders.value = result_customqry.folders;
             }
             let stop_time = performance.now();
-            updateElapsed(stop_time - start_time);
+            updateElapsed('getCustomQryData', stop_time - start_time);
             resolve(true);
         });
     };
@@ -589,7 +595,7 @@ async function updateData() {
             nextTick(() => {
                 is_loading_inbox_graph_dates.value = false;
             });
-            updateElapsed(result_inbox.elapsed);
+            updateElapsed('getInboxZeroData', result_inbox.elapsed);
             resolve(true);
         });
     };
@@ -607,9 +613,13 @@ function loadingDo(){
     is_loading_inbox_graph_dates.value = true;
 }
 
-function updateElapsed(elapsed) {
-    tsLog.log("updateElapsed: " + elapsed);
-    emit('updateElapsed', elapsed);
+function updateElapsed(function_name, time) {
+    elapsed[function_name] = time;
+    //console.log(">>>>>>>>>>>>> updateElapsed: " + JSON.stringify(elapsed));
+    const allNonZero = Object.values(elapsed).every(value => value !== 0);
+    if (allNonZero) {
+        emit('updateElapsed', Math.max(...Object.values(elapsed)));
+    }
 }
 
 function showEmailListTooltip(){

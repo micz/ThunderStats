@@ -167,6 +167,8 @@ import { tsUtils } from '@statslib/mzts-utils';
     if(tsCore == null) {
       tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     }
+    //elapsed_time.value = 0;
+    updateElapsed(0);
     last_exec_datetime.value[currentTab.value] = '';
     tsLog.log("updateStats", account_id);
     activeAccount.value = account_id;
@@ -229,7 +231,10 @@ import { tsUtils } from '@statslib/mzts-utils';
 
   function updateElapsed(elapsed) {
     tsLog.log("updateElapsed: " + elapsed);
-    if(elapsed_time.value < elapsed) elapsed_time.value = elapsed;
+    // console.log(">>>>>>>>>>>>> updateElapsed elapsed: " + elapsed);
+    // console.log(">>>>>>>>>>>>> updateElapsed elapsed_time.value: " + elapsed_time.value);
+    //if(elapsed_time.value < elapsed) elapsed_time.value = elapsed;
+    elapsed_time.value = elapsed;
     if(elapsed > 0) last_exec_datetime.value[currentTab.value] = (new Date()).toLocaleTimeString();
   }
 

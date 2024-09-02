@@ -33,7 +33,7 @@
           <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_ManyDays_ref" />
         </tab>
         <tab id="tab-customqry" name="__MSG_CustomQry__">
-          <TAB_CustomQry @updateCustomQry="updateCustomQry" :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_CustomQry_ref" />
+          <TAB_CustomQry @updateCustomQry="updateCustomQry" :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @customQryUserCancelled="customQryUserCancelled" ref="TAB_CustomQry_ref" />
         </tab>
         <tab id="tab-info" name="__MSG_Info__">
             <TAB_Info />
@@ -236,6 +236,11 @@ import { tsUtils } from '@statslib/mzts-utils';
     //if(elapsed_time.value < elapsed) elapsed_time.value = elapsed;
     elapsed_time.value = elapsed;
     if(elapsed > 0) last_exec_datetime.value[currentTab.value] = (new Date()).toLocaleTimeString();
+  }
+
+  function customQryUserCancelled() {
+    tsLog.log("The user cancelled the custom query when asked about too many days.");
+    is_loading.value = false;
   }
 
   function updateYesterdayTabName(name) {

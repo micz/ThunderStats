@@ -109,7 +109,7 @@ import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
 import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 
-const emit = defineEmits(['updateCustomQry'],['updateElapsed']);
+const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
 
 const props = defineProps({
     activeAccount: {
@@ -393,8 +393,17 @@ async function setPeriod(period){
 }
 
 async function doQry(){
-  loadingDo();
   customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
+  let pref_warn_days = await tsPrefs.getPref("customqry_warn_onlongperiod_days");
+  if(pref_warn_days > 0 && customqry_totaldays_num.value > pref_warn_days){
+    if(!confirm(browser.i18n.getMessage("CustomViewTooMuchDaysText",customqry_totaldays_num.value))){
+      do_run.value = false;
+      customqry_totaldays_num.value = 0;
+      emit('customQryUserCancelled');
+      return;
+    }
+  }
+  loadingDo();
   do_single_day.value = (customqry_totaldays_num.value == 1);
   elapsed.getInboxZeroData = 1;
   if(do_single_day.value){

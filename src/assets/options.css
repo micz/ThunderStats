@@ -78,7 +78,7 @@ span.dims_label{
     display: inline-block;
 }
 
-input#_involved_num, input#_many_days, input#datepicker_locale{
+input#_involved_num, input#_many_days, input#datepicker_local, input#customqry_warn_onlongperiod_days{
     width: 60px;
 }
 
@@ -266,7 +266,7 @@ table.bday_table th {
         color: #ccc;
     }
 
-    input#_involved_num, input#_many_days, input#datepicker_locale{
+    input#_involved_num, input#_many_days, input#datepicker_locale, input#customqry_warn_onlongperiod_days{
         background-color: #444;
         color: #fff;
         border: 1px solid #555;

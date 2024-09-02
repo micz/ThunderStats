@@ -10,6 +10,7 @@
         <li>The labels on the Inbox Zero Folders graphs no longer overlap [<a href="https://github.com/micz/ThunderStats/issues/341">#341</a>].</li>
         <li>Added the precentage of mails moved from inbox in all the single day views [<a href="https://github.com/micz/ThunderStats/issues/343">#343</a>].</li>
         <li>Fixed a concurrency bug in displaying the elapsed time. It now always shows the maximum value.</li>
+        <li>Added a warning if querying too much days in the Custom View. Added an option in the advanced tab to choose the maximum number of days to query without a warning. It's also possible to disable the warning completely [<a href="https://github.com/micz/ThunderStats/issues/281">#281</a>].</li>
         <li>...</li>
       </ul>
 <h3>Version 2.1.0 - 20/08/2024</h3>

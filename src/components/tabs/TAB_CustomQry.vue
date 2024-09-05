@@ -25,12 +25,13 @@
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
                 <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
-                <img src="@/assets/images/mzts-customqry_adv_filters.svg" @click="showfilters" title="__MSG_ShowFilters__" class="filters_btn"/>
+                <img src="@/assets/images/mzts-customqry_adv_filters.svg" @click="toggleAdvancedFilters" title="__MSG_ShowFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" /> __MSG_OnlyBDCustomQry__
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
+                <div id="customqry_adv_filters" v-if="show_advanced_filters">[Advanced Filters]</div>
             </div>
-    <div class="square_container">
+    <div class="square_container" id="customqry_square_container">
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
@@ -139,6 +140,7 @@ let customqry_totaldays_num = ref(0);
 let isDark = ref(false);
 let chart_width = ref("1500px");
 let emailListTooltipVisible = ref(false);
+let show_advanced_filters = ref(false);
 
 // single day view
 let do_progressive = true;
@@ -631,6 +633,28 @@ function updateElapsed(function_name, time) {
     if (allNonZero) {
         emit('updateElapsed', Math.max(...Object.values(elapsed)));
     }
+}
+
+async function toggleAdvancedFilters(){
+  let container = document.getElementById('customqry_square_container');
+  let currentMarginTop = window.getComputedStyle(container).marginTop;
+  let currentMarginTopValue = parseFloat(currentMarginTop);
+  if(show_advanced_filters.value){
+    let adv_filters = document.getElementById('customqry_adv_filters');
+    if(adv_filters) {
+      let heightOfElementA = adv_filters.offsetHeight;
+      container.style.marginTop = `${currentMarginTopValue - heightOfElementA}px`;
+      show_advanced_filters.value = false;
+    }
+  }else {
+    show_advanced_filters.value = true;
+    await nextTick();
+    let adv_filters = document.getElementById('customqry_adv_filters');
+    if(adv_filters) {
+      let heightOfElementA = adv_filters.offsetHeight;
+      container.style.marginTop = `${currentMarginTopValue + heightOfElementA}px`;
+    }
+  }
 }
 
 function showEmailListTooltip(){

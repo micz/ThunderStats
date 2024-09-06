@@ -700,5 +700,17 @@
   "CustmQryWarnOnLongPeriod_2": {
     "message": "[0: Never warn]",
     "description": ""
-  }    
+  },
+  "ShowAdvFilters": {
+    "message": "Show Advanced Filters",
+    "description": ""
+  },
+  "AdvFilters": {
+    "message": "Advanced Filters",
+    "description": ""
+  },
+  "ChooseFoldersFilter": {
+    "message": "Choose folders",
+    "description": ""
+  }
 }

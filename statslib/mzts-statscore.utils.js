@@ -423,6 +423,33 @@ export const tsCoreUtils = {
         return output;
     },
 
+    async getAccountFoldersNames(account_id){
+        let output = [];
+    
+        async function exploreFolders(folders) {
+            for (let folder of folders) {
+                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
+
+                if (!output.includes(folder.path)) {
+                    output.push(folder.path);
+                }
+    
+                // Recursively explore subfolders
+                if (folder.subFolders && folder.subFolders.length > 0) {
+                    await exploreFolders(folder.subFolders);
+                }
+            }
+        }
+    
+        let folders = await browser.folders.getSubFolders(account_id);
+    
+        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+    
+        await exploreFolders(folders);
+    
+        return output;
+    },
+
     async getIncludeArchivePreference(account_id) {
         if(account_id == 0) {
            return await tsPrefs.getPref("include_archive_multi_account");

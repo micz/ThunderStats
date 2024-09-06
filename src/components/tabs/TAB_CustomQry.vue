@@ -25,11 +25,28 @@
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
                 <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
-                <img src="@/assets/images/mzts-customqry_adv_filters.svg" @click="toggleAdvancedFilters" title="__MSG_ShowFilters__" class="filters_btn"/>
+                <img src="@/assets/images/mzts-customqry_adv_filters.svg" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" /> __MSG_OnlyBDCustomQry__
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
-                <div id="customqry_adv_filters" v-if="show_advanced_filters">[Advanced Filters]</div>
+                <div id="customqry_adv_filters" v-if="show_advanced_filters">
+                  <span class="adv_filters_main_title">__MSG_AdvFilters__</span>
+                  <div id="filterFolder_container">
+                    <span class="adv_filters_title">__MSG_ChooseFoldersFilter__</span>
+                    <br><Multiselect
+                      v-model="filterFolder"
+                      id="filterFolder"
+                      name="filterFolder"
+                      :options="folderList"
+                      :searchable="true"
+                      :close-on-select="true"
+                      :show-labels="false"
+                      :allow-empty="true"
+                      :create-option="false"
+                      mode="tags"
+                    ></Multiselect>
+                  </div>
+                </div>
             </div>
     <div class="square_container" id="customqry_square_container">
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
@@ -111,12 +128,13 @@ import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
 import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 import Multiselect from '@vueform/multiselect';
+import '@vueform/multiselect/themes/default.css';
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
 
 const props = defineProps({
     activeAccount: {
-        type: Number,
+        type: String,
         default: 0
     },
     accountEmails: {
@@ -141,6 +159,8 @@ let isDark = ref(false);
 let chart_width = ref("1500px");
 let emailListTooltipVisible = ref(false);
 let show_advanced_filters = ref(false);
+let folderList = ref([]);
+let filterFolder = ref([]);
 
 // single day view
 let do_progressive = true;
@@ -284,6 +304,9 @@ onMounted(async () => {
     totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
     totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
     folderLocationNote_text.value = browser.i18n.getMessage("InboxZeroFolderLocationNote");
+    console.log(">>>>>>> props.activeAccount: " + props.activeAccount);
+    console.log(">>>>>>> tsStore.current_account_id: " + tsStore.current_account_id);
+    folderList.value = await tsCoreUtils.getAccountFoldersNames(tsStore.current_account_id);
 });
 
 function update(){
@@ -654,6 +677,7 @@ async function toggleAdvancedFilters(){
       let heightOfElementA = adv_filters.offsetHeight;
       container.style.marginTop = `${currentMarginTopValue + heightOfElementA}px`;
     }
+    i18n.updateDocument();
   }
 }
 
@@ -668,7 +692,6 @@ function hideEmailListTooltip(){
 defineExpose({ doQry });
 
 </script>
-
 
 <style scoped>
 .square_container {

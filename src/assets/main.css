@@ -300,6 +300,11 @@ td.align_end {
     font-size: 1.5em;
 }
 
+#filterFolder_container{
+  width: 50%;
+}
+
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {

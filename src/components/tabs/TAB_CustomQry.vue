@@ -133,10 +133,6 @@ import '@vueform/multiselect/themes/default.css';
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
 
 const props = defineProps({
-    activeAccount: {
-        type: String,
-        default: 0
-    },
     accountEmails: {
         type: Array,
         default: []
@@ -304,8 +300,6 @@ onMounted(async () => {
     totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
     totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
     folderLocationNote_text.value = browser.i18n.getMessage("InboxZeroFolderLocationNote");
-    console.log(">>>>>>> props.activeAccount: " + props.activeAccount);
-    console.log(">>>>>>> tsStore.current_account_id: " + tsStore.current_account_id);
     folderList.value = await tsCoreUtils.getAccountFoldersNames(tsStore.current_account_id);
 });
 
@@ -536,7 +530,7 @@ async function updateData() {
           is_loading_singleday_graph.value = false;
           is_loading_inbox_graph_folders.value = false;
           // is_loading_inbox_graph_dates.value = false;
-          showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(props.activeAccount)
+          showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id)
         }
         i18n.updateDocument();
     });
@@ -548,7 +542,7 @@ async function updateData() {
             let start_time = performance.now();
             let fromDate = dateQry.value[0];
             let toDate = dateQry.value[1];
-            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, props.activeAccount, props.accountEmails, doOnlyBD.value);
+            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
             // export data
             if(!do_single_day.value){
@@ -618,7 +612,7 @@ async function updateData() {
 
     function getInboxZeroData () {
         return new Promise(async (resolve) => {
-            let result_inbox = await tsCore.getInboxZeroDates(props.activeAccount, props.accountEmails);
+            let result_inbox = await tsCore.getInboxZeroDates(tsStore.current_account_id, props.accountEmails);
             counter_inbox_total.value = result_inbox.total;
             counter_inbox_unread.value = result_inbox.unread;
             // inbox zero dates

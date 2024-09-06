@@ -82,10 +82,6 @@ import ExportMenu from '../ExportMenu.vue';
 import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 
 const props = defineProps({
-    activeAccount: {
-        type: Number,
-        default: 0
-    },
     accountEmails: {
         type: Array,
         default: []
@@ -245,7 +241,7 @@ async function updateData() {
         is_loading_yesterday_graph.value = false;
         is_loading_inbox_graph_folders.value = false;
         // is_loading_inbox_graph_dates.value = false;
-        showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(props.activeAccount)
+        showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id)
         i18n.updateDocument();
     });
 };
@@ -258,16 +254,16 @@ async function updateData() {
             let prefs_bday_use_last_business_day = await tsPrefs.getPref("bday_use_last_business_day");
             if(prefs_bday_use_last_business_day == true){
                 if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date.value)) == true){
-                    result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);
+                    result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails);
                 }else{
                     let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date.value);
                     yesterday_date_str.value = last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
                     emit('updateTabName', browser.i18n.getMessage("LastBusinessDay"));
-                    result_yesterday = await tsCore.getSingleDay(last_bday,props.activeAccount, props.accountEmails);
+                    result_yesterday = await tsCore.getSingleDay(last_bday,tsStore.current_account_id, props.accountEmails);
                     tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
                 }
             }else{
-                result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);
+                result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails);
             }
             tsLog.log("result_yesterday: " + JSON.stringify(result_yesterday, null, 2));
             counter_yesterday_rcvd.value = result_yesterday.received;
@@ -302,7 +298,7 @@ async function updateData() {
 
     function getInboxZeroData () {
         return new Promise(async (resolve) => {
-            let result_inbox = await tsCore.getInboxZeroDates(props.activeAccount, props.accountEmails);
+            let result_inbox = await tsCore.getInboxZeroDates(tsStore.current_account_id, props.accountEmails);
             counter_inbox_total.value = result_inbox.total;
             counter_inbox_unread.value = result_inbox.unread;
             // inbox zero dates
@@ -323,7 +319,7 @@ async function updateData() {
     // get 7 days data
     async function getManyDaysData () {
         return new Promise(async (resolve) => {
-            let result_many_days = await tsCore.getToday_manyDaysData(props.activeAccount, props.accountEmails);
+            let result_many_days = await tsCore.getToday_manyDaysData(tsStore.current_account_id, props.accountEmails);
             tsLog.log("result_today_manydays_data: " + JSON.stringify(result_many_days, null, 2));
             counter_many_days_rcvd_total.value = result_many_days.aggregate.total_received;
             counter_many_days_rcvd_max.value = result_many_days.aggregate.max_received;

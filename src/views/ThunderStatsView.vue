@@ -24,16 +24,16 @@
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
         <tab id="tab-today" name="__MSG_Today__">
-            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateYesterdayTabName="updateYesterdayTabName" ref="TAB_Today_ref" />
+            <TAB_Today :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateYesterdayTabName="updateYesterdayTabName" ref="TAB_Today_ref" />
         </tab>
         <tab id="tab-yesterday" :name="_yesterday_text">
-          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateTabName="updateYesterdayTabName" ref="TAB_Yesterday_ref" />
+          <TAB_Yesterday :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateTabName="updateYesterdayTabName" ref="TAB_Yesterday_ref" />
         </tab>
         <tab id="tab-manydays" :name="_many_days_text">
-          <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_ManyDays_ref" />
+          <TAB_ManyDays :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_ManyDays_ref" />
         </tab>
         <tab id="tab-customqry" name="__MSG_CustomQry__">
-          <TAB_CustomQry @updateCustomQry="updateCustomQry" :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @customQryUserCancelled="customQryUserCancelled" ref="TAB_CustomQry_ref" />
+          <TAB_CustomQry @updateCustomQry="updateCustomQry" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @customQryUserCancelled="customQryUserCancelled" ref="TAB_CustomQry_ref" />
         </tab>
         <tab id="tab-info" name="__MSG_Info__">
             <TAB_Info />
@@ -154,7 +154,7 @@ import { tsUtils } from '@statslib/mzts-utils';
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     i18n.updateDocument();
-    updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
+    updateStats(HeadingNAV_ref.value.getCurrentIdn());
     mounted_ok = true;
   });
   

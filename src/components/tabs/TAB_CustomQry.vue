@@ -32,7 +32,7 @@
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
                   <span class="adv_filters_main_title">__MSG_AdvFilters__</span>
                   <div id="filterFolder_container">
-                    <span class="adv_filters_title">__MSG_ChooseFoldersFilter__</span>
+                    <span class="adv_filters_title">__MSG_ChooseFoldersFilter__<span v-if="tsStore.current_account_id == 0"> (__MSG_ChoosAccountToFilterFolders__)</span></span>
                     <br><Multiselect
                       v-model="filterFolder"
                       id="filterFolder"
@@ -44,6 +44,8 @@
                       :allow-empty="true"
                       :create-option="false"
                       mode="tags"
+                      :disabled="tsStore.current_account_id == 0"
+                      ref="filterFolder_ref"
                     ></Multiselect>
                   </div>
                 </div>
@@ -138,6 +140,8 @@ const props = defineProps({
         default: []
     },
 });
+
+let filterFolder_ref = ref(null);
 
 let max_direct_accounts = 3;
 
@@ -414,6 +418,7 @@ async function setPeriod(period){
 }
 
 async function doQry(){
+  if(tsStore.current_account_id == 0) filterFolder_ref.value.clear();
   customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
   let pref_warn_days = await tsPrefs.getPref("customqry_warn_onlongperiod_days");
   if(pref_warn_days > 0 && customqry_totaldays_num.value > pref_warn_days){

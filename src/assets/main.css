@@ -300,6 +300,10 @@ td.align_end {
     font-size: 1.5em;
 }
 
+#customqry_adv_filters{
+  padding: 5px 10px;
+}
+
 #filterFolder_container{
   width: 50%;
 }

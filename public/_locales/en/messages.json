@@ -716,5 +716,13 @@
   "ChooseAccountToFilterFolders": {
     "message": "You must choose a single account to filter on the folders!",
     "description": ""
+  },
+  "FilterFoldersIncludeSubfolders": {
+    "message": "Include subfolders of the choosen folders",
+    "description": ""
+  },
+  "FilterFoldersPlaceholder": {
+    "message": "Choose one or more folders...",
+    "description": ""
   }
 }

@@ -45,8 +45,11 @@
                       :create-option="false"
                       mode="tags"
                       :disabled="tsStore.current_account_id == 0"
+                      placeholder="__MSG_FilterFoldersPlaceholder__"
                       ref="filterFolder_ref"
-                    ></Multiselect>
+                    >
+                    </Multiselect>
+                    <br><input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /> __MSG_FilterFoldersIncludeSubfolders__
                   </div>
                 </div>
             </div>
@@ -134,6 +137,12 @@ import '@vueform/multiselect/themes/default.css';
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
 
+
+function trackBy(option) {
+  console.log(">>>>>>>> trackBy: " + option.id);
+    return option.id;
+  }
+
 const props = defineProps({
     accountEmails: {
         type: Array,
@@ -161,6 +170,7 @@ let emailListTooltipVisible = ref(false);
 let show_advanced_filters = ref(false);
 let folderList = ref([]);
 let filterFolder = ref([]);
+let filterFolder_do_subfolders = ref(false);
 
 // single day view
 let do_progressive = true;
@@ -284,6 +294,8 @@ watch(() => tsStore.current_account_id, async (newValue, oldValue) => {
     filterFolder_ref.value.clear();
     await nextTick();
     i18n.updateDocument();
+  }else{
+    folderList.value = await tsCoreUtils.getAccountFoldersNames(tsStore.current_account_id);
   }
 });
 
@@ -312,7 +324,9 @@ onMounted(async () => {
     totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
     totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
     folderLocationNote_text.value = browser.i18n.getMessage("InboxZeroFolderLocationNote");
-    folderList.value = await tsCoreUtils.getAccountFoldersNames(tsStore.current_account_id);
+    if(tsStore.current_account_id != 0) {
+      folderList.value = await tsCoreUtils.getAccountFoldersNames(tsStore.current_account_id);
+    }
 });
 
 function update(){
@@ -427,6 +441,7 @@ async function setPeriod(period){
 
 async function doQry(){
   if(tsStore.current_account_id == 0) filterFolder_ref.value.clear();
+  console.log(">>>>>>>>>>>> filter folders: "+JSON.stringify(filterFolder.value));
   customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
   let pref_warn_days = await tsPrefs.getPref("customqry_warn_onlongperiod_days");
   if(pref_warn_days > 0 && customqry_totaldays_num.value > pref_warn_days){

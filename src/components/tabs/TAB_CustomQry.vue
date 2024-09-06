@@ -32,7 +32,7 @@
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
                   <span class="adv_filters_main_title">__MSG_AdvFilters__</span>
                   <div id="filterFolder_container">
-                    <span class="adv_filters_title">__MSG_ChooseFoldersFilter__<span v-if="tsStore.current_account_id == 0"> (__MSG_ChoosAccountToFilterFolders__)</span></span>
+                    <span class="adv_filters_title">__MSG_ChooseFoldersFilter__<span v-if="tsStore.current_account_id == 0"> (__MSG_ChooseAccountToFilterFolders__)</span></span>
                     <br><Multiselect
                       v-model="filterFolder"
                       id="filterFolder"
@@ -105,7 +105,7 @@
 
 
 <script setup>
-import { ref, onMounted, onBeforeMount, nextTick, computed } from 'vue';
+import { ref, onMounted, onBeforeMount, nextTick, computed, watch } from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
@@ -276,6 +276,14 @@ let job_done = computed(() => {
     is_loading_counter_inbox.value &&
     is_loading_inbox_graph_folders.value &&
     is_loading_inbox_graph_dates.value);
+  }
+});
+
+watch(() => tsStore.current_account_id, async (newValue, oldValue) => {
+  if(newValue == 0) {
+    filterFolder_ref.value.clear();
+    await nextTick();
+    i18n.updateDocument();
   }
 });
 

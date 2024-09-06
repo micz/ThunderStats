@@ -713,7 +713,7 @@
     "message": "Choose folders",
     "description": ""
   },
-  "ChoosAccountToFilterFolders": {
+  "ChooseAccountToFilterFolders": {
     "message": "You must choose a single account to filter on the folders!",
     "description": ""
   }

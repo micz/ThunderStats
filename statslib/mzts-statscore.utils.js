@@ -423,15 +423,28 @@ export const tsCoreUtils = {
         return output;
     },
 
+    // extractPath(folder_id) {
+    //     // Check if the string contains '://'
+    //     const index = folder_id.indexOf('://');
+    //     if (index === -1) {
+    //       return folder_id; // Return the original string if '://' is not found
+    //     }
+    //     // Return the part of the string after '://'
+    //     return folder_id.substring(index + 3);
+    // },
+
+    // return an array of objects {value, label}
     async getAccountFoldersNames(account_id){
         let output = [];
+        let checked_folders = [];
     
         async function exploreFolders(folders) {
             for (let folder of folders) {
                 if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
 
-                if (!output.includes(folder.path)) {
-                    output.push(folder.path);
+                if (!checked_folders.includes(folder.id)) {
+                    output.push({value: folder.id, label: folder.path});
+                    checked_folders.push(folder.id);
                 }
     
                 // Recursively explore subfolders

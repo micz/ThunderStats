@@ -334,8 +334,9 @@ onMounted(async () => {
     const endDate = new Date();
     const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
     dateQry.value = [startDate, endDate];
-    let prefs = await tsPrefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only"]);
+    let prefs = await tsPrefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only", "customqry_always_open_adv_filters"]);
     //console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
+    show_advanced_filters.value = prefs.customqry_always_open_adv_filters;
     first_day_week = prefs.first_day_week;
     _involved_num = prefs._involved_num;
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);

@@ -724,5 +724,9 @@
   "FilterFoldersPlaceholder": {
     "message": "Choose one or more folders...",
     "description": ""
+  },
+  "prefs_customqry_always_open_adv_filters": {
+    "message": "Always open the Advanced Filters panel in Custom View",
+    "description": ""
   }
 }

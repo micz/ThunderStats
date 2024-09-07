@@ -19,7 +19,7 @@
 -->
 
 <template>
-<div class="chart_time">
+<div :class="getWrapperClass">
   <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." id="yesterday_hours_graph_wait"/></div>
   <Line
       :options="chartOptions"
@@ -76,6 +76,13 @@ let do_yesterday = computed(() => props.yesterday)
 let is_generic_day = computed(() => props.is_generic_day)
 
 let maxY = ref(0);
+
+const getWrapperClass = computed(() => {
+  return {
+    'chart_time_full': is_generic_day.value,
+    'chart_time': !is_generic_day.value
+  };
+});
 
 watch(props.chartData, (newChartData) => {
   if(!do_yesterday.value) {

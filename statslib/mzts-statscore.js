@@ -117,14 +117,14 @@ export class thunderStastsCore {
     // ================ MANY DAYS TAB - END =====================
 
     // ================ CUSTOM QUERY TAB =====================
-    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], only_businessdays = -99) {
+    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], only_businessdays = -99, adv_filters = null) {
 
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays);   // the "true" is to aggregate
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays, adv_filters);   // the "true" is to aggregate
     }
     // ================ CUSTOM QUERY TAB - END =====================
 
@@ -164,7 +164,7 @@ export class thunderStastsCore {
     // ================ SINGLE DAY METHODS - END =====================
 
     // ================ BASE METHODS ========================
-    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99) {
+    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99, adv_filters = null) {
 
       let start_time = performance.now();
       // console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
@@ -178,7 +178,44 @@ export class thunderStastsCore {
         toDate: toDate,
       }
 
-      if(account_id != 0) queryInfo_FullStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
+      // Advanced Filters
+      /*
+        adv_filters is an object that contains various filters
+
+        //Folders
+          adv_filter.folders is an array with the folders ids to be included in the query
+          adv_filter.folders_do_subfolders is a boolean that indicates if the subfolders should be included in the query
+
+      */
+
+      let filter_folders = null;
+
+      this.tsLog.log("adv_filters: " + JSON.stringify(adv_filters));
+
+      if(adv_filters != null){
+        //Folders
+        if ('folders' in adv_filters) {
+          if(adv_filters.folders.length > 0) {
+            let tmp_filter_folders = [...adv_filters.folders];
+            if(adv_filters.folders_do_subfolders) {
+              for (let folder of tmp_filter_folders) {
+                let tmp_out = await tsCoreUtils.getAccountFoldersIds(folder);
+                tmp_filter_folders = [...tmp_filter_folders, ...tmp_out];
+              }
+            }
+            filter_folders = [...new Set(tmp_filter_folders)];
+          }
+        }
+      }
+
+      if(account_id != 0){
+        if(filter_folders != null){
+          this.tsLog.log("filter_folders: " + JSON.stringify(filter_folders));
+          queryInfo_FullStatsData.folderId = filter_folders;
+        }else{
+          queryInfo_FullStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
+        }
+      }
       
       this.tsLog.log("queryInfo_getFullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
       

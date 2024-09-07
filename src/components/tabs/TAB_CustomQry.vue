@@ -45,7 +45,7 @@
                       :create-option="false"
                       mode="tags"
                       :disabled="tsStore.current_account_id == 0"
-                      placeholder="__MSG_FilterFoldersPlaceholder__"
+                      :placeholder="folderFiltersPlaceholder"
                       ref="filterFolder_ref"
                     >
                     </Multiselect>
@@ -170,7 +170,7 @@ let emailListTooltipVisible = ref(false);
 let show_advanced_filters = ref(false);
 let folderList = ref([]);
 let filterFolder = ref([]);
-let filterFolder_do_subfolders = ref(false);
+let filterFolder_do_subfolders = ref(true);
 
 // single day view
 let do_progressive = true;
@@ -212,6 +212,8 @@ let folderLocationNote_text = ref("");
 
 let datepickerFormat = ref("dd-MM-yyyy");
 let prefLocale = ref("en-GB");
+
+let folderFiltersPlaceholder = ref("");
 
 let top_recipients_title = ref("");
 let top_senders_title = ref("");
@@ -324,6 +326,7 @@ onMounted(async () => {
     totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
     totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
     folderLocationNote_text.value = browser.i18n.getMessage("InboxZeroFolderLocationNote");
+    folderFiltersPlaceholder.value = browser.i18n.getMessage("FilterFoldersPlaceholder");
     if(tsStore.current_account_id != 0) {
       folderList.value = await tsCoreUtils.getAccountFoldersNames(tsStore.current_account_id);
     }
@@ -441,7 +444,7 @@ async function setPeriod(period){
 
 async function doQry(){
   if(tsStore.current_account_id == 0) filterFolder_ref.value.clear();
-  console.log(">>>>>>>>>>>> filter folders: "+JSON.stringify(filterFolder.value));
+  tsLog.log("filterFolder.value: "+JSON.stringify(filterFolder.value));
   customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
   let pref_warn_days = await tsPrefs.getPref("customqry_warn_onlongperiod_days");
   if(pref_warn_days > 0 && customqry_totaldays_num.value > pref_warn_days){
@@ -570,7 +573,10 @@ async function updateData() {
             let start_time = performance.now();
             let fromDate = dateQry.value[0];
             let toDate = dateQry.value[1];
-            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value);
+            let advFilters = {};
+            advFilters.folders = filterFolder.value;
+            advFilters.folders_do_subfolders = filterFolder_do_subfolders.value;
+            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
             // export data
             if(!do_single_day.value){

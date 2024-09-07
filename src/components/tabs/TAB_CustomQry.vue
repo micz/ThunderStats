@@ -27,7 +27,7 @@
                 <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <img :src="advanced_filters_icon" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
-                <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" /> __MSG_OnlyBDCustomQry__
+                <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
                   <span class="adv_filters_main_title">__MSG_AdvFilters__</span>
@@ -169,6 +169,7 @@ let folderList = ref([]);
 let filterFolder = ref([]);
 let filterFolder_do_subfolders = ref(true);
 let advanced_filters_icon = ref(advancedFiltersIconPath);
+let customqry_only_bd_disabled = ref(false);
 
 // single day view
 let do_progressive = true;
@@ -308,6 +309,15 @@ watch(() => filterFolder.value, async (newValue, oldValue) => {
   console.log(">>>>>>>> watch filterFolder.value.length: " + filterFolder.value.length);
   updateAdvFiltersSet();
 });
+
+watch(() => do_single_day.value, async (newValue, oldValue) => {
+  if(newValue == true){
+    doOnlyBD.value = false;
+    customqry_only_bd_disabled.value = true;
+  }else{
+    customqry_only_bd_disabled.value = false;
+  }
+})
 
 onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);

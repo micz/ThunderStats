@@ -25,7 +25,7 @@
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
                 <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
-                <img src="@/assets/images/mzts-customqry_adv_filters.svg" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
+                <img :src="advanced_filters_icon" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" /> __MSG_OnlyBDCustomQry__
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
@@ -134,14 +134,10 @@ import CounterInbox from '../counters/CounterInbox.vue';
 import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 import Multiselect from '@vueform/multiselect';
 import '@vueform/multiselect/themes/default.css';
+import advancedFiltersIconPath from '@/assets/images/mzts-customqry_adv_filters.svg';
+import advancedFiltersIconPath_Set from '@/assets/images/mzts-customqry_adv_filters_set.svg';
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
-
-
-function trackBy(option) {
-  console.log(">>>>>>>> trackBy: " + option.id);
-    return option.id;
-  }
 
 const props = defineProps({
     accountEmails: {
@@ -168,9 +164,11 @@ let isDark = ref(false);
 let chart_width = ref("1500px");
 let emailListTooltipVisible = ref(false);
 let show_advanced_filters = ref(false);
+let advanced_filters_set = ref(false)
 let folderList = ref([]);
 let filterFolder = ref([]);
 let filterFolder_do_subfolders = ref(true);
+let advanced_filters_icon = ref(advancedFiltersIconPath);
 
 // single day view
 let do_progressive = true;
@@ -301,6 +299,16 @@ watch(() => tsStore.current_account_id, async (newValue, oldValue) => {
   }
 });
 
+watch(() => advanced_filters_set.value, async (newValue, oldValue) => {
+  console.log(">>>>>>>> watch advanced_filters_set: " + advanced_filters_set.value);
+  updateAdvFiltersIcon();
+});
+
+watch(() => filterFolder.value, async (newValue, oldValue) => {
+  console.log(">>>>>>>> watch filterFolder.value.length: " + filterFolder.value.length);
+  updateAdvFiltersSet();
+});
+
 onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
   tsPrefs.logger = tsLog;
@@ -342,6 +350,22 @@ async function rangeChoosen(modelData){
   if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
     update();
   }
+}
+
+const updateAdvFiltersIcon = () => {
+  console.log(">>>>>>>>>>>>>>> advanced_filters_set.value: " + advanced_filters_set.value);
+  advanced_filters_icon.value = advanced_filters_set.value ? advancedFiltersIconPath_Set : advancedFiltersIconPath;
+}
+
+const updateAdvFiltersSet = () => {
+  let out_value = false;
+
+  if(filterFolder.value.length > 0){
+    out_value = true;
+  }
+
+  console.log(">>>>>>>>> out_value: " + out_value);
+  advanced_filters_set.value = out_value;
 }
 
 function openBookmarkMenu(e){

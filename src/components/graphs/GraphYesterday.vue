@@ -59,6 +59,10 @@ let props = defineProps({
     yesterday: {
       type: Boolean,
       default: true
+    },
+    is_generic_day: {
+      type: Boolean,
+      default: false
     }
 });
 
@@ -69,6 +73,7 @@ let legend_id = ref("yesterday-time-legend-container");
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
 let do_yesterday = computed(() => props.yesterday)
+let is_generic_day = computed(() => props.is_generic_day)
 
 let maxY = ref(0);
 
@@ -149,7 +154,9 @@ var chartOptions = ref({
               enabled: false,
               mode: 'index',
               intersect: false,
-              external: externalTooltipTimeGraphLines
+              external: function(context) {
+                externalTooltipTimeGraphLines(context, {is_generic_day: is_generic_day.value});
+              }
             }
         },
       });

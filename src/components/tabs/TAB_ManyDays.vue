@@ -36,6 +36,18 @@
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">__MSG_TimeDay__</h2>
+					  </div>
+                      <GraphYesterday :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_graph" :yesterday="false" :is_generic_day="true"/>
+    </div>
+
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">Weekday</h2>
+					  </div>
+					TEST
+    </div>
+
+    <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
@@ -68,6 +80,7 @@ import { tsPrefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
+import GraphYesterday from '../graphs/GraphYesterday.vue';
 
 const props = defineProps({
     accountEmails: {
@@ -96,6 +109,7 @@ let is_loading_involved_table_recipients = ref(true);
 let is_loading_involved_table_senders = ref(true);
 let is_loading_sent_graph = ref(true);
 let is_loading_rcvd_graph = ref(true);
+let is_loading_timeday_graph = ref(true);
 
 let counter_many_days_sent_total = ref(0);
 let counter_many_days_sent_max = ref(0);
@@ -114,6 +128,8 @@ let show_table_involved_senders = ref(false);
 let graphdata_manydays_sent = ref([]);
 let graphdata_manydays_rcvd = ref([]);
 let graphdata_manydays_labels = ref([]);
+let graphdata_manydays_hours_sent = ref([]);
+let graphdata_manydays_hours_rcvd = ref([]);
 
 let _export_data = ref({});
 
@@ -136,13 +152,19 @@ let chartData_Rcvd = ref({
 });
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
+let chartData_TimeDay = ref({
+    labels: Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')),
+    datasets: []
+});
+
 let job_done = computed(() => {
     return !(is_loading_counter_sent_rcvd.value &&
     is_loading_counter_many_days.value &&
     is_loading_involved_table_recipients.value &&
     is_loading_involved_table_senders.value &&
     is_loading_sent_graph.value &&
-    is_loading_rcvd_graph.value);
+    is_loading_rcvd_graph.value &&
+    is_loading_timeday_graph.value);
 });
 
 onMounted(async () => {
@@ -198,6 +220,25 @@ async function updateData() {
     });
     tsLog.log("graphdata_manydays_rcvd.value: " + JSON.stringify(graphdata_manydays_rcvd.value));
     chartData_Rcvd.value.labels = graphdata_manydays_labels.value;
+    tsLog.log("graphdata_manydays_hours_sent.value: " + JSON.stringify(graphdata_manydays_hours_sent.value));
+    tsLog.log("graphdata_manydays_hours_rcvd.value: " + JSON.stringify(graphdata_manydays_hours_rcvd.value));
+    chartData_TimeDay.value.datasets = [];
+    chartData_TimeDay.value.datasets.push({
+        label: 'ysent',
+        data: graphdata_manydays_hours_sent.value,
+        borderColor: '#1f77b4',
+        backgroundColor: '#1f77b4',
+        borderWidth: 2,
+        pointRadius: 1,
+    })
+    chartData_TimeDay.value.datasets.push({
+        label: 'yrcvd',
+        data: graphdata_manydays_hours_rcvd.value,
+        borderColor: '#ff7f0e',
+        backgroundColor: '#ff7f0e',
+        borderWidth: 2,
+        pointRadius: 1,
+    })
     nextTick(() => {
         i18n.updateDocument();
     });
@@ -236,6 +277,11 @@ async function updateData() {
             rcvd_total.value = result_many_days.received - rcvd_today.value;
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
+            // graph yesterday hours
+            const _hours_data = tsCoreUtils.transformCountDataToDataset(result_many_days.msg_hours, false); // the false is to not to it progressive
+            graphdata_manydays_hours_sent.value = _hours_data.dataset_sent;
+            graphdata_manydays_hours_rcvd.value = _hours_data.dataset_rcvd;
+            is_loading_timeday_graph.value = false;
             //aggregated data
             // remove today from the dates
             let dates_copy = Object.assign({}, result_many_days.dates);
@@ -276,6 +322,7 @@ function loadingDo(){
     is_loading_involved_table_senders.value = true;
     is_loading_sent_graph.value = true;
     is_loading_rcvd_graph.value = true;
+    is_loading_timeday_graph.value = true;
 }
 
 function updateElapsed(elapsed) {

@@ -29,4 +29,5 @@ export const prefs_default = {
     'bday_custom_days': [],
     'bday_easter': true,
     'customqry_warn_onlongperiod_days': 90,
+    'customqry_always_open_adv_filters': false,
 }

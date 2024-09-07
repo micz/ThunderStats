@@ -700,5 +700,33 @@
   "CustmQryWarnOnLongPeriod_2": {
     "message": "[0: Never warn]",
     "description": ""
-  }    
+  },
+  "ShowAdvFilters": {
+    "message": "Show Advanced Filters",
+    "description": ""
+  },
+  "AdvFilters": {
+    "message": "Advanced Filters",
+    "description": ""
+  },
+  "ChooseFoldersFilter": {
+    "message": "Choose folders",
+    "description": ""
+  },
+  "ChooseAccountToFilterFolders": {
+    "message": "You must choose a single account to filter on the folders!",
+    "description": ""
+  },
+  "FilterFoldersIncludeSubfolders": {
+    "message": "Include subfolders of the choosen folders",
+    "description": ""
+  },
+  "FilterFoldersPlaceholder": {
+    "message": "Choose one or more folders...",
+    "description": ""
+  },
+  "prefs_customqry_always_open_adv_filters": {
+    "message": "Always open the Advanced Filters panel in Custom View",
+    "description": ""
+  }
 }

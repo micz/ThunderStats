@@ -58,6 +58,14 @@
      <label><span class="dims_label" @click="toggle_options">__MSG_prefs_remember_last_tab__</span></label>
       </td>
     </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="customqry_always_open_adv_filters" name="customqry_always_open_adv_filters" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_customqry_always_open_adv_filters__</span></label>
+      </td>
+    </tr>
   </table>
     <table class="miczPrefs" style="margin-top: 10px;">
       <tr>

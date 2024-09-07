@@ -67,6 +67,13 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .bookmarkmenu{
   cursor: pointer;
 }
+.filters_btn{
+  cursor: pointer;
+  margin: 0px 10px;
+  display: inline-block;
+  position: relative;
+  top: 7px;
+}
 .mzts-execution-time{
   font-style: italic;
   font-size: smaller;
@@ -292,6 +299,15 @@ td.align_end {
     font-weight: bold;
     font-size: 1.5em;
 }
+
+#customqry_adv_filters{
+  padding: 5px 10px;
+}
+
+#filterFolder_container{
+  width: 50%;
+}
+
 
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {

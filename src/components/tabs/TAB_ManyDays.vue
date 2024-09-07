@@ -70,10 +70,6 @@ import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
 
 const props = defineProps({
-    activeAccount: {
-        type: Number,
-        default: 0
-    },
     accountEmails: {
         type: Array,
         default: []
@@ -211,7 +207,7 @@ async function updateData() {
     function getManyDaysData () {
         return new Promise(async (resolve) => {
             let start_time = performance.now();
-            let result_many_days = await tsCore.getManyDaysData(props.activeAccount, props.accountEmails);
+            let result_many_days = await tsCore.getManyDaysData(tsStore.current_account_id, props.accountEmails);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_many_days, null, 2));
             // export data
             _export_data.value[tsExport.export.daily_mails.type] = result_many_days.dates;

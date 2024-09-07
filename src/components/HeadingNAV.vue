@@ -107,6 +107,7 @@ let tsLog = null;
 onMounted(async () => {
   tsLog = new tsLogger("HeadingNAV", tsStore.do_debug);
   current_account.value = await tsPrefs.getPref("startup_account");
+  tsStore.current_account_id = current_account.value;
   tsLog.log("onMounted: " + current_account.value);
   SelectAccount_ref.value.updateCurrentAccount(current_account.value);
 });
@@ -118,6 +119,7 @@ function update(){
 }
 
 async function accountSelected(){
+  tsStore.current_account_id = current_account.value;
   tsLog.log("accountSelected: " + current_account.value);
   if(await tsPrefs.getPref("load_data_changing_account")){
     emit('chooseAccount', current_account.value);
@@ -140,6 +142,7 @@ function openOptions(){
 
 function getCurrentIdn(){
   doAgain();
+  tsStore.current_account_id = current_account.value;
   return current_account.value;
 }
 

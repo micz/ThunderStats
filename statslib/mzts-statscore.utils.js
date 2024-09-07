@@ -423,6 +423,46 @@ export const tsCoreUtils = {
         return output;
     },
 
+    // extractPath(folder_id) {
+    //     // Check if the string contains '://'
+    //     const index = folder_id.indexOf('://');
+    //     if (index === -1) {
+    //       return folder_id; // Return the original string if '://' is not found
+    //     }
+    //     // Return the part of the string after '://'
+    //     return folder_id.substring(index + 3);
+    // },
+
+    // return an array of objects {value, label}
+    async getAccountFoldersNames(account_id){
+        let output = [];
+        let checked_folders = [];
+    
+        async function exploreFolders(folders) {
+            for (let folder of folders) {
+                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
+
+                if (!checked_folders.includes(folder.id)) {
+                    output.push({value: folder.id, label: folder.path});
+                    checked_folders.push(folder.id);
+                }
+    
+                // Recursively explore subfolders
+                if (folder.subFolders && folder.subFolders.length > 0) {
+                    await exploreFolders(folder.subFolders);
+                }
+            }
+        }
+    
+        let folders = await browser.folders.getSubFolders(account_id);
+    
+        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+    
+        await exploreFolders(folders);
+    
+        return output;
+    },
+
     async getIncludeArchivePreference(account_id) {
         if(account_id == 0) {
            return await tsPrefs.getPref("include_archive_multi_account");

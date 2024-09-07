@@ -30,7 +30,7 @@
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
-                  <span class="adv_filters_main_title">__MSG_AdvFilters__</span>
+                  <div class="adv_filters_main_title">__MSG_AdvFilters__</div>
                   <div id="filterFolder_container">
                     <span class="adv_filters_title">__MSG_ChooseFoldersFilter__<span v-if="tsStore.current_account_id == 0"> (__MSG_ChooseAccountToFilterFolders__)</span></span>
                     <br><Multiselect

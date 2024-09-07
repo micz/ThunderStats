@@ -302,6 +302,19 @@ td.align_end {
 
 #customqry_adv_filters{
   padding: 5px 10px;
+  background: #3593dd;
+  border: #7fb5da;
+  border-radius: 7px;
+  margin: 0px 5px;
+  color: white;
+}
+
+.adv_filters_main_title{
+  font-weight: bold;
+  font-size: 1.05em;
+  border-bottom: 2px solid #f1f9fd;
+  padding-bottom: 3px;
+  margin-bottom: 9px;
 }
 
 #filterFolder_container{
@@ -368,6 +381,11 @@ td.align_end {
 
   .chart_inbox0_percent{
     background-color: #555;
+  }
+
+  #customqry_adv_filters{
+    background: #4d4d4d;
+    border: #333;
   }
 
 }

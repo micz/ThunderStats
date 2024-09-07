@@ -13,6 +13,19 @@ More info on [#194](https://github.com/micz/ThunderStats/issues/194) and [#195](
 
 <br>
 
+## Features
+- Sent and received mails
+- Day time graph
+- Top senders and recipients list
+- Inbox Zero status
+- Multiple days and Custom range date statistics with also max, min, average sent and received mails over the period.
+- Define the business days, to get statistics (total, max, min, average) ignoring non-business days.
+- Export data in CSV format
+
+
+<br>
+
+
 ## Privacy
 All data processing is performed locally on your device. No data is transmitted, shared, or stored on any external servers or third-party services.
 This ensures that your information remains private and secure at all times.

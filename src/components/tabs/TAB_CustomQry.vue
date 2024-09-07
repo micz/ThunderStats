@@ -49,7 +49,9 @@
                       ref="filterFolder_ref"
                     >
                     </Multiselect>
-                    <br><input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /> __MSG_FilterFoldersIncludeSubfolders__
+                    <div style="margin-top:2px;">
+                      <input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /> __MSG_FilterFoldersIncludeSubfolders__
+                    </div>
                   </div>
                 </div>
             </div>
@@ -301,12 +303,10 @@ watch(() => tsStore.current_account_id, async (newValue, oldValue) => {
 });
 
 watch(() => advanced_filters_set.value, async (newValue, oldValue) => {
-  console.log(">>>>>>>> watch advanced_filters_set: " + advanced_filters_set.value);
   updateAdvFiltersIcon();
 });
 
 watch(() => filterFolder.value, async (newValue, oldValue) => {
-  console.log(">>>>>>>> watch filterFolder.value.length: " + filterFolder.value.length);
   updateAdvFiltersSet();
 });
 
@@ -336,7 +336,7 @@ onMounted(async () => {
     dateQry.value = [startDate, endDate];
     let prefs = await tsPrefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only", "customqry_always_open_adv_filters"]);
     //console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
-    show_advanced_filters.value = prefs.customqry_always_open_adv_filters;
+    if(prefs.customqry_always_open_adv_filters) toggleAdvancedFilters();
     first_day_week = prefs.first_day_week;
     _involved_num = prefs._involved_num;
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
@@ -364,7 +364,6 @@ async function rangeChoosen(modelData){
 }
 
 const updateAdvFiltersIcon = () => {
-  console.log(">>>>>>>>>>>>>>> advanced_filters_set.value: " + advanced_filters_set.value);
   advanced_filters_icon.value = advanced_filters_set.value ? advancedFiltersIconPath_Set : advancedFiltersIconPath;
 }
 
@@ -375,7 +374,6 @@ const updateAdvFiltersSet = () => {
     out_value = true;
   }
 
-  console.log(">>>>>>>>> out_value: " + out_value);
   advanced_filters_set.value = out_value;
 }
 

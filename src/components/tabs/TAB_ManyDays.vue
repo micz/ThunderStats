@@ -277,7 +277,7 @@ async function updateData() {
             rcvd_total.value = result_many_days.received - rcvd_today.value;
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
-            // graph yesterday hours
+            // graph day hours
             const _hours_data = tsCoreUtils.transformCountDataToDataset(result_many_days.msg_hours, false); // the false is to not to it progressive
             graphdata_manydays_hours_sent.value = _hours_data.dataset_sent;
             graphdata_manydays_hours_rcvd.value = _hours_data.dataset_rcvd;

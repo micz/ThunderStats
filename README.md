@@ -69,6 +69,12 @@ Contributing Author: [Christopher Leidigh](https://github.com/cleidigh)
 
 <br>
 
+## Support this addon!
+Are you using this addon in your Thunderbird?
+<br>Consider to support the development making a small donation. [Click here!](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UHN4SXPGEXWQL&lc=IT&item_name=ThunderStats&item_number=thunderstats&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+
+<br>
+
 ## Attributions
 
 ### Translations

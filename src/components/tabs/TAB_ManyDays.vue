@@ -44,7 +44,7 @@
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
 					  </div>
-					<Widget_WeekDay :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" />
+					<WidgetWeekDay :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
@@ -81,7 +81,7 @@ import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
 import GraphYesterday from '../graphs/GraphYesterday.vue';
-import Widget_WeekDay from '../widgets/Widget_WeekDay.vue';
+import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
 
 const props = defineProps({
     accountEmails: {

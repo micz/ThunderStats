@@ -30,6 +30,7 @@
       v-if="!is_loading"
     />
 </div>
+<div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </template>
 
 
@@ -39,6 +40,7 @@ import { ref, computed, watch } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsStore } from '@statslib/mzts-store';
 
@@ -58,6 +60,8 @@ let props = defineProps({
 });
 
 let weekdaysChartBar_ref = ref(null);
+
+let legend_id = ref("weekdays-legend-container");
 
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
@@ -115,6 +119,12 @@ var chartOptions = ref({
           legend: {
             display: false,
           },
+          htmlLegend: {
+            // ID of the container to put the legend in
+            containerID: legend_id.value,
+            is_today: false,
+            is_yesterday: false,
+          },
           tooltip: {
               enabled: false,
           },
@@ -139,7 +149,8 @@ var chartOptions = ref({
         },
       });
 
-var chartPlugins = [ChartDataLabels];
+var chartPlugins = [ChartDataLabels, htmlLegendPlugin];
+
 
 watch(props.chartData, (newChartData) => {
     //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));

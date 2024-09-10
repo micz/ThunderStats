@@ -259,16 +259,16 @@ async function updateData() {
     chartData_WeekDays.value.datasets.push({
         label: 'ysent',
         data: graphdata_manydays_weekdays_sent.value,
-        borderColor: tsStore.chart_colors._time_sent,
-        backgroundColor: tsStore.chart_colors._time_sent,
+        borderColor: tsStore.chart_colors._weekday_sent,
+        backgroundColor: tsStore.chart_colors._weekday_sent,
         borderWidth: 2,
         pointRadius: 1,
     })
     chartData_WeekDays.value.datasets.push({
         label: 'yrcvd',
         data: graphdata_manydays_weekdays_rcvd.value,
-        borderColor: tsStore.chart_colors._time_rcvd,
-        backgroundColor: tsStore.chart_colors._time_rcvd,
+        borderColor: tsStore.chart_colors._weekday_rcvd,
+        backgroundColor: tsStore.chart_colors._weekday_rcvd,
         borderWidth: 2,
         pointRadius: 1,
     })

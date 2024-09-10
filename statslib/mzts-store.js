@@ -23,5 +23,7 @@ export const tsStore = reactive({
         _time_rcvd: '#ff7f0e',
         _time_sent_yesterday: '#17becf',
         _time_rcvd_yesterday: '#ffbb78',
+        _weekday_sent: '#4682B4',
+        _weekday_rcvd: '#FF8C45',
     },
 });

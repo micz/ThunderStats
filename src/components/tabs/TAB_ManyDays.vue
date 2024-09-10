@@ -42,9 +42,9 @@
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped lowercase">Weekday</h2>
+						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
 					  </div>
-					TEST
+					<Widget_WeekDay :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
@@ -81,6 +81,7 @@ import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
 import GraphYesterday from '../graphs/GraphYesterday.vue';
+import Widget_WeekDay from '../widgets/Widget_WeekDay.vue';
 
 const props = defineProps({
     accountEmails: {
@@ -110,6 +111,7 @@ let is_loading_involved_table_senders = ref(true);
 let is_loading_sent_graph = ref(true);
 let is_loading_rcvd_graph = ref(true);
 let is_loading_timeday_graph = ref(true);
+let is_loading_weekdays_graph = ref(true);
 
 let counter_many_days_sent_total = ref(0);
 let counter_many_days_sent_max = ref(0);
@@ -130,6 +132,8 @@ let graphdata_manydays_rcvd = ref([]);
 let graphdata_manydays_labels = ref([]);
 let graphdata_manydays_hours_sent = ref([]);
 let graphdata_manydays_hours_rcvd = ref([]);
+let graphdata_manydays_weekdays_sent = ref([]);
+let graphdata_manydays_weekdays_rcvd = ref([]);
 
 let _export_data = ref({});
 
@@ -157,6 +161,11 @@ let chartData_TimeDay = ref({
     datasets: []
 });
 
+let chartData_WeekDays = ref({
+    labels: Array.from({length: 7}, (_, i) => i),
+    datasets: []
+});
+
 let job_done = computed(() => {
     return !(is_loading_counter_sent_rcvd.value &&
     is_loading_counter_many_days.value &&
@@ -164,7 +173,8 @@ let job_done = computed(() => {
     is_loading_involved_table_senders.value &&
     is_loading_sent_graph.value &&
     is_loading_rcvd_graph.value &&
-    is_loading_timeday_graph.value);
+    is_loading_timeday_graph.value &&
+    is_loading_weekdays_graph.value);
 });
 
 onMounted(async () => {
@@ -220,6 +230,7 @@ async function updateData() {
     });
     tsLog.log("graphdata_manydays_rcvd.value: " + JSON.stringify(graphdata_manydays_rcvd.value));
     chartData_Rcvd.value.labels = graphdata_manydays_labels.value;
+    // time day
     tsLog.log("graphdata_manydays_hours_sent.value: " + JSON.stringify(graphdata_manydays_hours_sent.value));
     tsLog.log("graphdata_manydays_hours_rcvd.value: " + JSON.stringify(graphdata_manydays_hours_rcvd.value));
     chartData_TimeDay.value.datasets = [];
@@ -234,6 +245,26 @@ async function updateData() {
     chartData_TimeDay.value.datasets.push({
         label: 'yrcvd',
         data: graphdata_manydays_hours_rcvd.value,
+        borderColor: '#ff7f0e',
+        backgroundColor: '#ff7f0e',
+        borderWidth: 2,
+        pointRadius: 1,
+    })
+    // week days
+    tsLog.log("graphdata_manydays_hours_sent.value: " + JSON.stringify(graphdata_manydays_weekdays_rcvd.value));
+    tsLog.log("graphdata_manydays_hours_rcvd.value: " + JSON.stringify(graphdata_manydays_weekdays_sent.value));
+    chartData_WeekDays.value.datasets = [];
+    chartData_WeekDays.value.datasets.push({
+        label: 'ysent',
+        data: graphdata_manydays_weekdays_sent.value,
+        borderColor: '#1f77b4',
+        backgroundColor: '#1f77b4',
+        borderWidth: 2,
+        pointRadius: 1,
+    })
+    chartData_WeekDays.value.datasets.push({
+        label: 'yrcvd',
+        data: graphdata_manydays_weekdays_rcvd.value,
         borderColor: '#ff7f0e',
         backgroundColor: '#ff7f0e',
         borderWidth: 2,
@@ -278,10 +309,15 @@ async function updateData() {
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
             // graph day hours
-            const _hours_data = tsCoreUtils.transformCountDataToDataset(result_many_days.msg_hours, false); // the false is to not to it progressive
+            const _hours_data = tsCoreUtils.transformCountDataToDataset(result_many_days.msg_hours, false); // the false is to not do it progressive
             graphdata_manydays_hours_sent.value = _hours_data.dataset_sent;
             graphdata_manydays_hours_rcvd.value = _hours_data.dataset_rcvd;
             is_loading_timeday_graph.value = false;
+            // graph weekdays
+            const _weekdays_data = tsCoreUtils.transformCountDataToDataset(result_many_days.msg_weekdays, false); // the false is to not do it progressive
+            graphdata_manydays_weekdays_sent.value = _weekdays_data.dataset_sent;
+            graphdata_manydays_weekdays_rcvd.value = _weekdays_data.dataset_rcvd;
+            is_loading_weekdays_graph.value = false;
             //aggregated data
             // remove today from the dates
             let dates_copy = Object.assign({}, result_many_days.dates);
@@ -323,6 +359,7 @@ function loadingDo(){
     is_loading_sent_graph.value = true;
     is_loading_rcvd_graph.value = true;
     is_loading_timeday_graph.value = true;
+    is_loading_weekdays_graph.value = true;
 }
 
 function updateElapsed(elapsed) {

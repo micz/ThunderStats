@@ -198,16 +198,10 @@ export const tsCoreUtils = {
 
     getWeekDaysLabel(label) {
         const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
-
         let first_day_week = tsStore.first_day_week;
-
         label = parseInt(label) + parseInt(first_day_week);
-
         if(label >= 7) label = label - 7;
-
-        console.log(">>>>>>>> getWeekDaysLabel: " + label);
         const dayOfWeek = browser.i18n.getMessage(daysOfWeek[label]);
-
         return [
             dayOfWeek
         ];

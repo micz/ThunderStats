@@ -232,5 +232,25 @@ export const tsUtils = {
     
         return result.trim();
     },
-  
+
+    sortDays(firstDayWeek, days) {
+        const sortedDays = [...days]; // Create a shallow copy of the days array
+
+        if (firstDayWeek == 0) {
+          // Sort days normally by index if the first day of the week is 0 (Sunday)
+          sortedDays.sort((a, b) => a.idx - b.idx);
+        } else if (firstDayWeek == 6) {
+          // Custom sort for when the first day of the week is 6 (Saturday)
+          sortedDays.sort((a, b) => {
+            if (a.idx === 6) return -1; // Move Saturday to the front
+            if (b.idx === 6) return 1;
+            if (a.idx === 0) return -1; // Then move Sunday to the second position
+            if (b.idx === 0) return 1;
+            return a.idx - b.idx; // Sort the rest normally
+          });
+        }
+
+        return sortedDays; // Return the sorted copy
+      },
+        
 }

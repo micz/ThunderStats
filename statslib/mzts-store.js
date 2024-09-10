@@ -5,6 +5,7 @@ export const tsStore = reactive({
     'darkmode': false,
     'businessdays_only': false,
     'bday_easter': false,
+    'first_day_week': 0,
     'bday_custom_days': [],
     'bday_weekdays_0': false,   //Sunday
     'bday_weekdays_1': true,   //Monday

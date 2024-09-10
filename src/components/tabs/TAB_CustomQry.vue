@@ -98,9 +98,9 @@
     </div>
 
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped lowercase">Weekday</h2>
+						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
 					  </div>
-					TEST
+					<WidgetWeekDay :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
@@ -150,6 +150,7 @@ import Multiselect from '@vueform/multiselect';
 import '@vueform/multiselect/themes/default.css';
 import advancedFiltersIconPath from '@/assets/images/mzts-customqry_adv_filters.svg';
 import advancedFiltersIconPath_Set from '@/assets/images/mzts-customqry_adv_filters_set.svg';
+import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
 
@@ -197,6 +198,7 @@ let is_loading_inbox_graph_folders = ref(true);
 let is_loading_inbox_graph_dates = ref(true);
 let is_loading_counter_inbox = ref(true);
 let is_loading_timeday_graph = ref(true);
+let is_loading_weekdays_graph = ref(true);
 
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
@@ -261,6 +263,8 @@ let graphdata_customqry_rcvd = ref([]);
 let graphdata_customqry_labels = ref([]);
 let graphdata_customqry_hours_sent = ref([]);
 let graphdata_customqry_hours_rcvd = ref([]);
+let graphdata_customqry_weekdays_sent = ref([]);
+let graphdata_customqry_weekdays_rcvd = ref([]);
 
 let _export_data = ref({});
 
@@ -289,6 +293,11 @@ let chartData_TimeDay = ref({
     datasets: []
 });
 
+let chartData_WeekDays = ref({
+    labels: Array.from({length: 7}, (_, i) => i),
+    datasets: []
+});
+
 let elapsed = {
     'getCustomQryData':0,
 }
@@ -301,7 +310,8 @@ let job_done = computed(() => {
     is_loading_involved_table_senders.value &&
     is_loading_sent_graph.value &&
     is_loading_rcvd_graph.value &&
-    is_loading_timeday_graph.value);
+    is_loading_timeday_graph.value &&
+    is_loading_weekdays_graph.value);
   }else{
     return !(is_loading_counter_sent_rcvd.value &&
     is_loading_singleday_graph.value &&
@@ -587,10 +597,30 @@ async function updateData() {
           backgroundColor: '#1f77b4',
           borderWidth: 2,
           pointRadius: 1,
-      })
+      });
       chartData_TimeDay.value.datasets.push({
           label: 'yrcvd',
           data: graphdata_customqry_hours_rcvd.value,
+          borderColor: '#ff7f0e',
+          backgroundColor: '#ff7f0e',
+          borderWidth: 2,
+          pointRadius: 1,
+      });
+      // week days
+      tsLog.log("graphdata_customqry_hours_sent.value: " + JSON.stringify(graphdata_customqry_weekdays_rcvd.value));
+      tsLog.log("graphdata_customqry_hours_rcvd.value: " + JSON.stringify(graphdata_customqry_weekdays_sent.value));
+      chartData_WeekDays.value.datasets = [];
+      chartData_WeekDays.value.datasets.push({
+          label: 'ysent',
+          data: graphdata_customqry_weekdays_sent.value,
+          borderColor: '#1f77b4',
+          backgroundColor: '#1f77b4',
+          borderWidth: 2,
+          pointRadius: 1,
+      })
+      chartData_WeekDays.value.datasets.push({
+          label: 'yrcvd',
+          data: graphdata_customqry_weekdays_rcvd.value,
           borderColor: '#ff7f0e',
           backgroundColor: '#ff7f0e',
           borderWidth: 2,
@@ -657,7 +687,6 @@ async function updateData() {
             }else{
               _export_data.value[tsExport.export.time_emails.type] = result_customqry.msg_hours;
             }
-            
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_customqry.senders, result_customqry.recipients);
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
@@ -701,6 +730,12 @@ async function updateData() {
               // received graph
               graphdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
               is_loading_rcvd_graph.value = false;
+              // graph weekdays
+              let first_day_week = tsStore.first_day_week;
+              const _weekdays_data = tsCoreUtils.transformCountDataToDataset(tsUtils.sortWeekdays(first_day_week, result_customqry.msg_weekdays), false); // the false is to not do it progressive
+              graphdata_customqry_weekdays_sent.value = _weekdays_data.dataset_sent;
+              graphdata_customqry_weekdays_rcvd.value = _weekdays_data.dataset_rcvd;
+              is_loading_weekdays_graph.value = false;
             }else{  // single day view
               // console.log(">>>>>>>>>>>>>> count_total_rcvd: " + result_customqry.received);
               // console.log(">>>>>>>>>>>>>> count_in_inbox: " + result_customqry.count_in_inbox);
@@ -754,6 +789,7 @@ function loadingDo(){
     is_loading_inbox_graph_folders.value = true;
     is_loading_inbox_graph_dates.value = true;
     is_loading_timeday_graph.value = true;
+    is_loading_weekdays_graph.value = true;
 }
 
 function updateElapsed(function_name, time) {

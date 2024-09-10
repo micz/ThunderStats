@@ -100,7 +100,7 @@
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
 					  </div>
-					<WidgetWeekDay :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" />
+					<WidgetWeekDay v-if="do_run" :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">

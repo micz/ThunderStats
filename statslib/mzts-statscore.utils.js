@@ -191,8 +191,8 @@ export const tsCoreUtils = {
     },
 
     getManyDaysBarColor(ctx, totalBars) {
-        const defaultColor = '#4682B4';
-        const todayColor = tsStore.darkmode ? '#1f9c6a' : '#2bc285';
+        const defaultColor = tsStore.chart_colors.many_days_default;
+        const todayColor = tsStore.darkmode ? tsStore.chart_colors.many_days_today_dark : tsStore.chart_colors.many_days_today_light;
         return ctx.dataIndex === totalBars - 1 ? todayColor : defaultColor;
     },
 

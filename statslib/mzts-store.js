@@ -15,4 +15,13 @@ export const tsStore = reactive({
     'bday_weekdays_5': true,   //Friday
     'bday_weekdays_6': false,   //Saturday
     'current_account_id': 0,
+    'chart_colors':{
+        many_days_default: '#4682B4',
+        many_days_today_dark: '#1f9c6a',
+        many_days_today_light: '#2bc285',
+        _time_sent: '#1f77b4',
+        _time_rcvd: '#ff7f0e',
+        _time_sent_yesterday: '#17becf',
+        _time_rcvd_yesterday: '#ffbb78',
+    },
 });

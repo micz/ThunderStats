@@ -565,8 +565,8 @@ async function updateData() {
       chartData_Sent.value.datasets.push({
           label: 'Sent',
           data: graphdata_customqry_sent.value,
-          borderColor: '#4682B4',
-          backgroundColor: '#4682B4',
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
           borderWidth: 2,
           pointRadius: 1,
           //maxBarThickness: 15,
@@ -578,8 +578,8 @@ async function updateData() {
       chartData_Rcvd.value.datasets.push({
           label: 'Received',
           data: graphdata_customqry_rcvd.value,
-          borderColor: '#4682B4',
-          backgroundColor: '#4682B4',
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
           borderWidth: 2,
           pointRadius: 1,
           //maxBarThickness: 15,
@@ -593,16 +593,16 @@ async function updateData() {
       chartData_TimeDay.value.datasets.push({
           label: 'ysent',
           data: graphdata_customqry_hours_sent.value,
-          borderColor: '#1f77b4',
-          backgroundColor: '#1f77b4',
+          borderColor: tsStore.chart_colors._time_sent,
+          backgroundColor: tsStore.chart_colors._time_sent,
           borderWidth: 2,
           pointRadius: 1,
       });
       chartData_TimeDay.value.datasets.push({
           label: 'yrcvd',
           data: graphdata_customqry_hours_rcvd.value,
-          borderColor: '#ff7f0e',
-          backgroundColor: '#ff7f0e',
+          borderColor: tsStore.chart_colors._time_rcvd,
+          backgroundColor: tsStore.chart_colors._time_rcvd,
           borderWidth: 2,
           pointRadius: 1,
       });
@@ -613,16 +613,16 @@ async function updateData() {
       chartData_WeekDays.value.datasets.push({
           label: 'ysent',
           data: graphdata_customqry_weekdays_sent.value,
-          borderColor: '#1f77b4',
-          backgroundColor: '#1f77b4',
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
           borderWidth: 2,
           pointRadius: 1,
       })
       chartData_WeekDays.value.datasets.push({
           label: 'yrcvd',
           data: graphdata_customqry_weekdays_rcvd.value,
-          borderColor: '#ff7f0e',
-          backgroundColor: '#ff7f0e',
+          borderColor: tsStore.chart_colors._time_rcvd,
+          backgroundColor: tsStore.chart_colors._time_rcvd,
           borderWidth: 2,
           pointRadius: 1,
       })
@@ -635,16 +635,16 @@ async function updateData() {
       chartData_SingleDay.value.datasets.push({
           label: 'ysent',
           data: graphdata_singleday_hours_sent.value,
-          borderColor: '#1f77b4',
-          backgroundColor: '#1f77b4',
+          borderColor: tsStore.chart_colors._time_sent,
+          backgroundColor: tsStore.chart_colors._time_sent,
           borderWidth: 2,
           pointRadius: 1,
       })
       chartData_SingleDay.value.datasets.push({
           label: 'yrcvd',
           data: graphdata_singleday_hours_rcvd.value,
-          borderColor: '#ff7f0e',
-          backgroundColor: '#ff7f0e',
+          borderColor: tsStore.chart_colors._time_rcvd,
+          backgroundColor: tsStore.chart_colors._time_rcvd,
           borderWidth: 2,
           pointRadius: 1,
       })

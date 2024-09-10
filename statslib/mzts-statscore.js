@@ -241,6 +241,13 @@ export class thunderStastsCore {
         msg_hours[i].received = 0;
       }
 
+      let msg_weekdays = {};
+      for(let i = 0; i < 7; i++) {
+        msg_weekdays[i] = {};
+        msg_weekdays[i].sent = 0;
+        msg_weekdays[i].received = 0;
+      }
+
       for await (let message of messages) {
           if(this.excludeMessage(message,account_id)) continue;
           // this.tsLog.log("message: " + JSON.stringify(message));
@@ -299,6 +306,8 @@ export class thunderStastsCore {
               dates[date_message_string].sent++;
               // group by hour
               msg_hours[hour_message].sent++;
+              // group by weekday
+              msg_weekdays[date_message.getDay()].sent++;
               // check recipients
               //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
               for (let recipient of message.recipients) {
@@ -357,6 +366,8 @@ export class thunderStastsCore {
               dates[date_message_string].received++;
               // group by hour
               msg_hours[hour_message].received++;
+              // group by weekday
+              msg_weekdays[date_message.getDay()].received++;
             }
           }
         //check recipients - END
@@ -373,7 +384,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
       // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates };
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, msg_weekdays: msg_weekdays};
 
       if(do_aggregate_stats) {
         output.aggregate = await this.aggregateData(dates, only_businessdays);

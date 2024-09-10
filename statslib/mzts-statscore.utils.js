@@ -196,6 +196,28 @@ export const tsCoreUtils = {
         return ctx.dataIndex === totalBars - 1 ? todayColor : defaultColor;
     },
 
+    getWeekDaysLabel(label) {
+        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
+
+        const dayOfWeek = browser.i18n.getMessage(daysOfWeek[label]);
+
+        return [
+            dayOfWeek
+        ];
+    },
+
+    getWeekDaysLabelColor(label) {
+        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
+
+        // check weekeday preference
+        let isBusinessDay = tsStore["bday_weekdays_" + label]
+
+        const bd_color = tsStore.darkmode ? "white" : "black";
+        const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
+
+        return (isBusinessDay ? bd_color : nbd_color);
+    },
+
     transformInboxZeroDatesDataToDataset(data) {
         let datasets = [];
         let availableColors = [...inboxZeroColors];

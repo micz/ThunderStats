@@ -181,8 +181,10 @@ onMounted(async () => {
     tsLog = new tsLogger("TAB_ManyDays", tsStore.do_debug);
     tsPrefs.logger = tsLog;
     today_date.value = new Date().toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
-    _involved_num = await tsPrefs.getPref("_involved_num");
-    _many_days = await tsPrefs.getPref("_many_days");
+    let prefs = await tsPrefs.getPrefs(["_involved_num", "_many_days", "first_day_week"]);
+    _involved_num = prefs._involved_num;
+    _many_days = prefs._many_days;
+    tsStore.first_day_week = prefs.first_day_week;
     top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
     top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
     showTotalInfoTooltip.value = tsStore.businessdays_only;
@@ -314,7 +316,8 @@ async function updateData() {
             graphdata_manydays_hours_rcvd.value = _hours_data.dataset_rcvd;
             is_loading_timeday_graph.value = false;
             // graph weekdays
-            const _weekdays_data = tsCoreUtils.transformCountDataToDataset(result_many_days.msg_weekdays, false); // the false is to not do it progressive
+            let first_day_week = tsStore.first_day_week;
+            const _weekdays_data = tsCoreUtils.transformCountDataToDataset(tsUtils.sortWeekdays(first_day_week, result_many_days.msg_weekdays), false); // the false is to not do it progressive
             graphdata_manydays_weekdays_sent.value = _weekdays_data.dataset_sent;
             graphdata_manydays_weekdays_rcvd.value = _weekdays_data.dataset_rcvd;
             is_loading_weekdays_graph.value = false;

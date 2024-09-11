@@ -46,7 +46,7 @@ table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:#bae0fa;}
 table.mzts-tinvolved tr.mzts-trow td{padding:2px 4px 2px 2px;color:black;white-space:-moz-pre-wrap !important;word-break: break-all;}
 table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:normal;}
 
-.chart_time{ overflow:auto;float:left;height:175px;width:89%;}
+.chart_time{ overflow:auto;float:left;height:230px;width:89%;}
 .chart_time_full{ overflow:auto;float:left;height:275px;width:89%;}
 .legend-time{float:right;font-size:12px;padding-top:8px;}
 .legend-time ul{list-style-type:none;margin:0;padding:0;}

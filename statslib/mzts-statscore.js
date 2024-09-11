@@ -117,14 +117,14 @@ export class thunderStastsCore {
     // ================ MANY DAYS TAB - END =====================
 
     // ================ CUSTOM QUERY TAB =====================
-    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], only_businessdays = -99) {
+    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], only_businessdays = -99, adv_filters = null) {
 
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays);   // the "true" is to aggregate
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays, adv_filters);   // the "true" is to aggregate
     }
     // ================ CUSTOM QUERY TAB - END =====================
 
@@ -164,7 +164,7 @@ export class thunderStastsCore {
     // ================ SINGLE DAY METHODS - END =====================
 
     // ================ BASE METHODS ========================
-    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99) {
+    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99, adv_filters = null) {
 
       let start_time = performance.now();
       // console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
@@ -173,15 +173,56 @@ export class thunderStastsCore {
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
 
       let queryInfo_FullStatsData = {
-        accountId: account_id == 0?'':account_id,
+        //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account hass been chosen
         fromDate: fromDate,
         toDate: toDate,
       }
+
+      // Advanced Filters
+      /*
+        adv_filters is an object that contains various filters
+
+        //Folders
+          adv_filter.folders is an array with the folders ids to be included in the query
+          adv_filter.folders_do_subfolders is a boolean that indicates if the subfolders should be included in the query
+
+      */
+
+      let filter_folders = null;
+
+      this.tsLog.log("adv_filters: " + JSON.stringify(adv_filters));
+
+      if(adv_filters != null){
+        //Folders
+        if ('folders' in adv_filters) {
+          if(adv_filters.folders.length > 0) {
+            let tmp_filter_folders = [...adv_filters.folders];
+            if(adv_filters.folders_do_subfolders) {
+              for (let folder of tmp_filter_folders) {
+                let tmp_out = await tsCoreUtils.getAccountFoldersIds(folder);
+                tmp_filter_folders = [...tmp_filter_folders, ...tmp_out];
+              }
+            }
+            filter_folders = [...new Set(tmp_filter_folders)];
+          }
+        }
+      }
+
+      if(account_id != 0){
+        if(filter_folders != null){
+          this.tsLog.log("filter_folders: " + JSON.stringify(filter_folders));
+          queryInfo_FullStatsData.folderId = filter_folders;
+        }else{
+          queryInfo_FullStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
+        }
+      }
+      
       this.tsLog.log("queryInfo_getFullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
       
       let count = 0;
       let sent = 0;
       let received = 0;
+      let count_in_inbox = 0;
 
       let senders = {};
       let recipients = {};
@@ -200,6 +241,13 @@ export class thunderStastsCore {
         msg_hours[i].received = 0;
       }
 
+      let msg_weekdays = {};
+      for(let i = 0; i < 7; i++) {
+        msg_weekdays[i] = {};
+        msg_weekdays[i].sent = 0;
+        msg_weekdays[i].received = 0;
+      }
+
       for await (let message of messages) {
           if(this.excludeMessage(message,account_id)) continue;
           // this.tsLog.log("message: " + JSON.stringify(message));
@@ -215,6 +263,9 @@ export class thunderStastsCore {
               folders[message.folder.id].sent = 0;
               folders[message.folder.id].received = 0;
               folders[message.folder.id].folder_data = message.folder;
+            }
+            if(message.folder.specialUse && message.folder.specialUse.includes('inbox')){
+              count_in_inbox++;
             }
           }
 
@@ -255,6 +306,8 @@ export class thunderStastsCore {
               dates[date_message_string].sent++;
               // group by hour
               msg_hours[hour_message].sent++;
+              // group by weekday
+              msg_weekdays[date_message.getDay()].sent++;
               // check recipients
               //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
               for (let recipient of message.recipients) {
@@ -313,6 +366,8 @@ export class thunderStastsCore {
               dates[date_message_string].received++;
               // group by hour
               msg_hours[hour_message].received++;
+              // group by weekday
+              msg_weekdays[date_message.getDay()].received++;
             }
           }
         //check recipients - END
@@ -329,7 +384,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
       // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, msg_hours: msg_hours, folders: folders, dates: dates };
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, msg_weekdays: msg_weekdays};
 
       if(do_aggregate_stats) {
         output.aggregate = await this.aggregateData(dates, only_businessdays);

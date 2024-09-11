@@ -191,9 +191,32 @@ export const tsCoreUtils = {
     },
 
     getManyDaysBarColor(ctx, totalBars) {
-        const defaultColor = '#4682B4';
-        const todayColor = tsStore.darkmode ? '#1f9c6a' : '#2bc285';
+        const defaultColor = tsStore.chart_colors.many_days_default;
+        const todayColor = tsStore.darkmode ? tsStore.chart_colors.many_days_today_dark : tsStore.chart_colors.many_days_today_light;
         return ctx.dataIndex === totalBars - 1 ? todayColor : defaultColor;
+    },
+
+    getWeekDaysLabel(label) {
+        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
+        let first_day_week = tsStore.first_day_week;
+        label = parseInt(label) + parseInt(first_day_week);
+        if(label >= 7) label = label - 7;
+        const dayOfWeek = browser.i18n.getMessage(daysOfWeek[label]);
+        return [
+            dayOfWeek
+        ];
+    },
+
+    getWeekDaysLabelColor(label) {
+        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
+        let first_day_week = tsStore.first_day_week;
+        label = parseInt(label) + parseInt(first_day_week);
+        if(label >= 7) label = label - 7;
+        // check weekeday preference
+        let isBusinessDay = tsStore["bday_weekdays_" + label]
+        const bd_color = tsStore.darkmode ? "white" : "black";
+        const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
+        return (isBusinessDay ? bd_color : nbd_color);
     },
 
     transformInboxZeroDatesDataToDataset(data) {
@@ -392,6 +415,75 @@ export const tsCoreUtils = {
         let account_emails = await this.getAccountEmails(account_id,true);
         // console.log(">>>>>>>>>>>>> getDefaultAccountFilterDuplicatesOption account_emails: " + JSON.stringify(account_emails));
         return account_emails.some(email => email.toLowerCase().endsWith("@gmail.com"));
+    },
+
+    async getAccountFoldersIds(account_id, ignore_archive_folders = false) {
+        let output = [];
+    
+        async function exploreFolders(folders) {
+            for (let folder of folders) {
+                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
+                if (ignore_archive_folders && folder.type == "archive") {
+                    continue;
+                }
+                if (!output.includes(folder.id)) {
+                    output.push(folder.id);
+                }
+    
+                // Recursively explore subfolders
+                if (folder.subFolders && folder.subFolders.length > 0) {
+                    await exploreFolders(folder.subFolders);
+                }
+            }
+        }
+    
+        let folders = await browser.folders.getSubFolders(account_id);
+    
+        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+    
+        await exploreFolders(folders);
+    
+        return output;
+    },
+
+    // extractPath(folder_id) {
+    //     // Check if the string contains '://'
+    //     const index = folder_id.indexOf('://');
+    //     if (index === -1) {
+    //       return folder_id; // Return the original string if '://' is not found
+    //     }
+    //     // Return the part of the string after '://'
+    //     return folder_id.substring(index + 3);
+    // },
+
+    // return an array of objects {value, label}
+    async getAccountFoldersNames(account_id){
+        let output = [];
+        let checked_folders = [];
+    
+        async function exploreFolders(folders) {
+            for (let folder of folders) {
+                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
+
+                if (!checked_folders.includes(folder.id)) {
+                    output.push({value: folder.id, label: folder.path});
+                    checked_folders.push(folder.id);
+                }
+    
+                // Recursively explore subfolders
+                if (folder.subFolders && folder.subFolders.length > 0) {
+                    await exploreFolders(folder.subFolders);
+                }
+            }
+        }
+    
+        let folders = await browser.folders.getSubFolders(account_id);
+    
+        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+    
+        await exploreFolders(folders);
+    
+        return output;
     },
 
     async getIncludeArchivePreference(account_id) {

@@ -674,5 +674,63 @@
   "MailsInADay": {
     "message": "Mails in a day",
     "description": ""
+  },
+  "FolderLocation_percent_handled": {
+    "message": "Mails moved from the inbox folder",
+    "description": ""
+  },
+  "AskUserWarningTitle": {
+    "message": "Warning",
+    "description": ""
+  },
+  "CustomViewTooMuchDaysText" : {
+    "message": "This date interval is $QDAYS$ days long and the statistic could need some time to complete.\r\nDo you want to continue?",
+    "description": "",
+    "placeholders": {
+      "qdays": {
+        "content": "$1",
+        "example": "90"
+      }
+    }
+  },
+  "CustmQryWarnOnLongPeriod_1": {
+    "message": "Number of days after which the user is warned that the statistics may take a long time.",
+    "description": ""
+  },
+  "CustmQryWarnOnLongPeriod_2": {
+    "message": "[0: Never warn]",
+    "description": ""
+  },
+  "ShowAdvFilters": {
+    "message": "Show Advanced Filters",
+    "description": ""
+  },
+  "AdvFilters": {
+    "message": "Advanced Filters",
+    "description": ""
+  },
+  "ChooseFoldersFilter": {
+    "message": "Choose folders",
+    "description": ""
+  },
+  "ChooseAccountToFilterFolders": {
+    "message": "You must choose a single account to filter on the folders!",
+    "description": ""
+  },
+  "FilterFoldersIncludeSubfolders": {
+    "message": "Include subfolders of the choosen folders",
+    "description": ""
+  },
+  "FilterFoldersPlaceholder": {
+    "message": "Choose one or more folders...",
+    "description": ""
+  },
+  "prefs_customqry_always_open_adv_filters": {
+    "message": "Always open the Advanced Filters panel in Custom View",
+    "description": ""
+  },
+  "TimeDay": {
+    "message": "Time of the day",
+    "description": ""
   }
 }

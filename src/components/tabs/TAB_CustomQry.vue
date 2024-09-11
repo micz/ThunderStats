@@ -67,7 +67,7 @@
         <span class="list_heading_date" v-html="singleday_date_str"></span>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="sent_total" :_rcvd="rcvd_total" />
         <div class="singleday_spacing"></div>
-        <GraphYesterday :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_graph" :yesterday = "false" />
+        <GraphYesterday :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_graph" :yesterday = "false" :key="chartData_TimeDay_length"/>
     </div>
 
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
@@ -100,7 +100,7 @@
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
 					  </div>
-					<WidgetWeekDay v-if="do_run" :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" />
+					<WidgetWeekDay v-if="do_run" :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" :key="chartData_WeekDays_length" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
@@ -293,10 +293,14 @@ let chartData_TimeDay = ref({
     datasets: []
 });
 
+let chartData_TimeDay_length = computed(() => (chartData_TimeDay.value.datasets.length + Math.floor(Math.random() * 101)));
+
 let chartData_WeekDays = ref({
     labels: Array.from({length: 7}, (_, i) => i),
     datasets: []
 });
+
+let chartData_WeekDays_length = computed(() => (chartData_WeekDays.value.datasets.length + Math.floor(Math.random() * 101)));
 
 let elapsed = {
     'getCustomQryData':0,

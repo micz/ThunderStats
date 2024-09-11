@@ -21,14 +21,14 @@
 
 <template>
 
-    <GraphWeeksDay :chartData="weekday_chartData" :is_loading="is_loading" />
+    <GraphWeeksDay :chartData="weekday_chartData" :is_loading="is_loading" :key="weekday_chartData_length" />
 
 </template>
 
 
 <script setup>
 
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import GraphWeeksDay from '../graphs/GraphWeeksDay.vue';
 
 let props = defineProps({
@@ -45,6 +45,8 @@ let props = defineProps({
 
 let weekday_chartData = computed(() => props.weekday_chartData)
 let is_loading = computed(() => props.is_loading)
+
+let weekday_chartData_length = computed(() => (weekday_chartData.value.datasets.length + Math.floor(Math.random() * 101)));
 
 
 

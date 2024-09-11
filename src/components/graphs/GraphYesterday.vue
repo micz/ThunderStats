@@ -25,7 +25,7 @@
       :options="chartOptions"
       :data="chartData"
       :plugins="chartPlugins"
-      :key="chartData.datasets.length"
+      :key="chartData_length"
       ref="yesterdayChartBar_ref"
       v-if="!is_loading"
     />
@@ -67,6 +67,8 @@ let props = defineProps({
 });
 
 let yesterdayChartBar_ref = ref(null);
+
+let chartData_length = computed(() => (chartData.value.datasets.length + Math.floor(Math.random() * 101)));
 
 let legend_id = ref("yesterday-time-legend-container");
 

@@ -3,7 +3,7 @@
 
 
 
-<h3>Version 2.2.0 - ??/??/2024</h3>
+<h3>Version 2.2.0 - 11/09/2024</h3>
       <ul>
         <li>When executing a custom query for a single day, now is used the single day view [<a href="https://github.com/micz/ThunderStats/issues/315">#315</a>].</li>
         <li>The Inbox Zero Folders Chart is no longer partially hidden under the bottom border in certain circumstances.</li>
@@ -15,7 +15,6 @@
         <li>In the Custom View is now possible to filter by one or more folders [<a href="https://github.com/micz/ThunderStats/issues/75">#75</a>, <a href="https://github.com/micz/ThunderStats/issues/125">#125</a>].</li>
         <li>A chart showing the cumulative volumes of sent and received emails, grouped by hour, has been added to the Custom View and Many Days view [<a href="https://github.com/micz/ThunderStats/issues/244">#244</a>].</li>
         <li>A chart showing the cumulative volumes of sent and received emails, grouped by weekday, has been added to the Custom View and Many Days view [<a href="https://github.com/micz/ThunderStats/issues/245">#245</a>].</li>
-        <li>...</li>
       </ul>
 <h3>Version 2.1.0 - 20/08/2024</h3>
       <ul>

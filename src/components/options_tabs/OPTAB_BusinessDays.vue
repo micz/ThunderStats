@@ -162,7 +162,7 @@ let tsLog = null;
 
 const firstDayWeek = ref(1);
 
-const days = ref([
+const days = [
   {idx: 1, label: browser.i18n.getMessage('WeekDay1')},
   {idx: 2, label: browser.i18n.getMessage('WeekDay2')},
   {idx: 3, label: browser.i18n.getMessage('WeekDay3')},
@@ -170,7 +170,7 @@ const days = ref([
   {idx: 5, label: browser.i18n.getMessage('WeekDay5')},
   {idx: 6, label: browser.i18n.getMessage('WeekDay6')},
   {idx: 0, label: browser.i18n.getMessage('WeekDay0')}
-]);
+];
 
 const emit = defineEmits(['new_changes']);
 
@@ -228,28 +228,25 @@ onMounted(async () => {
 });
     
     selectedDays.value = [];
-    days.value.forEach(day => {
+    days.forEach(day => {
         if (prefs[`bday_weekdays_${day.idx}`]) {
             selectedDays.value.push(day.idx);
         }
     });
         
     firstDayWeek.value = prefs.first_day_week;
-    // if (firstDayWeek.value == 0) {
-    //     days.sort((a, b) => a.idx - b.idx);
-    // }
-    // else if (firstDayWeek.value == 6) {
-    //     days.sort((a, b) => {
-    //         if (a.idx === 6) return -1;
-    //         if (b.idx === 6) return 1;
-    //         if (a.idx === 0) return -1;
-    //         if (b.idx === 0) return 1;
-    //         return a.idx - b.idx;
-    //     });
-    // }
-
-    days.value = tsUtils.sortDays(firstDayWeek.value,days.value);
-
+    if (firstDayWeek.value == 0) {
+        days.sort((a, b) => a.idx - b.idx);
+    }
+    else if (firstDayWeek.value == 6) {
+        days.sort((a, b) => {
+            if (a.idx === 6) return -1;
+            if (b.idx === 6) return 1;
+            if (a.idx === 0) return -1;
+            if (b.idx === 0) return 1;
+            return a.idx - b.idx;
+        });
+    }
     tsLog.log("onMounted");
     nextTick(() => {
         i18n.updateDocument();

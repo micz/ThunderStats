@@ -28,6 +28,4 @@ export const prefs_default = {
     'bday_weekdays_6': false,   //Saturday
     'bday_custom_days': [],
     'bday_easter': true,
-    'customqry_warn_onlongperiod_days': 90,
-    'customqry_always_open_adv_filters': false,
 }

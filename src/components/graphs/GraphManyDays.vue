@@ -76,7 +76,8 @@ var chartOptions = ref({
         scales: {
           x: {
             title: {
-              display: false,
+              display: true,
+              text: browser.i18n.getMessage('TimeChart.Time')
             },
             beginAtZero: true,
             min: 0,

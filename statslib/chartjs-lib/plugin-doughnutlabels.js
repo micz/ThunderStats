@@ -31,21 +31,6 @@ export const tsDoughnutLabelsLine = {
       const centerX = doughnutMeta.controller.chart.chartArea.left + (doughnutMeta.controller.chart.chartArea.right - doughnutMeta.controller.chart.chartArea.left) / 2;
       const centerY = doughnutMeta.controller.chart.chartArea.top + (doughnutMeta.controller.chart.chartArea.bottom - doughnutMeta.controller.chart.chartArea.top) / 2;
 
-      // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-      // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-      // console.log(">>>>>>>>> centerX: " + centerX);
-      // console.log(">>>>>>>>> centerY: " + centerY);
-      // console.log(">>>>>>>>> thickness: " + thickness);
-      // console.log(">>>>>>>>> width: " + width);
-      // console.log(">>>>>>>>> height: " + height);
-      // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-      // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-      //let count_slice = 0;
-      let count_fixed = {};
-      count_fixed.top = 0;
-      count_fixed.bottom = 0;
-
       chart.data.datasets.forEach((dataset, i) => {
         //let onlyOne = (chart.getDatasetMeta(i).data.length == 1);
         chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
@@ -53,19 +38,10 @@ export const tsDoughnutLabelsLine = {
           // let x = 127.5;
           // let y = 155;
 
-          //count_slice++;
-
-          const radius = datapoint.outerRadius; // Outer radius of the slice
-          const startAngle = datapoint.startAngle * (180 / Math.PI); // Start angle in degrees
-          const endAngle = datapoint.endAngle * (180 / Math.PI); // End angle in degrees
-
-          // Calculate the extreme points
-          const extremePoints = getExtremePoints(centerX, centerY, radius, startAngle, endAngle);
-
           // if(!onlyOne) {
-          const { newX, newY } = moveTooltipPoint(centerX, centerY, a, b, thickness / 2);
-          let x = newX;
-          let y = newY;
+            const { newX, newY } = moveTooltipPoint(centerX, centerY, a, b, thickness / 2);
+            let x = newX;
+            let y = newY;
           // }
 
           // draw line
@@ -131,12 +107,8 @@ export const tsDoughnutLabelsLine = {
           const textWidth = ctx.measureText(chart.data.labels[index]).width;
           ctx.font = "12px Arial";
           // control the position
-          let textXPosition = x > halfwidth ? "left" : "right";
-          let plusFivePx = x > halfwidth ? 5 : -5;
-          if(_position_fix.needed){
-            textXPosition = textXPosition == "right" ? "left" : "right";
-            plusFivePx = -plusFivePx;
-          }
+          const textXPosition = x >= halfwidth ? "left" : "right";
+          const plusFivePx = x >= halfwidth ? 5 : -5;
           ctx.textAlign = textXPosition;
           ctx.textBaseline = "middle";
           // ctx.fillStyle = dataset.backgroundColor[index];
@@ -156,9 +128,6 @@ export const tsDoughnutLabelsLine = {
             xLine + extraLine + plusFivePx,
             yLine
           );
-
-          // ctx.arc(extremePoints.startPoint.x, extremePoints.startPoint.y, 2, 0, 2 * Math.PI, true);
-          // ctx.fill();
         });
       });
     },
@@ -180,7 +149,7 @@ export const tsDoughnutLabelsLine = {
     // Calculate new coordinates with the offset applied
     const newX = pointX + offset * ux;
     const newY = pointY + offset * uy;
-
+//console.log(">>>>>>>>>>>>>> newX: " + newX + " newY: " + newY);
     return {newX, newY};
   }
 
@@ -249,3 +218,4 @@ export const tsDoughnutLabelsLine = {
 
     return {needed: (is_top || is_bottom) && is_middle && !is_big, is_top: is_top, is_bottom: is_bottom, is_middle: is_middle};
   }
+

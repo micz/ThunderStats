@@ -1,6 +1,6 @@
 {
   "name": "thunderstats",
-  "version": "2.2.0",
+  "version": "2.1.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@imengyu/vue3-context-menu": "^1.4.1",
-    "@vueform/multiselect": "^2.6.9",
     "@vuepic/vue-datepicker": "^8.7.0",
     "chart.js": "^4.4.2",
     "chartjs-plugin-datalabels": "^2.2.0",

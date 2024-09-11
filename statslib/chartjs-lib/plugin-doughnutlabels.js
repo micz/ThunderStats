@@ -114,6 +114,7 @@ export const tsDoughnutLabelsLine = {
             xLine = xLine - Math.abs(2 * ( x - xLine ));
             //yLine = y >= halfheight ? y + 20 : y - 20;
             extraLine = -extraLine;
+            is_dx = !is_dx;
           }
 
           ctx.beginPath();

@@ -1,4 +1,4 @@
-# ![ThunderStats icon](public/images/mzts-icon-32px.png "ThunderStats")  ThunderStats 2.0
+# ![ThunderStats icon](public/images/mzts-icon-32px.png "ThunderStats")  ThunderStats 2
 
 This addon adds awesome statistics to your beloved Thunderbird!
 
@@ -12,6 +12,21 @@ Features from the previous version 1.4.5, not already implemented, have been ass
 More info on [#194](https://github.com/micz/ThunderStats/issues/194) and [#195](https://github.com/micz/ThunderStats/issues/195)
 
 <br>
+
+## Features
+- Sent and received mails
+- Day time graph
+- Top senders and recipients list
+- Inbox Zero status
+- Multiple days and Custom range date statistics with:
+  - Time and weekdays aggregation
+  - Max, min, average sent and received mails over the period
+- Define the business days, to get statistics (total, max, min, average) ignoring non-business days.
+- Export data in CSV format
+
+
+<br>
+
 
 ## Privacy
 All data processing is performed locally on your device. No data is transmitted, shared, or stored on any external servers or third-party services.
@@ -56,6 +71,12 @@ Contributing Author: [Christopher Leidigh](https://github.com/cleidigh)
 
 <br>
 
+## Support this addon!
+Are you using this addon in your Thunderbird?
+<br>Consider to support the development making a small donation. [Click here!](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UHN4SXPGEXWQL&lc=IT&item_name=ThunderStats&item_number=thunderstats&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+
+<br>
+
 ## Attributions
 
 ### Translations
@@ -75,8 +96,6 @@ See the [package.json](/package.json) file.
 Addon icon thanks to http://hopstarter.deviantart.com/
 
 Custom Query Bookmark icon thanks to http://www.iconarchive.com/artist/graphicrating.html
-
-Custom Query Advanced Filters icon thanks to https://www.iconarchive.com/artist/paomedia.html
 
 Loading SVGs thanks to https://loading.io
 

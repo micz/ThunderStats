@@ -24,16 +24,16 @@
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
         <tab id="tab-today" name="__MSG_Today__">
-            <TAB_Today :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateYesterdayTabName="updateYesterdayTabName" ref="TAB_Today_ref" />
+            <TAB_Today :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateYesterdayTabName="updateYesterdayTabName" ref="TAB_Today_ref" />
         </tab>
         <tab id="tab-yesterday" :name="_yesterday_text">
-          <TAB_Yesterday :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateTabName="updateYesterdayTabName" ref="TAB_Yesterday_ref" />
+          <TAB_Yesterday :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateTabName="updateYesterdayTabName" ref="TAB_Yesterday_ref" />
         </tab>
         <tab id="tab-manydays" :name="_many_days_text">
-          <TAB_ManyDays :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_ManyDays_ref" />
+          <TAB_ManyDays :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_ManyDays_ref" />
         </tab>
         <tab id="tab-customqry" name="__MSG_CustomQry__">
-          <TAB_CustomQry @updateCustomQry="updateCustomQry" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @customQryUserCancelled="customQryUserCancelled" ref="TAB_CustomQry_ref" />
+          <TAB_CustomQry @updateCustomQry="updateCustomQry" :activeAccount="activeAccount" :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_CustomQry_ref" />
         </tab>
         <tab id="tab-info" name="__MSG_Info__">
             <TAB_Info />
@@ -154,7 +154,7 @@ import { tsUtils } from '@statslib/mzts-utils';
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     i18n.updateDocument();
-    updateStats(HeadingNAV_ref.value.getCurrentIdn());
+    updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
     mounted_ok = true;
   });
   
@@ -167,8 +167,6 @@ import { tsUtils } from '@statslib/mzts-utils';
     if(tsCore == null) {
       tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     }
-    //elapsed_time.value = 0;
-    updateElapsed(0);
     last_exec_datetime.value[currentTab.value] = '';
     tsLog.log("updateStats", account_id);
     activeAccount.value = account_id;
@@ -220,10 +218,6 @@ import { tsUtils } from '@statslib/mzts-utils';
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
       //statsDone(id.tab.computedId);
     }
-    if(id.tab.computedId == "tab-customqry"){
-      await nextTick();
-      TAB_CustomQry_ref.value.updateAdvFiltersPosition();
-    }
   }
 
   async function updateCustomQry() {
@@ -235,16 +229,8 @@ import { tsUtils } from '@statslib/mzts-utils';
 
   function updateElapsed(elapsed) {
     tsLog.log("updateElapsed: " + elapsed);
-    // console.log(">>>>>>>>>>>>> updateElapsed elapsed: " + elapsed);
-    // console.log(">>>>>>>>>>>>> updateElapsed elapsed_time.value: " + elapsed_time.value);
-    //if(elapsed_time.value < elapsed) elapsed_time.value = elapsed;
     elapsed_time.value = elapsed;
     if(elapsed > 0) last_exec_datetime.value[currentTab.value] = (new Date()).toLocaleTimeString();
-  }
-
-  function customQryUserCancelled() {
-    tsLog.log("The user cancelled the custom query when asked about too many days.");
-    is_loading.value = false;
   }
 
   function updateYesterdayTabName(name) {

@@ -19,7 +19,7 @@
 -->
 
 <template>
-<div :class="getWrapperClass">
+<div class="chart_time">
   <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." id="yesterday_hours_graph_wait"/></div>
   <Line
       :options="chartOptions"
@@ -30,7 +30,7 @@
       v-if="!is_loading"
     />
 </div>
-<div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
+<div id="yesterday-time-legend-container" class="legend-time" v-if="!is_loading"></div>
 </template>
 
 
@@ -55,39 +55,17 @@ let props = defineProps({
     is_loading: {
         type: Boolean,
         default: true
-    },
-    yesterday: {
-      type: Boolean,
-      default: true
-    },
-    is_generic_day: {
-      type: Boolean,
-      default: false
     }
 });
 
 let yesterdayChartBar_ref = ref(null);
 
-let legend_id = ref("yesterday-time-legend-container");
-
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
-let do_yesterday = computed(() => props.yesterday)
-let is_generic_day = computed(() => props.is_generic_day)
 
 let maxY = ref(0);
 
-const getWrapperClass = computed(() => {
-  return {
-    'chart_time_full': is_generic_day.value,
-    'chart_time': !is_generic_day.value
-  };
-});
-
 watch(props.chartData, (newChartData) => {
-  if(!do_yesterday.value) {
-    legend_id.value = "singleday-time-legend-container";
-  }
     //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
       let data = newChartData.datasets[0].data.concat(newChartData.datasets[1].data);
@@ -153,17 +131,14 @@ var chartOptions = ref({
           },
           htmlLegend: {
             // ID of the container to put the legend in
-            containerID: legend_id.value,
+            containerID: 'yesterday-time-legend-container',
             is_today: false,
-            is_yesterday: do_yesterday.value,
           },
           tooltip: {
               enabled: false,
               mode: 'index',
               intersect: false,
-              external: function(context) {
-                externalTooltipTimeGraphLines(context, {is_generic_day: is_generic_day.value});
-              }
+              external: externalTooltipTimeGraphLines
             }
         },
       });

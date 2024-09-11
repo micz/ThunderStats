@@ -70,10 +70,18 @@ const getOrCreateTooltip = (chart) => {
   }
 
   
-export const externalTooltipTimeGraphLines = (context) => {
+export const externalTooltipTimeGraphLines = (context, extra_params = null) => {
     // Tooltip Element
     const {chart, tooltip} = context;
     const tooltipEl = getOrCreateTooltip(chart);
+
+    let is_generic_day = false;
+
+    if(extra_params != null){
+      if('is_generic_day' in extra_params){
+        is_generic_day = extra_params.is_generic_day;
+      }
+    }
   
     // Hide if no tooltip
     if (tooltip.opacity === 0) {
@@ -139,7 +147,7 @@ export const externalTooltipTimeGraphLines = (context) => {
           td_ty.classList.add('tooltip-content');
           td_ty.style.borderWidth = 0;
           const text_ty = document.createElement('span');
-          text_ty.innerHTML = ((i == 0) && (bodyLines.length > 2)) ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
+          text_ty.innerHTML = ((i == 0) && (bodyLines.length > 2)) ? browser.i18n.getMessage('Today') : (is_generic_day ? '' : browser.i18n.getMessage('Yesterday'));
           td_ty.appendChild(text_ty);
           tr_ty.appendChild(td_ty);
           tableBody.appendChild(tr_ty);

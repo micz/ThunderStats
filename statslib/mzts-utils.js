@@ -232,5 +232,51 @@ export const tsUtils = {
     
         return result.trim();
     },
-  
+
+    sortDays(firstDayWeek, days) {
+        const sortedDays = [...days]; // Create a shallow copy of the days array
+
+        if (firstDayWeek == 0) {
+          // Sort days normally by index if the first day of the week is 0 (Sunday)
+          sortedDays.sort((a, b) => a.idx - b.idx);
+        } else if (firstDayWeek == 6) {
+          // Custom sort for when the first day of the week is 6 (Saturday)
+          sortedDays.sort((a, b) => {
+            if (a.idx === 6) return -1; // Move Saturday to the front
+            if (b.idx === 6) return 1;
+            if (a.idx === 0) return -1; // Then move Sunday to the second position
+            if (b.idx === 0) return 1;
+            return a.idx - b.idx; // Sort the rest normally
+          });
+        }
+
+        return sortedDays; // Return the sorted copy
+      },
+
+      sortWeekdays(firstDayWeek, msg_weekdays) {
+        // console.log(">>>>>>>>>> sortWeekdays: msg_weekdays: " + JSON.stringify(msg_weekdays));
+        // console.log(">>>>>>>>>> sortWeekdays: firstDayWeek: " + firstDayWeek);
+        // Convert the object to an array of entries to sort
+        const weekdaysArray = Object.entries(msg_weekdays).map(([key, value]) => ({
+          idx: parseInt(key),
+          ...value
+        }));
+        // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
+        // Sort the array based on the firstDayWeek value
+        if (firstDayWeek == 0) {
+          weekdaysArray.sort((a, b) => a.idx - b.idx);
+        } else if (firstDayWeek == 6) {
+          weekdaysArray.sort((a, b) => {
+            if (a.idx == 6) return -1; // Move Saturday to the front
+            if (b.idx == 6) return 1;
+            if (a.idx == 0) return -1; // Then move Sunday to the second position
+            if (b.idx == 0) return 1;
+            return a.idx - b.idx; // Sort the rest normally
+          });
+        }
+        // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
+        
+        return weekdaysArray;
+      },      
+        
 }

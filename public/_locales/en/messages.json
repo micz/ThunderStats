@@ -728,5 +728,9 @@
   "prefs_customqry_always_open_adv_filters": {
     "message": "Always open the Advanced Filters panel in Custom View",
     "description": ""
+  },
+  "TimeDay": {
+    "message": "Time of the day",
+    "description": ""
   }
 }

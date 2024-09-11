@@ -19,7 +19,7 @@
 -->
 
 <template>
-<div class="chart_time">
+<div :class="getWrapperClass">
   <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." id="yesterday_hours_graph_wait"/></div>
   <Line
       :options="chartOptions"
@@ -59,6 +59,10 @@ let props = defineProps({
     yesterday: {
       type: Boolean,
       default: true
+    },
+    is_generic_day: {
+      type: Boolean,
+      default: false
     }
 });
 
@@ -69,8 +73,16 @@ let legend_id = ref("yesterday-time-legend-container");
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
 let do_yesterday = computed(() => props.yesterday)
+let is_generic_day = computed(() => props.is_generic_day)
 
 let maxY = ref(0);
+
+const getWrapperClass = computed(() => {
+  return {
+    'chart_time_full': is_generic_day.value,
+    'chart_time': !is_generic_day.value
+  };
+});
 
 watch(props.chartData, (newChartData) => {
   if(!do_yesterday.value) {
@@ -149,7 +161,9 @@ var chartOptions = ref({
               enabled: false,
               mode: 'index',
               intersect: false,
-              external: externalTooltipTimeGraphLines
+              external: function(context) {
+                externalTooltipTimeGraphLines(context, {is_generic_day: is_generic_day.value});
+              }
             }
         },
       });

@@ -210,16 +210,16 @@ async function updateData() {
     chartData_Yesterday.value.datasets.push({
         label: 'ysent',
         data: graphdata_yesterday_hours_sent.value,
-        borderColor: '#1f77b4',
-        backgroundColor: '#1f77b4',
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
         borderWidth: 2,
         pointRadius: 1,
     })
     chartData_Yesterday.value.datasets.push({
         label: 'yrcvd',
         data: graphdata_yesterday_hours_rcvd.value,
-        borderColor: '#ff7f0e',
-        backgroundColor: '#ff7f0e',
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
         borderWidth: 2,
         pointRadius: 1,
     })

@@ -32,6 +32,8 @@
         <li>Added a warning if querying too much days in the Custom View. Added an option in the advanced tab to choose the maximum number of days to query without a warning. It's also possible to disable the warning completely [<a href="https://github.com/micz/ThunderStats/issues/281">#281</a>].</li>
         <li>Added in the Custom View an Advanced Filters panel. Click on the Advanced Filters icon to show it [<a href="https://github.com/micz/ThunderStats/issues/347">#347</a>].</li>
         <li>In the Custom View is now possible to filter by one or more folders [<a href="https://github.com/micz/ThunderStats/issues/75">#75</a>, <a href="https://github.com/micz/ThunderStats/issues/125">#125</a>].</li>
+        <li>A chart showing the cumulative volumes of sent and received emails, grouped by hour, has been added to the Custom View and Many Days view [<a href="https://github.com/micz/ThunderStats/issues/244">#244</a>].</li>
+        <li>A chart showing the cumulative volumes of sent and received emails, grouped by weekday, has been added to the Custom View and Many Days view [<a href="https://github.com/micz/ThunderStats/issues/245">#245</a>].</li>
         <li>...</li>
       </ul>
       <h3>Version 2.1.0 - 20/08/2024</h3>

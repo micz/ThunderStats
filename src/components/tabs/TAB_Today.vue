@@ -226,16 +226,16 @@ async function updateData() {
     chartData_Today.value.datasets.push({
         label: 'tsent',
         data: graphdata_today_hours_sent.value,
-        borderColor: '#1f77b4',
-        backgroundColor: '#1f77b4',
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
         borderWidth: 2,
         pointRadius: 1,
     })
     chartData_Today.value.datasets.push({
         label: 'trcvd',
         data: graphdata_today_hours_rcvd.value,
-        borderColor: '#ff7f0e',
-        backgroundColor: '#ff7f0e',
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
         borderWidth: 2,
         pointRadius: 1,
     })
@@ -243,8 +243,8 @@ async function updateData() {
         chartData_Today.value.datasets.push({
             label: 'ysent',
             data: graphdata_yesterday_hours_sent.value,
-            borderColor: '#17becf',
-            backgroundColor: '#17becf',
+            borderColor: tsStore.chart_colors._time_sent_yesterday,
+            backgroundColor: tsStore.chart_colors._time_sent_yesterday,
             borderDash: [12, 3, 3],
             pointStyle: false,
             borderWidth: 2,
@@ -252,8 +252,8 @@ async function updateData() {
         chartData_Today.value.datasets.push({
             label: 'yrcvd',
             data: graphdata_yesterday_hours_rcvd.value,
-            borderColor: '#ffbb78',
-            backgroundColor: '#ffbb78',
+            borderColor: tsStore.chart_colors._time_rcvd_yesterday,
+            backgroundColor: tsStore.chart_colors._time_rcvd_yesterday,
             borderDash: [12, 3, 3],
             pointStyle: false,
             borderWidth: 2,

@@ -191,9 +191,32 @@ export const tsCoreUtils = {
     },
 
     getManyDaysBarColor(ctx, totalBars) {
-        const defaultColor = '#4682B4';
-        const todayColor = tsStore.darkmode ? '#1f9c6a' : '#2bc285';
+        const defaultColor = tsStore.chart_colors.many_days_default;
+        const todayColor = tsStore.darkmode ? tsStore.chart_colors.many_days_today_dark : tsStore.chart_colors.many_days_today_light;
         return ctx.dataIndex === totalBars - 1 ? todayColor : defaultColor;
+    },
+
+    getWeekDaysLabel(label) {
+        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
+        let first_day_week = tsStore.first_day_week;
+        label = parseInt(label) + parseInt(first_day_week);
+        if(label >= 7) label = label - 7;
+        const dayOfWeek = browser.i18n.getMessage(daysOfWeek[label]);
+        return [
+            dayOfWeek
+        ];
+    },
+
+    getWeekDaysLabelColor(label) {
+        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
+        let first_day_week = tsStore.first_day_week;
+        label = parseInt(label) + parseInt(first_day_week);
+        if(label >= 7) label = label - 7;
+        // check weekeday preference
+        let isBusinessDay = tsStore["bday_weekdays_" + label]
+        const bd_color = tsStore.darkmode ? "white" : "black";
+        const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
+        return (isBusinessDay ? bd_color : nbd_color);
     },
 
     transformInboxZeroDatesDataToDataset(data) {

@@ -674,5 +674,63 @@
   "MailsInADay": {
     "message": "E-mails par jour",
     "description": ""
+  },
+  "FolderLocation_percent_handled": {
+    "message": "Mails déplacés du dossier de la boîte de réception",
+    "description": ""
+  },
+  "AskUserWarningTitle": {
+    "message": "Avertissement",
+    "description": ""
+  },
+  "CustomViewTooMuchDaysText": {
+    "message": "Cet intervalle de dates est de $QDAYS$ jours et la statistique pourrait nécessiter un certain temps pour se terminer. Voulez-vous continuer ?",
+    "description": "",
+    "placeholders": {
+      "qdays": {
+        "content": "$1",
+        "example": "90"
+      }
+    }
+  },
+  "CustmQryWarnOnLongPeriod_1": {
+    "message": "Nombre de jours après lesquels l'utilisateur est averti que les statistiques peuvent prendre beaucoup de temps.",
+    "description": ""
+  },
+  "CustmQryWarnOnLongPeriod_2": {
+    "message": "Ne jamais avertir",
+    "description": ""
+  },
+  "ShowAdvFilters": {
+    "message": "Afficher les filtres avancés",
+    "description": ""
+  },
+  "AdvFilters": {
+    "message": "Filtres avancés",
+    "description": ""
+  },
+  "ChooseFoldersFilter": {
+    "message": "Choisir des dossiers",
+    "description": ""
+  },
+  "ChooseAccountToFilterFolders": {
+    "message": "Vous devez choisir un seul compte pour filtrer les dossiers !",
+    "description": ""
+  },
+  "FilterFoldersIncludeSubfolders": {
+    "message": "Inclure les sous-dossiers des dossiers choisis",
+    "description": ""
+  },
+  "FilterFoldersPlaceholder": {
+    "message": "Choisissez un ou plusieurs dossiers...",
+    "description": ""
+  },
+  "prefs_customqry_always_open_adv_filters": {
+    "message": "Toujours ouvrir le panneau des filtres avancés en vue personnalisée",
+    "description": ""
+  },
+  "TimeDay": {
+    "message": "Heure de la journée",
+    "description": ""
   }
 }

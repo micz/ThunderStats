@@ -80,6 +80,14 @@
       </td>
     </tr>
     <tr>
+      <td class="td_padding_right">
+        <label><input type="number" id="customqry_warn_onlongperiod_days" name="customqry_warn_onlongperiod_days" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_CustmQryWarnOnLongPeriod_1__<br>[0: __MSG_CustmQryWarnOnLongPeriod_2__]</span>
+      </td>
+    </tr>
+    <tr>
       <td>
         <label><input type="checkbox" id="do_debug" name="do_debug" class="option-input" /></label>
       </td>

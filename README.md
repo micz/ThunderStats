@@ -1,4 +1,4 @@
-# ![ThunderStats icon](public/images/mzts-icon-32px.png "ThunderStats")  ThunderStats 2.0
+# ![ThunderStats icon](public/images/mzts-icon-32px.png "ThunderStats")  ThunderStats 2
 
 This addon adds awesome statistics to your beloved Thunderbird!
 
@@ -18,7 +18,9 @@ More info on [#194](https://github.com/micz/ThunderStats/issues/194) and [#195](
 - Day time graph
 - Top senders and recipients list
 - Inbox Zero status
-- Multiple days and Custom range date statistics with also max, min, average sent and received mails over the period.
+- Multiple days and Custom range date statistics with:
+  - Time and weekdays aggregation
+  - Max, min, average sent and received mails over the period
 - Define the business days, to get statistics (total, max, min, average) ignoring non-business days.
 - Export data in CSV format
 

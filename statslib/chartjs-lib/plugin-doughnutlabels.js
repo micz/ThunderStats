@@ -45,12 +45,52 @@ export const tsDoughnutLabelsLine = {
           // }
 
           // draw line
-          const halfwidth = width / 2;
-          const halfheight = height / 2;
-          const xLine = x >= halfwidth ? x + 20 : x - 20;
-          const yLine = y >= halfheight ? y + 20 : y - 20;
+          const halfwidth = centerX;
+          const halfheight = centerY;
+          let xLine = x > halfwidth ? x + 20 : x - 20;
+          let yLine = y >= halfheight ? y + 20 : y - 20;
+          const yLine_original = yLine;
 
-          const extraLine = x >= halfwidth ? 10 : -10;
+          let extraLine = x > halfwidth ? 10 : -10;
+          
+          let _position_fix = checkSlicePosition(centerX, centerY, extremePoints);
+
+          let is_dx = x > halfwidth;
+
+          // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+          // console.log(">>>>>>>>> chart.data.labels[index]: " + chart.data.labels[index]);// + " ["+count_slice+"]");
+          // console.log(">>>>>>>>> a: " + a);
+          // console.log(">>>>>>>>> b: " + b);
+          // console.log(">>>>>>>>> x: " + x);
+          // console.log(">>>>>>>>> y: " + y);
+          // console.log(">>>>>>>> extremePoints.startPoint: " + JSON.stringify(extremePoints.startPoint));
+          // console.log(">>>>>>>> extremePoints.endPoint: " + JSON.stringify(extremePoints.endPoint));
+          // console.log(">>>>>>>> xLine: " + xLine);
+          // console.log(">>>>>>>> yLine: " + yLine);
+          // console.log(">>>>>>>>> extraLine: " + extraLine);
+          // console.log(">>>>>>>> _position_fix: " + JSON.stringify(_position_fix));
+          // console.log(">>>>>>>>> count_fixed: " + JSON.stringify(count_fixed));
+          // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+          if(_position_fix.is_top){
+            if(count_fixed.top > 0){
+              yLine -= 8 * count_fixed.top;
+            }
+            count_fixed.top++;
+          }
+          if(_position_fix.is_bottom){
+            if(count_fixed.bottom > 0){
+              yLine += 8 * count_fixed.bottom;
+            }
+            count_fixed.bottom++;
+          }
+
+          if(_position_fix.needed){
+            yLine = yLine_original;
+            xLine = xLine - Math.abs(2 * ( x - xLine ));
+            //yLine = y >= halfheight ? y + 20 : y - 20;
+            extraLine = -extraLine;
+          }
 
           ctx.beginPath();
           ctx.moveTo(x, y);
@@ -74,9 +114,17 @@ export const tsDoughnutLabelsLine = {
           // ctx.fillStyle = dataset.backgroundColor[index];
           ctx.fillStyle = chart.options.color;
 
+          let label_text = '';
+
+          if(is_dx){
+            label_text = '('+ chart.data.datasets[0].data[index] +') ' + chart.data.labels[index]; // + " ["+count_slice+"]",
+          }else{
+            label_text = chart.data.labels[index] + ' ('+ chart.data.datasets[0].data[index] +')'; // + " ["+count_slice+"]",
+          }
+
           ctx.fillText(
             //((chart.data.datasets[0].data[index] * 100) / sum).toFixed(2) + "%",
-            chart.data.labels[index] + ' ('+ chart.data.datasets[0].data[index] +')',
+            label_text,
             xLine + extraLine + plusFivePx,
             yLine
           );
@@ -103,4 +151,71 @@ export const tsDoughnutLabelsLine = {
     const newY = pointY + offset * uy;
 //console.log(">>>>>>>>>>>>>> newX: " + newX + " newY: " + newY);
     return {newX, newY};
-}
+  }
+
+
+  // Function to calculate the extreme points of a slice
+  function getExtremePoints(centerX, centerY, radius, startAngle, endAngle) {
+    // Convert the start angle to radians
+    const startRadians = (startAngle) * (Math.PI / 180);
+    const endRadians = (endAngle) * (Math.PI / 180);
+
+    // Calculate the coordinates of the starting extreme point
+    const startPoint = {
+        x: centerX + radius * Math.cos(startRadians),
+        y: centerY + radius * Math.sin(startRadians)
+    };
+
+    // Calculate the coordinates of the ending extreme point
+    const endPoint = {
+        x: centerX + radius * Math.cos(endRadians),
+        y: centerY + radius * Math.sin(endRadians)
+    };
+
+    return { startPoint, endPoint };
+  }
+
+  // check if the slice is at the top or at the bottom and is near the middle
+  // return true if we need to alter the positioning of the label
+  function checkSlicePosition(centerX, centerY, extremePoints){     
+    const { startPoint, endPoint } = extremePoints;
+
+    let extreme_start_x = Math.trunc(extremePoints.startPoint.x);
+    let extreme_end_x = Math.trunc(extremePoints.endPoint.x);
+    let extreme_start_y = Math.trunc(extremePoints.startPoint.y);
+    let extreme_end_y = Math.trunc(extremePoints.endPoint.y);
+
+    centerX = Math.trunc(centerX);
+    centerY = Math.trunc(centerY);
+
+    // is at the top or the bottom
+    let is_top = (extreme_start_y < centerY) && (extreme_end_y < centerY);
+    let is_bottom = (extreme_start_y > centerY) && (extreme_end_y > centerY);
+
+    // is around horizontal midpoint
+    let is_middle = false;
+    if(extremePoints.startPoint.x > extremePoints.endPoint.x){
+      is_middle = (extreme_start_x >= centerX) && (extreme_end_x <= centerX);
+    }else{
+      is_middle = (extreme_start_x <= centerX) && (extreme_end_x >= centerX);
+    }
+
+    // is big enough
+    let is_big = false;
+    if(Math.abs(extreme_start_x - extreme_end_x) > 50){
+      is_big = true;
+    }
+
+    // console.log(">>>>>>>> centerX: " + centerX);
+    // console.log(">>>>>>>> centerY: " + centerY);
+    // console.log(">>>>>>>> extreme_start_x: " + extreme_start_x);
+    // console.log(">>>>>>>> extreme_end_x: " + extreme_end_x);
+    // console.log(">>>>>>>> extreme_start_y: " + extreme_start_y);
+    // console.log(">>>>>>>> extreme_end_y: " + extreme_end_y);
+    // console.log(">>>>>>>>> is_top: " + is_top);
+    // console.log(">>>>>>>>> is_bottom: " + is_bottom);
+    // console.log(">>>>>>>>> is_middle: " + is_middle);
+
+    return {needed: (is_top || is_bottom) && is_middle && !is_big, is_top: is_top, is_bottom: is_bottom, is_middle: is_middle};
+  }
+

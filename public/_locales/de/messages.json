@@ -674,5 +674,63 @@
   "MailsInADay": {
     "message": "E-Mails pro Tag",
     "description": ""
+  },
+  "FolderLocation_percent_handled": {
+    "message": "E-Mails aus dem Posteingangsordner verschoben",
+    "description": ""
+  },
+  "AskUserWarningTitle": {
+    "message": "Warnung",
+    "description": ""
+  },
+  "CustomViewTooMuchDaysText": {
+    "message": "Dieses Datumsintervall ist $QDAYS$ Tage lang und die Statistik könnte einige Zeit in Anspruch nehmen. Möchten Sie fortfahren?",
+    "description": "",
+    "placeholders": {
+      "qdays": {
+        "content": "$1",
+        "example": "90"
+      }
+    }
+  },
+  "CustmQryWarnOnLongPeriod_1": {
+    "message": "Anzahl der Tage, nach denen der Benutzer gewarnt wird, dass die Erstellung der Statistiken lange dauern kann.",
+    "description": ""
+  },
+  "CustmQryWarnOnLongPeriod_2": {
+    "message": "Nie warnen",
+    "description": ""
+  },
+  "ShowAdvFilters": {
+    "message": "Erweiterte Filter anzeigen",
+    "description": ""
+  },
+  "AdvFilters": {
+    "message": "Erweiterte Filter",
+    "description": ""
+  },
+  "ChooseFoldersFilter": {
+    "message": "Ordner auswählen",
+    "description": ""
+  },
+  "ChooseAccountToFilterFolders": {
+    "message": "Sie müssen ein einziges Konto auswählen, um nach den Ordnern zu filtern!",
+    "description": ""
+  },
+  "FilterFoldersIncludeSubfolders": {
+    "message": "Unterordner der ausgewählten Ordner einbeziehen",
+    "description": ""
+  },
+  "FilterFoldersPlaceholder": {
+    "message": "Wählen Sie einen oder mehrere Ordner...",
+    "description": ""
+  },
+  "prefs_customqry_always_open_adv_filters": {
+    "message": "Das Fenster „Erweiterte Filter“ in der benutzerdefinierten Ansicht immer öffnen",
+    "description": ""
+  },
+  "TimeDay": {
+    "message": "Tageszeit",
+    "description": ""
   }
 }

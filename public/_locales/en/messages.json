@@ -698,7 +698,7 @@
     "description": ""
   },
   "CustmQryWarnOnLongPeriod_2": {
-    "message": "[0: Never warn]",
+    "message": "Never warn",
     "description": ""
   },
   "ShowAdvFilters": {

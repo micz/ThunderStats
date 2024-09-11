@@ -674,5 +674,63 @@
   "MailsInADay": {
     "message": "Mail in un giorno",
     "description": ""
+  },
+  "FolderLocation_percent_handled": {
+    "message": "Mail spostate dalla cartella della posta in arrivo",
+    "description": ""
+  },
+  "AskUserWarningTitle": {
+    "message": "Attenzione",
+    "description": ""
+  },
+  "CustomViewTooMuchDaysText": {
+    "message": "Questo intervallo di date è di $QDAYS$ giorni e il calcolo delle statistiche potrebbe richiedere del tempo per essere completata. Vuoi continuare?",
+    "description": "",
+    "placeholders": {
+      "qdays": {
+        "content": "$1",
+        "example": "90"
+      }
+    }
+  },
+  "CustmQryWarnOnLongPeriod_1": {
+    "message": "Numero di giorni dopo i quali l'utente viene avvisato che il calcolo delle statistiche potrebbero richiedere molto tempo.",
+    "description": ""
+  },
+  "CustmQryWarnOnLongPeriod_2": {
+    "message": "Non avvisare mai",
+    "description": ""
+  },
+  "ShowAdvFilters": {
+    "message": "Mostra filtri avanzati",
+    "description": ""
+  },
+  "AdvFilters": {
+    "message": "Filtri avanzati",
+    "description": ""
+  },
+  "ChooseFoldersFilter": {
+    "message": "Scegli le cartelle",
+    "description": ""
+  },
+  "ChooseAccountToFilterFolders": {
+    "message": "Devi scegliere un solo account per filtrare sulle cartelle!",
+    "description": ""
+  },
+  "FilterFoldersIncludeSubfolders": {
+    "message": "Includi le sottocartelle delle cartelle selezionate",
+    "description": ""
+  },
+  "FilterFoldersPlaceholder": {
+    "message": "Scegli una o più cartelle...",
+    "description": ""
+  },
+  "prefs_customqry_always_open_adv_filters": {
+    "message": "Apri sempre il pannello dei Filtri Avanzati nella vista personalizzata",
+    "description": ""
+  },
+  "TimeDay": {
+    "message": "Ora del giorno",
+    "description": ""
   }
 }

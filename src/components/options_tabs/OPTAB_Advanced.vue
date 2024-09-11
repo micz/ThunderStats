@@ -84,7 +84,7 @@
         <label><input type="number" id="customqry_warn_onlongperiod_days" name="customqry_warn_onlongperiod_days" class="option-input" /></label>
       </td>
       <td>
-        <span class="dims_label">__MSG_CustmQryWarnOnLongPeriod_1__<br>__MSG_CustmQryWarnOnLongPeriod_2__</span>
+        <span class="dims_label">__MSG_CustmQryWarnOnLongPeriod_1__<br>[0: __MSG_CustmQryWarnOnLongPeriod_2__]</span>
       </td>
     </tr>
     <tr>

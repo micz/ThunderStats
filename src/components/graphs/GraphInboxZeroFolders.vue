@@ -69,7 +69,7 @@ let chartOptions = ref({
         maintainAspectRatio: false,
         clip: false,
         layout: {
-	        padding: 50
+	        padding: 70
 	      },
         scales: {
             y: {

@@ -19,17 +19,18 @@
 -->
 
 <template>
-<div class="chart_many_days">
+<div class="chart_time_full">
   <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
   <Bar
       :options="chartOptions"
       :data="chartData"
       :plugins="chartPlugins"
       :key="chartData.datasets.length"
-      ref="manydaysChartBar_ref"
+      ref="weekdaysChartBar_ref"
       v-if="!is_loading"
     />
 </div>
+<div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </template>
 
 
@@ -39,6 +40,7 @@ import { ref, computed, watch } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsStore } from '@statslib/mzts-store';
 
@@ -57,12 +59,12 @@ let props = defineProps({
     }
 });
 
-let manydaysChartBar_ref = ref(null);
+let weekdaysChartBar_ref = ref(null);
+
+let legend_id = ref("weekdays-legend-container");
 
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
-
-//let maxY = ref(Math.ceil(Math.max(...chartData.value.datasets[0].data) / 5) * 5);
 
 let maxY = ref(0);
 
@@ -82,13 +84,13 @@ var chartOptions = ref({
             min: 0,
             ticks: {
               callback: function(value, index, ticks) {
-                            return tsCoreUtils.getManyDaysLabel(this.getLabelForValue(value));
+                            return tsCoreUtils.getWeekDaysLabel(this.getLabelForValue(value));
                         },
               align: 'center',
               color: function(context) {
                             const labelIndex = context['tick']['value'];
                             const label = context.chart.data.labels[labelIndex];
-                            return tsCoreUtils.getDaysLabelColor(label);
+                            return tsCoreUtils.getWeekDaysLabelColor(label);
                         },
               // maxRotation: 0,
               // minRotation: 0
@@ -117,6 +119,12 @@ var chartOptions = ref({
           legend: {
             display: false,
           },
+          htmlLegend: {
+            // ID of the container to put the legend in
+            containerID: legend_id.value,
+            is_today: false,
+            is_yesterday: false,
+          },
           tooltip: {
               enabled: false,
           },
@@ -137,19 +145,12 @@ var chartOptions = ref({
             font: {
               weight: 'bold',
             },
-            //formatter: function(value, context) {
-              // console.log(">>>>>>>>>>>>>>>>>>>>> context.dataIndex: " + JSON.stringify(context.dataIndex));
-              // console.log(">>>>>>>>>>>>>>>>>>>>> context.dataset: " + JSON.stringify(context.dataset));
-              // const dataValues = Object.values(context.dataset.data);
-              // value = dataValues[context.dataIndex];
-              //console.log(">>>>>>>>>>>>>>>>>>>>> value: " + JSON.stringify(value));
-            //   return value;
-            // },
           },
         },
       });
 
-var chartPlugins = [ChartDataLabels];
+var chartPlugins = [ChartDataLabels, htmlLegendPlugin];
+
 
 watch(props.chartData, (newChartData) => {
     //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));

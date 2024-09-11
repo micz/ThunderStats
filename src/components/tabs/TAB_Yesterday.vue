@@ -33,8 +33,9 @@
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
 					  </div>
 					  <CounterInbox :is_loading="is_loading_counter_inbox" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
+                      <CounterInboxPercent :is_loading="is_loading_counter_inbox" :inbox_percent="counter_inbox_percent" />
+                      <div class="chart_inbox0_info"><p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="yesteday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_yesterday_rcvd == 0)" v-text="no_mails_received_yesterday"></p></div>
                       <div class="chart_inbox0">
-                        <p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="yesteday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_yesterday_rcvd == 0)" v-text="no_mails_received_yesterday"></p>
                         <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_graph_folders" />
                       </div>
                       <div class="chart_inbox0_datemsg">
@@ -78,12 +79,9 @@ import { tsExport } from '@statslib/mzts-export';
 import CounterManyDays_Table from '../counters/CounterManyDays_Table.vue';
 import InfoTooltip from '../InfoTooltip.vue';
 import ExportMenu from '../ExportMenu.vue';
+import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 
 const props = defineProps({
-    activeAccount: {
-        type: Number,
-        default: 0
-    },
     accountEmails: {
         type: Array,
         default: []
@@ -133,6 +131,7 @@ let counter_many_days_rcvd_total = ref(0);
 let counter_many_days_rcvd_max = ref(0);
 let counter_many_days_rcvd_min = ref(0);
 let counter_many_days_rcvd_avg = ref(0);
+let counter_inbox_percent = ref(0);
 
 let table_involved_recipients = ref([]);
 let table_involved_senders = ref([]);
@@ -211,16 +210,16 @@ async function updateData() {
     chartData_Yesterday.value.datasets.push({
         label: 'ysent',
         data: graphdata_yesterday_hours_sent.value,
-        borderColor: '#1f77b4',
-        backgroundColor: '#1f77b4',
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
         borderWidth: 2,
         pointRadius: 1,
     })
     chartData_Yesterday.value.datasets.push({
         label: 'yrcvd',
         data: graphdata_yesterday_hours_rcvd.value,
-        borderColor: '#ff7f0e',
-        backgroundColor: '#ff7f0e',
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
         borderWidth: 2,
         pointRadius: 1,
     })
@@ -242,7 +241,7 @@ async function updateData() {
         is_loading_yesterday_graph.value = false;
         is_loading_inbox_graph_folders.value = false;
         // is_loading_inbox_graph_dates.value = false;
-        showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(props.activeAccount)
+        showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id)
         i18n.updateDocument();
     });
 };
@@ -255,16 +254,16 @@ async function updateData() {
             let prefs_bday_use_last_business_day = await tsPrefs.getPref("bday_use_last_business_day");
             if(prefs_bday_use_last_business_day == true){
                 if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date.value)) == true){
-                    result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);
+                    result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails);
                 }else{
                     let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date.value);
                     yesterday_date_str.value = last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
                     emit('updateTabName', browser.i18n.getMessage("LastBusinessDay"));
-                    result_yesterday = await tsCore.getSingleDay(last_bday,props.activeAccount, props.accountEmails);
+                    result_yesterday = await tsCore.getSingleDay(last_bday,tsStore.current_account_id, props.accountEmails);
                     tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
                 }
             }else{
-                result_yesterday = await tsCore.getYesterday(props.activeAccount, props.accountEmails);
+                result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails);
             }
             tsLog.log("result_yesterday: " + JSON.stringify(result_yesterday, null, 2));
             counter_yesterday_rcvd.value = result_yesterday.received;
@@ -287,6 +286,11 @@ async function updateData() {
             is_loading_involved_table_recipients.value = false;
             // inbox zero folders
             graphdata_inboxzero_folders.value = result_yesterday.folders;
+            if(result_yesterday.received > 0){
+                counter_inbox_percent.value = (Math.round((1 - (result_yesterday.count_in_inbox / result_yesterday.received)) * 10000) / 100).toFixed(2) + '%';
+            }else{
+                counter_inbox_percent.value = '0%';
+            }
             updateElapsed('getYesterdayData', result_yesterday.elapsed);
             resolve(true);
         });
@@ -294,7 +298,7 @@ async function updateData() {
 
     function getInboxZeroData () {
         return new Promise(async (resolve) => {
-            let result_inbox = await tsCore.getInboxZeroDates(props.activeAccount, props.accountEmails);
+            let result_inbox = await tsCore.getInboxZeroDates(tsStore.current_account_id, props.accountEmails);
             counter_inbox_total.value = result_inbox.total;
             counter_inbox_unread.value = result_inbox.unread;
             // inbox zero dates
@@ -315,7 +319,7 @@ async function updateData() {
     // get 7 days data
     async function getManyDaysData () {
         return new Promise(async (resolve) => {
-            let result_many_days = await tsCore.getToday_manyDaysData(props.activeAccount, props.accountEmails);
+            let result_many_days = await tsCore.getToday_manyDaysData(tsStore.current_account_id, props.accountEmails);
             tsLog.log("result_today_manydays_data: " + JSON.stringify(result_many_days, null, 2));
             counter_many_days_rcvd_total.value = result_many_days.aggregate.total_received;
             counter_many_days_rcvd_max.value = result_many_days.aggregate.max_received;

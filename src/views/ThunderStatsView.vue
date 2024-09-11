@@ -220,6 +220,10 @@ import { tsUtils } from '@statslib/mzts-utils';
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
       //statsDone(id.tab.computedId);
     }
+    if(id.tab.computedId == "tab-customqry"){
+      await nextTick();
+      TAB_CustomQry_ref.value.updateAdvFiltersPosition();
+    }
   }
 
   async function updateCustomQry() {

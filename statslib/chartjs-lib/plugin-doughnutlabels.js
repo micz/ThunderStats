@@ -81,20 +81,20 @@ export const tsDoughnutLabelsLine = {
 
           let is_dx = x > halfwidth;
 
-          console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-          console.log(">>>>>>>>> chart.data.labels[index]: " + chart.data.labels[index]);// + " ["+count_slice+"]");
-          console.log(">>>>>>>>> a: " + a);
-          console.log(">>>>>>>>> b: " + b);
-          console.log(">>>>>>>>> x: " + x);
-          console.log(">>>>>>>>> y: " + y);
-          console.log(">>>>>>>> extremePoints.startPoint: " + JSON.stringify(extremePoints.startPoint));
-          console.log(">>>>>>>> extremePoints.endPoint: " + JSON.stringify(extremePoints.endPoint));
-          console.log(">>>>>>>> xLine: " + xLine);
-          console.log(">>>>>>>> yLine: " + yLine);
-          console.log(">>>>>>>>> extraLine: " + extraLine);
-          console.log(">>>>>>>> _position_fix: " + JSON.stringify(_position_fix));
-          console.log(">>>>>>>>> count_fixed: " + JSON.stringify(count_fixed));
-          console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+          // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+          // console.log(">>>>>>>>> chart.data.labels[index]: " + chart.data.labels[index]);// + " ["+count_slice+"]");
+          // console.log(">>>>>>>>> a: " + a);
+          // console.log(">>>>>>>>> b: " + b);
+          // console.log(">>>>>>>>> x: " + x);
+          // console.log(">>>>>>>>> y: " + y);
+          // console.log(">>>>>>>> extremePoints.startPoint: " + JSON.stringify(extremePoints.startPoint));
+          // console.log(">>>>>>>> extremePoints.endPoint: " + JSON.stringify(extremePoints.endPoint));
+          // console.log(">>>>>>>> xLine: " + xLine);
+          // console.log(">>>>>>>> yLine: " + yLine);
+          // console.log(">>>>>>>>> extraLine: " + extraLine);
+          // console.log(">>>>>>>> _position_fix: " + JSON.stringify(_position_fix));
+          // console.log(">>>>>>>>> count_fixed: " + JSON.stringify(count_fixed));
+          // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
           if(_position_fix.is_top){
             if(count_fixed.top > 0){
@@ -237,15 +237,15 @@ export const tsDoughnutLabelsLine = {
       is_big = true;
     }
 
-    console.log(">>>>>>>> centerX: " + centerX);
-    console.log(">>>>>>>> centerY: " + centerY);
-    console.log(">>>>>>>> extreme_start_x: " + extreme_start_x);
-    console.log(">>>>>>>> extreme_end_x: " + extreme_end_x);
-    console.log(">>>>>>>> extreme_start_y: " + extreme_start_y);
-    console.log(">>>>>>>> extreme_end_y: " + extreme_end_y);
-    console.log(">>>>>>>>> is_top: " + is_top);
-    console.log(">>>>>>>>> is_bottom: " + is_bottom);
-    console.log(">>>>>>>>> is_middle: " + is_middle);
+    // console.log(">>>>>>>> centerX: " + centerX);
+    // console.log(">>>>>>>> centerY: " + centerY);
+    // console.log(">>>>>>>> extreme_start_x: " + extreme_start_x);
+    // console.log(">>>>>>>> extreme_end_x: " + extreme_end_x);
+    // console.log(">>>>>>>> extreme_start_y: " + extreme_start_y);
+    // console.log(">>>>>>>> extreme_end_y: " + extreme_end_y);
+    // console.log(">>>>>>>>> is_top: " + is_top);
+    // console.log(">>>>>>>>> is_bottom: " + is_bottom);
+    // console.log(">>>>>>>>> is_middle: " + is_middle);
 
     return {needed: (is_top || is_bottom) && is_middle && !is_big, is_top: is_top, is_bottom: is_bottom, is_middle: is_middle};
   }

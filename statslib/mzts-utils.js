@@ -283,6 +283,8 @@ export const tsUtils = {
         try {
           const info = await browser.runtime.getBrowserInfo();
           const version = info.version;
+          // console.log(">>>>>>>>>> version: " + info.version)
+          // console.log(">>>>>>>>>> isThunderbird128OrGreater: " + tsUtils.compareThunderbirdVersions(version, '128.0') >= 0)
           return tsUtils.compareThunderbirdVersions(version, '128.0') >= 0;
         } catch (error) {
           console.error('[ThunderStats] Error retrieving browser information:', error);

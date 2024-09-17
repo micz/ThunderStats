@@ -431,8 +431,11 @@ export const tsCoreUtils = {
     
         async function exploreFolders(folders) {
             for (let folder of folders) {
-                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
-                if (ignore_archive_folders && folder.type == "archive") {
+                if(!("specialUse" in folder)){
+                    folder.specialUse = [folder.type];
+                }
+                if (["trash", "templates", "drafts", "junk", "outbox"].some(specialUse => folder.specialUse.includes(specialUse))) continue;
+                if (ignore_archive_folders && folder.specialUse.includes('archives')) {
                     continue;
                 }
                 if (!output.includes(folder.id)) {
@@ -446,7 +449,8 @@ export const tsCoreUtils = {
             }
         }
     
-        let folders = await browser.folders.getSubFolders(account_id);
+        let account = await browser.accounts.get(account_id, true);
+        let folders = await browser.folders.getSubFolders(account);
     
         //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
     
@@ -466,14 +470,19 @@ export const tsCoreUtils = {
     // },
 
     // return an array of objects {value, label}
-    async getAccountFoldersNames(account_id){
+    async getAccountFoldersNames(account_id, ignore_archive_folders = false) {
         let output = [];
         let checked_folders = [];
     
         async function exploreFolders(folders) {
             for (let folder of folders) {
-                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
-
+                if(!("specialUse" in folder)){
+                    folder.specialUse = [folder.type];
+                }
+                if (["trash", "templates", "drafts", "junk", "outbox"].some(specialUse => folder.specialUse.includes(specialUse))) continue;
+                if (ignore_archive_folders && folder.specialUse.includes('archives')) {
+                    continue;
+                }
                 if (!checked_folders.includes(folder.id)) {
                     output.push({value: folder.id, label: folder.path});
                     checked_folders.push(folder.id);
@@ -485,8 +494,9 @@ export const tsCoreUtils = {
                 }
             }
         }
-    
-        let folders = await browser.folders.getSubFolders(account_id);
+
+        let account = await browser.accounts.get(account_id, true);    
+        let folders = await browser.folders.getSubFolders(account);
     
         //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
     

@@ -449,8 +449,13 @@ export const tsCoreUtils = {
             }
         }
     
-        let account = await browser.accounts.get(account_id, true);
-        let folders = await browser.folders.getSubFolders(account);
+        let folders = null;
+        if(tsStore.isTB128plus){
+            folders = await browser.folders.getSubFolders(account_id);
+        }else{
+            let account = await browser.accounts.get(account_id, true);    
+            folders = await browser.folders.getSubFolders(account);
+        }
     
         //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
     
@@ -495,8 +500,13 @@ export const tsCoreUtils = {
             }
         }
 
-        let account = await browser.accounts.get(account_id, true);    
-        let folders = await browser.folders.getSubFolders(account);
+        let folders = null;
+        if(tsStore.isTB128plus){
+            folders = await browser.folders.getSubFolders(account_id);
+        }else{
+            let account = await browser.accounts.get(account_id, true);    
+            folders = await browser.folders.getSubFolders(account);
+        }
     
         //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
     

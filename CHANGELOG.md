@@ -5,7 +5,9 @@
 
 <h3>Version 2.2.1 - ??/??/2024</h3>
       <ul>
-        <li>Version 2.* is now compatible also with version 115.*.</li>
+        <li>ThunderStats Version 2.* is now compatible also with Thunderbird version 115.*.</li>
+        <li>The option "When selecting a custom date range view, update the statistics immediately" is now true by default.</li>
+        <li>...</li>
       </ul>
 <h3>Version 2.2.0 - 11/09/2024</h3>
       <ul>

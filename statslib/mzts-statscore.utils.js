@@ -495,6 +495,34 @@ export const tsCoreUtils = {
         return output;
     },
 
+    async getFoldersArrayFromIds(folder_ids, account_id) {
+        let output = [];
+
+        let account = await browser.accounts.get(account_id, true);
+        all_account_folders = await browser.folders.getSubFolders(account);
+
+        for(let folder_id of folder_ids) {
+            let folder_info = tsCoreUtils.splitAccountAndPath(folder_id);
+            let folder = all_account_folders.find(folder => folder.path == folder_info.path);
+            output.push(folder);
+        }
+
+        return output;
+    },
+
+    splitAccountAndPath(inputString) {
+        const separator = ":/";
+        const index = inputString.indexOf(separator);
+    
+        if (index !== -1) {
+            const account = inputString.substring(0, index);
+            const path = inputString.substring(index + separator.length);
+            return { account: account, path: path };
+        } else {
+           return false;
+        }
+    },
+
     async getIncludeArchivePreference(account_id) {
         if(account_id == 0) {
            return await tsPrefs.getPref("include_archive_multi_account");
@@ -558,7 +586,6 @@ export const tsCoreUtils = {
                 return false;
             }
         }
-
 
         // check custom non-business days preference
         let custom_nbd = tsStore.bday_custom_days;

@@ -279,7 +279,7 @@ export const tsUtils = {
         return weekdaysArray;
       },
       
-      async function isThunderbird128OrGreater(){
+      async isThunderbird128OrGreater(){
         try {
           const info = await browser.runtime.getBrowserInfo();
           const version = info.version;

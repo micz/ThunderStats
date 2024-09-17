@@ -173,7 +173,7 @@ export class thunderStastsCore {
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
 
       let queryInfo_FullStatsData = {
-        //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account hass been chosen
+        //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
         fromDate: fromDate,
         toDate: toDate,
       }
@@ -436,17 +436,30 @@ export class thunderStastsCore {
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
 
       let queryInfo_CountStatsData = {
-        accountId: account_id == 0?'':account_id,	//TODO115 do not use account_id
+        //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
         fromDate: fromDate,
         toDate: toDate,
       }
+
+      if(account_id != 0){
+        if(tsUtils.isThunderbird128OrGreater()){
+          queryInfo_CountStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
+        }
+      }
+
       this.tsLog.log("queryInfo_CountStatsData: " + JSON.stringify(queryInfo_CountStatsData));
-      
+
       let count = 0;
       let sent = 0;
       let received = 0;
 
-      let messages = this.getMessages(browser.messages.query(queryInfo_CountStatsData));
+      let messages = null;
+      
+      if(tsUtils.isThunderbird128OrGreater()){
+        messages = this.getMessages(browser.messages.query(queryInfo_CountStatsData));
+      }else{
+        messages = this.getAccountMessages_TB115(queryInfo_CountStatsData, account_id);
+      }
 
       let msg_hours = {};
       for(let i = 0; i < 24; i++) {
@@ -511,17 +524,30 @@ export class thunderStastsCore {
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
 
       let queryInfo_getAggregatedStatsData = {
-        accountId: account_id == 0?'':account_id,	//TODO115 do not use account_id
+        //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
         fromDate: fromDate,
         toDate: toDate,
       }
+
+      if(account_id != 0){
+        if(tsUtils.isThunderbird128OrGreater()){
+          queryInfo_getAggregatedStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
+        }
+      }
+
       this.tsLog.log("queryInfo_getAggregatedStatsData: " + JSON.stringify(queryInfo_getAggregatedStatsData));
       
       let count = 0;
       let sent = 0;
       let received = 0;
 
-      let messages = this.getMessages(browser.messages.query(queryInfo_getAggregatedStatsData));
+      let messages = null;
+      
+      if(tsUtils.isThunderbird128OrGreater()){
+        messages = this.getMessages(browser.messages.query(queryInfo_getAggregatedStatsData));
+      }else{
+        messages = this.getAccountMessages_TB115(queryInfo_getAggregatedStatsData, account_id);
+      }
 
       let msg_days = tsUtils.getDateArray(fromDate,toDate);
 
@@ -658,7 +684,6 @@ export class thunderStastsCore {
       }else{
         inboxFolders = await this.getInboxFolders_TB115(account_id);
       }
-      
 
       //total and unread mails in inbox
       let total = 0;
@@ -667,11 +692,16 @@ export class thunderStastsCore {
       let dates = {};
 
       for(let folder of inboxFolders) {
-
           let queryInfo_InboxZeroData = {
-            accountId: account_id == 0?'':account_id,	//TODO115 do not use account_id
-            folderId: folder.id,	//TODO115 do not use folder.id but folder
+            //accountId: account_id == 0?'':account_id,
           }
+
+          if(tsUtils.isThunderbird128OrGreater()){
+            queryInfo_InboxZeroData.folderId = folder.id;
+          }else{
+            queryInfo_InboxZeroData.folder = folder;
+          }
+
           this.tsLog.log("queryInfo_InboxZeroData: " + JSON.stringify(queryInfo_InboxZeroData));
           
           let messages = this.getMessages(browser.messages.query(queryInfo_InboxZeroData));

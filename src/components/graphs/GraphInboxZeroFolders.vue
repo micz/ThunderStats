@@ -37,6 +37,7 @@ import { ref, computed } from 'vue'
 import { Doughnut } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from 'chart.js'
 import { tsDoughnutLabelsLine } from '@statslib/chartjs-lib/plugin-doughnutlabels';
+import { tsStore } from '@statslib/mzts-store';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
@@ -116,14 +117,14 @@ let chartOptions = ref({
                   break;
                 }
               }
-              if(tsUtils.isThunderbird128OrGreater()){
+              if(tsStore.isTB128plus){
                 browser.mailTabs.update(currTab.id, {displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
               }else{
                 browser.mailTabs.update(currTab.id, {displayedFolder: {...chartData.value.folder_paths[activeEls[0].index]}});
               }
               browser.tabs.update(currTab.id, {active: true});
             } else {
-              if(tsUtils.isThunderbird128OrGreater()){
+              if(tsStore.isTB128plus){
                 browser.mailTabs.create({displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
               }else{
                 browser.mailTabs.create({displayedFolder: {...chartData.value.folder_paths[activeEls[0].index]}});

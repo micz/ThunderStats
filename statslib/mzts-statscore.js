@@ -20,6 +20,7 @@ import { tsLogger } from "./mzts-logger";
 import { tsCoreUtils } from "./mzts-statscore.utils";
 import { tsUtils } from "./mzts-utils";
 import { tsPrefs } from "./mzts-options";
+import { tsStore } from "./mzts-store";
 
 export class thunderStastsCore {
 
@@ -213,13 +214,13 @@ export class thunderStastsCore {
       if(account_id != 0){
         if(filter_folders != null){
           this.tsLog.log("filter_folders: " + JSON.stringify(filter_folders));
-          if(tsUtils.isThunderbird128OrGreater()){
+          if(tsStore.isTB128plus){
             queryInfo_FullStatsData.folderId = filter_folders;
           }else{
             filter_folders_115 = filter_folders;
           }
         }else{
-          if(tsUtils.isThunderbird128OrGreater()){
+          if(tsStore.isTB128plus){
             queryInfo_FullStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
           }else{
             filter_folders_115 = null;
@@ -244,7 +245,7 @@ export class thunderStastsCore {
 
       let messages = null;
       
-      if(tsUtils.isThunderbird128OrGreater()){
+      if(tsStore.isTB128plus){
         messages = this.getMessages(browser.messages.query(queryInfo_FullStatsData));
       }else{
         if(filter_folders_115 == null){
@@ -442,7 +443,7 @@ export class thunderStastsCore {
       }
 
       if(account_id != 0){
-        if(tsUtils.isThunderbird128OrGreater()){
+        if(tsStore.isTB128plus){
           queryInfo_CountStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
         }
       }
@@ -455,7 +456,7 @@ export class thunderStastsCore {
 
       let messages = null;
       
-      if(tsUtils.isThunderbird128OrGreater()){
+      if(tsStore.isTB128plus){
         messages = this.getMessages(browser.messages.query(queryInfo_CountStatsData));
       }else{
         messages = this.getAccountMessages_TB115(queryInfo_CountStatsData, account_id);
@@ -530,7 +531,7 @@ export class thunderStastsCore {
       }
 
       if(account_id != 0){
-        if(tsUtils.isThunderbird128OrGreater()){
+        if(tsStore.isTB128plus){
           queryInfo_getAggregatedStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
         }
       }
@@ -543,7 +544,7 @@ export class thunderStastsCore {
 
       let messages = null;
       
-      if(tsUtils.isThunderbird128OrGreater()){
+      if(tsStore.isTB128plus){
         messages = this.getMessages(browser.messages.query(queryInfo_getAggregatedStatsData));
       }else{
         messages = this.getAccountMessages_TB115(queryInfo_getAggregatedStatsData, account_id);
@@ -679,7 +680,7 @@ export class thunderStastsCore {
 
       let inboxFolders = null;
       
-      if(tsUtils.isThunderbird128OrGreater()){
+      if(tsStore.isTB128plus){
         inboxFolders = await this.getInboxFolders(account_id);
       }else{
         inboxFolders = await this.getInboxFolders_TB115(account_id);
@@ -696,7 +697,7 @@ export class thunderStastsCore {
             //accountId: account_id == 0?'':account_id,
           }
 
-          if(tsUtils.isThunderbird128OrGreater()){
+          if(tsStore.isTB128plus){
             queryInfo_InboxZeroData.folderId = folder.id;
           }else{
             queryInfo_InboxZeroData.folder = folder;
@@ -790,7 +791,7 @@ export class thunderStastsCore {
     }
 
     async *processFolderAndSubfolders_TB115(folder, queryInfo, account_id) {
-      if (this.excludeFolder(folder, account_id)) return;
+      //if (this.excludeFolder(folder, account_id)) return;
   
       //console.log(`>>>>>>>> processFolderAndSubfolders Listing messages for folder: ${folder.name}, path: ${folder.path}`);
       queryInfo.folder = folder;

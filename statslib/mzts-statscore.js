@@ -280,7 +280,7 @@ export class thunderStastsCore {
           if(message.folder){
           	if(!("id" in message.folder)){
           		message.folder.id = tsCoreUtils.getFolderId(message.folder);
-              message.folder.specialUse = message.folder.type;
+              message.folder.specialUse = [message.folder.type];
           	}
             if (folders[message.folder.id]) {
               folders[message.folder.id].count ++;
@@ -658,7 +658,7 @@ export class thunderStastsCore {
 
     excludeMessage(message, account_id = 0){    // Returns true if the message should be excluded from the stats
       if(!("specialUse" in message.folder)){
-        message.folder.specialUse = message.folder.type;
+        message.folder.specialUse = [message.folder.type];
       }
       // do not include messages from drafts, trash, junk folders
       if(message.folder.specialUse && ['drafts', 'trash', 'junk'].some(specialUse => message.folder.specialUse.includes(specialUse))){

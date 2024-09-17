@@ -23,13 +23,16 @@
 		  <div id="mzts-account-sel">__MSG_ChooseAccount__:
           <SelectAccount id="account_selector" @change="accountSelected()" v-model="current_account" ref="SelectAccount_ref"/>
 			<div id="mzts-btn-update">
-        <button type="button" @click="update()">__MSG_Update__</button>
+        <button type="button" @click="update()">__MSG_Update__</button><span class="bday_icon" v-if="businessdays_only"><img src="@/assets/images/mzts-businessdays.png" alt="__MSG_BusinessDayOnlyWarning__" title="__MSG_BusinessDayOnlyWarning__"/></span>
       </div>
       <div id="mzts-warn-msg" v-if="warn_message != ''">
         {{ warn_message }}
       </div>
       <div class="mzts-execution-time" v-if="is_loading && currentTab != 'tab-info'">
         <span v-text="elapsed_time_label"></span>: <span v-text="elapsed_time_string" v-if="elapsed_time != 0"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="elapsed_time == 0"/>
+      </div>
+      <div class="mzts-last-exec" v-if="(is_loading && currentTab != 'tab-info') || (last_exec_datetime != '')">
+        <span v-text="last_exec_label"></span>: <span v-text="last_exec_datetime"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="last_exec_datetime == ''"/>
       </div>
 		  </div>
 		<div id="mzts-setup_icon">
@@ -45,7 +48,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { tsLogger } from "@statslib/mzts-logger.js";
-import { TS_prefs } from "@statslib/mzts-options.js";
+import { tsPrefs } from "@statslib/mzts-options.js";
 import { tsStore } from "@statslib/mzts-store.js";
 import { tsUtils } from "@statslib/mzts-utils.js";
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
@@ -55,12 +58,32 @@ const emit = defineEmits(['chooseAccount']);
 
 const props = defineProps({
   elapsed_time: { type: Number, default:0 },
+  last_exec_datetime: { type: Array, default: '' },
   currentTab: { type: String, default:'' },
-  is_loading: { type: Boolean, default:false }
+  is_loading: { type: Boolean, default:false },
 })
 
 let current_account = ref(0);
 let SelectAccount_ref = ref(null);
+
+let businessdays_only = computed(() => {
+  if((props.currentTab != "tab-info") && (props.currentTab != "tab-customqry")){
+    return tsStore.businessdays_only;
+  }else{
+    return false;
+  }
+})
+
+let currentTab = computed(() => {
+  return props.currentTab;
+})
+
+let last_exec_datetime = computed(() => {
+  if(props.last_exec_datetime[currentTab.value] == undefined){
+    return "";
+  }
+  return props.last_exec_datetime[currentTab.value];
+})
 
 let elapsed_time = computed(() => {
   return props.elapsed_time;
@@ -70,15 +93,12 @@ let elapsed_time_string = computed(() => {
   return tsUtils.convertFromMilliseconds(props.elapsed_time);
 })
 
-let currentTab = computed(() => {
-  return props.currentTab;
-})
-
 let is_loading = computed(() => {
   return props.is_loading;
 })
 
 let elapsed_time_label = ref("");
+let last_exec_label = ref("");
 let warn_message = ref("");
 
 
@@ -86,7 +106,8 @@ let tsLog = null;
 
 onMounted(async () => {
   tsLog = new tsLogger("HeadingNAV", tsStore.do_debug);
-  current_account.value = await TS_prefs.getPref("startup_account");
+  current_account.value = await tsPrefs.getPref("startup_account");
+  tsStore.current_account_id = current_account.value;
   tsLog.log("onMounted: " + current_account.value);
   SelectAccount_ref.value.updateCurrentAccount(current_account.value);
 });
@@ -98,8 +119,9 @@ function update(){
 }
 
 async function accountSelected(){
+  tsStore.current_account_id = current_account.value;
   tsLog.log("accountSelected: " + current_account.value);
-  if(await TS_prefs.getPref("load_data_changing_account")){
+  if(await tsPrefs.getPref("load_data_changing_account")){
     emit('chooseAccount', current_account.value);
     doAgain();
   }
@@ -120,12 +142,14 @@ function openOptions(){
 
 function getCurrentIdn(){
   doAgain();
+  tsStore.current_account_id = current_account.value;
   return current_account.value;
 }
 
 async function doAgain(){
   is_loading.value = true;
   elapsed_time_label.value = await browser.i18n.getMessage("ExecutionTime");
+  last_exec_label.value = await browser.i18n.getMessage("LastExecution");
   props.elapsed_time = 0;
   let account_emails = await tsCoreUtils.getAccountEmails(current_account.value);
   warn_message.value = "";

@@ -20,14 +20,19 @@
 
 <template>
 
-<div class="_7days_aggregate_data">[<span v-if="!is_loading">{{ _max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ _min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ _avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__]</div>
+<div class="_7days_aggregate_data">[<span v-if="!is_loading">{{ _total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> <span class="lowercase">__MSG_total__</span> / <span v-if="!is_loading">{{ _max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ _min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ _avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__]<InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalBDInfoTooltip_text"></InfoTooltip></div>
 
 </template>
 
 <script setup>
 import { computed } from 'vue';
+import InfoTooltip from '@/components/InfoTooltip.vue';
 
 let props = defineProps({
+    _total: {
+        type: Number,
+        default: 0
+    },
     _max: {
         type: Number,
         default: 0
@@ -44,8 +49,19 @@ let props = defineProps({
         type: Boolean,
         default: true
     },
+    showTotalInfoTooltip: {
+        type: Boolean,
+        default: false
+    },
+    totalBDInfoTooltip_text: {
+        type: String,
+        default: ""
+    }
 });
 
+let _total = computed(() => {
+    return props._total
+})
 let _max = computed(() => {
     return props._max
 })
@@ -59,9 +75,18 @@ let is_loading = computed(() => {
     return props.is_loading
 })
 
+let showTotalInfoTooltip = computed(() => {
+    return props.showTotalInfoTooltip
+})
+let totalBDInfoTooltip_text = computed(() => {
+    return props.totalBDInfoTooltip_text
+})
+
 </script>
 
 
 <style scoped>
-
+.lowercase {
+    text-transform: lowercase;
+}
 </style>

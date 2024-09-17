@@ -62,7 +62,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import SelectAccount from '../SelectAccount.vue';
-import { TS_prefs } from '@statslib/mzts-options';
+import { tsPrefs } from '@statslib/mzts-options';
 import { tsLogger } from '@statslib/mzts-logger';
 import { tsStore } from '@statslib/mzts-store';
 import { thunderStastsCore } from "@statslib/mzts-statscore.js";
@@ -82,9 +82,9 @@ let prefCustomIds = {};
 
 onMounted(async () => {
     tsLog = new tsLogger("OPTAB_CustomIds", tsStore.do_debug);
-    TS_prefs.logger = tsLog;
+    tsPrefs.logger = tsLog;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
-    prefCustomIds = await TS_prefs.getPref("custom_identities");
+    prefCustomIds = await tsPrefs.getPref("custom_identities");
     tsLog.log("prefCustomIds = " + JSON.stringify(prefCustomIds));
     tsLog.log("onMounted");
   });
@@ -118,7 +118,7 @@ function updateCustomIds(){
     tsLog.log("current_custom_ids: " + JSON.stringify(current_custom_ids));
     account_custom_ids.value = current_custom_ids.join("\n");
     prefCustomIds[current_account.value] = current_custom_ids;
-    TS_prefs.setPref("custom_identities", prefCustomIds);
+    tsPrefs.setPref("custom_identities", prefCustomIds);
     new_custom_ids_changes.value = false;
     somethingChanged();
 }

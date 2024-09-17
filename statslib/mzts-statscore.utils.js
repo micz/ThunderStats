@@ -17,7 +17,8 @@
  */
 
 import { tsUtils } from "./mzts-utils";
-import { TS_prefs } from "./mzts-options";
+import { tsPrefs } from "./mzts-options";
+import { tsStore } from "./mzts-store";
 
 export const tsCoreUtils = {
 
@@ -60,8 +61,10 @@ export const tsCoreUtils = {
         let output_paths = [];
         for(let key in folders) {
             output_labels.push(folders[key].folder_data.name);
-            //console.log(">>>>>>>>>>>>>> [getFoldersLabelsColors] folders[key].folder_data: " + JSON.stringify(folders[key].folder_data.name));
-            output_paths.push(folders[key].folder_data);
+            if(!("id" in folders[key].folder_data)){
+            	folders[key].folder_data.id = tsCoreUtils.getFolderId(folders[key].folder_data);
+            }
+            output_paths.push(folders[key].folder_data.id);
             if(folders[key].folder_data.type == 'inbox') {
                 output_colors.push(inboxZeroInboxColor);
             } else {
@@ -108,6 +111,15 @@ export const tsCoreUtils = {
       return `${folder.accountId}:/${folder.path}`
     },
 
+    filterTodayNextHours(hours) {
+        // Get the current time
+        const now = new Date();
+        const currentHour = now.getHours();
+
+        // Iterate over the array and set null for hours after the current hour
+        return hours.map((value, index) => index > currentHour ? null : value);
+    },
+
     // getManyDaysLabels(labels) {
     //     const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
 
@@ -131,6 +143,15 @@ export const tsCoreUtils = {
     //         return dayOfWeek + "\r\n" + formattedDate;
     //     });
     // },
+
+    getDaysLabelColor(label) {
+        let isBusinessDay = this.checkBusinessDay(label);
+
+        const bd_color = tsStore.darkmode ? "white" : "black";
+        const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
+
+        return (isBusinessDay ? bd_color : nbd_color);
+    },
 
     getCustomQryLabel(label) {
         const year = parseInt(label.slice(0, 4));
@@ -169,13 +190,40 @@ export const tsCoreUtils = {
         const formattedDate = dateFormatter.format(date);
 
         // return dayOfWeek + "\n" + formattedDate + (tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : "");
-        return [dayOfWeek,formattedDate,(tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : "")];
+        return [
+            dayOfWeek,
+            formattedDate,
+            (tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : ""),
+        ];
     },
 
     getManyDaysBarColor(ctx, totalBars) {
-        const defaultColor = '#4682B4';
-        const todayColor = '#5BB4FD';
+        const defaultColor = tsStore.chart_colors.many_days_default;
+        const todayColor = tsStore.darkmode ? tsStore.chart_colors.many_days_today_dark : tsStore.chart_colors.many_days_today_light;
         return ctx.dataIndex === totalBars - 1 ? todayColor : defaultColor;
+    },
+
+    getWeekDaysLabel(label) {
+        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
+        let first_day_week = tsStore.first_day_week;
+        label = parseInt(label) + parseInt(first_day_week);
+        if(label >= 7) label = label - 7;
+        const dayOfWeek = browser.i18n.getMessage(daysOfWeek[label]);
+        return [
+            dayOfWeek
+        ];
+    },
+
+    getWeekDaysLabelColor(label) {
+        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
+        let first_day_week = tsStore.first_day_week;
+        label = parseInt(label) + parseInt(first_day_week);
+        if(label >= 7) label = label - 7;
+        // check weekeday preference
+        let isBusinessDay = tsStore["bday_weekdays_" + label]
+        const bd_color = tsStore.darkmode ? "white" : "black";
+        const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
+        return (isBusinessDay ? bd_color : nbd_color);
     },
 
     transformInboxZeroDatesDataToDataset(data) {
@@ -342,7 +390,7 @@ export const tsCoreUtils = {
     },
 
     async getAccountCustomIdentities(account_id = 0) {
-        let prefCustomIds = await TS_prefs.getPref("custom_identities");
+        let prefCustomIds = await tsPrefs.getPref("custom_identities");
         // console.log(">>>>>>>>>>>>> getAccountCustomIdentities prefCustomIds: " + JSON.stringify(prefCustomIds));
         if(account_id == 0){ return prefCustomIds; }
         if(prefCustomIds.hasOwnProperty(account_id)){
@@ -378,11 +426,80 @@ export const tsCoreUtils = {
         return account_emails.some(email => email.toLowerCase().endsWith("@gmail.com"));
     },
 
+    async getAccountFoldersIds(account_id, ignore_archive_folders = false) {
+        let output = [];
+    
+        async function exploreFolders(folders) {
+            for (let folder of folders) {
+                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
+                if (ignore_archive_folders && folder.type == "archive") {
+                    continue;
+                }
+                if (!output.includes(folder.id)) {
+                    output.push(folder.id);
+                }
+    
+                // Recursively explore subfolders
+                if (folder.subFolders && folder.subFolders.length > 0) {
+                    await exploreFolders(folder.subFolders);
+                }
+            }
+        }
+    
+        let folders = await browser.folders.getSubFolders(account_id);
+    
+        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+    
+        await exploreFolders(folders);
+    
+        return output;
+    },
+
+    // extractPath(folder_id) {
+    //     // Check if the string contains '://'
+    //     const index = folder_id.indexOf('://');
+    //     if (index === -1) {
+    //       return folder_id; // Return the original string if '://' is not found
+    //     }
+    //     // Return the part of the string after '://'
+    //     return folder_id.substring(index + 3);
+    // },
+
+    // return an array of objects {value, label}
+    async getAccountFoldersNames(account_id){
+        let output = [];
+        let checked_folders = [];
+    
+        async function exploreFolders(folders) {
+            for (let folder of folders) {
+                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
+
+                if (!checked_folders.includes(folder.id)) {
+                    output.push({value: folder.id, label: folder.path});
+                    checked_folders.push(folder.id);
+                }
+    
+                // Recursively explore subfolders
+                if (folder.subFolders && folder.subFolders.length > 0) {
+                    await exploreFolders(folder.subFolders);
+                }
+            }
+        }
+    
+        let folders = await browser.folders.getSubFolders(account_id);
+    
+        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+    
+        await exploreFolders(folders);
+    
+        return output;
+    },
+
     async getIncludeArchivePreference(account_id) {
         if(account_id == 0) {
-           return await TS_prefs.getPref("include_archive_multi_account");
+           return await tsPrefs.getPref("include_archive_multi_account");
         } else {
-           let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
+           let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
          //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
          let element = null;
          if(accounts_adv_settings.length > 0) {
@@ -395,23 +512,103 @@ export const tsCoreUtils = {
         }
      },
 
-     async getFilterDuplicatesPreference(account_id) {
+    async getFilterDuplicatesPreference(account_id) {
         if(account_id == 0) {
-           return await TS_prefs.getPref("filter_duplicates_multi_account");
+            return await tsPrefs.getPref("filter_duplicates_multi_account");
         } else {
-           let accounts_adv_settings = await TS_prefs.getPref("accounts_adv_settings");
-         //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
-         let element = null;
-         if(accounts_adv_settings.length > 0) {
-           element = accounts_adv_settings.find(account => account.id == account_id);
-         }
-         //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
-           if(!element) return false;
-           return element.filter_duplicates || false;
+            let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
+            //console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
+            let element = null;
+            if(accounts_adv_settings.length > 0) {
+                element = accounts_adv_settings.find(account => account.id == account_id);
+            }
+            //console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
+            let filter_duplicates_defaults = await this.getDefaultAccountFilterDuplicatesOption(account_id);
+            if(!element) return filter_duplicates_defaults;
+            return element.filter_duplicates ?? filter_duplicates_defaults;
         }
-     },
+    },
+
+    // This function finds the first previous business day before the given date
+    findPreviousBusinessDay(date) {
+        let previousDate = new Date(date); // Create a copy of the original date
+
+        // Loop until a business day is found
+        do {
+            previousDate.setDate(previousDate.getDate() - 1); // Move to the previous day
+        } while (!this.checkBusinessDay(tsUtils.dateToYYYYMMDD(previousDate)));
+
+        return previousDate;
+    },
+
+    checkBusinessDay(datestr) {    //datestr is a string like YYYYMMDD
+        let date = tsUtils.parseYYYYMMDDToDate(datestr);
+        let date_weekday = date.getDay();
+
+        // console.log(">>>>>>>>>>>>>> checkBusinessDay: " + datestr);
+
+        // check weekeday preference
+        if(tsStore["bday_weekdays_" + date_weekday] == false) {
+            return false;
+        }
+
+        // check easter preference
+        if(tsStore.bday_easter == true) {
+            if(this.isEasterOrEasterMonday(date)) {
+                return false;
+            }
+        }
+
+
+        // check custom non-business days preference
+        let custom_nbd = tsStore.bday_custom_days;
+
+        if(custom_nbd && custom_nbd.length > 0) {
+            for (let element of custom_nbd) {
+                let nbd_datestr = String(element.year == 'every_year' ? date.getFullYear() : element.year) + 
+                                  String(element.month + 1).padStart(2, '0') + 
+                                  String(element.day).padStart(2, '0');
+                // console.log(">>>>>>>>>>>>>> nbd_datestr: " + nbd_datestr);
+                // console.log(">>>>>>>>>>>>>> datestr: " + datestr);
+                if (nbd_datestr == datestr) {
+                    // console.log(">>>>>>>>>>>>>> nbd_datestr == datestr: " + nbd_datestr + " == " + datestr);
+                    return false;
+                }
+            }
+        }
+
+        // console.log(">>>>>>>>>>>>>> checkBusinessDay ["+datestr+"]: return true");
+        return true;
+    },
+
+    isEasterOrEasterMonday(date) {
+        const year = date.getFullYear();
+        const easterDate = this.calculateEaster(year);
+    
+        // Calculate Easter Monday
+        const easterMonday = new Date(easterDate);
+        easterMonday.setDate(easterDate.getDate() + 1);
+    
+        // Compare the provided date with Easter and Easter Monday
+        return (date.toDateString() === easterDate.toDateString()) ||
+               (date.toDateString() === easterMonday.toDateString());
+    },
+
+    calculateEaster(year) {
+        const f = Math.floor;
+        const G = year % 19;
+        const C = f(year / 100);
+        const H = (C - f(C / 4) - f((8 * C + 13) / 25) + 19 * G + 15) % 30;
+        const I = H - f(H / 28) * (1 - f(29 / (H + 1)) * f((21 - G) / 11));
+        const J = (year + f(year / 4) + I + 2 - C + f(C / 4)) % 7;
+        const L = I - J;
+        const month = 3 + f((L + 40) / 44);  // March = 3, April = 4
+        const day = L + 28 - 31 * f(month / 4);
+        return new Date(year, month - 1, day);
+    },
 
 }
+
 
 const inboxZeroColors = [
     "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", 

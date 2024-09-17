@@ -56,7 +56,7 @@
     "description": ""
   },
   "ExecutionTime": {
-    "message": "Tempo di esecuzione",
+    "message": "Tempo totale",
     "description": ""
   },
   "Setup": {
@@ -319,6 +319,10 @@
     "message": "Avanzato",
     "description": ""
   },
+  "TabBusinessDays.label": {
+    "message": "Giorni Lavorativi",
+    "description": ""
+  },
   "TabCustomIdentities.label": {
     "message": "Identità Personalizzate",
     "description": ""
@@ -389,6 +393,10 @@
   },
   "EmailAddresses": {
     "message": "indirizzi email",
+    "description": ""
+  },
+  "Weekdays": {
+    "message": "Giorni della settimana",
     "description": ""
   },
   "WeekDay0": {
@@ -539,12 +547,190 @@
     "message": "Imposta predefinito",
     "description": ""
   },
+  "Label_bday_use_last_business_day": {
+    "message": "Se ieri non era lavorativo, mostra l'ultimo giorno lavorativo.",
+    "description": ""
+  },
+  "Label_bday_default_only": {
+    "message": "Considera solo i giorni lavorativi nelle statistiche aggregate (max, min, media)",
+    "description": ""
+  },
+  "Non-BDays": {
+    "message": "Giorni Non Lavorativi",
+    "description": ""
+  },
+  "Date": {
+    "message": "Data",
+    "description": ""
+  },
+  "Description": {
+    "message": "Descrizione",
+    "description": ""
+  },
+  "New": {
+    "message": "Nuovo",
+    "description": ""
+  },
+  "Edit": {
+    "message": "Modifica",
+    "description": ""
+  },
+  "Delete": {
+    "message": "Cancella",
+    "description": ""
+  },
+  "Yearly": {
+    "message": "Ogni anno",
+    "description": ""
+  },
+  "Yearly_Desc": {
+    "message": "Questo giorno sarà non lavorativo ogni anno.",
+    "description": ""
+  },
+  "Cancel": {
+    "message": "Annulla",
+    "description": ""
+  },
+  "Non-Business_Day": {
+    "message": "Giorno Non Lavorativo",
+    "description": ""
+  },
+  "deletePromptNBD_text": {
+    "message": "Sei sicuro di voler cancellare questo giorno non lavorativo?",
+    "description": ""
+  },
+  "EasterNoBusinessDay": {
+    "message": "Pasqua e il Lunedì di Pasqua sono sempre non lavorativi.",
+    "description": ""
+  },
+  "Year": {
+    "message": "Anno",
+    "description": ""
+  },
+  "Month": {
+    "message": "Mese",
+    "description": ""
+  },
+  "Day": {
+    "message": "Giorno",
+    "description": ""
+  },
+  "OnlyBDCustomQry": {
+    "message": "Considera solo i giorni lavorativi",
+    "description": ""
+  },
+  "BusinessDayOnlyWarning": {
+    "message": "Si stanno considerando solo i giorni non lavorativi",
+    "description": ""
+  },
+  "LastBusinessDay": {
+    "message": "Ultimo giorno lavorativo",
+    "description": ""
+  },
   "Version": {
     "message": "Versione",
     "description": ""
   },
   "AccountWithNoEmails": {
     "message": "L'account selezionato non ha email associate. Devi aggiungere un'identità personalizzata nella pagina delle opzioni.",
+    "description": ""
+  },
+  "InfoTotal_AllMails": {
+    "message": "Questo valore totale tiene conto sia dei giorni lavorativi che dei giorni non lavorativi.",
+    "description": ""
+  },
+  "InfoTotal_BDMails_Only": {
+    "message": "Questi valori tengono conto solo dei giorni lavorativi.",
+    "description": ""
+  },
+  "TimeChartNoFutureHours": {
+    "message": "Non mostrare le ore future nel grafico temporale di oggi.",
+    "description": ""
+  },
+  "Miscellaneous": {
+    "message": "Varie",
+    "description": ""
+  },
+  "TimeChart": {
+    "message": "Grafico temporale",
+    "description": ""
+  },
+  "LastExecution": {
+    "message": "Ultima esecuzione",
+    "description": ""
+  },
+  "ExportData": {
+    "message": "Esportazione Dati",
+    "description": ""
+  },
+  "DailyMails": {
+    "message": "Mail Giornaliere",
+    "description": ""
+  },
+  "Correspondents": {
+    "message": "Corrispondenti",
+    "description": ""
+  },
+  "MailsInADay": {
+    "message": "Mail in un giorno",
+    "description": ""
+  },
+  "FolderLocation_percent_handled": {
+    "message": "Mail spostate dalla cartella della posta in arrivo",
+    "description": ""
+  },
+  "AskUserWarningTitle": {
+    "message": "Attenzione",
+    "description": ""
+  },
+  "CustomViewTooMuchDaysText": {
+    "message": "Questo intervallo di date è di $QDAYS$ giorni e il calcolo delle statistiche potrebbe richiedere del tempo per essere completata. Vuoi continuare?",
+    "description": "",
+    "placeholders": {
+      "qdays": {
+        "content": "$1",
+        "example": "90"
+      }
+    }
+  },
+  "CustmQryWarnOnLongPeriod_1": {
+    "message": "Numero di giorni dopo i quali l'utente viene avvisato che il calcolo delle statistiche potrebbero richiedere molto tempo.",
+    "description": ""
+  },
+  "CustmQryWarnOnLongPeriod_2": {
+    "message": "Non avvisare mai",
+    "description": ""
+  },
+  "ShowAdvFilters": {
+    "message": "Mostra filtri avanzati",
+    "description": ""
+  },
+  "AdvFilters": {
+    "message": "Filtri avanzati",
+    "description": ""
+  },
+  "ChooseFoldersFilter": {
+    "message": "Scegli le cartelle",
+    "description": ""
+  },
+  "ChooseAccountToFilterFolders": {
+    "message": "Devi scegliere un solo account per filtrare sulle cartelle!",
+    "description": ""
+  },
+  "FilterFoldersIncludeSubfolders": {
+    "message": "Includi le sottocartelle delle cartelle selezionate",
+    "description": ""
+  },
+  "FilterFoldersPlaceholder": {
+    "message": "Scegli una o più cartelle...",
+    "description": ""
+  },
+  "prefs_customqry_always_open_adv_filters": {
+    "message": "Apri sempre il pannello dei Filtri Avanzati nella vista personalizzata",
+    "description": ""
+  },
+  "TimeDay": {
+    "message": "Ora del giorno",
     "description": ""
   }
 }

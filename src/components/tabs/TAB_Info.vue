@@ -34,11 +34,7 @@
 					  </div>
 					  <p>__MSG_InboxZeroText_1__</p>
 						<p>__MSG_InboxZeroText_2__</p>
-						<p><i><a href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/what-is-inbox-0/">__MSG_clickheremoreinfo__</a></i></p>
-						<p>&nbsp;</p>
-						<h2 class="list_heading cropped">About ThunderStats 1.9 for Thunderbird 115</h2>
-						<p>The new ThunderStats 2.0 was released in July 2024, exclusively for Thunderbird versions above 125. Since there are still many users using version 115, it was decided to release this version 1.9 compatible with Thunderbird 115. Please note that this version is slightly slower in processing statistics compared to version 2.0, which uses new Thunderbird features available only in the newer versions.</p>
-					</div>
+						<p><i><a href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/what-is-inbox-0/">__MSG_clickheremoreinfo__</a></i></p></div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ImportantInfoTitle__</h2>
 					  </div>

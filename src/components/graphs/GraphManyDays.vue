@@ -76,8 +76,7 @@ var chartOptions = ref({
         scales: {
           x: {
             title: {
-              display: true,
-              text: browser.i18n.getMessage('TimeChart.Time')
+              display: false,
             },
             beginAtZero: true,
             min: 0,
@@ -86,6 +85,11 @@ var chartOptions = ref({
                             return tsCoreUtils.getManyDaysLabel(this.getLabelForValue(value));
                         },
               align: 'center',
+              color: function(context) {
+                            const labelIndex = context['tick']['value'];
+                            const label = context.chart.data.labels[labelIndex];
+                            return tsCoreUtils.getDaysLabelColor(label);
+                        },
               // maxRotation: 0,
               // minRotation: 0
             },

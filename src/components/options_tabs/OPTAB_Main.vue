@@ -30,22 +30,9 @@
       </td>
     </tr>
   </table>
-    <table class="miczPrefs" style="margin-top: 10px;">
-    <tr>
-      <td>
-        <label><input type="checkbox" id="_time_graph_progressive" name="_time_graph_progressive" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_TimeChartProgressive__</span></label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="today_time_graph_show_yesterday" name="today_time_graph_show_yesterday" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_TodayTimeChartShowYesterday__</span></label>
-      </td>
+  <table class="miczPrefs">
+      <tr>
+      <td colspan="2" class="grouptitle">__MSG_Miscellaneous__</td>
     </tr>
     <tr>
      <td>
@@ -71,15 +58,100 @@
      <label><span class="dims_label" @click="toggle_options">__MSG_prefs_remember_last_tab__</span></label>
       </td>
     </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="customqry_always_open_adv_filters" name="customqry_always_open_adv_filters" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_customqry_always_open_adv_filters__</span></label>
+      </td>
+    </tr>
   </table>
+    <table class="miczPrefs" style="margin-top: 10px;">
+      <tr>
+      <td colspan="2" class="grouptitle">__MSG_TimeChart__</td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="today_time_graph_show_yesterday" name="today_time_graph_show_yesterday" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label" @click="toggle_options">__MSG_TodayTimeChartShowYesterday__</span></label>
+      </td>
+    </tr>
+      <tr>
+      <td>
+        <label><input type="checkbox" id="_time_graph_progressive" name="_time_graph_progressive" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label" @click="toggle_options">__MSG_TimeChartProgressive__</span></label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="today_time_graph_do_no_show_future" name="today_time_graph_do_no_show_future" class="option-input" /></label> 
+      </td>
+      <td>
+        <label><span class="dims_label" @click="toggle_options">__MSG_TimeChartNoFutureHours__</span></label>
+      </td>
+    </tr>
+    </table>
+    <table class="miczPrefs">
+    <tr>
+      <td colspan="2" class="grouptitle">__MSG_InboxZeroChart__</td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" /></label>
+      </td>
+      <td>
+     <label><span class="dims_label" @click="toggle_options">__MSG_folderspreadchart_openinfirsttab__</span></label>
+      </td>
+    </tr>
+    </table>
+    <table class="miczPrefs">
+    <tr>
+      <td colspan="2" class="grouptitle">__MSG_ManyDaysChart__</td>
+    </tr>
+    <tr>
+      <td class="td_padding_right">
+        <label><input type="number" id="_many_days" name="_many_days" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_ManyDays__</span>
+      </td>
+    </tr>
+    </table>
+    <table class="miczPrefs">
+    <tr>
+      <td colspan="2" class="grouptitle">__MSG_CustomQryTabGroupbox__</td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="customqry_loaddata_when_selectingrange" name="customqry_loaddata_when_selectingrange" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label" @click="toggle_options">__MSG_CustomQueryBookmarkImmediateUpdate__</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="td_padding_right">
+        <label><input type="text" id="datepicker_locale" name="datepicker_locale" class="option-input" /></label>
+      </td>
+      <td>
+        <button type="button" @click="setDefaultDatePickerLocale" class="marginright10">__MSG_SetDefault__</button>
+        <span class="dims_label">__MSG_DatePickerLocale__</span>
+      </td>
+    </tr>
+    </table>
 </template>
 
 
 <script setup>
-  import { onMounted, onUnmounted, ref } from 'vue'
-  import SelectAccount from '@/components/SelectAccount.vue';
-  import { tsLogger } from '@statslib/mzts-logger';
-  import { tsStore } from '@statslib/mzts-store';
+import { onMounted, onUnmounted, ref } from 'vue'
+import SelectAccount from '@/components/SelectAccount.vue';
+import { tsLogger } from '@statslib/mzts-logger';
+import { tsStore } from '@statslib/mzts-store';
   
   const emit = defineEmits(['new_changes']);
 
@@ -103,6 +175,12 @@
   async function somethingChanged() {
     new_changes.value = true;
     emit('new_changes', new_changes.value);
+  }
+
+  function setDefaultDatePickerLocale() {
+    const datepicker = document.getElementById('datepicker_locale');
+    datepicker.value = navigator.language;
+    datepicker.dispatchEvent(new Event('change', { 'bubbles': true }));
   }
 
   function toggle_options(e) {

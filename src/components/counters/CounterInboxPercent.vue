@@ -19,48 +19,34 @@
 -->
 
 <template>
-<p class="additional_info_text"><span class="additional_info_text"><span v-text="is_last_business_day ? '__MSG_LastBusinessDay__' : '__MSG_Yesterday__'"></span> __MSG_YesterdayThisTime__: <span id="yesterday_incremental_sent" v-if="!is_loading">{{ sent }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="yesterday_incremental_sent_wait" v-if="is_loading"/> __MSG_sent__ / <span id="yesterday_incremental_rcvd" v-if="!is_loading">{{ rcvd }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading;..." id="yesterday_incremental_rcvd_wait" v-if="is_loading"/> __MSG_received__</span></p>
+    <div class="chart_inbox0_percent">
+        <div class="chart_inbox0_percent_text">__MSG_FolderLocation_percent_handled__</div>
+        <div class="chart_inbox0_percent_num"><span v-if="!is_loading">{{ inbox_percent }}</span><img class="spinner_small" src="@/assets/images/mzts-wait_line.svg" alt="__MSG_Loading__..." v-if="is_loading" /></div>
+    </div>
 </template>
-
 
 <script setup>
 import { computed } from 'vue';
 
 let props = defineProps({
-    sent: {
-        type: Number,
-        default: 0
-    },
-    rcvd: {
+    inbox_percent: {
         type: Number,
         default: 0
     },
     is_loading: {
         type: Boolean,
         default: true
-    },
-    is_last_business_day: {
-        type: Boolean,
-        default: false
     }
 });
 
-let sent = computed(() => {
-    return props.sent
-})
-let rcvd = computed(() => {
-    return props.rcvd
+let inbox_percent = computed(() => {
+    return props.inbox_percent
 })
 let is_loading = computed(() => {
     return props.is_loading
 })
-let is_last_business_day = computed(() => {
-    return props.is_last_business_day
-})
 
 </script>
-
-
 
 
 <style scoped>

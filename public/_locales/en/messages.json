@@ -56,7 +56,7 @@
     "description": ""
   },
   "ExecutionTime": {
-    "message": "Execution time",
+    "message": "Total time",
     "description": ""
   },
   "Setup": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "YesterdayThisTime": {
-    "message": "Yesterday at this time",
+    "message": "at this time",
     "description": ""
   },
   "sent": {
@@ -319,6 +319,10 @@
     "message": "Advanced",
     "description": ""
   },
+  "TabBusinessDays.label": {
+    "message": "Business Days",
+    "description": ""
+  },
   "TabCustomIdentities.label": {
     "message": "Custom Identities",
     "description": ""
@@ -389,6 +393,10 @@
   },
   "EmailAddresses": {
     "message": "email addresses",
+    "description": ""
+  },
+  "Weekdays": {
+    "message": "Weekdays",
     "description": ""
   },
   "WeekDay0": {
@@ -539,12 +547,190 @@
     "message": "Set default",
     "description": ""
   },
+  "Label_bday_use_last_business_day": {
+    "message": "If yesterday is not a business day, show the last business day instead.",
+    "description": ""
+  },
+  "Label_bday_default_only": {
+    "message": "Consider business days only in aggregate statistics (max, min, average).",
+    "description": ""
+  },
+  "Non-BDays": {
+    "message": "Non-Business Days",
+    "description": ""
+  },
+  "Date": {
+    "message": "Date",
+    "description": ""
+  },
+  "Description": {
+    "message": "Description",
+    "description": ""
+  },
+  "New": {
+    "message": "New",
+    "description": ""
+  },
+  "Edit": {
+    "message": "Edit",
+    "description": ""
+  },
+  "Delete": {
+    "message": "Delete",
+    "description": ""
+  },
+  "Yearly": {
+    "message": "Every year",
+    "description": ""
+  },
+  "Yearly_Desc": {
+    "message": "This day will be a non-business day on every year.",
+    "description": ""
+  },
+  "Cancel": {
+    "message": "Cancel",
+    "description": ""
+  },
+  "Non-Business_Day": {
+    "message": "Non-Business Day",
+    "description": ""
+  },
+  "deletePromptNBD_text": {
+    "message": "Are you sure you want to delete this non-business day?",
+    "description": ""
+  },
+  "EasterNoBusinessDay": {
+    "message": "Easter and Easter Monday are non-business days.",
+    "description": ""
+  },
+  "Year": {
+    "message": "Year",
+    "description": ""
+  },
+  "Month": {
+    "message": "Month",
+    "description": ""
+  },
+  "Day": {
+    "message": "Day",
+    "description": ""
+  },
+  "OnlyBDCustomQry": {
+    "message": "Consider business days only",
+    "description": ""
+  },
+  "BusinessDayOnlyWarning": {
+    "message": "Considering business days only",
+    "description": ""
+  },
+  "LastBusinessDay": {
+    "message": "Last business day",
+    "description": ""
+  },
   "Version": {
     "message": "Version",
     "description": ""
   },
   "AccountWithNoEmails": {
     "message": "The selected account has no associated emails. You need to add a custom identity in the options page.",
+    "description": ""
+  },
+  "InfoTotal_AllMails": {
+    "message": "This total value accounts for both business and non-business days.",
+    "description": ""
+  },
+  "InfoTotal_BDMails_Only": {
+    "message": "These values account for business days only.",
+    "description": ""
+  },
+  "TimeChartNoFutureHours": {
+    "message": "Do not show future hours in the today time chart",
+    "description": ""
+  },
+  "Miscellaneous": {
+    "message": "Miscellaneous",
+    "description": ""
+  },
+  "TimeChart": {  
+    "message": "Time Chart",
+    "description": ""
+  },
+  "LastExecution": {
+    "message": "Last execution",
+    "description": ""
+  },
+  "ExportData": {
+    "message": "Data Export",
+    "description": ""
+  },
+  "DailyMails": {
+    "message": "Daily Mails",
+    "description": ""
+  },
+  "Correspondents": {
+    "message": "Correspondents",
+    "description": ""
+  },
+  "MailsInADay": {
+    "message": "Mails in a day",
+    "description": ""
+  },
+  "FolderLocation_percent_handled": {
+    "message": "Mails moved from the inbox folder",
+    "description": ""
+  },
+  "AskUserWarningTitle": {
+    "message": "Warning",
+    "description": ""
+  },
+  "CustomViewTooMuchDaysText" : {
+    "message": "This date interval is $QDAYS$ days long and the statistic could need some time to complete.\r\nDo you want to continue?",
+    "description": "",
+    "placeholders": {
+      "qdays": {
+        "content": "$1",
+        "example": "90"
+      }
+    }
+  },
+  "CustmQryWarnOnLongPeriod_1": {
+    "message": "Number of days after which the user is warned that the statistics may take a long time.",
+    "description": ""
+  },
+  "CustmQryWarnOnLongPeriod_2": {
+    "message": "Never warn",
+    "description": ""
+  },
+  "ShowAdvFilters": {
+    "message": "Show Advanced Filters",
+    "description": ""
+  },
+  "AdvFilters": {
+    "message": "Advanced Filters",
+    "description": ""
+  },
+  "ChooseFoldersFilter": {
+    "message": "Choose folders",
+    "description": ""
+  },
+  "ChooseAccountToFilterFolders": {
+    "message": "You must choose a single account to filter on the folders!",
+    "description": ""
+  },
+  "FilterFoldersIncludeSubfolders": {
+    "message": "Include subfolders of the choosen folders",
+    "description": ""
+  },
+  "FilterFoldersPlaceholder": {
+    "message": "Choose one or more folders...",
+    "description": ""
+  },
+  "prefs_customqry_always_open_adv_filters": {
+    "message": "Always open the Advanced Filters panel in Custom View",
+    "description": ""
+  },
+  "TimeDay": {
+    "message": "Time of the day",
     "description": ""
   }
 }

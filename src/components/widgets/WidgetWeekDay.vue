@@ -1,3 +1,4 @@
+<!--
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
  *  Copyright (C) 2024  Mic (m@micz.it)
@@ -15,24 +16,43 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+-->
 
-export class tsLogger {
 
-    do_debug = false;
-    prefix = "";
+<template>
 
-    constructor(prefix,do_debug) {
-        this.do_debug = do_debug;
-        this.prefix = "[ThunderStats Logger | " + prefix + "] ";
+    <GraphWeeksDay :chartData="weekday_chartData" :is_loading="is_loading" :key="weekday_chartData_length" />
+
+</template>
+
+
+<script setup>
+
+import { computed } from 'vue'
+import GraphWeeksDay from '../graphs/GraphWeeksDay.vue';
+
+let props = defineProps({
+    weekday_chartData: {
+        type: Object,
+        default: () => ({}),
+        required: true
+    },
+    is_loading: {
+        type: Boolean,
+        default: true
     }
-    log(msg, do_debug = -1) {
-        if(do_debug !== -1) this.do_debug = do_debug;
-        if(this.do_debug === true) console.log(this.prefix + msg);
-    }
-    error(msg) {
-        console.error(this.prefix + msg);
-    }
-    warn(msg) {
-        console.warn(this.prefix + msg);
-    }  
-};
+});
+
+let weekday_chartData = computed(() => props.weekday_chartData)
+let is_loading = computed(() => props.is_loading)
+
+let weekday_chartData_length = computed(() => (weekday_chartData.value.datasets.length + Math.floor(Math.random() * 101)));
+
+
+
+</script>
+
+
+<style scoped>
+
+</style>

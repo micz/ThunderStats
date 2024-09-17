@@ -1,4 +1,4 @@
-# ![ThunderStats icon](public/images/mzts-icon-32px.png "ThunderStats")  ThunderStats 1.9 (a 2.0 backport to Thunderbird 115)
+# ![ThunderStats icon](public/images/mzts-icon-32px.png "ThunderStats")  ThunderStats 2
 
 This addon adds awesome statistics to your beloved Thunderbird!
 
@@ -9,9 +9,24 @@ The addon has been rewritten from scratch using Vue.js.
 
 Features from the previous version 1.4.5, not already implemented, have been assigned the label "[road to 2.0](https://github.com/micz/ThunderStats/labels/road%20to%202.0)".
 
-More info on [#194](https://github.com/micz/ThunderStats/issues/194), [#195](https://github.com/micz/ThunderStats/issues/195) and [#286](https://github.com/micz/ThunderStats/issues/286)
+More info on [#194](https://github.com/micz/ThunderStats/issues/194) and [#195](https://github.com/micz/ThunderStats/issues/195)
 
 <br>
+
+## Features
+- Sent and received mails
+- Day time graph
+- Top senders and recipients list
+- Inbox Zero status
+- Multiple days and Custom range date statistics with:
+  - Time and weekdays aggregation
+  - Max, min, average sent and received mails over the period
+- Define the business days, to get statistics (total, max, min, average) ignoring non-business days.
+- Export data in CSV format
+
+
+<br>
+
 
 ## Privacy
 All data processing is performed locally on your device. No data is transmitted, shared, or stored on any external servers or third-party services.
@@ -27,6 +42,7 @@ Post any issues or questions for ThunderStats under [Issues](https://github.com/
 
 ## Changelog
 ThunderStats's changes are logged [here](CHANGELOG.md).
+
 
 
 <br>
@@ -46,19 +62,24 @@ You'll find the compiled addon in the `dist` folder.
 
 Change the `minify` (`true`|`false`) property in the `vite.config.js` file to choose whether to minify the final code.
 
-
 <br>
 
 ## Credits
-Original Author: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
+Original Author: [Mic](https://github.com/micz)
 
-Contributing Author: [Christopher Leidigh](https://addons.thunderbird.net/thunderbird/user/cleidigh/)
+Contributing Author: [Christopher Leidigh](https://github.com/cleidigh)
 
 <br>
 
-## ATTRIBUTIONS
+## Support this addon!
+Are you using this addon in your Thunderbird?
+<br>Consider to support the development making a small donation. [Click here!](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UHN4SXPGEXWQL&lc=IT&item_name=ThunderStats&item_number=thunderstats&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
-## Translations
+<br>
+
+## Attributions
+
+### Translations
 - English (en-US)	: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - Italian (it)		: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - French (fr)		: Goofy and Vittorio
@@ -66,15 +87,17 @@ Contributing Author: [Christopher Leidigh](https://addons.thunderbird.net/thunde
 
 <br>
 
-## Javascript Libraries
+### Javascript Libraries
 See the [package.json](/package.json) file.
 
 <br>
 
-## Graphics
+### Graphics
 Addon icon thanks to http://hopstarter.deviantart.com/
 
-Custom Query Bookmark Icon thanks to http://www.iconarchive.com/artist/graphicrating.html
+Custom Query Bookmark icon thanks to http://www.iconarchive.com/artist/graphicrating.html
 
 Loading SVGs thanks to https://loading.io
+
+Business Days and Export Data icons thanks to https://www.iconarchive.com/artist/custom-icon-design.html
 

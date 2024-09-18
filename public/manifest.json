@@ -14,7 +14,8 @@
     },
     "browser_action": {
         "default_title": "Thunderstats",
-        "default_icon": "images/mzts-icon-32px.png"
+        "default_icon": "images/mzts-icon-32px.png",
+        "allowed_spaces": []
     },
     "permissions": [
         "addressBooks",

@@ -28,6 +28,7 @@
         <li>The option "When selecting a custom date range view, update the statistics immediately" is now true by default.</li>
         <li>The toolbar button is now always visible.</li>
         <li>Folders select dropdown text color fixed.</li>
+        <li>Weekdays chart fixed [<a href="https://github.com/micz/ThunderStats/issues/374">#374</a>].</li>
         <li>...</li>
       </ul>
       <h3>Version 2.2.0 - 11/09/2024</h3>

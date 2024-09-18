@@ -36,6 +36,10 @@
   --section-gap: 160px;
 }
 
+.multiselect-option{
+  color: #313131;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: var(--vt-c-black);
@@ -93,6 +97,10 @@
     --ms-option-color-selected-disabled: #A7F3D0;
 
     --ms-empty-color: #D1D5DB;
+  }
+
+  .multiselect-option{
+    color: var(--ms-caret-color);
   }
 
   .multiselect-tags-search{

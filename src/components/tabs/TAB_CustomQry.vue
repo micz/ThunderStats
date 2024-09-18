@@ -79,7 +79,7 @@
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
 					  </div>
-					  <CounterInbox :is_loading="is_loading_counter_inbox" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
+					  <CounterInbox :is_loading="is_loading_inbox_graph_folders" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
             <CounterInboxPercent :is_loading="is_loading_counter_inbox" :inbox_percent="counter_inbox_percent" />
                       <div class="chart_inbox0_info"><p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="singleday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (rcvd_total == 0)" v-text="no_mails_received_yesterday"></p></div>
                       <div class="chart_inbox0">

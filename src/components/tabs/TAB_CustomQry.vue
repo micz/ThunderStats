@@ -684,7 +684,7 @@ async function updateData() {
             advFilters.folders = filterFolder.value;
             advFilters.folders_do_subfolders = filterFolder_do_subfolders.value;
             let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters);
-            tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
+            tsLog.log("result_customqry: " + JSON.stringify(result_customqry, null, 2));
             // export data
             if(!do_single_day.value){
               _export_data.value[tsExport.export.daily_mails.type] = result_customqry.dates;

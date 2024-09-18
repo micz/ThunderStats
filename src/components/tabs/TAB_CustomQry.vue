@@ -50,7 +50,7 @@
                     >
                     </Multiselect>
                     <div style="margin-top:2px;">
-                      <input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /> __MSG_FilterFoldersIncludeSubfolders__
+                      <input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /><span @click="filterFolder_do_subfolders = !filterFolder_do_subfolders" style="cursor: pointer;"> __MSG_FilterFoldersIncludeSubfolders__</span>
                     </div>
                   </div>
                 </div>

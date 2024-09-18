@@ -470,7 +470,8 @@ export const tsCoreUtils = {
     async getAccountFoldersIds_TB128plus(account_id) {
         let folders = await browser.folders.getSubFolders(account_id, false);
         //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
-        return folders;
+        let output = folders.map(folder => folder.id);
+        return output;
     },
 
     // extractPath(folder_id) {

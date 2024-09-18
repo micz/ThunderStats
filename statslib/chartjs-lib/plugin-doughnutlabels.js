@@ -43,6 +43,11 @@ export const tsDoughnutLabelsLine = {
 
       //let count_slice = 0;
 
+      usedSlots = {
+        left: new Set(),
+        right: new Set()
+      };
+
       chart.data.datasets.forEach((dataset, i) => {
         //let onlyOne = (chart.getDatasetMeta(i).data.length == 1);
         chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
@@ -177,7 +182,7 @@ export const tsDoughnutLabelsLine = {
 
   
 // Create an object to track used slots for both columns
-const usedSlots = {
+let usedSlots = {
   left: new Set(),
   right: new Set()
 };
@@ -202,15 +207,39 @@ function getLabelSlot(outerRadius, centerX, centerY, x, y) {
   // Calculate the slot index from the bottom (maxY) to the top (minY)
   let slotIndex = Math.floor((maxY - y) / slotHeight);
 
-  // Adjust the slotIndex if it's already used, moving up or down to find an available slot
-  while (usedSlots[column].has(slotIndex)) {
-    // Try moving up or down based on availability, and allow slotIndex to exceed the limits
-    if (!usedSlots[column].has(slotIndex + 1)) {
-      slotIndex++;
-    } else if (!usedSlots[column].has(slotIndex - 1)) {
-      slotIndex--;
-    } else {
-      break; // If no available slot is found, stop the loop
+  // Adjust the slotIndex based on the region: right-lower or left-upper
+  if (isRightColumn && y > centerY) {
+    // Right side and below the center, prioritize searching downwards first
+    while (usedSlots[column].has(slotIndex)) {
+      if (!usedSlots[column].has(slotIndex + 1)) {
+        slotIndex++; // Search downwards
+      } else if (!usedSlots[column].has(slotIndex - 1)) {
+        slotIndex--; // If down is full, search upwards
+      } else {
+        break; // If no available slot, stop
+      }
+    }
+  } else if (!isRightColumn && y < centerY) {
+    // Left side and above the center, prioritize searching upwards first
+    while (usedSlots[column].has(slotIndex)) {
+      if (!usedSlots[column].has(slotIndex - 1)) {
+        slotIndex--; // Search upwards
+      } else if (!usedSlots[column].has(slotIndex + 1)) {
+        slotIndex++; // If up is full, search downwards
+      } else {
+        break; // If no available slot, stop
+      }
+    }
+  } else {
+    // For other cases, alternate upwards and downwards search as before
+    while (usedSlots[column].has(slotIndex)) {
+      if (!usedSlots[column].has(slotIndex + 1)) {
+        slotIndex++;
+      } else if (!usedSlots[column].has(slotIndex - 1)) {
+        slotIndex--;
+      } else {
+        break;
+      }
     }
   }
 

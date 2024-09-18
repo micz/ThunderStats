@@ -371,6 +371,7 @@ async function updateData() {
             const yesterday_hours_data = tsCoreUtils.transformCountDataToDataset(result_yesterday.msg_hours, do_progressive);
             graphdata_yesterday_hours_sent.value = yesterday_hours_data.dataset_sent;
             graphdata_yesterday_hours_rcvd.value = yesterday_hours_data.dataset_rcvd;
+            tsLog.log("result_yesterday: " + JSON.stringify(result_yesterday, null, 2));
             updateElapsed('getYesterdayData', result_yesterday.elapsed);
             resolve(true);
         });

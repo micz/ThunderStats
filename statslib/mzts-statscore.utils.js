@@ -426,13 +426,14 @@ export const tsCoreUtils = {
         return account_emails.some(email => email.toLowerCase().endsWith("@gmail.com"));
     },
 
-    async getAccountFoldersIds(account_id, ignore_archive_folders = false) {
+    async getSubfoldersFoldersIds(folder_id, account_id, ignore_archive_folders = false) {
         let output = [];
     
         async function exploreFolders(folders) {
             for (let folder of folders) {
                 if(!("specialUse" in folder)){
                     folder.specialUse = [folder.type];
+                    folder.id = tsCoreUtils.getFolderId(folder);
                 }
                 if (["trash", "templates", "drafts", "junk", "outbox"].some(specialUse => folder.specialUse.includes(specialUse))) continue;
                 if (ignore_archive_folders && folder.specialUse.includes('archives')) {
@@ -453,8 +454,10 @@ export const tsCoreUtils = {
         if(tsStore.isTB128plus){
             folders = await browser.folders.getSubFolders(account_id);
         }else{
-            let account = await browser.accounts.get(account_id, true);    
-            folders = await browser.folders.getSubFolders(account);
+            // console.log(">>>>>>>>>> getAccountFoldersIds account_id: " + account_id);
+            let start_folder = await tsCoreUtils.getFolderFromId(folder_id, account_id);
+            // console.log(">>>>>>>>>> getAccountFoldersIds start_folder: " + JSON.stringify(start_folder));
+            folders = await browser.folders.getSubFolders(start_folder);
         }
     
         //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
@@ -462,6 +465,12 @@ export const tsCoreUtils = {
         await exploreFolders(folders);
     
         return output;
+    },
+
+    async getAccountFoldersIds_TB128plus(account_id) {
+        let folders = await browser.folders.getSubFolders(account_id, false);
+        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+        return folders;
     },
 
     // extractPath(folder_id) {
@@ -483,6 +492,7 @@ export const tsCoreUtils = {
             for (let folder of folders) {
                 if(!("specialUse" in folder)){
                     folder.specialUse = [folder.type];
+                    folder.id = tsCoreUtils.getFolderId(folder);
                 }
                 if (["trash", "templates", "drafts", "junk", "outbox"].some(specialUse => folder.specialUse.includes(specialUse))) continue;
                 if (ignore_archive_folders && folder.specialUse.includes('archives')) {
@@ -508,29 +518,68 @@ export const tsCoreUtils = {
             folders = await browser.folders.getSubFolders(account);
         }
     
-        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+        //console.log(">>>>>>>>>> getAccountFoldersNames folders: " + JSON.stringify(folders));
     
         await exploreFolders(folders);
-    
+        // console.log(">>>>>>>>>> getAccountFoldersNames output: " + JSON.stringify(output));
         return output;
     },
 
     async getFoldersArrayFromIds(folder_ids, account_id) {
         let output = [];
+        // console.log(">>>>>>>>>> getFoldersArrayFromIds folder_ids: " + JSON.stringify(folder_ids));
 
+        // console.log(">>>>>>>>>> getFoldersArrayFromIds account_id: " + JSON.stringify(account_id));
         let account = await browser.accounts.get(account_id, true);
-        all_account_folders = await browser.folders.getSubFolders(account);
+        // console.log(">>>>>>>>>> getFoldersArrayFromIds account: " + JSON.stringify(account));
+        let all_account_folders = tsCoreUtils.flattenFolders(await browser.folders.getSubFolders(account));
+        // console.log(">>>>>>>>>> getFoldersArrayFromIds all_account_folders: " + JSON.stringify(all_account_folders));
 
         for(let folder_id of folder_ids) {
+            // console.log(">>>>>>>>>> getFoldersArrayFromIds folder_id: " + folder_id);
             let folder_info = tsCoreUtils.splitAccountAndPath(folder_id);
-            let folder = all_account_folders.find(folder => folder.path == folder_info.path);
+            // console.log(">>>>>>>>>> getFoldersArrayFromIds folder_info: " + JSON.stringify(folder_info));
+            // let folder = all_account_folders.find(folder => folder.path == folder_info.path);
+            let folder = all_account_folders.find(function(folder) {
+                // console.log(">>>>>>>>>> getFoldersArrayFromIds folder_iterator: " + JSON.stringify(folder));
+                return folder.path == folder_info.path;
+            });
+            // console.log(">>>>>>>>>> getFoldersArrayFromIds folder: " + JSON.stringify(folder));
             output.push(folder);
         }
-
+        // console.log(">>>>>>>>>> getFoldersArrayFromIds output: " + JSON.stringify(output));
         return output;
     },
 
+    async getFolderFromId(folder_id, account_id) {
+        // console.log(">>>>>>>>>> getFolderFromId folder_id: " + folder_id);
+        // console.log(">>>>>>>>>> getFolderFromId account_id: " + account_id);
+        let folderArray = await tsCoreUtils.getFoldersArrayFromIds([folder_id], account_id);
+        // console.log(">>>>>>>>>> getFolderFromId folderArray: " + JSON.stringify(folderArray));
+        if(folderArray.length > 0) {
+            return folderArray[0];
+        } else {
+            return null;
+        }
+    },
+
+    flattenFolders(folders, pathsSet = new Set()) {
+        return folders.flatMap(folder => {
+        let result = [];
+        if (!pathsSet.has(folder.path)) {
+            const { subFolders, ...folderWithoutSubFolders } = folder;
+            result.push(folderWithoutSubFolders);
+            pathsSet.add(folder.path);
+        }
+        if (folder.subFolders && folder.subFolders.length > 0) {
+            result = result.concat(tsCoreUtils.flattenFolders(folder.subFolders, pathsSet));
+        }
+        return result;
+        });
+    },
+
     splitAccountAndPath(inputString) {
+        // console.log(">>>>>>>>>> splitAccountAndPath inputString: " + inputString);
         const separator = ":/";
         const index = inputString.indexOf(separator);
     

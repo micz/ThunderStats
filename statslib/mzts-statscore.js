@@ -184,7 +184,7 @@ export class thunderStastsCore {
         adv_filters is an object that contains various filters
 
         //Folders
-          adv_filter.folders is an array with the folders ids to be included in the query
+          adv_filter.folders is an array with the "folders ids" to be included in the query
           adv_filter.folders_do_subfolders is a boolean that indicates if the subfolders should be included in the query
 
       */
@@ -195,17 +195,8 @@ export class thunderStastsCore {
 
       if(adv_filters != null){
         //Folders
-        if ('folders' in adv_filters) {
-          if(adv_filters.folders.length > 0) {
-            let tmp_filter_folders = [...adv_filters.folders];
-            if(adv_filters.folders_do_subfolders) {
-              for (let folder of tmp_filter_folders) {
-                let tmp_out = await tsCoreUtils.getAccountFoldersIds(folder);
-                tmp_filter_folders = [...tmp_filter_folders, ...tmp_out];
-              }
-            }
-            filter_folders = [...new Set(tmp_filter_folders)];
-          }
+        if ((account_id != 0) && ('folders' in adv_filters) && (adv_filters.folders.length > 0)) {
+          filter_folders = [...new Set(adv_filters.folders)];
         }
       }
 
@@ -216,14 +207,18 @@ export class thunderStastsCore {
           this.tsLog.log("filter_folders: " + JSON.stringify(filter_folders));
           if(tsStore.isTB128plus){
             queryInfo_FullStatsData.folderId = filter_folders;
+            queryInfo_FullStatsData.includeSubFolders = adv_filters.folders_do_subfolders;
           }else{
             filter_folders_115 = filter_folders;
+            queryInfo_FullStatsData.includeSubFolders = adv_filters.folders_do_subfolders;
           }
         }else{
           if(tsStore.isTB128plus){
-            queryInfo_FullStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
+            queryInfo_FullStatsData.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
+            queryInfo_FullStatsData.includeSubFolders = true;
           }else{
             filter_folders_115 = null;
+            queryInfo_FullStatsData.includeSubFolders = true;
           }
         }
       }
@@ -250,13 +245,12 @@ export class thunderStastsCore {
       }else{
         if(filter_folders_115 == null){
           // get all messages for the account
-          messages = this.getAccountMessages_TB115(queryInfo_FullStatsData, account_id);
+          messages = this.getAccountMessages_TB115(queryInfo_FullStatsData, account_id, null, false);
         }else{
           //filter messages
-          messages = this.getAccountMessages_TB115(queryInfo_FullStatsData, account_id, tsCoreUtils.getFoldersArrayFromIds(filter_folders_115, account_id));
+          messages = this.getAccountMessages_TB115(queryInfo_FullStatsData, account_id, filter_folders_115, false);
         }
       }
-      
 
       let msg_hours = {};
       for(let i = 0; i < 24; i++) {
@@ -440,11 +434,12 @@ export class thunderStastsCore {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
         fromDate: fromDate,
         toDate: toDate,
+        includeSubFolders: true,
       }
 
       if(account_id != 0){
         if(tsStore.isTB128plus){
-          queryInfo_CountStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
+          queryInfo_CountStatsData.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
         }
       }
 
@@ -459,7 +454,7 @@ export class thunderStastsCore {
       if(tsStore.isTB128plus){
         messages = this.getMessages(browser.messages.query(queryInfo_CountStatsData));
       }else{
-        messages = this.getAccountMessages_TB115(queryInfo_CountStatsData, account_id);
+        messages = this.getAccountMessages_TB115(queryInfo_CountStatsData, account_id, null, false);
       }
 
       let msg_hours = {};
@@ -528,11 +523,12 @@ export class thunderStastsCore {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
         fromDate: fromDate,
         toDate: toDate,
+        includeSubFolders: true,
       }
 
       if(account_id != 0){
         if(tsStore.isTB128plus){
-          queryInfo_getAggregatedStatsData.folderId = await tsCoreUtils.getAccountFoldersIds(account_id);
+          queryInfo_getAggregatedStatsData.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
         }
       }
 
@@ -547,7 +543,7 @@ export class thunderStastsCore {
       if(tsStore.isTB128plus){
         messages = this.getMessages(browser.messages.query(queryInfo_getAggregatedStatsData));
       }else{
-        messages = this.getAccountMessages_TB115(queryInfo_getAggregatedStatsData, account_id);
+        messages = this.getAccountMessages_TB115(queryInfo_getAggregatedStatsData, account_id, null, false);
       }
 
       let msg_days = tsUtils.getDateArray(fromDate,toDate);
@@ -768,7 +764,8 @@ export class thunderStastsCore {
       return folders;
     }
 
-    async *getAccountMessages_TB115(queryInfo, account_id = 0, filter_folders_115 = null) {
+    async *getAccountMessages_TB115(queryInfo, account_id = 0, filter_folders_115 = null, do_subfolders = true) {
+      this.tsLog.log("getAccountMessages_TB115 queryInfo: " + JSON.stringify(queryInfo));
       if(account_id == 0) {
         yield* this.getMessages(browser.messages.query(queryInfo));
         return;
@@ -778,29 +775,35 @@ export class thunderStastsCore {
       let folders = null;
       
       if(filter_folders_115 == null) {
-        folders = await browser.folders.getSubFolders(account);
+        folders = await browser.folders.getSubFolders(account, do_subfolders);
       } else {
+        this.tsLog.log("filter_folders_115: " + JSON.stringify(filter_folders_115));
         folders = await tsCoreUtils.getFoldersArrayFromIds(filter_folders_115, account_id);
       }
 
-      //console.log(">>>>>>>>>> getAccountMessages folders: " + JSON.stringify(folders));
+      this.tsLog.log("getAccountMessages_TB115 folders: " + JSON.stringify(folders));
 
       for (let folder of folders) {
-        yield* this.processFolderAndSubfolders_TB115(folder, queryInfo, account_id);
+        this.tsLog.log("processFolderAndSubfolders_TB115 on folder: " + JSON.stringify(folder));
+        yield* this.processFolderAndSubfolders_TB115(folder, queryInfo, account_id, do_subfolders);
       }
     }
 
-    async *processFolderAndSubfolders_TB115(folder, queryInfo, account_id) {
+    async *processFolderAndSubfolders_TB115(folder, queryInfo, account_id, do_subfolders = true) {
       //if (this.excludeFolder(folder, account_id)) return;
-  
-      //console.log(`>>>>>>>> processFolderAndSubfolders Listing messages for folder: ${folder.name}, path: ${folder.path}`);
+      queryInfo = { ...queryInfo };
+      this.tsLog.log("processFolderAndSubfolders_TB115 queryInfo: " + JSON.stringify(queryInfo));
+      this.tsLog.log(` processFolderAndSubfolders Listing messages for folder: ${folder.name}, path: ${folder.path}`);
       queryInfo.folder = folder;
-      //console.log(">>>>>>>>>> processFolderAndSubfolders queryInfo: " + JSON.stringify(queryInfo));
+      this.tsLog.log("processFolderAndSubfolders queryInfo: " + JSON.stringify(queryInfo));
       yield* this.getMessages(browser.messages.query(queryInfo));
   
-      let subfolders = await browser.folders.getSubFolders(folder);
-      for (let subfolder of subfolders) {
-          yield* this.processFolderAndSubfolders_TB115(subfolder, queryInfo, account_id);
+      if(do_subfolders){
+        let subfolders = await browser.folders.getSubFolders(folder);
+        for (let subfolder of subfolders) {
+          this.tsLog.log("processFolderAndSubfolders_TB115 on subfolder: " + JSON.stringify(subfolder));
+            yield* this.processFolderAndSubfolders_TB115(subfolder, queryInfo, account_id);
+        }
       }
     }
 

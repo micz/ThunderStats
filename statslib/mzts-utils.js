@@ -263,17 +263,12 @@ export const tsUtils = {
         }));
         // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
         // Sort the array based on the firstDayWeek value
-        if (firstDayWeek == 0) {
-          weekdaysArray.sort((a, b) => a.idx - b.idx);
-        } else if (firstDayWeek == 6) {
-          weekdaysArray.sort((a, b) => {
-            if (a.idx == 6) return -1; // Move Saturday to the front
-            if (b.idx == 6) return 1;
-            if (a.idx == 0) return -1; // Then move Sunday to the second position
-            if (b.idx == 0) return 1;
-            return a.idx - b.idx; // Sort the rest normally
-          });
-        }
+         // Ordina l'array basandoti su firstDayWeek
+        weekdaysArray.sort((a, b) => {
+          const aAdjusted = (a.idx - firstDayWeek + 7) % 7;
+          const bAdjusted = (b.idx - firstDayWeek + 7) % 7;
+          return aAdjusted - bAdjusted;
+        });
         // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
         
         return weekdaysArray;

@@ -263,7 +263,6 @@ export const tsUtils = {
         }));
         // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
         // Sort the array based on the firstDayWeek value
-         // Ordina l'array basandoti su firstDayWeek
         weekdaysArray.sort((a, b) => {
           const aAdjusted = (a.idx - firstDayWeek + 7) % 7;
           const bAdjusted = (b.idx - firstDayWeek + 7) % 7;
@@ -299,5 +298,5 @@ export const tsUtils = {
         }
         return 0;
       },
-        
+
 }

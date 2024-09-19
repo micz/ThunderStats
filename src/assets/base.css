@@ -102,7 +102,6 @@
   .multiselect-option{
     color: var(--ms-caret-color);
   }
-
   .multiselect-tags-search{
     background-color: var(--ms-bg);
     color: var(--ms-caret-color);

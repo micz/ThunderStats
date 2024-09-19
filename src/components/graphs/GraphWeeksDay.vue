@@ -91,8 +91,6 @@ let chartData = computed(() => {
 
 let is_loading = computed(() => props.is_loading)
 
-
-
 var chartOptions = ref({
         responsive: true,
         animation: false,

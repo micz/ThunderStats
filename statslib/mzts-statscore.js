@@ -186,7 +186,6 @@ export class thunderStastsCore {
         //Folders
           adv_filter.folders is an array with the "folders ids" to be included in the query
           adv_filter.folders_do_subfolders is a boolean that indicates if the subfolders should be included in the query
-
       */
 
       let filter_folders = null;

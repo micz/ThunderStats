@@ -179,7 +179,6 @@ export const tsDoughnutLabelsLine = {
 
     return { startPoint, endPoint };
   }
-
   
 // Create an object to track used slots for both columns
 let usedSlots = {

@@ -80,7 +80,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
   font-size: smaller;
   position: absolute;
   right: 46px;
-  top: 13px;
+  top: 12px;
   min-width: 11em;
 }
 .mzts-last-exec{
@@ -110,7 +110,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 	border: 1px solid #cccccc;
 	background: #ededed;
 	color: #666666;
-  width: 15ch;
+  width: fit-content;
 }
 .tooltip-light .tooltip-content {
 	font-family: Arial, sans-serif;

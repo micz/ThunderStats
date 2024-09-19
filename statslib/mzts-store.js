@@ -2,6 +2,7 @@ import { reactive } from "vue"
 
 export const tsStore = reactive({
     'do_debug': false,
+    'isTB128plus': null,
     'darkmode': false,
     'businessdays_only': false,
     'bday_easter': false,

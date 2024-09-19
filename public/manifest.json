@@ -2,19 +2,20 @@
     "manifest_version": 2,
     "name": "ThunderStats",
     "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "author": "Mic (m@micz.it)",
     "homepage_url": "http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/",
     "default_locale": "en",
     "browser_specific_settings": {
         "gecko": {
             "id": "thunderstats@micz.it",
-            "strict_min_version": "125.0"
+            "strict_min_version": "115.0"
         }
     },
     "browser_action": {
         "default_title": "Thunderstats",
-        "default_icon": "images/mzts-icon-32px.png"
+        "default_icon": "images/mzts-icon-32px.png",
+        "allowed_spaces": []
     },
     "permissions": [
         "addressBooks",

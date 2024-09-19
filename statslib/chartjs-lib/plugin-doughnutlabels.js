@@ -42,9 +42,11 @@ export const tsDoughnutLabelsLine = {
       // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
       //let count_slice = 0;
-      let count_fixed = {};
-      count_fixed.top = 0;
-      count_fixed.bottom = 0;
+
+      usedSlots = {
+        left: new Set(),
+        right: new Set()
+      };
 
       chart.data.datasets.forEach((dataset, i) => {
         //let onlyOne = (chart.getDatasetMeta(i).data.length == 1);
@@ -62,24 +64,21 @@ export const tsDoughnutLabelsLine = {
           // Calculate the extreme points
           const extremePoints = getExtremePoints(centerX, centerY, radius, startAngle, endAngle);
 
-          // if(!onlyOne) {
           const { newX, newY } = moveTooltipPoint(centerX, centerY, a, b, thickness / 2);
           let x = newX;
           let y = newY;
-          // }
 
           // draw line
           const halfwidth = centerX;
           const halfheight = centerY;
-          let xLine = x > halfwidth ? x + 20 : x - 20;
-          let yLine = y >= halfheight ? y + 20 : y - 20;
-          const yLine_original = yLine;
 
           let extraLine = x > halfwidth ? 10 : -10;
-          
-          let _position_fix = checkSlicePosition(centerX, centerY, extremePoints);
 
           let is_dx = x > halfwidth;
+
+          let slot = getLabelSlot(outerRadius, centerX, centerY, x, y);
+          let xLine = slot.position.x;
+          let yLine = slot.position.y;
 
           // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
           // console.log(">>>>>>>>> chart.data.labels[index]: " + chart.data.labels[index]);// + " ["+count_slice+"]");
@@ -92,30 +91,8 @@ export const tsDoughnutLabelsLine = {
           // console.log(">>>>>>>> xLine: " + xLine);
           // console.log(">>>>>>>> yLine: " + yLine);
           // console.log(">>>>>>>>> extraLine: " + extraLine);
-          // console.log(">>>>>>>> _position_fix: " + JSON.stringify(_position_fix));
-          // console.log(">>>>>>>>> count_fixed: " + JSON.stringify(count_fixed));
+          // console.log(">>>>>>>>> slot: " + JSON.stringify(slot));
           // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-          if(_position_fix.is_top){
-            if(count_fixed.top > 0){
-              yLine -= 8 * count_fixed.top;
-            }
-            count_fixed.top++;
-          }
-          if(_position_fix.is_bottom){
-            if(count_fixed.bottom > 0){
-              yLine += 8 * count_fixed.bottom;
-            }
-            count_fixed.bottom++;
-          }
-
-          if(_position_fix.needed){
-            yLine = yLine_original;
-            xLine = xLine - Math.abs(2 * ( x - xLine ));
-            //yLine = y >= halfheight ? y + 20 : y - 20;
-            extraLine = -extraLine;
-            is_dx = !is_dx;
-          }
 
           ctx.beginPath();
           ctx.moveTo(x, y);
@@ -134,10 +111,6 @@ export const tsDoughnutLabelsLine = {
           // control the position
           let textXPosition = x > halfwidth ? "left" : "right";
           let plusFivePx = x > halfwidth ? 5 : -5;
-          if(_position_fix.needed){
-            textXPosition = textXPosition == "right" ? "left" : "right";
-            plusFivePx = -plusFivePx;
-          }
           ctx.textAlign = textXPosition;
           ctx.textBaseline = "middle";
           // ctx.fillStyle = dataset.backgroundColor[index];
@@ -206,47 +179,86 @@ export const tsDoughnutLabelsLine = {
 
     return { startPoint, endPoint };
   }
+  
+// Create an object to track used slots for both columns
+let usedSlots = {
+  left: new Set(),
+  right: new Set()
+};
 
-  // check if the slice is at the top or at the bottom and is near the middle
-  // return true if we need to alter the positioning of the label
-  function checkSlicePosition(centerX, centerY, extremePoints){     
-    const { startPoint, endPoint } = extremePoints;
+function getLabelSlot(outerRadius, centerX, centerY, x, y) {
+  // Define the height of each slot and the horizontal offset for the label positioning
+  const slotHeight = 12;
+  const labelOffset = 20; // Distance from the edge of the chart to the label
 
-    let extreme_start_x = Math.trunc(extremePoints.startPoint.x);
-    let extreme_end_x = Math.trunc(extremePoints.endPoint.x);
-    let extreme_start_y = Math.trunc(extremePoints.startPoint.y);
-    let extreme_end_y = Math.trunc(extremePoints.endPoint.y);
+  // Determine if the point is on the right or left side of the doughnut chart
+  const isRightColumn = x > centerX;
+  const column = isRightColumn ? 'right' : 'left';
 
-    centerX = Math.trunc(centerX);
-    centerY = Math.trunc(centerY);
+  // Calculate the maximum and minimum y positions that correspond to the top and bottom slots
+  const minY = centerY - outerRadius; // Topmost slot within the outerRadius
+  const maxY = centerY + outerRadius; // Bottommost slot within the outerRadius
 
-    // is at the top or the bottom
-    let is_top = (extreme_start_y < centerY) && (extreme_end_y < centerY);
-    let is_bottom = (extreme_start_y > centerY) && (extreme_end_y > centerY);
+  // Ensure y is within bounds of the outer radius (optional, we don't restrict it now)
+  if (y < minY) y = minY;
+  if (y > maxY) y = maxY;
 
-    // is around horizontal midpoint
-    let is_middle = false;
-    if(extremePoints.startPoint.x > extremePoints.endPoint.x){
-      is_middle = (extreme_start_x >= centerX) && (extreme_end_x <= centerX);
-    }else{
-      is_middle = (extreme_start_x <= centerX) && (extreme_end_x >= centerX);
+  // Calculate the slot index from the bottom (maxY) to the top (minY)
+  let slotIndex = Math.floor((maxY - y) / slotHeight);
+
+  // Adjust the slotIndex based on the region: right-lower or left-upper
+  if (isRightColumn && y > centerY) {
+    // Right side and below the center, prioritize searching downwards first
+    while (usedSlots[column].has(slotIndex)) {
+      if (!usedSlots[column].has(slotIndex + 1)) {
+        slotIndex++; // Search downwards
+      } else if (!usedSlots[column].has(slotIndex - 1)) {
+        slotIndex--; // If down is full, search upwards
+      } else {
+        break; // If no available slot, stop
+      }
     }
-
-    // is big enough
-    let is_big = false;
-    if(Math.abs(extreme_start_x - extreme_end_x) > 50){
-      is_big = true;
+  } else if (!isRightColumn && y < centerY) {
+    // Left side and above the center, prioritize searching upwards first
+    while (usedSlots[column].has(slotIndex)) {
+      if (!usedSlots[column].has(slotIndex - 1)) {
+        slotIndex--; // Search upwards
+      } else if (!usedSlots[column].has(slotIndex + 1)) {
+        slotIndex++; // If up is full, search downwards
+      } else {
+        break; // If no available slot, stop
+      }
     }
-
-    // console.log(">>>>>>>> centerX: " + centerX);
-    // console.log(">>>>>>>> centerY: " + centerY);
-    // console.log(">>>>>>>> extreme_start_x: " + extreme_start_x);
-    // console.log(">>>>>>>> extreme_end_x: " + extreme_end_x);
-    // console.log(">>>>>>>> extreme_start_y: " + extreme_start_y);
-    // console.log(">>>>>>>> extreme_end_y: " + extreme_end_y);
-    // console.log(">>>>>>>>> is_top: " + is_top);
-    // console.log(">>>>>>>>> is_bottom: " + is_bottom);
-    // console.log(">>>>>>>>> is_middle: " + is_middle);
-
-    return {needed: (is_top || is_bottom) && is_middle && !is_big, is_top: is_top, is_bottom: is_bottom, is_middle: is_middle};
+  } else {
+    // For other cases, alternate upwards and downwards search as before
+    while (usedSlots[column].has(slotIndex)) {
+      if (!usedSlots[column].has(slotIndex + 1)) {
+        slotIndex++;
+      } else if (!usedSlots[column].has(slotIndex - 1)) {
+        slotIndex--;
+      } else {
+        break;
+      }
+    }
   }
+
+  // Mark this slot as used
+  usedSlots[column].add(slotIndex);
+
+  // Calculate the x position for the label, 20px beyond the edge of the doughnut chart
+  const labelX = isRightColumn
+    ? centerX + outerRadius + labelOffset  // 20px to the right of the chart
+    : centerX - outerRadius - labelOffset; // 20px to the left of the chart
+
+  // Return the slot position, including which column (left or right), slot index, and label position
+  return {
+    column: column,
+    slotIndex: slotIndex,
+    position: {
+      // X position for the label
+      x: labelX,
+      // Y position for the label, can go beyond the outerRadius limit
+      y: maxY - slotIndex * slotHeight // Continue adding slots above or below
+    }
+  };
+}

@@ -22,6 +22,21 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
+      <h3>Version 2.2.1 - 19/09/2024</h3>
+      <ul>
+        <li>ThunderStats Version 2.* is now compatible also with Thunderbird version 115.*.</li>
+        <li>The option "When selecting a custom date range view, update the statistics immediately" is now true by default.</li>
+        <li>The toolbar button is now always visible.</li>
+        <li>Folders select dropdown text color fixed.</li>
+        <li>Weekdays chart fixed [<a href="https://github.com/micz/ThunderStats/issues/374">#374</a>].</li>
+        <li>Improved the positioning of the labels on the Inbox Zero Folders graphs [<a href="https://github.com/micz/ThunderStats/issues/370">#370</a>, <a href="https://github.com/micz/ThunderStats/issues/373">#373</a>].</li>
+        <li>In the advanced filters panel is now possible to check the "include subolders" checkbox clicking on its label [<a href="https://github.com/micz/ThunderStats/issues/371">#371</a>].</li>
+        <li>Inbox percentage loading indicator timing fixed [<a href="https://github.com/micz/ThunderStats/issues/376">#376</a>].</li>
+        <li>Fixed a label error in the weekdays chart, which misordered the days relative to the number of emails.</li>
+        <li>Time chart tooltip width fixed even with large numbers.</li>
+        <li>The "Current week", "last week" and "Two last weeks" bookmarks are now considering the start week day option.</li>
+        <li>Minor graphics fixes.</li>
+      </ul>
       <h3>Version 2.2.0 - 11/09/2024</h3>
       <ul>
         <li>When executing a custom query for a single day, now is used the single day view [<a href="https://github.com/micz/ThunderStats/issues/315">#315</a>].</li>
@@ -85,6 +100,22 @@
     </div>
     <div v-if="!show_v1"><button type="button" @click="show_v1 = true">__MSG_ShowRelNotes1x__</button></div>
     <div v-if="show_v1">
+      <h3>Version 1.9.1 - 20/08/2024</h3>
+      <ul>
+        <li>Minor bug fixes.</li>
+      </ul>
+<h3>Version 1.9.0 - 09/08/2024</h3>
+      <ul>
+       <li><b><i>This version 1.9 has been backported from ThunderStats version 2.0 to Thunderbird 115.</i></b></li>
+       <li>This is a complete rewrite of the original addon as a MailExtension, using Vue.js.</li>
+       <li>Added dark mode [<a href="https://github.com/micz/ThunderStats/issues/197">#197</a>].</li>
+       <li>It's now possibile to define a locale for the datepicker different from the default one [<a href="https://github.com/micz/ThunderStats/issues/238">#238</a>].</li>
+       <li>Added an option to choose to remember last opened tab [<a href="https://github.com/micz/ThunderStats/issues/232">#232</a>].</li>
+       <li>The Time Graph is now a line graph [<a href="https://github.com/micz/ThunderStats/issues/198">#198</a>].</li>
+       <li>Added info for the last days in the Yesterday Tab [<a href="https://github.com/micz/ThunderStats/issues/276">#276</a>].</li>
+       <li>The elaboration time is now shown [<a href="https://github.com/micz/ThunderStats/issues/218">#218</a>].</li>
+       <li>The results are displayed as they become available [<a href="https://github.com/micz/ThunderStats/issues/219">#219</a>].</li>
+      </ul>
 <h3 id="version-1-4-5-16-12-2019">Version 1.4.5 - 16/12/2019</h3>
 <ul>
 <li>Update for 68+ changes</li>

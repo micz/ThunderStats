@@ -43,6 +43,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsStore } from '@statslib/mzts-store';
+import { tsUtils } from '@statslib/mzts-utils';
 
 Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, BarController);
 
@@ -62,11 +63,33 @@ let props = defineProps({
 let weekdaysChartBar_ref = ref(null);
 
 let legend_id = ref("weekdays-legend-container");
-
-let chartData = computed(() => props.chartData)
-let is_loading = computed(() => props.is_loading)
-
 let maxY = ref(0);
+
+let chartData = computed(() => {
+  if (props.chartData.datasets && props.chartData.datasets.length > 0) {
+  let data = tsUtils.safeConcat(props.chartData.datasets, 0)
+                  .concat(tsUtils.safeConcat(props.chartData.datasets, 1));
+        let maxData = tsCoreUtils.getMaxFromData(data);
+        maxY.value = (Math.ceil(maxData / 5) * 5);
+        if(maxY.value == maxData) {
+          maxY.value = maxY.value + 3;
+        }
+    } else {
+        maxY.value = 5;
+    }
+    if(!chartOptions) return;
+    //console.log(">>>>>>>>>>>>>>>>>>>> maxY: " + maxY.value);
+    if(maxY.value < 20) {
+      chartOptions.value.scales.y.ticks.stepSize = 1;
+    }else{
+      chartOptions.value.scales.y.ticks.stepSize = 5;
+    }
+    chartOptions.value.scales.y.max = maxY.value;
+
+  return props.chartData;
+});
+
+let is_loading = computed(() => props.is_loading)
 
 var chartOptions = ref({
         responsive: true,
@@ -150,28 +173,6 @@ var chartOptions = ref({
       });
 
 var chartPlugins = [ChartDataLabels, htmlLegendPlugin];
-
-
-watch(props.chartData, (newChartData) => {
-    //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
-    if (newChartData.datasets && newChartData.datasets.length > 0) {
-        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
-    } else {
-        maxY.value = 5;
-    }
-    if(!chartOptions) return;
-    if(maxY.value < 20) {
-      chartOptions.value.scales.y.ticks.stepSize = 1;
-    }else{
-      chartOptions.value.scales.y.ticks.stepSize = 5;
-    }
-    chartOptions.value.scales.y.max = maxY.value;
-
-    if(tsStore.darkmode) {
-      Chart.defaults.color = 'white';
-      Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.2)';
-    }
-}, { immediate: true });
 
 </script>
 

@@ -263,20 +263,40 @@ export const tsUtils = {
         }));
         // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
         // Sort the array based on the firstDayWeek value
-        if (firstDayWeek == 0) {
-          weekdaysArray.sort((a, b) => a.idx - b.idx);
-        } else if (firstDayWeek == 6) {
-          weekdaysArray.sort((a, b) => {
-            if (a.idx == 6) return -1; // Move Saturday to the front
-            if (b.idx == 6) return 1;
-            if (a.idx == 0) return -1; // Then move Sunday to the second position
-            if (b.idx == 0) return 1;
-            return a.idx - b.idx; // Sort the rest normally
-          });
-        }
+        weekdaysArray.sort((a, b) => {
+          const aAdjusted = (a.idx - firstDayWeek + 7) % 7;
+          const bAdjusted = (b.idx - firstDayWeek + 7) % 7;
+          return aAdjusted - bAdjusted;
+        });
         // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
         
         return weekdaysArray;
-      },      
-        
+      },
+      
+      async isThunderbird128OrGreater(){
+        try {
+          const info = await browser.runtime.getBrowserInfo();
+          const version = info.version;
+          // console.log(">>>>>>>>>> version: " + info.version)
+          // console.log(">>>>>>>>>> isThunderbird128OrGreater: " + tsUtils.compareThunderbirdVersions(version, '128.0') >= 0)
+          return tsUtils.compareThunderbirdVersions(version, '128.0') >= 0;
+        } catch (error) {
+          console.error('[ThunderStats] Error retrieving browser information:', error);
+          return false;
+        }
+      },
+
+      compareThunderbirdVersions(v1, v2) {
+        const v1parts = v1.split('.').map(Number);
+        const v2parts = v2.split('.').map(Number);
+
+        for (let i = 0; i < Math.max(v1parts.length, v2parts.length); i++) {
+          const v1part = v1parts[i] || 0;
+          const v2part = v2parts[i] || 0;
+          if (v1part > v2part) return 1;
+          if (v1part < v2part) return -1;
+        }
+        return 0;
+      },
+
 }

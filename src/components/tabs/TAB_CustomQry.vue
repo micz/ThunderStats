@@ -50,7 +50,7 @@
                     >
                     </Multiselect>
                     <div style="margin-top:2px;">
-                      <input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /> __MSG_FilterFoldersIncludeSubfolders__
+                      <input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /><span @click="filterFolder_do_subfolders = !filterFolder_do_subfolders" style="cursor: pointer;"> __MSG_FilterFoldersIncludeSubfolders__</span>
                     </div>
                   </div>
                 </div>
@@ -79,8 +79,8 @@
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
 					  </div>
-					  <CounterInbox :is_loading="is_loading_counter_inbox" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
-            <CounterInboxPercent :is_loading="is_loading_counter_inbox" :inbox_percent="counter_inbox_percent" />
+					  <CounterInbox :is_loading="is_loading_inbox_graph_folders" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
+            <CounterInboxPercent :is_loading="is_loading_counter_inbox_percent" :inbox_percent="counter_inbox_percent" />
                       <div class="chart_inbox0_info"><p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="singleday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (rcvd_total == 0)" v-text="no_mails_received_yesterday"></p></div>
                       <div class="chart_inbox0">
                         <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_graph_folders" />
@@ -197,6 +197,7 @@ let is_loading_singleday_graph = ref(true);
 let is_loading_inbox_graph_folders = ref(true);
 let is_loading_inbox_graph_dates = ref(true);
 let is_loading_counter_inbox = ref(true);
+let is_loading_counter_inbox_percent = ref(true);
 let is_loading_timeday_graph = ref(true);
 let is_loading_weekdays_graph = ref(true);
 
@@ -322,6 +323,7 @@ let job_done = computed(() => {
     is_loading_involved_table_recipients.value &&
     is_loading_involved_table_senders.value &&
     is_loading_counter_inbox.value &&
+    is_loading_counter_inbox_percent.value &&
     is_loading_inbox_graph_folders.value &&
     is_loading_inbox_graph_dates.value);
   }
@@ -485,12 +487,12 @@ async function setPeriod(period){
         case "lastweek":
             let last_weekday = tsUtils.getLastWeekday(first_day_week);
             last_weekday = new Date(last_weekday.setDate(last_weekday.getDate() - 1));
-            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday, 1), last_weekday];
+            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday, tsStore.first_day_week), last_weekday];
             break;
         case "last2week":
             let last_weekday2 = tsUtils.getLastWeekday(first_day_week);
             last_weekday2 = new Date(last_weekday2.setDate(last_weekday2.getDate() - 1));
-            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday2, 1), new Date()];
+            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday2, tsStore.first_day_week), new Date()];
             break;
         case "currentmonth":
             dateQry.value = [tsUtils.getFirstDayOfCurrentMonth(), new Date()];
@@ -684,7 +686,7 @@ async function updateData() {
             advFilters.folders = filterFolder.value;
             advFilters.folders_do_subfolders = filterFolder_do_subfolders.value;
             let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters);
-            tsLog.log("result_manydays_data: " + JSON.stringify(result_customqry, null, 2));
+            tsLog.log("result_customqry: " + JSON.stringify(result_customqry, null, 2));
             // export data
             if(!do_single_day.value){
               _export_data.value[tsExport.export.daily_mails.type] = result_customqry.dates;
@@ -748,6 +750,7 @@ async function updateData() {
               }else{
                 counter_inbox_percent.value = '0%';
               }
+              is_loading_counter_inbox_percent.value = false;
               const singleday_hours_data = tsCoreUtils.transformCountDataToDataset(result_customqry.msg_hours, do_progressive);
               graphdata_singleday_hours_sent.value = singleday_hours_data.dataset_sent;
               graphdata_singleday_hours_rcvd.value = singleday_hours_data.dataset_rcvd;
@@ -790,6 +793,7 @@ function loadingDo(){
     is_loading_rcvd_graph.value = true;
     is_loading_singleday_graph.value = true;
     is_loading_counter_inbox.value = true;
+    is_loading_counter_inbox_percent.value = true;
     is_loading_inbox_graph_folders.value = true;
     is_loading_inbox_graph_dates.value = true;
     is_loading_timeday_graph.value = true;

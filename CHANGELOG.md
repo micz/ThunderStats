@@ -3,7 +3,21 @@
 
 
 
-
+<h3>Version 2.2.1 - 19/09/2024</h3>
+      <ul>
+        <li>ThunderStats Version 2.* is now compatible also with Thunderbird version 115.*.</li>
+        <li>The option "When selecting a custom date range view, update the statistics immediately" is now true by default.</li>
+        <li>The toolbar button is now always visible.</li>
+        <li>Folders select dropdown text color fixed.</li>
+        <li>Weekdays chart fixed [<a href="https://github.com/micz/ThunderStats/issues/374">#374</a>].</li>
+        <li>Improved the positioning of the labels on the Inbox Zero Folders graphs [<a href="https://github.com/micz/ThunderStats/issues/370">#370</a>, <a href="https://github.com/micz/ThunderStats/issues/373">#373</a>].</li>
+        <li>In the advanced filters panel is now possible to check the "include subolders" checkbox clicking on its label [<a href="https://github.com/micz/ThunderStats/issues/371">#371</a>].</li>
+        <li>Inbox percentage loading indicator timing fixed [<a href="https://github.com/micz/ThunderStats/issues/376">#376</a>].</li>
+        <li>Fixed a label error in the weekdays chart, which misordered the days relative to the number of emails.</li>
+        <li>Time chart tooltip width fixed even with large numbers.</li>
+        <li>The "Current week", "last week" and "Two last weeks" bookmarks are now considering the start week day option.</li>
+        <li>Minor graphics fixes.</li>
+      </ul>
 <h3>Version 2.2.0 - 11/09/2024</h3>
       <ul>
         <li>When executing a custom query for a single day, now is used the single day view [<a href="https://github.com/micz/ThunderStats/issues/315">#315</a>].</li>

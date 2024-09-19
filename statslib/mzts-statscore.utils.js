@@ -61,6 +61,9 @@ export const tsCoreUtils = {
         let output_paths = [];
         for(let key in folders) {
             output_labels.push(folders[key].folder_data.name);
+            if(!("id" in folders[key].folder_data)){
+            	folders[key].folder_data.id = tsCoreUtils.getFolderId(folders[key].folder_data);
+            }
             output_paths.push(folders[key].folder_data.id);
             if(folders[key].folder_data.type == 'inbox') {
                 output_colors.push(inboxZeroInboxColor);
@@ -102,6 +105,10 @@ export const tsCoreUtils = {
             }
         }
         return result;
+    },
+
+    getFolderId(folder) {
+      return `${folder.accountId}:/${folder.path}`
     },
 
     filterTodayNextHours(hours) {
@@ -361,6 +368,7 @@ export const tsCoreUtils = {
               });
             }
           }
+          //console.log(">>>>>>>>>>>>> getAccountEmails (all account) account_emails: " + JSON.stringify(account_emails));
         }else{
           for (let account of accounts) {
             if(account.id == account_id) {
@@ -375,6 +383,7 @@ export const tsCoreUtils = {
               }
             }
           }
+          //console.log(">>>>>>>>>>>> getAccountEmails (one account) account_emails: " + JSON.stringify(account_emails));
         }
 
         return account_emails;
@@ -417,13 +426,17 @@ export const tsCoreUtils = {
         return account_emails.some(email => email.toLowerCase().endsWith("@gmail.com"));
     },
 
-    async getAccountFoldersIds(account_id, ignore_archive_folders = false) {
+    async getSubfoldersFoldersIds(folder_id, account_id, ignore_archive_folders = false) {
         let output = [];
     
         async function exploreFolders(folders) {
             for (let folder of folders) {
-                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
-                if (ignore_archive_folders && folder.type == "archive") {
+                if(!("specialUse" in folder)){
+                    folder.specialUse = [folder.type];
+                    folder.id = tsCoreUtils.getFolderId(folder);
+                }
+                if (["trash", "templates", "drafts", "junk", "outbox"].some(specialUse => folder.specialUse.includes(specialUse))) continue;
+                if (ignore_archive_folders && folder.specialUse.includes('archives')) {
                     continue;
                 }
                 if (!output.includes(folder.id)) {
@@ -437,12 +450,27 @@ export const tsCoreUtils = {
             }
         }
     
-        let folders = await browser.folders.getSubFolders(account_id);
+        let folders = null;
+        if(tsStore.isTB128plus){
+            folders = await browser.folders.getSubFolders(account_id);
+        }else{
+            // console.log(">>>>>>>>>> getAccountFoldersIds account_id: " + account_id);
+            let start_folder = await tsCoreUtils.getFolderFromId(folder_id, account_id);
+            // console.log(">>>>>>>>>> getAccountFoldersIds start_folder: " + JSON.stringify(start_folder));
+            folders = await browser.folders.getSubFolders(start_folder);
+        }
     
         //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
     
         await exploreFolders(folders);
     
+        return output;
+    },
+
+    async getAccountFoldersIds_TB128plus(account_id) {
+        let folders = await browser.folders.getSubFolders(account_id, false);
+        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+        let output = folders.map(folder => folder.id);
         return output;
     },
 
@@ -457,14 +485,20 @@ export const tsCoreUtils = {
     // },
 
     // return an array of objects {value, label}
-    async getAccountFoldersNames(account_id){
+    async getAccountFoldersNames(account_id, ignore_archive_folders = false) {
         let output = [];
         let checked_folders = [];
     
         async function exploreFolders(folders) {
             for (let folder of folders) {
-                if (["trash", "templates", "drafts", "junk", "outbox"].includes(folder.type)) continue;
-
+                if(!("specialUse" in folder)){
+                    folder.specialUse = [folder.type];
+                    folder.id = tsCoreUtils.getFolderId(folder);
+                }
+                if (["trash", "templates", "drafts", "junk", "outbox"].some(specialUse => folder.specialUse.includes(specialUse))) continue;
+                if (ignore_archive_folders && folder.specialUse.includes('archives')) {
+                    continue;
+                }
                 if (!checked_folders.includes(folder.id)) {
                     output.push({value: folder.id, label: folder.path});
                     checked_folders.push(folder.id);
@@ -476,14 +510,87 @@ export const tsCoreUtils = {
                 }
             }
         }
+
+        let folders = null;
+        if(tsStore.isTB128plus){
+            folders = await browser.folders.getSubFolders(account_id);
+        }else{
+            let account = await browser.accounts.get(account_id, true);    
+            folders = await browser.folders.getSubFolders(account);
+        }
     
-        let folders = await browser.folders.getSubFolders(account_id);
-    
-        //console.log(">>>>>>>>>> getAccountFoldersIds folders: " + JSON.stringify(folders));
+        //console.log(">>>>>>>>>> getAccountFoldersNames folders: " + JSON.stringify(folders));
     
         await exploreFolders(folders);
-    
+        // console.log(">>>>>>>>>> getAccountFoldersNames output: " + JSON.stringify(output));
         return output;
+    },
+
+    async getFoldersArrayFromIds(folder_ids, account_id) {
+        let output = [];
+        // console.log(">>>>>>>>>> getFoldersArrayFromIds folder_ids: " + JSON.stringify(folder_ids));
+
+        // console.log(">>>>>>>>>> getFoldersArrayFromIds account_id: " + JSON.stringify(account_id));
+        let account = await browser.accounts.get(account_id, true);
+        // console.log(">>>>>>>>>> getFoldersArrayFromIds account: " + JSON.stringify(account));
+        let all_account_folders = tsCoreUtils.flattenFolders(await browser.folders.getSubFolders(account));
+        // console.log(">>>>>>>>>> getFoldersArrayFromIds all_account_folders: " + JSON.stringify(all_account_folders));
+
+        for(let folder_id of folder_ids) {
+            // console.log(">>>>>>>>>> getFoldersArrayFromIds folder_id: " + folder_id);
+            let folder_info = tsCoreUtils.splitAccountAndPath(folder_id);
+            // console.log(">>>>>>>>>> getFoldersArrayFromIds folder_info: " + JSON.stringify(folder_info));
+            // let folder = all_account_folders.find(folder => folder.path == folder_info.path);
+            let folder = all_account_folders.find(function(folder) {
+                // console.log(">>>>>>>>>> getFoldersArrayFromIds folder_iterator: " + JSON.stringify(folder));
+                return folder.path == folder_info.path;
+            });
+            // console.log(">>>>>>>>>> getFoldersArrayFromIds folder: " + JSON.stringify(folder));
+            output.push(folder);
+        }
+        // console.log(">>>>>>>>>> getFoldersArrayFromIds output: " + JSON.stringify(output));
+        return output;
+    },
+
+    async getFolderFromId(folder_id, account_id) {
+        // console.log(">>>>>>>>>> getFolderFromId folder_id: " + folder_id);
+        // console.log(">>>>>>>>>> getFolderFromId account_id: " + account_id);
+        let folderArray = await tsCoreUtils.getFoldersArrayFromIds([folder_id], account_id);
+        // console.log(">>>>>>>>>> getFolderFromId folderArray: " + JSON.stringify(folderArray));
+        if(folderArray.length > 0) {
+            return folderArray[0];
+        } else {
+            return null;
+        }
+    },
+
+    flattenFolders(folders, pathsSet = new Set()) {
+        return folders.flatMap(folder => {
+        let result = [];
+        if (!pathsSet.has(folder.path)) {
+            const { subFolders, ...folderWithoutSubFolders } = folder;
+            result.push(folderWithoutSubFolders);
+            pathsSet.add(folder.path);
+        }
+        if (folder.subFolders && folder.subFolders.length > 0) {
+            result = result.concat(tsCoreUtils.flattenFolders(folder.subFolders, pathsSet));
+        }
+        return result;
+        });
+    },
+
+    splitAccountAndPath(inputString) {
+        // console.log(">>>>>>>>>> splitAccountAndPath inputString: " + inputString);
+        const separator = ":/";
+        const index = inputString.indexOf(separator);
+    
+        if (index !== -1) {
+            const account = inputString.substring(0, index);
+            const path = inputString.substring(index + separator.length);
+            return { account: account, path: path };
+        } else {
+           return false;
+        }
     },
 
     async getIncludeArchivePreference(account_id) {
@@ -497,8 +604,9 @@ export const tsCoreUtils = {
            element = accounts_adv_settings.find(account => account.id == account_id);
          }
          //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
-           if(!element) return true;
-           return element.include_archive === undefined ? true : element.include_archive;
+         let filter_duplicates_defaults = await this.getDefaultAccountFilterDuplicatesOption(account_id);
+         if(!element) return filter_duplicates_defaults;
+         return element.filter_duplicates ?? filter_duplicates_defaults;
         }
      },
 
@@ -548,7 +656,6 @@ export const tsCoreUtils = {
                 return false;
             }
         }
-
 
         // check custom non-business days preference
         let custom_nbd = tsStore.bday_custom_days;

@@ -22,7 +22,7 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
-      <h3>Version 2.2.1 - ??/??/2024</h3>
+      <h3>Version 2.2.1 - 19/09/2024</h3>
       <ul>
         <li>ThunderStats Version 2.* is now compatible also with Thunderbird version 115.*.</li>
         <li>The option "When selecting a custom date range view, update the statistics immediately" is now true by default.</li>
@@ -35,7 +35,7 @@
         <li>Fixed a label error in the weekdays chart, which misordered the days relative to the number of emails.</li>
         <li>Time chart tooltip width fixed even with large numbers.</li>
         <li>The "Current week", "last week" and "Two last weeks" bookmarks are now considering the start week day option.</li>
-        <li>...</li>
+        <li>Minor graphics fixes.</li>
       </ul>
       <h3>Version 2.2.0 - 11/09/2024</h3>
       <ul>

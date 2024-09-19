@@ -33,7 +33,7 @@
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
 					  </div>
 					  <CounterInbox :is_loading="is_loading_counter_inbox" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
-                      <CounterInboxPercent :is_loading="is_loading_counter_inbox" :inbox_percent="counter_inbox_percent" />
+                      <CounterInboxPercent :is_loading="is_loading_counter_inbox_percent" :inbox_percent="counter_inbox_percent" />
                       <div class="chart_inbox0_info"><p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="yesteday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_yesterday_rcvd == 0)" v-text="no_mails_received_yesterday"></p></div>
                       <div class="chart_inbox0">
                         <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_graph_folders" />
@@ -117,6 +117,7 @@ let is_loading_yesterday_graph = ref(true);
 let is_loading_involved_table_recipients = ref(true);
 let is_loading_involved_table_senders = ref(true);
 let is_loading_counter_inbox = ref(true);
+let is_loading_counter_inbox_percent = ref(true);
 let is_loading_inbox_graph_folders = ref(true);
 let is_loading_inbox_graph_dates = ref(true);
 let is_loading_counter_many_days = ref(true);
@@ -172,6 +173,7 @@ let job_done = computed(() => {
     is_loading_involved_table_recipients.value &&
     is_loading_involved_table_senders.value &&
     is_loading_counter_inbox.value &&
+    is_loading_counter_inbox_percent.value &&
     is_loading_inbox_graph_folders.value &&
     is_loading_inbox_graph_dates.value &&
     is_loading_counter_many_days.value);
@@ -291,6 +293,7 @@ async function updateData() {
             }else{
                 counter_inbox_percent.value = '0%';
             }
+            is_loading_counter_inbox_percent.value = false;
             updateElapsed('getYesterdayData', result_yesterday.elapsed);
             resolve(true);
         });
@@ -341,6 +344,7 @@ function loadingDo(){
     is_loading_involved_table_recipients.value = true;
     is_loading_involved_table_senders.value = true;
     is_loading_counter_inbox.value = true;
+    is_loading_counter_inbox_percent.value = true;
     is_loading_inbox_graph_folders.value = true;
     is_loading_inbox_graph_dates.value = true;
     is_loading_counter_many_days.value = true;

@@ -485,12 +485,12 @@ async function setPeriod(period){
         case "lastweek":
             let last_weekday = tsUtils.getLastWeekday(first_day_week);
             last_weekday = new Date(last_weekday.setDate(last_weekday.getDate() - 1));
-            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday, 1), last_weekday];
+            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday, tsStore.first_day_week), last_weekday];
             break;
         case "last2week":
             let last_weekday2 = tsUtils.getLastWeekday(first_day_week);
             last_weekday2 = new Date(last_weekday2.setDate(last_weekday2.getDate() - 1));
-            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday2, 1), new Date()];
+            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday2, tsStore.first_day_week), new Date()];
             break;
         case "currentmonth":
             dateQry.value = [tsUtils.getFirstDayOfCurrentMonth(), new Date()];

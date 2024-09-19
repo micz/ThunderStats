@@ -85,7 +85,7 @@ let chartData = computed(() => {
       chartOptions.value.scales.y.ticks.stepSize = 5;
     }
     chartOptions.value.scales.y.max = maxY.value;
-    console.log(">>>>>>>>>>>>>>>>>>>> maxY: " + maxY.value);
+
   return props.chartData;
 });
 
@@ -175,28 +175,6 @@ var chartOptions = ref({
       });
 
 var chartPlugins = [ChartDataLabels, htmlLegendPlugin];
-
-
-watch(props.chartData, (newChartData) => {
-    //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
-    if (newChartData.datasets && newChartData.datasets.length > 0) {
-        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
-    } else {
-        maxY.value = 5;
-    }
-    if(!chartOptions) return;
-    if(maxY.value < 20) {
-      chartOptions.value.scales.y.ticks.stepSize = 1;
-    }else{
-      chartOptions.value.scales.y.ticks.stepSize = 5;
-    }
-    chartOptions.value.scales.y.max = maxY.value;
-
-    if(tsStore.darkmode) {
-      Chart.defaults.color = 'white';
-      Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.2)';
-    }
-}, { immediate: true });
 
 </script>
 

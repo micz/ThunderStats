@@ -622,9 +622,13 @@ export class thunderStastsCore {
       let total_sent = 0;
       let total_received = 0;
       let max_sent = 0;
-      let min_sent = 0;
+      let min_sent = Infinity;
       let max_received = 0;
-      let min_received = 0;
+      let min_received = Infinity;
+
+      let num_days = 0;
+
+      // console.log(">>>>>>>>>>> filtered_dates: " + JSON.stringify(filtered_dates));
 
       for(let i in filtered_dates) {
         total_sent += filtered_dates[i].sent;
@@ -642,10 +646,10 @@ export class thunderStastsCore {
         if(filtered_dates[i].received < min_received) {
           min_received = filtered_dates[i].received;
         }
+        num_days++;
       }
 
-      // filtered_dates must be popolated with all the days, even with 0 value
-      let num_days = Object.keys(filtered_dates).length;
+      // filtered_dates must be popolated with all the days, even with 0 values
       let avg_sent = parseFloat((total_sent / num_days).toFixed(2));
       let avg_received = parseFloat((total_received / num_days).toFixed(2));
       

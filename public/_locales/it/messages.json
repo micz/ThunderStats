@@ -732,5 +732,9 @@
   "TimeDay": {
     "message": "Ora del giorno",
     "description": ""
+  },
+  "LastBusinessDayIs": {
+    "message": "L'ultimo giorno lavorativo è",
+    "description": ""
   }
 }

@@ -732,5 +732,9 @@
   "TimeDay": {
     "message": "Time of the day",
     "description": ""
+  },
+  "LastBusinessDayIs": {
+    "message": "The last business day is",
+    "description": ""
   }
 }

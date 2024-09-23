@@ -19,7 +19,7 @@
 -->
 
 <template>
-<p class="additional_info_text"><span class="additional_info_text"><span v-text="is_last_business_day_text"></span> __MSG_YesterdayThisTime__: <span id="yesterday_incremental_sent" v-if="!is_loading">{{ sent }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="yesterday_incremental_sent_wait" v-if="is_loading"/> __MSG_sent__ / <span id="yesterday_incremental_rcvd" v-if="!is_loading">{{ rcvd }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading;..." id="yesterday_incremental_rcvd_wait" v-if="is_loading"/> __MSG_received__</span></p>
+<p class="additional_info_text"><span class="additional_info_text"><span v-text="last_business_day_text" :title="last_business_day_title"></span> __MSG_YesterdayThisTime__: <span id="yesterday_incremental_sent" v-if="!is_loading">{{ sent }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." id="yesterday_incremental_sent_wait" v-if="is_loading"/> __MSG_sent__ / <span id="yesterday_incremental_rcvd" v-if="!is_loading">{{ rcvd }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading;..." id="yesterday_incremental_rcvd_wait" v-if="is_loading"/> __MSG_received__</span></p>
 </template>
 
 
@@ -42,6 +42,10 @@ let props = defineProps({
     is_last_business_day: {
         type: Boolean,
         default: false
+    },
+    last_bday_date: {
+        type: String,
+        default: ''
     }
 });
 
@@ -58,12 +62,17 @@ let is_last_business_day = computed(() => {
     return props.is_last_business_day
 })
 
-let is_last_business_day_text = computed(() => {
+let last_business_day_text = computed(() => {
     if(is_last_business_day.value == true) {
         return browser.i18n.getMessage("LastBusinessDay")
     }else{
         return browser.i18n.getMessage("Yesterday")
     }
+})
+
+let last_business_day_title = computed(() => {
+    console.log(">>>>>>>>>>>>>> props.last_bday_date: " + JSON.stringify(props.last_bday_date));
+    return props.last_bday_date;
 })
 
 </script>

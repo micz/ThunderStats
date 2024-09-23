@@ -25,7 +25,7 @@
         </div>
         <span id="today_date" class="list_heading_date" v-html="today_date"></span>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_today_sent" :_rcvd="counter_today_rcvd" />
-        <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" :is_last_business_day="is_last_business_day" />
+        <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" :is_last_business_day="is_last_business_day" :last_bday_date="last_bday_text" />
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <GraphToday :chartData="chartData_Today" :is_loading="is_loading_today_graph" :is_last_business_day="is_last_business_day" />
     </div>
@@ -104,6 +104,7 @@ let no_mails_received_today = ref("");
 let no_mails_sent_today = ref("");
 let no_mails_inbox = ref("");
 let is_last_business_day = ref(false);
+let last_bday_text = ref("");
 
 let folderLocationNote_text = ref("");
 let showFolderLocationNoteAnchor = ref(false);
@@ -361,6 +362,7 @@ async function updateData() {
                     let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date);
                     result_yesterday = await tsCore.getToday_SingleDayData(last_bday,tsStore.current_account_id, props.accountEmails);
                     tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
+                    last_bday_text.value = browser.i18n.getMessage("LastBusinessDayIs") + " " + last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
                 }
             }else{
                 is_last_business_day.value = false;

@@ -5,6 +5,8 @@
 
 <h3>Version 2.2.2 - ??/??/2024</h3>
       <ul>
+        <li>In the Time Chart correctly displaying "Last Business Day" in legend and tooltip when needed.</li>
+        <li>The minimum aggregate statistics were alway zero. The problem is now fixed.</li>
         <li>...</li>
       </ul>
 <h3>Version 2.2.1 - 19/09/2024</h3>

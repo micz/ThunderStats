@@ -27,7 +27,7 @@
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_yesterday_sent" :_rcvd="counter_yesterday_rcvd" />
         <div id="yesterday_spacing"></div>
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
-        <GraphYesterday :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_graph" />
+        <GraphYesterday :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_graph" :is_last_business_day="is_last_business_day" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
@@ -100,6 +100,7 @@ let top_senders_title = ref("");
 let no_mails_sent_yesterday = ref("");
 let no_mails_received_yesterday = ref("");
 let no_mails_inbox = ref("");
+let is_last_business_day = ref(false);
 
 let do_progressive = true;
 let inbox0_openFolderInFirstTab = ref(false);
@@ -256,8 +257,10 @@ async function updateData() {
             let prefs_bday_use_last_business_day = await tsPrefs.getPref("bday_use_last_business_day");
             if(prefs_bday_use_last_business_day == true){
                 if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date.value)) == true){
+                    is_last_business_day.value = false;
                     result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails);
                 }else{
+                    is_last_business_day.value = true;
                     let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date.value);
                     yesterday_date_str.value = last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
                     emit('updateTabName', browser.i18n.getMessage("LastBusinessDay"));
@@ -265,6 +268,7 @@ async function updateData() {
                     tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
                 }
             }else{
+                is_last_business_day.value = false;
                 result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails);
             }
             tsLog.log("result_yesterday: " + JSON.stringify(result_yesterday, null, 2));

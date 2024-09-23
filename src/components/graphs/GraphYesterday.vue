@@ -60,6 +60,10 @@ let props = defineProps({
       type: Boolean,
       default: true
     },
+    is_last_business_day: {
+      type: Boolean,
+      default: false
+    },
     is_generic_day: {
       type: Boolean,
       default: false
@@ -78,11 +82,13 @@ let do_yesterday = computed(() => props.yesterday)
 let is_generic_day = computed(() => props.is_generic_day)
 
 let maxY = ref(0);
+let is_last_business_day = ref(false);
 
 const getWrapperClass = computed(() => {
   return {
     'chart_time_full': is_generic_day.value,
-    'chart_time': !is_generic_day.value
+    'chart_time': !is_generic_day.value && !is_last_business_day.value,
+    'chart_time_86': !is_generic_day.value && is_last_business_day.value,
   };
 });
 
@@ -90,6 +96,7 @@ watch(props.chartData, (newChartData) => {
   if(!do_yesterday.value) {
     legend_id.value = "singleday-time-legend-container";
   }
+  is_last_business_day.value = props.is_last_business_day;
     //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
       let data = newChartData.datasets[0].data.concat(newChartData.datasets[1].data);
@@ -102,6 +109,7 @@ watch(props.chartData, (newChartData) => {
         maxY.value = 5;
     }
     if(!chartOptions) return;
+    chartOptions.value.plugins.htmlLegend.is_last_business_day = props.is_last_business_day;
     //console.log(">>>>>>>>>>>>>>>>>>>> maxY: " + maxY.value);
     if(maxY.value < 20) {
       chartOptions.value.scales.y.ticks.stepSize = 1;
@@ -158,13 +166,14 @@ var chartOptions = ref({
             containerID: legend_id.value,
             is_today: false,
             is_yesterday: do_yesterday.value,
+            is_last_business_day: is_last_business_day.value,
           },
           tooltip: {
               enabled: false,
               mode: 'index',
               intersect: false,
               external: function(context) {
-                externalTooltipTimeGraphLines(context, {is_generic_day: is_generic_day.value});
+                externalTooltipTimeGraphLines(context, {is_generic_day: is_generic_day.value, is_last_business_day: is_last_business_day.value});
               }
             }
         },

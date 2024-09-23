@@ -19,7 +19,7 @@
 -->
 
 <template>
-<div class="chart_time">
+<div :class="getWrapperClass">
   <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." id="today_hours_graph_wait"/></div>
   <Line
       :options="chartOptions"
@@ -57,7 +57,11 @@ let props = defineProps({
     is_loading: {
         type: Boolean,
         default: true
-    }
+    },
+    is_last_business_day: {
+      type: Boolean,
+      default: false
+    },
 });
 
 let todayChartBar_ref = ref(null);
@@ -66,9 +70,19 @@ let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
 
 let maxY = ref(0);
+let is_last_business_day = ref(false);
+
+const getWrapperClass = computed(() => {
+  return {
+    'chart_time_86': is_last_business_day.value,
+    'chart_time': !is_last_business_day.value
+  };
+});
 
 watch(props.chartData, (newChartData) => {
-    //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
+  is_last_business_day.value = props.is_last_business_day;
+  // console.log(">>>>>>>>>>>>>> is_last_business_day.value: " + JSON.stringify(is_last_business_day.value));
+  // console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
         //let data = newChartData.datasets[0].data.concat(newChartData.datasets[1].data).concat(newChartData.datasets[2].data).concat(newChartData.datasets[3].data);
         let data = tsUtils.safeConcat(newChartData.datasets, 0)
@@ -84,6 +98,7 @@ watch(props.chartData, (newChartData) => {
         maxY.value = 5;
     }
     if(!chartOptions) return;
+    chartOptions.value.plugins.htmlLegend.is_last_business_day = props.is_last_business_day;
     //console.log(">>>>>>>>>>>>>>>>>>>> maxY: " + maxY.value);
     if(maxY.value < 20) {
       chartOptions.value.scales.y.ticks.stepSize = 1;
@@ -142,6 +157,7 @@ var chartOptions = ref({
             // ID of the container to put the legend in
             containerID: 'today-time-legend-container',
             is_today: true,
+            is_last_business_day: is_last_business_day.value,
           },
           tsVerticalLinePlugin: {
             drawVerticalLineAt: () => {
@@ -161,7 +177,9 @@ var chartOptions = ref({
               enabled: false,
               mode: 'index',
               intersect: false,
-              external: externalTooltipTimeGraphLines
+              external: function(context) {
+                externalTooltipTimeGraphLines(context, {is_last_business_day: is_last_business_day.value});
+              }
             }
         },
       });

@@ -22,6 +22,10 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
+      <h3>Version 2.2.2 - ??/??/2024</h3>
+      <ul>
+        <li>...</li>
+      </ul>
       <h3>Version 2.2.1 - 19/09/2024</h3>
       <ul>
         <li>ThunderStats Version 2.* is now compatible also with Thunderbird version 115.*.</li>

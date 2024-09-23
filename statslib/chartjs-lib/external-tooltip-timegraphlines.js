@@ -76,10 +76,14 @@ export const externalTooltipTimeGraphLines = (context, extra_params = null) => {
     const tooltipEl = getOrCreateTooltip(chart);
 
     let is_generic_day = false;
+    let is_last_business_day = false;
 
     if(extra_params != null){
       if('is_generic_day' in extra_params){
         is_generic_day = extra_params.is_generic_day;
+      }
+      if('is_last_business_day' in extra_params){
+        is_last_business_day = extra_params.is_last_business_day;
       }
     }
   
@@ -147,7 +151,7 @@ export const externalTooltipTimeGraphLines = (context, extra_params = null) => {
           td_ty.classList.add('tooltip-content');
           td_ty.style.borderWidth = 0;
           const text_ty = document.createElement('span');
-          text_ty.innerHTML = ((i == 0) && (bodyLines.length > 2)) ? browser.i18n.getMessage('Today') : (is_generic_day ? '' : browser.i18n.getMessage('Yesterday'));
+          text_ty.innerHTML = ((i == 0) && (bodyLines.length > 2)) ? browser.i18n.getMessage('Today') : (is_generic_day ? '' : (is_last_business_day ? browser.i18n.getMessage('LastBusinessDay') : browser.i18n.getMessage('Yesterday')));
           td_ty.appendChild(text_ty);
           tr_ty.appendChild(td_ty);
           tableBody.appendChild(tr_ty);

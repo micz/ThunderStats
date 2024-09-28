@@ -22,6 +22,10 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
+      <h3>Version 2.3.0 - ??/??/2024</h3>
+      <ul>
+        <li>...</li>
+      </ul>
       <h3>Version 2.2.2 - 24/09/2024</h3>
       <ul>
         <li>In the Time Chart correctly displaying "Last Business Day" in legend and tooltip when needed.</li>

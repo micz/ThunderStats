@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "ThunderStats",
     "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
-    "version": "2.2.2",
+    "version": "2.3.0",
     "author": "Mic (m@micz.it)",
     "homepage_url": "http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/",
     "default_locale": "en",

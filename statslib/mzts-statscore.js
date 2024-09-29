@@ -214,14 +214,14 @@ export class thunderStastsCore {
 
         // Read / Unread
         if ('read_unread' in adv_filters) {
-          switch(adv_filters.read_unread){
-            case 1:
+          switch(String(adv_filters.read_unread)){
+            case "1":
               queryInfo_FullStatsData.unread = false;
               break;
-            case 2:
+            case "2":
               queryInfo_FullStatsData.unread = true;
               break;
-            case 0:
+            case "0":
             default:
               break;
           }
@@ -229,14 +229,14 @@ export class thunderStastsCore {
 
         // Flagged / Unflagged
         if ('flagged_unflagged' in adv_filters) {
-          switch(adv_filters.flagged_unflagged){
-            case 1:
+          switch(String(adv_filters.flagged_unflagged)){
+            case "1":
               queryInfo_FullStatsData.flagged = true;
               break;
-            case 2:
+            case "2":
               queryInfo_FullStatsData.flagged = false;
               break;
-            case 0:
+            case "0":
             default:
               break;
           }
@@ -266,7 +266,7 @@ export class thunderStastsCore {
         }
       }
       
-      this.tsLog.log("queryInfo_getFullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
+      this.tsLog.log("queryInfo_FullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
       
       let count = 0;
       let sent = 0;

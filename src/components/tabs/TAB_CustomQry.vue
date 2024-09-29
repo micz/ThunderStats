@@ -31,28 +31,57 @@
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
                   <div class="adv_filters_main_title">__MSG_AdvFilters__</div>
-                  <div id="filterFolder_container">
-                    <span class="adv_filters_title">__MSG_ChooseFoldersFilter__<span v-if="tsStore.current_account_id == 0"> (__MSG_ChooseAccountToFilterFolders__)</span></span>
-                    <br><Multiselect
-                      v-model="filterFolder"
-                      id="filterFolder"
-                      name="filterFolder"
-                      :options="folderList"
-                      :searchable="true"
-                      :close-on-select="true"
-                      :show-labels="false"
-                      :allow-empty="true"
-                      :create-option="false"
-                      mode="tags"
-                      :disabled="tsStore.current_account_id == 0"
-                      :placeholder="folderFiltersPlaceholder"
-                      ref="filterFolder_ref"
-                    >
-                    </Multiselect>
-                    <div style="margin-top:2px;">
-                      <input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /><span @click="filterFolder_do_subfolders = !filterFolder_do_subfolders" style="cursor: pointer;"> __MSG_FilterFoldersIncludeSubfolders__</span>
-                    </div>
-                  </div>
+                  <table id="customqry_adv_filters_table">
+                    <tr>
+                      <td>
+                        <div id="filterFolder_container">
+                          <span class="adv_filters_title">__MSG_ChooseFoldersFilter__<span v-if="tsStore.current_account_id == 0"> (__MSG_ChooseAccountToFilterFolders__)</span></span>
+                          <br><Multiselect
+                            v-model="filterFolder"
+                            id="filterFolder"
+                            name="filterFolder"
+                            :options="folderList"
+                            :searchable="true"
+                            :close-on-select="true"
+                            :show-labels="false"
+                            :allow-empty="true"
+                            :create-option="false"
+                            mode="tags"
+                            :disabled="tsStore.current_account_id == 0"
+                            :placeholder="folderFiltersPlaceholder"
+                            ref="filterFolder_ref"
+                          >
+                          </Multiselect>
+                          <div style="margin-top:2px;">
+                            <input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /><span @click="filterFolder_do_subfolders = !filterFolder_do_subfolders" style="cursor: pointer;"> __MSG_FilterFoldersIncludeSubfolders__</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td colspan="2">
+                        <span class="adv_filters_title">__MSG_FilterSubject__</span>
+                      <br><input type="text" id="filterSubject" name="filterSubject" v-model="filterSubject" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td class="td-30">
+                        __MSG_ReadStatus__<br>
+                        <select id="filterFolder_do_read_unread" v-model="filterFolder_do_read_unread">
+                          <option value="0">__MSG_FilterFoldersAll__</option>
+                          <option value="1">__MSG_FilterFoldersOnlyRead__</option>
+                          <option value="2">__MSG_FilterFoldersOnlyUnread__</option>
+                        </select>
+                      </td>
+                      <td class="td-30">
+                        __MSG_FlagStatus__<br>
+                        <select id="filterFolder_do_flagged_unflagged" v-model="filterFolder_do_flagged_unflagged">
+                          <option value="0">__MSG_FilterFoldersAll__</option>
+                          <option value="1">__MSG_FilterFoldersOnlyFlagged__</option>
+                          <option value="2">__MSG_FilterFoldersOnlyUnflagged__</option>
+                        </select>
+                    </td>
+                    </tr>
+                  </table>
                 </div>
             </div>
     <div class="square_container" id="customqry_square_container">
@@ -181,10 +210,13 @@ let emailListTooltipVisible = ref(false);
 let show_advanced_filters = ref(false);
 let advanced_filters_set = ref(false)
 let folderList = ref([]);
-let filterFolder = ref([]);
-let filterFolder_do_subfolders = ref(true);
 let advanced_filters_icon = ref(advancedFiltersIconPath);
 let customqry_only_bd_disabled = ref(false);
+let filterFolder = ref([]);
+let filterFolder_do_subfolders = ref(true);
+let filterFolder_do_read_unread = ref(0); // 0: all, 1: read, 2: unread
+let filterFolder_do_flagged_unflagged = ref(0); // 0: all, 1: flagged, 2: unflagged
+let filterSubject = ref("");
 
 // single day view
 let do_progressive = true;

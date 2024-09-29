@@ -736,5 +736,37 @@
   "LastBusinessDayIs": {
     "message": "The last business day is",
     "description": ""
+  },
+  "ReadStatus": {
+    "message": "Read Status",
+    "description": ""
+  },
+  "FilterFoldersOnlyRead": {
+    "message": "Read",
+    "description": ""
+  },
+  "FilterFoldersOnlyUnread": {
+    "message": "Unread",
+    "description": ""
+  },
+  "FlagStatus": {
+    "message": "Star Status",
+    "description": ""
+  },
+  "FilterFoldersOnlyFlagged": {
+    "message": "Starred",
+    "description": "" 
+  },
+  "FilterFoldersOnlyUnflagged": {
+    "message": "Unstarred",
+    "description": ""
+  },
+  "FilterFoldersAll": {
+    "message": "All",
+    "description": ""
+  },
+  "FilterSubject": {
+    "message": "Filter the subject with a keyword",
+    "description": ""
   }
 }

@@ -320,9 +320,41 @@ td.align_end {
 }
 
 #filterFolder_container{
-  width: 50%;
+  width: 100%;
 }
 
+table#customqry_adv_filters_table{
+  width: 100%;
+}
+
+table#customqry_adv_filters_table td{
+  width: 50%;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#filterSubject{
+  min-height: calc(var(--ms-border-width, 1px)*2 + var(--ms-font-size, 1rem)*var(--ms-line-height, 1.375) + var(--ms-py, .5rem)*2);
+  width: 100%;
+  background: var(--ms-bg);
+  color: var(--ms-caret-color);
+  border: var(--ms-border-width,1px) solid var(--ms-border-color);
+  padding: 0.5rem;
+}
+
+#filterFolder_do_read_unread, #filterFolder_do_flagged_unflagged{
+  min-height: calc(var(--ms-border-width, 1px)*2 + var(--ms-font-size, 1rem)*var(--ms-line-height, 1.375) + var(--ms-py, .5rem)*2);
+  background: var(--ms-bg);
+  color: var(--ms-caret-color);
+  border: var(--ms-border-width,1px) solid var(--ms-border-color);
+  padding: 0.5rem;
+  width: 10em;
+}
+
+.td-30{
+  text-align: left;
+  width: 30% !important;
+}
 
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {

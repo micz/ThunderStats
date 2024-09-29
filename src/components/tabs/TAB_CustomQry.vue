@@ -65,7 +65,7 @@
                     <tr>
                       <td></td>
                       <td class="td-30">
-                        __MSG_ReadStatus__<br>
+                        <span class="adv_filters_title">__MSG_ReadStatus__</span><br>
                         <select id="filterFolder_do_read_unread" v-model="filterFolder_do_read_unread">
                           <option value="0">__MSG_FilterFoldersAll__</option>
                           <option value="1">__MSG_FilterFoldersOnlyRead__</option>
@@ -73,7 +73,7 @@
                         </select>
                       </td>
                       <td class="td-30">
-                        __MSG_FlagStatus__<br>
+                        <span class="adv_filters_title">__MSG_FlagStatus__</span><br>
                         <select id="filterFolder_do_flagged_unflagged" v-model="filterFolder_do_flagged_unflagged">
                           <option value="0">__MSG_FilterFoldersAll__</option>
                           <option value="1">__MSG_FilterFoldersOnlyFlagged__</option>

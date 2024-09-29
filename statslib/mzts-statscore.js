@@ -208,7 +208,7 @@ export class thunderStastsCore {
         }
 
         // filterSubject
-        if ('filterSubject' in adv_filters) {
+        if (('filterSubject' in adv_filters) && (adv_filters.filterSubject.length > 0)) {
           queryInfo_FullStatsData.subject = adv_filters.filterSubject;
         }
 

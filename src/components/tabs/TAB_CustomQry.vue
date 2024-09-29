@@ -66,7 +66,7 @@
                       <td></td>
                       <td class="td-30">
                         <span class="adv_filters_title">__MSG_ReadStatus__</span><br>
-                        <select id="filterFolder_do_read_unread" v-model="filterFolder_do_read_unread">
+                        <select id="filterReadUnread" v-model="filterReadUnread">
                           <option value="0">__MSG_FilterFoldersAll__</option>
                           <option value="1">__MSG_FilterFoldersOnlyRead__</option>
                           <option value="2">__MSG_FilterFoldersOnlyUnread__</option>
@@ -74,7 +74,7 @@
                       </td>
                       <td class="td-30">
                         <span class="adv_filters_title">__MSG_FlagStatus__</span><br>
-                        <select id="filterFolder_do_flagged_unflagged" v-model="filterFolder_do_flagged_unflagged">
+                        <select id="filterFlaggedUnflagged" v-model="filterFlaggedUnflagged">
                           <option value="0">__MSG_FilterFoldersAll__</option>
                           <option value="1">__MSG_FilterFoldersOnlyFlagged__</option>
                           <option value="2">__MSG_FilterFoldersOnlyUnflagged__</option>
@@ -214,8 +214,8 @@ let advanced_filters_icon = ref(advancedFiltersIconPath);
 let customqry_only_bd_disabled = ref(false);
 let filterFolder = ref([]);
 let filterFolder_do_subfolders = ref(true);
-let filterFolder_do_read_unread = ref(0); // 0: all, 1: read, 2: unread
-let filterFolder_do_flagged_unflagged = ref(0); // 0: all, 1: flagged, 2: unflagged
+let filterReadUnread = ref(0); // 0: all, 1: read, 2: unread
+let filterFlaggedUnflagged = ref(0); // 0: all, 1: flagged, 2: unflagged
 let filterSubject = ref("");
 
 // single day view

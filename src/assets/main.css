@@ -342,7 +342,7 @@ table#customqry_adv_filters_table td{
   padding: 0.5rem;
 }
 
-#filterFolder_do_read_unread, #filterFolder_do_flagged_unflagged{
+#filterReadUnread, #filterFlaggedUnflagged{
   min-height: calc(var(--ms-border-width, 1px)*2 + var(--ms-font-size, 1rem)*var(--ms-line-height, 1.375) + var(--ms-py, .5rem)*2);
   background: var(--ms-bg);
   color: var(--ms-caret-color);

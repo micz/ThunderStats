@@ -719,7 +719,7 @@ async function updateData() {
             advFilters.folders_do_subfolders = filterFolder_do_subfolders.value;
             advFilters.read_unread = filterReadUnread.value;
             advFilters.flagged_unflagged = filterFlaggedUnflagged.value;
-            advFilters.filterSubject = filterSubject.value;
+            advFilters.filterSubject = filterSubject.value.trim();
             tsLog.log("advFilters: " + JSON.stringify(advFilters, null, 2));
             let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters);
             tsLog.log("result_customqry: " + JSON.stringify(result_customqry, null, 2));

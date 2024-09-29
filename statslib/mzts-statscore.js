@@ -186,6 +186,15 @@ export class thunderStastsCore {
         //Folders
           adv_filter.folders is an array with the "folders ids" to be included in the query
           adv_filter.folders_do_subfolders is a boolean that indicates if the subfolders should be included in the query
+
+        // filterSubject
+          adv_filter.filterSubject is a string that is searched in the subject
+
+        // Read / Unread
+          adv_filter.read_unread is an integer value: 0: all, 1: read, 2: unread
+
+        // Flagged / Unflagged
+          adv_filter.flagged_unflagged is an integer value: 0: all, 1: flagged, 2: unflagged
       */
 
       let filter_folders = null;
@@ -196,6 +205,41 @@ export class thunderStastsCore {
         //Folders
         if ((account_id != 0) && ('folders' in adv_filters) && (adv_filters.folders.length > 0)) {
           filter_folders = [...new Set(adv_filters.folders)];
+        }
+
+        // filterSubject
+        if ('filterSubject' in adv_filters) {
+          queryInfo_FullStatsData.subject = adv_filters.filterSubject;
+        }
+
+        // Read / Unread
+        if ('read_unread' in adv_filters) {
+          switch(adv_filters.read_unread){
+            case 1:
+              queryInfo_FullStatsData.unread = false;
+              break;
+            case 2:
+              queryInfo_FullStatsData.unread = true;
+              break;
+            case 0:
+            default:
+              break;
+          }
+        }
+
+        // Flagged / Unflagged
+        if ('flagged_unflagged' in adv_filters) {
+          switch(adv_filters.flagged_unflagged){
+            case 1:
+              queryInfo_FullStatsData.flagged = true;
+              break;
+            case 2:
+              queryInfo_FullStatsData.flagged = false;
+              break;
+            case 0:
+            default:
+              break;
+          }
         }
       }
 

@@ -5,7 +5,7 @@
 
 <h3>Version 2.2.3 - ??/??/2024</h3>
       <ul>
-        <li><i>Thunderbird 128+</i> Fixed opening the folder from the Inbox Zero Folder Chart [<a href="https://github.com/micz/ThunderStats/issues/381">#381</a>].</li>
+        <li>Fixed opening the folder from the Inbox Zero Folder Chart [<a href="https://github.com/micz/ThunderStats/issues/381">#381</a>].</li>
         <li>...</li>
       </ul>
 <h3>Version 2.2.2 - 24/09/2024</h3>

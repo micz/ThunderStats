@@ -38,6 +38,7 @@ import { Doughnut } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from 'chart.js'
 import { tsDoughnutLabelsLine } from '@statslib/chartjs-lib/plugin-doughnutlabels';
 import { tsStore } from '@statslib/mzts-store';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
@@ -103,7 +104,7 @@ let chartOptions = ref({
           },
           onClick: async (e, activeEls, chart) => {
             // console.log("onClick index: " + JSON.stringify(activeEls[0].index));
-            // console.log("onClick path: " + JSON.stringify(chartData.value.folder_paths[activeEls[0].index]));
+            // console.log("onClick path: " + JSON.stringify(chartData.value.folders[activeEls[0].index]));
             if(activeEls.length == 0){
               return;
             }
@@ -120,14 +121,14 @@ let chartOptions = ref({
               if(tsStore.isTB128plus){
                 browser.mailTabs.update(currTab.id, {displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
               }else{
-                browser.mailTabs.update(currTab.id, {displayedFolder: {...chartData.value.folder_paths[activeEls[0].index]}});
+                browser.mailTabs.update(currTab.id, {displayedFolder: {...chartData.value.folders[activeEls[0].index]}});
               }
               browser.tabs.update(currTab.id, {active: true});
             } else {
               if(tsStore.isTB128plus){
                 browser.mailTabs.create({displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
               }else{
-                browser.mailTabs.create({displayedFolder: {...chartData.value.folder_paths[activeEls[0].index]}});
+                browser.mailTabs.update(currTab.id, {displayedFolder: {...chartData.value.folders[activeEls[0].index]}});
               }
             }
           },

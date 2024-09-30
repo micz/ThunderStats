@@ -657,6 +657,9 @@ async function updateData() {
       // graph inbox zero folders
       let given_folders = tsCoreUtils.filterReceivedFolders(graphdata_inboxzero_folders.value);
       let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
+      if("folders" in folders_data){
+        chartData_InboxZeroFolders.value.folders = folders_data.folders;
+      }
       chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
       chartData_InboxZeroFolders.value.labels = folders_data.labels;
       chartData_InboxZeroFolders.value.datasets = [];

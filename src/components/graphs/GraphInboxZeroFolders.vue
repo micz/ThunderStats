@@ -107,7 +107,7 @@ let chartOptions = ref({
             if(activeEls.length == 0){
               return;
             }
-            if(openFolderInFirstTab){
+            if(openFolderInFirstTab.value){
               let tabs = await browser.tabs.query({windowId: window.WINDOW_ID_CURRENT});
               // Cycle through tabs to find the first mailtab
               let currTab = null;

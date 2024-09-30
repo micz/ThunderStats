@@ -60,6 +60,7 @@
                       <td colspan="2">
                         <span class="adv_filters_title">__MSG_FilterSubject__</span>
                       <br><input type="text" id="filterSubject" name="filterSubject" v-model="filterSubject" />
+                      <br>__MSG_WarnSearchCaseSensitive__
                       </td>
                     </tr>
                     <tr>

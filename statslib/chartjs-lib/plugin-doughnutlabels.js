@@ -41,7 +41,7 @@ export const tsDoughnutLabelsLine = {
       // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
       // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-      //let count_slice = 0;
+      // let count_slice = 0;
 
       usedSlots = {
         left: new Set(),
@@ -55,7 +55,7 @@ export const tsDoughnutLabelsLine = {
           // let x = 127.5;
           // let y = 155;
 
-          //count_slice++;
+          // count_slice++;
 
           const radius = datapoint.outerRadius; // Outer radius of the slice
           const startAngle = datapoint.startAngle * (180 / Math.PI); // Start angle in degrees
@@ -119,9 +119,9 @@ export const tsDoughnutLabelsLine = {
           let label_text = '';
 
           if(is_dx){
-            label_text = '('+ chart.data.datasets[0].data[index] +') ' + chart.data.labels[index]; // + " ["+count_slice+"]",
+            label_text = '('+ chart.data.datasets[0].data[index] +') ' + chart.data.labels[index]; // + " ["+count_slice+"]";
           }else{
-            label_text = chart.data.labels[index] + ' ('+ chart.data.datasets[0].data[index] +')'; // + " ["+count_slice+"]",
+            label_text = chart.data.labels[index] + ' ('+ chart.data.datasets[0].data[index] +')'; // + " ["+count_slice+"]";
           }
 
           ctx.fillText(
@@ -188,7 +188,7 @@ let usedSlots = {
 
 function getLabelSlot(outerRadius, centerX, centerY, x, y) {
   // Define the height of each slot and the horizontal offset for the label positioning
-  const slotHeight = 12;
+  const slotHeight = 15;
   const labelOffset = 20; // Distance from the edge of the chart to the label
 
   // Determine if the point is on the right or left side of the doughnut chart
@@ -212,9 +212,9 @@ function getLabelSlot(outerRadius, centerX, centerY, x, y) {
     while (usedSlots[column].has(slotIndex)) {
       if (!usedSlots[column].has(slotIndex + 1)) {
         slotIndex++; // Search downwards
-      } else if (!usedSlots[column].has(slotIndex - 1)) {
+      /*} else if (!usedSlots[column].has(slotIndex - 1)) {
         slotIndex--; // If down is full, search upwards
-      } else {
+      } else {*/
         break; // If no available slot, stop
       }
     }
@@ -223,9 +223,9 @@ function getLabelSlot(outerRadius, centerX, centerY, x, y) {
     while (usedSlots[column].has(slotIndex)) {
       if (!usedSlots[column].has(slotIndex - 1)) {
         slotIndex--; // Search upwards
-      } else if (!usedSlots[column].has(slotIndex + 1)) {
+      /*} else if (!usedSlots[column].has(slotIndex + 1)) {
         slotIndex++; // If up is full, search downwards
-      } else {
+      } else {*/
         break; // If no available slot, stop
       }
     }
@@ -244,6 +244,9 @@ function getLabelSlot(outerRadius, centerX, centerY, x, y) {
 
   // Mark this slot as used
   usedSlots[column].add(slotIndex);
+  // console.log(">>>>>>>> count_slice: " + count_slice);
+  // console.log(">>>>>>>> slotIndex: " + slotIndex);
+
 
   // Calculate the x position for the label, 20px beyond the edge of the doughnut chart
   const labelX = isRightColumn

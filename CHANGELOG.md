@@ -3,6 +3,10 @@
 
 
 
+<h3>Version 2.2.4 - ??/??/2024</h3>
+      <ul>
+        <li>...</li>
+      </ul>
 <h3>Version 2.2.3 - 05/10/2024</h3>
       <ul>
         <li>Fixed opening the folder from the Inbox Zero Folder Chart [<a href="https://github.com/micz/ThunderStats/issues/381">#381</a>].</li>

@@ -3,12 +3,11 @@
 
 
 
-<h3>Version 2.2.3 - ??/??/2024</h3>
+<h3>Version 2.2.3 - 05/10/2024</h3>
       <ul>
         <li>Fixed opening the folder from the Inbox Zero Folder Chart [<a href="https://github.com/micz/ThunderStats/issues/381">#381</a>].</li>
         <li>Improved the label positioning in the Inbox Zero Folders graphs [<a href="https://github.com/micz/ThunderStats/issues/383">#383</a>].</li>
         <li>Better time chart legend positioning in small windows [<a href="https://github.com/micz/ThunderStats/issues/382">#382</a>].</li>
-        <li>...</li>
       </ul>
 <h3>Version 2.2.2 - 24/09/2024</h3>
       <ul>

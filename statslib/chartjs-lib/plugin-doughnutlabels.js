@@ -43,7 +43,7 @@ export const tsDoughnutLabelsLine = {
 
       // let count_slice = 0;
 
-      usedSlots = {
+      let usedSlots = {
         left: new Set(),
         right: new Set()
       };
@@ -76,9 +76,12 @@ export const tsDoughnutLabelsLine = {
 
           let is_dx = x > halfwidth;
 
-          let slot = getLabelSlot(outerRadius, centerX, centerY, x, y);
+          let slot = getLabelSlot(outerRadius, centerX, centerY, x, y, usedSlots);
           let xLine = slot.position.x;
           let yLine = slot.position.y;
+
+          // console.log(">>>>>>>>> chart.data.labels[index]: " + chart.data.labels[index]);
+          // console.log(">>>>>>>>>>> slot: " + JSON.stringify(slot));
 
           // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
           // console.log(">>>>>>>>> chart.data.labels[index]: " + chart.data.labels[index]);// + " ["+count_slice+"]");
@@ -181,14 +184,14 @@ export const tsDoughnutLabelsLine = {
   }
   
 // Create an object to track used slots for both columns
-let usedSlots = {
-  left: new Set(),
-  right: new Set()
-};
+// let usedSlots = {
+//   left: new Set(),
+//   right: new Set()
+// };
 
-function getLabelSlot(outerRadius, centerX, centerY, x, y) {
+function getLabelSlot(outerRadius, centerX, centerY, x, y, usedSlots) {
   // Define the height of each slot and the horizontal offset for the label positioning
-  const slotHeight = 15;
+  const slotHeight = 14;
   const labelOffset = 20; // Distance from the edge of the chart to the label
 
   // Determine if the point is on the right or left side of the doughnut chart
@@ -205,40 +208,44 @@ function getLabelSlot(outerRadius, centerX, centerY, x, y) {
 
   // Calculate the slot index from the bottom (maxY) to the top (minY)
   let slotIndex = Math.floor((maxY - y) / slotHeight);
+  // console.log(">>>>>>>>>>> first slotIndex: " + slotIndex);
 
   // Adjust the slotIndex based on the region: right-lower or left-upper
-  if (isRightColumn && y > centerY) {
+  if (isRightColumn && y >= centerY) {
     // Right side and below the center, prioritize searching downwards first
     while (usedSlots[column].has(slotIndex)) {
-      if (!usedSlots[column].has(slotIndex + 1)) {
-        slotIndex++; // Search downwards
+      //if (!usedSlots[column].has(slotIndex + 1)) {
+        slotIndex--; // Search downwards
       /*} else if (!usedSlots[column].has(slotIndex - 1)) {
         slotIndex--; // If down is full, search upwards
-      } else {*/
+      } else {
         break; // If no available slot, stop
-      }
+      }*/
+      if (slotIndex > 25) break;
     }
   } else if (!isRightColumn && y < centerY) {
     // Left side and above the center, prioritize searching upwards first
     while (usedSlots[column].has(slotIndex)) {
-      if (!usedSlots[column].has(slotIndex - 1)) {
-        slotIndex--; // Search upwards
+      //if (!usedSlots[column].has(slotIndex - 1)) {
+        slotIndex++; // Search upwards
       /*} else if (!usedSlots[column].has(slotIndex + 1)) {
         slotIndex++; // If up is full, search downwards
-      } else {*/
+      } else {
         break; // If no available slot, stop
-      }
+      }*/
+      if (slotIndex < -5) break;
     }
   } else {
     // For other cases, alternate upwards and downwards search as before
     while (usedSlots[column].has(slotIndex)) {
-      if (!usedSlots[column].has(slotIndex + 1)) {
+      //if (!usedSlots[column].has(slotIndex + 1)) {
         slotIndex++;
-      } else if (!usedSlots[column].has(slotIndex - 1)) {
+      /*} else if (!usedSlots[column].has(slotIndex - 1)) {
         slotIndex--;
       } else {
         break;
-      }
+      }*/
+      if (slotIndex > 25) break;
     }
   }
 

@@ -24,6 +24,7 @@
       <h1>ThunderStats Release Notes</h1>
       <h3>Version 2.2.4 - ??/??/2024</h3>
       <ul>
+        <li>In Thunderbird 128 is now possible again to choose to open a folder from the Inbox Zero Folder Chart in a new tab or not.</li>
         <li>...</li>
       </ul>
       <h3>Version 2.2.3 - 05/10/2024</h3>

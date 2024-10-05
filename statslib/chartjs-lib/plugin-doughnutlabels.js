@@ -211,40 +211,16 @@ function getLabelSlot(outerRadius, centerX, centerY, x, y, usedSlots) {
   // console.log(">>>>>>>>>>> first slotIndex: " + slotIndex);
 
   // Adjust the slotIndex based on the region: right-lower or left-upper
-  if (isRightColumn && y >= centerY) {
-    // Right side and below the center, prioritize searching downwards first
-    while (usedSlots[column].has(slotIndex)) {
-      //if (!usedSlots[column].has(slotIndex + 1)) {
-        slotIndex--; // Search downwards
-      /*} else if (!usedSlots[column].has(slotIndex - 1)) {
-        slotIndex--; // If down is full, search upwards
-      } else {
-        break; // If no available slot, stop
-      }*/
-      if (slotIndex > 25) break;
-    }
-  } else if (!isRightColumn && y < centerY) {
-    // Left side and above the center, prioritize searching upwards first
-    while (usedSlots[column].has(slotIndex)) {
-      //if (!usedSlots[column].has(slotIndex - 1)) {
-        slotIndex++; // Search upwards
-      /*} else if (!usedSlots[column].has(slotIndex + 1)) {
-        slotIndex++; // If up is full, search downwards
-      } else {
-        break; // If no available slot, stop
-      }*/
-      if (slotIndex < -5) break;
-    }
+  if (isRightColumn){
+      // Right side, prioritize searching downwards first
+      while (usedSlots[column].has(slotIndex)) {
+          slotIndex--; // Search downwards
+        if (slotIndex < -5) break;
+      }
   } else {
-    // For other cases, alternate upwards and downwards search as before
+    // Left side, prioritize searching upwards first
     while (usedSlots[column].has(slotIndex)) {
-      //if (!usedSlots[column].has(slotIndex + 1)) {
-        slotIndex++;
-      /*} else if (!usedSlots[column].has(slotIndex - 1)) {
-        slotIndex--;
-      } else {
-        break;
-      }*/
+        slotIndex++; // Search upwards
       if (slotIndex > 25) break;
     }
   }

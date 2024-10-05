@@ -46,12 +46,14 @@ table.mzts-tinvolved tr.mzts-trow:nth-child(even){background:#bae0fa;}
 table.mzts-tinvolved tr.mzts-trow td{padding:2px 4px 2px 2px;color:black;white-space:-moz-pre-wrap !important;word-break: break-all;}
 table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:normal;}
 
+.chart_time_container{width:100%;float:left;display:flex; flex-wrap:nowrap;}
 .chart_time{ overflow:auto;float:left;height:230px;width:89%;}
 .chart_time_86{ overflow:auto;float:left;height:230px;width:86%;}
 .chart_time_full{ overflow:auto;float:left;height:275px;width:89%;}
 .legend-time{float:right;font-size:12px;padding-top:8px;}
 .legend-time ul{list-style-type:none;margin:0;padding:0;}
 .legend-time ul li.day_today_title{font-weight:bold;}
+.legend-time ul li{white-space: nowrap;}
 .chart_inbox0_info{width:100%;float:left;}
 .chart_inbox0{width:80%;height:310px;float:left;overflow:auto;}
 .chart_inbox0_datemsg{float:right;max-width:20%;min-width:90px;height:220px;}

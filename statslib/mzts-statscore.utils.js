@@ -59,6 +59,7 @@ export const tsCoreUtils = {
         let output_labels = [];
         let output_colors = [];
         let output_paths = [];
+        //console.log(">>>>>>>>>>>> folders: " + JSON.stringify(folders));
         for(let key in folders) {
             output_labels.push(folders[key].folder_data.name);
             if(!("id" in folders[key].folder_data)){
@@ -76,7 +77,15 @@ export const tsCoreUtils = {
                 output_colors.push(color);
             }
         }
-        return {labels: output_labels, colors: output_colors, folder_paths: output_paths};
+        let output = {labels: output_labels, colors: output_colors, folder_paths: output_paths}
+
+        if(!tsStore.isTB128plus) {
+            const foldersArray = Object.values(folders);
+            output.folders = foldersArray.map(({folder_data: { id, specialUse, ...item }}) => item);
+            // console.log(">>>>>>>>>> getFoldersLabelsColors output: " + JSON.stringify(output));
+        }
+
+        return output;
     },
 
     getFoldersCounts(folders, type = 'rcvd') {  //type is 'sent' or 'rcvd'

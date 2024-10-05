@@ -370,6 +370,7 @@ onBeforeMount(async () => {
 onMounted(async () => {
     const endDate = new Date();
     const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
+    // dateQry.value = [new Date('2024-08-19'),new Date('2024-08-19')];
     dateQry.value = [startDate, endDate];
     let prefs = await tsPrefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only", "customqry_always_open_adv_filters"]);
     //console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
@@ -657,6 +658,9 @@ async function updateData() {
       // graph inbox zero folders
       let given_folders = tsCoreUtils.filterReceivedFolders(graphdata_inboxzero_folders.value);
       let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
+      if("folders" in folders_data){
+        chartData_InboxZeroFolders.value.folders = folders_data.folders;
+      }
       chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
       chartData_InboxZeroFolders.value.labels = folders_data.labels;
       chartData_InboxZeroFolders.value.datasets = [];

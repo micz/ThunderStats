@@ -266,6 +266,10 @@ async function updateData() {
     let given_folders = tsCoreUtils.filterReceivedFolders(graphdata_inboxzero_folders.value);
     let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
     chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
+    console.log(">>>>>>>>>> folders_data: " + JSON.stringify(folders_data));
+    if("folders" in folders_data){
+        chartData_InboxZeroFolders.value.folders = folders_data.folders;
+    }
     chartData_InboxZeroFolders.value.labels = folders_data.labels;
     chartData_InboxZeroFolders.value.datasets = [];
     chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(given_folders), backgroundColor: folders_data.colors, borderColor: folders_data.colors});

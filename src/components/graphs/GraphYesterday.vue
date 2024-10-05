@@ -19,18 +19,20 @@
 -->
 
 <template>
-<div :class="getWrapperClass">
-  <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." id="yesterday_hours_graph_wait"/></div>
-  <Line
-      :options="chartOptions"
-      :data="chartData"
-      :plugins="chartPlugins"
-      :key="chartData_length"
-      ref="yesterdayChartBar_ref"
-      v-if="!is_loading"
-    />
+<div class="chart_time_container">
+  <div :class="getWrapperClass">
+    <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." id="yesterday_hours_graph_wait"/></div>
+    <Line
+        :options="chartOptions"
+        :data="chartData"
+        :plugins="chartPlugins"
+        :key="chartData_length"
+        ref="yesterdayChartBar_ref"
+        v-if="!is_loading"
+      />
+  </div>
+  <div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </div>
-<div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </template>
 
 

@@ -22,7 +22,7 @@
         <li>The toolbar button is now always visible.</li>
         <li>Folders select dropdown text color fixed.</li>
         <li>Weekdays chart fixed [<a href="https://github.com/micz/ThunderStats/issues/374">#374</a>].</li>
-        <li>Improved the positioning of the labels on the Inbox Zero Folders graphs [<a href="https://github.com/micz/ThunderStats/issues/370">#370</a>, <a href="https://github.com/micz/ThunderStats/issues/373">#373</a>].</li>
+        <li>Improved the positioning of the labels on the Inbox Zero Folders charts [<a href="https://github.com/micz/ThunderStats/issues/370">#370</a>, <a href="https://github.com/micz/ThunderStats/issues/373">#373</a>].</li>
         <li>In the advanced filters panel is now possible to check the "include subolders" checkbox clicking on its label [<a href="https://github.com/micz/ThunderStats/issues/371">#371</a>].</li>
         <li>Inbox percentage loading indicator timing fixed [<a href="https://github.com/micz/ThunderStats/issues/376">#376</a>].</li>
         <li>Fixed a label error in the weekdays chart, which misordered the days relative to the number of emails.</li>
@@ -34,7 +34,7 @@
       <ul>
         <li>When executing a custom query for a single day, now is used the single day view [<a href="https://github.com/micz/ThunderStats/issues/315">#315</a>].</li>
         <li>The Inbox Zero Folders Chart is no longer partially hidden under the bottom border in certain circumstances.</li>
-        <li>The labels on the Inbox Zero Folders graphs no longer overlap [<a href="https://github.com/micz/ThunderStats/issues/341">#341</a>].</li>
+        <li>The labels on the Inbox Zero Folders charts no longer overlap [<a href="https://github.com/micz/ThunderStats/issues/341">#341</a>].</li>
         <li>Added the precentage of mails moved from inbox in all the single day views [<a href="https://github.com/micz/ThunderStats/issues/343">#343</a>].</li>
         <li>Fixed a concurrency bug in displaying the elapsed time. It now always shows the maximum value.</li>
         <li>Added a warning if querying too much days in the Custom View. Added an option in the advanced tab to choose the maximum number of days to query without a warning. It's also possible to disable the warning completely [<a href="https://github.com/micz/ThunderStats/issues/281">#281</a>].</li>

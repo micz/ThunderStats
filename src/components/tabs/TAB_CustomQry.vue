@@ -90,47 +90,47 @@
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
-                      <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length"/>
+                      <ChartCustomQry v-if="do_run" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :key="chartData_Sent_length"/>
     </div>
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
         <span class="list_heading_date" v-html="singleday_date_str"></span>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="sent_total" :_rcvd="rcvd_total" />
         <div class="singleday_spacing"></div>
-        <GraphYesterday :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_graph" :yesterday = "false" :key="chartData_TimeDay_length"/>
+        <ChartYesterday :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_chart" :yesterday = "false" :key="chartData_TimeDay_length"/>
     </div>
 
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
-					  <GraphCustomQry v-if="do_run" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_graph"  :key="chartData_Rcvd_length"/>
+					  <ChartCustomQry v-if="do_run" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_chart"  :key="chartData_Rcvd_length"/>
     </div>
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
 					  </div>
-					  <CounterInbox :is_loading="is_loading_inbox_graph_folders" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
+					  <CounterInbox :is_loading="is_loading_inbox_chart_folders" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
             <CounterInboxPercent :is_loading="is_loading_counter_inbox_percent" :inbox_percent="counter_inbox_percent" />
                       <div class="chart_inbox0_info"><p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="singleday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (rcvd_total == 0)" v-text="no_mails_received_yesterday"></p></div>
                       <div class="chart_inbox0">
-                        <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_graph_folders" />
+                        <ChartInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_chart_folders" />
                       </div>
                       <div class="chart_inbox0_datemsg">
                         <p class="chart_info">__MSG_InboxMailsDateSpreading__</p><p class="chart_info_nomail" id="singleday_inbox0_datemsg_nomails" v-if="!is_loading_counter_inbox && (counter_inbox_total == 0)" v-text="no_mails_inbox"></p>
-                        <GraphInboxZeroDates :chartData="chartData_InboxZeroDates" :is_loading="is_loading_inbox_graph_dates" />
+                        <ChartInboxZeroDates :chartData="chartData_InboxZeroDates" :is_loading="is_loading_inbox_chart_dates" />
                       </div>
     </div>
 
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_TimeDay__</h2>
 					  </div>
-                      <GraphYesterday v-if="do_run" :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_graph" :yesterday="false" :is_generic_day="true"/>
+                      <ChartYesterday v-if="do_run" :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :yesterday="false" :is_generic_day="true"/>
     </div>
 
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
 					  </div>
-					<WidgetWeekDay v-if="do_run" :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" :key="chartData_WeekDays_length" />
+					<WidgetWeekDay v-if="do_run" :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_chart" :key="chartData_WeekDays_length" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
@@ -158,7 +158,7 @@ import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsUtils } from '@statslib/mzts-utils';
 import TableInvolved from '../tables/TableInvolved.vue';
-import GraphCustomQry from '../graphs/GraphCustomQry.vue';
+import ChartCustomQry from '../charts/ChartCustomQry.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
 import ExportMenu from '../ExportMenu.vue';
 import InfoTooltip from '../InfoTooltip.vue';
@@ -171,9 +171,9 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import CounterSentReceived from '../counters/CounterSentReceived.vue';
-import GraphYesterday from '../graphs/GraphYesterday.vue';
-import GraphInboxZeroFolders from '../graphs/GraphInboxZeroFolders.vue';
-import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
+import ChartYesterday from '../charts/ChartYesterday.vue';
+import ChartInboxZeroFolders from '../charts/ChartInboxZeroFolders.vue';
+import ChartInboxZeroDates from '../charts/ChartInboxZeroDates.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
 import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 import Multiselect from '@vueform/multiselect';
@@ -226,13 +226,13 @@ let do_single_day = ref(false);
 let singleDay = ref(null);
 let singleday_date_str = ref("");
 
-let is_loading_singleday_graph = ref(true);
-let is_loading_inbox_graph_folders = ref(true);
-let is_loading_inbox_graph_dates = ref(true);
+let is_loading_singleday_chart = ref(true);
+let is_loading_inbox_chart_folders = ref(true);
+let is_loading_inbox_chart_dates = ref(true);
 let is_loading_counter_inbox = ref(true);
 let is_loading_counter_inbox_percent = ref(true);
-let is_loading_timeday_graph = ref(true);
-let is_loading_weekdays_graph = ref(true);
+let is_loading_timeday_chart = ref(true);
+let is_loading_weekdays_chart = ref(true);
 
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
@@ -243,8 +243,8 @@ let chartData_SingleDay = ref({
     datasets: []
 });
 
-let graphdata_singleday_hours_sent = ref([]);
-let graphdata_singleday_hours_rcvd = ref([]);
+let chartdata_singleday_hours_sent = ref([]);
+let chartdata_singleday_hours_rcvd = ref([]);
 let chartData_InboxZeroFolders = ref({
     labels: [],
     datasets: []
@@ -253,8 +253,8 @@ let chartData_InboxZeroDates = ref({
     labels: [],
     datasets: []
 });
-let graphdata_inboxzero_folders = ref([]);
-let graphdata_inboxzero_dates = ref([]);
+let chartdata_inboxzero_folders = ref([]);
+let chartdata_inboxzero_dates = ref([]);
 
 let showFolderLocationNoteAnchor = ref(false);
 let folderLocationNote_text = ref("");
@@ -275,8 +275,8 @@ let is_loading_counter_sent_rcvd = ref(true);
 let is_loading_counter_customqry = ref(true);
 let is_loading_involved_table_recipients = ref(true);
 let is_loading_involved_table_senders = ref(true);
-let is_loading_sent_graph = ref(true);
-let is_loading_rcvd_graph = ref(true);
+let is_loading_sent_chart = ref(true);
+let is_loading_rcvd_chart = ref(true);
 
 let counter_customqry_sent_total = ref(0);
 let counter_customqry_sent_max = ref(0);
@@ -292,13 +292,13 @@ let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
 
-let graphdata_customqry_sent = ref([]);
-let graphdata_customqry_rcvd = ref([]);
-let graphdata_customqry_labels = ref([]);
-let graphdata_customqry_hours_sent = ref([]);
-let graphdata_customqry_hours_rcvd = ref([]);
-let graphdata_customqry_weekdays_sent = ref([]);
-let graphdata_customqry_weekdays_rcvd = ref([]);
+let chartdata_customqry_sent = ref([]);
+let chartdata_customqry_rcvd = ref([]);
+let chartdata_customqry_labels = ref([]);
+let chartdata_customqry_hours_sent = ref([]);
+let chartdata_customqry_hours_rcvd = ref([]);
+let chartdata_customqry_weekdays_sent = ref([]);
+let chartdata_customqry_weekdays_rcvd = ref([]);
 
 let _export_data = ref({});
 
@@ -346,19 +346,19 @@ let job_done = computed(() => {
     is_loading_counter_customqry.value &&
     is_loading_involved_table_recipients.value &&
     is_loading_involved_table_senders.value &&
-    is_loading_sent_graph.value &&
-    is_loading_rcvd_graph.value &&
-    is_loading_timeday_graph.value &&
-    is_loading_weekdays_graph.value);
+    is_loading_sent_chart.value &&
+    is_loading_rcvd_chart.value &&
+    is_loading_timeday_chart.value &&
+    is_loading_weekdays_chart.value);
   }else{
     return !(is_loading_counter_sent_rcvd.value &&
-    is_loading_singleday_graph.value &&
+    is_loading_singleday_chart.value &&
     is_loading_involved_table_recipients.value &&
     is_loading_involved_table_senders.value &&
     is_loading_counter_inbox.value &&
     is_loading_counter_inbox_percent.value &&
-    is_loading_inbox_graph_folders.value &&
-    is_loading_inbox_graph_dates.value);
+    is_loading_inbox_chart_folders.value &&
+    is_loading_inbox_chart_dates.value);
   }
 });
 
@@ -594,8 +594,8 @@ async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    let prefs = await tsPrefs.getPrefs(["_time_graph_progressive", "accounts_adv_settings"]);
-    do_progressive = prefs._time_graph_progressive;
+    let prefs = await tsPrefs.getPrefs(["_time_chart_progressive", "accounts_adv_settings"]);
+    do_progressive = prefs._time_chart_progressive;
     let accounts_adv_settings = prefs.accounts_adv_settings;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
@@ -603,7 +603,7 @@ async function updateData() {
     await getCustomQryData();
     if(!do_single_day.value){
       let chart_container_width = document.querySelector('.chart_customqry').clientWidth;
-      let chart_ipotetic_width = graphdata_customqry_labels.value.length * 30;
+      let chart_ipotetic_width = chartdata_customqry_labels.value.length * 30;
       if(chart_container_width < chart_ipotetic_width){
         chart_width.value = String(chart_ipotetic_width) + "px";
       } else {
@@ -612,7 +612,7 @@ async function updateData() {
       chartData_Sent.value.datasets = [];
       chartData_Sent.value.datasets.push({
           label: 'Sent',
-          data: graphdata_customqry_sent.value,
+          data: chartdata_customqry_sent.value,
           borderColor: tsStore.chart_colors.many_days_default,
           backgroundColor: tsStore.chart_colors.many_days_default,
           borderWidth: 2,
@@ -620,12 +620,12 @@ async function updateData() {
           //maxBarThickness: 15,
           minBarThickness: 15,
       });
-      tsLog.log("graphdata_customqry_sent.value: " + JSON.stringify(graphdata_customqry_sent.value));
-      chartData_Sent.value.labels = graphdata_customqry_labels.value;
+      tsLog.log("chartdata_customqry_sent.value: " + JSON.stringify(chartdata_customqry_sent.value));
+      chartData_Sent.value.labels = chartdata_customqry_labels.value;
       chartData_Rcvd.value.datasets = [];
       chartData_Rcvd.value.datasets.push({
           label: 'Received',
-          data: graphdata_customqry_rcvd.value,
+          data: chartdata_customqry_rcvd.value,
           borderColor: tsStore.chart_colors.many_days_default,
           backgroundColor: tsStore.chart_colors.many_days_default,
           borderWidth: 2,
@@ -633,14 +633,14 @@ async function updateData() {
           //maxBarThickness: 15,
           minBarThickness: 15,
       });
-      tsLog.log("graphdata_customqry_rcvd.value: " + JSON.stringify(graphdata_customqry_rcvd.value));
-      chartData_Rcvd.value.labels = graphdata_customqry_labels.value;
-      tsLog.log("graphdata_customqry_hours_sent.value: " + JSON.stringify(graphdata_customqry_hours_sent.value));
-      tsLog.log("graphdata_customqry_hours_rcvd.value: " + JSON.stringify(graphdata_customqry_hours_rcvd.value));
+      tsLog.log("chartdata_customqry_rcvd.value: " + JSON.stringify(chartdata_customqry_rcvd.value));
+      chartData_Rcvd.value.labels = chartdata_customqry_labels.value;
+      tsLog.log("chartdata_customqry_hours_sent.value: " + JSON.stringify(chartdata_customqry_hours_sent.value));
+      tsLog.log("chartdata_customqry_hours_rcvd.value: " + JSON.stringify(chartdata_customqry_hours_rcvd.value));
       chartData_TimeDay.value.datasets = [];
       chartData_TimeDay.value.datasets.push({
           label: 'ysent',
-          data: graphdata_customqry_hours_sent.value,
+          data: chartdata_customqry_hours_sent.value,
           borderColor: tsStore.chart_colors._time_sent,
           backgroundColor: tsStore.chart_colors._time_sent,
           borderWidth: 2,
@@ -648,19 +648,19 @@ async function updateData() {
       });
       chartData_TimeDay.value.datasets.push({
           label: 'yrcvd',
-          data: graphdata_customqry_hours_rcvd.value,
+          data: chartdata_customqry_hours_rcvd.value,
           borderColor: tsStore.chart_colors._time_rcvd,
           backgroundColor: tsStore.chart_colors._time_rcvd,
           borderWidth: 2,
           pointRadius: 1,
       });
       // week days
-      tsLog.log("graphdata_customqry_hours_sent.value: " + JSON.stringify(graphdata_customqry_weekdays_rcvd.value));
-      tsLog.log("graphdata_customqry_hours_rcvd.value: " + JSON.stringify(graphdata_customqry_weekdays_sent.value));
+      tsLog.log("chartdata_customqry_hours_sent.value: " + JSON.stringify(chartdata_customqry_weekdays_rcvd.value));
+      tsLog.log("chartdata_customqry_hours_rcvd.value: " + JSON.stringify(chartdata_customqry_weekdays_sent.value));
       chartData_WeekDays.value.datasets = [];
       chartData_WeekDays.value.datasets.push({
           label: 'ysent',
-          data: graphdata_customqry_weekdays_sent.value,
+          data: chartdata_customqry_weekdays_sent.value,
           borderColor: tsStore.chart_colors._weekday_sent,
           backgroundColor: tsStore.chart_colors._weekday_sent,
           borderWidth: 2,
@@ -668,7 +668,7 @@ async function updateData() {
       })
       chartData_WeekDays.value.datasets.push({
           label: 'yrcvd',
-          data: graphdata_customqry_weekdays_rcvd.value,
+          data: chartdata_customqry_weekdays_rcvd.value,
           borderColor: tsStore.chart_colors._weekday_rcvd,
           backgroundColor: tsStore.chart_colors._weekday_rcvd,
           borderWidth: 2,
@@ -676,13 +676,13 @@ async function updateData() {
       })
     }else{    //single day
       getInboxZeroData();
-      // graph single day hours
-      tsLog.log("graphdata_singleday_hours_sent.value: " + JSON.stringify(graphdata_singleday_hours_sent.value));
-      tsLog.log("graphdata_singleday_hours_rcvd.value: " + JSON.stringify(graphdata_singleday_hours_rcvd.value));
+      // chart single day hours
+      tsLog.log("chartdata_singleday_hours_sent.value: " + JSON.stringify(chartdata_singleday_hours_sent.value));
+      tsLog.log("chartdata_singleday_hours_rcvd.value: " + JSON.stringify(chartdata_singleday_hours_rcvd.value));
       chartData_SingleDay.value.datasets = [];
       chartData_SingleDay.value.datasets.push({
           label: 'ysent',
-          data: graphdata_singleday_hours_sent.value,
+          data: chartdata_singleday_hours_sent.value,
           borderColor: tsStore.chart_colors._time_sent,
           backgroundColor: tsStore.chart_colors._time_sent,
           borderWidth: 2,
@@ -690,28 +690,28 @@ async function updateData() {
       })
       chartData_SingleDay.value.datasets.push({
           label: 'yrcvd',
-          data: graphdata_singleday_hours_rcvd.value,
+          data: chartdata_singleday_hours_rcvd.value,
           borderColor: tsStore.chart_colors._time_rcvd,
           backgroundColor: tsStore.chart_colors._time_rcvd,
           borderWidth: 2,
           pointRadius: 1,
       })
-      // graph inbox zero folders
-      let given_folders = tsCoreUtils.filterReceivedFolders(graphdata_inboxzero_folders.value);
+      // chart inbox zero folders
+      let given_folders = tsCoreUtils.filterReceivedFolders(chartdata_inboxzero_folders.value);
       let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
       chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
       chartData_InboxZeroFolders.value.labels = folders_data.labels;
       chartData_InboxZeroFolders.value.datasets = [];
       chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(given_folders), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
       tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
-      // graph inbox zero dates
+      // chart inbox zero dates
       inbox0_openFolderInFirstTab.value = await tsPrefs.getPref("inbox0_openFolderInFirstTab");
     }
     nextTick(async () => {
         if(do_single_day.value){
-          is_loading_singleday_graph.value = false;
-          is_loading_inbox_graph_folders.value = false;
-          // is_loading_inbox_graph_dates.value = false;
+          is_loading_singleday_chart.value = false;
+          is_loading_inbox_chart_folders.value = false;
+          // is_loading_inbox_chart_dates.value = false;
           showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id)
         }
         i18n.updateDocument();
@@ -754,11 +754,11 @@ async function updateData() {
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
             if(!do_single_day.value){
-              // graph day hours
+              // chart day hours
               const _hours_data = tsCoreUtils.transformCountDataToDataset(result_customqry.msg_hours, false); // the false is to not to it progressive
-              graphdata_customqry_hours_sent.value = _hours_data.dataset_sent;
-              graphdata_customqry_hours_rcvd.value = _hours_data.dataset_rcvd;
-              is_loading_timeday_graph.value = false;
+              chartdata_customqry_hours_sent.value = _hours_data.dataset_sent;
+              chartdata_customqry_hours_rcvd.value = _hours_data.dataset_rcvd;
+              is_loading_timeday_chart.value = false;
               //aggregated data
               let aggregate = result_customqry.aggregate;
               tsLog.log("dates: " + JSON.stringify(result_customqry.dates, null, 2));
@@ -772,22 +772,22 @@ async function updateData() {
               counter_customqry_sent_min.value = aggregate.min_sent;
               counter_customqry_sent_avg.value = aggregate.avg_sent;
               is_loading_counter_customqry.value = false;
-              // sent and received graphs
+              // sent and received charts
               const customqry_data = tsCoreUtils.transformCountDataToDataset(result_customqry.dates, false, true);
               tsLog.log("customqry_data: " + JSON.stringify(customqry_data));
-              graphdata_customqry_labels.value = customqry_data.labels;
-              // sent graph
-              graphdata_customqry_sent.value = customqry_data.dataset_sent;
-              is_loading_sent_graph.value = false;
-              // received graph
-              graphdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
-              is_loading_rcvd_graph.value = false;
-              // graph weekdays
+              chartdata_customqry_labels.value = customqry_data.labels;
+              // sent chart
+              chartdata_customqry_sent.value = customqry_data.dataset_sent;
+              is_loading_sent_chart.value = false;
+              // received chart
+              chartdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
+              is_loading_rcvd_chart.value = false;
+              // chart weekdays
               let first_day_week = tsStore.first_day_week;
               const _weekdays_data = tsCoreUtils.transformCountDataToDataset(tsUtils.sortWeekdays(first_day_week, result_customqry.msg_weekdays), false); // the false is to not do it progressive
-              graphdata_customqry_weekdays_sent.value = _weekdays_data.dataset_sent;
-              graphdata_customqry_weekdays_rcvd.value = _weekdays_data.dataset_rcvd;
-              is_loading_weekdays_graph.value = false;
+              chartdata_customqry_weekdays_sent.value = _weekdays_data.dataset_sent;
+              chartdata_customqry_weekdays_rcvd.value = _weekdays_data.dataset_rcvd;
+              is_loading_weekdays_chart.value = false;
             }else{  // single day view
               // console.log(">>>>>>>>>>>>>> count_total_rcvd: " + result_customqry.received);
               // console.log(">>>>>>>>>>>>>> count_in_inbox: " + result_customqry.count_in_inbox);
@@ -798,11 +798,11 @@ async function updateData() {
               }
               is_loading_counter_inbox_percent.value = false;
               const singleday_hours_data = tsCoreUtils.transformCountDataToDataset(result_customqry.msg_hours, do_progressive);
-              graphdata_singleday_hours_sent.value = singleday_hours_data.dataset_sent;
-              graphdata_singleday_hours_rcvd.value = singleday_hours_data.dataset_rcvd;
-              is_loading_singleday_graph.value = false;
+              chartdata_singleday_hours_sent.value = singleday_hours_data.dataset_sent;
+              chartdata_singleday_hours_rcvd.value = singleday_hours_data.dataset_rcvd;
+              is_loading_singleday_chart.value = false;
               // inbox zero folders
-              graphdata_inboxzero_folders.value = result_customqry.folders;
+              chartdata_inboxzero_folders.value = result_customqry.folders;
             }
             let stop_time = performance.now();
             updateElapsed('getCustomQryData', stop_time - start_time);
@@ -816,14 +816,14 @@ async function updateData() {
             counter_inbox_total.value = result_inbox.total;
             counter_inbox_unread.value = result_inbox.unread;
             // inbox zero dates
-            graphdata_inboxzero_dates.value = result_inbox.dates;
+            chartdata_inboxzero_dates.value = result_inbox.dates;
             is_loading_counter_inbox.value = false;
             chartData_InboxZeroDates.value.labels = ['date'];
             chartData_InboxZeroDates.value.datasets = [];
-            chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
+            chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(chartdata_inboxzero_dates.value);
             tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
             nextTick(() => {
-                is_loading_inbox_graph_dates.value = false;
+                is_loading_inbox_chart_dates.value = false;
             });
             updateElapsed('getInboxZeroData', result_inbox.elapsed);
             resolve(true);
@@ -835,15 +835,15 @@ function loadingDo(){
     is_loading_counter_customqry.value = true;
     is_loading_involved_table_recipients.value = true;
     is_loading_involved_table_senders.value = true;
-    is_loading_sent_graph.value = true;
-    is_loading_rcvd_graph.value = true;
-    is_loading_singleday_graph.value = true;
+    is_loading_sent_chart.value = true;
+    is_loading_rcvd_chart.value = true;
+    is_loading_singleday_chart.value = true;
     is_loading_counter_inbox.value = true;
     is_loading_counter_inbox_percent.value = true;
-    is_loading_inbox_graph_folders.value = true;
-    is_loading_inbox_graph_dates.value = true;
-    is_loading_timeday_graph.value = true;
-    is_loading_weekdays_graph.value = true;
+    is_loading_inbox_chart_folders.value = true;
+    is_loading_inbox_chart_dates.value = true;
+    is_loading_timeday_chart.value = true;
+    is_loading_weekdays_chart.value = true;
 }
 
 function updateElapsed(function_name, time) {

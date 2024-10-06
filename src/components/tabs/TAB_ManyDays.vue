@@ -25,26 +25,26 @@
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ sent_total }}</span><span v-if="sent_today > 0"> (+<span>{{ sent_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/><InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalInfoTooltip_text"></InfoTooltip></h2>
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_total="counter_many_days_sent_total" :_max="counter_many_days_sent_max" :_min="counter_many_days_sent_min" :_avg="counter_many_days_sent_avg" :showTotalInfoTooltip="showTotalInfoTooltip" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
-                      <GraphManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length" />
+                      <ChartManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_chart" :key="chartData_Sent_length" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ rcvd_total }}</span><span v-if="rcvd_today > 0"> (+<span>{{ rcvd_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/><InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalInfoTooltip_text"></InfoTooltip></h2>
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_total="counter_many_days_rcvd_total" :_max="counter_many_days_rcvd_max" :_min="counter_many_days_rcvd_min" :_avg="counter_many_days_rcvd_avg" :showTotalInfoTooltip="showTotalInfoTooltip" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
-					  <GraphManyDays :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_graph" :key="chartData_Rcvd_length" />
+					  <ChartManyDays :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_chart" :key="chartData_Rcvd_length" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_TimeDay__</h2>
 					  </div>
-                      <GraphYesterday :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_graph" :yesterday="false" :is_generic_day="true"/>
+                      <ChartYesterday :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :yesterday="false" :is_generic_day="true"/>
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
 					  </div>
-					<WidgetWeekDay :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" />
+					<WidgetWeekDay :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_chart" />
     </div>
 
     <div class="square_item"><div class="list_heading_wrapper">
@@ -72,7 +72,7 @@ import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsUtils } from '@statslib/mzts-utils';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import TableInvolved from '../tables/TableInvolved.vue';
-import GraphManyDays from '../graphs/GraphManyDays.vue';
+import ChartManyDays from '../charts/ChartManyDays.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
 import ExportMenu from '../ExportMenu.vue';
 import InfoTooltip from '../InfoTooltip.vue';
@@ -80,7 +80,7 @@ import { tsPrefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
-import GraphYesterday from '../graphs/GraphYesterday.vue';
+import ChartYesterday from '../charts/ChartYesterday.vue';
 import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
 
 const props = defineProps({
@@ -108,10 +108,10 @@ let is_loading_counter_sent_rcvd = ref(true);
 let is_loading_counter_many_days = ref(true);
 let is_loading_involved_table_recipients = ref(true);
 let is_loading_involved_table_senders = ref(true);
-let is_loading_sent_graph = ref(true);
-let is_loading_rcvd_graph = ref(true);
-let is_loading_timeday_graph = ref(true);
-let is_loading_weekdays_graph = ref(true);
+let is_loading_sent_chart = ref(true);
+let is_loading_rcvd_chart = ref(true);
+let is_loading_timeday_chart = ref(true);
+let is_loading_weekdays_chart = ref(true);
 
 let counter_many_days_sent_total = ref(0);
 let counter_many_days_sent_max = ref(0);
@@ -127,13 +127,13 @@ let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
 
-let graphdata_manydays_sent = ref([]);
-let graphdata_manydays_rcvd = ref([]);
-let graphdata_manydays_labels = ref([]);
-let graphdata_manydays_hours_sent = ref([]);
-let graphdata_manydays_hours_rcvd = ref([]);
-let graphdata_manydays_weekdays_sent = ref([]);
-let graphdata_manydays_weekdays_rcvd = ref([]);
+let chartdata_manydays_sent = ref([]);
+let chartdata_manydays_rcvd = ref([]);
+let chartdata_manydays_labels = ref([]);
+let chartdata_manydays_hours_sent = ref([]);
+let chartdata_manydays_hours_rcvd = ref([]);
+let chartdata_manydays_weekdays_sent = ref([]);
+let chartdata_manydays_weekdays_rcvd = ref([]);
 
 let _export_data = ref({});
 
@@ -171,10 +171,10 @@ let job_done = computed(() => {
     is_loading_counter_many_days.value &&
     is_loading_involved_table_recipients.value &&
     is_loading_involved_table_senders.value &&
-    is_loading_sent_graph.value &&
-    is_loading_rcvd_graph.value &&
-    is_loading_timeday_graph.value &&
-    is_loading_weekdays_graph.value);
+    is_loading_sent_chart.value &&
+    is_loading_rcvd_chart.value &&
+    is_loading_timeday_chart.value &&
+    is_loading_weekdays_chart.value);
 });
 
 onMounted(async () => {
@@ -205,40 +205,40 @@ async function updateData() {
     chartData_Sent.value.datasets = [];
     chartData_Sent.value.datasets.push({
         label: 'Sent',
-        data: graphdata_manydays_sent.value,
+        data: chartdata_manydays_sent.value,
         borderColor: (ctx) => {
-            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(chartdata_manydays_sent.value).length);
         },
         backgroundColor:  (ctx) => {
-            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_sent.value).length);
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(chartdata_manydays_sent.value).length);
         },
         borderWidth: 2,
         pointRadius: 1,
     });
-    tsLog.log("graphdata_manydays_sent.value: " + JSON.stringify(graphdata_manydays_sent.value));
-    chartData_Sent.value.labels = graphdata_manydays_labels.value;
+    tsLog.log("chartdata_manydays_sent.value: " + JSON.stringify(chartdata_manydays_sent.value));
+    chartData_Sent.value.labels = chartdata_manydays_labels.value;
     chartData_Rcvd.value.datasets = [];
     chartData_Rcvd.value.datasets.push({
         label: 'Received',
-        data: graphdata_manydays_rcvd.value,
+        data: chartdata_manydays_rcvd.value,
         borderColor:  (ctx) => {
-            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(chartdata_manydays_rcvd.value).length);
         },
         backgroundColor: (ctx) => {
-            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(graphdata_manydays_rcvd.value).length);
+            return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(chartdata_manydays_rcvd.value).length);
         },
         borderWidth: 2,
         pointRadius: 1,
     });
-    tsLog.log("graphdata_manydays_rcvd.value: " + JSON.stringify(graphdata_manydays_rcvd.value));
-    chartData_Rcvd.value.labels = graphdata_manydays_labels.value;
+    tsLog.log("chartdata_manydays_rcvd.value: " + JSON.stringify(chartdata_manydays_rcvd.value));
+    chartData_Rcvd.value.labels = chartdata_manydays_labels.value;
     // time day
-    tsLog.log("graphdata_manydays_hours_sent.value: " + JSON.stringify(graphdata_manydays_hours_sent.value));
-    tsLog.log("graphdata_manydays_hours_rcvd.value: " + JSON.stringify(graphdata_manydays_hours_rcvd.value));
+    tsLog.log("chartdata_manydays_hours_sent.value: " + JSON.stringify(chartdata_manydays_hours_sent.value));
+    tsLog.log("chartdata_manydays_hours_rcvd.value: " + JSON.stringify(chartdata_manydays_hours_rcvd.value));
     chartData_TimeDay.value.datasets = [];
     chartData_TimeDay.value.datasets.push({
         label: 'ysent',
-        data: graphdata_manydays_hours_sent.value,
+        data: chartdata_manydays_hours_sent.value,
         borderColor: tsStore.chart_colors._time_sent,
         backgroundColor: tsStore.chart_colors._time_sent,
         borderWidth: 2,
@@ -246,19 +246,19 @@ async function updateData() {
     })
     chartData_TimeDay.value.datasets.push({
         label: 'yrcvd',
-        data: graphdata_manydays_hours_rcvd.value,
+        data: chartdata_manydays_hours_rcvd.value,
         borderColor: tsStore.chart_colors._time_rcvd,
         backgroundColor: tsStore.chart_colors._time_rcvd,
         borderWidth: 2,
         pointRadius: 1,
     })
     // week days
-    tsLog.log("graphdata_manydays_hours_sent.value: " + JSON.stringify(graphdata_manydays_weekdays_rcvd.value));
-    tsLog.log("graphdata_manydays_hours_rcvd.value: " + JSON.stringify(graphdata_manydays_weekdays_sent.value));
+    tsLog.log("chartdata_manydays_hours_sent.value: " + JSON.stringify(chartdata_manydays_weekdays_rcvd.value));
+    tsLog.log("chartdata_manydays_hours_rcvd.value: " + JSON.stringify(chartdata_manydays_weekdays_sent.value));
     chartData_WeekDays.value.datasets = [];
     chartData_WeekDays.value.datasets.push({
         label: 'ysent',
-        data: graphdata_manydays_weekdays_sent.value,
+        data: chartdata_manydays_weekdays_sent.value,
         borderColor: tsStore.chart_colors._weekday_sent,
         backgroundColor: tsStore.chart_colors._weekday_sent,
         borderWidth: 2,
@@ -266,7 +266,7 @@ async function updateData() {
     })
     chartData_WeekDays.value.datasets.push({
         label: 'yrcvd',
-        data: graphdata_manydays_weekdays_rcvd.value,
+        data: chartdata_manydays_weekdays_rcvd.value,
         borderColor: tsStore.chart_colors._weekday_rcvd,
         backgroundColor: tsStore.chart_colors._weekday_rcvd,
         borderWidth: 2,
@@ -310,17 +310,17 @@ async function updateData() {
             rcvd_total.value = result_many_days.received - rcvd_today.value;
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
-            // graph day hours
+            // chart day hours
             const _hours_data = tsCoreUtils.transformCountDataToDataset(result_many_days.msg_hours, false); // the false is to not do it progressive
-            graphdata_manydays_hours_sent.value = _hours_data.dataset_sent;
-            graphdata_manydays_hours_rcvd.value = _hours_data.dataset_rcvd;
-            is_loading_timeday_graph.value = false;
-            // graph weekdays
+            chartdata_manydays_hours_sent.value = _hours_data.dataset_sent;
+            chartdata_manydays_hours_rcvd.value = _hours_data.dataset_rcvd;
+            is_loading_timeday_chart.value = false;
+            // chart weekdays
             let first_day_week = tsStore.first_day_week;
             const _weekdays_data = tsCoreUtils.transformCountDataToDataset(tsUtils.sortWeekdays(first_day_week, result_many_days.msg_weekdays), false); // the false is to not do it progressive
-            graphdata_manydays_weekdays_sent.value = _weekdays_data.dataset_sent;
-            graphdata_manydays_weekdays_rcvd.value = _weekdays_data.dataset_rcvd;
-            is_loading_weekdays_graph.value = false;
+            chartdata_manydays_weekdays_sent.value = _weekdays_data.dataset_sent;
+            chartdata_manydays_weekdays_rcvd.value = _weekdays_data.dataset_rcvd;
+            is_loading_weekdays_chart.value = false;
             //aggregated data
             // remove today from the dates
             let dates_copy = Object.assign({}, result_many_days.dates);
@@ -337,16 +337,16 @@ async function updateData() {
             counter_many_days_sent_min.value = aggregate.min_sent;
             counter_many_days_sent_avg.value = aggregate.avg_sent;
             is_loading_counter_many_days.value = false;
-            // sent and received graphs
+            // sent and received charts
             const many_days_data = tsCoreUtils.transformCountDataToDataset(result_many_days.dates, false, true);
             tsLog.log("many_days_data: " + JSON.stringify(many_days_data));
-            graphdata_manydays_labels.value = many_days_data.labels;
-            // sent graph
-            graphdata_manydays_sent.value = many_days_data.dataset_sent;
-            is_loading_sent_graph.value = false;
-            // received graph
-            graphdata_manydays_rcvd.value = many_days_data.dataset_rcvd;
-            is_loading_rcvd_graph.value = false;
+            chartdata_manydays_labels.value = many_days_data.labels;
+            // sent chart
+            chartdata_manydays_sent.value = many_days_data.dataset_sent;
+            is_loading_sent_chart.value = false;
+            // received chart
+            chartdata_manydays_rcvd.value = many_days_data.dataset_rcvd;
+            is_loading_rcvd_chart.value = false;
             let stop_time = performance.now();
             updateElapsed(stop_time - start_time);
             resolve(true);
@@ -359,10 +359,10 @@ function loadingDo(){
     is_loading_counter_many_days.value = true;
     is_loading_involved_table_recipients.value = true;
     is_loading_involved_table_senders.value = true;
-    is_loading_sent_graph.value = true;
-    is_loading_rcvd_graph.value = true;
-    is_loading_timeday_graph.value = true;
-    is_loading_weekdays_graph.value = true;
+    is_loading_sent_chart.value = true;
+    is_loading_rcvd_chart.value = true;
+    is_loading_timeday_chart.value = true;
+    is_loading_weekdays_chart.value = true;
 }
 
 function updateElapsed(elapsed) {

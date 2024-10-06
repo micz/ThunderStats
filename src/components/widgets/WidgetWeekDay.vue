@@ -21,7 +21,7 @@
 
 <template>
 
-    <GraphWeekDays :chartData="weekday_chartData" :is_loading="is_loading" :key="weekday_chartData_length" />
+    <ChartWeekDays :chartData="weekday_chartData" :is_loading="is_loading" :key="weekday_chartData_length" />
 
 </template>
 
@@ -29,7 +29,7 @@
 <script setup>
 
 import { computed } from 'vue'
-import GraphWeekDays from '../graphs/GraphWeekDays.vue';
+import ChartWeekDays from '../charts/ChartWeekDays.vue';
 
 let props = defineProps({
     weekday_chartData: {

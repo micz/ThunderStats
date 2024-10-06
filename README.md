@@ -15,7 +15,7 @@ More info on [#194](https://github.com/micz/ThunderStats/issues/194) and [#195](
 
 ## Features
 - Sent and received mails
-- Day time graph
+- Day time chart
 - Top senders and recipients list
 - Inbox Zero status
 - Multiple days and Custom range date statistics with:

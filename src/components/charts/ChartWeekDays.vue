@@ -40,7 +40,7 @@ import { ref, computed, watch } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
+import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timechart-legend';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';

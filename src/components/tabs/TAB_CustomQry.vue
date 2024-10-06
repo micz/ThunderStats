@@ -59,7 +59,7 @@
                       </td>
                       <td colspan="2">
                         <span class="adv_filters_title">__MSG_FilterSubject__</span>
-                      <br><input type="text" id="filterSubject" name="filterSubject" v-model="filterSubject" />
+                      <br><input type="text" id="filterSubject" name="filterSubject" v-model="filterSubject" @input="updateAdvFiltersSet" @change="updateAdvFiltersPosition" />
                       <br>__MSG_WarnSearchCaseSensitive__
                       </td>
                     </tr>
@@ -67,7 +67,7 @@
                       <td></td>
                       <td class="td-30">
                         <span class="adv_filters_title">__MSG_ReadStatus__</span><br>
-                        <select id="filterReadUnread" v-model="filterReadUnread">
+                        <select id="filterReadUnread" v-model="filterReadUnread" @change="updateAdvFiltersSet">
                           <option value="0">__MSG_FilterFoldersAll__</option>
                           <option value="1">__MSG_FilterFoldersOnlyRead__</option>
                           <option value="2">__MSG_FilterFoldersOnlyUnread__</option>
@@ -75,7 +75,7 @@
                       </td>
                       <td class="td-30">
                         <span class="adv_filters_title">__MSG_FlagStatus__</span><br>
-                        <select id="filterFlaggedUnflagged" v-model="filterFlaggedUnflagged">
+                        <select id="filterFlaggedUnflagged" v-model="filterFlaggedUnflagged" @change="updateAdvFiltersSet">
                           <option value="0">__MSG_FilterFoldersAll__</option>
                           <option value="1">__MSG_FilterFoldersOnlyFlagged__</option>
                           <option value="2">__MSG_FilterFoldersOnlyUnflagged__</option>
@@ -441,6 +441,15 @@ const updateAdvFiltersSet = () => {
   let out_value = false;
 
   if(filterFolder.value.length > 0){
+    out_value = true;
+  }
+  if(filterReadUnread.value > 0){
+    out_value = true;
+  }
+  if(filterFlaggedUnflagged.value > 0){
+    out_value = true;
+  }
+  if(filterSubject.value.length > 0){
     out_value = true;
   }
 

@@ -179,7 +179,7 @@ export class thunderStastsCore {
         toDate: toDate,
       }
 
-      // Advanced Filters
+      // ====================== Advanced Filters ======================
       /*
         adv_filters is an object that contains various filters
 
@@ -196,6 +196,7 @@ export class thunderStastsCore {
         // Flagged / Unflagged
           adv_filter.flagged_unflagged is an integer value: 0: all, 1: flagged, 2: unflagged
       */
+     // ===============================================================
 
       let filter_folders = null;
 
@@ -278,6 +279,8 @@ export class thunderStastsCore {
 
       let folders = {};
       let dates = tsUtils.getDateArray(fromDate,toDate);
+
+      let domains = {};
 
       //let messageids_sent = [];
 
@@ -373,6 +376,20 @@ export class thunderStastsCore {
               msg_hours[hour_message].sent++;
               // group by weekday
               msg_weekdays[date_message.getDay()].sent++;
+              // group by domain
+              let allRecipients = [...message.recipients, ...message.ccList, ...message.bccList];
+              let domains_array = tsCoreUtils.extractDomains(allRecipients);
+              for (let domain of domains_array) {
+                if (domains[domain]) {
+                  domains[domain].count++;
+                  domains[domain].sent++;
+                } else {
+                  domains[domain] = {}
+                  domains[domain].count = 1;
+                  domains[domain].sent = 1;
+                  domains[domain].received = 0;
+                }
+              }
               // check recipients
               //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
               for (let recipient of message.recipients) {
@@ -433,10 +450,21 @@ export class thunderStastsCore {
               msg_hours[hour_message].received++;
               // group by weekday
               msg_weekdays[date_message.getDay()].received++;
+              // group by domain
+              let curr_domain = tsCoreUtils.extractDomain(key_author);
+              if (domains[curr_domain]) {
+                domains[curr_domain].count++;
+                domains[curr_domain].received++;
+              } else {
+                domains[curr_domain] = {}
+                domains[curr_domain].count = 1;
+                domains[curr_domain].sent = 0;
+                domains[curr_domain].received = 1;
+              }
             }
           }
         //check recipients - END
-        
+
         count++;
       }
 
@@ -449,7 +477,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
       // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, msg_weekdays: msg_weekdays};
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, msg_weekdays: msg_weekdays, domains: domains};
 
       if(do_aggregate_stats) {
         output.aggregate = await this.aggregateData(dates, only_businessdays);

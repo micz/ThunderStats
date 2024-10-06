@@ -627,6 +627,30 @@ export const tsCoreUtils = {
         }
     },
 
+    extractDomain(email) {
+        if (typeof email === 'string' && email.includes('@')) {
+          return email.split('@')[1];
+        }
+        return null;
+    },
+
+    extractDomains(recipients) {
+        const domains = [];
+      
+        recipients.forEach((recipient) => {
+          // Use regex to extract the email from a string like "Name <email@example.com>" or just "email@example.com"
+          const emailMatch = recipient.match(/<(.+?)>|(.+?@.+)/);
+          const email = emailMatch ? (emailMatch[1] || emailMatch[2]) : null;
+      
+          if (email && email.includes('@')) {
+            const domain = email.split('@')[1].trim();
+            domains.push(domain);
+          }
+        });
+      
+        return domains;
+    },
+
     // This function finds the first previous business day before the given date
     findPreviousBusinessDay(date) {
         let previousDate = new Date(date); // Create a copy of the original date

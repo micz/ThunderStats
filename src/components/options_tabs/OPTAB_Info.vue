@@ -24,6 +24,8 @@
       <h1>ThunderStats Release Notes</h1>
       <h3>Version 2.3.0 - ??/??/2024</h3>
       <ul>
+        <li>Is now possible to search for read/unread and starred/unsterred in the Custom View [<a href="https://github.com/micz/ThunderStats/issues/158">#158</a>].</li>
+        <li>Is now possible to search for a keyword in the subject in the Custom View [<a href="https://github.com/micz/ThunderStats/issues/354">#354</a>].</li>
         <li>...</li>
       </ul>
       <h3>Version 2.2.2 - 24/09/2024</h3>

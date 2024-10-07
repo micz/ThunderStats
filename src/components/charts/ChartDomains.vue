@@ -144,7 +144,7 @@ var chartOptions = ref({
             is_yesterday: false,
           },
           tooltip: {
-              enabled: true,
+              enabled: false,
           },
           datalabels: {
             display: true,

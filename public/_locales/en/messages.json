@@ -772,5 +772,13 @@
   "WarnSearchCaseSensitive": {
     "message": "Be aware that the search is case sensitive. Searching for \"test\" is different from searching for \"Test\".",
     "description": ""
+  },
+  "Domains": {
+    "message": "Domains",
+    "description": ""
+  },
+  "Tags": {
+    "message": "Tags",
+    "description": ""
   }
 }

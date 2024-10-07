@@ -21,7 +21,7 @@
 <template>
     <ExportMenu :export_data="_export_data" currentTab="tab-today" v-if="job_done" />
     <div class="square_container">
-        <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
+    <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
         <span id="today_date" class="list_heading_date" v-html="today_date"></span>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_today_sent" :_rcvd="counter_today_rcvd" />
@@ -44,15 +44,23 @@
                       </div>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">__MSG_Domains__</h2>
+					  </div>
+                      <ChartDomains :chartData="chartData_Domains" :is_loading="is_loading_domains_chart" />
+    </div>
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">__MSG_Tags__</h2>
+                    </div>
+                        TO DO
+    </div>
+    <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
-                        <ExportButton :export_data="table_involved_recipients" :export_name="_involved_recipients_export_name" export_type="correspondents" v-if="!is_loading_involved_table_recipients && show_table_involved_recipients" />
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients" v-text="no_mails_sent_today"></p>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
-                        <ExportButton :export_data="table_involved_senders" :export_name="_involved_senders_export_name" export_type="correspondents" v-if="!is_loading_involved_table_senders && show_table_involved_senders" />
 					  </div>
                       <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="is_loading_involved_table_senders || show_table_involved_senders"/>
                       <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders" v-text="no_mails_received_today"></p>
@@ -83,6 +91,7 @@ import { tsUtils } from '@statslib/mzts-utils';
 import InfoTooltip from '../InfoTooltip.vue';
 import { tsExport } from '@statslib/mzts-export';
 import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
+import ChartDomains from '../charts/ChartDomains.vue';
 
 
 const props = defineProps({
@@ -130,6 +139,7 @@ let is_loading_counter_inbox = ref(true);
 let is_loading_counter_inbox_percent = ref(true);
 let is_loading_inbox_chart_folders = ref(true);
 let is_loading_inbox_chart_dates = ref(true);
+let is_loading_domains_chart = ref(true);
 
 let counter_today_sent = ref(0);
 let counter_today_rcvd = ref(0);
@@ -173,12 +183,20 @@ let chartData_InboxZeroDates = ref({
     datasets: []
 });
 
+let chartData_Domains = ref({
+    labels: [],
+    datasets: []
+})
+
 let chartdata_today_hours_sent = ref([]);
 let chartdata_today_hours_rcvd = ref([]);
 let chartdata_yesterday_hours_sent = ref([]);
 let chartdata_yesterday_hours_rcvd = ref([]);
 let chartdata_inboxzero_folders = ref([]);
 let chartdata_inboxzero_dates = ref([]);
+let chartdata_domains_sent = ref([]);
+let chartdata_domains_rcvd = ref([]);
+let chartdata_domains_labels = ref([]);
 
 let job_done = computed(() => {
     return !(is_loading_counter_sent_rcvd.value &&
@@ -190,7 +208,8 @@ let job_done = computed(() => {
     is_loading_counter_inbox.value &&
     is_loading_counter_inbox_percent.value &&
     is_loading_inbox_chart_folders.value &&
-    is_loading_inbox_chart_dates.value);
+    is_loading_inbox_chart_dates.value &&
+    is_loading_domains_chart.value);
 })
 
 onMounted(async () => {
@@ -276,6 +295,28 @@ async function updateData() {
     // chartData_InboxZeroDates.value.datasets = [];
     // chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(chartdata_inboxzero_dates.value);
     // tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
+    // chart domains
+    chartData_Domains.value.labels = chartdata_domains_labels.value;
+    chartData_Domains.value.datasets = [];
+    chartData_Domains.value.datasets.push({
+        label: 'tsent',
+        data: chartdata_domains_sent.value,
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    chartData_Domains.value.datasets.push({
+        label: 'trcvd',
+        data: chartdata_domains_rcvd.value,
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("chartData_Domains.value: " + JSON.stringify(chartData_Domains.value));
+    tsLog.log("chartData_Domains.value.labels: " + JSON.stringify(chartData_Domains.value.labels));
+
     nextTick(async () => {
         is_loading_today_chart.value = false;
         is_loading_inbox_chart_folders.value = false;
@@ -317,6 +358,13 @@ async function updateData() {
                 counter_inbox_percent.value = '0%';
             }
             is_loading_counter_inbox_percent.value = false;
+            // domains
+            const domains_data = tsCoreUtils.transformCountDataToDataset(result_today.domains, do_progressive, true);
+            // console.log(">>>>>>>>>>>>> domains_data: " + JSON.stringify(domains_data, null, 2));
+            chartdata_domains_sent.value = domains_data.dataset_sent;
+            chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
+            chartdata_domains_labels.value = domains_data.labels;
+            is_loading_domains_chart.value = false;
             updateElapsed('getTodayData', result_today.elapsed);
             resolve(true);
         });
@@ -413,6 +461,7 @@ function loadingDo(){
     is_loading_counter_inbox_percent.value = true;
     is_loading_inbox_chart_folders.value = true;
     is_loading_inbox_chart_dates.value = true;
+    is_loading_domains_chart.value = true;
     elapsed = {
             'getManyDaysData':0,
             'getInboxZeroData':0,

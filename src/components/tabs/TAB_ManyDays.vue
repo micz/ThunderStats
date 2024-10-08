@@ -27,33 +27,38 @@
                       </div>
                       <ChartManyDays :chartData="chartData_Sent" :is_loading="is_loading_sent_chart" :key="chartData_Sent_length" />
     </div>
-
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ rcvd_total }}</span><span v-if="rcvd_today > 0"> (+<span>{{ rcvd_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/><InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalInfoTooltip_text"></InfoTooltip></h2>
                         <CounterManyDays_Row :is_loading="is_loading_counter_many_days" :_total="counter_many_days_rcvd_total" :_max="counter_many_days_rcvd_max" :_min="counter_many_days_rcvd_min" :_avg="counter_many_days_rcvd_avg" :showTotalInfoTooltip="showTotalInfoTooltip" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
 					  <ChartManyDays :chartData="chartData_Rcvd" :is_loading="is_loading_rcvd_chart" :key="chartData_Rcvd_length" />
     </div>
-
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_TimeDay__</h2>
 					  </div>
                       <ChartYesterday :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :yesterday="false" :is_generic_day="true"/>
     </div>
-
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
 					  </div>
 					<WidgetWeekDay :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_chart" />
     </div>
-
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">__MSG_Domains__</h2>
+					  </div>
+                      <WidgetDomains :chartData="chartData_Domains" chart_id="chart_domains_manydays" :chart_height="domains_chart_height" :is_loading="is_loading_domains_chart" />
+    </div>
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">__MSG_Tags__</h2>
+                    </div>
+                        TO DO
+    </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
     </div>
-    
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
 					  </div>
@@ -82,6 +87,8 @@ import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
 import ChartYesterday from '../charts/ChartYesterday.vue';
 import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
+import WidgetDomains from '../widgets/WidgetDomains.vue';
+
 
 const props = defineProps({
     accountEmails: {
@@ -112,6 +119,7 @@ let is_loading_sent_chart = ref(true);
 let is_loading_rcvd_chart = ref(true);
 let is_loading_timeday_chart = ref(true);
 let is_loading_weekdays_chart = ref(true);
+let is_loading_domains_chart = ref(true);
 
 let counter_many_days_sent_total = ref(0);
 let counter_many_days_sent_max = ref(0);
@@ -134,6 +142,11 @@ let chartdata_manydays_hours_sent = ref([]);
 let chartdata_manydays_hours_rcvd = ref([]);
 let chartdata_manydays_weekdays_sent = ref([]);
 let chartdata_manydays_weekdays_rcvd = ref([]);
+let chartdata_domains_sent = ref([]);
+let chartdata_domains_rcvd = ref([]);
+let chartdata_domains_labels = ref([]);
+
+let domains_chart_height = ref("275px");
 
 let _export_data = ref({});
 
@@ -166,6 +179,11 @@ let chartData_WeekDays = ref({
     datasets: []
 });
 
+let chartData_Domains = ref({
+    labels: [],
+    datasets: []
+})
+
 let job_done = computed(() => {
     return !(is_loading_counter_sent_rcvd.value &&
     is_loading_counter_many_days.value &&
@@ -174,7 +192,8 @@ let job_done = computed(() => {
     is_loading_sent_chart.value &&
     is_loading_rcvd_chart.value &&
     is_loading_timeday_chart.value &&
-    is_loading_weekdays_chart.value);
+    is_loading_weekdays_chart.value &&
+    is_loading_domains_chart.value);
 });
 
 onMounted(async () => {
@@ -272,6 +291,35 @@ async function updateData() {
         borderWidth: 2,
         pointRadius: 1,
     })
+    // chart domains
+    let chart_container_height = document.getElementById('chart_domains_manydays').clientHeight;
+    let chart_ipotetic_height = chartdata_domains_labels.value.length * 30;
+    if(chart_container_height < chart_ipotetic_height){
+        domains_chart_height.value = String(chart_ipotetic_height) + "px";
+    } else {
+        domains_chart_height.value = String(chart_container_height) + "px";
+    }
+    chartData_Domains.value.labels = chartdata_domains_labels.value;
+    chartData_Domains.value.datasets = [];
+    chartData_Domains.value.datasets.push({
+        label: 'tsent',
+        data: chartdata_domains_sent.value,
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    chartData_Domains.value.datasets.push({
+        label: 'trcvd',
+        data: chartdata_domains_rcvd.value,
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("chartData_Domains.value: " + JSON.stringify(chartData_Domains.value));
+    tsLog.log("chartData_Domains.value.labels: " + JSON.stringify(chartData_Domains.value.labels));
+
     nextTick(() => {
         i18n.updateDocument();
     });
@@ -347,6 +395,13 @@ async function updateData() {
             // received chart
             chartdata_manydays_rcvd.value = many_days_data.dataset_rcvd;
             is_loading_rcvd_chart.value = false;
+            // domains
+            const domains_data = tsCoreUtils.transformCountDataToDataset(result_many_days.domains, false, true);
+            // console.log(">>>>>>>>>>>>> domains_data: " + JSON.stringify(domains_data, null, 2));
+            chartdata_domains_sent.value = domains_data.dataset_sent;
+            chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
+            chartdata_domains_labels.value = domains_data.labels;
+            is_loading_domains_chart.value = false;
             let stop_time = performance.now();
             updateElapsed(stop_time - start_time);
             resolve(true);
@@ -363,6 +418,7 @@ function loadingDo(){
     is_loading_rcvd_chart.value = true;
     is_loading_timeday_chart.value = true;
     is_loading_weekdays_chart.value = true;
+    is_loading_domains_chart.value = true;
 }
 
 function updateElapsed(elapsed) {

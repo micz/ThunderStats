@@ -71,10 +71,10 @@ let props = defineProps({
 
 let domainsChartBar_ref = ref(null);
 
-let legend_id = ref("domains-legend-container");
 let maxX = ref(0);
 
 let chart_id = computed(() => props.chart_id);
+let legend_id = computed(() => props.chart_id + "-legend");
 let chart_height = computed(() => props.chart_height);
 
 let chartData = computed(() => {

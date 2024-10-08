@@ -46,7 +46,7 @@
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Domains__</h2>
 					  </div>
-                      <ChartDomains :chartData="chartData_Domains" :is_loading="is_loading_domains_chart" />
+                      <ChartDomains :chartData="chartData_Domains" :chart_height="domains_chart_height":is_loading="is_loading_domains_chart" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Tags__</h2>
@@ -198,6 +198,8 @@ let chartdata_domains_sent = ref([]);
 let chartdata_domains_rcvd = ref([]);
 let chartdata_domains_labels = ref([]);
 
+let domains_chart_height = ref("500px");
+
 let job_done = computed(() => {
     return !(is_loading_counter_sent_rcvd.value &&
     is_loading_counter_yesterday_thistime.value &&
@@ -296,6 +298,13 @@ async function updateData() {
     // chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(chartdata_inboxzero_dates.value);
     // tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
     // chart domains
+    let chart_container_height = document.querySelector('.chart_time_full_domains').clientHeight;
+    let chart_ipotetic_height = 50 * 30; //chartdata_domains_labels.value.length * 30;
+    if(chart_container_height < chart_ipotetic_height){
+        domains_chart_height.value = String(chart_ipotetic_height) + "px";
+    } else {
+        domains_chart_height.value = String(chart_container_height) + "px";
+    }
     chartData_Domains.value.labels = chartdata_domains_labels.value;
     chartData_Domains.value.datasets = [];
     chartData_Domains.value.datasets.push({

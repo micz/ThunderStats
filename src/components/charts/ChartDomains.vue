@@ -19,7 +19,7 @@
 -->
 
 <template>
-<div class="chart_time_full">
+<div class="chart_time_full_domains">
   <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
   <Bar
       :options="chartOptions"
@@ -28,6 +28,8 @@
       :key="chartData.datasets.length"
       ref="domainsChartBar_ref"
       v-if="!is_loading"
+      :height="chart_height"
+      width="500px"
     />
 </div>
 <div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
@@ -35,7 +37,7 @@
 
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -53,6 +55,10 @@ let props = defineProps({
         default: () => ({}),
         required: true
     },
+    chart_height: {
+        type: String,
+        default: '500px'
+    },
     is_loading: {
         type: Boolean,
         default: true
@@ -63,6 +69,8 @@ let domainsChartBar_ref = ref(null);
 
 let legend_id = ref("domains-legend-container");
 let maxX = ref(0);
+
+let chart_height = computed(() => props.chart_height);
 
 let chartData = computed(() => {
   if (props.chartData.datasets && props.chartData.datasets.length > 0) {
@@ -91,7 +99,7 @@ let chartData = computed(() => {
 let is_loading = computed(() => props.is_loading)
 
 var chartOptions = ref({
-        responsive: true,
+        responsive: false,
         animation: false,
         maintainAspectRatio: false,
         indexAxis: 'y',

@@ -44,6 +44,16 @@
                       </div>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">__MSG_Domains__</h2>
+					  </div>
+                      <ChartDomains :chartData="chartData_Domains" chart_id="chart_domains_yesterday" :chart_height="domains_chart_height" :is_loading="is_loading_domains_chart" />
+    </div>
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">__MSG_Tags__</h2>
+                    </div>
+                        TO DO
+    </div>
+    <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="is_loading_involved_table_recipients || show_table_involved_recipients" />
@@ -80,6 +90,7 @@ import CounterManyDays_Table from '../counters/CounterManyDays_Table.vue';
 import InfoTooltip from '../InfoTooltip.vue';
 import ExportMenu from '../ExportMenu.vue';
 import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
+import ChartDomains from '../charts/ChartDomains.vue';
 
 const props = defineProps({
     accountEmails: {
@@ -122,6 +133,7 @@ let is_loading_counter_inbox_percent = ref(true);
 let is_loading_inbox_chart_folders = ref(true);
 let is_loading_inbox_chart_dates = ref(true);
 let is_loading_counter_many_days = ref(true);
+let is_loading_domains_chart = ref(true);
 
 let counter_yesterday_sent = ref(0);
 let counter_yesterday_rcvd = ref(0);
@@ -163,10 +175,20 @@ let chartData_InboxZeroDates = ref({
     datasets: []
 });
 
+let chartData_Domains = ref({
+    labels: [],
+    datasets: []
+})
+
 let chartdata_yesterday_hours_sent = ref([]);
 let chartdata_yesterday_hours_rcvd = ref([]);
 let chartdata_inboxzero_folders = ref([]);
 let chartdata_inboxzero_dates = ref([]);
+let chartdata_domains_sent = ref([]);
+let chartdata_domains_rcvd = ref([]);
+let chartdata_domains_labels = ref([]);
+
+let domains_chart_height = ref("275px");
 
 let job_done = computed(() => {
     return !(is_loading_counter_sent_rcvd.value &&
@@ -177,7 +199,8 @@ let job_done = computed(() => {
     is_loading_counter_inbox_percent.value &&
     is_loading_inbox_chart_folders.value &&
     is_loading_inbox_chart_dates.value &&
-    is_loading_counter_many_days.value);
+    is_loading_counter_many_days.value &&
+    is_loading_domains_chart.value);
 })
 
 onMounted(async () => {
@@ -240,6 +263,35 @@ async function updateData() {
     // chartData_InboxZeroDates.value.datasets = [];
     // chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(chartdata_inboxzero_dates.value);
     // tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
+    // chart domains
+    let chart_container_height = document.getElementById('chart_domains_yesterday').clientHeight;
+    let chart_ipotetic_height = chartdata_domains_labels.value.length * 30;
+    if(chart_container_height < chart_ipotetic_height){
+        domains_chart_height.value = String(chart_ipotetic_height) + "px";
+    } else {
+        domains_chart_height.value = String(chart_container_height) + "px";
+    }
+    chartData_Domains.value.labels = chartdata_domains_labels.value;
+    chartData_Domains.value.datasets = [];
+    chartData_Domains.value.datasets.push({
+        label: 'tsent',
+        data: chartdata_domains_sent.value,
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    chartData_Domains.value.datasets.push({
+        label: 'trcvd',
+        data: chartdata_domains_rcvd.value,
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("chartData_Domains.value: " + JSON.stringify(chartData_Domains.value));
+    tsLog.log("chartData_Domains.value.labels: " + JSON.stringify(chartData_Domains.value.labels));
+
     nextTick(async () => {
         is_loading_yesterday_chart.value = false;
         is_loading_inbox_chart_folders.value = false;
@@ -298,6 +350,13 @@ async function updateData() {
                 counter_inbox_percent.value = '0%';
             }
             is_loading_counter_inbox_percent.value = false;
+            // domains
+            const domains_data = tsCoreUtils.transformCountDataToDataset(result_yesterday.domains, do_progressive, true);
+            // console.log(">>>>>>>>>>>>> domains_data: " + JSON.stringify(domains_data, null, 2));
+            chartdata_domains_sent.value = domains_data.dataset_sent;
+            chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
+            chartdata_domains_labels.value = domains_data.labels;
+            is_loading_domains_chart.value = false;
             updateElapsed('getYesterdayData', result_yesterday.elapsed);
             resolve(true);
         });
@@ -352,6 +411,7 @@ function loadingDo(){
     is_loading_inbox_chart_folders.value = true;
     is_loading_inbox_chart_dates.value = true;
     is_loading_counter_many_days.value = true;
+    is_loading_domains_chart.value = true;
     elapsed = {
             'getManyDaysData':0,
             'getInboxZeroData':0,

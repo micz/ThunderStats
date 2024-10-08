@@ -19,7 +19,7 @@
 -->
 
 <template>
-<div class="chart_time_full_domains">
+<div class="chart_time_full_domains" :id="chart_id">
   <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
   <Bar
       :options="chartOptions"
@@ -55,6 +55,10 @@ let props = defineProps({
         default: () => ({}),
         required: true
     },
+    chart_id: {
+        type: String,
+        default: 'domains-chart',
+    },
     chart_height: {
         type: String,
         default: '500px'
@@ -70,6 +74,7 @@ let domainsChartBar_ref = ref(null);
 let legend_id = ref("domains-legend-container");
 let maxX = ref(0);
 
+let chart_id = computed(() => props.chart_id);
 let chart_height = computed(() => props.chart_height);
 
 let chartData = computed(() => {

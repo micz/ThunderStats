@@ -46,7 +46,7 @@
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Domains__</h2>
 					  </div>
-                      <ChartDomains :chartData="chartData_Domains" chart_id="chart_domains_yesterday" :chart_height="domains_chart_height" :is_loading="is_loading_domains_chart" />
+                      <WidgetDomains :chartData="chartData_Domains" chart_id="chart_domains_yesterday" :chart_height="domains_chart_height" :is_loading="is_loading_domains_chart" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Tags__</h2>
@@ -90,7 +90,7 @@ import CounterManyDays_Table from '../counters/CounterManyDays_Table.vue';
 import InfoTooltip from '../InfoTooltip.vue';
 import ExportMenu from '../ExportMenu.vue';
 import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
-import ChartDomains from '../charts/ChartDomains.vue';
+import WidgetDomains from '../widgets/WidgetDomains.vue';
 
 const props = defineProps({
     accountEmails: {

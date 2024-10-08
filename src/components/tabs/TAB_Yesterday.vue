@@ -351,7 +351,7 @@ async function updateData() {
             }
             is_loading_counter_inbox_percent.value = false;
             // domains
-            const domains_data = tsCoreUtils.transformCountDataToDataset(result_yesterday.domains, do_progressive, true);
+            const domains_data = tsCoreUtils.transformCountDataToDataset(result_yesterday.domains, false, true);
             // console.log(">>>>>>>>>>>>> domains_data: " + JSON.stringify(domains_data, null, 2));
             chartdata_domains_sent.value = domains_data.dataset_sent;
             chartdata_domains_rcvd.value = domains_data.dataset_rcvd;

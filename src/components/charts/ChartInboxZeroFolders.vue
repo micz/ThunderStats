@@ -31,13 +31,13 @@
 </template>
 
 
-
 <script setup>
 import { ref, computed } from 'vue'
 import { Doughnut } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from 'chart.js'
 import { tsDoughnutLabelsLine } from '@statslib/chartjs-lib/plugin-doughnutlabels';
 import { tsStore } from '@statslib/mzts-store';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
@@ -103,31 +103,32 @@ let chartOptions = ref({
           },
           onClick: async (e, activeEls, chart) => {
             // console.log("onClick index: " + JSON.stringify(activeEls[0].index));
-            // console.log("onClick path: " + JSON.stringify(chartData.value.folder_paths[activeEls[0].index]));
+            // console.log("onClick path: " + JSON.stringify(chartData.value.folders[activeEls[0].index]));
             if(activeEls.length == 0){
               return;
             }
-            if(openFolderInFirstTab){
-              let tabs = await browser.tabs.query({windowId: window.WINDOW_ID_CURRENT});
-              // Cycle through tabs to find the first mailtab
-              let currTab = null;
-              for(let i = 0; i < tabs.length; i++){
-                if(tabs[i].mailTab){
-                  currTab = tabs[i];
-                  break;
-                }
+            let currTab = null;
+            let tabs = await browser.tabs.query({windowId: browser.mailTabs.WINDOW_ID_CURRENT});
+            // Cycle through tabs to find the first mailtab
+            for(let i = 0; i < tabs.length; i++){
+              if(tabs[i].mailTab){
+                currTab = tabs[i];
+                break;
               }
+            }
+            if(openFolderInFirstTab.value){
               if(tsStore.isTB128plus){
                 browser.mailTabs.update(currTab.id, {displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
               }else{
-                browser.mailTabs.update(currTab.id, {displayedFolder: {...chartData.value.folder_paths[activeEls[0].index]}});
+                browser.mailTabs.update(currTab.id, {displayedFolder: {...chartData.value.folders[activeEls[0].index]}});
               }
               browser.tabs.update(currTab.id, {active: true});
             } else {
               if(tsStore.isTB128plus){
                 browser.mailTabs.create({displayedFolder: chartData.value.folder_paths[activeEls[0].index]});
               }else{
-                browser.mailTabs.create({displayedFolder: {...chartData.value.folder_paths[activeEls[0].index]}});
+                browser.mailTabs.update(currTab.id, {displayedFolder: {...chartData.value.folders[activeEls[0].index]}});
+                browser.tabs.update(currTab.id, {active: true});
               }
             }
           },

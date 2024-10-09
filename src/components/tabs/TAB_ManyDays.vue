@@ -36,7 +36,7 @@
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_TimeDay__</h2>
 					  </div>
-                      <ChartYesterday :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :yesterday="false" :is_generic_day="true"/>
+                      <ChartTime :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :day_type="1"/>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
@@ -85,7 +85,7 @@ import { tsPrefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
-import ChartYesterday from '../charts/ChartYesterday.vue';
+import ChartTime from '../charts/ChartTime.vue';
 import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
 import WidgetDomains from '../widgets/WidgetDomains.vue';
 

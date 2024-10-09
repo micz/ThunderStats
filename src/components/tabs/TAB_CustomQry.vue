@@ -97,7 +97,7 @@
         <span class="list_heading_date" v-html="singleday_date_str"></span>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="sent_total" :_rcvd="rcvd_total" />
         <div class="singleday_spacing"></div>
-        <ChartYesterday :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_chart" :yesterday = "false" :key="chartData_TimeDay_length"/>
+        <ChartTime :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_chart" :day_type="1" />
     </div>
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
@@ -122,7 +122,7 @@
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_TimeDay__</h2>
 					  </div>
-            <ChartYesterday v-if="do_run" :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :yesterday="false" :is_generic_day="true"/>
+            <ChartTime v-if="do_run" :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :day_type="1"/>
     </div>
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
@@ -176,7 +176,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import CounterSentReceived from '../counters/CounterSentReceived.vue';
-import ChartYesterday from '../charts/ChartYesterday.vue';
+import ChartTime from '../charts/ChartTime.vue';
 import ChartInboxZeroFolders from '../charts/ChartInboxZeroFolders.vue';
 import ChartInboxZeroDates from '../charts/ChartInboxZeroDates.vue';
 import CounterInbox from '../counters/CounterInbox.vue';

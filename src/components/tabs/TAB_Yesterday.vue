@@ -27,7 +27,7 @@
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_yesterday_sent" :_rcvd="counter_yesterday_rcvd" />
         <div id="yesterday_spacing"></div>
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
-        <ChartYesterday :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_chart" :is_last_business_day="is_last_business_day" />
+        <ChartTime :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_chart" :is_last_business_day="is_last_business_day" :day_type="-1" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
@@ -77,7 +77,7 @@ import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsUtils } from '@statslib/mzts-utils';
 import CounterSentReceived from '../counters/CounterSentReceived.vue';
-import ChartYesterday from '../charts/ChartYesterday.vue';
+import ChartTime from '../charts/ChartTime.vue';
 import ChartInboxZeroFolders from '../charts/ChartInboxZeroFolders.vue';
 import ChartInboxZeroDates from '../charts/ChartInboxZeroDates.vue';
 import TableInvolved from '../tables/TableInvolved.vue';

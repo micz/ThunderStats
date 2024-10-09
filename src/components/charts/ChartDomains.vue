@@ -26,7 +26,7 @@
           :options="chartOptions"
           :data="chartData"
           :plugins="chartPlugins"
-          :key="chartData.datasets.length"
+          :key="chartData_length"
           ref="domainsChartBar_ref"
           v-if="!is_loading"
           :height="chart_height"
@@ -78,6 +78,7 @@ let maxX = ref(0);
 let chart_id = computed(() => props.chart_id);
 let legend_id = computed(() => props.chart_id + "-legend");
 let chart_height = computed(() => props.chart_height);
+let chartData_length = computed(() => (chartData.value.datasets.length + Math.floor(Math.random() * 101)));
 
 let chartData = computed(() => {
   if (props.chartData.datasets && props.chartData.datasets.length > 0) {

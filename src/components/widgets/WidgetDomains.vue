@@ -20,7 +20,7 @@
 
 
 <template>
-    <ChartDomains :chartData="chartData" :chart_id="chart_id" :chart_height="chart_height" :is_loading="is_loading" :key="chartData_length" />
+    <ChartDomains :chartData="chartData" :chart_id="chart_id" :chart_height="chart_height" :is_loading="is_loading" />
 </template>
 
 
@@ -52,8 +52,6 @@ let chartData = computed(() => props.chartData)
 let chart_id = computed(() => props.chart_id)
 let chart_height = computed(() => props.chart_height)
 let is_loading = computed(() => props.is_loading)
-
-let chartData_length = computed(() => (chartData.value.datasets.length + Math.floor(Math.random() * 101)));
 
 </script>
 

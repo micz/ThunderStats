@@ -19,20 +19,22 @@
 -->
 
 <template>
-<div class="chart_time_full_domains" :id="chart_id">
-  <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
-  <Bar
-      :options="chartOptions"
-      :data="chartData"
-      :plugins="chartPlugins"
-      :key="chartData.datasets.length"
-      ref="domainsChartBar_ref"
-      v-if="!is_loading"
-      :height="chart_height"
-      width="500px"
-    />
+  <div class="chart_time_container">
+    <div class="chart_time_full_domains" :id="chart_id">
+      <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
+      <Bar
+          :options="chartOptions"
+          :data="chartData"
+          :plugins="chartPlugins"
+          :key="chartData.datasets.length"
+          ref="domainsChartBar_ref"
+          v-if="!is_loading"
+          :height="chart_height"
+          width="500px"
+        />
+    </div>
+    <div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </div>
-<div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </template>
 
 

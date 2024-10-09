@@ -99,7 +99,6 @@
         <div class="singleday_spacing"></div>
         <ChartYesterday :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_chart" :yesterday = "false" :key="chartData_TimeDay_length"/>
     </div>
-
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
@@ -120,26 +119,32 @@
                         <ChartInboxZeroDates :chartData="chartData_InboxZeroDates" :is_loading="is_loading_inbox_chart_dates" />
                       </div>
     </div>
-
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_TimeDay__</h2>
 					  </div>
-                      <ChartYesterday v-if="do_run" :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :yesterday="false" :is_generic_day="true"/>
+            <ChartYesterday v-if="do_run" :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :yesterday="false" :is_generic_day="true"/>
     </div>
-
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
 					  </div>
 					<WidgetWeekDay v-if="do_run" :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_chart" :key="chartData_WeekDays_length" />
     </div>
-
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">__MSG_Domains__</h2>
+					  </div>
+           <WidgetDomains v-if="do_run" :chartData="chartData_Domains" chart_id="chart_domains_customqry" :chart_height="domains_chart_height" :is_loading="is_loading_domains_chart" />
+    </div>
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">__MSG_Tags__</h2>
+                    </div>
+                        TO DO
+    </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="do_run && (is_loading_involved_table_recipients || show_table_involved_recipients)" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
     </div>
-    
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
 					  </div>
@@ -181,6 +186,7 @@ import '@vueform/multiselect/themes/default.css';
 import advancedFiltersIconPath from '@/assets/images/mzts-customqry_adv_filters.svg';
 import advancedFiltersIconPath_Set from '@/assets/images/mzts-customqry_adv_filters_set.svg';
 import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
+import WidgetDomains from '../widgets/WidgetDomains.vue';
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
 
@@ -243,8 +249,6 @@ let chartData_SingleDay = ref({
     datasets: []
 });
 
-let chartdata_singleday_hours_sent = ref([]);
-let chartdata_singleday_hours_rcvd = ref([]);
 let chartData_InboxZeroFolders = ref({
     labels: [],
     datasets: []
@@ -253,6 +257,14 @@ let chartData_InboxZeroDates = ref({
     labels: [],
     datasets: []
 });
+
+let chartData_Domains = ref({
+    labels: [],
+    datasets: []
+})
+
+let chartdata_singleday_hours_sent = ref([]);
+let chartdata_singleday_hours_rcvd = ref([]);
 let chartdata_inboxzero_folders = ref([]);
 let chartdata_inboxzero_dates = ref([]);
 
@@ -277,6 +289,7 @@ let is_loading_involved_table_recipients = ref(true);
 let is_loading_involved_table_senders = ref(true);
 let is_loading_sent_chart = ref(true);
 let is_loading_rcvd_chart = ref(true);
+let is_loading_domains_chart = ref(true);
 
 let counter_customqry_sent_total = ref(0);
 let counter_customqry_sent_max = ref(0);
@@ -299,6 +312,11 @@ let chartdata_customqry_hours_sent = ref([]);
 let chartdata_customqry_hours_rcvd = ref([]);
 let chartdata_customqry_weekdays_sent = ref([]);
 let chartdata_customqry_weekdays_rcvd = ref([]);
+let chartdata_domains_sent = ref([]);
+let chartdata_domains_rcvd = ref([]);
+let chartdata_domains_labels = ref([]);
+
+let domains_chart_height = ref("275px");
 
 let _export_data = ref({});
 
@@ -349,7 +367,8 @@ let job_done = computed(() => {
     is_loading_sent_chart.value &&
     is_loading_rcvd_chart.value &&
     is_loading_timeday_chart.value &&
-    is_loading_weekdays_chart.value);
+    is_loading_weekdays_chart.value &&
+    is_loading_domains_chart.value);
   }else{
     return !(is_loading_counter_sent_rcvd.value &&
     is_loading_singleday_chart.value &&
@@ -358,7 +377,8 @@ let job_done = computed(() => {
     is_loading_counter_inbox.value &&
     is_loading_counter_inbox_percent.value &&
     is_loading_inbox_chart_folders.value &&
-    is_loading_inbox_chart_dates.value);
+    is_loading_inbox_chart_dates.value &&
+    is_loading_domains_chart.value);
   }
 });
 
@@ -707,6 +727,36 @@ async function updateData() {
       // chart inbox zero dates
       inbox0_openFolderInFirstTab.value = await tsPrefs.getPref("inbox0_openFolderInFirstTab");
     }
+
+    // chart domains
+    let chart_container_height = document.getElementById('chart_domains_customqry').clientHeight;
+    let chart_ipotetic_height = chartdata_domains_labels.value.length * 30;
+    if(chart_container_height < chart_ipotetic_height){
+        domains_chart_height.value = String(chart_ipotetic_height) + "px";
+    } else {
+        domains_chart_height.value = String(chart_container_height) + "px";
+    }
+    chartData_Domains.value.labels = chartdata_domains_labels.value;
+    chartData_Domains.value.datasets = [];
+    chartData_Domains.value.datasets.push({
+        label: 'tsent',
+        data: chartdata_domains_sent.value,
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    chartData_Domains.value.datasets.push({
+        label: 'trcvd',
+        data: chartdata_domains_rcvd.value,
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("chartData_Domains.value: " + JSON.stringify(chartData_Domains.value));
+    tsLog.log("chartData_Domains.value.labels: " + JSON.stringify(chartData_Domains.value.labels));
+
     nextTick(async () => {
         if(do_single_day.value){
           is_loading_singleday_chart.value = false;
@@ -804,6 +854,13 @@ async function updateData() {
               // inbox zero folders
               chartdata_inboxzero_folders.value = result_customqry.folders;
             }
+            // domains
+            const domains_data = tsCoreUtils.transformCountDataToDataset(result_customqry.domains, false, true);
+            // console.log(">>>>>>>>>>>>> domains_data: " + JSON.stringify(domains_data, null, 2));
+            chartdata_domains_sent.value = domains_data.dataset_sent;
+            chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
+            chartdata_domains_labels.value = domains_data.labels;
+            is_loading_domains_chart.value = false;
             let stop_time = performance.now();
             updateElapsed('getCustomQryData', stop_time - start_time);
             resolve(true);
@@ -844,6 +901,7 @@ function loadingDo(){
     is_loading_inbox_chart_dates.value = true;
     is_loading_timeday_chart.value = true;
     is_loading_weekdays_chart.value = true;
+    is_loading_domains_chart.value = true;
 }
 
 function updateElapsed(function_name, time) {

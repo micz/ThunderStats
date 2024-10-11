@@ -160,6 +160,15 @@ export const tsCoreUtils = {
         return output;
     },
 
+    getTagsLabelColor(label) {
+        let color = Object.values(tsStore.tags_list).find(tag => tag.tag === label).color;
+        if(tsStore.darkmode && color === '#000000') {
+            color = '#ffffff';
+        }
+        
+        return color;
+    },
+
     // getManyDaysLabels(labels) {
     //     const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
 

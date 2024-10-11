@@ -151,6 +151,15 @@ export const tsCoreUtils = {
         return output;
     },
 
+    async transformTagsLabels(labels) {
+        let output = [];
+        let tags = await tsCoreUtils.getTagsList();
+        for(let label of labels) {
+            output.push(tags[label].tag);
+        }
+        return output;
+    },
+
     // getManyDaysLabels(labels) {
     //     const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
 

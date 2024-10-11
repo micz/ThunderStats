@@ -128,6 +128,29 @@ export const tsCoreUtils = {
         return hours.map((value, index) => index > currentHour ? null : value);
     },
 
+    async getTagsList(){
+        let messageTags = {};
+        if(tsStore.isTB128plus) {
+            messageTags = await browser.messages.tags.list();
+        } else {
+            messageTags = await browser.messages.listTags();
+        }
+        const output = messageTags.reduce((acc, messageTag) => {
+            acc[messageTag.key] = {
+                tag: messageTag.tag,
+                color: messageTag.color,
+                key: messageTag.key,
+                ordinal: messageTag.ordinal,
+                count: 0,
+                sent: 0,
+                received: 0,
+            };
+            return acc;
+          }, {});
+        // console.log(">>>>>>>>>>> getTagsList: " + JSON.stringify(output));
+        return output;
+    },
+
     // getManyDaysLabels(labels) {
     //     const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
 

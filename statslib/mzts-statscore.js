@@ -281,6 +281,7 @@ export class thunderStastsCore {
       let dates = tsUtils.getDateArray(fromDate,toDate);
 
       let domains = {};
+      let tags = await tsCoreUtils.getTagsList();
 
       //let messageids_sent = [];
 
@@ -390,6 +391,15 @@ export class thunderStastsCore {
                   domains[domain].received = 0;
                 }
               }
+              // group by tag
+              for (let tag of message.tags) {
+                if (tags[tag]) {
+                  tags[tag].count++;
+                  tags[tag].sent++;
+                } else {
+                  this.logger.error("tag: " + tag + " not found!");
+                }
+              }
               // check recipients
               //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
               for (let recipient of message.recipients) {
@@ -461,6 +471,15 @@ export class thunderStastsCore {
                 domains[curr_domain].sent = 0;
                 domains[curr_domain].received = 1;
               }
+              // group by tag
+              for (let tag of message.tags) {
+                if (tags[tag]) {
+                  tags[tag].count++;
+                  tags[tag].received++;
+                } else {
+                  this.logger.error("tag: " + tag + " not found!");
+                }
+              }
             }
           }
         //check recipients - END
@@ -477,7 +496,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
       // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, msg_weekdays: msg_weekdays, domains: domains};
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, msg_weekdays: msg_weekdays, domains: domains, tags: tags};
 
       if(do_aggregate_stats) {
         output.aggregate = await this.aggregateData(dates, only_businessdays);

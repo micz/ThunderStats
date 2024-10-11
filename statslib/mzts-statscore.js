@@ -397,7 +397,7 @@ export class thunderStastsCore {
                   tags[tag].count++;
                   tags[tag].sent++;
                 } else {
-                  this.logger.error("tag: " + tag + " not found!");
+                  this.tsLog.error("tag: " + tag + " not found!");
                 }
               }
               // check recipients

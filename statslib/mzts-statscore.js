@@ -282,6 +282,7 @@ export class thunderStastsCore {
 
       let domains = {};
       let tags = await tsCoreUtils.getTagsList();
+      tsStore.tags_list = tags;
 
       //let messageids_sent = [];
 

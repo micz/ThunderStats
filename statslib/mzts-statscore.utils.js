@@ -153,7 +153,7 @@ export const tsCoreUtils = {
 
     async transformTagsLabels(labels) {
         let output = [];
-        let tags = await tsCoreUtils.getTagsList();
+        let tags = tsStore.tags_list;
         for(let label of labels) {
             output.push(tags[label].tag);
         }

@@ -146,6 +146,11 @@ var chartOptions = ref({
               callback: function(value, index, ticks) {
                           return this.getLabelForValue(value);
               },
+              color: function(context) {
+                            const labelIndex = context['tick']['value'];
+                            const label = context.chart.data.labels[labelIndex];
+                            return tsCoreUtils.getTagsLabelColor(label);
+                        },
             },
           },
         },

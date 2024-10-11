@@ -32,16 +32,25 @@
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
 					  </div>
-					  <CounterInbox :is_loading="is_loading_counter_inbox" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
-                      <CounterInboxPercent :is_loading="is_loading_counter_inbox_percent" :inbox_percent="counter_inbox_percent" />
-                      <div class="chart_inbox0_info"><p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="today_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (counter_today_rcvd == 0)" v-text="no_mails_received_today"></p></div>
-                      <div class="chart_inbox0">
-                        <ChartInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_chart_folders" />
-                      </div>
-                      <div class="chart_inbox0_datemsg">
-                        <p class="chart_info">__MSG_InboxMailsDateSpreading__</p><p class="chart_info_nomail" id="today_inbox0_datemsg_nomails" v-if="!is_loading_counter_inbox && (counter_inbox_total == 0)" v-text="no_mails_inbox"></p>
-                        <ChartInboxZeroDates :chartData="chartData_InboxZeroDates" :is_loading="is_loading_inbox_chart_dates" />
-                      </div>
+					  <WidgetInboxZero
+                        :is_loading_counter_inbox="is_loading_counter_inbox"
+                        :counter_inbox_total="counter_inbox_total"
+                        :counter_inbox_unread="counter_inbox_unread"
+                        :is_loading_counter_inbox_percent="is_loading_counter_inbox_percent"
+                        :counter_inbox_percent="counter_inbox_percent"
+                        :showFolderLocationNoteAnchor="showFolderLocationNoteAnchor"
+                        :folderLocationNote_text="folderLocationNote_text"
+                        :is_loading_counter_sent_rcvd="is_loading_counter_sent_rcvd"
+                        :counter_rcvd="counter_today_rcvd"
+                        :no_mails_received_today="no_mails_received_today"
+                        :chartData_InboxZeroFolders="chartData_InboxZeroFolders"
+                        :inbox0_openFolderInFirstTab="inbox0_openFolderInFirstTab"
+                        :is_loading_inbox_chart_folders="is_loading_inbox_chart_folders"
+                        :no_mails_inbox="no_mails_inbox"
+                        :chartData_InboxZeroDates="chartData_InboxZeroDates"
+                        :is_loading_inbox_chart_dates="is_loading_inbox_chart_dates"
+                        :no_mails_received="no_mails_received_today"
+                      />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Domains__</h2>
@@ -79,19 +88,15 @@ import CounterSentReceived from '../counters/CounterSentReceived.vue';
 import CounterYesterdayThisTime from '../counters/CounterYesterdayThisTime.vue';
 import CounterManyDays_Table from '../counters/CounterManyDays_Table.vue';
 import ChartTime from '../charts/ChartTime.vue';
-import ChartInboxZeroFolders from '../charts/ChartInboxZeroFolders.vue';
-import ChartInboxZeroDates from '../charts/ChartInboxZeroDates.vue';
 import TableInvolved from '../tables/TableInvolved.vue';
-import CounterInbox from '../counters/CounterInbox.vue';
 import ExportMenu from '../ExportMenu.vue';
 import { tsPrefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
-import InfoTooltip from '../InfoTooltip.vue';
 import { tsExport } from '@statslib/mzts-export';
-import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 import WidgetDomains from '../widgets/WidgetDomains.vue';
+import WidgetInboxZero from '../widgets/WidgetInboxZero.vue';
 
 
 const props = defineProps({

@@ -108,16 +108,24 @@
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
 					  </div>
-					  <CounterInbox :is_loading="is_loading_inbox_chart_folders" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
-            <CounterInboxPercent :is_loading="is_loading_counter_inbox_percent" :inbox_percent="counter_inbox_percent" />
-                      <div class="chart_inbox0_info"><p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="singleday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (rcvd_total == 0)" v-text="no_mails_received_yesterday"></p></div>
-                      <div class="chart_inbox0">
-                        <ChartInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_chart_folders" />
-                      </div>
-                      <div class="chart_inbox0_datemsg">
-                        <p class="chart_info">__MSG_InboxMailsDateSpreading__</p><p class="chart_info_nomail" id="singleday_inbox0_datemsg_nomails" v-if="!is_loading_counter_inbox && (counter_inbox_total == 0)" v-text="no_mails_inbox"></p>
-                        <ChartInboxZeroDates :chartData="chartData_InboxZeroDates" :is_loading="is_loading_inbox_chart_dates" />
-                      </div>
+            <WidgetInboxZero
+              :is_loading_counter_inbox="is_loading_counter_inbox"
+              :counter_inbox_total="counter_inbox_total"
+              :counter_inbox_unread="counter_inbox_unread"
+              :is_loading_counter_inbox_percent="is_loading_counter_inbox_percent"
+              :counter_inbox_percent="counter_inbox_percent"
+              :showFolderLocationNoteAnchor="showFolderLocationNoteAnchor"
+              :folderLocationNote_text="folderLocationNote_text"
+              :is_loading_counter_sent_rcvd="is_loading_counter_sent_rcvd"
+              :counter_rcvd="rcvd_total"
+              :chartData_InboxZeroFolders="chartData_InboxZeroFolders"
+              :inbox0_openFolderInFirstTab="inbox0_openFolderInFirstTab"
+              :is_loading_inbox_chart_folders="is_loading_inbox_chart_folders"
+              :no_mails_inbox="no_mails_inbox"
+              :chartData_InboxZeroDates="chartData_InboxZeroDates"
+              :is_loading_inbox_chart_dates="is_loading_inbox_chart_dates"
+              :no_mails_received="no_mails_received"
+            />
     </div>
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_TimeDay__</h2>
@@ -177,16 +185,13 @@ import ContextMenu from '@imengyu/vue3-context-menu'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import CounterSentReceived from '../counters/CounterSentReceived.vue';
 import ChartTime from '../charts/ChartTime.vue';
-import ChartInboxZeroFolders from '../charts/ChartInboxZeroFolders.vue';
-import ChartInboxZeroDates from '../charts/ChartInboxZeroDates.vue';
-import CounterInbox from '../counters/CounterInbox.vue';
-import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 import Multiselect from '@vueform/multiselect';
 import '@vueform/multiselect/themes/default.css';
 import advancedFiltersIconPath from '@/assets/images/mzts-customqry_adv_filters.svg';
 import advancedFiltersIconPath_Set from '@/assets/images/mzts-customqry_adv_filters_set.svg';
 import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
 import WidgetDomains from '../widgets/WidgetDomains.vue';
+import WidgetInboxZero from '../widgets/WidgetInboxZero.vue';
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
 
@@ -231,6 +236,7 @@ let inbox0_openFolderInFirstTab = ref(false);
 let do_single_day = ref(false);
 let singleDay = ref(null);
 let singleday_date_str = ref("");
+let no_mails_received = ref("");
 
 let is_loading_singleday_chart = ref(true);
 let is_loading_inbox_chart_folders = ref(true);
@@ -439,6 +445,7 @@ onMounted(async () => {
     if(tsStore.current_account_id != 0) {
       folderList.value = await tsCoreUtils.getAccountFoldersNames(tsStore.current_account_id);
     }
+    no_mails_received.value = browser.i18n.getMessage("NoMailsReceived");
 });
 
 function update(){
@@ -966,7 +973,7 @@ defineExpose({ doQry, updateAdvFiltersPosition });
 .square_container {
     margin-top: 4.6em;
 }
-.chart_inbox0_percent{
+:deep(.chart_inbox0_percent){
   top: 5.2em;
 }
 </style>

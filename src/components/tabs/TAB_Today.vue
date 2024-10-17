@@ -42,7 +42,6 @@
                         :folderLocationNote_text="folderLocationNote_text"
                         :is_loading_counter_sent_rcvd="is_loading_counter_sent_rcvd"
                         :counter_rcvd="counter_today_rcvd"
-                        :no_mails_received_today="no_mails_received_today"
                         :chartData_InboxZeroFolders="chartData_InboxZeroFolders"
                         :inbox0_openFolderInFirstTab="inbox0_openFolderInFirstTab"
                         :is_loading_inbox_chart_folders="is_loading_inbox_chart_folders"

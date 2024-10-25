@@ -322,6 +322,41 @@ export const tsCoreUtils = {
         return datasets;
     },
 
+    transformInboxZeroDatesExtendedDataToDataset(data) {
+        let output = {};
+        let dataset = {};
+        dataset.data = [];
+        let labels = [];
+        let total = 0;
+        let targetLength = data.length;
+
+        let availableColors = [...inboxZeroColors];
+        while (availableColors.length <= targetLength) {
+            // Aggiungi tutto l'array inboxZeroColors
+            availableColors.push(...inboxZeroColors);
+          }
+
+        for(let key in data) {
+            total += data[key];
+        }
+
+        for(let key in data) {
+            let value = data[key];
+            dataset.data.push(value);
+            let current_date = tsUtils.parseYYYYMMDDToDate(key);
+            labels.push(current_date.toLocaleDateString(undefined,{day: '2-digit', month: '2-digit', year: 'numeric'}));
+        }
+
+        dataset.backgroundColor = [...availableColors];
+        dataset.borderColor = [...availableColors];
+
+        output.dataset = dataset;
+        output.labels = labels;
+        output.total = total;
+
+        return output;
+    },
+
     // getMaxFromData(data) {      // data is an object like this: {"20240517":2,"20240518":4,"20240519":4,"20240520":2,"20240521":0,"20240522":2,"20240523":4,"20240524":0}
     //     let maxValue = 0;
     //     for (const [date, value] of Object.entries(data)) {

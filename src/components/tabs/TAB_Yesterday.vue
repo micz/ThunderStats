@@ -47,6 +47,7 @@
                         :is_loading_inbox_chart_folders="is_loading_inbox_chart_folders"
                         :no_mails_inbox="no_mails_inbox"
                         :chartData_InboxZeroDates="chartData_InboxZeroDates"
+                        :chartData_InboxZeroDates_extended = "chartdata_inboxzero_dates"
                         :is_loading_inbox_chart_dates="is_loading_inbox_chart_dates"
                         :no_mails_received="no_mails_received_yesterday"
                       />

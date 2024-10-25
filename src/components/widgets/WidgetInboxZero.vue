@@ -1,15 +1,15 @@
 <template>
     <div>
-      <CounterInbox 
+      <CounterInbox v-if="!show_extended"
         :is_loading="is_loading_counter_inbox" 
         :inbox_total="counter_inbox_total" 
         :inbox_unread="counter_inbox_unread" 
       />
-      <CounterInboxPercent 
+      <CounterInboxPercent v-if="!show_extended"
         :is_loading="is_loading_counter_inbox_percent" 
         :inbox_percent="counter_inbox_percent" 
       />
-      <div class="chart_inbox0_info">
+      <div class="chart_inbox0_info" v-if="!show_extended">
         <p class="chart_info">
           __MSG_FolderLocation__ 
           <InfoTooltip 
@@ -23,14 +23,14 @@
           v-text="no_mails_received"
         ></p>
       </div>
-      <div class="chart_inbox0">
+      <div class="chart_inbox0" v-if="!show_extended">
         <ChartInboxZeroFolders 
           :chartData="chartData_InboxZeroFolders" 
           :openFolderInFirstTab="inbox0_openFolderInFirstTab" 
           :is_loading="is_loading_inbox_chart_folders" 
         />
       </div>
-      <div class="chart_inbox0_datemsg">
+      <div class="chart_inbox0_datemsg" v-if="!show_extended">
         <p class="chart_info">__MSG_InboxMailsDateSpreading__</p>
         <p 
           class="chart_info_nomail" 
@@ -39,19 +39,31 @@
         ></p>
         <ChartInboxZeroDates 
           :chartData="chartData_InboxZeroDates" 
-          :is_loading="is_loading_inbox_chart_dates" 
+          :is_loading="is_loading_inbox_chart_dates"
+        />
+        <button type="button" @click="doShowExtended" v-if="!is_loading_counter_inbox" >extend</button>
+      </div>
+      <div class="chart_inbox0_extended" :id="chart_inbox0_extended_id" v-if="show_extended">
+        <ChartInboxZeroDatesExtended 
+          :chartData="chartData_InboxZeroDates_extended"
+          :chart_height="chart_inbox0_extended_height"
+          :is_loading="false"
+          :key = "key"
         />
       </div>
     </div>
 </template>
 
 <script setup>
-// import { computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 import ChartInboxZeroFolders from '../charts/ChartInboxZeroFolders.vue';
 import ChartInboxZeroDates from '../charts/ChartInboxZeroDates.vue';
 import CounterInbox from '../counters/CounterInbox.vue';
 import InfoTooltip from '../InfoTooltip.vue';
+import ChartInboxZeroDatesExtended from '../charts/ChartInboxZeroDatesExtended.vue';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsStore } from '@statslib/mzts-store';
 
 
 const props = defineProps({
@@ -117,28 +129,118 @@ const props = defineProps({
     default: () => ({}),
     required: true,
   },
+  chartData_InboxZeroDates_extended: {
+    type: Object,
+    default: () => ({}),
+    required: true,
+  },
   is_loading_inbox_chart_dates: {
     type: Boolean,
     default: false,
   }
 });
 
-// let is_loading_counter_inbox = computed(() => props.is_loading_counter_inbox);
-// let counter_inbox_total = computed(() => props.counter_inbox_total);
-// let counter_inbox_unread = computed(() => props.counter_inbox_unread);
-// let is_loading_counter_inbox_percent = computed(() => props.is_loading_counter_inbox_percent);
-// let counter_inbox_percent = computed(() => props.counter_inbox_percent);
-// let showFolderLocationNoteAnchor = computed(() => props.showFolderLocationNoteAnchor);
-// let folderLocationNote_text = computed(() => props.folderLocationNote_text);
-// let is_loading_counter_sent_rcvd = computed(() => props.is_loading_counter_sent_rcvd);
-// let counter_rcvd = computed(() => props.counter_rcvd);
-// let chartData_InboxZeroFolders = computed(() => props.chartData_InboxZeroFolders);
-// let inbox0_openFolderInFirstTab = computed(() => props.inbox0_openFolderInFirstTab);
-// let is_loading_inbox_chart_folders = computed(() => props.is_loading_inbox_chart_folders);
-// let no_mails_inbox = computed(() => props.no_mails_inbox);
-// let no_mails_received = computed(() => props.no_mails_received);
-// let chartData_InboxZeroDates = computed(() => props.chartData_InboxZeroDates);
-// let is_loading_inbox_chart_dates = computed(() => props.is_loading_inbox_chart_dates);
+let show_extended = ref(false);
+let chart_inbox0_extended_height = ref("275px")
+// let chartData_InboxZeroDates_extended = ref({
+//     labels: [],
+//     datasets: []
+// })
+
+let chart_inbox0_extended_id = computed(() => {
+  return "chart_inbox0_extended_" + tsStore.currentTab;
+});
+
+let force_rand = ref(Math.floor(Math.random() * 101));
+let key = computed(() => (props.chartData_InboxZeroDates_extended.length + force_rand.value));
+
+
+// let chart_inbox0_extended_height = computed(async () => {
+//   await nextTick();
+//   let output = "";  
+//   let container_height = document.getElementById(chart_inbox0_extended_id.value).clientHeight;
+//   let ipotetic_height = chartData_InboxZeroDates_extended.value.labels.length * 30;
+//   console.log(">>>>>>>>>>>>> chart_inbox0_height container_height: " + container_height + " ipotetic_height: " + ipotetic_height);
+//   if(container_height < ipotetic_height){
+//     output = String(ipotetic_height) + "px";
+//   } else {
+//     output = String(container_height) + "px";
+//   }
+//   console.log(">>>>>>>>>>>>>> chart_inbox0_height: " + output);
+//   return output;
+// });
+
+let chartData_InboxZeroDates_extended = computed(() => {
+  let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(props.chartData_InboxZeroDates_extended, true);
+  let output = {};
+  output.labels = data_trasf.labels;
+  output.datasets = [data_trasf.dataset];
+  console.log(">>>>>>>>>>>>>> props.chartData_InboxZeroDates_extended: " + JSON.stringify(props.chartData_InboxZeroDates_extended));
+  console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
+  return output;
+});
+
+// watch(() => props.chartData_InboxZeroDates_extended, async (newValue) => {
+//   console.log(">>>>>>>>>>>>> chart_inbox0_extended_id: " + chart_inbox0_extended_id.value);
+//   let dom_element = document.getElementById(chart_inbox0_extended_id.value);
+//   if(dom_element != null){
+//     let container_height = dom_element.clientHeight;
+//     let ipotetic_height = newValue.labels.length * 30;
+//     console.log(">>>>>>>>>>>>> chart_inbox0_height container_height: " + container_height + " ipotetic_height: " + ipotetic_height);
+//     if(container_height < ipotetic_height){
+//       chart_inbox0_extended_height.value = String(ipotetic_height) + "px";
+//     } else {
+//       chart_inbox0_extended_height.value = String(container_height) + "px";
+//     }
+//     console.log(">>>>>>>>>>>>>> chart_inbox0_extended_height.value: " + chart_inbox0_extended_height.value);
+//   }
+//   let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(newValue);
+//   let output = {};
+//   output.labels = data_trasf.labels;
+//   output.datasets = [{data: data_trasf.dataset}];
+//   console.log(">>>>>>>>>>>>>> props.chartData_InboxZeroDates_extended: " + JSON.stringify(newValue));
+//   console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
+//   chartData_InboxZeroDates_extended.value = output;
+// }, { immediate: true });
+
+// watch(() => show_extended.value, async (newValue) => {
+//   if(newValue == false) return;
+//   await nextTick();
+//   let dom_element = document.getElementById(chart_inbox0_extended_id.value);
+//   if(dom_element != null){
+//     let container_height = dom_element.clientHeight;
+//     let ipotetic_height = chartData_InboxZeroDates_extended.value.labels.length * 30;
+//     console.log(">>>>>>>>>>>>> chart_inbox0_height container_height: " + container_height + " ipotetic_height: " + ipotetic_height);
+//     if(container_height < ipotetic_height){
+//       chart_inbox0_extended_height.value = String(ipotetic_height) + "px";
+//     } else {
+//       chart_inbox0_extended_height.value = String(container_height) + "px";
+//     }
+//     console.log(">>>>>>>>>>>>>> chart_inbox0_extended_height.value: " + chart_inbox0_extended_height.value);
+//   }
+// }, { immediate: true });
+
+
+async function doShowExtended() {
+  show_extended.value = true;
+  await nextTick();
+  let dom_element = document.getElementById(chart_inbox0_extended_id.value);
+  if(dom_element != null){
+    let container_height = dom_element.clientHeight;
+    let ipotetic_height = chartData_InboxZeroDates_extended.value.labels.length * 30;
+    // console.log(">>>>>>>>>>>>> chart_inbox0_height container_height: " + container_height + " ipotetic_height: " + ipotetic_height);
+    if(container_height < ipotetic_height){
+      chart_inbox0_extended_height.value = String(ipotetic_height) + "px";
+    } else {
+      chart_inbox0_extended_height.value = String(container_height) + "px";
+    }
+    // console.log(">>>>>>>>>>>>>> chart_inbox0_extended_height.value: " + chart_inbox0_extended_height.value);
+    force_rand.value =Math.floor(Math.random() * 101);
+  }else{
+    console.error("[ThunderStats] Extended inbox0 chart DOM element not found!");
+  }
+}
+
 </script>
 
 <style scoped>

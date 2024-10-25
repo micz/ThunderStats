@@ -1,6 +1,6 @@
 <template>
     <div>
-      <CounterInbox v-if="!show_extended"
+      <CounterInbox 
         :is_loading="is_loading_counter_inbox" 
         :inbox_total="counter_inbox_total" 
         :inbox_unread="counter_inbox_unread" 
@@ -43,6 +43,7 @@
         />
         <button type="button" @click="doShowExtended" v-if="!is_loading_counter_inbox" >extend</button>
       </div>
+      <p class="chart_info" v-if="show_extended">__MSG_InboxMailsDateSpreadingExtended__</p>
       <div class="chart_inbox0_extended" :id="chart_inbox0_extended_id" v-if="show_extended">
         <ChartInboxZeroDatesExtended 
           :chartData="chartData_InboxZeroDates_extended"
@@ -51,7 +52,8 @@
           :key = "key"
         />
       </div>
-      <button type="button" @click="doHideExtended" v-if="show_extended" >close</button>
+      <div class="chart_inbox0_extended_orderby" v-if="show_extended">Order by <span>date</span> - <span>number of mails</span></div>
+      <div class="chart_inbox0_extended_close_btn" v-if="show_extended"><button type="button" @click="doHideExtended" >close</button></div>
     </div>
 </template>
 
@@ -152,14 +154,17 @@ let chart_inbox0_extended_id = computed(() => {
 let force_rand = ref(Math.floor(Math.random() * 101));
 let key = computed(() => (props.chartData_InboxZeroDates_extended.length + force_rand.value));
 
+let chartData_OrdinableArray = ref([]);
 
 let chartData_InboxZeroDates_extended = computed(() => {
   let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(props.chartData_InboxZeroDates_extended, true);
   let output = {};
   output.labels = data_trasf.labels;
   output.datasets = [data_trasf.dataset];
-  // console.log(">>>>>>>>>>>>>> props.chartData_InboxZeroDates_extended: " + JSON.stringify(props.chartData_InboxZeroDates_extended));
-  // console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
+  chartData_OrdinableArray.value = tsCoreUtils.sortInboxZeroDatesExtendedDatasetOrdinableArray(tsCoreUtils.transformInboxZeroDatesExtendedDatasetToOrdinableArray(output));
+  tsCoreUtils.updateInboxZeroDatesExtendedDataset(output, chartData_OrdinableArray.value);
+  console.log(">>>>>>>>>>>>>> props.chartData_InboxZeroDates_extended: " + JSON.stringify(props.chartData_InboxZeroDates_extended));
+  console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
   return output;
 });
 

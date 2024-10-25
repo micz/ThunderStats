@@ -51,6 +51,9 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .chart_time_86{overflow:auto;float:left;height:230px;width:86%;}
 .chart_time_full{overflow:auto;float:left;height:275px;width:89%;}
 .chart_time_full_domains{overflow-y:auto;float:left;height:275px;width:89%;}
+.chart_time_full_inbox0ext{overflow-y:auto;float:left;height:275px;width:100%;}
+.chart_inbox0_extended_orderby{width:fit-content;text-align:left;float:left;}
+.chart_inbox0_extended_close_btn{width:fit-content;text-align:right;float:right;margin-top:4px;}
 .legend-time{float:right;font-size:12px;padding-top:8px;}
 .legend-time ul{list-style-type:none;margin:0;padding:0;}
 .legend-time ul li{white-space: nowrap;}

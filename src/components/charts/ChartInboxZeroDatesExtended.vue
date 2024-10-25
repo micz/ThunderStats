@@ -20,7 +20,7 @@
 
 <template>
   <div class="chart_time_container">
-    <div class="chart_time_full_domains" :id="chart_id">
+    <div class="chart_time_full_inbox0ext" :id="chart_id">
       <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
       <Bar
           :options="chartOptions"

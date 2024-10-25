@@ -780,5 +780,9 @@
   "Tags": {
     "message": "Tags",
     "description": ""
+  },
+  "InboxMailsDateSpreadingExtended": {
+    "message": "Inbox mails - Date details view",
+    "description": ""
   }
 }

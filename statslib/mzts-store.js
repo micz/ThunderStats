@@ -28,4 +28,5 @@ export const tsStore = reactive({
         _weekday_rcvd: '#FF8C45',
     },
     'tags_list': {},
+    'currentTab': '',
 });

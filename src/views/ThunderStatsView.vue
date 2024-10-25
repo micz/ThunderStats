@@ -202,6 +202,7 @@ import { tsUtils } from '@statslib/mzts-utils';
     //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsStore.do_debug: " + tsStore.do_debug);
     //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsLog: " + JSON.stringify(tsLog));
     currentTab.value = id.tab.computedId;
+    tsStore.currentTab = id.tab.computedId;
     if(!mounted_ok) { return; }
     updateElapsed(0);
     is_loading.value = false;

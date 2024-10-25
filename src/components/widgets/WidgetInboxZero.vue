@@ -142,10 +142,6 @@ const props = defineProps({
 
 let show_extended = ref(false);
 let chart_inbox0_extended_height = ref("275px")
-// let chartData_InboxZeroDates_extended = ref({
-//     labels: [],
-//     datasets: []
-// })
 
 let chart_inbox0_extended_id = computed(() => {
   return "chart_inbox0_extended_" + tsStore.currentTab;
@@ -154,21 +150,6 @@ let chart_inbox0_extended_id = computed(() => {
 let force_rand = ref(Math.floor(Math.random() * 101));
 let key = computed(() => (props.chartData_InboxZeroDates_extended.length + force_rand.value));
 
-
-// let chart_inbox0_extended_height = computed(async () => {
-//   await nextTick();
-//   let output = "";  
-//   let container_height = document.getElementById(chart_inbox0_extended_id.value).clientHeight;
-//   let ipotetic_height = chartData_InboxZeroDates_extended.value.labels.length * 30;
-//   console.log(">>>>>>>>>>>>> chart_inbox0_height container_height: " + container_height + " ipotetic_height: " + ipotetic_height);
-//   if(container_height < ipotetic_height){
-//     output = String(ipotetic_height) + "px";
-//   } else {
-//     output = String(container_height) + "px";
-//   }
-//   console.log(">>>>>>>>>>>>>> chart_inbox0_height: " + output);
-//   return output;
-// });
 
 let chartData_InboxZeroDates_extended = computed(() => {
   let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(props.chartData_InboxZeroDates_extended, true);
@@ -179,46 +160,6 @@ let chartData_InboxZeroDates_extended = computed(() => {
   console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
   return output;
 });
-
-// watch(() => props.chartData_InboxZeroDates_extended, async (newValue) => {
-//   console.log(">>>>>>>>>>>>> chart_inbox0_extended_id: " + chart_inbox0_extended_id.value);
-//   let dom_element = document.getElementById(chart_inbox0_extended_id.value);
-//   if(dom_element != null){
-//     let container_height = dom_element.clientHeight;
-//     let ipotetic_height = newValue.labels.length * 30;
-//     console.log(">>>>>>>>>>>>> chart_inbox0_height container_height: " + container_height + " ipotetic_height: " + ipotetic_height);
-//     if(container_height < ipotetic_height){
-//       chart_inbox0_extended_height.value = String(ipotetic_height) + "px";
-//     } else {
-//       chart_inbox0_extended_height.value = String(container_height) + "px";
-//     }
-//     console.log(">>>>>>>>>>>>>> chart_inbox0_extended_height.value: " + chart_inbox0_extended_height.value);
-//   }
-//   let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(newValue);
-//   let output = {};
-//   output.labels = data_trasf.labels;
-//   output.datasets = [{data: data_trasf.dataset}];
-//   console.log(">>>>>>>>>>>>>> props.chartData_InboxZeroDates_extended: " + JSON.stringify(newValue));
-//   console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
-//   chartData_InboxZeroDates_extended.value = output;
-// }, { immediate: true });
-
-// watch(() => show_extended.value, async (newValue) => {
-//   if(newValue == false) return;
-//   await nextTick();
-//   let dom_element = document.getElementById(chart_inbox0_extended_id.value);
-//   if(dom_element != null){
-//     let container_height = dom_element.clientHeight;
-//     let ipotetic_height = chartData_InboxZeroDates_extended.value.labels.length * 30;
-//     console.log(">>>>>>>>>>>>> chart_inbox0_height container_height: " + container_height + " ipotetic_height: " + ipotetic_height);
-//     if(container_height < ipotetic_height){
-//       chart_inbox0_extended_height.value = String(ipotetic_height) + "px";
-//     } else {
-//       chart_inbox0_extended_height.value = String(container_height) + "px";
-//     }
-//     console.log(">>>>>>>>>>>>>> chart_inbox0_extended_height.value: " + chart_inbox0_extended_height.value);
-//   }
-// }, { immediate: true });
 
 
 async function doShowExtended() {

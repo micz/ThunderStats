@@ -51,6 +51,7 @@
           :key = "key"
         />
       </div>
+      <button type="button" @click="doHideExtended" v-if="show_extended" >close</button>
     </div>
 </template>
 
@@ -64,6 +65,7 @@ import InfoTooltip from '../InfoTooltip.vue';
 import ChartInboxZeroDatesExtended from '../charts/ChartInboxZeroDatesExtended.vue';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsStore } from '@statslib/mzts-store';
+import { i18n } from '@statslib/mzts-i18n';
 
 
 const props = defineProps({
@@ -156,8 +158,8 @@ let chartData_InboxZeroDates_extended = computed(() => {
   let output = {};
   output.labels = data_trasf.labels;
   output.datasets = [data_trasf.dataset];
-  console.log(">>>>>>>>>>>>>> props.chartData_InboxZeroDates_extended: " + JSON.stringify(props.chartData_InboxZeroDates_extended));
-  console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
+  // console.log(">>>>>>>>>>>>>> props.chartData_InboxZeroDates_extended: " + JSON.stringify(props.chartData_InboxZeroDates_extended));
+  // console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
   return output;
 });
 
@@ -180,6 +182,13 @@ async function doShowExtended() {
   }else{
     console.error("[ThunderStats] Extended inbox0 chart DOM element not found!");
   }
+  i18n.updateDocument();
+}
+
+async function doHideExtended() {
+  show_extended.value = false;
+  await nextTick();
+  i18n.updateDocument();
 }
 
 </script>

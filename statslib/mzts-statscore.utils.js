@@ -328,13 +328,6 @@ export const tsCoreUtils = {
         dataset.data = [];
         let labels = [];
         let total = 0;
-        let targetLength = data.length;
-
-        let availableColors = [...inboxZeroColors];
-        while (availableColors.length <= targetLength) {
-            // Aggiungi tutto l'array inboxZeroColors
-            availableColors.push(...inboxZeroColors);
-          }
 
         for(let key in data) {
             total += data[key];
@@ -347,6 +340,11 @@ export const tsCoreUtils = {
             labels.push(current_date.toLocaleDateString(undefined,{day: '2-digit', month: '2-digit', year: 'numeric'}));
         }
 
+        let targetLength = labels.length;
+        let availableColors = [...inboxZeroColors];
+        while (availableColors.length < targetLength) {
+          availableColors.push(...inboxZeroColors);
+        }
         dataset.backgroundColor = [...availableColors];
         dataset.borderColor = [...availableColors];
 
@@ -354,7 +352,52 @@ export const tsCoreUtils = {
         output.labels = labels;
         output.total = total;
 
+        // console.log(">>>>>>>>>>>>>> Length of labels: " + labels.length);
+        // console.log(">>>>>>>>>>>>>> Length of available colors: " + availableColors.length);
+        // console.log(">>>>>>>>>>>>>> Length of dataset.data: " + dataset.data.length);
+        // console.log(">>>>>>>>>>>>>> targetLength: " + targetLength);
+
         return output;
+    },
+
+    transformInboxZeroDatesExtendedDatasetToOrdinableArray(dataObject) {
+      return dataObject.labels.map((label, index) => {
+          const [day, month, year] = label.split("/").map(Number);
+          return {
+            date: new Date(year, month - 1, day),
+            label,
+            value: dataObject.datasets[0].data[index],
+            bgColor: dataObject.datasets[0].backgroundColor[index],
+            borderColor: dataObject.datasets[0].borderColor[index]
+          };
+      });
+    },
+
+    sortInboxZeroDatesExtendedDatasetOrdinableArray(tempArray, type = 'date', order = 'asc') {
+      if (type === 'date') {
+        if (order === 'asc') {
+          return tempArray.sort((a, b) => a.date - b.date);
+        } else if (order === 'desc') {
+          return tempArray.sort((a, b) => b.date - a.date);
+        }
+      } else if (type === 'value') {
+        if (order === 'asc') {
+          return tempArray.sort((a, b) => a.value - b.value);
+        } else if (order === 'desc') {
+          return tempArray.sort((a, b) => b.value - a.value);
+         }
+      } else {
+        throw new Error("Invalid type. Use 'date' or 'value' for sorting.");
+      }
+      
+      throw new Error("Invalid order. Use 'asc' or 'desc' for sorting.");
+    },
+
+    updateInboxZeroDatesExtendedDataset(dataObject, sortedArray) {
+      dataObject.labels = sortedArray.map(item => item.label);
+      dataObject.datasets[0].data = sortedArray.map(item => item.value);
+      dataObject.datasets[0].backgroundColor = sortedArray.map(item => item.bgColor);
+      dataObject.datasets[0].borderColor = sortedArray.map(item => item.borderColor);
     },
 
     // getMaxFromData(data) {      // data is an object like this: {"20240517":2,"20240518":4,"20240519":4,"20240520":2,"20240521":0,"20240522":2,"20240523":4,"20240524":0}

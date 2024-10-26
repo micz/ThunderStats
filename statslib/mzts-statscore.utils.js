@@ -380,17 +380,17 @@ export const tsCoreUtils = {
         } else if (order === 'desc') {
           return tempArray.sort((a, b) => b.date - a.date);
         }
-      } else if (type === 'value') {
+      } else if (type === 'mails') {
         if (order === 'asc') {
           return tempArray.sort((a, b) => a.value - b.value);
         } else if (order === 'desc') {
           return tempArray.sort((a, b) => b.value - a.value);
          }
       } else {
-        throw new Error("Invalid type. Use 'date' or 'value' for sorting.");
+        throw new Error("Invalid type. Use 'date' or 'mails' for sorting.");
       }
       
-      throw new Error("Invalid order. Use 'asc' or 'desc' for sorting.");
+      throw new Error("Invalid order. Use 'asc' or 'mails' for sorting.");
     },
 
     updateInboxZeroDatesExtendedDataset(dataObject, sortedArray) {

@@ -784,5 +784,17 @@
   "InboxMailsDateSpreadingExtended": {
     "message": "Inbox mails - Date details view",
     "description": ""
+  },
+  "OrderBy": {
+    "message": "Order by",
+    "description": ""
+  },
+  "Close": {
+    "message": "Close",
+    "description": ""
+  },
+  "ViewDetails": {
+    "message": "View Details",
+    "description": ""
   }
 }

@@ -41,7 +41,7 @@
           :chartData="chartData_InboxZeroDates" 
           :is_loading="is_loading_inbox_chart_dates"
         />
-        <button type="button" @click="doShowExtended" v-if="!is_loading_counter_inbox" >extend</button>
+        <button type="button" @click="doShowExtended" v-if="!is_loading_counter_inbox" >__MSG_ViewDetails__</button>
       </div>
       <p class="chart_info" v-if="show_extended">__MSG_InboxMailsDateSpreadingExtended__</p>
       <div class="chart_inbox0_extended" :id="chart_inbox0_extended_id" v-if="show_extended">
@@ -52,8 +52,8 @@
           :key = "key"
         />
       </div>
-      <div class="chart_inbox0_extended_orderby" v-if="show_extended">Order by <span>date</span> - <span>number of mails</span></div>
-      <div class="chart_inbox0_extended_close_btn" v-if="show_extended"><button type="button" @click="doHideExtended" >close</button></div>
+      <div class="chart_inbox0_extended_orderby" v-if="show_extended">__MSG_OrderBy__:&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedDate">__MSG_Date__</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedMails">__MSG_Mails__</span></div>
+      <div class="chart_inbox0_extended_close_btn" v-if="show_extended"><button type="button" @click="doHideExtended" >__MSG_Close__</button></div>
     </div>
 </template>
 
@@ -145,31 +145,45 @@ const props = defineProps({
 });
 
 let show_extended = ref(false);
-let chart_inbox0_extended_height = ref("275px")
+let chart_inbox0_extended_height = ref("275px");
+
+let chartData_InboxZeroDates_extended = ref({
+  labels: [],
+  datasets: []
+})
 
 let chart_inbox0_extended_id = computed(() => {
   return "chart_inbox0_extended_" + tsStore.currentTab;
 });
 
 let force_rand = ref(Math.floor(Math.random() * 101));
-let key = computed(() => (props.chartData_InboxZeroDates_extended.length + force_rand.value));
+let key = computed(() => String(force_rand.value));
 
 let chartData_OrdinableArray = ref([]);
+let orderDate = 'asc';
+let orderMails = 'asc';
 
-let chartData_InboxZeroDates_extended = computed(() => {
+// let chartData_InboxZeroDates_extended = computed(() => {
+//   let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(props.chartData_InboxZeroDates_extended, true);
+//   let output = {};
+//   output.labels = data_trasf.labels;
+//   output.datasets = [data_trasf.dataset];
+//   chartData_OrdinableArray.value = tsCoreUtils.sortInboxZeroDatesExtendedDatasetOrdinableArray(tsCoreUtils.transformInboxZeroDatesExtendedDatasetToOrdinableArray(output));
+//   tsCoreUtils.updateInboxZeroDatesExtendedDataset(output, chartData_OrdinableArray.value);
+//   console.log(">>>>>>>>>>>>>> props.chartData_InboxZeroDates_extended: " + JSON.stringify(props.chartData_InboxZeroDates_extended));
+//   console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
+//   return output;
+// });
+
+
+async function doShowExtended() {
   let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(props.chartData_InboxZeroDates_extended, true);
   let output = {};
   output.labels = data_trasf.labels;
   output.datasets = [data_trasf.dataset];
-  chartData_OrdinableArray.value = tsCoreUtils.sortInboxZeroDatesExtendedDatasetOrdinableArray(tsCoreUtils.transformInboxZeroDatesExtendedDatasetToOrdinableArray(output));
-  tsCoreUtils.updateInboxZeroDatesExtendedDataset(output, chartData_OrdinableArray.value);
-  console.log(">>>>>>>>>>>>>> props.chartData_InboxZeroDates_extended: " + JSON.stringify(props.chartData_InboxZeroDates_extended));
-  console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
-  return output;
-});
-
-
-async function doShowExtended() {
+  chartData_OrdinableArray.value = tsCoreUtils.transformInboxZeroDatesExtendedDatasetToOrdinableArray(output);
+  chartData_InboxZeroDates_extended.value = output;
+  orderInboxZeroFoldersExtended();
   show_extended.value = true;
   await nextTick();
   let dom_element = document.getElementById(chart_inbox0_extended_id.value);
@@ -183,7 +197,7 @@ async function doShowExtended() {
       chart_inbox0_extended_height.value = String(container_height) + "px";
     }
     // console.log(">>>>>>>>>>>>>> chart_inbox0_extended_height.value: " + chart_inbox0_extended_height.value);
-    force_rand.value =Math.floor(Math.random() * 101);
+    force_rand.value = Math.floor(Math.random() * 101);
   }else{
     console.error("[ThunderStats] Extended inbox0 chart DOM element not found!");
   }
@@ -194,6 +208,29 @@ async function doHideExtended() {
   show_extended.value = false;
   await nextTick();
   i18n.updateDocument();
+}
+
+function orderInboxZeroFoldersExtended(type = 'date', order = 'asc') {
+  console.log(">>>>>>>>>>>>>> orderInboxZeroFoldersExtended type: " + type + " order: " + order);
+  chartData_OrdinableArray.value = tsCoreUtils.sortInboxZeroDatesExtendedDatasetOrdinableArray(chartData_OrdinableArray.value,type,order);
+  console.log(">>>>>>>>>>>>>> orderInboxZeroFoldersExtended chartData_OrdinableArray: " + JSON.stringify(chartData_OrdinableArray.value));
+  tsCoreUtils.updateInboxZeroDatesExtendedDataset(chartData_InboxZeroDates_extended.value, chartData_OrdinableArray.value);
+  console.log(">>>>>>>>>>>>>> orderInboxZeroFoldersExtended chartData_InboxZeroDates_extended: " + JSON.stringify(chartData_InboxZeroDates_extended.value));
+  force_rand.value = Math.floor(Math.random() * 101);
+}
+
+function doOrderExtendedDate() {
+  let order = orderDate === 'asc' ? 'desc' : 'asc';
+  orderDate = order;
+  orderMails = 'asc';
+  orderInboxZeroFoldersExtended('date', order);
+}
+
+function doOrderExtendedMails() {
+  let order = orderMails === 'asc' ? 'desc' : 'asc';
+  orderMails = order;
+  orderDate = 'asc';
+  orderInboxZeroFoldersExtended('mails', order);
 }
 
 </script>

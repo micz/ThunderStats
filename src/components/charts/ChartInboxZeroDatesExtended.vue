@@ -66,20 +66,17 @@ let props = defineProps({
     is_loading: {
         type: Boolean,
         default: true
-    },
-    key: {
-        type: Number,
-        default: 0
     }
 });
 
 let inbox0folderextChartBar_ref = ref(null);
 
 let maxX = ref(0);
+let force_rand = ref(Math.floor(Math.random() * 101));
 
 let chart_id = computed(() => props.chart_id);
 let chart_height = computed(() => props.chart_height);
-let chartData_length = computed(() => props.key);
+let chartData_length = computed(() => String(force_rand.value));
 
 let chartData = computed(() => {
   if (props.chartData.datasets && props.chartData.datasets.length > 0) {
@@ -105,6 +102,7 @@ let chartData = computed(() => {
     chartOptions.value.scales.x.max = maxX.value;
     chartOptions.value.scales.x2.max = maxX.value;
 
+  force_rand.value = (Math.floor(Math.random() * 101));
   return props.chartData;
 });
 

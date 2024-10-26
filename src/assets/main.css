@@ -53,11 +53,12 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .chart_time_full_domains{overflow-y:auto;float:left;height:275px;width:89%;}
 .chart_time_full_inbox0ext{overflow-y:auto;float:left;height:275px;width:100%;}
 .chart_inbox0_extended_orderby{width:fit-content;text-align:left;float:left;margin:3px 0px 0px 3px;}
-.chart_inbox0_extended_close_btn{width:fit-content;text-align:right;float:right;margin-top:4px;}
+.chart_inbox0_extended_close_btn{width:fit-content;text-align:right;float:right;margin-top:11px;}
 .chart_inbox0_info{width:100%;float:left;}
 .chart_inbox0{width:80%;height:310px;float:left;overflow:auto;}
 .chart_inbox0_datemsg{float:right;max-width:20%;min-width:90px;height:220px;}
 .chart_inbox0_orderbtn{cursor:pointer;text-decoration:underline;color:#3593dd;}
+.chart_inbox0_extended_btn{width:fit-content;float:right;}
 .legend-time{float:right;font-size:12px;padding-top:8px;}
 .legend-time ul{list-style-type:none;margin:0;padding:0;}
 .legend-time ul li{white-space: nowrap;}
@@ -363,6 +364,15 @@ table#customqry_adv_filters_table td{
   width: 30% !important;
 }
 
+.btn {
+  padding: 5px 7px;
+  background-color: #0078d7;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {
@@ -427,6 +437,11 @@ table#customqry_adv_filters_table td{
   #customqry_adv_filters{
     background: #4d4d4d;
     border: #333;
+  }
+
+  .btn {
+    background-color: #1e88e5;
+    color: #ffffff;
   }
 
 }

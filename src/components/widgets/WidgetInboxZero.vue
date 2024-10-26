@@ -41,9 +41,10 @@
           :chartData="chartData_InboxZeroDates" 
           :is_loading="is_loading_inbox_chart_dates"
         />
-        <button type="button" @click="doShowExtended" v-if="!is_loading_counter_inbox" >__MSG_ViewDetails__</button>
+        <div class="chart_inbox0_extended_btn" ><button type="button" @click="doShowExtended" v-if="!is_loading_counter_inbox" class="btn" >__MSG_ViewDetails__</button></div>
       </div>
       <p class="chart_info" v-if="show_extended">__MSG_InboxMailsDateSpreadingExtended__</p>
+      <div class="chart_inbox0_extended_orderby" v-if="show_extended">__MSG_OrderBy__:&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedDate">__MSG_Date__</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedMails">__MSG_Mails__</span></div>
       <div class="chart_inbox0_extended" :id="chart_inbox0_extended_id" v-if="show_extended">
         <ChartInboxZeroDatesExtended 
           :chartData="chartData_InboxZeroDates_extended"
@@ -52,8 +53,7 @@
           :key = "key"
         />
       </div>
-      <div class="chart_inbox0_extended_orderby" v-if="show_extended">__MSG_OrderBy__:&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedDate">__MSG_Date__</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedMails">__MSG_Mails__</span></div>
-      <div class="chart_inbox0_extended_close_btn" v-if="show_extended"><button type="button" @click="doHideExtended" >__MSG_Close__</button></div>
+      <div class="chart_inbox0_extended_close_btn" v-if="show_extended"><button type="button" @click="doHideExtended" class="btn" >__MSG_Close__</button></div>
     </div>
 </template>
 
@@ -183,7 +183,8 @@ async function doShowExtended() {
   output.datasets = [data_trasf.dataset];
   chartData_OrdinableArray.value = tsCoreUtils.transformInboxZeroDatesExtendedDatasetToOrdinableArray(output);
   chartData_InboxZeroDates_extended.value = output;
-  orderInboxZeroFoldersExtended();
+  orderInboxZeroFoldersExtended('date','desc');
+  orderDate = 'desc';
   show_extended.value = true;
   await nextTick();
   let dom_element = document.getElementById(chart_inbox0_extended_id.value);

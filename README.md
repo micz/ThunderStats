@@ -101,3 +101,5 @@ Loading SVGs thanks to https://loading.io
 
 Business Days and Export Data icons thanks to https://www.iconarchive.com/artist/custom-icon-design.html
 
+[Fluent Design System](https://www.iconfinder.com/fluent-designsystem) for the sorting icons
+

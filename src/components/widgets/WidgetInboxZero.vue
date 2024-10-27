@@ -44,7 +44,7 @@
         <div class="chart_inbox0_extended_btn" ><button type="button" @click="doShowExtended" v-if="!is_loading_counter_inbox" class="btn" >__MSG_ViewDetails__</button></div>
       </div>
       <p class="chart_info" v-if="show_extended">__MSG_InboxMailsDateSpreadingExtended__</p>
-      <div class="chart_inbox0_extended_orderby" v-if="show_extended">__MSG_OrderBy__:&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedDate">__MSG_Date__</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedMails">__MSG_Mails__</span></div>
+      <div class="chart_inbox0_extended_orderby" v-if="show_extended">__MSG_OrderBy__:&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedDate">__MSG_Date__</span>&nbsp;<img src="@public/images/mzts-arrow-sort-active-down.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'date' && orderDate == 'asc'" /><img src="@public/images/mzts-arrow-sort-active-up.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'date' && orderDate == 'desc'" />&nbsp;&nbsp;|&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedMails">__MSG_Mails__</span>&nbsp;<img src="@public/images/mzts-arrow-sort-active-down.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'mails' && orderMails == 'asc'" /><img src="@public/images/mzts-arrow-sort-active-up.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'mails' && orderMails == 'desc'" /></div>
       <div class="chart_inbox0_extended" :id="chart_inbox0_extended_id" v-if="show_extended">
         <ChartInboxZeroDatesExtended 
           :chartData="chartData_InboxZeroDates_extended"
@@ -162,6 +162,7 @@ let key = computed(() => String(force_rand.value));
 let chartData_OrdinableArray = ref([]);
 let orderDate = 'asc';
 let orderMails = 'asc';
+let orderType = 'date';
 
 // let chartData_InboxZeroDates_extended = computed(() => {
 //   let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(props.chartData_InboxZeroDates_extended, true);
@@ -224,14 +225,16 @@ function doOrderExtendedDate() {
   let order = orderDate === 'asc' ? 'desc' : 'asc';
   orderDate = order;
   orderMails = 'asc';
-  orderInboxZeroFoldersExtended('date', order);
+  orderType = 'date';
+  orderInboxZeroFoldersExtended(orderType, order);
 }
 
 function doOrderExtendedMails() {
   let order = orderMails === 'asc' ? 'desc' : 'asc';
   orderMails = order;
   orderDate = 'asc';
-  orderInboxZeroFoldersExtended('mails', order);
+  orderType = 'mails';
+  orderInboxZeroFoldersExtended(orderType, order);
 }
 
 </script>

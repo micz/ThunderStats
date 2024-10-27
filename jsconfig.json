@@ -2,7 +2,8 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"],
-      "@statslib/*": ["./statslib/*"]
+      "@statslib/*": ["./statslib/*"],
+      "@public/*": ["./public/*"]
     }
   },
   "exclude": ["node_modules", "dist", ".github"],

@@ -43,8 +43,16 @@
         />
         <div class="chart_inbox0_extended_btn" ><button type="button" @click="doShowExtended" v-if="!is_loading_counter_inbox" class="btn" >__MSG_ViewDetails__</button></div>
       </div>
-      <p class="chart_info" v-if="show_extended">__MSG_InboxMailsDateSpreadingExtended__</p>
-      <div class="chart_inbox0_extended_orderby" v-if="show_extended">__MSG_OrderBy__:&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedDate">__MSG_Date__</span>&nbsp;<img src="@public/images/mzts-arrow-sort-active-down.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'date' && orderDate == 'asc'" /><img src="@public/images/mzts-arrow-sort-active-up.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'date' && orderDate == 'desc'" />&nbsp;&nbsp;|&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedMails">__MSG_Mails__</span>&nbsp;<img src="@public/images/mzts-arrow-sort-active-down.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'mails' && orderMails == 'asc'" /><img src="@public/images/mzts-arrow-sort-active-up.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'mails' && orderMails == 'desc'" /></div>
+      <table class="chart_inbox0_extended_table" v-if="show_extended">
+        <tr>
+          <td class="chart_inbox0_extended_title">
+            __MSG_InboxMailsDateSpreadingExtended__
+          </td>
+          <td class="chart_inbox0_extended_orderby">
+            __MSG_OrderBy__:&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedDate">__MSG_Date__</span>&nbsp;<img src="@public/images/mzts-arrow-sort-active-down.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'date' && orderDate == 'asc'" /><img src="@public/images/mzts-arrow-sort-active-up.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'date' && orderDate == 'desc'" />&nbsp;&nbsp;|&nbsp;&nbsp;<span class="chart_inbox0_orderbtn" @click="doOrderExtendedMails">__MSG_Mails__</span>&nbsp;<img src="@public/images/mzts-arrow-sort-active-down.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'mails' && orderMails == 'asc'" /><img src="@public/images/mzts-arrow-sort-active-up.png" class="chart_inbox0_extended_sorticon" v-if="orderType == 'mails' && orderMails == 'desc'" />
+          </td>
+      </tr>
+    </table>
       <div class="chart_inbox0_extended" :id="chart_inbox0_extended_id" v-if="show_extended">
         <ChartInboxZeroDatesExtended 
           :chartData="chartData_InboxZeroDates_extended"

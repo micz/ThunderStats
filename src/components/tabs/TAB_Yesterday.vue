@@ -301,7 +301,8 @@ async function updateData() {
         is_loading_yesterday_chart.value = false;
         is_loading_inbox_chart_folders.value = false;
         // is_loading_inbox_chart_dates.value = false;
-        showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id)
+        showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id);
+        await nextTick();
         i18n.updateDocument();
     });
 };

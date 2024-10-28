@@ -51,6 +51,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .chart_time_86{overflow:auto;float:left;height:230px;width:86%;}
 .chart_time_full{overflow:auto;float:left;height:275px;width:89%;}
 .chart_time_full_domains{overflow-y:auto;float:left;height:275px;width:89%;}
+.chart_time_full_domains_container, .chart_time_full_inbox0ext_container{position: relative;}
 .chart_time_full_inbox0ext{overflow-y:auto;float:left;height:275px;width:100%;}
 .chart_inbox0_extended_orderby{width:fit-content;text-align:left;float:left;margin:3px 0px 0px 3px;}
 .chart_inbox0_extended_close_btn{width:fit-content;text-align:right;float:right;margin-top:11px;}
@@ -60,7 +61,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .chart_inbox0_orderbtn{cursor:pointer;text-decoration:underline;color:#3593dd;}
 .chart_inbox0_extended_btn{width:fit-content;float:right;}
 .chart_inbox0_extended_sorticon{position: relative;top:4px;filter: invert(1)};
-.legend-time{float:right;font-size:12px;padding-top:8px;margin-left:4px;}
+.legend-time{float:right;font-size:12px;padding-top:8px;}
 .legend-time ul{list-style-type:none;margin:0;padding:0;}
 .legend-time ul li{white-space: nowrap;}
 .legend-time ul li.day_today_title{font-weight:bold;}

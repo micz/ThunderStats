@@ -21,17 +21,19 @@
 <template>
   <div class="chart_time_container">
     <div class="chart_time_full_inbox0ext" :id="chart_id">
-      <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
-      <Bar
-          :options="chartOptions"
-          :data="chartData"
-          :plugins="chartPlugins"
-          :key="chartData_length"
-          ref="inbox0folderextChartBar_ref"
-          v-if="!is_loading"
-          :height="chart_height"
-          width="500px"
-        />
+      <div class="chart_time_full_inbox0ext_container" :id="chart_id">
+        <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
+        <Bar
+            :options="chartOptions"
+            :data="chartData"
+            :plugins="chartPlugins"
+            :key="chartData_length"
+            ref="inbox0folderextChartBar_ref"
+            v-if="!is_loading"
+            :height="chart_height"
+            width="500px"
+          />
+      </div>
     </div>
 </div>
 </template>
@@ -103,13 +105,19 @@ let chartData = computed(() => {
     chartOptions.value.scales.x2.max = maxX.value;
 
   force_rand.value = (Math.floor(Math.random() * 101));
+
+  let chart_container = document.getElementById(chart_id.value);
+  if(chart_container) {
+    chart_container.style.height = chart_height.value;
+  }
+
   return props.chartData;
 });
 
 let is_loading = computed(() => props.is_loading)
 
 var chartOptions = ref({
-        responsive: false,
+        responsive: true,
         animation: false,
         maintainAspectRatio: false,
         indexAxis: 'y',

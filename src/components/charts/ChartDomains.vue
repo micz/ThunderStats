@@ -20,18 +20,18 @@
 
 <template>
   <div class="chart_time_container">
-    <div class="chart_time_full_domains" :id="chart_id">
-      <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
-      <Bar
-          :options="chartOptions"
-          :data="chartData"
-          :plugins="chartPlugins"
-          :key="chartData_length"
-          ref="domainsChartBar_ref"
-          v-if="!is_loading"
-          :height="chart_height"
-          width="500px"
-        />
+    <div class="chart_time_full_domains" >
+      <div class="chart_time_full_domains_container" :id="chart_id">
+        <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
+          <Bar
+            :options="chartOptions"
+            :data="chartData"
+            :plugins="chartPlugins"
+            :key="chartData_length"
+            ref="domainsChartBar_ref"
+            v-if="!is_loading"
+          />
+      </div>
     </div>
     <div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </div>
@@ -101,13 +101,18 @@ let chartData = computed(() => {
     }
     chartOptions.value.scales.x.max = maxX.value;
 
+  let chart_container = document.getElementById(chart_id.value);
+  if(chart_container) {
+    chart_container.style.height = chart_height.value;
+  }
+
   return props.chartData;
 });
 
 let is_loading = computed(() => props.is_loading)
 
 var chartOptions = ref({
-        responsive: false,
+        responsive: true,
         animation: false,
         maintainAspectRatio: false,
         indexAxis: 'y',

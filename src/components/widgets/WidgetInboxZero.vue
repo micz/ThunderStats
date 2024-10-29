@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed, nextTick, watch } from 'vue';
 import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
 import ChartInboxZeroFolders from '../charts/ChartInboxZeroFolders.vue';
 import ChartInboxZeroDates from '../charts/ChartInboxZeroDates.vue';
@@ -184,6 +184,11 @@ let orderType = 'date';
 //   return output;
 // });
 
+watch(() => props.is_loading_inbox_chart_dates, (newData) => {
+  if(newData){
+    doHideExtended();
+  }
+})
 
 async function doShowExtended() {
   let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(props.chartData_InboxZeroDates_extended, true);

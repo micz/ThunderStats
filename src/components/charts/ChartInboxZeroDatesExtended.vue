@@ -176,8 +176,15 @@ var chartOptions = ref({
             min: 0,
             ticks: {
               callback: function(value, index, ticks) {
-                          return this.getLabelForValue(value);
+                          let val = this.getLabelForValue(value);
+                          let current_date = tsUtils.parseYYYYMMDDToDate(val);
+                           return current_date.toLocaleDateString(undefined,{day: '2-digit', month: '2-digit', year: 'numeric'});
               },
+              color: function(context) {
+                            const labelIndex = context['tick']['value'];
+                            const label = context.chart.data.labels[labelIndex];
+                            return tsCoreUtils.getDaysLabelColor(label, true);
+                        },
             },
           },
         },

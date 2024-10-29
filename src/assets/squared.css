@@ -16,13 +16,15 @@
 
 .square_item:nth-child(1),
 .square_item:nth-child(4),
-.square_item:nth-child(5) {
+.square_item:nth-child(5),
+.square_item:nth-child(8) {
     background-color: #F1F9FD;
 }
 
 .square_item:nth-child(2),
 .square_item:nth-child(3),
-.square_item:nth-child(6) {
+.square_item:nth-child(6),
+.square_item:nth-child(7) {
     background-color: white;
 }
 
@@ -81,13 +83,15 @@ h2.lowercase{
 
     .square_item:nth-child(1),
     .square_item:nth-child(4),
-    .square_item:nth-child(5) {
+    .square_item:nth-child(5),
+    .square_item:nth-child(8) {
         background-color: #333;
     }
 
     .square_item:nth-child(2),
     .square_item:nth-child(3),
-    .square_item:nth-child(6) {
+    .square_item:nth-child(6),
+    .square_item:nth-child(7) {
         background-color: #444;
     }
 

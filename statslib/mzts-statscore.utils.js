@@ -770,7 +770,8 @@ export const tsCoreUtils = {
           const email = emailMatch ? (emailMatch[1] || emailMatch[2]) : null;
       
           if (email && email.includes('@')) {
-            const domain = email.split('@')[1].trim();
+            let domain = email.split('@')[1].trim();
+            domain = domain.replace(/>/g, '').trim();
             domains.push(domain);
           }
         });

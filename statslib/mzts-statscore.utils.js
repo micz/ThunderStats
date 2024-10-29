@@ -193,7 +193,7 @@ export const tsCoreUtils = {
     //     });
     // },
 
-    getDaysLabelColor(label, color_today = false) {
+    getDaysLabelColor(label, color_today = true) {
         let isBusinessDay = this.checkBusinessDay(label);
 
         const bd_color = tsStore.darkmode ? "white" : "black";

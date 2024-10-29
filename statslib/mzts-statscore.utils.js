@@ -193,11 +193,15 @@ export const tsCoreUtils = {
     //     });
     // },
 
-    getDaysLabelColor(label) {
+    getDaysLabelColor(label, color_today = false) {
         let isBusinessDay = this.checkBusinessDay(label);
 
         const bd_color = tsStore.darkmode ? "white" : "black";
         const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
+
+        if(color_today && tsCoreUtils.isToday(label)) {
+            return tsStore.darkmode ? tsStore.chart_colors.many_days_today_dark : tsStore.chart_colors.many_days_today_light;
+        }
 
         return (isBusinessDay ? bd_color : nbd_color);
     },
@@ -336,8 +340,9 @@ export const tsCoreUtils = {
         for(let key in data) {
             let value = data[key];
             dataset.data.push(value);
-            let current_date = tsUtils.parseYYYYMMDDToDate(key);
-            labels.push(current_date.toLocaleDateString(undefined,{day: '2-digit', month: '2-digit', year: 'numeric'}));
+            // let current_date = tsUtils.parseYYYYMMDDToDate(key);
+            // labels.push(current_date.toLocaleDateString(undefined,{day: '2-digit', month: '2-digit', year: 'numeric'}));
+            labels.push(key);
         }
 
         let targetLength = labels.length;
@@ -362,9 +367,10 @@ export const tsCoreUtils = {
 
     transformInboxZeroDatesExtendedDatasetToOrdinableArray(dataObject) {
       return dataObject.labels.map((label, index) => {
-          const [day, month, year] = label.split("/").map(Number);
+        //   const [day, month, year] = label.split("/").map(Number);
           return {
-            date: new Date(year, month - 1, day),
+            // date: new Date(year, month - 1, day),
+            date: tsUtils.parseYYYYMMDDToDate(label),
             label,
             value: dataObject.datasets[0].data[index],
             bgColor: dataObject.datasets[0].backgroundColor[index],
@@ -828,6 +834,19 @@ export const tsCoreUtils = {
 
         // console.log(">>>>>>>>>>>>>> checkBusinessDay ["+datestr+"]: return true");
         return true;
+    },
+
+    isToday(dateString) {
+        // Get the current date
+        const today = new Date();
+        
+        // Format the current date as YYYYMMDD
+        const currentDate = today.getFullYear().toString() +
+                            (today.getMonth() + 1).toString().padStart(2, '0') +
+                            today.getDate().toString().padStart(2, '0');
+      
+        // Check if the provided date string matches today's date
+        return dateString === currentDate;
     },
 
     isEasterOrEasterMonday(date) {

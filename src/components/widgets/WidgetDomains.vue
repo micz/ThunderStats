@@ -27,11 +27,15 @@
 <script setup>
 import { computed } from 'vue'
 import ChartDomains from '../charts/ChartDomains.vue';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 
 let props = defineProps({
     chartData: {
         type: Object,
-        default: () => ({}),
+        default: () => ({
+                    labels: [],
+                    datasets: []
+                }),
         required: true
     },
     chart_id: {
@@ -48,10 +52,13 @@ let props = defineProps({
     }
 });
 
-let chartData = computed(() => props.chartData)
-let chart_id = computed(() => props.chart_id)
-let chart_height = computed(() => props.chart_height)
-let is_loading = computed(() => props.is_loading)
+let chartData = computed(() => {
+    return tsCoreUtils.sortDoubleDatasetsByTotal(props.chartData);
+});
+
+let chart_id = computed(() => props.chart_id);
+let chart_height = computed(() => props.chart_height);
+let is_loading = computed(() => props.is_loading);
 
 </script>
 

@@ -326,7 +326,7 @@ export const tsCoreUtils = {
         return datasets;
     },
 
-    transformInboxZeroDatesExtendedDataToDataset(data) {
+    transformQueryDataToDataset(data) {
         let output = {};
         let dataset = {};
         dataset.data = [];
@@ -365,7 +365,7 @@ export const tsCoreUtils = {
         return output;
     },
 
-    transformInboxZeroDatesExtendedDatasetToOrdinableArray(dataObject) {
+    transformDatasetToOrdinableArray(dataObject) {
       return dataObject.labels.map((label, index) => {
         //   const [day, month, year] = label.split("/").map(Number);
           return {
@@ -379,7 +379,7 @@ export const tsCoreUtils = {
       });
     },
 
-    sortInboxZeroDatesExtendedDatasetOrdinableArray(tempArray, type = 'date', order = 'asc') {
+    sortDatasetOrdinableArray(tempArray, type = 'date', order = 'asc') {
       if (type === 'date') {
         if (order === 'asc') {
           return tempArray.sort((a, b) => a.date - b.date);
@@ -399,12 +399,35 @@ export const tsCoreUtils = {
       throw new Error("Invalid order. Use 'asc' or 'mails' for sorting.");
     },
 
-    updateInboxZeroDatesExtendedDataset(dataObject, sortedArray) {
+    updateDatasetFromSorted(dataObject, sortedArray) {
       dataObject.labels = sortedArray.map(item => item.label);
       dataObject.datasets[0].data = sortedArray.map(item => item.value);
       dataObject.datasets[0].backgroundColor = sortedArray.map(item => item.bgColor);
       dataObject.datasets[0].borderColor = sortedArray.map(item => item.borderColor);
     },
+
+    sortDoubleDatasetsByTotal(data) {
+      // Create an array of objects containing labels and the sum of data values
+      const summedData = data.labels.map((label, index) => {
+        const sum = data.datasets.reduce((acc, dataset) => acc + dataset.data[index], 0);
+        return { label, sum };
+      });
+    
+      // Sort the array by sum in descending order
+      summedData.sort((a, b) => b.sum - a.sum);
+    
+      // Rebuild the sorted object
+      const sortedLabels = summedData.map(item => item.label);
+      const sortedDatasets = data.datasets.map(dataset => ({
+        ...dataset,
+        data: summedData.map(item => dataset.data[data.labels.indexOf(item.label)])
+      }));
+    
+      return {
+        labels: sortedLabels,
+        datasets: sortedDatasets
+      };
+    },      
 
     // getMaxFromData(data) {      // data is an object like this: {"20240517":2,"20240518":4,"20240519":4,"20240520":2,"20240521":0,"20240522":2,"20240523":4,"20240524":0}
     //     let maxValue = 0;

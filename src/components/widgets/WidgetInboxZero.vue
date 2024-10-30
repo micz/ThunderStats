@@ -173,12 +173,12 @@ let orderMails = 'asc';
 let orderType = 'date';
 
 // let chartData_InboxZeroDates_extended = computed(() => {
-//   let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(props.chartData_InboxZeroDates_extended, true);
+//   let data_trasf = tsCoreUtils.transformQueryDataToDataset(props.chartData_InboxZeroDates_extended, true);
 //   let output = {};
 //   output.labels = data_trasf.labels;
 //   output.datasets = [data_trasf.dataset];
-//   chartData_OrdinableArray.value = tsCoreUtils.sortInboxZeroDatesExtendedDatasetOrdinableArray(tsCoreUtils.transformInboxZeroDatesExtendedDatasetToOrdinableArray(output));
-//   tsCoreUtils.updateInboxZeroDatesExtendedDataset(output, chartData_OrdinableArray.value);
+//   chartData_OrdinableArray.value = tsCoreUtils.sortDatasetOrdinableArray(tsCoreUtils.transformDatasetToOrdinableArray(output));
+//   tsCoreUtils.updateDatasetFromSorted(output, chartData_OrdinableArray.value);
 //   console.log(">>>>>>>>>>>>>> props.chartData_InboxZeroDates_extended: " + JSON.stringify(props.chartData_InboxZeroDates_extended));
 //   console.log(">>>>>>>>>>>>>> chartData_InboxZeroDates_extended: " + JSON.stringify(output));
 //   return output;
@@ -191,11 +191,11 @@ watch(() => props.is_loading_inbox_chart_dates, (newData) => {
 })
 
 async function doShowExtended() {
-  let data_trasf = tsCoreUtils.transformInboxZeroDatesExtendedDataToDataset(props.chartData_InboxZeroDates_extended, true);
+  let data_trasf = tsCoreUtils.transformQueryDataToDataset(props.chartData_InboxZeroDates_extended);
   let output = {};
   output.labels = data_trasf.labels;
   output.datasets = [data_trasf.dataset];
-  chartData_OrdinableArray.value = tsCoreUtils.transformInboxZeroDatesExtendedDatasetToOrdinableArray(output);
+  chartData_OrdinableArray.value = tsCoreUtils.transformDatasetToOrdinableArray(output);
   chartData_InboxZeroDates_extended.value = output;
   orderInboxZeroFoldersExtended('date','desc');
   orderDate = 'desc';
@@ -227,9 +227,9 @@ async function doHideExtended() {
 
 function orderInboxZeroFoldersExtended(type = 'date', order = 'asc') {
   console.log(">>>>>>>>>>>>>> orderInboxZeroFoldersExtended type: " + type + " order: " + order);
-  chartData_OrdinableArray.value = tsCoreUtils.sortInboxZeroDatesExtendedDatasetOrdinableArray(chartData_OrdinableArray.value,type,order);
+  chartData_OrdinableArray.value = tsCoreUtils.sortDatasetOrdinableArray(chartData_OrdinableArray.value,type,order);
   console.log(">>>>>>>>>>>>>> orderInboxZeroFoldersExtended chartData_OrdinableArray: " + JSON.stringify(chartData_OrdinableArray.value));
-  tsCoreUtils.updateInboxZeroDatesExtendedDataset(chartData_InboxZeroDates_extended.value, chartData_OrdinableArray.value);
+  tsCoreUtils.updateDatasetFromSorted(chartData_InboxZeroDates_extended.value, chartData_OrdinableArray.value);
   console.log(">>>>>>>>>>>>>> orderInboxZeroFoldersExtended chartData_InboxZeroDates_extended: " + JSON.stringify(chartData_InboxZeroDates_extended.value));
   force_rand.value = Math.floor(Math.random() * 101);
 }

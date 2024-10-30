@@ -54,7 +54,10 @@ Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, B
 let props = defineProps({
     chartData: {
         type: Object,
-        default: () => ({}),
+        default: () => ({
+                    labels: [],
+                    datasets: []
+                }),
         required: true
     },
     chart_id: {

@@ -320,7 +320,7 @@ async function updateData() {
     // tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
     // chart domains
     let domains_container_height = document.getElementById('chart_domains_today').clientHeight;
-    let domains_ipotetic_height = chartdata_domains_labels.value.length * 30;
+    let domains_ipotetic_height = chartdata_domains_labels.value.length * 60;
     if(domains_container_height < domains_ipotetic_height){
         domains_chart_height.value = String(domains_ipotetic_height) + "px";
     } else {

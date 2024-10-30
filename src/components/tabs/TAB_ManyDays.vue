@@ -305,7 +305,7 @@ async function updateData() {
     })
     // chart domains
     let chart_container_height = document.getElementById('chart_domains_manydays').clientHeight;
-    let chart_ipotetic_height = chartdata_domains_labels.value.length * 30;
+    let chart_ipotetic_height = chartdata_domains_labels.value.length * 60;
     if(chart_container_height < chart_ipotetic_height){
         domains_chart_height.value = String(chart_ipotetic_height) + "px";
     } else {

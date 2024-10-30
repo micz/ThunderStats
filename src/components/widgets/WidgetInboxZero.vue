@@ -204,7 +204,7 @@ async function doShowExtended() {
   let dom_element = document.getElementById(chart_inbox0_extended_id.value);
   if(dom_element != null){
     let container_height = dom_element.clientHeight;
-    let ipotetic_height = chartData_InboxZeroDates_extended.value.labels.length * 30;
+    let ipotetic_height = chartData_InboxZeroDates_extended.value.labels.length * 60;
     // console.log(">>>>>>>>>>>>> chart_inbox0_height container_height: " + container_height + " ipotetic_height: " + ipotetic_height);
     if(container_height < ipotetic_height){
       chart_inbox0_extended_height.value = String(ipotetic_height) + "px";

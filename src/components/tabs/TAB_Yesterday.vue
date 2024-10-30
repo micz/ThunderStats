@@ -282,7 +282,7 @@ async function updateData() {
     // tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
     // chart domains
     let chart_container_height = document.getElementById('chart_domains_yesterday').clientHeight;
-    let chart_ipotetic_height = chartdata_domains_labels.value.length * 30;
+    let chart_ipotetic_height = chartdata_domains_labels.value.length * 60;
     if(chart_container_height < chart_ipotetic_height){
         domains_chart_height.value = String(chart_ipotetic_height) + "px";
     } else {

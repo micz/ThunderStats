@@ -333,7 +333,7 @@ async function updateData() {
     tsLog.log("chartData_Domains.value.labels: " + JSON.stringify(chartData_Domains.value.labels));
 
     // chart tags
-    let tags_container_height = document.getElementById('chart_tags_today').clientHeight;
+    let tags_container_height = document.getElementById('chart_tags_manydays').clientHeight;
     let tags_ipotetic_height = chartdata_tags_labels.value.length * 60;
     if(tags_container_height < tags_ipotetic_height){
         tags_chart_height.value = String(tags_ipotetic_height) + "px";

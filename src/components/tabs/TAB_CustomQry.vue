@@ -146,7 +146,7 @@
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Tags__</h2>
                     </div>
-                    <WidgetTags :chartData="chartData_Tags" chart_id="chart_tags_customqry" :chart_height="tags_chart_height" :is_loading="is_loading_tags_chart" />
+                    <WidgetTags v-if="do_run" :chartData="chartData_Tags" chart_id="chart_tags_customqry" :chart_height="tags_chart_height" :is_loading="is_loading_tags_chart" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
@@ -964,6 +964,7 @@ function loadingDo(){
     is_loading_timeday_chart.value = true;
     is_loading_weekdays_chart.value = true;
     is_loading_domains_chart.value = true;
+    is_loading_tags_chart.value = true;
 }
 
 function updateElapsed(function_name, time) {

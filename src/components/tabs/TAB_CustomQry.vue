@@ -24,7 +24,7 @@
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
-                <span style="margin: 0px 10px;" @click="updateAdvFiltersPosition">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
+                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <img :src="advanced_filters_icon" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__
@@ -977,26 +977,45 @@ function updateElapsed(function_name, time) {
 }
 
 async function toggleAdvancedFilters(){
-  let container = document.getElementById('customqry_square_container');
-  let currentMarginTop = window.getComputedStyle(container).marginTop;
-  let currentMarginTopValue = parseFloat(currentMarginTop);
-  if(show_advanced_filters.value){
-    let adv_filters = document.getElementById('customqry_adv_filters');
-    if(adv_filters) {
-      let heightOfElementA = adv_filters.offsetHeight;
-      container.style.marginTop = `${currentMarginTopValue - heightOfElementA}px`;
-      show_advanced_filters.value = false;
-    }
-  }else{
-    show_advanced_filters.value = true;
-    await nextTick();
-    let adv_filters = document.getElementById('customqry_adv_filters');
-    if(adv_filters) {
-      let heightOfElementA = adv_filters.offsetHeight;
-      container.style.marginTop = `${currentMarginTopValue + heightOfElementA}px`;
-    }
+  // let container = document.getElementById('customqry_square_container');
+  // let currentMarginTop = window.getComputedStyle(container).marginTop;
+  // let currentMarginTopValue = parseFloat(currentMarginTop);
+  show_advanced_filters.value = !show_advanced_filters.value;
+  await nextTick();
+  updateAdvFiltersPosition();
+  // if(show_advanced_filters.value){
+  //   let adv_filters = document.getElementById('customqry_adv_filters');
+  //   if(adv_filters) {
+  //     // let heightOfElementA = adv_filters.offsetHeight;
+  //     let height = adv_filters.offsetHeight;
+  //     let style = getComputedStyle(adv_filters);
+  //     let marginTop = parseFloat(style.marginTop);
+  //     let marginBottom = parseFloat(style.marginBottom);
+  //     let totalHeight = height + marginTop + marginBottom;
+  //     container.style.marginTop = `${currentMarginTopValue - totalHeight}px`;
+  //     show_advanced_filters.value = false;
+  //     console.log(">>>>>>>>>>>>> totalHeight: " + totalHeight);
+  //     console.log(">>>>>>>>>>>>> container.style.marginTop: " + container.style.marginTop);
+  //     console.log(">>>>>>>>>>>>> height: " + height + " marginTop: " + marginTop + " marginBottom: " + marginBottom);
+  //   }
+  // }else{
+  //   show_advanced_filters.value = true;
+  //   await nextTick();
+  //   let adv_filters = document.getElementById('customqry_adv_filters');
+  //   if(adv_filters) {
+  //     // let heightOfElementA = adv_filters.offsetHeight;
+  //     let height = adv_filters.offsetHeight;
+  //     let style = getComputedStyle(adv_filters);
+  //     let marginTop = parseFloat(style.marginTop);
+  //     let marginBottom = parseFloat(style.marginBottom);
+  //     let totalHeight = height + marginTop + marginBottom;
+  //     container.style.marginTop = `${currentMarginTopValue + totalHeight}px`;
+  //     console.log(">>>>>>>>>>>>> totalHeight: " + totalHeight);
+  //     console.log(">>>>>>>>>>>>> container.style.marginTop: " + container.style.marginTop);
+  //     console.log(">>>>>>>>>>>>> height: " + height + " marginTop: " + marginTop + " marginBottom: " + marginBottom);
+  //   }
     i18n.updateDocument();
-  }
+  // }
 }
 
 function updateAdvFiltersPosition(){
@@ -1006,7 +1025,12 @@ function updateAdvFiltersPosition(){
   if(show_advanced_filters.value){
     let currentMarginTop = window.getComputedStyle(container).marginTop;
     let currentMarginTopValue = parseFloat(currentMarginTop);
-    container.style.marginTop = `${currentMarginTopValue + parseFloat(customqry_adv_filters.offsetHeight)}px`;
+    let height = customqry_adv_filters.offsetHeight;
+    let style = getComputedStyle(customqry_adv_filters);
+    let marginTop = parseFloat(style.marginTop);
+    let marginBottom = parseFloat(style.marginBottom);
+    let totalHeight = height + marginTop + marginBottom;
+    container.style.marginTop = `${currentMarginTopValue + totalHeight + 10}px`;
   }
 }
 

@@ -29,6 +29,7 @@
         <li>Added the sent / received domains chart [<a href="https://github.com/micz/ThunderStats/issues/380">#380</a>].</li>
         <li>Added the sent / received tags chart [<a href="https://github.com/micz/ThunderStats/issues/359">#359</a>].</li>
         <li>Added a details view of the Inbox Zero Dates chart [<a href="https://github.com/micz/ThunderStats/issues/350">#350</a>]</li>
+        <li>The advanced filters panel opening and closing spacing is now fixed [<a href="https://github.com/micz/ThunderStats/issues/386">#386</a>].</li>
         <li>...</li>
       </ul>
       <h3>Version 2.2.2 - 24/09/2024</h3>

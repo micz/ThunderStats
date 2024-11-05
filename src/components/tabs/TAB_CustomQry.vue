@@ -146,7 +146,7 @@
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Tags__</h2>
                     </div>
-                    <WidgetTags v-if="do_run" :chartData="chartData_Tags" chart_id="chart_tags_customqry" :chart_height="tags_chart_height" :is_loading="is_loading_tags_chart" />
+                    <WidgetFoldersTags v-if="do_run" :chartData="chartData_Tags" chart_id="chart_tags_customqry" :chart_height="tags_chart_height" :is_loading="is_loading_tags_chart" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
@@ -193,7 +193,7 @@ import advancedFiltersIconPath_Set from '@/assets/images/mzts-customqry_adv_filt
 import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
 import WidgetDomains from '../widgets/WidgetDomains.vue';
 import WidgetInboxZero from '../widgets/WidgetInboxZero.vue';
-import WidgetTags from '../widgets/WidgetTags.vue';
+import WidgetFoldersTags from '../widgets/WidgetFoldersTags.vue';
 
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);

@@ -60,7 +60,7 @@
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Tags__</h2>
                     </div>
-                    <WidgetTags :chartData="chartData_Tags" chart_id="chart_tags_today" :chart_height="tags_chart_height" :is_loading="is_loading_tags_chart" />
+                    <WidgetFoldersTags :chartData="chartData_Tags" chart_id="chart_tags_today" :chart_height="tags_chart_height" :is_loading="is_loading_tags_chart" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
@@ -97,7 +97,7 @@ import { tsUtils } from '@statslib/mzts-utils';
 import { tsExport } from '@statslib/mzts-export';
 import WidgetDomains from '../widgets/WidgetDomains.vue';
 import WidgetInboxZero from '../widgets/WidgetInboxZero.vue';
-import WidgetTags from '../widgets/WidgetTags.vue';
+import WidgetFoldersTags from '../widgets/WidgetFoldersTags.vue';
 
 
 const props = defineProps({

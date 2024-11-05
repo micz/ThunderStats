@@ -29,4 +29,5 @@ export const tsStore = reactive({
     },
     'tags_list': {},
     'currentTab': '',
+    'show_tags': false,
 });

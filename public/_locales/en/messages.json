@@ -796,5 +796,9 @@
   "ViewDetails": {
     "message": "View Details",
     "description": ""
+  },
+  "Folders": {
+    "message": "Folders",
+    "description": ""
   }
 }

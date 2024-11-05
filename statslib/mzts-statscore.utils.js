@@ -407,6 +407,7 @@ export const tsCoreUtils = {
     },
 
     sortDoubleDatasetsByTotal(data) {
+      // console.log(">>>>>>>>>>>>>> [sortDoubleDatasetsByTotal] data: " + JSON.stringify(data));
       // Create an array of objects containing labels and the sum of data values
       const summedData = data.labels.map((label, index) => {
         const sum = data.datasets.reduce((acc, dataset) => acc + dataset.data[index], 0);

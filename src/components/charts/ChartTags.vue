@@ -62,7 +62,7 @@ let props = defineProps({
     },
     chart_id: {
         type: String,
-        default: 'domains-chart',
+        default: 'tags-chart',
     },
     chart_height: {
         type: String,

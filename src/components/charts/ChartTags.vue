@@ -27,6 +27,7 @@
             :options="chartOptions"
             :data="chartData"
             :plugins="chartPlugins"
+            :height="chart_height"
             :key="chartData_length"
             ref="tagsChartBar_ref"
             v-if="!is_loading"

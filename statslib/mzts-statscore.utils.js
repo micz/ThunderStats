@@ -119,6 +119,15 @@ export const tsCoreUtils = {
       return `${folder.accountId}:/${folder.path}`
     },
 
+    getFolderPath(folderId, do_split = false) {
+      const [accountId, path] = folderId.split(':/');
+      if(!do_split) {
+        return path.slice(1);
+      } else {
+        return path.slice(1).split(/(?<=\/)/);
+      }
+    },
+
     filterTodayNextHours(hours) {
         // Get the current time
         const now = new Date();

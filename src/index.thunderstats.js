@@ -13,6 +13,7 @@ async function main() {
     tsStore.do_debug = await tsPrefs.getPref("do_debug");
     tsStore.isTB128plus = await tsUtils.isThunderbird128OrGreater();
     tsStore.darkmode = undefined;
+    tsStore.currentTab = "tab-today";
 
     createApp(App_ThunderStats)
         .component('tabs', Tabs)

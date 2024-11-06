@@ -97,29 +97,29 @@ function setChartHeight(){
         let folders_dom_element = document.getElementById(chart_id_folders.value).parentElement;
         if(folders_dom_element != null){
             let folders_container_height = folders_dom_element.clientHeight;
-            console.log(">>>>>>>>>>>>>>>> folders_container_height: " + folders_container_height);
+            // console.log(">>>>>>>>>>>>>>>> folders_container_height: " + folders_container_height);
             let folders_ipotetic_height = props.chartDataFolders.labels.length * 60;
-            console.log(">>>>>>>>>>>>>>>> folders_ipotetic_height: " + folders_ipotetic_height);
+            // console.log(">>>>>>>>>>>>>>>> folders_ipotetic_height: " + folders_ipotetic_height);
             if(folders_container_height < folders_ipotetic_height){
                 chart_height_folders.value = String(folders_ipotetic_height) + "px";
             } else {
                 chart_height_folders.value = String(folders_container_height) + "px";
             }
-            console.log(">>>>>>>>>>>>>>>> chart_height_folders.value: " + chart_height_folders.value);
+            // console.log(">>>>>>>>>>>>>>>> chart_height_folders.value: " + chart_height_folders.value);
         }
     }else{
         let tags_dom_element = document.getElementById(chart_id_tags.value).parentElement;
         if(tags_dom_element != null){
             let tags_container_height = tags_dom_element.clientHeight;
-            console.log(">>>>>>>>>>>>>>>> tags_container_height: " + tags_container_height);
+            // console.log(">>>>>>>>>>>>>>>> tags_container_height: " + tags_container_height);
             let tags_ipotetic_height = props.chartDataTags.labels.length * 60;
-            console.log(">>>>>>>>>>>>>>>> tags_ipotetic_height: " + tags_ipotetic_height);
+            // console.log(">>>>>>>>>>>>>>>> tags_ipotetic_height: " + tags_ipotetic_height);
             if(tags_container_height < tags_ipotetic_height){
                 chart_height_tags.value = String(tags_ipotetic_height) + "px";
             } else {
                 chart_height_tags.value = String(tags_container_height) + "px";
             }
-            console.log(">>>>>>>>>>>>>>>> chart_height_tags.value: " + chart_height_tags.value);
+            // console.log(">>>>>>>>>>>>>>>> chart_height_tags.value: " + chart_height_tags.value);
         }
     }
     force_rand.value = Math.floor(Math.random() * 101);

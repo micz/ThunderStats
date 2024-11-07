@@ -800,5 +800,13 @@
   "Folders": {
     "message": "Folders",
     "description": ""
+  },
+  "ShowTags": {
+    "message": "Show Tags",
+    "description": ""
+  },
+  "ShowFolders": {
+    "message": "Show Folders",
+    "description": ""
   }
 }

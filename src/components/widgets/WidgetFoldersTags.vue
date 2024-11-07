@@ -25,7 +25,7 @@
     </div>
     <ChartFolders v-if="!show_tags" :chartData="chartDataFolders" :chart_id="chart_id_folders" :chart_height="chart_height_folders" :is_loading="is_loading_folders" :key="chart_key" />
     <ChartTags v-if="show_tags" :chartData="chartDataTags" :chart_id="chart_id_tags" :chart_height="chart_height_tags" :is_loading="is_loading_tags" />
-    <button type="button" @click="doSwitch" v-if="!(is_loading_folders || is_loading_tags)" class="btn" >switch</button>
+    <div class="chart_inbox0_extended_btn" ><button type="button" @click="doSwitch" v-if="!(is_loading_folders || is_loading_tags)" class="btn" v-text="switch_text"></button></div>
 </template>
 
 
@@ -85,8 +85,11 @@ let chart_id_tags = ref("chart_tags_" + tsStore.currentTab);
 let force_rand = ref(Math.floor(Math.random() * 101));
 let chart_key = computed(() => String(force_rand.value));
 
+let switch_text = ref(browser.i18n.getMessage("ShowTags"));
+
 async function doSwitch(){
     show_tags.value = !show_tags.value;
+    switch_text.value = show_tags.value ? browser.i18n.getMessage("ShowFolders") : browser.i18n.getMessage("ShowTags");
     await nextTick();
     setChartHeight();
     i18n.updateDocument();

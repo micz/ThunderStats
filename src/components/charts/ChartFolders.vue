@@ -157,7 +157,7 @@ var chartOptions = ref({
             min: 0,
             ticks: {
               callback: function(value, index, ticks) {
-                          return tsCoreUtils.getFolderPath(this.getLabelForValue(value), true);
+                          return tsCoreUtils.getFolderPath(this.getLabelForValue(value), false);
               },
             },
           },

@@ -148,8 +148,15 @@ import { tsUtils } from '@statslib/mzts-utils';
 
   onMounted(async () => {
     // console.log(">>>>>>>>>>>> ThunderStatsView onMounted");
+    // console.log(">>>>>>>>>>>>> ThunderStatsView onMounted statsTabs_ref.value.activeTabHash: " + JSON.stringify(statsTabs_ref.value.activeTabHash));
     remember_last_tab = await tsPrefs.getPref("remember_last_tab");
-    if(!remember_last_tab) { statsTabs_ref.value.selectTab('#tab-today'); }
+    if(!remember_last_tab) {
+      statsTabs_ref.value.selectTab('#tab-today');
+      tsStore.currentTab = "tab-today";
+    }else {
+      tsStore.currentTab = statsTabs_ref.value.activeTabHash.substring(1);
+    }
+    // console.log(">>>>>>>>>>>>>> ThunderStatsView onMounted tsStore.currentTab: " + tsStore.currentTab);
     let _many_days = await tsPrefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
@@ -160,7 +167,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   
 
   async function updateStats(account_id) {
-     //console.log(">>>>>>>>>>>> ThunderStatsView updateStats");
+    // console.log(">>>>>>>>>>>> ThunderStatsView updateStats tsStore.do_debug: " + tsStore.do_debug);
     if(tsLog == null) {
       tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     }
@@ -176,24 +183,25 @@ import { tsUtils } from '@statslib/mzts-utils';
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
 //    resetStatsDone();
     nextTick(() => {
-      let curr_tab = statsTabs_ref.value.activeTabHash;
-      tsLog.log("curr_tab: " + curr_tab);
+      // console.log(">>>>>>>>>>>>>> ThunderStatsView updateStats statsTabs_ref.value.activeTabHash: " + statsTabs_ref.value.activeTabHash);
+      tsStore.currentTab = statsTabs_ref.value.activeTabHash.substring(1);
+      tsLog.log("tsStore.currentTab: " + tsStore.currentTab);
       is_loading.value = true;
-      switch(curr_tab) {
-        case "#tab-today":
+      switch(tsStore.currentTab) {
+        case "tab-today":
           TAB_Today_ref.value.updateData();
           break;
-        case "#tab-yesterday":
+        case "tab-yesterday":
           TAB_Yesterday_ref.value.updateData();
           break;
-        case "#tab-manydays":
+        case "tab-manydays":
           TAB_ManyDays_ref.value.updateData();
           break;
-        case "#tab-customqry":
+        case "tab-customqry":
           TAB_CustomQry_ref.value.doQry();
           break;
       }
-      statsDone(curr_tab.substring(1));
+      statsDone(tsStore.currentTab);
     });
   }
 

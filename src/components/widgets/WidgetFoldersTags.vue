@@ -88,6 +88,8 @@ let chart_key = computed(() => String(force_rand.value));
 let switch_text = ref(browser.i18n.getMessage("ShowTags"));
 
 async function doSwitch(){
+    chart_id_folders.value = "chart_folders_" + tsStore.currentTab;
+    chart_id_tags.value = "chart_tags_" + tsStore.currentTab;
     show_tags.value = !show_tags.value;
     switch_text.value = show_tags.value ? browser.i18n.getMessage("ShowFolders") : browser.i18n.getMessage("ShowTags");
     await nextTick();
@@ -96,6 +98,7 @@ async function doSwitch(){
 }
 
 function setChartHeight(){
+    // console.log(">>>>>>>>>>>>>>>> chart_id_folders.value: " + chart_id_folders.value);
     if(!show_tags.value){
         let folders_dom_element = document.getElementById(chart_id_folders.value).parentElement;
         if(folders_dom_element != null){

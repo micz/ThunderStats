@@ -48,10 +48,8 @@
 					  </div>
                       <WidgetDomains :chartData="chartData_Domains" chart_id="chart_domains_manydays" :chart_height="domains_chart_height" :is_loading="is_loading_domains_chart" />
     </div>
-    <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped lowercase">__MSG_Tags__</h2>
-                    </div>
-                    <WidgetFoldersTags :chartDataTags="chartData_Tags" chart_id="chart_tags_manydays" :chart_height="tags_chart_height" :is_loading="is_loading_tags_chart" />
+    <div class="square_item">
+                    <WidgetFoldersTags :chartDataFolders="chartData_Folders" :chartDataTags="chartData_Tags" :is_loading_folders="is_loading_folders_chart" :is_loading_tags="is_loading_tags_chart" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
@@ -100,7 +98,6 @@ const props = defineProps({
 
 const emit = defineEmits(['updateElapsed']);
 
-
 let tsLog = null;
 var tsCore = null;
 
@@ -122,6 +119,7 @@ let is_loading_timeday_chart = ref(true);
 let is_loading_weekdays_chart = ref(true);
 let is_loading_domains_chart = ref(true);
 let is_loading_tags_chart = ref(true);
+let is_loading_folders_chart = ref(true);
 
 let counter_many_days_sent_total = ref(0);
 let counter_many_days_sent_max = ref(0);
@@ -147,6 +145,9 @@ let chartdata_manydays_weekdays_rcvd = ref([]);
 let chartdata_domains_sent = ref([]);
 let chartdata_domains_rcvd = ref([]);
 let chartdata_domains_labels = ref([]);
+let chartdata_folders_sent = ref([]);
+let chartdata_folders_rcvd = ref([]);
+let chartdata_folders_labels = ref([]);
 let chartdata_tags_sent = ref([]);
 let chartdata_tags_rcvd = ref([]);
 let chartdata_tags_labels = ref([]);
@@ -190,6 +191,11 @@ let chartData_Domains = ref({
     datasets: []
 });
 
+let chartData_Folders = ref({
+    labels: [],
+    datasets: []
+});
+
 let chartData_Tags = ref({
     labels: [],
     datasets: []
@@ -205,7 +211,8 @@ let job_done = computed(() => {
     is_loading_timeday_chart.value &&
     is_loading_weekdays_chart.value &&
     is_loading_domains_chart.value &&
-    is_loading_tags_chart.value);
+    is_loading_tags_chart.value &&
+    is_loading_folders_chart.value);
 });
 
 onMounted(async () => {
@@ -332,14 +339,29 @@ async function updateData() {
     tsLog.log("chartData_Domains.value: " + JSON.stringify(chartData_Domains.value));
     tsLog.log("chartData_Domains.value.labels: " + JSON.stringify(chartData_Domains.value.labels));
 
+    // chart folders
+    chartData_Folders.value.labels = chartdata_folders_labels.value;
+    chartData_Folders.value.datasets = [];
+    chartData_Folders.value.datasets.push({
+        label: 'tsent',
+        data: chartdata_folders_sent.value,
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    chartData_Folders.value.datasets.push({
+        label: 'trcvd',
+        data: chartdata_folders_rcvd.value,
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("chartData_Folders.value: " + JSON.stringify(chartData_Folders.value));
+    tsLog.log("chartData_Folders.value.labels: " + JSON.stringify(chartData_Folders.value.labels));
+
     // chart tags
-    let tags_container_height = document.getElementById('chart_tags_manydays').clientHeight;
-    let tags_ipotetic_height = chartdata_tags_labels.value.length * 60;
-    if(tags_container_height < tags_ipotetic_height){
-        tags_chart_height.value = String(tags_ipotetic_height) + "px";
-    } else {
-        tags_chart_height.value = String(tags_container_height) + "px";
-    }
     chartData_Tags.value.labels = chartdata_tags_labels.value;
     chartData_Tags.value.datasets = [];
     chartData_Tags.value.datasets.push({
@@ -443,6 +465,13 @@ async function updateData() {
             chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
             chartdata_domains_labels.value = domains_data.labels;
             is_loading_domains_chart.value = false;
+            // folders
+            const folders_data = tsCoreUtils.transformCountDataToDataset(result_many_days.folders, false, true);
+            //  console.log(">>>>>>>>>>>>> folders_data: " + JSON.stringify(folders_data, null, 2));
+            chartdata_folders_sent.value = folders_data.dataset_sent;
+            chartdata_folders_rcvd.value = folders_data.dataset_rcvd;
+            chartdata_folders_labels.value = folders_data.labels;
+            is_loading_folders_chart.value = false;
             // tags
             const tags_data = tsCoreUtils.transformCountDataToDataset(result_many_days.tags, false, true);
             //  console.log(">>>>>>>>>>>>> tags_data: " + JSON.stringify(tags_data, null, 2));
@@ -467,6 +496,8 @@ function loadingDo(){
     is_loading_timeday_chart.value = true;
     is_loading_weekdays_chart.value = true;
     is_loading_domains_chart.value = true;
+    is_loading_folders_chart.value = true;
+    is_loading_tags_chart.value = true;
 }
 
 function updateElapsed(elapsed) {

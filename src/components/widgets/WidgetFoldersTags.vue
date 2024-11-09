@@ -30,7 +30,7 @@
 
 
 <script setup>
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, onBeforeUpdate } from 'vue'
 import ChartTags from '../charts/ChartTags.vue';
 import ChartFolders from '../charts/ChartFolders.vue';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
@@ -87,6 +87,10 @@ let chart_key = computed(() => String(force_rand.value));
 
 let switch_text = ref(browser.i18n.getMessage("ShowTags"));
 
+onBeforeUpdate(() => {
+  setChartHeight()
+});
+
 async function doSwitch(){
     chart_id_folders.value = "chart_folders_" + tsStore.currentTab;
     chart_id_tags.value = "chart_tags_" + tsStore.currentTab;
@@ -98,6 +102,8 @@ async function doSwitch(){
 }
 
 function setChartHeight(){
+    chart_id_folders.value = "chart_folders_" + tsStore.currentTab;
+    chart_id_tags.value = "chart_tags_" + tsStore.currentTab;
     // console.log(">>>>>>>>>>>>>>>> chart_id_folders.value: " + chart_id_folders.value);
     if(!show_tags.value){
         let folders_dom_element = document.getElementById(chart_id_folders.value).parentElement;
@@ -130,6 +136,7 @@ function setChartHeight(){
     }
     force_rand.value = Math.floor(Math.random() * 101);
 }
+
 </script>
 
 

@@ -106,7 +106,11 @@ function setChartHeight(){
     chart_id_tags.value = "chart_tags_" + tsStore.currentTab;
     // console.log(">>>>>>>>>>>>>>>> chart_id_folders.value: " + chart_id_folders.value);
     if(!show_tags.value){
-        let folders_dom_element = document.getElementById(chart_id_folders.value).parentElement;
+        let base_element_folders = document.getElementById(chart_id_folders.value);
+        if(base_element_folders == null){
+            return;
+        }
+        let folders_dom_element = base_element_folders.parentElement;
         if(folders_dom_element != null){
             let folders_container_height = folders_dom_element.clientHeight;
             // console.log(">>>>>>>>>>>>>>>> folders_container_height: " + folders_container_height);
@@ -120,7 +124,11 @@ function setChartHeight(){
             // console.log(">>>>>>>>>>>>>>>> chart_height_folders.value: " + chart_height_folders.value);
         }
     }else{
-        let tags_dom_element = document.getElementById(chart_id_tags.value).parentElement;
+        let base_element_tags = document.getElementById(chart_id_tags.value);
+        if(base_element_tags == null){
+            return;
+        }
+        let tags_dom_element = base_element_tags.parentElement;
         if(tags_dom_element != null){
             let tags_container_height = tags_dom_element.clientHeight;
             // console.log(">>>>>>>>>>>>>>>> tags_container_height: " + tags_container_height);

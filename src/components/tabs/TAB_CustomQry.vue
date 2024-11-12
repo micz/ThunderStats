@@ -331,7 +331,6 @@ let chartdata_tags_rcvd = ref([]);
 let chartdata_tags_labels = ref([]);
 
 let domains_chart_height = ref("275px");
-let tags_chart_height = ref("275px");
 
 let _export_data = ref({});
 
@@ -430,7 +429,9 @@ watch(() => do_single_day.value, async (newValue, oldValue) => {
     doOnlyBD.value = false;
     customqry_only_bd_disabled.value = true;
   }else{
+    let prefs_bday = await tsPrefs.getPref("bday_default_only");
     customqry_only_bd_disabled.value = false;
+    doOnlyBD.value = prefs_bday;
   }
 })
 

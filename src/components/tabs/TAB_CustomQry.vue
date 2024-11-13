@@ -88,9 +88,10 @@
     <div class="square_container" id="customqry_square_container">
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
+                        <a @click="showWeeks">weeks</a>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
-                      <ChartCustomQry v-if="do_run" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :key="chartData_Sent_length"/>
+                      <ChartCustomQry v-if="do_run" ref="chartCustomQrySent_ref" :data_type="chartdata_type" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :key="chartData_Sent_length"/>
     </div>
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
@@ -103,7 +104,7 @@
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
-					  <ChartCustomQry v-if="do_run" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_chart"  :key="chartData_Rcvd_length"/>
+					  <ChartCustomQry v-if="do_run" ref="chartCustomQryRcvd_ref" :data_type="chartdata_type" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_chart"  :key="chartData_Rcvd_length"/>
     </div>
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
@@ -203,6 +204,8 @@ const props = defineProps({
 });
 
 let filterFolder_ref = ref(null);
+let  chartCustomQrySent_ref = ref(null);
+let  chartCustomQryRcvd_ref = ref(null);
 
 let max_direct_accounts = 3;
 
@@ -316,6 +319,9 @@ let show_table_involved_senders = ref(false);
 let chartdata_customqry_sent = ref([]);
 let chartdata_customqry_rcvd = ref([]);
 let chartdata_customqry_labels = ref([]);
+let chartdata_customqry_weeks_sent = ref([]);
+let chartdata_customqry_weeks_rcvd = ref([]);
+let chartdata_customqry_weeks_labels = ref([]);
 let chartdata_customqry_hours_sent = ref([]);
 let chartdata_customqry_hours_rcvd = ref([]);
 let chartdata_customqry_weekdays_sent = ref([]);
@@ -354,6 +360,26 @@ let chartData_Rcvd = ref({
 });
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
+let chartData_Sent_Original = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Rcvd_Original = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Weeks_Sent = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Weeks_Rcvd = ref({
+    labels: [],
+    datasets: []
+});
+
 let chartData_TimeDay = ref({
     labels: Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')),
     datasets: []
@@ -373,6 +399,8 @@ let chartData_Tags = ref({
     labels: [],
     datasets: []
 });
+
+let chartdata_type = ref("YYYYMMDD"); // "YYYY" | "YYYYMM" | "YYYYWW" | "YYYYMMDD"
 
 let elapsed = {
     'getCustomQryData':0,
@@ -471,6 +499,15 @@ onMounted(async () => {
 function update(){
   tsLog.log("Update requested");
   emit('updateCustomQry');
+}
+
+function showWeeks(){
+  tsLog.log("Show weeks");
+  chartData_Sent.value = {...chartData_Weeks_Sent.value};
+  // chartData_Sent_length.value = chartData_Sent.value.datasets.length + Math.floor(Math.random() * 101);
+  chartData_Rcvd.value = {...chartData_Weeks_Rcvd.value};
+  // chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
+  chartdata_type.value = "YYYYWW";
 }
 
 async function rangeChoosen(modelData){
@@ -656,8 +693,8 @@ async function updateData() {
       } else {
         chart_width.value = String(chart_container_width) + "px";
       }
-      chartData_Sent.value.datasets = [];
-      chartData_Sent.value.datasets.push({
+      chartData_Sent_Original.value.datasets = [];
+      chartData_Sent_Original.value.datasets.push({
           label: 'Sent',
           data: chartdata_customqry_sent.value,
           borderColor: tsStore.chart_colors.many_days_default,
@@ -668,9 +705,10 @@ async function updateData() {
           minBarThickness: 15,
       });
       tsLog.log("chartdata_customqry_sent.value: " + JSON.stringify(chartdata_customqry_sent.value));
-      chartData_Sent.value.labels = chartdata_customqry_labels.value;
-      chartData_Rcvd.value.datasets = [];
-      chartData_Rcvd.value.datasets.push({
+      chartData_Sent_Original.value.labels = chartdata_customqry_labels.value;
+      chartData_Sent.value = chartData_Sent_Original.value;
+      chartData_Rcvd_Original.value.datasets = [];
+      chartData_Rcvd_Original.value.datasets.push({
           label: 'Received',
           data: chartdata_customqry_rcvd.value,
           borderColor: tsStore.chart_colors.many_days_default,
@@ -681,7 +719,33 @@ async function updateData() {
           minBarThickness: 15,
       });
       tsLog.log("chartdata_customqry_rcvd.value: " + JSON.stringify(chartdata_customqry_rcvd.value));
-      chartData_Rcvd.value.labels = chartdata_customqry_labels.value;
+      chartData_Rcvd_Original.value.labels = chartdata_customqry_labels.value;
+      chartData_Rcvd.value = chartData_Rcvd_Original.value; 
+      //weeks
+      chartData_Weeks_Sent.value.datasets = [];
+      chartData_Weeks_Sent.value.datasets.push({
+          label: 'Sent',
+          data: chartdata_customqry_weeks_sent.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Weeks_Sent.value.labels = chartdata_customqry_weeks_labels.value;
+      chartData_Weeks_Rcvd.value.datasets = [];
+      chartData_Weeks_Rcvd.value.datasets.push({
+          label: 'Received',
+          data: chartdata_customqry_weeks_rcvd.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Weeks_Rcvd.value.labels = chartdata_customqry_weeks_labels.value;
       tsLog.log("chartdata_customqry_hours_sent.value: " + JSON.stringify(chartdata_customqry_hours_sent.value));
       tsLog.log("chartdata_customqry_hours_rcvd.value: " + JSON.stringify(chartdata_customqry_hours_rcvd.value));
       chartData_TimeDay.value.datasets = [];
@@ -907,6 +971,12 @@ async function updateData() {
               // received chart
               chartdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
               is_loading_rcvd_chart.value = false;
+              // weeks view
+              const customqry_weeks = tsCoreUtils.transformCountDataToDataset(result_customqry.dates_weeks, false, true);
+              tsLog.log("customqry_weeks: " + JSON.stringify(customqry_weeks));
+              chartdata_customqry_weeks_labels.value = customqry_weeks.labels;
+              chartdata_customqry_weeks_sent.value = customqry_weeks.dataset_sent;
+              chartdata_customqry_weeks_rcvd.value = customqry_weeks.dataset_rcvd;
               // chart weekdays
               let first_day_week = tsStore.first_day_week;
               const _weekdays_data = tsCoreUtils.transformCountDataToDataset(tsUtils.sortWeekdays(first_day_week, result_customqry.msg_weekdays), false); // the false is to not do it progressive

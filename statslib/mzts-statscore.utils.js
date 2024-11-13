@@ -202,8 +202,11 @@ export const tsCoreUtils = {
     //     });
     // },
 
-    getDaysLabelColor(label, color_today = true) {
-        let isBusinessDay = this.checkBusinessDay(label);
+    getDaysLabelColor(label, color_today = true, color_nobusiness_day = true) {
+        let isBusinessDay = true;
+
+        console.log(">>>>>>>>>> color_today: " + color_today);
+        console.log(">>>>>>>>>> color_nobusiness_day: " + color_nobusiness_day);
 
         const bd_color = tsStore.darkmode ? "white" : "black";
         const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
@@ -212,25 +215,38 @@ export const tsCoreUtils = {
             return tsStore.darkmode ? tsStore.chart_colors.many_days_today_dark : tsStore.chart_colors.many_days_today_light;
         }
 
+        if(color_nobusiness_day) {
+            isBusinessDay = this.checkBusinessDay(label);
+        }
+
         return (isBusinessDay ? bd_color : nbd_color);
     },
 
-    getCustomQryLabel(label) {
-        const year = parseInt(label.slice(0, 4));
-        const month = parseInt(label.slice(4, 6));
-        const day = parseInt(label.slice(6, 8));
+    getCustomQryLabel(label, data_type) {      // data_type = "YYYY" | "YYYYMM" | "YYYYWW" | "YYYYMMDD"
+        switch(data_type) {
+            case "YYYY":
+                return label;
+            case "YYYYMM":
+                return label;
+            case "YYYYWW":
+                return label;
+            case "YYYYMMDD":
+                const year = parseInt(label.slice(0, 4));
+                const month = parseInt(label.slice(4, 6));
+                const day = parseInt(label.slice(6, 8));
 
-        const date = new Date(year, month - 1, day);
+                const date = new Date(year, month - 1, day);
 
-        const dateFormatter = new Intl.DateTimeFormat(undefined, {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
+                const dateFormatter = new Intl.DateTimeFormat(undefined, {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
 
-        const formattedDate = dateFormatter.format(date);
+                const formattedDate = dateFormatter.format(date);
 
-        return formattedDate;
+                return formattedDate;
+        }
     },
 
     getManyDaysLabel(label) {

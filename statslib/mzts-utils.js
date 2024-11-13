@@ -36,6 +36,50 @@ export const tsUtils = {
         return dateString;
     },
 
+    dateToYYYYMM(originalDate) {
+      // Extract the year from the date
+      let year = originalDate.getFullYear();
+      // Extract the month from the date and adjust for zero-index (0 for January, 11 for December)
+      let month = originalDate.getMonth() + 1;
+      // Format month to always have two digits
+      let formattedMonth = month < 10 ? '0' + month : month;
+  
+      // Combine year and formatted month
+      let dateString = '' + year + formattedMonth;
+  
+      return dateString;
+    },
+
+    dateToYYYY(originalDate) {
+      // Extract the year from the date
+      let year = originalDate.getFullYear();
+      return '' + year; // Convert to string for consistency
+    },
+
+    dateToYYYYWW(originalDate) {
+      // Extract the year from the date
+      let year = originalDate.getFullYear();
+  
+      // Create a copy of the date to avoid modifying the original
+      let date = new Date(originalDate.getTime());
+      date.setHours(0, 0, 0, 0);
+  
+      // Set the date to the nearest Thursday (ISO week starts on Monday and counts from the first Thursday)
+      date.setDate(date.getDate() + 4 - (date.getDay() || 7));
+      let yearStart = new Date(date.getFullYear(), 0, 1);
+      
+      // Calculate the week number
+      let weekNumber = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+  
+      // Format week number to always have two digits
+      let formattedWeek = weekNumber < 10 ? '0' + weekNumber : weekNumber;
+  
+      // Combine year and formatted week number
+      let dateString = '' + year + formattedWeek;
+  
+      return dateString;
+    },  
+
     parseYYYYMMDDToDate(dateString) {
         // Extract year, month, and day from the string
         let year = parseInt(dateString.substring(0, 4), 10);
@@ -54,13 +98,52 @@ export const tsUtils = {
     
         while (currentDate <= toDate) {
             let formattedDate = this.dateToYYYYMMDD(currentDate);
-            dateArray[formattedDate] = {};
-            dateArray[formattedDate].count = 0;
-            dateArray[formattedDate].sent = 0;
-            dateArray[formattedDate].received = 0;
+            dateArray[formattedDate] = { count: 0, sent: 0, received: 0 };
             currentDate.setDate(currentDate.getDate() + 1); // Increment the date by one day
         }
         return dateArray;
+    },
+
+    getDateArrayWeeks(fromDate, toDate) {
+      let weekArray = {};
+      let currentDate = new Date(fromDate.getTime());
+  
+      while (currentDate <= toDate) {
+          let weekKey = this.dateToYYYYWW(currentDate);
+          if (!weekArray[weekKey]) {
+              weekArray[weekKey] = { count: 0, sent: 0, received: 0 };
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
+      }
+      return weekArray;
+    },
+
+    getDateArrayMonths(fromDate, toDate) {
+      let monthArray = {};
+      let currentDate = new Date(fromDate.getTime());
+  
+      while (currentDate <= toDate) {
+          let monthKey = this.dateToYYYYMM(currentDate);
+          if (!monthArray[monthKey]) {
+              monthArray[monthKey] = { count: 0, sent: 0, received: 0 };
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
+      }
+      return monthArray;
+    },
+
+    getDateArrayYears(fromDate, toDate) {
+      let yearArray = {};
+      let currentDate = new Date(fromDate.getTime());
+  
+      while (currentDate <= toDate) {
+          let yearKey = this.dateToYYYY(currentDate);
+          if (!yearArray[yearKey]) {
+              yearArray[yearKey] = { count: 0, sent: 0, received: 0 };
+          }
+          currentDate.setDate(currentDate.getDate() + 1);
+      }
+      return yearArray;
     },
 
     daysBetween(fromDate, toDate) {

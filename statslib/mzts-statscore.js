@@ -279,6 +279,9 @@ export class thunderStastsCore {
 
       let folders = {};
       let dates = tsUtils.getDateArray(fromDate,toDate);
+      let dates_weeks = tsUtils.getDateArrayWeeks(fromDate,toDate);
+      let dates_months = tsUtils.getDateArrayMonths(fromDate,toDate);
+      let dates_years = tsUtils.getDateArrayYears(fromDate,toDate);
 
       let domains = {};
       let tags = await tsCoreUtils.getTagsList();
@@ -363,7 +366,13 @@ export class thunderStastsCore {
           }
           // dates
           let date_message_string = tsUtils.dateToYYYYMMDD(message.date);
+          let date_week_string = tsUtils.dateToYYYYWW(message.date);
+          let date_month_string = tsUtils.dateToYYYYMM(message.date);
+          let date_year_string = tsUtils.dateToYYYY(message.date);
           dates[date_message_string].count++;
+          dates_weeks[date_week_string].count++;
+          dates_months[date_month_string].count++;
+          dates_years[date_year_string].count++;
           // check sender
           if (match_author) {
             const key_author = match_author[0].toLowerCase();
@@ -374,6 +383,9 @@ export class thunderStastsCore {
               folders[message.folder.id].sent++;
               // group by date
               dates[date_message_string].sent++;
+              dates_weeks[date_week_string].sent++;
+              dates_months[date_month_string].sent++;
+              dates_years[date_year_string].sent++;
               // group by hour
               msg_hours[hour_message].sent++;
               // group by weekday
@@ -457,6 +469,9 @@ export class thunderStastsCore {
               folders[message.folder.id].received++;
               // group by date
               dates[date_message_string].received++;
+              dates_weeks[date_week_string].received++;
+              dates_months[date_month_string].received++;
+              dates_years[date_year_string].received++;
               // group by hour
               msg_hours[hour_message].received++;
               // group by weekday
@@ -497,7 +512,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
       // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, msg_weekdays: msg_weekdays, domains: domains, tags: tags};
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, dates_weeks: dates_weeks, dates_months: dates_months, dates_years: dates_years, msg_weekdays: msg_weekdays, domains: domains, tags: tags};
 
       if(do_aggregate_stats) {
         output.aggregate = await this.aggregateData(dates, only_businessdays);

@@ -205,8 +205,8 @@ export const tsCoreUtils = {
     getDaysLabelColor(label, color_today = true, color_nobusiness_day = true) {
         let isBusinessDay = true;
 
-        console.log(">>>>>>>>>> color_today: " + color_today);
-        console.log(">>>>>>>>>> color_nobusiness_day: " + color_nobusiness_day);
+        // console.log(">>>>>>>>>> color_today: " + color_today);
+        // console.log(">>>>>>>>>> color_nobusiness_day: " + color_nobusiness_day);
 
         const bd_color = tsStore.darkmode ? "white" : "black";
         const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";

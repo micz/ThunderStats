@@ -88,7 +88,10 @@
     <div class="square_container" id="customqry_square_container">
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
-                        <a @click="showWeeks">weeks</a>
+                        <button type="button" @click="showDays" class="btn_small btn_disabled" ref="showDays_btn_ref" >Days</button>
+                        <button type="button" @click="showWeeks" class="btn_small" ref="showWeeks_btn_ref" >Weeks</button>
+                        <button type="button" @click="showMonths" class="btn_small" ref="showMonths_btn_ref" >Months</button>
+                        <button type="button" @click="showYears" class="btn_small" ref="showYears_btn_ref" >Years</button>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
                       <ChartCustomQry v-if="do_run" ref="chartCustomQrySent_ref" :data_type="chartdata_type" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :key="chartData_Sent_length"/>
@@ -204,8 +207,12 @@ const props = defineProps({
 });
 
 let filterFolder_ref = ref(null);
-let  chartCustomQrySent_ref = ref(null);
-let  chartCustomQryRcvd_ref = ref(null);
+let chartCustomQrySent_ref = ref(null);
+let chartCustomQryRcvd_ref = ref(null);
+let showDays_btn_ref = ref(null);
+let showWeeks_btn_ref = ref(null);
+let showMonths_btn_ref = ref(null);
+let showYears_btn_ref = ref(null);
 
 let max_direct_accounts = 3;
 
@@ -322,6 +329,12 @@ let chartdata_customqry_labels = ref([]);
 let chartdata_customqry_weeks_sent = ref([]);
 let chartdata_customqry_weeks_rcvd = ref([]);
 let chartdata_customqry_weeks_labels = ref([]);
+let chartdata_customqry_months_sent = ref([]);
+let chartdata_customqry_months_rcvd = ref([]);
+let chartdata_customqry_months_labels = ref([]);
+let chartdata_customqry_years_sent = ref([]);
+let chartdata_customqry_years_rcvd = ref([]);
+let chartdata_customqry_years_labels = ref([]);
 let chartdata_customqry_hours_sent = ref([]);
 let chartdata_customqry_hours_rcvd = ref([]);
 let chartdata_customqry_weekdays_sent = ref([]);
@@ -376,6 +389,26 @@ let chartData_Weeks_Sent = ref({
 });
 
 let chartData_Weeks_Rcvd = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Months_Sent = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Months_Rcvd = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Years_Sent = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Years_Rcvd = ref({
     labels: [],
     datasets: []
 });
@@ -461,7 +494,38 @@ watch(() => do_single_day.value, async (newValue, oldValue) => {
     customqry_only_bd_disabled.value = false;
     doOnlyBD.value = prefs_bday;
   }
-})
+});
+
+watch(() => chartdata_type.value, async (newValue, oldValue) => {
+  switch(newValue){
+    case "YYYYMMDD":
+      showDays_btn_ref.value.classList.add("btn_disabled");
+      break;
+    case "YYYYWW":
+      showWeeks_btn_ref.value.classList.add("btn_disabled");
+      break;
+    case "YYYYMM":
+      showMonths_btn_ref.value.classList.add("btn_disabled");
+      break;
+    case "YYYY":
+      showYears_btn_ref.value.classList.add("btn_disabled");
+      break;
+  }
+  switch(oldValue){
+    case "YYYYMMDD":
+      showDays_btn_ref.value.classList.remove("btn_disabled");
+      break;
+    case "YYYYWW":
+      showWeeks_btn_ref.value.classList.remove("btn_disabled");
+      break;
+    case "YYYYMM":
+      showMonths_btn_ref.value.classList.remove("btn_disabled");
+      break;
+    case "YYYY":
+      showYears_btn_ref.value.classList.remove("btn_disabled");
+      break;
+  }
+});
 
 onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
@@ -501,13 +565,32 @@ function update(){
   emit('updateCustomQry');
 }
 
+function showDays(){
+  tsLog.log("Show days");
+  chartData_Sent.value = {...chartData_Sent_Original.value};
+  chartData_Rcvd.value = {...chartData_Rcvd_Original.value};
+  chartdata_type.value = "YYYYMMDD";
+}
+
 function showWeeks(){
   tsLog.log("Show weeks");
   chartData_Sent.value = {...chartData_Weeks_Sent.value};
-  // chartData_Sent_length.value = chartData_Sent.value.datasets.length + Math.floor(Math.random() * 101);
   chartData_Rcvd.value = {...chartData_Weeks_Rcvd.value};
-  // chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
   chartdata_type.value = "YYYYWW";
+}
+
+function showMonths(){
+  tsLog.log("Show months");
+  chartData_Sent.value = {...chartData_Months_Sent.value};
+  chartData_Rcvd.value = {...chartData_Months_Rcvd.value};
+  chartdata_type.value = "YYYYMM";
+}
+
+function showYears(){
+  tsLog.log("Show years");
+  chartData_Sent.value = {...chartData_Years_Sent.value};
+  chartData_Rcvd.value = {...chartData_Years_Rcvd.value};
+  chartdata_type.value = "YYYY";
 }
 
 async function rangeChoosen(modelData){
@@ -746,6 +829,56 @@ async function updateData() {
           minBarThickness: 15,
       });
       chartData_Weeks_Rcvd.value.labels = chartdata_customqry_weeks_labels.value;
+      //months
+      chartData_Months_Sent.value.datasets = [];
+      chartData_Months_Sent.value.datasets.push({
+          label: 'Sent',
+          data: chartdata_customqry_months_sent.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Months_Sent.value.labels = chartdata_customqry_months_labels.value;
+      chartData_Months_Rcvd.value.datasets = [];
+      chartData_Months_Rcvd.value.datasets.push({
+          label: 'Received',
+          data: chartdata_customqry_months_rcvd.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Months_Rcvd.value.labels = chartdata_customqry_months_labels.value;
+      //years
+      chartData_Years_Sent.value.datasets = [];
+      chartData_Years_Sent.value.datasets.push({
+          label: 'Sent',
+          data: chartdata_customqry_years_sent.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Years_Sent.value.labels = chartdata_customqry_years_labels.value;
+      chartData_Years_Rcvd.value.datasets = [];
+      chartData_Years_Rcvd.value.datasets.push({
+          label: 'Received',
+          data: chartdata_customqry_years_rcvd.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Years_Rcvd.value.labels = chartdata_customqry_years_labels.value;
       tsLog.log("chartdata_customqry_hours_sent.value: " + JSON.stringify(chartdata_customqry_hours_sent.value));
       tsLog.log("chartdata_customqry_hours_rcvd.value: " + JSON.stringify(chartdata_customqry_hours_rcvd.value));
       chartData_TimeDay.value.datasets = [];
@@ -977,6 +1110,18 @@ async function updateData() {
               chartdata_customqry_weeks_labels.value = customqry_weeks.labels;
               chartdata_customqry_weeks_sent.value = customqry_weeks.dataset_sent;
               chartdata_customqry_weeks_rcvd.value = customqry_weeks.dataset_rcvd;
+              // months view
+              const customqry_months = tsCoreUtils.transformCountDataToDataset(result_customqry.dates_months, false, true);
+              tsLog.log("customqry_months: " + JSON.stringify(customqry_months));
+              chartdata_customqry_months_labels.value = customqry_months.labels;
+              chartdata_customqry_months_sent.value = customqry_months.dataset_sent;
+              chartdata_customqry_months_rcvd.value = customqry_months.dataset_rcvd;
+              // years view
+              const customqry_years = tsCoreUtils.transformCountDataToDataset(result_customqry.dates_years, false, true);
+              tsLog.log("customqry_years: " + JSON.stringify(customqry_years));
+              chartdata_customqry_years_labels.value = customqry_years.labels;
+              chartdata_customqry_years_sent.value = customqry_years.dataset_sent;
+              chartdata_customqry_years_rcvd.value = customqry_years.dataset_rcvd;
               // chart weekdays
               let first_day_week = tsStore.first_day_week;
               const _weekdays_data = tsCoreUtils.transformCountDataToDataset(tsUtils.sortWeekdays(first_day_week, result_customqry.msg_weekdays), false); // the false is to not do it progressive

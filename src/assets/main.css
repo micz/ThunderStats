@@ -377,6 +377,22 @@ table#customqry_adv_filters_table td{
   border-radius: 4px;
 }
 
+.btn_small {
+  padding: 0px 7px;
+  background-color: #0078d7;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 12px;
+  font-size: 0.80em;
+}
+
+.btn_disabled {
+  background-color: #7a7a7a;
+  color: white;
+  cursor: unset;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {
@@ -446,6 +462,16 @@ table#customqry_adv_filters_table td{
   .btn {
     background-color: #1e88e5;
     color: #ffffff;
+  }
+
+  .btn_small {
+    background-color: #1e88e5;
+    color: #ffffff;
+  }
+
+  .btn_disabled {
+    background-color: #8b8b8b;
+    color: white;
   }
 
  .chart_inbox0_extended_sorticon{filter: invert(0)};

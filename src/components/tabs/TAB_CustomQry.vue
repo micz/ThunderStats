@@ -88,10 +88,12 @@
     <div class="square_container" id="customqry_square_container">
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
-                        <button type="button" @click="showDays" class="btn_small btn_disabled" ref="showDays_btn_ref" >Days</button>
-                        <button type="button" @click="showWeeks" class="btn_small" ref="showWeeks_btn_ref" >Weeks</button>
-                        <button type="button" @click="showMonths" class="btn_small" ref="showMonths_btn_ref" >Months</button>
-                        <button type="button" @click="showYears" class="btn_small" ref="showYears_btn_ref" >Years</button>
+                        <div class="btn_group">
+                          <button type="button" @click="showDays" class="btn_small btn_small_start btn_disabled" ref="showDays_btn_ref" >Days</button>
+                          <button type="button" @click="showWeeks" class="btn_small" ref="showWeeks_btn_ref" >Weeks</button>
+                          <button type="button" @click="showMonths" class="btn_small" ref="showMonths_btn_ref" >Months</button>
+                          <button type="button" @click="showYears" class="btn_small btn_small_end" ref="showYears_btn_ref" >Years</button>
+                        </div>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
                       <ChartCustomQry v-if="do_run" ref="chartCustomQrySent_ref" :data_type="chartdata_type" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :key="chartData_Sent_length"/>

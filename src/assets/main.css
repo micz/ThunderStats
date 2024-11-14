@@ -377,14 +377,31 @@ table#customqry_adv_filters_table td{
   border-radius: 4px;
 }
 
+.btn_group{
+  width:fit-content;
+  display: inline-block;
+}
+
 .btn_small {
-  padding: 0px 7px;
+  padding-top: 1px;
+  padding-right: 7px;
+  padding-bottom: 2px;
+  padding-left: 7px;
   background-color: #0078d7;
   border: none;
   color: white;
   cursor: pointer;
-  border-radius: 12px;
   font-size: 0.80em;
+}
+
+.btn_small_start{
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.btn_small_end{
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 .btn_disabled {

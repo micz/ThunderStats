@@ -808,5 +808,9 @@
   "ShowFolders": {
     "message": "Show Folders",
     "description": ""
+  },
+  "prefs_customqry_loaddata_when_opening_addon": {
+    "message": "Load data even when Custom View is the first tab opened in ThunderStats",
+    "description": ""
   }
 }

@@ -11,6 +11,7 @@ export const prefs_default = {
     'always_reload_tab_data': false,
     'load_data_changing_account': true,
     'customqry_loaddata_when_selectingrange': true,
+    'customqry_loaddata_when_opening_addon': true,    // choose to load the customqry data even if is the opening tab when launching ThunderStats
     'first_day_week': 1,
     'datepicker_locale': 'en-US',
     'custom_identities': {},

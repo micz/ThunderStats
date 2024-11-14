@@ -149,7 +149,8 @@ import { tsUtils } from '@statslib/mzts-utils';
   onMounted(async () => {
     // console.log(">>>>>>>>>>>> ThunderStatsView onMounted");
     // console.log(">>>>>>>>>>>>> ThunderStatsView onMounted statsTabs_ref.value.activeTabHash: " + JSON.stringify(statsTabs_ref.value.activeTabHash));
-    remember_last_tab = await tsPrefs.getPref("remember_last_tab");
+    let prefs_onmounted = await tsPrefs.getPrefs(["remember_last_tab","customqry_loaddata_when_opening_addon"]);
+    remember_last_tab = prefs_onmounted.remember_last_tab;
     if(!remember_last_tab) {
       statsTabs_ref.value.selectTab('#tab-today');
       tsStore.currentTab = "tab-today";
@@ -161,7 +162,9 @@ import { tsUtils } from '@statslib/mzts-utils';
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     i18n.updateDocument();
-    updateStats(HeadingNAV_ref.value.getCurrentIdn());
+    if((tsStore.currentTab != "tab-customqry")||(prefs_onmounted.customqry_loaddata_when_opening_addon)) {
+      updateStats(HeadingNAV_ref.value.getCurrentIdn());
+    }
     mounted_ok = true;
   });
   

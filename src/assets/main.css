@@ -410,6 +410,10 @@ table#customqry_adv_filters_table td{
   cursor: unset;
 }
 
+.spacer {
+  flex-grow: 1;
+}
+
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   #heading_wrapper {

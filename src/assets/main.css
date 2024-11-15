@@ -380,6 +380,8 @@ table#customqry_adv_filters_table td{
 .btn_group{
   width:fit-content;
   display: inline-block;
+  position: relative;
+  top: 2px;
 }
 
 .btn_small {

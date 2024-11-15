@@ -218,7 +218,7 @@ let showWeeks_btn_ref = ref(null);
 let showMonths_btn_ref = ref(null);
 let showYears_btn_ref = ref(null);
 
-let max_direct_accounts = 3;
+let max_direct_accounts = 1;
 
 let tsLog = null;
 var tsCore = null;

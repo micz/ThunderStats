@@ -82,8 +82,7 @@ let chart_height_tags = ref("275px");
 let chart_id_folders = ref("chart_folders_" + tsStore.currentTab);
 let chart_id_tags = ref("chart_tags_" + tsStore.currentTab);
 
-let force_rand = ref(Math.floor(Math.random() * 101));
-let chart_key = computed(() => String(force_rand.value));
+let chart_key = ref(Math.floor(Math.random() * 1001));
 
 let switch_text = ref(browser.i18n.getMessage("ShowTags"));
 
@@ -105,6 +104,7 @@ function setChartHeight(){
     chart_id_folders.value = "chart_folders_" + tsStore.currentTab;
     chart_id_tags.value = "chart_tags_" + tsStore.currentTab;
     // console.log(">>>>>>>>>>>>>>>> chart_id_folders.value: " + chart_id_folders.value);
+    console.log(">>>>>>>>>>>>>>>> chart_id_tags.value: " + chart_id_tags.value);
     if(!show_tags.value){
         let base_element_folders = document.getElementById(chart_id_folders.value);
         if(base_element_folders == null){
@@ -124,25 +124,27 @@ function setChartHeight(){
             // console.log(">>>>>>>>>>>>>>>> chart_height_folders.value: " + chart_height_folders.value);
         }
     }else{
+        console.log(">>>>>>>>>> setting tag chart height");
         let base_element_tags = document.getElementById(chart_id_tags.value);
         if(base_element_tags == null){
+            console.log(">>>>>>>>>> base_element_tags == null");
             return;
         }
         let tags_dom_element = base_element_tags.parentElement;
         if(tags_dom_element != null){
             let tags_container_height = tags_dom_element.clientHeight;
-            // console.log(">>>>>>>>>>>>>>>> tags_container_height: " + tags_container_height);
+            console.log(">>>>>>>>>>>>>>>> tags_container_height: " + tags_container_height);
             let tags_ipotetic_height = props.chartDataTags.labels.length * 60;
-            // console.log(">>>>>>>>>>>>>>>> tags_ipotetic_height: " + tags_ipotetic_height);
+            console.log(">>>>>>>>>>>>>>>> tags_ipotetic_height: " + tags_ipotetic_height);
             if(tags_container_height < tags_ipotetic_height){
                 chart_height_tags.value = String(tags_ipotetic_height) + "px";
             } else {
                 chart_height_tags.value = String(tags_container_height) + "px";
             }
-            // console.log(">>>>>>>>>>>>>>>> chart_height_tags.value: " + chart_height_tags.value);
+            console.log(">>>>>>>>>>>>>>>> chart_height_tags.value: " + chart_height_tags.value);
         }
     }
-    force_rand.value = Math.floor(Math.random() * 101);
+    chart_key.value = Math.floor(Math.random() * 1001);
 }
 
 </script>

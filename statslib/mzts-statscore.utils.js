@@ -227,9 +227,14 @@ export const tsCoreUtils = {
             case "YYYY":
                 return label;
             case "YYYYMM":
-                return label;
+                let mm_year = label.slice(0, 4);
+                let mm_month = label.slice(4);
+                return `${mm_month}/${mm_year}`;
             case "YYYYWW":
-                return label;
+                let ww_year = label.slice(0, 4); // First 4 characters are the year
+                let ww_week = label.slice(4);   // Remaining characters are the week number
+                // Format the string as "WW [YYYY]"
+                return `${ww_week} [${ww_year}]`;
             case "YYYYMMDD":
                 const year = parseInt(label.slice(0, 4));
                 const month = parseInt(label.slice(4, 6));

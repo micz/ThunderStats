@@ -574,6 +574,7 @@ function showDays(){
   chartData_Sent.value = {...chartData_Sent_Original.value};
   chartData_Rcvd.value = {...chartData_Rcvd_Original.value};
   chartdata_type.value = "YYYYMMDD";
+  setChartWidth();
 }
 
 function showWeeks(){
@@ -581,6 +582,7 @@ function showWeeks(){
   chartData_Sent.value = {...chartData_Weeks_Sent.value};
   chartData_Rcvd.value = {...chartData_Weeks_Rcvd.value};
   chartdata_type.value = "YYYYWW";
+  setChartWidth();
 }
 
 function showMonths(){
@@ -588,6 +590,7 @@ function showMonths(){
   chartData_Sent.value = {...chartData_Months_Sent.value};
   chartData_Rcvd.value = {...chartData_Months_Rcvd.value};
   chartdata_type.value = "YYYYMM";
+  setChartWidth();
 }
 
 function showYears(){
@@ -595,6 +598,7 @@ function showYears(){
   chartData_Sent.value = {...chartData_Years_Sent.value};
   chartData_Rcvd.value = {...chartData_Years_Rcvd.value};
   chartdata_type.value = "YYYY";
+  setChartWidth();
 }
 
 async function rangeChoosen(modelData){
@@ -739,6 +743,7 @@ async function doQry(){
     }
   }
   loadingDo();
+  chartdata_type.value = "YYYYMMDD";
   do_single_day.value = (customqry_totaldays_num.value == 1);
   elapsed.getInboxZeroData = 1;
   if(do_single_day.value){
@@ -761,6 +766,16 @@ async function doQry(){
   updateData();
 }
 
+function setChartWidth(){
+  let chart_container_width = document.querySelector('.chart_customqry').clientWidth;
+  let chart_ipotetic_width = chartData_Rcvd.value.labels.length * 60;
+  if(chart_container_width < chart_ipotetic_width){
+    chart_width.value = String(chart_ipotetic_width) + "px";
+  } else {
+    chart_width.value = String(chart_container_width) + "px";
+  }
+}
+
 async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
@@ -773,13 +788,6 @@ async function updateData() {
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
     await getCustomQryData();
     if(!do_single_day.value){
-      let chart_container_width = document.querySelector('.chart_customqry').clientWidth;
-      let chart_ipotetic_width = chartdata_customqry_labels.value.length * 60;
-      if(chart_container_width < chart_ipotetic_width){
-        chart_width.value = String(chart_ipotetic_width) + "px";
-      } else {
-        chart_width.value = String(chart_container_width) + "px";
-      }
       chartData_Sent_Original.value.datasets = [];
       chartData_Sent_Original.value.datasets.push({
           label: 'Sent',
@@ -807,7 +815,8 @@ async function updateData() {
       });
       tsLog.log("chartdata_customqry_rcvd.value: " + JSON.stringify(chartdata_customqry_rcvd.value));
       chartData_Rcvd_Original.value.labels = chartdata_customqry_labels.value;
-      chartData_Rcvd.value = chartData_Rcvd_Original.value; 
+      chartData_Rcvd.value = chartData_Rcvd_Original.value;
+      setChartWidth();
       //weeks
       chartData_Weeks_Sent.value.datasets = [];
       chartData_Weeks_Sent.value.datasets.push({

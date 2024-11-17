@@ -736,5 +736,81 @@
   "LastBusinessDayIs": {
     "message": "L'ultimo giorno lavorativo è",
     "description": ""
+  },
+  "ReadStatus": {
+    "message": "Stato di lettura",
+    "description": ""
+  },
+  "FilterFoldersOnlyRead": {
+    "message": "Letto",
+    "description": ""
+  },
+  "FilterFoldersOnlyUnread": {
+    "message": "Non letto",
+    "description": ""
+  },
+  "FlagStatus": {
+    "message": "Stato del contrassegno",
+    "description": ""
+  },
+  "FilterFoldersOnlyFlagged": {
+    "message": "Contrassegnato",
+    "description": ""
+  },
+  "FilterFoldersOnlyUnflagged": {
+    "message": "Non contrassegnato",
+    "description": ""
+  },
+  "FilterFoldersAll": {
+    "message": "Tutti",
+    "description": ""
+  },
+  "FilterSubject": {
+    "message": "Filtra l'oggetto con una parola chiave",
+    "description": ""
+  },
+  "WarnSearchCaseSensitive": {
+    "message": "Tieni presente che la ricerca distingue tra maiuscole e minuscole. Cercare \"test\" è diverso da cercare \"Test\".",
+    "description": ""
+  },
+  "Domains": {
+    "message": "Domini",
+    "description": ""
+  },
+  "Tags": {
+    "message": "Tag",
+    "description": ""
+  },
+  "InboxMailsDateSpreadingExtended": {
+    "message": "Email in arrivo - Vista dettagli date",
+    "description": ""
+  },
+  "OrderBy": {
+    "message": "Ordina per",
+    "description": ""
+  },
+  "Close": {
+    "message": "Chiudi",
+    "description": ""
+  },
+  "ViewDetails": {
+    "message": "Visualizza dettagli",
+    "description": ""
+  },
+  "Folders": {
+    "message": "Cartelle",
+    "description": ""
+  },
+  "ShowTags": {
+    "message": "Mostra Tag",
+    "description": ""
+  },
+  "ShowFolders": {
+    "message": "Mostra Cartelle",
+    "description": ""
+  },
+  "prefs_customqry_loaddata_when_opening_addon": {
+    "message": "Carica i dati anche quando la Vista Personalizzata è la prima scheda aperta in ThunderStats",
+    "description": ""
   }
 }

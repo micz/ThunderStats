@@ -21,11 +21,13 @@
 
 <template>
     <div class="list_heading_wrapper">
-        <h2 class="list_heading cropped lowercase">{{ show_tags ? '__MSG_Tags__' : '__MSG_Folders__' }}</h2>
+        <h2 class="list_heading cropped lowercase">{{ show_tags ? '__MSG_Tags__&nbsp;&nbsp;' : '__MSG_Folders__' }}</h2>
+        <div class="spacer" style="max-width:4.5em;"></div>
+        <div class="btn_group" ><button type="button" @click="doSwitch" v-if="!(is_loading_folders || is_loading_tags)" class="btn_small btn_small_single" v-text="switch_text"></button></div>
+        <div class="spacer"></div>
     </div>
     <ChartFolders v-if="!show_tags" :chartData="chartDataFolders" :chart_id="chart_id_folders" :chart_height="chart_height_folders" :is_loading="is_loading_folders" :key="chart_key" />
     <ChartTags v-if="show_tags" :chartData="chartDataTags" :chart_id="chart_id_tags" :chart_height="chart_height_tags" :is_loading="is_loading_tags" />
-    <div class="chart_inbox0_extended_btn" ><button type="button" @click="doSwitch" v-if="!(is_loading_folders || is_loading_tags)" class="btn" v-text="switch_text"></button></div>
 </template>
 
 

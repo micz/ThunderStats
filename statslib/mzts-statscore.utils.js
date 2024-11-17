@@ -59,6 +59,7 @@ export const tsCoreUtils = {
         let output_labels = [];
         let output_colors = [];
         let output_paths = [];
+        //console.log(">>>>>>>>>>>> folders: " + JSON.stringify(folders));
         for(let key in folders) {
             output_labels.push(folders[key].folder_data.name);
             if(!("id" in folders[key].folder_data)){

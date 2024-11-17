@@ -104,7 +104,7 @@
       </td>
     </tr>
     </table>
-    <table class="miczPrefs">
+    <table class="miczPrefs" v-if="tsStore.isTB128plus">
     <tr>
       <td colspan="2" class="grouptitle">__MSG_InboxZeroChart__</td>
     </tr>

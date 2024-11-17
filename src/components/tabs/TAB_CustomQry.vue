@@ -545,6 +545,7 @@ onBeforeMount(async () => {
 onMounted(async () => {
     const endDate = new Date();
     const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
+    // dateQry.value = [new Date('2024-08-19'),new Date('2024-08-19')];
     dateQry.value = [startDate, endDate];
     let prefs = await tsPrefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only", "customqry_always_open_adv_filters"]);
     //console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));

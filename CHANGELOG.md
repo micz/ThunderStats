@@ -13,7 +13,14 @@
         <li>Added a details view of the Inbox Zero Dates chart [<a href="https://github.com/micz/ThunderStats/issues/350">#350</a>]</li>
         <li>The advanced filters panel opening and closing spacing is now fixed [<a href="https://github.com/micz/ThunderStats/issues/386">#386</a>].</li>
         <li>Added an option to do not load data in the Custom View at startup.</li>
+        <li>In Thunderbird 128 is now possible again to choose to open a folder from the Inbox Zero Folder Chart in a new tab or not.</li>
         <li>...</li>
+      </ul>
+<h3>Version 2.2.3 - 05/10/2024</h3>
+      <ul>
+        <li>Fixed opening the folder from the Inbox Zero Folder Chart [<a href="https://github.com/micz/ThunderStats/issues/381">#381</a>].</li>
+        <li>Improved the label positioning in the Inbox Zero Folders graphs [<a href="https://github.com/micz/ThunderStats/issues/383">#383</a>].</li>
+        <li>Better time chart legend positioning in small windows [<a href="https://github.com/micz/ThunderStats/issues/382">#382</a>].</li>
       </ul>
 <h3>Version 2.2.2 - 24/09/2024</h3>
       <ul>

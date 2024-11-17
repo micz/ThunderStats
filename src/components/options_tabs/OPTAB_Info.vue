@@ -22,7 +22,7 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
-      <h3>Version 2.3.0 - ??/??/2024</h3>
+      <h3>Version 2.3.0 - 17/11/2024</h3>
       <ul>
         <li>It's now possible to search for read/unread and starred/unsterred in the Custom View [<a href="https://github.com/micz/ThunderStats/issues/158">#158</a>].</li>
         <li>It's now possible to search for a keyword in the subject in the Custom View [<a href="https://github.com/micz/ThunderStats/issues/354">#354</a>].</li>
@@ -33,7 +33,6 @@
         <li>The advanced filters panel opening and closing spacing is now fixed [<a href="https://github.com/micz/ThunderStats/issues/386">#386</a>].</li>
         <li>Added an option to do not load data in the Custom View at startup.</li>
         <li>In Thunderbird 128 is now possible again to choose to open a folder from the Inbox Zero Folder Chart in a new tab or not.</li>
-        <li>...</li>
       </ul>
       <h3>Version 2.2.3 - 05/10/2024</h3>
       <ul>

@@ -71,7 +71,7 @@ let last_business_day_text = computed(() => {
 })
 
 let last_business_day_title = computed(() => {
-    //console.log(">>>>>>>>>>>>>> props.last_bday_date: " + JSON.stringify(props.last_bday_date));
+    // console.log(">>>>>>>>>>>>>> props.last_bday_date: " + JSON.stringify(props.last_bday_date));
     return props.last_bday_date;
 })
 

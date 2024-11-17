@@ -179,14 +179,24 @@ export class thunderStastsCore {
         toDate: toDate,
       }
 
-      // Advanced Filters
+      // ====================== Advanced Filters ======================
       /*
         adv_filters is an object that contains various filters
 
         //Folders
           adv_filter.folders is an array with the "folders ids" to be included in the query
           adv_filter.folders_do_subfolders is a boolean that indicates if the subfolders should be included in the query
+
+        // filterSubject
+          adv_filter.filterSubject is a string that is searched in the subject
+
+        // Read / Unread
+          adv_filter.read_unread is an integer value: 0: all, 1: read, 2: unread
+
+        // Flagged / Unflagged
+          adv_filter.flagged_unflagged is an integer value: 0: all, 1: flagged, 2: unflagged
       */
+     // ===============================================================
 
       let filter_folders = null;
 
@@ -196,6 +206,41 @@ export class thunderStastsCore {
         //Folders
         if ((account_id != 0) && ('folders' in adv_filters) && (adv_filters.folders.length > 0)) {
           filter_folders = [...new Set(adv_filters.folders)];
+        }
+
+        // filterSubject
+        if (('filterSubject' in adv_filters) && (adv_filters.filterSubject.length > 0)) {
+          queryInfo_FullStatsData.subject = adv_filters.filterSubject;
+        }
+
+        // Read / Unread
+        if ('read_unread' in adv_filters) {
+          switch(String(adv_filters.read_unread)){
+            case "1":
+              queryInfo_FullStatsData.unread = false;
+              break;
+            case "2":
+              queryInfo_FullStatsData.unread = true;
+              break;
+            case "0":
+            default:
+              break;
+          }
+        }
+
+        // Flagged / Unflagged
+        if ('flagged_unflagged' in adv_filters) {
+          switch(String(adv_filters.flagged_unflagged)){
+            case "1":
+              queryInfo_FullStatsData.flagged = true;
+              break;
+            case "2":
+              queryInfo_FullStatsData.flagged = false;
+              break;
+            case "0":
+            default:
+              break;
+          }
         }
       }
 
@@ -222,7 +267,7 @@ export class thunderStastsCore {
         }
       }
       
-      this.tsLog.log("queryInfo_getFullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
+      this.tsLog.log("queryInfo_FullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
       
       let count = 0;
       let sent = 0;
@@ -234,6 +279,13 @@ export class thunderStastsCore {
 
       let folders = {};
       let dates = tsUtils.getDateArray(fromDate,toDate);
+      let dates_weeks = tsUtils.getDateArrayWeeks(fromDate,toDate);
+      let dates_months = tsUtils.getDateArrayMonths(fromDate,toDate);
+      let dates_years = tsUtils.getDateArrayYears(fromDate,toDate);
+
+      let domains = {};
+      let tags = await tsCoreUtils.getTagsList();
+      tsStore.tags_list = tags;
 
       //let messageids_sent = [];
 
@@ -314,7 +366,13 @@ export class thunderStastsCore {
           }
           // dates
           let date_message_string = tsUtils.dateToYYYYMMDD(message.date);
+          let date_week_string = tsUtils.dateToYYYYWW(message.date);
+          let date_month_string = tsUtils.dateToYYYYMM(message.date);
+          let date_year_string = tsUtils.dateToYYYY(message.date);
           dates[date_message_string].count++;
+          dates_weeks[date_week_string].count++;
+          dates_months[date_month_string].count++;
+          dates_years[date_year_string].count++;
           // check sender
           if (match_author) {
             const key_author = match_author[0].toLowerCase();
@@ -325,10 +383,36 @@ export class thunderStastsCore {
               folders[message.folder.id].sent++;
               // group by date
               dates[date_message_string].sent++;
+              dates_weeks[date_week_string].sent++;
+              dates_months[date_month_string].sent++;
+              dates_years[date_year_string].sent++;
               // group by hour
               msg_hours[hour_message].sent++;
               // group by weekday
               msg_weekdays[date_message.getDay()].sent++;
+              // group by domain
+              let allRecipients = [...message.recipients, ...message.ccList, ...message.bccList];
+              let domains_array = tsCoreUtils.extractDomains(allRecipients);
+              for (let domain of domains_array) {
+                if (domains[domain]) {
+                  domains[domain].count++;
+                  domains[domain].sent++;
+                } else {
+                  domains[domain] = {}
+                  domains[domain].count = 1;
+                  domains[domain].sent = 1;
+                  domains[domain].received = 0;
+                }
+              }
+              // group by tag
+              for (let tag of message.tags) {
+                if (tags[tag]) {
+                  tags[tag].count++;
+                  tags[tag].sent++;
+                } else {
+                  this.tsLog.error("tag: " + tag + " not found!");
+                }
+              }
               // check recipients
               //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
               for (let recipient of message.recipients) {
@@ -385,14 +469,37 @@ export class thunderStastsCore {
               folders[message.folder.id].received++;
               // group by date
               dates[date_message_string].received++;
+              dates_weeks[date_week_string].received++;
+              dates_months[date_month_string].received++;
+              dates_years[date_year_string].received++;
               // group by hour
               msg_hours[hour_message].received++;
               // group by weekday
               msg_weekdays[date_message.getDay()].received++;
+              // group by domain
+              let curr_domain = tsCoreUtils.extractDomain(key_author);
+              if (domains[curr_domain]) {
+                domains[curr_domain].count++;
+                domains[curr_domain].received++;
+              } else {
+                domains[curr_domain] = {}
+                domains[curr_domain].count = 1;
+                domains[curr_domain].sent = 0;
+                domains[curr_domain].received = 1;
+              }
+              // group by tag
+              for (let tag of message.tags) {
+                if (tags[tag]) {
+                  tags[tag].count++;
+                  tags[tag].received++;
+                } else {
+                  this.logger.error("tag: " + tag + " not found!");
+                }
+              }
             }
           }
         //check recipients - END
-        
+
         count++;
       }
 
@@ -405,7 +512,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
       // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, msg_weekdays: msg_weekdays};
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, dates_weeks: dates_weeks, dates_months: dates_months, dates_years: dates_years, msg_weekdays: msg_weekdays, domains: domains, tags: tags};
 
       if(do_aggregate_stats) {
         output.aggregate = await this.aggregateData(dates, only_businessdays);

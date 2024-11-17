@@ -148,19 +148,29 @@ import { tsUtils } from '@statslib/mzts-utils';
 
   onMounted(async () => {
     // console.log(">>>>>>>>>>>> ThunderStatsView onMounted");
-    remember_last_tab = await tsPrefs.getPref("remember_last_tab");
-    if(!remember_last_tab) { statsTabs_ref.value.selectTab('#tab-today'); }
+    // console.log(">>>>>>>>>>>>> ThunderStatsView onMounted statsTabs_ref.value.activeTabHash: " + JSON.stringify(statsTabs_ref.value.activeTabHash));
+    let prefs_onmounted = await tsPrefs.getPrefs(["remember_last_tab","customqry_loaddata_when_opening_addon"]);
+    remember_last_tab = prefs_onmounted.remember_last_tab;
+    if(!remember_last_tab) {
+      statsTabs_ref.value.selectTab('#tab-today');
+      tsStore.currentTab = "tab-today";
+    }else {
+      tsStore.currentTab = statsTabs_ref.value.activeTabHash.substring(1);
+    }
+    // console.log(">>>>>>>>>>>>>> ThunderStatsView onMounted tsStore.currentTab: " + tsStore.currentTab);
     let _many_days = await tsPrefs.getPref("_many_days");
     _many_days_text.value = browser.i18n.getMessage("LastNumDays", _many_days);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     i18n.updateDocument();
-    updateStats(HeadingNAV_ref.value.getCurrentIdn());
+    if((tsStore.currentTab != "tab-customqry")||(prefs_onmounted.customqry_loaddata_when_opening_addon)) {
+      updateStats(HeadingNAV_ref.value.getCurrentIdn());
+    }
     mounted_ok = true;
   });
   
 
   async function updateStats(account_id) {
-     //console.log(">>>>>>>>>>>> ThunderStatsView updateStats");
+    // console.log(">>>>>>>>>>>> ThunderStatsView updateStats tsStore.do_debug: " + tsStore.do_debug);
     if(tsLog == null) {
       tsLog = new tsLogger("ThunderStatsView", tsStore.do_debug);
     }
@@ -176,24 +186,25 @@ import { tsUtils } from '@statslib/mzts-utils';
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
 //    resetStatsDone();
     nextTick(() => {
-      let curr_tab = statsTabs_ref.value.activeTabHash;
-      tsLog.log("curr_tab: " + curr_tab);
+      // console.log(">>>>>>>>>>>>>> ThunderStatsView updateStats statsTabs_ref.value.activeTabHash: " + statsTabs_ref.value.activeTabHash);
+      tsStore.currentTab = statsTabs_ref.value.activeTabHash.substring(1);
+      tsLog.log("tsStore.currentTab: " + tsStore.currentTab);
       is_loading.value = true;
-      switch(curr_tab) {
-        case "#tab-today":
+      switch(tsStore.currentTab) {
+        case "tab-today":
           TAB_Today_ref.value.updateData();
           break;
-        case "#tab-yesterday":
+        case "tab-yesterday":
           TAB_Yesterday_ref.value.updateData();
           break;
-        case "#tab-manydays":
+        case "tab-manydays":
           TAB_ManyDays_ref.value.updateData();
           break;
-        case "#tab-customqry":
+        case "tab-customqry":
           TAB_CustomQry_ref.value.doQry();
           break;
       }
-      statsDone(curr_tab.substring(1));
+      statsDone(tsStore.currentTab);
     });
   }
 
@@ -202,6 +213,7 @@ import { tsUtils } from '@statslib/mzts-utils';
     //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsStore.do_debug: " + tsStore.do_debug);
     //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsLog: " + JSON.stringify(tsLog));
     currentTab.value = id.tab.computedId;
+    tsStore.currentTab = id.tab.computedId;
     if(!mounted_ok) { return; }
     updateElapsed(0);
     is_loading.value = false;

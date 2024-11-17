@@ -27,4 +27,7 @@ export const tsStore = reactive({
         _weekday_sent: '#4682B4',
         _weekday_rcvd: '#FF8C45',
     },
+    'tags_list': {},
+    'currentTab': '',
+    'show_tags': false,
 });

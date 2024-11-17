@@ -20,22 +20,31 @@
 
 
 <template>
-
-    <ChartWeekDays :chartData="weekday_chartData" :is_loading="is_loading" :key="weekday_chartData_length" />
-
+    <ChartDomains :chartData="chartData" :chart_id="chart_id" :chart_height="chart_height" :is_loading="is_loading" />
 </template>
 
 
 <script setup>
-
 import { computed } from 'vue'
-import ChartWeekDays from '../charts/ChartWeekDays.vue';
+import ChartDomains from '../charts/ChartDomains.vue';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 
 let props = defineProps({
-    weekday_chartData: {
+    chartData: {
         type: Object,
-        default: () => ({}),
+        default: () => ({
+                    labels: [],
+                    datasets: []
+                }),
         required: true
+    },
+    chart_id: {
+        type: String,
+        default: 'domains-chart',
+    },
+    chart_height: {
+        type: String,
+        default: '500px'
     },
     is_loading: {
         type: Boolean,
@@ -43,12 +52,13 @@ let props = defineProps({
     }
 });
 
-let weekday_chartData = computed(() => props.weekday_chartData)
-let is_loading = computed(() => props.is_loading)
+let chartData = computed(() => {
+    return tsCoreUtils.sortDoubleDatasetsByTotal(props.chartData);
+});
 
-let weekday_chartData_length = computed(() => (weekday_chartData.value.datasets.length + Math.floor(Math.random() * 101)));
-
-
+let chart_id = computed(() => props.chart_id);
+let chart_height = computed(() => props.chart_height);
+let is_loading = computed(() => props.is_loading);
 
 </script>
 

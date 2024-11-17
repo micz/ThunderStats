@@ -19,20 +19,20 @@
 -->
 
 <template>
-<div class="chart_time_container">
-  <div :class="getWrapperClass">
-    <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." id="today_hours_graph_wait"/></div>
-    <Line
-        :options="chartOptions"
-        :data="chartData"
-        :plugins="chartPlugins"
-        :key="chartData.datasets.length"
-        ref="todayChartBar_ref"
-        v-if="!is_loading"
-      />
+  <div class="chart_time_container">
+    <div :class="getWrapperClass">
+      <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
+      <Line
+          :options="chartOptions"
+          :data="chartData"
+          :plugins="chartPlugins"
+          :key="chartData_length"
+          ref="timeChartBar_ref"
+          v-if="!is_loading"
+        />
+    </div>
+    <div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
   </div>
-  <div id="today-time-legend-container" class="legend-time" v-if="!is_loading"></div>
-</div>
 </template>
 
 
@@ -41,9 +41,9 @@
 import { ref, computed, watch } from 'vue'
 import { Line } from 'vue-chartjs'
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
-import { externalTooltipTimeGraphLines } from '@statslib/chartjs-lib/external-tooltip-timegraphlines';
-import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
-import { tsVerticalLinePlugin } from '@statslib/chartjs-lib/plugin-timegraph-vertical-line';
+import { externalTooltipTimeChartLines } from '@statslib/chartjs-lib/external-tooltip-timechartlines';
+import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timechart-legend';
+import { tsVerticalLinePlugin } from '@statslib/chartjs-lib/plugin-timechart-vertical-line';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsUtils } from '@statslib/mzts-utils';
 import { tsStore } from '@statslib/mzts-store';
@@ -60,28 +60,40 @@ let props = defineProps({
         type: Boolean,
         default: true
     },
+    day_type: {
+        type: Number,
+        default: 0
+    },
     is_last_business_day: {
       type: Boolean,
       default: false
     },
 });
 
-let todayChartBar_ref = ref(null);
+let timeChartBar_ref = ref(null);
+let legend_id = ref("time-legend-container");
 
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
+let is_yesterday = computed(() => props.day_type === -1)
+let is_today = computed(() => props.day_type === 0)
+let is_generic_day = computed(() => props.day_type === 1)
+
+let chartData_length = computed(() => (chartData.value.datasets.length + Math.floor(Math.random() * 101)));
 
 let maxY = ref(0);
 let is_last_business_day = ref(false);
 
 const getWrapperClass = computed(() => {
   return {
-    'chart_time_86': is_last_business_day.value,
-    'chart_time': !is_last_business_day.value
+    'chart_time_full': is_generic_day.value,
+    'chart_time': !is_generic_day.value && !is_last_business_day.value,
+    'chart_time_86': !is_generic_day.value && is_last_business_day.value,
   };
 });
 
 watch(props.chartData, (newChartData) => {
+  legend_id.value = "singleday-time-legend-container-" + props.day_type;
   is_last_business_day.value = props.is_last_business_day;
   // console.log(">>>>>>>>>>>>>> is_last_business_day.value: " + JSON.stringify(is_last_business_day.value));
   // console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
@@ -157,11 +169,12 @@ var chartOptions = ref({
           },
           htmlLegend: {
             // ID of the container to put the legend in
-            containerID: 'today-time-legend-container',
-            is_today: true,
+            containerID: legend_id.value,
+            is_today: is_today.value,
+            is_yesterday: is_yesterday.value,
             is_last_business_day: is_last_business_day.value,
           },
-          tsVerticalLinePlugin: {
+          tsVerticalLinePlugin: is_today.value ?{
             drawVerticalLineAt: () => {
               const now = new Date();
               const hour = now.getHours();
@@ -174,13 +187,13 @@ var chartOptions = ref({
               }
               return '#265707';
             },
-          },
+          } : {},
           tooltip: {
               enabled: false,
               mode: 'index',
               intersect: false,
               external: function(context) {
-                externalTooltipTimeGraphLines(context, {is_last_business_day: is_last_business_day.value});
+                externalTooltipTimeChartLines(context, {is_generic_day: is_generic_day.value, is_last_business_day: is_last_business_day.value});
               }
             }
         },
@@ -188,12 +201,6 @@ var chartOptions = ref({
 
 
 let chartPlugins =  [htmlLegendPlugin, tsVerticalLinePlugin];
-
-/*async function updateChart() {
-  //console.log("updateChart: " + JSON.stringify(chartData.value));
-}*/
-
-//defineExpose({ updateChart });
 
 </script>
 

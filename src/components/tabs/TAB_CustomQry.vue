@@ -24,92 +24,142 @@
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
-                <span style="margin: 0px 10px;" @click="updateAdvFiltersPosition">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
+                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
                 <img :src="advanced_filters_icon" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
                   <div class="adv_filters_main_title">__MSG_AdvFilters__</div>
-                  <div id="filterFolder_container">
-                    <span class="adv_filters_title">__MSG_ChooseFoldersFilter__<span v-if="tsStore.current_account_id == 0"> (__MSG_ChooseAccountToFilterFolders__)</span></span>
-                    <br><Multiselect
-                      v-model="filterFolder"
-                      id="filterFolder"
-                      name="filterFolder"
-                      :options="folderList"
-                      :searchable="true"
-                      :close-on-select="true"
-                      :show-labels="false"
-                      :allow-empty="true"
-                      :create-option="false"
-                      mode="tags"
-                      :disabled="tsStore.current_account_id == 0"
-                      :placeholder="folderFiltersPlaceholder"
-                      ref="filterFolder_ref"
-                    >
-                    </Multiselect>
-                    <div style="margin-top:2px;">
-                      <input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /><span @click="filterFolder_do_subfolders = !filterFolder_do_subfolders" style="cursor: pointer;"> __MSG_FilterFoldersIncludeSubfolders__</span>
-                    </div>
-                  </div>
+                  <table id="customqry_adv_filters_table">
+                    <tr>
+                      <td>
+                        <div id="filterFolder_container">
+                          <span class="adv_filters_title">__MSG_ChooseFoldersFilter__<span v-if="tsStore.current_account_id == 0"> (__MSG_ChooseAccountToFilterFolders__)</span></span>
+                          <br><Multiselect
+                            v-model="filterFolder"
+                            id="filterFolder"
+                            name="filterFolder"
+                            :options="folderList"
+                            :searchable="true"
+                            :close-on-select="true"
+                            :show-labels="false"
+                            :allow-empty="true"
+                            :create-option="false"
+                            mode="tags"
+                            :disabled="tsStore.current_account_id == 0"
+                            :placeholder="folderFiltersPlaceholder"
+                            ref="filterFolder_ref"
+                          >
+                          </Multiselect>
+                          <div style="margin-top:2px;">
+                            <input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /><span @click="filterFolder_do_subfolders = !filterFolder_do_subfolders" style="cursor: pointer;"> __MSG_FilterFoldersIncludeSubfolders__</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td colspan="2">
+                        <span class="adv_filters_title">__MSG_FilterSubject__</span>
+                      <br><input type="text" id="filterSubject" name="filterSubject" v-model="filterSubject" @input="updateAdvFiltersSet" @change="updateAdvFiltersPosition" />
+                      <br>__MSG_WarnSearchCaseSensitive__
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td class="td-30">
+                        <span class="adv_filters_title">__MSG_ReadStatus__</span><br>
+                        <select id="filterReadUnread" v-model="filterReadUnread" @change="updateAdvFiltersSet">
+                          <option value="0">__MSG_FilterFoldersAll__</option>
+                          <option value="1">__MSG_FilterFoldersOnlyRead__</option>
+                          <option value="2">__MSG_FilterFoldersOnlyUnread__</option>
+                        </select>
+                      </td>
+                      <td class="td-30">
+                        <span class="adv_filters_title">__MSG_FlagStatus__</span><br>
+                        <select id="filterFlaggedUnflagged" v-model="filterFlaggedUnflagged" @change="updateAdvFiltersSet">
+                          <option value="0">__MSG_FilterFoldersAll__</option>
+                          <option value="1">__MSG_FilterFoldersOnlyFlagged__</option>
+                          <option value="2">__MSG_FilterFoldersOnlyUnflagged__</option>
+                        </select>
+                    </td>
+                    </tr>
+                  </table>
                 </div>
             </div>
     <div class="square_container" id="customqry_square_container">
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
+                        <div class="spacer" style="max-width:4.5em;" v-if="!do_run"></div>
+                        <div class="btn_group">
+                          <button type="button" @click="showDays" class="btn_small btn_small_start btn_disabled" ref="showDays_btn_ref" >Days</button>
+                          <button type="button" @click="showWeeks" class="btn_small" ref="showWeeks_btn_ref" >Weeks</button>
+                          <button type="button" @click="showMonths" class="btn_small" ref="showMonths_btn_ref" >Months</button>
+                          <button type="button" @click="showYears" class="btn_small btn_small_end" ref="showYears_btn_ref" >Years</button>
+                        </div>
+                        <div class="spacer" v-if="!do_run"></div>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
-                      <GraphCustomQry v-if="do_run" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_graph" :key="chartData_Sent_length"/>
+                      <ChartCustomQry v-if="do_run" ref="chartCustomQrySent_ref" :data_type="chartdata_type" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :key="chartData_Sent_length"/>
     </div>
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
         <span class="list_heading_date" v-html="singleday_date_str"></span>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="sent_total" :_rcvd="rcvd_total" />
         <div class="singleday_spacing"></div>
-        <GraphYesterday :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_graph" :yesterday = "false" :key="chartData_TimeDay_length"/>
+        <ChartTime :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_chart" :day_type="1" />
     </div>
-
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
-					  <GraphCustomQry v-if="do_run" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_graph"  :key="chartData_Rcvd_length"/>
+					  <ChartCustomQry v-if="do_run" ref="chartCustomQryRcvd_ref" :data_type="chartdata_type" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_chart"  :key="chartData_Rcvd_length"/>
     </div>
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
 					  </div>
-					  <CounterInbox :is_loading="is_loading_inbox_graph_folders" :inbox_total="counter_inbox_total" :inbox_unread="counter_inbox_unread" />
-            <CounterInboxPercent :is_loading="is_loading_counter_inbox_percent" :inbox_percent="counter_inbox_percent" />
-                      <div class="chart_inbox0_info"><p class="chart_info">__MSG_FolderLocation__ <InfoTooltip :showAnchor="showFolderLocationNoteAnchor" :noteText="folderLocationNote_text"></InfoTooltip></p><p class="chart_info_nomail" id="singleday_inbox0_folder_spread_nomails" v-if="!is_loading_counter_sent_rcvd && (rcvd_total == 0)" v-text="no_mails_received_yesterday"></p></div>
-                      <div class="chart_inbox0">
-                        <GraphInboxZeroFolders :chartData="chartData_InboxZeroFolders" :openFolderInFirstTab="inbox0_openFolderInFirstTab" :is_loading="is_loading_inbox_graph_folders" />
-                      </div>
-                      <div class="chart_inbox0_datemsg">
-                        <p class="chart_info">__MSG_InboxMailsDateSpreading__</p><p class="chart_info_nomail" id="singleday_inbox0_datemsg_nomails" v-if="!is_loading_counter_inbox && (counter_inbox_total == 0)" v-text="no_mails_inbox"></p>
-                        <GraphInboxZeroDates :chartData="chartData_InboxZeroDates" :is_loading="is_loading_inbox_graph_dates" />
-                      </div>
+            <WidgetInboxZero
+              :is_loading_counter_inbox="is_loading_counter_inbox"
+              :counter_inbox_total="counter_inbox_total"
+              :counter_inbox_unread="counter_inbox_unread"
+              :is_loading_counter_inbox_percent="is_loading_counter_inbox_percent"
+              :counter_inbox_percent="counter_inbox_percent"
+              :showFolderLocationNoteAnchor="showFolderLocationNoteAnchor"
+              :folderLocationNote_text="folderLocationNote_text"
+              :is_loading_counter_sent_rcvd="is_loading_counter_sent_rcvd"
+              :counter_rcvd="rcvd_total"
+              :chartData_InboxZeroFolders="chartData_InboxZeroFolders"
+              :inbox0_openFolderInFirstTab="inbox0_openFolderInFirstTab"
+              :is_loading_inbox_chart_folders="is_loading_inbox_chart_folders"
+              :no_mails_inbox="no_mails_inbox"
+              :chartData_InboxZeroDates="chartData_InboxZeroDates"
+              :chartData_InboxZeroDates_extended = "chartdata_inboxzero_dates"
+              :is_loading_inbox_chart_dates="is_loading_inbox_chart_dates"
+              :no_mails_received="no_mails_received"
+            />
     </div>
-
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_TimeDay__</h2>
 					  </div>
-                      <GraphYesterday v-if="do_run" :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_graph" :yesterday="false" :is_generic_day="true"/>
+            <ChartTime v-if="do_run" :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :day_type="1"/>
     </div>
-
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
 					  </div>
-					<WidgetWeekDay v-if="do_run" :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_graph" :key="chartData_WeekDays_length" />
+					<WidgetWeekDay v-if="do_run" :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_chart" />
     </div>
-
+    <div class="square_item"><div class="list_heading_wrapper">
+						<h2 class="list_heading cropped lowercase">__MSG_Domains__</h2>
+					  </div>
+           <WidgetDomains v-if="do_run" :chartData="chartData_Domains" chart_id="chart_domains_customqry" :chart_height="domains_chart_height" :is_loading="is_loading_domains_chart" />
+    </div>
+    <div class="square_item">
+                    <WidgetFoldersTags v-if="do_run" :chartDataFolders="chartData_Folders" :chartDataTags="chartData_Tags" :is_loading_folders="is_loading_folders_chart" :is_loading_tags="is_loading_tags_chart" />
+    </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
 					  </div>
 					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="do_run && (is_loading_involved_table_recipients || show_table_involved_recipients)" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
     </div>
-    
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
 					  </div>
@@ -120,7 +170,6 @@
 </template>
 
 
-
 <script setup>
 import { ref, onMounted, onBeforeMount, nextTick, computed, watch } from 'vue';
 import { tsLogger } from '@statslib/mzts-logger';
@@ -128,7 +177,7 @@ import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsUtils } from '@statslib/mzts-utils';
 import TableInvolved from '../tables/TableInvolved.vue';
-import GraphCustomQry from '../graphs/GraphCustomQry.vue';
+import ChartCustomQry from '../charts/ChartCustomQry.vue';
 import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
 import ExportMenu from '../ExportMenu.vue';
 import InfoTooltip from '../InfoTooltip.vue';
@@ -141,16 +190,16 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import CounterSentReceived from '../counters/CounterSentReceived.vue';
-import GraphYesterday from '../graphs/GraphYesterday.vue';
-import GraphInboxZeroFolders from '../graphs/GraphInboxZeroFolders.vue';
-import GraphInboxZeroDates from '../graphs/GraphInboxZeroDates.vue';
-import CounterInbox from '../counters/CounterInbox.vue';
-import CounterInboxPercent from '../counters/CounterInboxPercent.vue';
+import ChartTime from '../charts/ChartTime.vue';
 import Multiselect from '@vueform/multiselect';
 import '@vueform/multiselect/themes/default.css';
 import advancedFiltersIconPath from '@/assets/images/mzts-customqry_adv_filters.svg';
 import advancedFiltersIconPath_Set from '@/assets/images/mzts-customqry_adv_filters_set.svg';
 import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
+import WidgetDomains from '../widgets/WidgetDomains.vue';
+import WidgetInboxZero from '../widgets/WidgetInboxZero.vue';
+import WidgetFoldersTags from '../widgets/WidgetFoldersTags.vue';
+
 
 const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
 
@@ -162,8 +211,14 @@ const props = defineProps({
 });
 
 let filterFolder_ref = ref(null);
+let chartCustomQrySent_ref = ref(null);
+let chartCustomQryRcvd_ref = ref(null);
+let showDays_btn_ref = ref(null);
+let showWeeks_btn_ref = ref(null);
+let showMonths_btn_ref = ref(null);
+let showYears_btn_ref = ref(null);
 
-let max_direct_accounts = 3;
+let max_direct_accounts = 1;
 
 let tsLog = null;
 var tsCore = null;
@@ -181,10 +236,13 @@ let emailListTooltipVisible = ref(false);
 let show_advanced_filters = ref(false);
 let advanced_filters_set = ref(false)
 let folderList = ref([]);
-let filterFolder = ref([]);
-let filterFolder_do_subfolders = ref(true);
 let advanced_filters_icon = ref(advancedFiltersIconPath);
 let customqry_only_bd_disabled = ref(false);
+let filterFolder = ref([]);
+let filterFolder_do_subfolders = ref(true);
+let filterReadUnread = ref(0); // 0: all, 1: read, 2: unread
+let filterFlaggedUnflagged = ref(0); // 0: all, 1: flagged, 2: unflagged
+let filterSubject = ref("");
 
 // single day view
 let do_progressive = true;
@@ -192,14 +250,15 @@ let inbox0_openFolderInFirstTab = ref(false);
 let do_single_day = ref(false);
 let singleDay = ref(null);
 let singleday_date_str = ref("");
+let no_mails_received = ref("");
 
-let is_loading_singleday_graph = ref(true);
-let is_loading_inbox_graph_folders = ref(true);
-let is_loading_inbox_graph_dates = ref(true);
+let is_loading_singleday_chart = ref(true);
+let is_loading_inbox_chart_folders = ref(true);
+let is_loading_inbox_chart_dates = ref(true);
 let is_loading_counter_inbox = ref(true);
 let is_loading_counter_inbox_percent = ref(true);
-let is_loading_timeday_graph = ref(true);
-let is_loading_weekdays_graph = ref(true);
+let is_loading_timeday_chart = ref(true);
+let is_loading_weekdays_chart = ref(true);
 
 let counter_inbox_total = ref(0);
 let counter_inbox_unread = ref(0);
@@ -210,8 +269,6 @@ let chartData_SingleDay = ref({
     datasets: []
 });
 
-let graphdata_singleday_hours_sent = ref([]);
-let graphdata_singleday_hours_rcvd = ref([]);
 let chartData_InboxZeroFolders = ref({
     labels: [],
     datasets: []
@@ -220,8 +277,16 @@ let chartData_InboxZeroDates = ref({
     labels: [],
     datasets: []
 });
-let graphdata_inboxzero_folders = ref([]);
-let graphdata_inboxzero_dates = ref([]);
+
+let chartData_Domains = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartdata_singleday_hours_sent = ref([]);
+let chartdata_singleday_hours_rcvd = ref([]);
+let chartdata_inboxzero_folders = ref([]);
+let chartdata_inboxzero_dates = ref([]);
 
 let showFolderLocationNoteAnchor = ref(false);
 let folderLocationNote_text = ref("");
@@ -242,8 +307,11 @@ let is_loading_counter_sent_rcvd = ref(true);
 let is_loading_counter_customqry = ref(true);
 let is_loading_involved_table_recipients = ref(true);
 let is_loading_involved_table_senders = ref(true);
-let is_loading_sent_graph = ref(true);
-let is_loading_rcvd_graph = ref(true);
+let is_loading_sent_chart = ref(true);
+let is_loading_rcvd_chart = ref(true);
+let is_loading_domains_chart = ref(true);
+let is_loading_folders_chart = ref(true);
+let is_loading_tags_chart = ref(true);
 
 let counter_customqry_sent_total = ref(0);
 let counter_customqry_sent_max = ref(0);
@@ -259,13 +327,33 @@ let table_involved_senders = ref([]);
 let show_table_involved_recipients = ref(false);
 let show_table_involved_senders = ref(false);
 
-let graphdata_customqry_sent = ref([]);
-let graphdata_customqry_rcvd = ref([]);
-let graphdata_customqry_labels = ref([]);
-let graphdata_customqry_hours_sent = ref([]);
-let graphdata_customqry_hours_rcvd = ref([]);
-let graphdata_customqry_weekdays_sent = ref([]);
-let graphdata_customqry_weekdays_rcvd = ref([]);
+let chartdata_customqry_sent = ref([]);
+let chartdata_customqry_rcvd = ref([]);
+let chartdata_customqry_labels = ref([]);
+let chartdata_customqry_weeks_sent = ref([]);
+let chartdata_customqry_weeks_rcvd = ref([]);
+let chartdata_customqry_weeks_labels = ref([]);
+let chartdata_customqry_months_sent = ref([]);
+let chartdata_customqry_months_rcvd = ref([]);
+let chartdata_customqry_months_labels = ref([]);
+let chartdata_customqry_years_sent = ref([]);
+let chartdata_customqry_years_rcvd = ref([]);
+let chartdata_customqry_years_labels = ref([]);
+let chartdata_customqry_hours_sent = ref([]);
+let chartdata_customqry_hours_rcvd = ref([]);
+let chartdata_customqry_weekdays_sent = ref([]);
+let chartdata_customqry_weekdays_rcvd = ref([]);
+let chartdata_domains_sent = ref([]);
+let chartdata_domains_rcvd = ref([]);
+let chartdata_domains_labels = ref([]);
+let chartdata_folders_sent = ref([]);
+let chartdata_folders_rcvd = ref([]);
+let chartdata_folders_labels = ref([]);
+let chartdata_tags_sent = ref([]);
+let chartdata_tags_rcvd = ref([]);
+let chartdata_tags_labels = ref([]);
+
+let domains_chart_height = ref("275px");
 
 let _export_data = ref({});
 
@@ -289,19 +377,67 @@ let chartData_Rcvd = ref({
 });
 let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
 
+let chartData_Sent_Original = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Rcvd_Original = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Weeks_Sent = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Weeks_Rcvd = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Months_Sent = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Months_Rcvd = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Years_Sent = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Years_Rcvd = ref({
+    labels: [],
+    datasets: []
+});
+
 let chartData_TimeDay = ref({
     labels: Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')),
     datasets: []
 });
-
-let chartData_TimeDay_length = computed(() => (chartData_TimeDay.value.datasets.length + Math.floor(Math.random() * 101)));
 
 let chartData_WeekDays = ref({
     labels: Array.from({length: 7}, (_, i) => i),
     datasets: []
 });
 
-let chartData_WeekDays_length = computed(() => (chartData_WeekDays.value.datasets.length + Math.floor(Math.random() * 101)));
+let chartData_Folders = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartData_Tags = ref({
+    labels: [],
+    datasets: []
+});
+
+let chartdata_type = ref("YYYYMMDD"); // "YYYY" | "YYYYMM" | "YYYYWW" | "YYYYMMDD"
 
 let elapsed = {
     'getCustomQryData':0,
@@ -313,19 +449,25 @@ let job_done = computed(() => {
     is_loading_counter_customqry.value &&
     is_loading_involved_table_recipients.value &&
     is_loading_involved_table_senders.value &&
-    is_loading_sent_graph.value &&
-    is_loading_rcvd_graph.value &&
-    is_loading_timeday_graph.value &&
-    is_loading_weekdays_graph.value);
+    is_loading_sent_chart.value &&
+    is_loading_rcvd_chart.value &&
+    is_loading_timeday_chart.value &&
+    is_loading_weekdays_chart.value &&
+    is_loading_domains_chart.value &&
+    is_loading_tags_chart.value &&
+    is_loading_folders_chart.value);
   }else{
     return !(is_loading_counter_sent_rcvd.value &&
-    is_loading_singleday_graph.value &&
+    is_loading_singleday_chart.value &&
     is_loading_involved_table_recipients.value &&
     is_loading_involved_table_senders.value &&
     is_loading_counter_inbox.value &&
     is_loading_counter_inbox_percent.value &&
-    is_loading_inbox_graph_folders.value &&
-    is_loading_inbox_graph_dates.value);
+    is_loading_inbox_chart_folders.value &&
+    is_loading_inbox_chart_dates.value &&
+    is_loading_domains_chart.value &&
+    is_loading_tags_chart.value &&
+    is_loading_folders_chart.value);
   }
 });
 
@@ -352,9 +494,42 @@ watch(() => do_single_day.value, async (newValue, oldValue) => {
     doOnlyBD.value = false;
     customqry_only_bd_disabled.value = true;
   }else{
+    let prefs_bday = await tsPrefs.getPref("bday_default_only");
     customqry_only_bd_disabled.value = false;
+    doOnlyBD.value = prefs_bday;
   }
-})
+});
+
+watch(() => chartdata_type.value, async (newValue, oldValue) => {
+  switch(newValue){
+    case "YYYYMMDD":
+      showDays_btn_ref.value.classList.add("btn_disabled");
+      break;
+    case "YYYYWW":
+      showWeeks_btn_ref.value.classList.add("btn_disabled");
+      break;
+    case "YYYYMM":
+      showMonths_btn_ref.value.classList.add("btn_disabled");
+      break;
+    case "YYYY":
+      showYears_btn_ref.value.classList.add("btn_disabled");
+      break;
+  }
+  switch(oldValue){
+    case "YYYYMMDD":
+      showDays_btn_ref.value.classList.remove("btn_disabled");
+      break;
+    case "YYYYWW":
+      showWeeks_btn_ref.value.classList.remove("btn_disabled");
+      break;
+    case "YYYYMM":
+      showMonths_btn_ref.value.classList.remove("btn_disabled");
+      break;
+    case "YYYY":
+      showYears_btn_ref.value.classList.remove("btn_disabled");
+      break;
+  }
+});
 
 onBeforeMount(async () => {
   tsLog = new tsLogger("TAB_CustomQry", tsStore.do_debug);
@@ -387,11 +562,44 @@ onMounted(async () => {
     if(tsStore.current_account_id != 0) {
       folderList.value = await tsCoreUtils.getAccountFoldersNames(tsStore.current_account_id);
     }
+    no_mails_received.value = browser.i18n.getMessage("NoMailsReceived");
 });
 
 function update(){
   tsLog.log("Update requested");
   emit('updateCustomQry');
+}
+
+function showDays(){
+  tsLog.log("Show days");
+  chartData_Sent.value = {...chartData_Sent_Original.value};
+  chartData_Rcvd.value = {...chartData_Rcvd_Original.value};
+  chartdata_type.value = "YYYYMMDD";
+  setChartWidth();
+}
+
+function showWeeks(){
+  tsLog.log("Show weeks");
+  chartData_Sent.value = {...chartData_Weeks_Sent.value};
+  chartData_Rcvd.value = {...chartData_Weeks_Rcvd.value};
+  chartdata_type.value = "YYYYWW";
+  setChartWidth();
+}
+
+function showMonths(){
+  tsLog.log("Show months");
+  chartData_Sent.value = {...chartData_Months_Sent.value};
+  chartData_Rcvd.value = {...chartData_Months_Rcvd.value};
+  chartdata_type.value = "YYYYMM";
+  setChartWidth();
+}
+
+function showYears(){
+  tsLog.log("Show years");
+  chartData_Sent.value = {...chartData_Years_Sent.value};
+  chartData_Rcvd.value = {...chartData_Years_Rcvd.value};
+  chartdata_type.value = "YYYY";
+  setChartWidth();
 }
 
 async function rangeChoosen(modelData){
@@ -409,6 +617,15 @@ const updateAdvFiltersSet = () => {
   let out_value = false;
 
   if(filterFolder.value.length > 0){
+    out_value = true;
+  }
+  if(filterReadUnread.value > 0){
+    out_value = true;
+  }
+  if(filterFlaggedUnflagged.value > 0){
+    out_value = true;
+  }
+  if(filterSubject.value.length > 0){
     out_value = true;
   }
 
@@ -527,6 +744,7 @@ async function doQry(){
     }
   }
   loadingDo();
+  chartdata_type.value = "YYYYMMDD";
   do_single_day.value = (customqry_totaldays_num.value == 1);
   elapsed.getInboxZeroData = 1;
   if(do_single_day.value){
@@ -549,29 +767,32 @@ async function doQry(){
   updateData();
 }
 
+function setChartWidth(){
+  let chart_container_width = document.querySelector('.chart_customqry').clientWidth;
+  let chart_ipotetic_width = chartData_Rcvd.value.labels.length * 60;
+  if(chart_container_width < chart_ipotetic_width){
+    chart_width.value = String(chart_ipotetic_width) + "px";
+  } else {
+    chart_width.value = String(chart_container_width) + "px";
+  }
+}
+
 async function updateData() {
     while(props.updated == false){
         await new Promise(r => setTimeout(r, 100));
     }
-    let prefs = await tsPrefs.getPrefs(["_time_graph_progressive", "accounts_adv_settings"]);
-    do_progressive = prefs._time_graph_progressive;
+    let prefs = await tsPrefs.getPrefs(["_time_chart_progressive", "accounts_adv_settings"]);
+    do_progressive = prefs._time_chart_progressive;
     let accounts_adv_settings = prefs.accounts_adv_settings;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
     await getCustomQryData();
     if(!do_single_day.value){
-      let chart_container_width = document.querySelector('.chart_customqry').clientWidth;
-      let chart_ipotetic_width = graphdata_customqry_labels.value.length * 30;
-      if(chart_container_width < chart_ipotetic_width){
-        chart_width.value = String(chart_ipotetic_width) + "px";
-      } else {
-        chart_width.value = String(chart_container_width) + "px";
-      }
-      chartData_Sent.value.datasets = [];
-      chartData_Sent.value.datasets.push({
+      chartData_Sent_Original.value.datasets = [];
+      chartData_Sent_Original.value.datasets.push({
           label: 'Sent',
-          data: graphdata_customqry_sent.value,
+          data: chartdata_customqry_sent.value,
           borderColor: tsStore.chart_colors.many_days_default,
           backgroundColor: tsStore.chart_colors.many_days_default,
           borderWidth: 2,
@@ -579,12 +800,13 @@ async function updateData() {
           //maxBarThickness: 15,
           minBarThickness: 15,
       });
-      tsLog.log("graphdata_customqry_sent.value: " + JSON.stringify(graphdata_customqry_sent.value));
-      chartData_Sent.value.labels = graphdata_customqry_labels.value;
-      chartData_Rcvd.value.datasets = [];
-      chartData_Rcvd.value.datasets.push({
+      tsLog.log("chartdata_customqry_sent.value: " + JSON.stringify(chartdata_customqry_sent.value));
+      chartData_Sent_Original.value.labels = chartdata_customqry_labels.value;
+      chartData_Sent.value = chartData_Sent_Original.value;
+      chartData_Rcvd_Original.value.datasets = [];
+      chartData_Rcvd_Original.value.datasets.push({
           label: 'Received',
-          data: graphdata_customqry_rcvd.value,
+          data: chartdata_customqry_rcvd.value,
           borderColor: tsStore.chart_colors.many_days_default,
           backgroundColor: tsStore.chart_colors.many_days_default,
           borderWidth: 2,
@@ -592,14 +814,91 @@ async function updateData() {
           //maxBarThickness: 15,
           minBarThickness: 15,
       });
-      tsLog.log("graphdata_customqry_rcvd.value: " + JSON.stringify(graphdata_customqry_rcvd.value));
-      chartData_Rcvd.value.labels = graphdata_customqry_labels.value;
-      tsLog.log("graphdata_customqry_hours_sent.value: " + JSON.stringify(graphdata_customqry_hours_sent.value));
-      tsLog.log("graphdata_customqry_hours_rcvd.value: " + JSON.stringify(graphdata_customqry_hours_rcvd.value));
+      tsLog.log("chartdata_customqry_rcvd.value: " + JSON.stringify(chartdata_customqry_rcvd.value));
+      chartData_Rcvd_Original.value.labels = chartdata_customqry_labels.value;
+      chartData_Rcvd.value = chartData_Rcvd_Original.value;
+      setChartWidth();
+      //weeks
+      chartData_Weeks_Sent.value.datasets = [];
+      chartData_Weeks_Sent.value.datasets.push({
+          label: 'Sent',
+          data: chartdata_customqry_weeks_sent.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Weeks_Sent.value.labels = chartdata_customqry_weeks_labels.value;
+      chartData_Weeks_Rcvd.value.datasets = [];
+      chartData_Weeks_Rcvd.value.datasets.push({
+          label: 'Received',
+          data: chartdata_customqry_weeks_rcvd.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Weeks_Rcvd.value.labels = chartdata_customqry_weeks_labels.value;
+      //months
+      chartData_Months_Sent.value.datasets = [];
+      chartData_Months_Sent.value.datasets.push({
+          label: 'Sent',
+          data: chartdata_customqry_months_sent.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Months_Sent.value.labels = chartdata_customqry_months_labels.value;
+      chartData_Months_Rcvd.value.datasets = [];
+      chartData_Months_Rcvd.value.datasets.push({
+          label: 'Received',
+          data: chartdata_customqry_months_rcvd.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Months_Rcvd.value.labels = chartdata_customqry_months_labels.value;
+      //years
+      chartData_Years_Sent.value.datasets = [];
+      chartData_Years_Sent.value.datasets.push({
+          label: 'Sent',
+          data: chartdata_customqry_years_sent.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Years_Sent.value.labels = chartdata_customqry_years_labels.value;
+      chartData_Years_Rcvd.value.datasets = [];
+      chartData_Years_Rcvd.value.datasets.push({
+          label: 'Received',
+          data: chartdata_customqry_years_rcvd.value,
+          borderColor: tsStore.chart_colors.many_days_default,
+          backgroundColor: tsStore.chart_colors.many_days_default,
+          borderWidth: 2,
+          pointRadius: 1,
+          //maxBarThickness: 15,
+          minBarThickness: 15,
+      });
+      chartData_Years_Rcvd.value.labels = chartdata_customqry_years_labels.value;
+      tsLog.log("chartdata_customqry_hours_sent.value: " + JSON.stringify(chartdata_customqry_hours_sent.value));
+      tsLog.log("chartdata_customqry_hours_rcvd.value: " + JSON.stringify(chartdata_customqry_hours_rcvd.value));
       chartData_TimeDay.value.datasets = [];
       chartData_TimeDay.value.datasets.push({
           label: 'ysent',
-          data: graphdata_customqry_hours_sent.value,
+          data: chartdata_customqry_hours_sent.value,
           borderColor: tsStore.chart_colors._time_sent,
           backgroundColor: tsStore.chart_colors._time_sent,
           borderWidth: 2,
@@ -607,19 +906,19 @@ async function updateData() {
       });
       chartData_TimeDay.value.datasets.push({
           label: 'yrcvd',
-          data: graphdata_customqry_hours_rcvd.value,
+          data: chartdata_customqry_hours_rcvd.value,
           borderColor: tsStore.chart_colors._time_rcvd,
           backgroundColor: tsStore.chart_colors._time_rcvd,
           borderWidth: 2,
           pointRadius: 1,
       });
       // week days
-      tsLog.log("graphdata_customqry_hours_sent.value: " + JSON.stringify(graphdata_customqry_weekdays_rcvd.value));
-      tsLog.log("graphdata_customqry_hours_rcvd.value: " + JSON.stringify(graphdata_customqry_weekdays_sent.value));
+      tsLog.log("chartdata_customqry_hours_sent.value: " + JSON.stringify(chartdata_customqry_weekdays_rcvd.value));
+      tsLog.log("chartdata_customqry_hours_rcvd.value: " + JSON.stringify(chartdata_customqry_weekdays_sent.value));
       chartData_WeekDays.value.datasets = [];
       chartData_WeekDays.value.datasets.push({
           label: 'ysent',
-          data: graphdata_customqry_weekdays_sent.value,
+          data: chartdata_customqry_weekdays_sent.value,
           borderColor: tsStore.chart_colors._weekday_sent,
           backgroundColor: tsStore.chart_colors._weekday_sent,
           borderWidth: 2,
@@ -627,7 +926,7 @@ async function updateData() {
       })
       chartData_WeekDays.value.datasets.push({
           label: 'yrcvd',
-          data: graphdata_customqry_weekdays_rcvd.value,
+          data: chartdata_customqry_weekdays_rcvd.value,
           borderColor: tsStore.chart_colors._weekday_rcvd,
           backgroundColor: tsStore.chart_colors._weekday_rcvd,
           borderWidth: 2,
@@ -635,13 +934,13 @@ async function updateData() {
       })
     }else{    //single day
       getInboxZeroData();
-      // graph single day hours
-      tsLog.log("graphdata_singleday_hours_sent.value: " + JSON.stringify(graphdata_singleday_hours_sent.value));
-      tsLog.log("graphdata_singleday_hours_rcvd.value: " + JSON.stringify(graphdata_singleday_hours_rcvd.value));
+      // chart single day hours
+      tsLog.log("chartdata_singleday_hours_sent.value: " + JSON.stringify(chartdata_singleday_hours_sent.value));
+      tsLog.log("chartdata_singleday_hours_rcvd.value: " + JSON.stringify(chartdata_singleday_hours_rcvd.value));
       chartData_SingleDay.value.datasets = [];
       chartData_SingleDay.value.datasets.push({
           label: 'ysent',
-          data: graphdata_singleday_hours_sent.value,
+          data: chartdata_singleday_hours_sent.value,
           borderColor: tsStore.chart_colors._time_sent,
           backgroundColor: tsStore.chart_colors._time_sent,
           borderWidth: 2,
@@ -649,14 +948,14 @@ async function updateData() {
       })
       chartData_SingleDay.value.datasets.push({
           label: 'yrcvd',
-          data: graphdata_singleday_hours_rcvd.value,
+          data: chartdata_singleday_hours_rcvd.value,
           borderColor: tsStore.chart_colors._time_rcvd,
           backgroundColor: tsStore.chart_colors._time_rcvd,
           borderWidth: 2,
           pointRadius: 1,
       })
-      // graph inbox zero folders
-      let given_folders = tsCoreUtils.filterReceivedFolders(graphdata_inboxzero_folders.value);
+      // chart inbox zero folders
+      let given_folders = tsCoreUtils.filterReceivedFolders(chartdata_inboxzero_folders.value);
       let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
       if("folders" in folders_data){
         chartData_InboxZeroFolders.value.folders = folders_data.folders;
@@ -666,15 +965,90 @@ async function updateData() {
       chartData_InboxZeroFolders.value.datasets = [];
       chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(given_folders), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
       tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
-      // graph inbox zero dates
+      // chart inbox zero dates
       inbox0_openFolderInFirstTab.value = await tsPrefs.getPref("inbox0_openFolderInFirstTab");
     }
+
+    // chart domains
+    let chart_container_height = document.getElementById('chart_domains_customqry').clientHeight;
+    let chart_ipotetic_height = chartdata_domains_labels.value.length * 60;
+    if(chart_container_height < chart_ipotetic_height){
+        domains_chart_height.value = String(chart_ipotetic_height) + "px";
+    } else {
+        domains_chart_height.value = String(chart_container_height) + "px";
+    }
+    chartData_Domains.value.labels = chartdata_domains_labels.value;
+    chartData_Domains.value.datasets = [];
+    chartData_Domains.value.datasets.push({
+        label: 'tsent',
+        data: chartdata_domains_sent.value,
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    chartData_Domains.value.datasets.push({
+        label: 'trcvd',
+        data: chartdata_domains_rcvd.value,
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("chartData_Domains.value: " + JSON.stringify(chartData_Domains.value));
+    tsLog.log("chartData_Domains.value.labels: " + JSON.stringify(chartData_Domains.value.labels));
+
+    // chart folders
+    chartData_Folders.value.labels = chartdata_folders_labels.value;
+    chartData_Folders.value.datasets = [];
+    chartData_Folders.value.datasets.push({
+        label: 'tsent',
+        data: chartdata_folders_sent.value,
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    chartData_Folders.value.datasets.push({
+        label: 'trcvd',
+        data: chartdata_folders_rcvd.value,
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("chartData_Folders.value: " + JSON.stringify(chartData_Folders.value));
+    tsLog.log("chartData_Folders.value.labels: " + JSON.stringify(chartData_Folders.value.labels));
+
+    // chart tags
+    chartData_Tags.value.labels = chartdata_tags_labels.value;
+    chartData_Tags.value.datasets = [];
+    chartData_Tags.value.datasets.push({
+        label: 'tsent',
+        data: chartdata_tags_sent.value,
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    chartData_Tags.value.datasets.push({
+        label: 'trcvd',
+        data: chartdata_tags_rcvd.value,
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
+        borderWidth: 2,
+        pointRadius: 1,
+    });
+    tsLog.log("chartData_Tags.value: " + JSON.stringify(chartData_Tags.value));
+    tsLog.log("chartData_Tags.value.labels: " + JSON.stringify(chartData_Tags.value.labels));
+
     nextTick(async () => {
         if(do_single_day.value){
-          is_loading_singleday_graph.value = false;
-          is_loading_inbox_graph_folders.value = false;
-          // is_loading_inbox_graph_dates.value = false;
-          showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id)
+          is_loading_singleday_chart.value = false;
+          is_loading_inbox_chart_folders.value = false;
+          // is_loading_inbox_chart_dates.value = false;
+          showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id);
+          await nextTick();
         }
         i18n.updateDocument();
     });
@@ -689,6 +1063,10 @@ async function updateData() {
             let advFilters = {};
             advFilters.folders = filterFolder.value;
             advFilters.folders_do_subfolders = filterFolder_do_subfolders.value;
+            advFilters.read_unread = filterReadUnread.value;
+            advFilters.flagged_unflagged = filterFlaggedUnflagged.value;
+            advFilters.filterSubject = filterSubject.value.trim();
+            tsLog.log("advFilters: " + JSON.stringify(advFilters, null, 2));
             let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters);
             tsLog.log("result_customqry: " + JSON.stringify(result_customqry, null, 2));
             // export data
@@ -712,11 +1090,11 @@ async function updateData() {
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             is_loading_counter_sent_rcvd.value = false;
             if(!do_single_day.value){
-              // graph day hours
+              // chart day hours
               const _hours_data = tsCoreUtils.transformCountDataToDataset(result_customqry.msg_hours, false); // the false is to not to it progressive
-              graphdata_customqry_hours_sent.value = _hours_data.dataset_sent;
-              graphdata_customqry_hours_rcvd.value = _hours_data.dataset_rcvd;
-              is_loading_timeday_graph.value = false;
+              chartdata_customqry_hours_sent.value = _hours_data.dataset_sent;
+              chartdata_customqry_hours_rcvd.value = _hours_data.dataset_rcvd;
+              is_loading_timeday_chart.value = false;
               //aggregated data
               let aggregate = result_customqry.aggregate;
               tsLog.log("dates: " + JSON.stringify(result_customqry.dates, null, 2));
@@ -730,22 +1108,40 @@ async function updateData() {
               counter_customqry_sent_min.value = aggregate.min_sent;
               counter_customqry_sent_avg.value = aggregate.avg_sent;
               is_loading_counter_customqry.value = false;
-              // sent and received graphs
+              // sent and received charts
               const customqry_data = tsCoreUtils.transformCountDataToDataset(result_customqry.dates, false, true);
               tsLog.log("customqry_data: " + JSON.stringify(customqry_data));
-              graphdata_customqry_labels.value = customqry_data.labels;
-              // sent graph
-              graphdata_customqry_sent.value = customqry_data.dataset_sent;
-              is_loading_sent_graph.value = false;
-              // received graph
-              graphdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
-              is_loading_rcvd_graph.value = false;
-              // graph weekdays
+              chartdata_customqry_labels.value = customqry_data.labels;
+              // sent chart
+              chartdata_customqry_sent.value = customqry_data.dataset_sent;
+              is_loading_sent_chart.value = false;
+              // received chart
+              chartdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
+              is_loading_rcvd_chart.value = false;
+              // weeks view
+              const customqry_weeks = tsCoreUtils.transformCountDataToDataset(result_customqry.dates_weeks, false, true);
+              tsLog.log("customqry_weeks: " + JSON.stringify(customqry_weeks));
+              chartdata_customqry_weeks_labels.value = customqry_weeks.labels;
+              chartdata_customqry_weeks_sent.value = customqry_weeks.dataset_sent;
+              chartdata_customqry_weeks_rcvd.value = customqry_weeks.dataset_rcvd;
+              // months view
+              const customqry_months = tsCoreUtils.transformCountDataToDataset(result_customqry.dates_months, false, true);
+              tsLog.log("customqry_months: " + JSON.stringify(customqry_months));
+              chartdata_customqry_months_labels.value = customqry_months.labels;
+              chartdata_customqry_months_sent.value = customqry_months.dataset_sent;
+              chartdata_customqry_months_rcvd.value = customqry_months.dataset_rcvd;
+              // years view
+              const customqry_years = tsCoreUtils.transformCountDataToDataset(result_customqry.dates_years, false, true);
+              tsLog.log("customqry_years: " + JSON.stringify(customqry_years));
+              chartdata_customqry_years_labels.value = customqry_years.labels;
+              chartdata_customqry_years_sent.value = customqry_years.dataset_sent;
+              chartdata_customqry_years_rcvd.value = customqry_years.dataset_rcvd;
+              // chart weekdays
               let first_day_week = tsStore.first_day_week;
               const _weekdays_data = tsCoreUtils.transformCountDataToDataset(tsUtils.sortWeekdays(first_day_week, result_customqry.msg_weekdays), false); // the false is to not do it progressive
-              graphdata_customqry_weekdays_sent.value = _weekdays_data.dataset_sent;
-              graphdata_customqry_weekdays_rcvd.value = _weekdays_data.dataset_rcvd;
-              is_loading_weekdays_graph.value = false;
+              chartdata_customqry_weekdays_sent.value = _weekdays_data.dataset_sent;
+              chartdata_customqry_weekdays_rcvd.value = _weekdays_data.dataset_rcvd;
+              is_loading_weekdays_chart.value = false;
             }else{  // single day view
               // console.log(">>>>>>>>>>>>>> count_total_rcvd: " + result_customqry.received);
               // console.log(">>>>>>>>>>>>>> count_in_inbox: " + result_customqry.count_in_inbox);
@@ -756,12 +1152,33 @@ async function updateData() {
               }
               is_loading_counter_inbox_percent.value = false;
               const singleday_hours_data = tsCoreUtils.transformCountDataToDataset(result_customqry.msg_hours, do_progressive);
-              graphdata_singleday_hours_sent.value = singleday_hours_data.dataset_sent;
-              graphdata_singleday_hours_rcvd.value = singleday_hours_data.dataset_rcvd;
-              is_loading_singleday_graph.value = false;
+              chartdata_singleday_hours_sent.value = singleday_hours_data.dataset_sent;
+              chartdata_singleday_hours_rcvd.value = singleday_hours_data.dataset_rcvd;
+              is_loading_singleday_chart.value = false;
               // inbox zero folders
-              graphdata_inboxzero_folders.value = result_customqry.folders;
+              chartdata_inboxzero_folders.value = result_customqry.folders;
             }
+            // domains
+            const domains_data = tsCoreUtils.transformCountDataToDataset(result_customqry.domains, false, true);
+            // console.log(">>>>>>>>>>>>> domains_data: " + JSON.stringify(domains_data, null, 2));
+            chartdata_domains_sent.value = domains_data.dataset_sent;
+            chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
+            chartdata_domains_labels.value = domains_data.labels;
+            is_loading_domains_chart.value = false;
+            // folders
+            const folders_data = tsCoreUtils.transformCountDataToDataset(result_customqry.folders, false, true);
+            //  console.log(">>>>>>>>>>>>> folders_data: " + JSON.stringify(folders_data, null, 2));
+            chartdata_folders_sent.value = folders_data.dataset_sent;
+            chartdata_folders_rcvd.value = folders_data.dataset_rcvd;
+            chartdata_folders_labels.value = folders_data.labels;
+            is_loading_folders_chart.value = false;
+            // tags
+            const tags_data = tsCoreUtils.transformCountDataToDataset(result_customqry.tags, false, true);
+            //  console.log(">>>>>>>>>>>>> tags_data: " + JSON.stringify(tags_data, null, 2));
+            chartdata_tags_sent.value = tags_data.dataset_sent;
+            chartdata_tags_rcvd.value = tags_data.dataset_rcvd;
+            chartdata_tags_labels.value = await tsCoreUtils.transformTagsLabels(tags_data.labels);
+            is_loading_tags_chart.value = false;
             let stop_time = performance.now();
             updateElapsed('getCustomQryData', stop_time - start_time);
             resolve(true);
@@ -774,14 +1191,14 @@ async function updateData() {
             counter_inbox_total.value = result_inbox.total;
             counter_inbox_unread.value = result_inbox.unread;
             // inbox zero dates
-            graphdata_inboxzero_dates.value = result_inbox.dates;
+            chartdata_inboxzero_dates.value = result_inbox.dates;
             is_loading_counter_inbox.value = false;
             chartData_InboxZeroDates.value.labels = ['date'];
             chartData_InboxZeroDates.value.datasets = [];
-            chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(graphdata_inboxzero_dates.value);
+            chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(chartdata_inboxzero_dates.value);
             tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
             nextTick(() => {
-                is_loading_inbox_graph_dates.value = false;
+                is_loading_inbox_chart_dates.value = false;
             });
             updateElapsed('getInboxZeroData', result_inbox.elapsed);
             resolve(true);
@@ -793,15 +1210,18 @@ function loadingDo(){
     is_loading_counter_customqry.value = true;
     is_loading_involved_table_recipients.value = true;
     is_loading_involved_table_senders.value = true;
-    is_loading_sent_graph.value = true;
-    is_loading_rcvd_graph.value = true;
-    is_loading_singleday_graph.value = true;
+    is_loading_sent_chart.value = true;
+    is_loading_rcvd_chart.value = true;
+    is_loading_singleday_chart.value = true;
     is_loading_counter_inbox.value = true;
     is_loading_counter_inbox_percent.value = true;
-    is_loading_inbox_graph_folders.value = true;
-    is_loading_inbox_graph_dates.value = true;
-    is_loading_timeday_graph.value = true;
-    is_loading_weekdays_graph.value = true;
+    is_loading_inbox_chart_folders.value = true;
+    is_loading_inbox_chart_dates.value = true;
+    is_loading_timeday_chart.value = true;
+    is_loading_weekdays_chart.value = true;
+    is_loading_domains_chart.value = true;
+    is_loading_folders_chart.value = true;
+    is_loading_tags_chart.value = true;
 }
 
 function updateElapsed(function_name, time) {
@@ -814,26 +1234,45 @@ function updateElapsed(function_name, time) {
 }
 
 async function toggleAdvancedFilters(){
-  let container = document.getElementById('customqry_square_container');
-  let currentMarginTop = window.getComputedStyle(container).marginTop;
-  let currentMarginTopValue = parseFloat(currentMarginTop);
-  if(show_advanced_filters.value){
-    let adv_filters = document.getElementById('customqry_adv_filters');
-    if(adv_filters) {
-      let heightOfElementA = adv_filters.offsetHeight;
-      container.style.marginTop = `${currentMarginTopValue - heightOfElementA}px`;
-      show_advanced_filters.value = false;
-    }
-  }else{
-    show_advanced_filters.value = true;
-    await nextTick();
-    let adv_filters = document.getElementById('customqry_adv_filters');
-    if(adv_filters) {
-      let heightOfElementA = adv_filters.offsetHeight;
-      container.style.marginTop = `${currentMarginTopValue + heightOfElementA}px`;
-    }
+  // let container = document.getElementById('customqry_square_container');
+  // let currentMarginTop = window.getComputedStyle(container).marginTop;
+  // let currentMarginTopValue = parseFloat(currentMarginTop);
+  show_advanced_filters.value = !show_advanced_filters.value;
+  await nextTick();
+  updateAdvFiltersPosition();
+  // if(show_advanced_filters.value){
+  //   let adv_filters = document.getElementById('customqry_adv_filters');
+  //   if(adv_filters) {
+  //     // let heightOfElementA = adv_filters.offsetHeight;
+  //     let height = adv_filters.offsetHeight;
+  //     let style = getComputedStyle(adv_filters);
+  //     let marginTop = parseFloat(style.marginTop);
+  //     let marginBottom = parseFloat(style.marginBottom);
+  //     let totalHeight = height + marginTop + marginBottom;
+  //     container.style.marginTop = `${currentMarginTopValue - totalHeight}px`;
+  //     show_advanced_filters.value = false;
+  //     console.log(">>>>>>>>>>>>> totalHeight: " + totalHeight);
+  //     console.log(">>>>>>>>>>>>> container.style.marginTop: " + container.style.marginTop);
+  //     console.log(">>>>>>>>>>>>> height: " + height + " marginTop: " + marginTop + " marginBottom: " + marginBottom);
+  //   }
+  // }else{
+  //   show_advanced_filters.value = true;
+  //   await nextTick();
+  //   let adv_filters = document.getElementById('customqry_adv_filters');
+  //   if(adv_filters) {
+  //     // let heightOfElementA = adv_filters.offsetHeight;
+  //     let height = adv_filters.offsetHeight;
+  //     let style = getComputedStyle(adv_filters);
+  //     let marginTop = parseFloat(style.marginTop);
+  //     let marginBottom = parseFloat(style.marginBottom);
+  //     let totalHeight = height + marginTop + marginBottom;
+  //     container.style.marginTop = `${currentMarginTopValue + totalHeight}px`;
+  //     console.log(">>>>>>>>>>>>> totalHeight: " + totalHeight);
+  //     console.log(">>>>>>>>>>>>> container.style.marginTop: " + container.style.marginTop);
+  //     console.log(">>>>>>>>>>>>> height: " + height + " marginTop: " + marginTop + " marginBottom: " + marginBottom);
+  //   }
     i18n.updateDocument();
-  }
+  // }
 }
 
 function updateAdvFiltersPosition(){
@@ -843,7 +1282,12 @@ function updateAdvFiltersPosition(){
   if(show_advanced_filters.value){
     let currentMarginTop = window.getComputedStyle(container).marginTop;
     let currentMarginTopValue = parseFloat(currentMarginTop);
-    container.style.marginTop = `${currentMarginTopValue + parseFloat(customqry_adv_filters.offsetHeight)}px`;
+    let height = customqry_adv_filters.offsetHeight;
+    let style = getComputedStyle(customqry_adv_filters);
+    let marginTop = parseFloat(style.marginTop);
+    let marginBottom = parseFloat(style.marginBottom);
+    let totalHeight = height + marginTop + marginBottom;
+    container.style.marginTop = `${currentMarginTopValue + totalHeight + 10}px`;
   }
 }
 
@@ -863,7 +1307,7 @@ defineExpose({ doQry, updateAdvFiltersPosition });
 .square_container {
     margin-top: 4.6em;
 }
-.chart_inbox0_percent{
+:deep(.chart_inbox0_percent){
   top: 5.2em;
 }
 </style>

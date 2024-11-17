@@ -19,28 +19,32 @@
 -->
 
 <template>
-<div class="chart_time_full">
-  <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
-  <Bar
-      :options="chartOptions"
-      :data="chartData"
-      :plugins="chartPlugins"
-      :key="chartData.datasets.length"
-      ref="weekdaysChartBar_ref"
-      v-if="!is_loading"
-    />
+  <div class="chart_time_container">
+    <div class="chart_time_full_domains" >
+      <div class="chart_time_full_domains_container" :id="chart_id">
+        <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
+        <Bar
+            :options="chartOptions"
+            :data="chartData"
+            :plugins="chartPlugins"
+            :height="chart_height"
+            :key="key"
+            ref="foldersChartBar_ref"
+            v-if="!is_loading"
+          />
+      </div>
+    </div>
+    <div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </div>
-<div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </template>
 
 
-
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timegraph-legend';
+import { htmlLegendPlugin } from '@statslib/chartjs-lib/plugin-timechart-legend';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
@@ -51,40 +55,64 @@ Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, B
 let props = defineProps({
     chartData: {
         type: Object,
-        default: () => ({}),
+        default: () => ({
+                    labels: [],
+                    datasets: []
+                }),
         required: true
+    },
+    chart_id: {
+        type: String,
+        default: 'folders-chart',
+    },
+    chart_height: {
+        type: String,
+        default: '500px'
     },
     is_loading: {
         type: Boolean,
         default: true
+    },
+    key: {
+        type: Number,
+        default: 0
     }
 });
 
-let weekdaysChartBar_ref = ref(null);
+let foldersChartBar_ref = ref(null);
 
-let legend_id = ref("weekdays-legend-container");
-let maxY = ref(0);
+let maxX = ref(0);
+
+let chart_id = computed(() => props.chart_id);
+let legend_id = computed(() => props.chart_id + "-legend");
+let chart_height = computed(() => props.chart_height);
+let key = computed(() => props.key);
 
 let chartData = computed(() => {
   if (props.chartData.datasets && props.chartData.datasets.length > 0) {
   let data = tsUtils.safeConcat(props.chartData.datasets, 0)
                   .concat(tsUtils.safeConcat(props.chartData.datasets, 1));
         let maxData = tsCoreUtils.getMaxFromData(data);
-        maxY.value = (Math.ceil(maxData / 5) * 5);
-        if(maxY.value == maxData) {
-          maxY.value = maxY.value + 3;
+        maxX.value = (Math.ceil(maxData / 5) * 5);
+        if(maxX.value == maxData) {
+          maxX.value = maxX.value + 3;
         }
     } else {
-        maxY.value = 5;
+        maxX.value = 5;
     }
     if(!chartOptions) return;
-    //console.log(">>>>>>>>>>>>>>>>>>>> maxY: " + maxY.value);
-    if(maxY.value < 20) {
-      chartOptions.value.scales.y.ticks.stepSize = 1;
+    // console.log(">>>>>>>>>>>>>>>>>>>> maxX: " + maxX.value);
+    if(maxX.value < 20) {
+      chartOptions.value.scales.x.ticks.stepSize = 1;
     }else{
-      chartOptions.value.scales.y.ticks.stepSize = 5;
+      chartOptions.value.scales.x.ticks.stepSize = 5;
     }
-    chartOptions.value.scales.y.max = maxY.value;
+    chartOptions.value.scales.x.max = maxX.value;
+
+  let chart_container = document.getElementById(chart_id.value);
+  if(chart_container) {
+    chart_container.style.height = chart_height.value;
+  }
 
   return props.chartData;
 });
@@ -95,38 +123,19 @@ var chartOptions = ref({
         responsive: true,
         animation: false,
         maintainAspectRatio: false,
+        indexAxis: 'y',
         hover: {mode: null},
         // categoryPercentage: 1,
         // barPercentage: 0.8,
         scales: {
           x: {
             title: {
-              display: false,
-            },
-            beginAtZero: true,
-            min: 0,
-            ticks: {
-              callback: function(value, index, ticks) {
-                            return tsCoreUtils.getWeekDaysLabel(this.getLabelForValue(value));
-                        },
-              align: 'center',
-              color: function(context) {
-                            const labelIndex = context['tick']['value'];
-                            const label = context.chart.data.labels[labelIndex];
-                            return tsCoreUtils.getWeekDaysLabelColor(label);
-                        },
-              // maxRotation: 0,
-              // minRotation: 0
-            },
-          },
-          y: {
-            title: {
               display: true,
               text: browser.i18n.getMessage('Mails')
             },
             beginAtZero: true,
             min: 0,
-            max: maxY.value,
+            max: maxX.value,
             ticks: {
               stepSize: 5,
               callback: function(value) {
@@ -134,6 +143,21 @@ var chartOptions = ref({
                   return value;
                 }
                 return '';
+              },
+              align: 'right',
+              // maxRotation: 0,
+              // minRotation: 0
+            },
+          },
+          y: {
+            title: {
+              display: false,
+            },
+            beginAtZero: true,
+            min: 0,
+            ticks: {
+              callback: function(value, index, ticks) {
+                          return tsCoreUtils.getFolderPath(this.getLabelForValue(value), false);
               },
             },
           },
@@ -155,15 +179,15 @@ var chartOptions = ref({
             display: true,
             anchor: 'end',
             align: function(context) {
-              let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
-              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
-              return height <= 25 ? 'top' : 'bottom';
+              let width = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].width;
+              // console.log(">>>>>>>>>>>>>>>>>>>>> context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex]: " + JSON.stringify(context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex]));
+              return width <= 25 ? 'right' : 'left';
             },
             color: function(context) {
-              let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
-              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
+              let width = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].width;
+              //console.log(">>>>>>>>>>>>>>>>>>>>> width: " + JSON.stringify(width));
               //console.log(">>>>>>>>>>>>>>>>>>>>> darkMode: " + JSON.stringify(tsStore.darkmode));
-              return height > 25 ? '#fff' : tsStore.darkmode?'#bbb':'grey';
+              return width > 25 ? '#fff' : tsStore.darkmode?'#bbb':'grey';
             },
             font: {
               weight: 'bold',

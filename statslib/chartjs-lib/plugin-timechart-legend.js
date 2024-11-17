@@ -1,5 +1,6 @@
 const getOrCreateLegendList = (chart, id) => {
     const legendContainer = document.getElementById(id);
+    if(legendContainer == null) return null;
     let listContainer = legendContainer.querySelector('ul');
   
     if (!listContainer) {
@@ -36,6 +37,7 @@ const getOrCreateLegendList = (chart, id) => {
     afterUpdate(chart, args, options) {
         //console.log(">>>>>>>>>>>>> containerID: " + options.containerID);
       const ul = getOrCreateLegendList(chart, options.containerID);
+      if(ul == null) return;
   
       // Remove old legend items
       while (ul.firstChild) {

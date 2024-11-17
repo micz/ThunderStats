@@ -70,7 +70,7 @@ const getOrCreateTooltip = (chart) => {
   }
 
   
-export const externalTooltipTimeGraphLines = (context, extra_params = null) => {
+export const externalTooltipTimeChartLines = (context, extra_params = null) => {
     // Tooltip Element
     const {chart, tooltip} = context;
     const tooltipEl = getOrCreateTooltip(chart);

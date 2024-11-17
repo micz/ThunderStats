@@ -736,5 +736,81 @@
   "LastBusinessDayIs": {
     "message": "Le dernier jour ouvrable est",
     "description": ""
+  },
+  "ReadStatus": {
+    "message": "Statut de lecture",
+    "description": ""
+  },
+  "FilterFoldersOnlyRead": {
+    "message": "Lu",
+    "description": ""
+  },
+  "FilterFoldersOnlyUnread": {
+    "message": "Non lu",
+    "description": ""
+  },
+  "FlagStatus": {
+    "message": "Statut d'étoile",
+    "description": ""
+  },
+  "FilterFoldersOnlyFlagged": {
+    "message": "Marqué",
+    "description": ""
+  },
+  "FilterFoldersOnlyUnflagged": {
+    "message": "Non marqué",
+    "description": ""
+  },
+  "FilterFoldersAll": {
+    "message": "Tout",
+    "description": ""
+  },
+  "FilterSubject": {
+    "message": "Filtrer le sujet avec un mot-clé",
+    "description": ""
+  },
+  "WarnSearchCaseSensitive": {
+    "message": "Notez que la recherche est sensible à la casse. Rechercher \"test\" est différent de rechercher \"Test\".",
+    "description": ""
+  },
+  "Domains": {
+    "message": "Domaines",
+    "description": ""
+  },
+  "Tags": {
+    "message": "Étiquettes",
+    "description": ""
+  },
+  "InboxMailsDateSpreadingExtended": {
+    "message": "Courriels reçus - Vue des détails de la date",
+    "description": ""
+  },
+  "OrderBy": {
+    "message": "Trier par",
+    "description": ""
+  },
+  "Close": {
+    "message": "Fermer",
+    "description": ""
+  },
+  "ViewDetails": {
+    "message": "Voir les détails",
+    "description": ""
+  },
+  "Folders": {
+    "message": "Dossiers",
+    "description": ""
+  },
+  "ShowTags": {
+    "message": "Afficher les étiquettes",
+    "description": ""
+  },
+  "ShowFolders": {
+    "message": "Afficher les dossiers",
+    "description": ""
+  },
+  "prefs_customqry_loaddata_when_opening_addon": {
+    "message": "Charger les données même si la vue personnalisée est l'onglet ouvert en premier dans ThunderStats",
+    "description": ""
   }
 }

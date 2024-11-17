@@ -47,16 +47,25 @@ table.mzts-tinvolved tr.mzts-trow td{padding:2px 4px 2px 2px;color:black;white-s
 table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:normal;}
 
 .chart_time_container{width:100%;float:left;display:flex; flex-wrap:nowrap;}
-.chart_time{ overflow:auto;float:left;height:230px;width:89%;}
-.chart_time_86{ overflow:auto;float:left;height:230px;width:86%;}
-.chart_time_full{ overflow:auto;float:left;height:275px;width:89%;}
-.legend-time{float:right;font-size:12px;padding-top:8px;}
-.legend-time ul{list-style-type:none;margin:0;padding:0;}
-.legend-time ul li.day_today_title{font-weight:bold;}
-.legend-time ul li{white-space: nowrap;}
+.chart_time{overflow:auto;float:left;height:230px;width:89%;}
+.chart_time_86{overflow:auto;float:left;height:230px;width:86%;}
+.chart_time_full{overflow:auto;float:left;height:275px;width:89%;}
+.chart_time_full_domains{overflow-y:auto;float:left;height:275px;width:89%;}
+.chart_time_full_domains_container, .chart_time_full_inbox0ext_container{position: relative;}
+.chart_time_full_inbox0ext{overflow-y:auto;float:left;height:275px;width:100%;}
+.chart_inbox0_extended_orderby{text-align:right;}
+.chart_inbox0_extended_close_btn{width:fit-content;text-align:right;float:right;margin-top:11px;}
+.chart_inbox0_extended_table{width:100%;}
+.chart_inbox0_extended_title{text-align:left;}
 .chart_inbox0_info{width:100%;float:left;}
 .chart_inbox0{width:80%;height:310px;float:left;overflow:auto;}
 .chart_inbox0_datemsg{float:right;max-width:20%;min-width:90px;height:220px;}
+.chart_inbox0_orderbtn{cursor:pointer;text-decoration:underline;color:#3593dd;}
+.chart_inbox0_extended_sorticon{position: relative;top:4px;filter: invert(1)};
+.legend-time{float:right;font-size:12px;padding-top:8px;}
+.legend-time ul{list-style-type:none;margin:0;padding:0;}
+.legend-time ul li{white-space: nowrap;}
+.legend-time ul li.day_today_title{font-weight:bold;}
 .inbox0_inboxmsg_unread{color:grey;}
 .chart_many_days{overflow:auto;float:left;height:370px;width:100%;}
 .chart_customqry{overflow-x:scroll;float:left;height:370px;width:100%;}
@@ -322,9 +331,93 @@ td.align_end {
 }
 
 #filterFolder_container{
-  width: 50%;
+  width: 100%;
 }
 
+table#customqry_adv_filters_table{
+  width: 100%;
+}
+
+table#customqry_adv_filters_table td{
+  width: 50%;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#filterSubject{
+  min-height: calc(var(--ms-border-width, 1px)*2 + var(--ms-font-size, 1rem)*var(--ms-line-height, 1.375) + var(--ms-py, .5rem)*2);
+  width: 100%;
+  background: var(--ms-bg);
+  color: var(--ms-caret-color);
+  border: var(--ms-border-width,1px) solid var(--ms-border-color);
+  padding: 0.5rem;
+}
+
+#filterReadUnread, #filterFlaggedUnflagged{
+  min-height: calc(var(--ms-border-width, 1px)*2 + var(--ms-font-size, 1rem)*var(--ms-line-height, 1.375) + var(--ms-py, .5rem)*2);
+  background: var(--ms-bg);
+  color: var(--ms-caret-color);
+  border: var(--ms-border-width,1px) solid var(--ms-border-color);
+  padding: 0.5rem;
+  width: 10em;
+}
+
+.td-30{
+  text-align: left;
+  width: 30% !important;
+}
+
+.btn {
+  padding: 5px 7px;
+  background-color: #0078d7;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn_group{
+  width:fit-content;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+}
+
+.btn_small {
+  padding-top: 1px;
+  padding-right: 7px;
+  padding-bottom: 2px;
+  padding-left: 7px;
+  background-color: #0078d7;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 0.80em;
+}
+
+.btn_small_start{
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.btn_small_end{
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.btn_small_single{
+  border-radius: 12px;
+}
+
+.btn_disabled {
+  background-color: #7a7a7a;
+  color: white;
+  cursor: unset;
+}
+
+.spacer {
+  flex-grow: 1;
+}
 
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
@@ -391,5 +484,22 @@ td.align_end {
     background: #4d4d4d;
     border: #333;
   }
+
+  .btn {
+    background-color: #1e88e5;
+    color: #ffffff;
+  }
+
+  .btn_small {
+    background-color: #1e88e5;
+    color: #ffffff;
+  }
+
+  .btn_disabled {
+    background-color: #8b8b8b;
+    color: white;
+  }
+
+ .chart_inbox0_extended_sorticon{filter: invert(0)};
 
 }

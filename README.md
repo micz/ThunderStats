@@ -15,7 +15,7 @@ More info on [#194](https://github.com/micz/ThunderStats/issues/194) and [#195](
 
 ## Features
 - Sent and received mails
-- Day time graph
+- Day time chart
 - Top senders and recipients list
 - Inbox Zero status
 - Multiple days and Custom range date statistics with:
@@ -100,4 +100,6 @@ Custom Query Bookmark icon thanks to http://www.iconarchive.com/artist/graphicra
 Loading SVGs thanks to https://loading.io
 
 Business Days and Export Data icons thanks to https://www.iconarchive.com/artist/custom-icon-design.html
+
+[Fluent Design System](https://www.iconfinder.com/fluent-designsystem) for the sorting icons
 

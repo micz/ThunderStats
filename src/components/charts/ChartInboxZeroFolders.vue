@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." id="today_hours_graph_wait"/></div>
+    <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." id="today_hours_chart_wait"/></div>
     <Doughnut
         :options="chartOptions"
         :data="chartData"
@@ -29,7 +29,6 @@
         v-if="!is_loading"
     />
 </template>
-
 
 
 <script setup>
@@ -110,14 +109,13 @@ let chartOptions = ref({
             }
             let currTab = null;
             let tabs = await browser.tabs.query({windowId: browser.mailTabs.WINDOW_ID_CURRENT});
-              // Cycle through tabs to find the first mailtab
-              for(let i = 0; i < tabs.length; i++){
-                if(tabs[i].mailTab){
-                  currTab = tabs[i];
-                  break;
-                }
+            // Cycle through tabs to find the first mailtab
+            for(let i = 0; i < tabs.length; i++){
+              if(tabs[i].mailTab){
+                currTab = tabs[i];
+                break;
               }
-
+            }
             if(openFolderInFirstTab.value){
               if(tsStore.isTB128plus){
                 browser.mailTabs.update(currTab.id, {displayedFolder: chartData.value.folder_paths[activeEls[0].index]});

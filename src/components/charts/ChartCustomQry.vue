@@ -57,6 +57,10 @@ let props = defineProps({
         type: String,
         default: '1500px'
     },
+    data_type: {
+        type: String,
+        default: 'YYYYMMDD'
+    },
     is_loading: {
         type: Boolean,
         default: true
@@ -87,13 +91,13 @@ var chartOptions = ref({
             min: 0,
             ticks: {
               callback: function(value, index, ticks) {
-                            return tsCoreUtils.getCustomQryLabel(this.getLabelForValue(value));
+                            return tsCoreUtils.getCustomQryLabel(this.getLabelForValue(value), props.data_type);
                         },
               align: 'center',
               color: function(context) {
                             const labelIndex = context['tick']['value'];
                             const label = context.chart.data.labels[labelIndex];
-                            return tsCoreUtils.getDaysLabelColor(label);
+                            return tsCoreUtils.getDaysLabelColor(label, props.data_type == 'YYYYMMDD', props.data_type == 'YYYYMMDD');
                         },
               // maxRotation: 0,
               //minRotation: 90

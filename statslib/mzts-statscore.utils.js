@@ -120,6 +120,15 @@ export const tsCoreUtils = {
       return `${folder.accountId}:/${folder.path}`
     },
 
+    getFolderPath(folderId, do_split = false) {
+      const [accountId, path] = folderId.split(':/');
+      if(!do_split) {
+        return path.slice(1);
+      } else {
+        return path.slice(1).split(/(?<=\/)/);
+      }
+    },
+
     filterTodayNextHours(hours) {
         // Get the current time
         const now = new Date();
@@ -127,6 +136,47 @@ export const tsCoreUtils = {
 
         // Iterate over the array and set null for hours after the current hour
         return hours.map((value, index) => index > currentHour ? null : value);
+    },
+
+    async getTagsList(){
+        let messageTags = {};
+        if(tsStore.isTB128plus) {
+            messageTags = await browser.messages.tags.list();
+        } else {
+            messageTags = await browser.messages.listTags();
+        }
+        const output = messageTags.reduce((acc, messageTag) => {
+            acc[messageTag.key] = {
+                tag: messageTag.tag,
+                color: messageTag.color,
+                key: messageTag.key,
+                ordinal: messageTag.ordinal,
+                count: 0,
+                sent: 0,
+                received: 0,
+            };
+            return acc;
+          }, {});
+        // console.log(">>>>>>>>>>> getTagsList: " + JSON.stringify(output));
+        return output;
+    },
+
+    async transformTagsLabels(labels) {
+        let output = [];
+        let tags = tsStore.tags_list;
+        for(let label of labels) {
+            output.push(tags[label].tag);
+        }
+        return output;
+    },
+
+    getTagsLabelColor(label) {
+        let color = Object.values(tsStore.tags_list).find(tag => tag.tag === label).color;
+        if(tsStore.darkmode && color === '#000000') {
+            color = '#ffffff';
+        }
+        
+        return color;
     },
 
     // getManyDaysLabels(labels) {
@@ -153,31 +203,56 @@ export const tsCoreUtils = {
     //     });
     // },
 
-    getDaysLabelColor(label) {
-        let isBusinessDay = this.checkBusinessDay(label);
+    getDaysLabelColor(label, color_today = true, color_nobusiness_day = true) {
+        let isBusinessDay = true;
+
+        // console.log(">>>>>>>>>> color_today: " + color_today);
+        // console.log(">>>>>>>>>> color_nobusiness_day: " + color_nobusiness_day);
 
         const bd_color = tsStore.darkmode ? "white" : "black";
         const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
 
+        if(color_today && tsCoreUtils.isToday(label)) {
+            return tsStore.darkmode ? tsStore.chart_colors.many_days_today_dark : tsStore.chart_colors.many_days_today_light;
+        }
+
+        if(color_nobusiness_day) {
+            isBusinessDay = this.checkBusinessDay(label);
+        }
+
         return (isBusinessDay ? bd_color : nbd_color);
     },
 
-    getCustomQryLabel(label) {
-        const year = parseInt(label.slice(0, 4));
-        const month = parseInt(label.slice(4, 6));
-        const day = parseInt(label.slice(6, 8));
+    getCustomQryLabel(label, data_type) {      // data_type = "YYYY" | "YYYYMM" | "YYYYWW" | "YYYYMMDD"
+        switch(data_type) {
+            case "YYYY":
+                return label;
+            case "YYYYMM":
+                let mm_year = label.slice(0, 4);
+                let mm_month = label.slice(4);
+                return `${mm_month}/${mm_year}`;
+            case "YYYYWW":
+                let ww_year = label.slice(0, 4); // First 4 characters are the year
+                let ww_week = label.slice(4);   // Remaining characters are the week number
+                // Format the string as "WW [YYYY]"
+                return `${ww_week} [${ww_year}]`;
+            case "YYYYMMDD":
+                const year = parseInt(label.slice(0, 4));
+                const month = parseInt(label.slice(4, 6));
+                const day = parseInt(label.slice(6, 8));
 
-        const date = new Date(year, month - 1, day);
+                const date = new Date(year, month - 1, day);
 
-        const dateFormatter = new Intl.DateTimeFormat(undefined, {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
+                const dateFormatter = new Intl.DateTimeFormat(undefined, {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
 
-        const formattedDate = dateFormatter.format(date);
+                const formattedDate = dateFormatter.format(date);
 
-        return formattedDate;
+                return formattedDate;
+        }
     },
 
     getManyDaysLabel(label) {
@@ -281,6 +356,110 @@ export const tsCoreUtils = {
         }
         return datasets;
     },
+
+    transformQueryDataToDataset(data) {
+        let output = {};
+        let dataset = {};
+        dataset.data = [];
+        let labels = [];
+        let total = 0;
+
+        for(let key in data) {
+            total += data[key];
+        }
+
+        for(let key in data) {
+            let value = data[key];
+            dataset.data.push(value);
+            // let current_date = tsUtils.parseYYYYMMDDToDate(key);
+            // labels.push(current_date.toLocaleDateString(undefined,{day: '2-digit', month: '2-digit', year: 'numeric'}));
+            labels.push(key);
+        }
+
+        let targetLength = labels.length;
+        let availableColors = [...inboxZeroColors];
+        while (availableColors.length < targetLength) {
+          availableColors.push(...inboxZeroColors);
+        }
+        dataset.backgroundColor = [...availableColors];
+        dataset.borderColor = [...availableColors];
+
+        output.dataset = dataset;
+        output.labels = labels;
+        output.total = total;
+
+        // console.log(">>>>>>>>>>>>>> Length of labels: " + labels.length);
+        // console.log(">>>>>>>>>>>>>> Length of available colors: " + availableColors.length);
+        // console.log(">>>>>>>>>>>>>> Length of dataset.data: " + dataset.data.length);
+        // console.log(">>>>>>>>>>>>>> targetLength: " + targetLength);
+
+        return output;
+    },
+
+    transformDatasetToOrdinableArray(dataObject) {
+      return dataObject.labels.map((label, index) => {
+        //   const [day, month, year] = label.split("/").map(Number);
+          return {
+            // date: new Date(year, month - 1, day),
+            date: tsUtils.parseYYYYMMDDToDate(label),
+            label,
+            value: dataObject.datasets[0].data[index],
+            bgColor: dataObject.datasets[0].backgroundColor[index],
+            borderColor: dataObject.datasets[0].borderColor[index]
+          };
+      });
+    },
+
+    sortDatasetOrdinableArray(tempArray, type = 'date', order = 'asc') {
+      if (type === 'date') {
+        if (order === 'asc') {
+          return tempArray.sort((a, b) => a.date - b.date);
+        } else if (order === 'desc') {
+          return tempArray.sort((a, b) => b.date - a.date);
+        }
+      } else if (type === 'mails') {
+        if (order === 'asc') {
+          return tempArray.sort((a, b) => a.value - b.value);
+        } else if (order === 'desc') {
+          return tempArray.sort((a, b) => b.value - a.value);
+         }
+      } else {
+        throw new Error("Invalid type. Use 'date' or 'mails' for sorting.");
+      }
+      
+      throw new Error("Invalid order. Use 'asc' or 'mails' for sorting.");
+    },
+
+    updateDatasetFromSorted(dataObject, sortedArray) {
+      dataObject.labels = sortedArray.map(item => item.label);
+      dataObject.datasets[0].data = sortedArray.map(item => item.value);
+      dataObject.datasets[0].backgroundColor = sortedArray.map(item => item.bgColor);
+      dataObject.datasets[0].borderColor = sortedArray.map(item => item.borderColor);
+    },
+
+    sortDoubleDatasetsByTotal(data) {
+      // console.log(">>>>>>>>>>>>>> [sortDoubleDatasetsByTotal] data: " + JSON.stringify(data));
+      // Create an array of objects containing labels and the sum of data values
+      const summedData = data.labels.map((label, index) => {
+        const sum = data.datasets.reduce((acc, dataset) => acc + dataset.data[index], 0);
+        return { label, sum };
+      });
+    
+      // Sort the array by sum in descending order
+      summedData.sort((a, b) => b.sum - a.sum);
+    
+      // Rebuild the sorted object
+      const sortedLabels = summedData.map(item => item.label);
+      const sortedDatasets = data.datasets.map(dataset => ({
+        ...dataset,
+        data: summedData.map(item => dataset.data[data.labels.indexOf(item.label)])
+      }));
+    
+      return {
+        labels: sortedLabels,
+        datasets: sortedDatasets
+      };
+    },      
 
     // getMaxFromData(data) {      // data is an object like this: {"20240517":2,"20240518":4,"20240519":4,"20240520":2,"20240521":0,"20240522":2,"20240523":4,"20240524":0}
     //     let maxValue = 0;
@@ -636,6 +815,31 @@ export const tsCoreUtils = {
         }
     },
 
+    extractDomain(email) {
+        if (typeof email === 'string' && email.includes('@')) {
+          return email.split('@')[1];
+        }
+        return null;
+    },
+
+    extractDomains(recipients) {
+        const domains = [];
+      
+        recipients.forEach((recipient) => {
+          // Use regex to extract the email from a string like "Name <email@example.com>" or just "email@example.com"
+          const emailMatch = recipient.match(/<(.+?)>|(.+?@.+)/);
+          const email = emailMatch ? (emailMatch[1] || emailMatch[2]) : null;
+      
+          if (email && email.includes('@')) {
+            let domain = email.split('@')[1].trim();
+            domain = domain.replace(/>/g, '').trim();
+            domains.push(domain);
+          }
+        });
+      
+        return domains;
+    },
+
     // This function finds the first previous business day before the given date
     findPreviousBusinessDay(date) {
         let previousDate = new Date(date); // Create a copy of the original date
@@ -685,6 +889,19 @@ export const tsCoreUtils = {
 
         // console.log(">>>>>>>>>>>>>> checkBusinessDay ["+datestr+"]: return true");
         return true;
+    },
+
+    isToday(dateString) {
+        // Get the current date
+        const today = new Date();
+        
+        // Format the current date as YYYYMMDD
+        const currentDate = today.getFullYear().toString() +
+                            (today.getMonth() + 1).toString().padStart(2, '0') +
+                            today.getDate().toString().padStart(2, '0');
+      
+        // Check if the provided date string matches today's date
+        return dateString === currentDate;
     },
 
     isEasterOrEasterMonday(date) {

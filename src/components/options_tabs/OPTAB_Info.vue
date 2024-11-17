@@ -22,8 +22,16 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
-      <h3>Version 2.2.4 - ??/??/2024</h3>
+      <h3>Version 2.3.0 - ??/??/2024</h3>
       <ul>
+        <li>It's now possible to search for read/unread and starred/unsterred in the Custom View [<a href="https://github.com/micz/ThunderStats/issues/158">#158</a>].</li>
+        <li>It's now possible to search for a keyword in the subject in the Custom View [<a href="https://github.com/micz/ThunderStats/issues/354">#354</a>].</li>
+        <li>Added the sent / received domains chart [<a href="https://github.com/micz/ThunderStats/issues/380">#380</a>].</li>
+        <li>Added the sent / received folders chart [<a href="https://github.com/micz/ThunderStats/issues/357">#357</a>].</li>
+        <li>Added the sent / received tags chart [<a href="https://github.com/micz/ThunderStats/issues/359">#359</a>].</li>        
+        <li>Added a details view of the Inbox Zero Dates chart [<a href="https://github.com/micz/ThunderStats/issues/350">#350</a>]</li>
+        <li>The advanced filters panel opening and closing spacing is now fixed [<a href="https://github.com/micz/ThunderStats/issues/386">#386</a>].</li>
+        <li>Added an option to do not load data in the Custom View at startup.</li>
         <li>In Thunderbird 128 is now possible again to choose to open a folder from the Inbox Zero Folder Chart in a new tab or not.</li>
         <li>...</li>
       </ul>
@@ -46,7 +54,7 @@
         <li>The toolbar button is now always visible.</li>
         <li>Folders select dropdown text color fixed.</li>
         <li>Weekdays chart fixed [<a href="https://github.com/micz/ThunderStats/issues/374">#374</a>].</li>
-        <li>Improved the positioning of the labels on the Inbox Zero Folders graphs [<a href="https://github.com/micz/ThunderStats/issues/370">#370</a>, <a href="https://github.com/micz/ThunderStats/issues/373">#373</a>].</li>
+        <li>Improved the positioning of the labels on the Inbox Zero Folders charts [<a href="https://github.com/micz/ThunderStats/issues/370">#370</a>, <a href="https://github.com/micz/ThunderStats/issues/373">#373</a>].</li>
         <li>In the advanced filters panel is now possible to check the "include subolders" checkbox clicking on its label [<a href="https://github.com/micz/ThunderStats/issues/371">#371</a>].</li>
         <li>Inbox percentage loading indicator timing fixed [<a href="https://github.com/micz/ThunderStats/issues/376">#376</a>].</li>
         <li>Fixed a label error in the weekdays chart, which misordered the days relative to the number of emails.</li>
@@ -58,7 +66,7 @@
       <ul>
         <li>When executing a custom query for a single day, now is used the single day view [<a href="https://github.com/micz/ThunderStats/issues/315">#315</a>].</li>
         <li>The Inbox Zero Folders Chart is no longer partially hidden under the bottom border in certain circumstances.</li>
-        <li>The labels on the Inbox Zero Folders graphs no longer overlap [<a href="https://github.com/micz/ThunderStats/issues/341">#341</a>].</li>
+        <li>The labels on the Inbox Zero Folders charts no longer overlap [<a href="https://github.com/micz/ThunderStats/issues/341">#341</a>].</li>
         <li>Added the precentage of mails moved from inbox in all the single day views [<a href="https://github.com/micz/ThunderStats/issues/343">#343</a>].</li>
         <li>Fixed a concurrency bug in displaying the elapsed time. It now always shows the maximum value.</li>
         <li>Added a warning if querying too much days in the Custom View. Added an option in the advanced tab to choose the maximum number of days to query without a warning. It's also possible to disable the warning completely [<a href="https://github.com/micz/ThunderStats/issues/281">#281</a>].</li>
@@ -78,8 +86,8 @@
         <li>Added an hourly email extract divider in the Today and Yesterday tabs.</li>
        </ul>
        <li>Added the total number of mails in aggregate stats in Today Tab, Yesterday Tab, 7 Days Tab and Custom View Tabs. This total also considers business days only if the corresponding option is active [<a href="https://github.com/micz/ThunderStats/issues/323">#323</a>].</li>
-       <li>Added an option to display today's time graph lines only up to the current hour [<a href="https://github.com/micz/ThunderStats/issues/302">#302</a>].</li>
-       <li>In today's time graph, a vertical line has been added to indicate the current hour [<a href="https://github.com/micz/ThunderStats/issues/79">#79</a>].</li>
+       <li>Added an option to display Today Tab's Time Chart lines only up to the current hour [<a href="https://github.com/micz/ThunderStats/issues/302">#302</a>].</li>
+       <li>In Today Tab's Time Chart, a vertical line has been added to indicate the current hour [<a href="https://github.com/micz/ThunderStats/issues/79">#79</a>].</li>
        <li>Some options have been moved from the options page "Advanced" tab to the "General" tab.</li>
        <li>Displaying the last execution time for each tab [<a href="https://github.com/micz/ThunderStats/issues/314">#314</a>].</li>
        <li>Changed the color of the 'Today' bar in the 7-Days Tab Chart [<a href="https://github.com/micz/ThunderStats/issues/326">#326</a>].</li>
@@ -109,7 +117,7 @@
        <li>Added dark mode [<a href="https://github.com/micz/ThunderStats/issues/197">#197</a>].</li>
        <li>It's now possibile to define a locale for the datepicker different from the default one [<a href="https://github.com/micz/ThunderStats/issues/238">#238</a>].</li>
        <li>Added an option to choose to remember last opened tab [<a href="https://github.com/micz/ThunderStats/issues/232">#232</a>].</li>
-       <li>The Time Graph is now a line graph [<a href="https://github.com/micz/ThunderStats/issues/198">#198</a>].</li>
+       <li>The Time Chart is now a line chart [<a href="https://github.com/micz/ThunderStats/issues/198">#198</a>].</li>
        <li>Added info for the last days in the Yesterday Tab [<a href="https://github.com/micz/ThunderStats/issues/276">#276</a>].</li>
        <li>The elaboration time is now shown [<a href="https://github.com/micz/ThunderStats/issues/218">#218</a>].</li>
        <li>The results are displayed as they become available [<a href="https://github.com/micz/ThunderStats/issues/219">#219</a>].</li>
@@ -128,7 +136,7 @@
        <li>Added dark mode [<a href="https://github.com/micz/ThunderStats/issues/197">#197</a>].</li>
        <li>It's now possibile to define a locale for the datepicker different from the default one [<a href="https://github.com/micz/ThunderStats/issues/238">#238</a>].</li>
        <li>Added an option to choose to remember last opened tab [<a href="https://github.com/micz/ThunderStats/issues/232">#232</a>].</li>
-       <li>The Time Graph is now a line graph [<a href="https://github.com/micz/ThunderStats/issues/198">#198</a>].</li>
+       <li>The Time Chart is now a line chart [<a href="https://github.com/micz/ThunderStats/issues/198">#198</a>].</li>
        <li>Added info for the last days in the Yesterday Tab [<a href="https://github.com/micz/ThunderStats/issues/276">#276</a>].</li>
        <li>The elaboration time is now shown [<a href="https://github.com/micz/ThunderStats/issues/218">#218</a>].</li>
        <li>The results are displayed as they become available [<a href="https://github.com/micz/ThunderStats/issues/219">#219</a>].</li>

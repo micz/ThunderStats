@@ -736,5 +736,81 @@
   "LastBusinessDayIs": {
     "message": "The last business day is",
     "description": ""
+  },
+  "ReadStatus": {
+    "message": "Read Status",
+    "description": ""
+  },
+  "FilterFoldersOnlyRead": {
+    "message": "Read",
+    "description": ""
+  },
+  "FilterFoldersOnlyUnread": {
+    "message": "Unread",
+    "description": ""
+  },
+  "FlagStatus": {
+    "message": "Star Status",
+    "description": ""
+  },
+  "FilterFoldersOnlyFlagged": {
+    "message": "Starred",
+    "description": "" 
+  },
+  "FilterFoldersOnlyUnflagged": {
+    "message": "Unstarred",
+    "description": ""
+  },
+  "FilterFoldersAll": {
+    "message": "All",
+    "description": ""
+  },
+  "FilterSubject": {
+    "message": "Filter the subject with a keyword",
+    "description": ""
+  },
+  "WarnSearchCaseSensitive": {
+    "message": "Be aware that the search is case sensitive. Searching for \"test\" is different from searching for \"Test\".",
+    "description": ""
+  },
+  "Domains": {
+    "message": "Domains",
+    "description": ""
+  },
+  "Tags": {
+    "message": "Tags",
+    "description": ""
+  },
+  "InboxMailsDateSpreadingExtended": {
+    "message": "Inbox mails - Date details view",
+    "description": ""
+  },
+  "OrderBy": {
+    "message": "Order by",
+    "description": ""
+  },
+  "Close": {
+    "message": "Close",
+    "description": ""
+  },
+  "ViewDetails": {
+    "message": "View Details",
+    "description": ""
+  },
+  "Folders": {
+    "message": "Folders",
+    "description": ""
+  },
+  "ShowTags": {
+    "message": "Show Tags",
+    "description": ""
+  },
+  "ShowFolders": {
+    "message": "Show Folders",
+    "description": ""
+  },
+  "prefs_customqry_loaddata_when_opening_addon": {
+    "message": "Load data even when Custom View is the first tab opened in ThunderStats",
+    "description": ""
   }
 }

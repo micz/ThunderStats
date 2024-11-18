@@ -10,6 +10,7 @@
         <li>Added the sent / received domains chart [<a href="https://github.com/micz/ThunderStats/issues/380">#380</a>].</li>
         <li>Added the sent / received folders chart [<a href="https://github.com/micz/ThunderStats/issues/357">#357</a>].</li>
         <li>Added the sent / received tags chart [<a href="https://github.com/micz/ThunderStats/issues/359">#359</a>].</li>
+        <li>In the Custom View sent and received charts, the user can now select the chart scale (day, week, month, or year) [<a href="https://github.com/micz/ThunderStats/issues/362">#362</a>].</li>
         <li>Added a details view of the Inbox Zero Dates chart [<a href="https://github.com/micz/ThunderStats/issues/350">#350</a>]</li>
         <li>The advanced filters panel opening and closing spacing is now fixed [<a href="https://github.com/micz/ThunderStats/issues/386">#386</a>].</li>
         <li>Added an option to do not load data in the Custom View at startup.</li>

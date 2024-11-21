@@ -1,0 +1,65 @@
+name: Bug Report
+description: Create a report to help ThunderStats improve.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue form is for reporting bugs only!
+
+        If you have a feature or enhancement request, please use the [feature request][fr] form.
+
+        [fr]: https://github.com/micz/ThunderStats/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=
+  - type: textarea
+    validations:
+      required: true
+    id: problem
+    attributes:
+      label: The problem
+      description: >-
+        Describe the issue you are experiencing here. Tell us what you were trying to do and what happened.
+
+        Provide a clear and concise description of what the problem is.
+  - type: markdown
+    attributes:
+      value: |
+        ## Environment
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: Which Operative System are you using?
+      description: >
+        Like Windows 10 or MacOSX.
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: Which version of Thunderbird are you using?
+      description: >
+        Thunderbird version like 115.14.0 or 128.1.
+  - type: input
+    id: version
+    validations:
+      required: true
+    attributes:
+      label: Which version of ThunderStats has the issue?
+      description: >
+        ThunderStats version like 2.1.0.
+  - type: markdown
+    attributes:
+      value: |
+        # Details
+  - type: textarea
+    id: logs
+    attributes:
+      label: Anything in the Thunderbird console logs that might be useful?
+      description: For example, error message, or stack traces. Be sure to have activated the debug in the add-on preferences. Open the console using the keyboard shortcut CTRL+SHIFT+J.
+      render: txt
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: >
+        If you have any additional information, use the field below.
+        Please note, you can attach screenshots or screen recordings here, by
+        dragging and dropping files in the field below.

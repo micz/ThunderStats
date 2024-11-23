@@ -24,7 +24,7 @@
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
-                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
+                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" :text-input="{ selectOnFocus: true }" ></VueDatePicker>
                 <img :src="advanced_filters_icon" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__

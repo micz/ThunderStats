@@ -17,6 +17,7 @@
  */
 
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsStore } from '@statslib/mzts-store';
 
 export const tsExport = {
 
@@ -32,6 +33,18 @@ export const tsExport = {
         daily_mails: {
             type: 'daily_mails',
             name: 'Daily Emails',
+        },
+        tags: {
+            type: 'tags',
+            name: 'Tags',
+        },
+        folders: {
+            type: 'folders',
+            name: 'Folders',
+        },
+        domains: {
+            type: 'domains',
+            name: 'Domains',
         },
     },
 
@@ -186,6 +199,26 @@ export const tsExport = {
                 obj[sentKey] = json[hour].sent;
                 obj[rcvdKey] = json[hour].received;
     
+            resultArray.push(obj);
+        }
+    
+        return resultArray;
+    },
+
+    transformTagsJsonToArray(json) {
+        let resultArray = [];
+
+        const tagKey = browser.i18n.getMessage('Tags');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+    
+        for (let tag in json) {
+            let mailData = json[tag];
+            const obj = {};
+            obj[tagKey] =  tsStore.tags_list[tag].tag;
+            obj[sentKey] = mailData.sent;
+            obj[rcvdKey] = mailData.received;
+            
             resultArray.push(obj);
         }
     

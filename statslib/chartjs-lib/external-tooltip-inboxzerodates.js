@@ -17,8 +17,8 @@
  */
 
 const getOrCreateTooltip = (chart) => {
-    let tooltipEl = chart.canvas.parentNode.querySelector('div');
-  
+    let tooltipEl = chart.canvas.parentNode.querySelector('div.tooltip-light');
+
     if (!tooltipEl) {
       tooltipEl = document.createElement('div');
       tooltipEl.classList.add('tooltip-light');

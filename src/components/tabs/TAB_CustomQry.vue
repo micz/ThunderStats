@@ -771,6 +771,7 @@ async function doQry(){
 function setChartWidth(){
   let chart_container_width = document.querySelector('.chart_customqry').clientWidth;
   let chart_ipotetic_width = chartData_Rcvd.value.labels.length * 60;
+  if(chart_ipotetic_width > 30000) chart_ipotetic_width = 30000;
   if(chart_container_width < chart_ipotetic_width){
     chart_width.value = String(chart_ipotetic_width) + "px";
   } else {

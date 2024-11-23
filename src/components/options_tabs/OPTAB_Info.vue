@@ -21,6 +21,10 @@
 <template>
     <OptionDonationHeader />
     <div>
+      <h3>Version 2.3.1 - ??/??/2024</h3>
+      <ul>
+        <li>...</li>
+      </ul>
       <h1>ThunderStats Release Notes</h1>
       <h3>Version 2.3.0 - 17/11/2024</h3>
       <ul>

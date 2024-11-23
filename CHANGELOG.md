@@ -3,6 +3,10 @@
 
 
 
+<h3>Version 2.3.1 - ??/??/2024</h3>
+      <ul>
+        <li>...</li>
+      </ul>
 <h3>Version 2.3.0 - 17/11/2024</h3>
       <ul>
         <li>It's now possible to search for read/unread and starred/unsterred in the Custom View [<a href="https://github.com/micz/ThunderStats/issues/158">#158</a>].</li>

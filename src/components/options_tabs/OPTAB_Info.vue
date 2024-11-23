@@ -23,6 +23,9 @@
     <div>
       <h3>Version 2.3.1 - ??/??/2024</h3>
       <ul>
+        <li>Inbox Zero Date Chart tooltip is now visible again [<a href="https://github.com/micz/ThunderStats/issues/392">#392</a>].</li>
+        <li>Custom View sent and received charts day view has now a max width of 30.000 pixels, so it's visible also when querying hundreds of days [<a href="https://github.com/micz/ThunderStats/issues/390">#390</a>].</li>
+        <li>Custom View export menu is now correctly updated [<a href="https://github.com/micz/ThunderStats/issues/393">#393</a>].</li>
         <li>...</li>
       </ul>
       <h1>ThunderStats Release Notes</h1>

@@ -747,6 +747,7 @@ async function doQry(){
   chartdata_type.value = "YYYYMMDD";
   do_single_day.value = (customqry_totaldays_num.value == 1);
   elapsed.getInboxZeroData = 1;
+  tabId.value = "tab-customqry";
   if(do_single_day.value){
     tsLog.log("Doing single day view...");
     tabId.value = "tab-customqry-single-day";

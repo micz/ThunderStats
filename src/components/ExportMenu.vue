@@ -51,7 +51,6 @@ let export_menu_title = [
         label: h('div', { class: 'my-menu-sperator' }),
         disabled: true,
       },
-
     ];
 
 let export_menu = {
@@ -73,6 +72,14 @@ let export_menu = {
             exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
           }
         },
+        {
+          label: browser.i18n.getMessage("Tags"), 
+          onClick: () => {
+            let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date());
+            let export_type = tsExport.export["tags"].type;
+            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+          }
+        }
     ],
     //========================================== Today Tab - END
     //========================================== Yesterday Tab
@@ -200,6 +207,10 @@ function exportData(data, export_type, export_name) {
         case "time_emails":
           let output_data_time_emails = tsExport.transformTimeMailsJsonToArray(data);
           tsExport.downloadCSV(output_data_time_emails, export_name);
+          break;
+        case "tags":
+          let output_data_tags = tsExport.transformTagsJsonToArray(data);
+          tsExport.downloadCSV(output_data_tags, export_name);
           break;
         default: alert("export error: " + export_type);
           break;

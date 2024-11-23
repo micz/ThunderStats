@@ -399,6 +399,7 @@ async function updateData() {
             // export data
             _export_data.value[tsExport.export.time_emails.type] = result_yesterday.msg_hours;
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_yesterday.senders, result_yesterday.recipients);
+            _export_data.value[tsExport.export.tags.type] = result_yesterday.tags;
             // chart yesterday hours
             const yesterday_hours_data = tsCoreUtils.transformCountDataToDataset(result_yesterday.msg_hours, do_progressive);
             chartdata_yesterday_hours_sent.value = yesterday_hours_data.dataset_sent;

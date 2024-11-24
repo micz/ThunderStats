@@ -1088,6 +1088,7 @@ async function updateData() {
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_customqry.senders, result_customqry.recipients);
             _export_data.value[tsExport.export.tags.type] = result_customqry.tags;
             _export_data.value[tsExport.export.folders.type] = result_customqry.folders;
+            _export_data.value[tsExport.export.domains.type] = result_customqry.domains;
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
             table_involved_senders.value = result_customqry.senders;

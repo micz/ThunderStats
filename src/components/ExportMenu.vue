@@ -188,6 +188,15 @@ let export_menu = {
           exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
         }
       },
+      {
+        label: browser.i18n.getMessage("Domains"), 
+        onClick: async () => {
+          let _many_days = await tsPrefs.getPref("_many_days");
+          let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
+          let export_type = tsExport.export["domains"].type;
+          exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        }
+      },
     ],
     //========================================== ManyDays Tab - END
     //========================================== CustomQry Tab - END

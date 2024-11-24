@@ -420,6 +420,10 @@ table#customqry_adv_filters_table td{
   top: -3px;
 }
 
+.chart_inbox0_extended_btn{
+  text-align: right;
+}
+
 .spacer {
   flex-grow: 1;
 }

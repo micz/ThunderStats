@@ -41,7 +41,7 @@
           :chartData="chartData_InboxZeroDates" 
           :is_loading="is_loading_inbox_chart_dates"
         />
-        <div class="chart_inbox0_extended_btn" ><button type="button" @click="doShowExtended" v-if="!is_loading_inbox_chart_folders" class="btn" >__MSG_ViewDetails__</button></div>
+        <div class="chart_inbox0_extended_btn" ><button type="button" @click="doShowExtended" v-if="!is_loading_inbox_chart_folders" class="btn_small btn_small_single" >__MSG_ViewDetails__</button></div>
       </div>
       <table class="chart_inbox0_extended_table" v-if="show_extended">
         <tr>
@@ -61,7 +61,7 @@
           :key = "key"
         />
       </div>
-      <div class="chart_inbox0_extended_close_btn" v-if="show_extended"><button type="button" @click="doHideExtended" class="btn" >__MSG_Close__</button></div>
+      <div class="chart_inbox0_extended_close_btn" v-if="show_extended"><button type="button" @click="doHideExtended" class="btn_small btn_small_single" >__MSG_Close__</button></div>
     </div>
 </template>
 

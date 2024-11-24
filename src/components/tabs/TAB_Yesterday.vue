@@ -213,18 +213,18 @@ let chartdata_tags_labels = ref([]);
 let domains_chart_height = ref("275px");
 
 let job_done = computed(() => {
-    return !(is_loading_counter_sent_rcvd.value &&
-    is_loading_yesterday_chart.value &&
-    is_loading_involved_table_recipients.value &&
-    is_loading_involved_table_senders.value &&
-    is_loading_counter_inbox.value &&
-    is_loading_counter_inbox_percent.value &&
-    is_loading_inbox_chart_folders.value &&
-    is_loading_inbox_chart_dates.value &&
-    is_loading_counter_many_days.value &&
-    is_loading_domains_chart.value &&
-    is_loading_tags_chart.value &&
-    is_loading_folders_chart.value);
+    return !is_loading_counter_sent_rcvd.value &&
+    !is_loading_yesterday_chart.value &&
+    !is_loading_involved_table_recipients.value &&
+    !is_loading_involved_table_senders.value &&
+    !is_loading_counter_inbox.value &&
+    !is_loading_counter_inbox_percent.value &&
+    !is_loading_inbox_chart_folders.value &&
+    !is_loading_inbox_chart_dates.value &&
+    !is_loading_counter_many_days.value &&
+    !is_loading_domains_chart.value &&
+    !is_loading_tags_chart.value &&
+    !is_loading_folders_chart.value;
 })
 
 onMounted(async () => {

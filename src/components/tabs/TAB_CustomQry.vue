@@ -446,29 +446,29 @@ let elapsed = {
 
 let job_done = computed(() => {
   if(!do_single_day.value){
-    return !(is_loading_counter_sent_rcvd.value &&
-    is_loading_counter_customqry.value &&
-    is_loading_involved_table_recipients.value &&
-    is_loading_involved_table_senders.value &&
-    is_loading_sent_chart.value &&
-    is_loading_rcvd_chart.value &&
-    is_loading_timeday_chart.value &&
-    is_loading_weekdays_chart.value &&
-    is_loading_domains_chart.value &&
-    is_loading_tags_chart.value &&
-    is_loading_folders_chart.value);
+    return !is_loading_counter_sent_rcvd.value &&
+    !is_loading_counter_customqry.value &&
+    !is_loading_involved_table_recipients.value &&
+    !is_loading_involved_table_senders.value &&
+    !is_loading_sent_chart.value &&
+    !is_loading_rcvd_chart.value &&
+    !is_loading_timeday_chart.value &&
+    !is_loading_weekdays_chart.value &&
+    !is_loading_domains_chart.value &&
+    !is_loading_tags_chart.value &&
+    !is_loading_folders_chart.value;
   }else{
-    return !(is_loading_counter_sent_rcvd.value &&
-    is_loading_singleday_chart.value &&
-    is_loading_involved_table_recipients.value &&
-    is_loading_involved_table_senders.value &&
-    is_loading_counter_inbox.value &&
-    is_loading_counter_inbox_percent.value &&
-    is_loading_inbox_chart_folders.value &&
-    is_loading_inbox_chart_dates.value &&
-    is_loading_domains_chart.value &&
-    is_loading_tags_chart.value &&
-    is_loading_folders_chart.value);
+    return !is_loading_counter_sent_rcvd.value &&
+    !is_loading_singleday_chart.value &&
+    !is_loading_involved_table_recipients.value &&
+    !is_loading_involved_table_senders.value &&
+    !is_loading_counter_inbox.value &&
+    !is_loading_counter_inbox_percent.value &&
+    !is_loading_inbox_chart_folders.value &&
+    !is_loading_inbox_chart_dates.value &&
+    !is_loading_domains_chart.value &&
+    !is_loading_tags_chart.value &&
+    !is_loading_folders_chart.value;
   }
 });
 

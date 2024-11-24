@@ -153,7 +153,6 @@ let chartdata_tags_rcvd = ref([]);
 let chartdata_tags_labels = ref([]);
 
 let domains_chart_height = ref("275px");
-let tags_chart_height = ref("275px");
 
 let _export_data = ref({});
 
@@ -397,6 +396,7 @@ async function updateData() {
             // export data
             _export_data.value[tsExport.export.daily_mails.type] = result_many_days.dates;
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_many_days.senders, result_many_days.recipients);
+            _export_data.value[tsExport.export.tags.type] = result_many_days.tags;
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_many_days.senders).length > 0;
             table_involved_senders.value = result_many_days.senders;

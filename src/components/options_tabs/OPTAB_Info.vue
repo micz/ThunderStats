@@ -28,6 +28,7 @@
         <li>Custom View sent and received charts day view has now a max width of 30.000 pixels, so it's visible also when querying hundreds of days [<a href="https://github.com/micz/ThunderStats/issues/390">#390</a>].</li>
         <li>Custom View export menu is now correctly updated [<a href="https://github.com/micz/ThunderStats/issues/393">#393</a>].</li>
         <li>Preventing concurrent data querying in the Custom View under some circumstances.</li>
+        <li>Some buttons graphic and positioning improved.</li>
         <li>...</li>
       </ul>
       <h1>ThunderStats Release Notes</h1>

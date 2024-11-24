@@ -398,6 +398,7 @@ async function updateData() {
             _export_data.value[tsExport.export.daily_mails.type] = result_many_days.dates;
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_many_days.senders, result_many_days.recipients);
             _export_data.value[tsExport.export.tags.type] = result_many_days.tags;
+            _export_data.value[tsExport.export.folders.type] = result_many_days.folders;
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_many_days.senders).length > 0;
             table_involved_senders.value = result_many_days.senders;

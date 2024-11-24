@@ -109,13 +109,13 @@ let export_menu = {
         }
       },
       {
-          label: browser.i18n.getMessage("Folders"),
-          onClick: () => {
-            let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date(Date.now() - (1000 * 60 * 60 * 24)));
-            let export_type = tsExport.export["folders"].type;
-            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
-          }
-        },
+        label: browser.i18n.getMessage("Folders"),
+        onClick: () => {
+          let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date(Date.now() - (1000 * 60 * 60 * 24)));
+          let export_type = tsExport.export["folders"].type;
+          exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        }
+      },
       {
         label: browser.i18n.getMessage("Tags"), 
         onClick: () => {
@@ -151,6 +151,15 @@ let export_menu = {
           let _many_days = await tsPrefs.getPref("_many_days");
           let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
           let export_type = tsExport.export["time_emails"].type;
+          exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        }
+      },
+      {
+        label: browser.i18n.getMessage("Folders"),
+        onClick: async () => {
+          let _many_days = await tsPrefs.getPref("_many_days");
+          let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
+          let export_type = tsExport.export["folders"].type;
           exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
         }
       },

@@ -132,6 +132,14 @@ let export_menu = {
           exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
         }
       },
+      {
+        label: browser.i18n.getMessage("Domains"), 
+        onClick: () => {
+          let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date(Date.now() - (1000 * 60 * 60 * 24)));
+          let export_type = tsExport.export["domains"].type;
+          exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        }
+      },
     ],
     //========================================== ManyDays Tab - END
     "tab-manydays": [

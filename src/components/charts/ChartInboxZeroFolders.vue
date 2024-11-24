@@ -37,7 +37,6 @@ import { Doughnut } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from 'chart.js'
 import { tsDoughnutLabelsLine } from '@statslib/chartjs-lib/plugin-doughnutlabels';
 import { tsStore } from '@statslib/mzts-store';
-import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);

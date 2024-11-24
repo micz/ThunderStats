@@ -88,6 +88,14 @@ let export_menu = {
             exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
           }
         },
+        {
+          label: browser.i18n.getMessage("Domains"), 
+          onClick: () => {
+            let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date());
+            let export_type = tsExport.export["domains"].type;
+            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+          }
+        },
     ],
     //========================================== Today Tab - END
     //========================================== Yesterday Tab
@@ -297,6 +305,10 @@ function exportData(data, export_type, export_name) {
         case "folders":
           let output_data_folders = tsExport.transformFoldersJsonToArray(data);
           tsExport.downloadCSV(output_data_folders, export_name);
+          break;
+        case "domains":
+          let output_data_domains = tsExport.transformDomainsJsonToArray(data);
+          tsExport.downloadCSV(output_data_domains, export_name);
           break;
         default: alert("export error: " + export_type);
           break;

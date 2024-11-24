@@ -244,4 +244,24 @@ export const tsExport = {
     
         return resultArray;
     },
+
+    transformDomainsJsonToArray(json) {
+        let resultArray = [];
+
+        const tagKey = browser.i18n.getMessage('Domains');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+    
+        for (let domain in json) {
+            let mailData = json[domain];
+            const obj = {};
+            obj[tagKey] = domain;
+            obj[sentKey] = mailData.sent;
+            obj[rcvdKey] = mailData.received;
+            
+            resultArray.push(obj);
+        }
+    
+        return resultArray;
+    },
 }

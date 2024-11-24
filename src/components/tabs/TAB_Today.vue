@@ -421,6 +421,7 @@ async function updateData() {
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_today.senders, result_today.recipients);
             _export_data.value[tsExport.export.tags.type] = result_today.tags;
             _export_data.value[tsExport.export.folders.type] = result_today.folders;
+            _export_data.value[tsExport.export.domains.type] = result_today.domains;
             // chart today hours
             const today_hours_data = tsCoreUtils.transformCountDataToDataset(result_today.msg_hours, do_progressive);
             let pref_today_time_chart_do_no_show_future = await tsPrefs.getPref("today_time_chart_do_no_show_future");

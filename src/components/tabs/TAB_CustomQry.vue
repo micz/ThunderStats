@@ -1087,6 +1087,7 @@ async function updateData() {
               _export_data.value[tsExport.export.time_emails.type] = result_customqry.msg_hours;
             }
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_customqry.senders, result_customqry.recipients);
+            _export_data.value[tsExport.export.tags.type] = result_customqry.tags;
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
             table_involved_senders.value = result_customqry.senders;

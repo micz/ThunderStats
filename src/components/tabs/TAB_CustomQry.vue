@@ -24,7 +24,7 @@
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
-                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" :text-input="{ selectOnFocus: true }" ></VueDatePicker>
+                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" ></VueDatePicker>
                 <img :src="advanced_filters_icon" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__
@@ -201,7 +201,7 @@ import WidgetInboxZero from '../widgets/WidgetInboxZero.vue';
 import WidgetFoldersTags from '../widgets/WidgetFoldersTags.vue';
 
 
-const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
+const emit = defineEmits(['updateCustomQry'],['updateElapsed'],['customQryUserCancelled']);
 
 const props = defineProps({
     accountEmails: {
@@ -219,6 +219,7 @@ let showMonths_btn_ref = ref(null);
 let showYears_btn_ref = ref(null);
 
 let max_direct_accounts = 1;
+let doing_update = false;
 
 let tsLog = null;
 var tsCore = null;
@@ -566,6 +567,12 @@ onMounted(async () => {
 });
 
 function update(){
+  if(doing_update){
+    tsLog.log("Update already in progress...");
+    return;
+  }
+  doing_update = true;
+  // console.log(">>>>>>>>>>> TAB_CustomQry update");
   tsLog.log("Update requested");
   emit('updateCustomQry');
 }
@@ -726,6 +733,7 @@ async function setPeriod(period){
             break;
     }
     if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
+      // console.log(">>>>>>>>>>>>>> customqry_loaddata_when_selectingrange do update");
       update();
     }
 }
@@ -737,9 +745,10 @@ async function doQry(){
   let pref_warn_days = await tsPrefs.getPref("customqry_warn_onlongperiod_days");
   if(pref_warn_days > 0 && customqry_totaldays_num.value > pref_warn_days){
     if(!confirm(browser.i18n.getMessage("CustomViewTooMuchDaysText",customqry_totaldays_num.value))){
+      // console.log(">>>>>>>>>>>>> CustomQry cancelled");
       do_run.value = false;
-      customqry_totaldays_num.value = 0;
       emit('customQryUserCancelled');
+      doing_update = false;
       return;
     }
   }
@@ -1183,6 +1192,7 @@ async function updateData() {
             is_loading_tags_chart.value = false;
             let stop_time = performance.now();
             updateElapsed('getCustomQryData', stop_time - start_time);
+            doing_update = false;
             resolve(true);
         });
     };

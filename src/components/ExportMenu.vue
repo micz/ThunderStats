@@ -97,17 +97,17 @@ let export_menu = {
         onClick: () => {
           let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date(Date.now() - (1000 * 60 * 60 * 24)));
           let export_type = tsExport.export["time_emails"].type;
-            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
-          }
+          exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        }
       },
       {
-          label: browser.i18n.getMessage("Tags"), 
-          onClick: () => {
-            let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date(Date.now() - (1000 * 60 * 60 * 24)));
-            let export_type = tsExport.export["tags"].type;
-            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
-          }
-        },
+        label: browser.i18n.getMessage("Tags"), 
+        onClick: () => {
+          let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date(Date.now() - (1000 * 60 * 60 * 24)));
+          let export_type = tsExport.export["tags"].type;
+          exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        }
+      },
     ],
     //========================================== ManyDays Tab - END
     "tab-manydays": [

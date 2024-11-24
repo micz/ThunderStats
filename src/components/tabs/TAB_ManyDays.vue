@@ -394,6 +394,7 @@ async function updateData() {
             let result_many_days = await tsCore.getManyDaysData(tsStore.current_account_id, props.accountEmails);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_many_days, null, 2));
             // export data
+            _export_data.value[tsExport.export.time_emails.type] = result_many_days.msg_hours;
             _export_data.value[tsExport.export.daily_mails.type] = result_many_days.dates;
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_many_days.senders, result_many_days.recipients);
             _export_data.value[tsExport.export.tags.type] = result_many_days.tags;

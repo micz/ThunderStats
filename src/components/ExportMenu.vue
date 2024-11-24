@@ -7,7 +7,7 @@
 
 <script setup>
 
-import { ref, computed, onMounted, h } from 'vue';
+import { ref, computed, h } from 'vue';
 import { tsExport } from '@statslib/mzts-export';
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
@@ -69,6 +69,14 @@ let export_menu = {
           onClick: () => {
             let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date());
             let export_type = tsExport.export["time_emails"].type;
+            exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+          }
+        },
+        {
+          label: browser.i18n.getMessage("Folders"),
+          onClick: () => {
+            let export_define = browser.i18n.getMessage("Day") + tsUtils.dateToYYYYMMDD(new Date());
+            let export_type = tsExport.export["folders"].type;
             exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
           }
         },
@@ -252,6 +260,10 @@ function exportData(data, export_type, export_name) {
         case "tags":
           let output_data_tags = tsExport.transformTagsJsonToArray(data);
           tsExport.downloadCSV(output_data_tags, export_name);
+          break;
+        case "folders":
+          let output_data_folders = tsExport.transformFoldersJsonToArray(data);
+          tsExport.downloadCSV(output_data_folders, export_name);
           break;
         default: alert("export error: " + export_type);
           break;

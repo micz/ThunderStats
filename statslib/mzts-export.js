@@ -221,6 +221,26 @@ export const tsExport = {
             
             resultArray.push(obj);
         }
+
+        return resultArray;
+    },
+
+    transformFoldersJsonToArray(json) {
+        let resultArray = [];
+
+        const tagKey = browser.i18n.getMessage('Folders');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+    
+        for (let folder in json) {
+            let mailData = json[folder];
+            const obj = {};
+            obj[tagKey] = tsCoreUtils.getFolderPath(folder);
+            obj[sentKey] = mailData.sent;
+            obj[rcvdKey] = mailData.received;
+            
+            resultArray.push(obj);
+        }
     
         return resultArray;
     },

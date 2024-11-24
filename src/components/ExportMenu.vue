@@ -171,6 +171,15 @@ let export_menu = {
         }
       },
       {
+        label: browser.i18n.getMessage("Weekdays"), 
+        onClick: async () => {
+          let _many_days = await tsPrefs.getPref("_many_days");
+          let export_define = browser.i18n.getMessage("LastNumDays", _many_days);
+          let export_type = tsExport.export["weekdays"].type;
+          exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        }
+      },
+      {
         label: browser.i18n.getMessage("Folders"),
         onClick: async () => {
           let _many_days = await tsPrefs.getPref("_many_days");
@@ -330,6 +339,10 @@ function exportData(data, export_type, export_name) {
         case "time_emails":
           let output_data_time_emails = tsExport.transformTimeMailsJsonToArray(data);
           tsExport.downloadCSV(output_data_time_emails, export_name);
+          break;
+        case "weekdays":
+          let output_data_weekdays = tsExport.transformWeekdaysJsonToArray(data);
+          tsExport.downloadCSV(output_data_weekdays, export_name);
           break;
         case "tags":
           let output_data_tags = tsExport.transformTagsJsonToArray(data);

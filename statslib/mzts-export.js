@@ -34,6 +34,10 @@ export const tsExport = {
             type: 'daily_mails',
             name: 'Daily Emails',
         },
+        weekdays: {
+            type: 'weekdays',
+            name: 'Weekdays',
+        },
         tags: {
             type: 'tags',
             name: 'Tags',
@@ -256,6 +260,26 @@ export const tsExport = {
             let mailData = json[domain];
             const obj = {};
             obj[tagKey] = domain;
+            obj[sentKey] = mailData.sent;
+            obj[rcvdKey] = mailData.received;
+            
+            resultArray.push(obj);
+        }
+    
+        return resultArray;
+    },
+
+    transformWeekdaysJsonToArray(json) {
+        let resultArray = [];
+
+        const tagKey = browser.i18n.getMessage('Weekdays');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+    
+        for (let weekday in json) {
+            let mailData = json[weekday];
+            const obj = {};
+            obj[tagKey] = browser.i18n.getMessage('WeekDay'+weekday);
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
             

@@ -400,6 +400,7 @@ async function updateData() {
             _export_data.value[tsExport.export.tags.type] = result_many_days.tags;
             _export_data.value[tsExport.export.folders.type] = result_many_days.folders;
             _export_data.value[tsExport.export.domains.type] = result_many_days.domains;
+            _export_data.value[tsExport.export.weekdays.type] = result_many_days.msg_weekdays;
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_many_days.senders).length > 0;
             table_involved_senders.value = result_many_days.senders;

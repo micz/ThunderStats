@@ -61,7 +61,7 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .chart_inbox0{width:80%;height:310px;float:left;overflow:auto;}
 .chart_inbox0_datemsg{float:right;max-width:20%;min-width:90px;height:220px;}
 .chart_inbox0_orderbtn{cursor:pointer;text-decoration:underline;color:#3593dd;}
-.chart_inbox0_extended_sorticon{position: relative;top:4px;filter: invert(1)};
+.chart_inbox0_extended_sorticon{position: relative;top:4px;filter: invert(1);}
 .legend-time{float:right;font-size:12px;padding-top:8px;}
 .legend-time ul{list-style-type:none;margin:0;padding:0;}
 .legend-time ul li{white-space: nowrap;}
@@ -509,6 +509,6 @@ table#customqry_adv_filters_table td{
     color: white;
   }
 
- .chart_inbox0_extended_sorticon{filter: invert(0)};
+ .chart_inbox0_extended_sorticon{filter: invert(0);}
 
 }

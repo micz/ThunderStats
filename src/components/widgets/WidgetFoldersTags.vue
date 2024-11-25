@@ -23,7 +23,7 @@
     <div class="list_heading_wrapper">
         <h2 class="list_heading cropped lowercase">{{ show_tags ? '__MSG_Tags__&nbsp;&nbsp;' : '__MSG_Folders__' }}</h2>
         <div class="spacer" style="max-width:4.5em;"></div>
-        <div class="btn_group" ><button type="button" @click="doSwitch" v-if="!(is_loading_folders || is_loading_tags)" class="btn_small btn_small_single" v-text="switch_text"></button></div>
+        <div class="btn_group" ><button type="button" @click="doSwitch" v-if="!(is_loading_folders || is_loading_tags)" class="btn_small btn_small_single btn_pos_3" v-text="switch_text"></button></div>
         <div class="spacer"></div>
     </div>
     <ChartFolders v-if="!show_tags" :chartData="chartDataFolders" :chart_id="chart_id_folders" :chart_height="chart_height_folders" :is_loading="is_loading_folders" :key="chart_key" />

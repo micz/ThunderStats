@@ -415,6 +415,15 @@ table#customqry_adv_filters_table td{
   cursor: unset;
 }
 
+.btn_pos_3{
+  position: relative;
+  top: -3px;
+}
+
+.chart_inbox0_extended_btn{
+  text-align: right;
+}
+
 .spacer {
   flex-grow: 1;
 }

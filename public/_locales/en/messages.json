@@ -672,7 +672,7 @@
     "description": ""
   },
   "MailsInADay": {
-    "message": "Mails in a day",
+    "message": "Time of the day",
     "description": ""
   },
   "FolderLocation_percent_handled": {
@@ -811,6 +811,22 @@
   },
   "prefs_customqry_loaddata_when_opening_addon": {
     "message": "Load data even when Custom View is the first tab opened in ThunderStats",
+    "description": ""
+  },
+  "WeeklyMails": {
+    "message": "Weekly Mails",
+    "description": ""
+  },
+  "MonthlyMails": {
+    "message": "Monthly Mails",
+    "description": ""
+  },
+  "YearlyMails": {
+    "message": "Yearly Mails",
+    "description": ""
+  },
+  "Week": {
+    "message": "Week",
     "description": ""
   }
 }

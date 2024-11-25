@@ -17,6 +17,7 @@
  */
 
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsStore } from '@statslib/mzts-store';
 
 export const tsExport = {
 
@@ -32,6 +33,34 @@ export const tsExport = {
         daily_mails: {
             type: 'daily_mails',
             name: 'Daily Emails',
+        },
+        weekly_mails: {
+            type: 'weekly_mails',
+            name: 'Weekly Emails',
+        },
+        monthly_mails: {
+            type: 'monthly_mails',
+            name: 'Monthly Emails',
+        },
+        yearly_mails: {
+            type: 'yearly_mails',
+            name: 'Yearly Emails',
+        },
+        weekdays: {
+            type: 'weekdays',
+            name: 'Weekdays',
+        },
+        tags: {
+            type: 'tags',
+            name: 'Tags',
+        },
+        folders: {
+            type: 'folders',
+            name: 'Folders',
+        },
+        domains: {
+            type: 'domains',
+            name: 'Domains',
         },
     },
 
@@ -150,18 +179,34 @@ export const tsExport = {
         return resultArray;
     },
 
-    transformDailyMailsJsonToArray(json) {
+    transformPeriodMailsJsonToArray(json, data_type) {
         let resultArray = [];
 
-        const dateKey = browser.i18n.getMessage('Date');
+        let dateKey = "";
+
+        switch(data_type) {
+            case 'YYYYMMDD':
+                dateKey = browser.i18n.getMessage('Date');
+                break;
+            case 'YYYYWW':
+                dateKey = browser.i18n.getMessage('Week') + " [" + browser.i18n.getMessage('Year') + "]";
+                break;
+            case 'YYYYMM':
+                dateKey = browser.i18n.getMessage('Month');
+                break;
+            case 'YYYY':
+                dateKey = browser.i18n.getMessage('Year');
+                break;
+        }
+        
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
     
         for (let date in json) {
             let mailData = json[date];
             const obj = {};
-            let formatted_date = tsCoreUtils.getManyDaysLabel(date);
-            obj[dateKey] = formatted_date[1];
+            let formatted_date = tsCoreUtils.getCustomQryLabel(date, data_type);
+            obj[dateKey] = formatted_date;
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
             
@@ -186,6 +231,86 @@ export const tsExport = {
                 obj[sentKey] = json[hour].sent;
                 obj[rcvdKey] = json[hour].received;
     
+            resultArray.push(obj);
+        }
+    
+        return resultArray;
+    },
+
+    transformTagsJsonToArray(json) {
+        let resultArray = [];
+
+        const tagKey = browser.i18n.getMessage('Tags');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+    
+        for (let tag in json) {
+            let mailData = json[tag];
+            const obj = {};
+            obj[tagKey] =  tsStore.tags_list[tag].tag;
+            obj[sentKey] = mailData.sent;
+            obj[rcvdKey] = mailData.received;
+            
+            resultArray.push(obj);
+        }
+
+        return resultArray;
+    },
+
+    transformFoldersJsonToArray(json) {
+        let resultArray = [];
+
+        const tagKey = browser.i18n.getMessage('Folders');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+    
+        for (let folder in json) {
+            let mailData = json[folder];
+            const obj = {};
+            obj[tagKey] = tsCoreUtils.getFolderPath(folder);
+            obj[sentKey] = mailData.sent;
+            obj[rcvdKey] = mailData.received;
+            
+            resultArray.push(obj);
+        }
+    
+        return resultArray;
+    },
+
+    transformDomainsJsonToArray(json) {
+        let resultArray = [];
+
+        const tagKey = browser.i18n.getMessage('Domains');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+    
+        for (let domain in json) {
+            let mailData = json[domain];
+            const obj = {};
+            obj[tagKey] = domain;
+            obj[sentKey] = mailData.sent;
+            obj[rcvdKey] = mailData.received;
+            
+            resultArray.push(obj);
+        }
+    
+        return resultArray;
+    },
+
+    transformWeekdaysJsonToArray(json) {
+        let resultArray = [];
+
+        const tagKey = browser.i18n.getMessage('Weekdays');
+        const sentKey = browser.i18n.getMessage('TimeChart.Sent');
+        const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+    
+        for (let weekday in json) {
+            let mailData = json[weekday];
+            const obj = {};
+            obj[tagKey] = browser.i18n.getMessage('WeekDay'+weekday);
+            obj[sentKey] = mailData.sent;
+            obj[rcvdKey] = mailData.received;
+            
             resultArray.push(obj);
         }
     

@@ -24,7 +24,7 @@
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
-                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" ></VueDatePicker>
+                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" ></VueDatePicker>
                 <img :src="advanced_filters_icon" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__
@@ -201,7 +201,7 @@ import WidgetInboxZero from '../widgets/WidgetInboxZero.vue';
 import WidgetFoldersTags from '../widgets/WidgetFoldersTags.vue';
 
 
-const emit = defineEmits(['updateCustomQry'],['updateElapsed']['customQryUserCancelled']);
+const emit = defineEmits(['updateCustomQry'],['updateElapsed'],['customQryUserCancelled']);
 
 const props = defineProps({
     accountEmails: {
@@ -219,6 +219,7 @@ let showMonths_btn_ref = ref(null);
 let showYears_btn_ref = ref(null);
 
 let max_direct_accounts = 1;
+let doing_update = false;
 
 let tsLog = null;
 var tsCore = null;
@@ -445,29 +446,29 @@ let elapsed = {
 
 let job_done = computed(() => {
   if(!do_single_day.value){
-    return !(is_loading_counter_sent_rcvd.value &&
-    is_loading_counter_customqry.value &&
-    is_loading_involved_table_recipients.value &&
-    is_loading_involved_table_senders.value &&
-    is_loading_sent_chart.value &&
-    is_loading_rcvd_chart.value &&
-    is_loading_timeday_chart.value &&
-    is_loading_weekdays_chart.value &&
-    is_loading_domains_chart.value &&
-    is_loading_tags_chart.value &&
-    is_loading_folders_chart.value);
+    return !is_loading_counter_sent_rcvd.value &&
+    !is_loading_counter_customqry.value &&
+    !is_loading_involved_table_recipients.value &&
+    !is_loading_involved_table_senders.value &&
+    !is_loading_sent_chart.value &&
+    !is_loading_rcvd_chart.value &&
+    !is_loading_timeday_chart.value &&
+    !is_loading_weekdays_chart.value &&
+    !is_loading_domains_chart.value &&
+    !is_loading_tags_chart.value &&
+    !is_loading_folders_chart.value;
   }else{
-    return !(is_loading_counter_sent_rcvd.value &&
-    is_loading_singleday_chart.value &&
-    is_loading_involved_table_recipients.value &&
-    is_loading_involved_table_senders.value &&
-    is_loading_counter_inbox.value &&
-    is_loading_counter_inbox_percent.value &&
-    is_loading_inbox_chart_folders.value &&
-    is_loading_inbox_chart_dates.value &&
-    is_loading_domains_chart.value &&
-    is_loading_tags_chart.value &&
-    is_loading_folders_chart.value);
+    return !is_loading_counter_sent_rcvd.value &&
+    !is_loading_singleday_chart.value &&
+    !is_loading_involved_table_recipients.value &&
+    !is_loading_involved_table_senders.value &&
+    !is_loading_counter_inbox.value &&
+    !is_loading_counter_inbox_percent.value &&
+    !is_loading_inbox_chart_folders.value &&
+    !is_loading_inbox_chart_dates.value &&
+    !is_loading_domains_chart.value &&
+    !is_loading_tags_chart.value &&
+    !is_loading_folders_chart.value;
   }
 });
 
@@ -566,6 +567,12 @@ onMounted(async () => {
 });
 
 function update(){
+  if(doing_update){
+    tsLog.log("Update already in progress...");
+    return;
+  }
+  doing_update = true;
+  // console.log(">>>>>>>>>>> TAB_CustomQry update");
   tsLog.log("Update requested");
   emit('updateCustomQry');
 }
@@ -726,6 +733,7 @@ async function setPeriod(period){
             break;
     }
     if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
+      // console.log(">>>>>>>>>>>>>> customqry_loaddata_when_selectingrange do update");
       update();
     }
 }
@@ -737,9 +745,10 @@ async function doQry(){
   let pref_warn_days = await tsPrefs.getPref("customqry_warn_onlongperiod_days");
   if(pref_warn_days > 0 && customqry_totaldays_num.value > pref_warn_days){
     if(!confirm(browser.i18n.getMessage("CustomViewTooMuchDaysText",customqry_totaldays_num.value))){
+      // console.log(">>>>>>>>>>>>> CustomQry cancelled");
       do_run.value = false;
-      customqry_totaldays_num.value = 0;
       emit('customQryUserCancelled');
+      doing_update = false;
       return;
     }
   }
@@ -747,6 +756,7 @@ async function doQry(){
   chartdata_type.value = "YYYYMMDD";
   do_single_day.value = (customqry_totaldays_num.value == 1);
   elapsed.getInboxZeroData = 1;
+  tabId.value = "tab-customqry";
   if(do_single_day.value){
     tsLog.log("Doing single day view...");
     tabId.value = "tab-customqry-single-day";
@@ -770,6 +780,7 @@ async function doQry(){
 function setChartWidth(){
   let chart_container_width = document.querySelector('.chart_customqry').clientWidth;
   let chart_ipotetic_width = chartData_Rcvd.value.labels.length * 60;
+  if(chart_ipotetic_width > 30000) chart_ipotetic_width = 30000;
   if(chart_container_width < chart_ipotetic_width){
     chart_width.value = String(chart_ipotetic_width) + "px";
   } else {
@@ -1072,10 +1083,16 @@ async function updateData() {
             // export data
             if(!do_single_day.value){
               _export_data.value[tsExport.export.daily_mails.type] = result_customqry.dates;
-            }else{
-              _export_data.value[tsExport.export.time_emails.type] = result_customqry.msg_hours;
+              _export_data.value[tsExport.export.weekdays.type] = result_customqry.msg_weekdays;
+              _export_data.value[tsExport.export.weekly_mails.type] = result_customqry.dates_weeks;
+              _export_data.value[tsExport.export.monthly_mails.type] = result_customqry.dates_months;
+              _export_data.value[tsExport.export.yearly_mails.type] = result_customqry.dates_years;
             }
+            _export_data.value[tsExport.export.time_emails.type] = result_customqry.msg_hours;
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_customqry.senders, result_customqry.recipients);
+            _export_data.value[tsExport.export.tags.type] = result_customqry.tags;
+            _export_data.value[tsExport.export.folders.type] = result_customqry.folders;
+            _export_data.value[tsExport.export.domains.type] = result_customqry.domains;
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
             table_involved_senders.value = result_customqry.senders;
@@ -1181,6 +1198,7 @@ async function updateData() {
             is_loading_tags_chart.value = false;
             let stop_time = performance.now();
             updateElapsed('getCustomQryData', stop_time - start_time);
+            doing_update = false;
             resolve(true);
         });
     };

@@ -223,19 +223,19 @@ let chartdata_tags_labels = ref([]);
 let domains_chart_height = ref("275px");
 
 let job_done = computed(() => {
-    return !(is_loading_counter_sent_rcvd.value &&
-    is_loading_counter_yesterday_thistime.value &&
-    is_loading_counter_many_days.value &&
-    is_loading_today_chart.value &&
-    is_loading_involved_table_recipients.value &&
-    is_loading_involved_table_senders.value &&
-    is_loading_counter_inbox.value &&
-    is_loading_counter_inbox_percent.value &&
-    is_loading_inbox_chart_folders.value &&
-    is_loading_inbox_chart_dates.value &&
-    is_loading_domains_chart.value &&
-    is_loading_tags_chart.value &&
-    is_loading_folders_chart.value);
+    return !is_loading_counter_sent_rcvd.value &&
+    !is_loading_counter_yesterday_thistime.value &&
+    !is_loading_counter_many_days.value &&
+    !is_loading_today_chart.value &&
+    !is_loading_involved_table_recipients.value &&
+    !is_loading_involved_table_senders.value &&
+    !is_loading_counter_inbox.value &&
+    !is_loading_counter_inbox_percent.value &&
+    !is_loading_inbox_chart_folders.value &&
+    !is_loading_inbox_chart_dates.value &&
+    !is_loading_domains_chart.value &&
+    !is_loading_tags_chart.value &&
+    !is_loading_folders_chart.value;
 })
 
 onMounted(async () => {
@@ -419,6 +419,9 @@ async function updateData() {
             // export data
             _export_data.value[tsExport.export.time_emails.type] = result_today.msg_hours;
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_today.senders, result_today.recipients);
+            _export_data.value[tsExport.export.tags.type] = result_today.tags;
+            _export_data.value[tsExport.export.folders.type] = result_today.folders;
+            _export_data.value[tsExport.export.domains.type] = result_today.domains;
             // chart today hours
             const today_hours_data = tsCoreUtils.transformCountDataToDataset(result_today.msg_hours, do_progressive);
             let pref_today_time_chart_do_no_show_future = await tsPrefs.getPref("today_time_chart_do_no_show_future");

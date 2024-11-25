@@ -153,7 +153,6 @@ let chartdata_tags_rcvd = ref([]);
 let chartdata_tags_labels = ref([]);
 
 let domains_chart_height = ref("275px");
-let tags_chart_height = ref("275px");
 
 let _export_data = ref({});
 
@@ -202,17 +201,17 @@ let chartData_Tags = ref({
 });
 
 let job_done = computed(() => {
-    return !(is_loading_counter_sent_rcvd.value &&
-    is_loading_counter_many_days.value &&
-    is_loading_involved_table_recipients.value &&
-    is_loading_involved_table_senders.value &&
-    is_loading_sent_chart.value &&
-    is_loading_rcvd_chart.value &&
-    is_loading_timeday_chart.value &&
-    is_loading_weekdays_chart.value &&
-    is_loading_domains_chart.value &&
-    is_loading_tags_chart.value &&
-    is_loading_folders_chart.value);
+    return !is_loading_counter_sent_rcvd.value &&
+    !is_loading_counter_many_days.value &&
+    !is_loading_involved_table_recipients.value &&
+    !is_loading_involved_table_senders.value &&
+    !is_loading_sent_chart.value &&
+    !is_loading_rcvd_chart.value &&
+    !is_loading_timeday_chart.value &&
+    !is_loading_weekdays_chart.value &&
+    !is_loading_domains_chart.value &&
+    !is_loading_tags_chart.value &&
+    !is_loading_folders_chart.value;
 });
 
 onMounted(async () => {
@@ -395,8 +394,13 @@ async function updateData() {
             let result_many_days = await tsCore.getManyDaysData(tsStore.current_account_id, props.accountEmails);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_many_days, null, 2));
             // export data
+            _export_data.value[tsExport.export.time_emails.type] = result_many_days.msg_hours;
             _export_data.value[tsExport.export.daily_mails.type] = result_many_days.dates;
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_many_days.senders, result_many_days.recipients);
+            _export_data.value[tsExport.export.tags.type] = result_many_days.tags;
+            _export_data.value[tsExport.export.folders.type] = result_many_days.folders;
+            _export_data.value[tsExport.export.domains.type] = result_many_days.domains;
+            _export_data.value[tsExport.export.weekdays.type] = result_many_days.msg_weekdays;
             //top senders list
             show_table_involved_senders.value =  Object.keys(result_many_days.senders).length > 0;
             table_involved_senders.value = result_many_days.senders;

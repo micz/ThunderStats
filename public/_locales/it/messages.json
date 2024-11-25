@@ -672,7 +672,7 @@
     "description": ""
   },
   "MailsInADay": {
-    "message": "Mail in un giorno",
+    "message": "Ora del giorno",
     "description": ""
   },
   "FolderLocation_percent_handled": {
@@ -811,6 +811,22 @@
   },
   "prefs_customqry_loaddata_when_opening_addon": {
     "message": "Carica i dati anche quando la Vista Personalizzata è la prima scheda aperta in ThunderStats",
+    "description": ""
+  },
+  "WeeklyMails": {
+    "message": "Email settimanali",
+    "description": ""
+  },
+  "MonthlyMails": {
+    "message": "Email mensili",
+    "description": ""
+  },
+  "YearlyMails": {
+    "message": "Email annuali",
+    "description": ""
+  },
+  "Week": {
+    "message": "Settimana",
     "description": ""
   }
 }

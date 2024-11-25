@@ -1083,6 +1083,7 @@ async function updateData() {
             // export data
             if(!do_single_day.value){
               _export_data.value[tsExport.export.daily_mails.type] = result_customqry.dates;
+              _export_data.value[tsExport.export.weekdays.type] = result_customqry.msg_weekdays;
             }
             _export_data.value[tsExport.export.time_emails.type] = result_customqry.msg_hours;
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_customqry.senders, result_customqry.recipients);

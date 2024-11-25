@@ -34,6 +34,18 @@ export const tsExport = {
             type: 'daily_mails',
             name: 'Daily Emails',
         },
+        weekly_mails: {
+            type: 'weekly_mails',
+            name: 'Weekly Emails',
+        },
+        monthly_mails: {
+            type: 'monthly_mails',
+            name: 'Monthly Emails',
+        },
+        yearly_mails: {
+            type: 'yearly_mails',
+            name: 'Yearly Emails',
+        },
         weekdays: {
             type: 'weekdays',
             name: 'Weekdays',
@@ -167,18 +179,34 @@ export const tsExport = {
         return resultArray;
     },
 
-    transformDailyMailsJsonToArray(json) {
+    transformPeriodMailsJsonToArray(json, data_type) {
         let resultArray = [];
 
-        const dateKey = browser.i18n.getMessage('Date');
+        let dateKey = "";
+
+        switch(data_type) {
+            case 'YYYYMMDD':
+                dateKey = browser.i18n.getMessage('Date');
+                break;
+            case 'YYYYWW':
+                dateKey = browser.i18n.getMessage('Week') + " [" + browser.i18n.getMessage('Year') + "]";
+                break;
+            case 'YYYYMM':
+                dateKey = browser.i18n.getMessage('Month');
+                break;
+            case 'YYYY':
+                dateKey = browser.i18n.getMessage('Year');
+                break;
+        }
+        
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
     
         for (let date in json) {
             let mailData = json[date];
             const obj = {};
-            let formatted_date = tsCoreUtils.getManyDaysLabel(date);
-            obj[dateKey] = formatted_date[1];
+            let formatted_date = tsCoreUtils.getCustomQryLabel(date, data_type);
+            obj[dateKey] = formatted_date;
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
             

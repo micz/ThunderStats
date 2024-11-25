@@ -1084,6 +1084,9 @@ async function updateData() {
             if(!do_single_day.value){
               _export_data.value[tsExport.export.daily_mails.type] = result_customqry.dates;
               _export_data.value[tsExport.export.weekdays.type] = result_customqry.msg_weekdays;
+              _export_data.value[tsExport.export.weekly_mails.type] = result_customqry.dates_weeks;
+              _export_data.value[tsExport.export.monthly_mails.type] = result_customqry.dates_months;
+              _export_data.value[tsExport.export.yearly_mails.type] = result_customqry.dates_years;
             }
             _export_data.value[tsExport.export.time_emails.type] = result_customqry.msg_hours;
             _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_customqry.senders, result_customqry.recipients);

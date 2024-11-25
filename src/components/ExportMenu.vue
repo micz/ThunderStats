@@ -227,6 +227,30 @@ let export_menu = {
         }
       },
       { 
+        label: browser.i18n.getMessage("WeeklyMails"), 
+        onClick: () => {
+          let export_define = browser.i18n.getMessage("CustomQry");
+          let export_type = tsExport.export["weekly_mails"].type;
+          exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        }
+      },
+      { 
+        label: browser.i18n.getMessage("MonthlyMails"), 
+        onClick: () => {
+          let export_define = browser.i18n.getMessage("CustomQry");
+          let export_type = tsExport.export["monthly_mails"].type;
+          exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        }
+      },
+      { 
+        label: browser.i18n.getMessage("YearlyMails"), 
+        onClick: () => {
+          let export_define = browser.i18n.getMessage("CustomQry");
+          let export_type = tsExport.export["yearly_mails"].type;
+          exportData(export_data.value[export_type], export_type, export_define + "_" + tsExport.export[export_type].name)
+        }
+      },
+      { 
         label: browser.i18n.getMessage("MailsInADay"), 
         onClick: () => {
           let export_define = browser.i18n.getMessage("CustomQry");
@@ -339,10 +363,22 @@ function exportData(data, export_type, export_name) {
             tsExport.downloadCSV(output_data, export_name);
           break;
         case 'daily_mails':
-          //console.log(">>>>>>> exportData daily_mails: " + JSON.stringify(data));
-          let output_data_daily_mails = tsExport.transformDailyMailsJsonToArray(data);
-          //console.log(">>>>>>>> output_data_daily_mails: " + JSON.stringify(output_data_daily_mails));
+          // console.log(">>>>>>> exportData daily_mails: " + JSON.stringify(data));
+          let output_data_daily_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYYMMDD");
+          // console.log(">>>>>>>> output_data_daily_mails: " + JSON.stringify(output_data_daily_mails));
           tsExport.downloadCSV(output_data_daily_mails, export_name);
+          break;
+        case 'weekly_mails':
+          let output_data_weekly_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYYWW");
+          tsExport.downloadCSV(output_data_weekly_mails, export_name);
+          break;
+        case 'monthly_mails':
+          let output_data_monthly_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYYMM");
+          tsExport.downloadCSV(output_data_monthly_mails, export_name);
+          break;
+        case 'yearly_mails':
+          let output_data_yearly_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYY");
+          tsExport.downloadCSV(output_data_yearly_mails, export_name);
           break;
         case "time_emails":
           let output_data_time_emails = tsExport.transformTimeMailsJsonToArray(data);

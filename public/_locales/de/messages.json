@@ -812,5 +812,21 @@
   "prefs_customqry_loaddata_when_opening_addon": {
     "message": "Daten laden, auch wenn die benutzerdefinierte Ansicht der erste geöffnete Tab in ThunderStats ist",
     "description": ""
+  },
+  "WeeklyMails": {
+    "message": "Wochenmails",
+    "description": ""
+  },
+  "MonthlyMails": {
+    "message": "Monatsmails",
+    "description": ""
+  },
+  "YearlyMails": {
+    "message": "Jahresmails",
+    "description": ""
+  },
+  "Week": {
+    "message": "Woche",
+    "description": ""
   }
 }

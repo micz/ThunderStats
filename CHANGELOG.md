@@ -3,15 +3,15 @@
 
 
 
-<h3>Version 2.3.1 - ??/??/2024</h3>
+<h3>Version 2.3.1 - 25/11/2024</h3>
       <ul>
         <li>In the Custom View now it's also possible to manually write the date in the datepicker. The two dates must be separated by "<i>space hyphen space</i>", " - ".</li>
+        <li>Now it's possible to extract all the new charts data (tags, folder, domains) and all the Custom View periods (daily, weekly, monthly, yearly mails) [<a href="https://github.com/micz/ThunderStats/issues/394">#394</a>].</li>
         <li>Inbox Zero Date Chart tooltip is now visible again [<a href="https://github.com/micz/ThunderStats/issues/392">#392</a>].</li>
         <li>Custom View sent and received charts day view has now a max width of 30.000 pixels, so it's visible also when querying hundreds of days [<a href="https://github.com/micz/ThunderStats/issues/390">#390</a>].</li>
         <li>Custom View export menu is now correctly updated [<a href="https://github.com/micz/ThunderStats/issues/393">#393</a>].</li>
         <li>Preventing concurrent data querying in the Custom View under some circumstances.</li>
         <li>Some buttons graphic and positioning improved.</li>
-        <li>...</li>
       </ul>
 <h3>Version 2.3.0 - 17/11/2024</h3>
       <ul>

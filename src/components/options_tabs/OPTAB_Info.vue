@@ -21,6 +21,7 @@
 <template>
     <OptionDonationHeader />
     <div>
+      <h1>ThunderStats Release Notes</h1>
       <h3>Version 2.3.1 - 25/11/2024</h3>
       <ul>
         <li>In the Custom View now it's also possible to manually write the date in the datepicker. The two dates must be separated by "<i>space hyphen space</i>", " - ".</li>
@@ -31,7 +32,6 @@
         <li>Preventing concurrent data querying in the Custom View under some circumstances.</li>
         <li>Some buttons graphic and positioning improved.</li>
       </ul>
-      <h1>ThunderStats Release Notes</h1>
       <h3>Version 2.3.0 - 17/11/2024</h3>
       <ul>
         <li>It's now possible to search for read/unread and starred/unsterred in the Custom View [<a href="https://github.com/micz/ThunderStats/issues/158">#158</a>].</li>

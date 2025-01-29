@@ -34,10 +34,16 @@
   --color-text: var(--vt-c-text-light-1);
 
   --section-gap: 160px;
+
+  --ms-bg: #ffffff;
 }
 
 .multiselect-option{
   color: #313131;
+}
+
+div#customqry_adv_filters input, div#customqry_adv_filters select{
+  border-radius: var(--ms-radius,4px);
 }
 
 @media (prefers-color-scheme: dark) {

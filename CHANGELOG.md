@@ -3,6 +3,10 @@
 
 
 
+<h3>Version 2.3.2 - ??/??/2025</h3>
+      <ul>
+        <li>...</li>
+      </ul>
 <h3>Version 2.3.1 - 25/11/2024</h3>
       <ul>
         <li>In the Custom View now it's also possible to manually write the date in the datepicker. The two dates must be separated by "<i>space hyphen space</i>", " - ".</li>

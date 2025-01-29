@@ -22,9 +22,12 @@
     <OptionDonationHeader />
     <div>
       <h1>ThunderStats Release Notes</h1>
-      <h3>Version 2.3.2 - ??/??/2025</h3>
+      <h3>Version 2.3.2 - 29/01/2025</h3>
       <ul>
-        <li>...</li>
+        <li>The background color of some advanced filter fields has been fixed.</li>
+        <li>The graphic style of some advanced filter fields has been improved.</li>
+        <li>Various libraries updated.</li>
+        <li>Implemented some minor fixes.</li>
       </ul>
       <h3>Version 2.3.1 - 25/11/2024</h3>
       <ul>

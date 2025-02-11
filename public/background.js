@@ -16,27 +16,27 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+await messenger.spaces.create(
+  'thunderstats',
+  './index.thunderstats.html',
+  {
+    badgeBackgroundColor: '#e64db9',
+    badgeText: '',
+    defaultIcons: 'images/mzts-icon-16px.png',
+    title: 'ThunderStats'
+  }
+);
+
+
 browser.browserAction.onClicked.addListener(() => {
     openTStab();
   });
 
-  function openTStab() {
-      messenger.spaces.open('thunderstats');
+  async function openTStab() {
+      let thspace = await messenger.spaces.query({'name': 'thunderstats'});
+      messenger.spaces.open(thspace[0].id);
  }
 
-
- if (messenger.spaces) {
-  await messenger.spaces.create(
-    'thunderstats',
-    './index.thunderstats.html',
-    {
-      badgeBackgroundColor: '#e64db9',
-      badgeText: '',
-      defaultIcons: 'images/mzts-icon-16px.png',
-      title: 'ThunderStats'
-    }
-  );
-}
 
 messenger.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   // Check what type of message we have received and invoke the appropriate

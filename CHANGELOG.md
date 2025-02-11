@@ -3,6 +3,10 @@
 
 
 
+<h3>Version 2.3.4 - 11/02/2025</h3>
+      <ul>
+        <li>The toolbar button is now working again.</li>
+      </ul>
 <h3>Version 2.3.3 - 01/02/2025</h3>
       <ul>
         <li>Spaces button fixed for Thunderbird 135.* [<a href="https://github.com/micz/ThunderStats/issues/399">#399</a>].</li>

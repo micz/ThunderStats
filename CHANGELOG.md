@@ -3,6 +3,10 @@
 
 
 
+<h3>Version 2.3.5 - ??/??/2025</h3>
+      <ul>
+        <li>...</li>
+      </ul>
 <h3>Version 2.3.4 - 11/02/2025</h3>
       <ul>
         <li>The toolbar button is now working again.</li>

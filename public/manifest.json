@@ -23,7 +23,8 @@
         "accountsRead",
         "storage",
         "tabs",
-        "messagesTagsList"
+        "messagesTagsList",
+        "management"
     ],
     "background": {
         "page": "background.html"

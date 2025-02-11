@@ -33,7 +33,7 @@ browser.browserAction.onClicked.addListener(() => {
   });
 
   async function openTStab() {
-      let thspace = await messenger.spaces.query({'name': 'thunderstats'});
+      let thspace = await messenger.spaces.query({'name': 'thunderstats', 'extensionId': 'thunderstats@micz.it'});
       messenger.spaces.open(thspace[0].id);
  }
 

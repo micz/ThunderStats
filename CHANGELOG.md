@@ -3,9 +3,13 @@
 
 
 
+<h3>Version 2.3.6 - 18/02/2025</h3>
+      <ul>
+        <li>Toolbar button improved. Removed the need for the "Monitor extension usage and manage themes" permission.</li>
+      </ul>
 <h3>Version 2.3.5 - 14/02/2025</h3>
       <ul>
-        <li>The toolbar button improved.</li>
+        <li>Toolbar button improved.</li>
       </ul>
 <h3>Version 2.3.4 - 11/02/2025</h3>
       <ul>

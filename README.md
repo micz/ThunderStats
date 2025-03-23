@@ -83,10 +83,10 @@ Are you using this addon in your Thunderbird?
 ## Attributions
 
 ### Translations
-- English (en-US)	: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
-- Italian (it)		: [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
-- French (fr)		: Goofy and Vittorio
-- German (de)		: [Axel Grude](https://addons.thunderbird.net/thunderbird/user/realraven/) and ChatGPT (for version 2.0 new text)
+- English (en-US): [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
+- Italian (it): [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
+- French (fr): Generated automatically, Goofy and Vittorio
+- German (de): Generated automatically, [Axel Grude](https://addons.thunderbird.net/thunderbird/user/realraven/)
 
 <br>
 

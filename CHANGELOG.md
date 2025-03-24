@@ -3,6 +3,11 @@
 
 
 
+<h3>Version 2.3.7 - 24/03/2025</h3>
+<ul>
+      <li>Libraries updated.</li>
+      <li>Translation improved. Thanks to <a href="https://hosted.weblate.org/engage/thunderstats/">Weblate</a>. Help <a href="https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/translate/">translate</a> ThunderStats in your language!</li>
+</ul>
 <h3>Version 2.3.6 - 18/02/2025</h3>
       <ul>
         <li>Toolbar button improved. Removed the need for the "Monitor extension usage and manage themes" permission.</li>

@@ -88,6 +88,8 @@ Are you using this addon in your Thunderbird?
 - French (fr): Generated automatically, Goofy and Vittorio
 - German (de): Generated automatically, [Axel Grude](https://addons.thunderbird.net/thunderbird/user/realraven/)
 
+<i>Thanks to <a href="https://hosted.weblate.org/widgets/thunderai/">Hosted Weblate</a> for managing the localization.</i>
+
 <br>
 
 ### Javascript Libraries
@@ -105,4 +107,3 @@ Loading SVGs thanks to https://loading.io
 Business Days and Export Data icons thanks to https://www.iconarchive.com/artist/custom-icon-design.html
 
 [Fluent Design System](https://www.iconfinder.com/fluent-designsystem) for the sorting icons
-

@@ -1,0 +1,515 @@
+{
+    "extensionDescription": {
+        "message": "Herinnert u zich de goede oude statistieken van Eudora? Mist u dat? Met deze add-on kunt u eindelijk het gebruik van uw geliefde Thunderbird in de gaten houden!"
+    },
+    "AllAccounts": {
+        "message": "Alle accounts"
+    },
+    "YesterdayThisTime": {
+        "message": "op dit moment"
+    },
+    "today_small": {
+        "message": "vandaag"
+    },
+    "TimeChart.Sent": {
+        "message": "Verzonden"
+    },
+    "clickheremoreinfo": {
+        "message": "Klik hier voor meer info"
+    },
+    "AboutTitle": {
+        "message": "Over deze add-on"
+    },
+    "CurrentYear": {
+        "message": "Dit jaar"
+    },
+    "WeekDay4": {
+        "message": "Donderdag"
+    },
+    "LastYear": {
+        "message": "Vorig jaar"
+    },
+    "Name": {
+        "message": "Naam"
+    },
+    "Mail": {
+        "message": "E-mail"
+    },
+    "Total": {
+        "message": "Totaal"
+    },
+    "Before": {
+        "message": "Voor"
+    },
+    "Mails": {
+        "message": "E-mails"
+    },
+    "TimeChart.Time": {
+        "message": "Tijd"
+    },
+    "TimeChart.Rcvd": {
+        "message": "Ontvangen"
+    },
+    "DonateLink": {
+        "message": "Doe een donatie!"
+    },
+    "Update": {
+        "message": "Bijwerken"
+    },
+    "Save": {
+        "message": "Bewaren"
+    },
+    "ExecutionTime": {
+        "message": "Totale tijd"
+    },
+    "Setup": {
+        "message": "Tabblad opties openen"
+    },
+    "Today": {
+        "message": "Vandaag"
+    },
+    "TotalDays": {
+        "message": "Totaal aantal dagen"
+    },
+    "Info": {
+        "message": "Info"
+    },
+    "Loading": {
+        "message": "Laden"
+    },
+    "SentMails": {
+        "message": "Verzonden e-mailberichten"
+    },
+    "ReceivedMails": {
+        "message": "Ontvangen e-mailberichten"
+    },
+    "TotalInboxUnread": {
+        "message": "ongelezen"
+    },
+    "received": {
+        "message": "ontvangen"
+    },
+    "TopRecipients": {
+        "message": "Top $NUMTOP$ ontvangers",
+        "placeholders": {
+            "numtop": {
+                "content": "$1",
+                "example": "10"
+            }
+        }
+    },
+    "clickhere": {
+        "message": "klik hier"
+    },
+    "InboxZeroTitle": {
+        "message": "Wat is ‘Inbox Zero’?"
+    },
+    "HowDoesItWorkSubtitle": {
+        "message": "Hoe werkt het?"
+    },
+    "DonationsTitle": {
+        "message": "Donaties"
+    },
+    "max": {
+        "message": "max."
+    },
+    "min": {
+        "message": "min."
+    },
+    "average": {
+        "message": "gemiddeld"
+    },
+    "CustomQry": {
+        "message": "Aangepast beeld"
+    },
+    "UpdateCustomQry": {
+        "message": "Gegevens ontvangen"
+    },
+    "CustomQryDataMsg": {
+        "message": "Gegevens extraheren voor"
+    },
+    "DateRange": {
+        "message": "Datumbereik"
+    },
+    "Bookmarks_Menu": {
+        "message": "Kies een voorgedefinieerde periode"
+    },
+    "CurrentWeek": {
+        "message": "Deze week"
+    },
+    "CurrentMonth": {
+        "message": "Deze maand"
+    },
+    "LastMonth": {
+        "message": "Vorige maand"
+    },
+    "Last2Week": {
+        "message": "Laatste twee weken"
+    },
+    "NoMailsSent": {
+        "message": "Geen e-mailberichten verzonden"
+    },
+    "InTheLastNumDays": {
+        "message": "In de laatste $NUMDAYS$ dagen",
+        "placeholders": {
+            "numdays": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "LastNumDays": {
+        "message": "Laatste $NUMDAYS$ dagen",
+        "placeholders": {
+            "numdays": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "TabAdvanced.label": {
+        "message": "Geavanceerd"
+    },
+    "TabBusinessDays.label": {
+        "message": "Werkdagen"
+    },
+    "TabCustomIdentities.label": {
+        "message": "Aangepaste identiteiten"
+    },
+    "Identities": {
+        "message": "Identiteiten"
+    },
+    "Account": {
+        "message": "Account"
+    },
+    "EmailAddresses": {
+        "message": "e-mailadressen"
+    },
+    "WeekDay2": {
+        "message": "Dinsdag"
+    },
+    "WeekDay3": {
+        "message": "Woensdag"
+    },
+    "WeekDay5": {
+        "message": "Vrijdag"
+    },
+    "WeekDay6": {
+        "message": "Zaterdag"
+    },
+    "TotalInbox": {
+        "message": "Totaal aantal e-mailberichten in Postvak IN"
+    },
+    "ChooseAccount": {
+        "message": "Account kiezen"
+    },
+    "sent": {
+        "message": "verzonden"
+    },
+    "TabSettings.label": {
+        "message": "Algemeen"
+    },
+    "Weekdays": {
+        "message": "Weekdagen"
+    },
+    "WeekDay0": {
+        "message": "Zondag"
+    },
+    "ManageCustomIdentitites": {
+        "message": "Beheer hier uw aangepaste identiteiten"
+    },
+    "yesterday_small": {
+        "message": "gisteren"
+    },
+    "NoMailsReceived": {
+        "message": "Geen e-mailberichten ontvangen"
+    },
+    "Yesterday": {
+        "message": "Gisteren"
+    },
+    "NoMailsInbox": {
+        "message": "Geen e-mailberichten in Postvak IN!"
+    },
+    "LastWeek": {
+        "message": "Vorige week"
+    },
+    "days": {
+        "message": "dagen"
+    },
+    "InboxZeroStatus": {
+        "message": "Postvak IN-nulstatus"
+    },
+    "StartupAccount": {
+        "message": "Opstartaccount"
+    },
+    "WeekDay1": {
+        "message": "Maandag"
+    },
+    "TopSenders": {
+        "message": "Top $NUMTOP$ afzenders",
+        "placeholders": {
+            "numtop": {
+                "content": "$1",
+                "example": "10"
+            }
+        }
+    },
+    "FolderLocation": {
+        "message": "E-mailmapdiagram"
+    },
+    "InboxMailsDateSpreading": {
+        "message": "Diagram datumspreiding e-mailberichten Postvak IN"
+    },
+    "AboutText_1": {
+        "message": "Herinnert u zich de goede oude statistieken van Eudora? Mist u dat?"
+    },
+    "AboutText_2": {
+        "message": "Met deze add-on kunt u eindelijk het gebruik van uw geliefde Thunderbird in de gaten houden!"
+    },
+    "InboxZeroText_2": {
+        "message": "ThunderStats geeft u enigszins inzicht in hoe u uw Postvak IN beheert."
+    },
+    "OtherInfoText_1": {
+        "message": "Alle statistieken worden berekend vanuit de e-mailberichten die in de Thunderbird-mappen staan, geassocieerd met de e-mailadressen van het geselecteerde account."
+    },
+    "OtherInfoText_2b": {
+        "message": "De statistieken zullen worden bijgewerkt zo gauw als Thunderbird de mappen van de mailserver heeft bijgewerkt."
+    },
+    "GlobalDescSettingTab": {
+        "message": "Gebruik deze opties om uw ThunderStats-ervaring aan te passen!"
+    },
+    "AdvancedSettingTabDesc": {
+        "message": "Dit zijn de geavanceerde opties, gebruik ze als u weet wat u doet."
+    },
+    "InfoMainDesc": {
+        "message": "Deze add-on is gratis en ontwikkeld in mijn vrije tijd. Als u het dagelijks gebruikt, voel u vrij om te ondersteunen met een kleine donatie door op de koppeling hieronder te klikken. Bedankt!!"
+    },
+    "ManageCustomIdentititesDesc_1": {
+        "message": "Een aangepaste identiteit is een e-mailadres, afwijkend van die voor de account is geregistreerd, waarmee u e-mailberichten ontvangt."
+    },
+    "CustomIdentititesAccount": {
+        "message": "Aangepaste identiteiten voor de geselecteerde account"
+    },
+    "CustomIdentititesAccount.Info": {
+        "message": "Voeg per regel een e-mailadres toe, of gescheiden door een komma."
+    },
+    "ActivateDebug": {
+        "message": "Het debug-systeem activeren"
+    },
+    "TodayTimeChartShowYesterday": {
+        "message": "Ook e-mailberichten van gisteren in het tijdsdiagram van vandaag tonen"
+    },
+    "TimeChartProgressive": {
+        "message": "Cumulatieve waarden in de tijdsdiagrammen van vandaag en gisteren tonen"
+    },
+    "ManyDaysChart": {
+        "message": "Meerdere-dagendiagram"
+    },
+    "CustomQueryBookmarkImmediateUpdate": {
+        "message": "Werk de statistieken direct bij als een aangepast datumbereik wordt geselecteerd"
+    },
+    "DatePickerLocale": {
+        "message": "Landinstelling voor de datumkiezer"
+    },
+    "ShowRelNotes1x": {
+        "message": "Uitgifteopmerkingen voor versie 1.x tonen"
+    },
+    "License": {
+        "message": "Licentie"
+    },
+    "CustomQryTabGroupbox": {
+        "message": "Aangepast statistiekenbereik"
+    },
+    "Non-BDays": {
+        "message": "Geen-werkdagen"
+    },
+    "Date": {
+        "message": "Datum"
+    },
+    "Description": {
+        "message": "Omschrijving"
+    },
+    "New": {
+        "message": "Nieuw"
+    },
+    "Edit": {
+        "message": "Bewerken"
+    },
+    "Delete": {
+        "message": "Verwijderen"
+    },
+    "Yearly": {
+        "message": "Elk jaar"
+    },
+    "Cancel": {
+        "message": "Annuleren"
+    },
+    "Non-Business_Day": {
+        "message": "Geen-werkdag"
+    },
+    "deletePromptNBD_text": {
+        "message": "Weet u zeker dat u deze niet-werkdag wilt verwijderen?"
+    },
+    "EasterNoBusinessDay": {
+        "message": "Pasen en paasmaandag zijn geen werkdagen."
+    },
+    "OnlyBDCustomQry": {
+        "message": "Alleen werkdagen overwegen"
+    },
+    "BusinessDayOnlyWarning": {
+        "message": "Alleen werkdagen overwegend"
+    },
+    "LastBusinessDay": {
+        "message": "Laatste werkdag"
+    },
+    "Version": {
+        "message": "Versie"
+    },
+    "AccountWithNoEmails": {
+        "message": "De geselecteerde account heeft geen geassocieerde e-mailberichten. U moet een aangepaste identiteit in de optiespagina toevoegen."
+    },
+    "LastExecution": {
+        "message": "Laatst uitgevoerd"
+    },
+    "ExportData": {
+        "message": "Gegevensexport"
+    },
+    "DailyMails": {
+        "message": "Dagelijkse e-mailberichten"
+    },
+    "FolderLocation_percent_handled": {
+        "message": "E-mailberichten verplaatst uit Postvak IN"
+    },
+    "AskUserWarningTitle": {
+        "message": "Waarschuwing"
+    },
+    "CustmQryWarnOnLongPeriod_2": {
+        "message": "Nooit waarschuwen"
+    },
+    "ShowAdvFilters": {
+        "message": "Geavanceerd filters tonen"
+    },
+    "ChooseFoldersFilter": {
+        "message": "Mappen kiezen"
+    },
+    "ChooseAccountToFilterFolders": {
+        "message": "U moet een enkel account kiezen om de mappen te filteren!"
+    },
+    "FilterFoldersIncludeSubfolders": {
+        "message": "Submappen van de gekozen mappen meenemen"
+    },
+    "FilterFoldersPlaceholder": {
+        "message": "Kies een of meer mappen…"
+    },
+    "LastBusinessDayIs": {
+        "message": "De laatste werkdag is"
+    },
+    "FilterFoldersOnlyRead": {
+        "message": "Gelezen"
+    },
+    "FilterFoldersAll": {
+        "message": "Alle"
+    },
+    "FilterSubject": {
+        "message": "Filter het onderwerp met een zoekterm"
+    },
+    "OrderBy": {
+        "message": "Sorteren per"
+    },
+    "Close": {
+        "message": "Sluiten"
+    },
+    "ViewDetails": {
+        "message": "Details bekijken"
+    },
+    "MonthlyMails": {
+        "message": "Maandelijkse e-mailberichten"
+    },
+    "YearlyMails": {
+        "message": "Jaarlijkse e-mailberichten"
+    },
+    "Week": {
+        "message": "Week"
+    },
+    "InboxZeroFolderLocationNote": {
+        "message": "In dit diagram, worden alle berichten meegenomen, inclusief duplicaten die gefilterd zijn in de andere diagrammen. Dus, bijvoorbeeld als u Gmail gebruikt, ziet u berichten die zowel in de map waar ze in staan en in de map ‘Alle e-mail’."
+    },
+    "AboutText_3": {
+        "message": "In de toekomst zullen er meer functies worden toegevoegd, maar als u een idee hebt, stuur het ons toe"
+    },
+    "ReopenTabDesc": {
+        "message": "U moet het ThunderStats-tabblad sluiten en opnieuw openen om de wijzigingen actief te maken."
+    },
+    "ManyDays": {
+        "message": "Aantal dagen om te tonen"
+    },
+    "InboxZeroText_1": {
+        "message": "Inbox Zero is a rigoureuze benadering van e-mailbeheer gericht op het leeg houden van Postvak IN — of bijna leeg — voor altijd."
+    },
+    "FilterFoldersOnlyUnflagged": {
+        "message": "Zonder ster"
+    },
+    "Domains": {
+        "message": "Domeinen"
+    },
+    "FilterFoldersOnlyUnread": {
+        "message": "Ongelezen"
+    },
+    "ShowFolders": {
+        "message": "Mappen tonen"
+    },
+    "ManageCustomIdentititesDesc_2": {
+        "message": "Meestal zijn dit e-mailadressen van mailinglijsten waar u op bent geabonneerd, waar uw e-mailadres niet wordt gebruikt in een van de velden ‘Aan’ of ‘Cc’."
+    },
+    "ShowTags": {
+        "message": "Labels tonen"
+    },
+    "Yearly_Desc": {
+        "message": "Deze dag is elk jaar een geen-werkdag."
+    },
+    "AdvFilters": {
+        "message": "Geavanceerd filters"
+    },
+    "WeeklyMails": {
+        "message": "Wekelijkse e-mailberichten"
+    },
+    "Folders": {
+        "message": "Mappen"
+    },
+    "MailsInADay": {
+        "message": "Tijd van de dag"
+    },
+    "Tags": {
+        "message": "Labels"
+    },
+    "ReadStatus": {
+        "message": "Leesstatus"
+    },
+    "Year": {
+        "message": "Jaar"
+    },
+    "Miscellaneous": {
+        "message": "Diversen"
+    },
+    "TimeChart": {
+        "message": "Tijdsdiagram"
+    },
+    "Month": {
+        "message": "Maand"
+    },
+    "Day": {
+        "message": "Dag"
+    },
+    "TimeDay": {
+        "message": "Tijd van de dag"
+    },
+    "Correspondents": {
+        "message": "Correspondenten"
+    },
+    "FlagStatus": {
+        "message": "Sterstatus"
+    },
+    "FilterFoldersOnlyFlagged": {
+        "message": "Met ster"
+    }
+}

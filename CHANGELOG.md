@@ -3,6 +3,11 @@
 
 
 
+<h3>Version 2.3.8 - ??/??/2025</h3>
+<ul>
+      <li>Libraries updated.</li>
+      <li>...</li>
+</ul>
 <h3>Version 2.3.7 - 24/03/2025</h3>
 <ul>
       <li>Libraries updated.</li>

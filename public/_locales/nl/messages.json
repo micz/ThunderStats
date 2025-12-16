@@ -511,5 +511,80 @@
     },
     "FilterFoldersOnlyFlagged": {
         "message": "Met ster"
+    },
+    "Other": {
+        "message": "Overig"
+    },
+    "prefs_FirstDayWeek": {
+        "message": "Kies de eerste dag van de week"
+    },
+    "prefs_remember_last_tab": {
+        "message": "Laatst geopende tabblad onthouden"
+    },
+    "prefs_always_reload_tab_data": {
+        "message": "Laad na wisselen van tabblad de gegevens opnieuw"
+    },
+    "prefs_load_data_changing_account": {
+        "message": "Laad na wisselen van account de gegevens opnieuw"
+    },
+    "prefs_filter_duplicates_multi_account": {
+        "message": "Filter dubbele berichten wanneer meerdere accounts zijn geselecteerd"
+    },
+    "prefs_include_archive_multi_account": {
+        "message": "Neem archieven mee wanneer meerdere accounts zijn geselecteerd"
+    },
+    "ImportantInfoTitle": {
+        "message": "Belangrijke informatie"
+    },
+    "ImportantInfoSubtitle_1": {
+        "message": "Dubbele berichten filteren"
+    },
+    "ImportantInfoSubtitle_2": {
+        "message": "Help mee met vertalen"
+    },
+    "ImportantInfoText_2b": {
+        "message": "  Zie hoe door hier te klikken!"
+    },
+    "prefsDonation_1": {
+        "message": "Vindt u deze add-on leuk?"
+    },
+    "prefsDonation_2": {
+        "message": "Overweeg een donatie!"
+    },
+    "AdvancedAccountList": {
+        "message": "Geavanceerde accountinstellingen"
+    },
+    "IncludeArchive": {
+        "message": "Inclusief archief"
+    },
+    "FilterDuplicateMessages": {
+        "message": "Dubbele berichten filteren"
+    },
+    "PrivacySubtitle": {
+        "message": "Privacy"
+    },
+    "SetDefault": {
+        "message": "Als standaard instellen"
+    },
+    "Label_bday_use_last_business_day": {
+        "message": "Als gisteren geen werkdag was, toon dan in plaats daarvan de laatste werkdag."
+    },
+    "Label_bday_default_only": {
+        "message": "Beschouw werkdagen alleen in geaggregeerde statistieken (max., min., gemiddeld)."
+    },
+    "InfoTotal_AllMails": {
+        "message": "Deze totaalwaarde geldt zowel voor werk- als niet-werkdagen."
+    },
+    "InfoTotal_BDMails_Only": {
+        "message": "Deze waarden gelden alleen voor werkdagen."
+    },
+    "TimeChartNoFutureHours": {
+        "message": "Geen aanstaande uren tonen in het tijdsdiagram van vandaag"
+    },
+    "prefs_customqry_always_open_adv_filters": {
+        "message": "Altijd het paneel Geavanceerde filters openen in Aangepast beeld"
+    },
+    "InboxMailsDateSpreadingExtended": {
+        "message": "Postvak IN-e-mailbeichten – Datumdetailsbeeld"
     }
 }

@@ -25,6 +25,7 @@
       <h3>Version 2.3.8 - ??/??/2025</h3>
       <ul>
             <li>Libraries updated.</li>
+            <li>Dutch translation added, thanks to <a href="https://github.com/Fjoerfoks">Fjoerfoks</a>.</li>
             <li>...</li>
       </ul>
       <h3>Version 2.3.7 - 24/03/2025</h3>

@@ -36,6 +36,8 @@
   --section-gap: 160px;
 
   --ms-bg: #ffffff;
+
+  --ms-caret-color: #414141;
 }
 
 .multiselect-option{

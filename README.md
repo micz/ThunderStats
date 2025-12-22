@@ -83,6 +83,7 @@ Are you using this addon in your Thunderbird?
 ## Attributions
 
 ### Translations
+- Dutch (nl): [Fjoerfoks](https://github.com/Fjoerfoks)
 - English (en-US): [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - Italian (it): [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
 - French (fr): Generated automatically, Goofy and Vittorio

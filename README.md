@@ -83,11 +83,11 @@ Are you using this addon in your Thunderbird?
 ## Attributions
 
 ### Translations
-- Dutch (nl): [Fjoerfoks](https://github.com/Fjoerfoks)
-- English (en-US): [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
-- Italian (it): [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/)
-- French (fr): Generated automatically, Goofy and Vittorio
-- German (de): Generated automatically, [Axel Grude](https://addons.thunderbird.net/thunderbird/user/realraven/)
+- Dutch (nl): [Fjoerfoks](https://github.com/Fjoerfoks) <img src="https://micz.it/weblate/thunderstats/nl.svg">
+- English (en-US): [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/) <img src="https://micz.it/weblate/thunderstats/en-US.svg">
+- Italian (it): [Mic](https://addons.thunderbird.net/thunderbird/user/Micz/) <img src="https://micz.it/weblate/thunderstats/it.svg">
+- French (fr): Generated automatically, Goofy and Vittorio <img src="https://micz.it/weblate/thunderstats/fr.svg">
+- German (de): Generated automatically, [Axel Grude](https://addons.thunderbird.net/thunderbird/user/realraven/) <img src="https://micz.it/weblate/thunderstats/de.svg">
 
 <i>Thanks to <a href="https://hosted.weblate.org/widgets/thunderai/">Hosted Weblate</a> for managing the localization.</i>
 

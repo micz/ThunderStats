@@ -55,15 +55,21 @@ ThunderStats's changes are logged [here](CHANGELOG.md).
 
 Ensure you have installed [Node.js and npm](https://nodejs.org/).
 
-Then, in the root folder of the project use these commands:
+Then, in the root folder of the project run:
 
 `npm install`
+
+### Production build (with minification)
 
 `npm run build`
 
 You'll find the compiled addon in the `dist` folder.
 
-Change the `minify` (`true`|`false`) property in the `vite.config.js` file to choose whether to minify the final code.
+### Development build (without minification, auto-rebuild on changes)
+
+`npm run dev`
+
+The process watches for file changes and automatically recompiles the addon into the `dist` folder.
 
 <br>
 

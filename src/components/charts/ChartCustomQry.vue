@@ -134,11 +134,7 @@ var chartOptions = ref({
               enabled: false,
           },
           datalabels: {
-            display: function(context) {
-              // Hide datalabels for Period B datasets (index > 0) when comparing
-              if (props.is_comparing && context.datasetIndex > 0) return false;
-              return true;
-            },
+            display: true,
             anchor: 'end',
             align: function(context) {
               let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;

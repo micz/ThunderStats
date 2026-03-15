@@ -1,216 +1,253 @@
-# Thunderbird Team Guidelines
+# Thunderbird Team Guidelines for ThunderStats
 
-## Source
-
-The official Thunderbird WebExtension development team guidelines are available in the official skill document provided by the team. This file extracts the rules relevant to ThunderJira, documents motivated deviations, and adds requirements not covered by the other specs.
-
-**Official API documentation:** https://webextension-api.thunderbird.net/en/mv3/
+This document adapts the official Thunderbird WebExtensions development guidelines for the ThunderStats project. Only sections relevant to this codebase are included.
 
 ---
 
-## Rules Applicable to ThunderJira
+## Documented Deviations from General Guidelines
 
-### 1. Do not use `async` listeners for `runtime.onMessage`
+ThunderStats intentionally deviates from some general Thunderbird WebExtension recommendations. These are known, accepted deviations — do not attempt to "fix" them:
 
-The `runtime.onMessage` listener **must not be declared `async`**. An `async` listener implicitly returns a `Promise` that the Thunderbird/Firefox WebExtension engine does not recognise as a valid message response, causing undefined behaviour and hard-to-reproduce bugs.
+| Deviation | General guideline | ThunderStats choice | Reason |
+|---|---|---|---|
+| Manifest version | Use MV3 for new extensions | **Manifest V2** | Thunderbird compatibility requirement |
+| Build tools | Avoid build tools for beginners | **Vite 6.4** | Vue 3 SFC components require a bundler |
+| Background page | Use `"type": "module"` in background scripts array | **`background.html`** (page-based) | MV2 pattern |
+| Dependencies | Use VENDOR.md + direct file inclusion | **npm + package.json** | Build pipeline manages dependencies |
+| UI framework | Plain JavaScript | **Vue 3 Composition API** | Full rewrite architectural decision |
 
-**Correct pattern:** the listener is synchronous and delegates to an `async` function, returning its `Promise` explicitly.
+---
 
-```js
-// CORRECT — non-async listener that returns an explicit Promise
-browser.runtime.onMessage.addListener((message) => {
-  // Returns a Promise — Thunderbird recognises it as an async response
-  return handleMessage(message)
-})
+## Important Guidelines for AI Assistants
 
-async function handleMessage(message) {
-  const { type, payload } = message
-  try {
-    const client = await getJiraClient()
-    switch (type) {
-      case JIRA_GET_PROJECTS:
-        return { data: await client.getProjects() }
-      // ...
-      default:
-        return { error: `Unknown message type: ${type}` }
+### 1. Use `browser_specific_settings`, not `applications`
+
+The `applications` manifest entry is deprecated. Always use `browser_specific_settings`:
+
+```json
+{
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "thunderstats@micz.it",
+            "strict_min_version": "115.0"
+        }
     }
-  } catch (err) {
-    return { error: err.message ?? String(err) }
+}
+```
+
+ThunderStats already uses this correctly.
+
+### 2. Do not guess APIs using Try-Catch
+
+```javascript
+// WRONG - Never do this!
+try {
+  await browser.someApi.method({ guessedParam: value });
+} catch (e) {
+  try {
+    await browser.someApi.method({ differentGuess: value });
+  } catch (e2) {
+    // Giving up silently — makes debugging impossible
   }
 }
 ```
 
-See also: [05-messaging.md](05-messaging.md) for the full message catalog.
+**The correct approach:**
+1. Read the API documentation FIRST
+2. Use the exact parameter names and types specified
+3. Only use try-catch for expected error conditions with proper handling
+4. Never suppress errors without logging or handling them
 
----
+### 3. Do not use Experiments unnecessarily
 
-### 2. Safe background initialisation pattern
-
-The background (Event Page) in MV3 can be re-executed for any registered event, not only at startup. To prevent `init()` from running more than once per session, use a flag in `storage.session`:
-
-```js
-// CORRECT — init() runs only once per session
-async function init() {
-  const { initialized } = await browser.storage.session.get({ initialized: false })
-  if (initialized) return
-  await browser.storage.session.set({ initialized: true })
-
-  // ... set up JiraClient, etc.
-}
-
-// Register a NOOP listener on onStartup to activate the background at startup
-browser.runtime.onStartup.addListener(() => {})
-
-// Always call init() (it will be blocked by the flag if already run)
-init()
+```javascript
+// WRONG — Using Experiment when standard API exists
+// RIGHT — Check if standard API can do it first
+const folders = await browser.folders.query({ name: "Inbox" });
 ```
 
----
+### 4. Verify API return types — do not assume array access
 
-### 3. Verify the return type of Thunderbird APIs
+Many Thunderbird APIs return wrapped objects, not direct arrays. Always verify the return type before accessing data.
 
-Many Thunderbird APIs return "wrapped" objects, not plain arrays. Always check the documentation before accessing data.
+**Common pitfall — MessageList:**
+```javascript
+// WRONG — getDisplayedMessages() returns MessageList, not an array
+const [message] = await browser.messageDisplay.getDisplayedMessages(tabId);
 
-| API | Returns | Access pattern |
-|-----|---------|----------------|
+// RIGHT — MessageList has a .messages array property
+const { messages: [message] } = await browser.messageDisplay.getDisplayedMessages(tabId);
+```
+
+**Common pitfall — HeadersDictionary:**
+```javascript
+// WRONG — keys might not match case, values are arrays
+let returnPath = headers["Return-Path"];
+
+// RIGHT — keys are lowercase, values are always arrays
+const returnPath = headers["return-path"]?.[0] ?? null;
+```
+
+**APIs that return wrapped objects (NOT direct arrays):**
+
+| API | Returns | Access Pattern |
+|---|---|---|
 | `messageDisplay.getDisplayedMessages()` | `MessageList` | `result.messages[0]` |
 | `messages.list()` | `MessageList` | `result.messages[0]` |
 | `messages.query()` | `MessageList` | `result.messages[0]` |
 | `messages.getHeaders()` | `HeadersDictionary` | `result["header-name"][0]` |
+| `messages.getFull()` | `MessagePart` | `result.headers["header-name"][0]` |
+
+**APIs that return direct arrays:**
+
+| API | Returns | Access Pattern |
+|---|---|---|
 | `tabs.query()` | `array of Tab` | `result[0]` |
+| `mailTabs.query()` | `array of MailTab` | `result[0]` |
+| `addressBooks.list()` | `array of AddressBookNode` | `result[0]` |
+| `contacts.list()` | `array of ContactNode` | `result[0]` |
 | `folders.query()` | `array of MailFolder` | `result[0]` |
 
-**Important:** `HeadersDictionary` uses lowercase keys and values that are always arrays — access with `headers["return-path"]?.[0]`.
+**MV2 → MV3 API changes (relevant if ThunderStats ever migrates):**
+
+| MV2 (old) | MV3 (new) | Return Type Change |
+|---|---|---|
+| `getDisplayedMessage()` | `getDisplayedMessages()` | `MessageHeader` → `MessageList` |
+| `onMessageDisplayed` | `onMessagesDisplayed` | `(tab, message)` → `(tab, messageList)` |
+
+### 5. Do not use async listeners for `runtime.onMessage`
+
+See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage
+
+### 6. Set correct `strict_min_version`
+
+Ensure `manifest.json` has a `strict_min_version` matching the minimum Thunderbird version that supports all used APIs. ThunderStats currently targets `115.0`.
+
+### 7. Parse Mailbox Strings using `messengerUtilities`
+
+```javascript
+const parsed = await browser.messengerUtilities.parseMailboxString(
+  "John Doe <john@example.com>, Jane <jane@example.com>"
+);
+// Result: [{ name: "John Doe", email: "john@example.com" }, ...]
+const emails = parsed.map(p => p.email);
+```
+
+Documentation: https://webextension-api.thunderbird.net/en/mv3/messengerUtilities.html
 
 ---
 
-### 4. Mandatory API audit before using new Thunderbird APIs
+## Official API Documentation
 
-Before adding any call to a new Thunderbird API, verify in the official documentation:
-- Exact parameter names and types
-- Actual return type of the Promise
-- Result access pattern (wrapped object vs plain array)
-- Permission required in the manifest
+**Primary resource:** https://webextension-api.thunderbird.net/en/mv2/
 
-Never make assumptions. Never use try-catch to "guess" parameters.
+Since ThunderStats uses Manifest V2, use the MV2 documentation:
+- **Release (mv2):** https://webextension-api.thunderbird.net/en/mv2/
+- **ESR (esr-mv2):** https://webextension-api.thunderbird.net/en/esr-mv2/
 
----
-
-### 5. `VENDOR.md` — third-party dependency documentation
-
-Every third-party library manually vendored in the project must be documented in `VENDOR.md` at the project root (npm dependencies tracked in `package.json` do not belong here). Use this format:
-
-```
-local/path/to/file.js:
- - Version: exact version (not "latest" or "main")
- - URL: direct URL to the release/download page
-```
-
-Example VENDOR.md entry:
-```
-local/path/to/ical.min.js:
- - Version: 2.2.1
- - URL: https://github.com/kewisch/ical.js/releases/download/v2.2.1/ical.min.js
-```
+The MV3 docs are available at https://webextension-api.thunderbird.net/en/mv3/ for reference, but API signatures may differ.
 
 ---
 
-### 6. i18n — no hardcoded user-facing strings
+## Experiment APIs
 
-All strings visible to the user must be localised via the Thunderbird i18n API. Never use hardcoded string literals in Vue components or HTML files.
+### What Are Experiment APIs?
 
-- Strings go in `public/_locales/en/messages.json` (and in any other supported languages)
-- The manifest must have the `"default_locale"` entry when the `_locales` folder exists
-- In Vue components use `browser.i18n.getMessage('keyName')`
+Experiment APIs allow add-ons to access Thunderbird's core internals directly. They require updates for each major Thunderbird version.
 
-Reference: https://github.com/thunderbird/webext-examples/tree/master/manifest_v3/i18n
+### Rules for ThunderStats
+
+1. **Avoid Experiments unless absolutely necessary.** Standard WebExtension APIs should always be the first choice.
+2. **Experiments require updates for each major version** — monthly on the Release channel, yearly on ESR.
+3. If an Experiment is genuinely needed, target the **ESR channel** and reference `esr-mv2` documentation.
+4. Check the [webext-experiments](https://github.com/thunderbird/webext-experiments/) repository for semi-official Experiment APIs before writing a custom one.
+
+### Available semi-official Experiment APIs
+
+- **Calendar API** — for reading/writing calendar items. See https://github.com/thunderbird/webext-experiments/ for setup.
 
 ---
 
-### 7. Background type: always `"module"`
+## Permission Requirements
 
-The background must always declare `"type": "module"` in the manifest. This is already correct in our spec (see [02-manifest-and-permissions.md](02-manifest-and-permissions.md)).
+Only request permissions that are actually needed. Unnecessary permissions may cause rejection during ATN review.
 
+**Currently used by ThunderStats:**
 ```json
-"background": {
-  "scripts": ["background/background.js"],
-  "type": "module"
-}
-```
-
----
-
-### 8. `browser_specific_settings` (not `applications`)
-
-Always use `browser_specific_settings` in the manifest. The `applications` entry is deprecated and not supported in MV3. Already correct in our spec.
-
----
-
-### 9. Use optional host permissions with URL-specific runtime grants
-
-**Source:** Thunderbird extension reviewer feedback (John).
-
-Never request `<all_urls>` as a blanket optional host permission for user-entered URLs. Instead, declare `["https://*/*", "http://*/*"]` (and `"<all_urls>"` for the localhost edge case) as `optional_host_permissions` in the manifest, and request only the specific origin the user entered — at the moment they save it.
-
-**Manifest:**
-```json
-"optional_host_permissions": [
-  "https://*/*",
-  "http://*/*",
-  "<all_urls>"
+"permissions": [
+    "addressBooks",
+    "messagesRead",
+    "accountsRead",
+    "storage",
+    "tabs",
+    "messagesTagsList"
 ]
 ```
 
-The broad patterns stay disabled. Only the explicitly entered origin is ever granted.
+**Note on `tabs` permission:** This is needed in ThunderStats for tab management (opening the stats window). Do not add it if removing that functionality; do not remove it while it is still used.
 
-**Runtime request:** `requestSitePermission(url)` in `src/options/permissions.js` — see [02-manifest-and-permissions.md](02-manifest-and-permissions.md) for the full implementation.
-
-**localhost / 127.0.0.1 exception:** `localhost` and `127.0.0.1` have no TLD and do not match `https://*/*` or `http://*/*`. For these hosts, request `<all_urls>` instead of the URL-specific origin. The `isLocalhost()` check in `requestSitePermission` handles this automatically.
-
-**`strict_min_version`:** must be `"140.0"` (improved optional permission prompt introduced in Thunderbird 140).
-
-**`"permissions"` permission:** must be declared in the manifest `permissions` array to call `browser.permissions.contains()` and `browser.permissions.request()`.
+**Anti-pattern — never request unused permissions:**
+- `activeTab` — only needed to inject content scripts into the active tab
+- Permissions for APIs you are not calling
 
 ---
 
-## Documented Deviations
+## Add-on Review Requirements
 
-### Deviation A — Build tool (Vite)
+**Review policy:** https://thunderbird.github.io/atn-review-policy/
 
-The Thunderbird team recommends avoiding build tools for beginners. ThunderJira is an **advanced** project using Vue 3 + Pinia, which necessarily requires a build tool (Vite with native multi-entry configuration — no third-party web extension plugin).
+### Source Code Submission (applies to ThunderStats)
 
-**Consequence:** ThunderJira falls under the "Advanced developers" category of the ATN review process and requires:
-- **Source code submission** when publishing to ATN
-- A `DEVELOPER.md` file at the source root with build instructions:
+ThunderStats uses Vite as a build tool, so it falls under the "advanced developer" path requiring source code submission:
+
+- Upload the source code archive during the ATN submission process
+- Include a `DEVELOPER.md` file in the root of the source archive with build instructions:
   ```
   npm ci
   npm run build
   ```
-- The source archive must not include `node_modules/` or build artefacts (`dist/`)
-- The generated XPI file must exactly match the one uploaded
-
-Policy reference: https://thunderbird.github.io/atn-review-policy/
+- The source archive must **not** include build artifacts (`dist/`) or downloaded modules (`node_modules/`)
+- The generated XPI must exactly match the uploaded one
 
 ---
 
-### Deviation B — Regex for Jira URL detection
+## Mandatory API Audit
 
-The Thunderbird team prefers parsing libraries over regex. Our spec ([07-content-script-and-popup.md](07-content-script-and-popup.md)) uses a regex to detect Jira URLs in the email DOM:
+Before finalizing any code that uses Thunderbird APIs, produce an audit table:
 
-```js
-const JIRA_LINK_REGEX = /(https?:\/\/[^\s"<>]+\/browse\/([A-Z]+-\d+))/g
-```
+| API Method | Returns | Access Pattern | Required Permission |
+|---|---|---|---|
+| `browser.messageDisplay.getDisplayedMessages()` | `MessageList` | `result.messages[0]` | messagesRead |
+| `browser.messages.query()` | `MessageList` | `result.messages[0]` | messagesRead |
+| `browser.messages.getHeaders()` | `HeadersDictionary` | `result["header-name"][0]` | messagesRead |
+| `browser.messages.getFull()` | `MessagePart` | `result.headers["header-name"][0]` | messagesRead |
+| `browser.mailTabs.query()` | `array of MailTab` | `result[0]` | (none) |
+| `browser.tabs.query()` | `array of Tab` | `result[0]` | (none) |
+| `browser.folders.query()` | `array of MailFolder` | `result[0]` | accountsRead |
+| `browser.storage.local.get()` | `object` | `result.keyName` | storage |
+| `browser.i18n.getMessage()` | `string` | direct | (none) |
 
-**Rationale for the deviation:** the pattern is specific and well-defined (Jira URL structure `/browse/ISSUEKEY` with a key in the `LETTERS-NUMBER` format). Using a general URL parsing library would be overengineering for this use case. The regex is maintainable because it matches a stable, documented Jira API pattern.
-
-This deviation does not apply to other cases: parsing of vCards, iCal, email addresses, etc. must always use the libraries recommended by the Thunderbird team.
+For each method used, verify:
+- **Parameters:** Correct parameter names and types (consult docs, do not guess)
+- **Return type:** Actual type returned by the Promise
+- **Access pattern:** How to extract data from the return value
+- **Required permission:** What permission is needed in `manifest.json`
 
 ---
 
-## Official Channels
+## Troubleshooting
 
-- **Documentation:** https://developer.thunderbird.net/
-- **Forum:** https://thunderbird.topicbox.com/groups/addons
-- **Matrix:** #tb-addon-developers:mozilla.org
-- **Official examples:** https://github.com/thunderbird/webext-examples
-- **Support libraries:** https://github.com/thunderbird/webext-support
+### "API not working"
+1. Re-read the official API documentation for the exact method signature.
+2. Check that the required permission is in `manifest.json`.
+3. Verify the return type — do not assume it is a direct array (see Section 4 above).
+4. Check the Thunderbird version — the API may not be available in `strict_min_version: 115.0`.
+
+### "Experiment not loading"
+1. Check `manifest.json` has the correct `experiment_apis` entry.
+2. Ensure schema and implementation files are included and paths match.
+
+### Getting Help
+- Developer documentation: https://developer.thunderbird.net/
+- Support forum: https://thunderbird.topicbox.com/groups/addons
+- Matrix chat: #tb-addon-developers:mozilla.org

@@ -24,14 +24,16 @@
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
             </div>
+                <img :src="compare_icon" @click="toggleCompare" title="__MSG_ComparePeriods__" class="filters_btn" :class="{ 'compare_disabled': do_single_day }"/>
                 <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" ></VueDatePicker>
                 <img :src="advanced_filters_icon" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
-                <img :src="compare_icon" @click="toggleCompare" title="__MSG_ComparePeriods__" class="filters_btn" :class="{ 'compare_disabled': do_single_day }"/>
-                <span v-if="compareEnabled" style="margin: 0px 10px;">__MSG_PeriodBStart__</span>
-                <VueDatePicker v-if="compareEnabled" v-model="dateQryB_start" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :max-date="maxDateB" :enable-time-picker="false" :clearable="false" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" style="max-width: 180px; display: inline-block;" />
-                <span v-if="compareEnabled && dateQryB_end" style="margin: 0px 5px;" class="compare_end_date"> → {{ formatDateB(dateQryB_end) }}</span>
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__
+                <div id="customqry_compare_row" v-if="compareEnabled">
+                  <span style="margin: 0px 10px;">__MSG_PeriodBStart__</span>
+                  <VueDatePicker v-model="dateQryB_start" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :max-date="maxDateB" :enable-time-picker="false" :clearable="false" :auto-apply="true" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" style="max-width: 180px; display: inline-block;" />
+                  <span v-if="dateQryB_end" style="margin: 0px 5px;" class="compare_end_date"> → {{ formatDateB(dateQryB_end) }}</span>
+                </div>
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
                   <div class="adv_filters_main_title">__MSG_AdvFilters__</div>
@@ -702,6 +704,7 @@ async function toggleCompare() {
   compare_icon.value = compareEnabled.value ? comparePeriodsIconPath_Active : comparePeriodsIconPath;
   await nextTick();
   i18n.updateDocument();
+  updateAdvFiltersPosition();
 }
 
 const updateAdvFiltersIcon = () => {
@@ -1741,6 +1744,11 @@ defineExpose({ doQry, updateAdvFiltersPosition });
 .compare_end_date {
   font-style: italic;
   opacity: 0.8;
+}
+#customqry_compare_row {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
 }
 .compare_disabled {
   opacity: 0.4;

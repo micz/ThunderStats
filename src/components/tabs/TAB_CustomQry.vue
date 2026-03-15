@@ -31,7 +31,7 @@
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__
                 <div id="customqry_compare_row" v-if="compareEnabled">
                   <span style="margin: 0px 10px;">__MSG_PeriodBStart__</span>
-                  <VueDatePicker v-model="dateQryB_start" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :max-date="maxDateB" :enable-time-picker="false" :clearable="false" :auto-apply="true" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" style="max-width: 180px; display: inline-block;" />
+                  <VueDatePicker v-model="dateQryB_start" @update:model-value="periodBChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :max-date="maxDateB" :enable-time-picker="false" :clearable="false" :auto-apply="true" :disabled="is_loading_counter_sent_rcvd" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" style="max-width: 180px; display: inline-block;" />
                   <span v-if="dateQryB_end" class="compare_end_date">→ {{ formatDateB(dateQryB_end) }}</span>
                 </div>
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
@@ -414,18 +414,22 @@ let deltaRcvdText = ref('');
 let deltaSentClass = ref('');
 let deltaRcvdClass = ref('');
 
-// Period B end date auto-calculation
-const periodLengthMs = computed(() => {
+// Period B end date auto-calculation (using calendar days to avoid DST/ms drift)
+const periodDays = computed(() => {
   if (!dateQry.value?.[0] || !dateQry.value?.[1]) return 0;
-  return dateQry.value[1].getTime() - dateQry.value[0].getTime();
+  return tsUtils.daysBetween(dateQry.value[0], dateQry.value[1]);
 });
 const dateQryB_end = computed(() => {
-  if (!dateQryB_start.value || !periodLengthMs.value) return null;
-  return new Date(dateQryB_start.value.getTime() + periodLengthMs.value);
+  if (!dateQryB_start.value || !periodDays.value) return null;
+  const end = new Date(dateQryB_start.value);
+  end.setDate(end.getDate() + periodDays.value - 1);
+  return end;
 });
 const maxDateB = computed(() => {
-  if (!periodLengthMs.value) return new Date();
-  return new Date(Date.now() - periodLengthMs.value);
+  if (!periodDays.value) return new Date();
+  const max = new Date();
+  max.setDate(max.getDate() - periodDays.value + 1);
+  return max;
 });
 const compareIsReady = computed(() => {
   return compareEnabled.value && dateQryB_start.value != null;
@@ -694,6 +698,12 @@ function showYears(){
 async function rangeChoosen(modelData){
   //console.log(">>>>>>>>>>>>>>> rangeChoosen: " + JSON.stringify(modelData));
   if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
+    update();
+  }
+}
+
+async function periodBChoosen(){
+  if(do_run.value && await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
     update();
   }
 }

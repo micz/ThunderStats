@@ -158,16 +158,23 @@ var chartOptions = ref({
           datalabels: {
             display: true,
             anchor: 'end',
+            clamp: true,
             align: function(context) {
               let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
-              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
               return height <= 25 ? 'top' : 'bottom';
             },
             color: function(context) {
-              let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
-              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
-              //console.log(">>>>>>>>>>>>>>>>>>>>> darkMode: " + JSON.stringify(tsStore.darkmode));
-              return height > 25 ? '#fff' : tsStore.darkmode?'#bbb':'grey';
+              let meta = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex];
+              let height = meta.height;
+              if (height <= 25) {
+                return tsStore.darkmode ? '#bbb' : '#555';
+              }
+              let chartArea = context.chart.chartArea;
+              let barTop = meta.y;
+              if (barTop < chartArea.top) {
+                return tsStore.darkmode ? '#bbb' : '#555';
+              }
+              return '#fff';
             },
             font: {
               weight: 'bold',

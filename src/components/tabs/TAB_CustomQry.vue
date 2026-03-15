@@ -101,7 +101,7 @@
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <div class="spacer" style="max-width:4.5em;" v-if="!do_run"></div>
-                        <div class="btn_group">
+                        <div class="btn_group" style="flex-shrink:0;">
                           <button type="button" @click="showDays" class="btn_small btn_small_start btn_disabled" ref="showDays_btn_ref" >Days</button>
                           <button type="button" @click="showWeeks" class="btn_small" ref="showWeeks_btn_ref" >Weeks</button>
                           <button type="button" @click="showMonths" class="btn_small" ref="showMonths_btn_ref" >Months</button>
@@ -109,6 +109,10 @@
                         </div>
                         <div class="spacer" v-if="!do_run"></div>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
+                      </div>
+                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady">
+                        <h2 class="list_heading cropped">__MSG_PeriodB__: <span v-if="!is_loading_compare">{{ sent_total_B }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_compare"/></h2>
+                        <CounterManyDays_Row :is_loading="is_loading_compare" :_total="counter_customqry_B_sent_total" :_max="counter_customqry_B_sent_max" :_min="counter_customqry_B_sent_min" :_avg="counter_customqry_B_sent_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
                       </div>
                       <ChartCustomQry v-if="do_run" ref="chartCustomQrySent_ref" :data_type="chartdata_type" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :is_comparing="compareIsReady" :key="chartData_Sent_length"/>
     </div>
@@ -123,6 +127,10 @@
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
+                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady">
+                        <h2 class="list_heading cropped">__MSG_PeriodB__: <span v-if="!is_loading_compare">{{ rcvd_total_B }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_compare"/></h2>
+                        <CounterManyDays_Row :is_loading="is_loading_compare" :_total="counter_customqry_B_rcvd_total" :_max="counter_customqry_B_rcvd_max" :_min="counter_customqry_B_rcvd_min" :_avg="counter_customqry_B_rcvd_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
+                      </div>
 					  <ChartCustomQry v-if="do_run" ref="chartCustomQryRcvd_ref" :data_type="chartdata_type" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_chart" :is_comparing="compareIsReady" :key="chartData_Rcvd_length"/>
     </div>
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper">
@@ -407,6 +415,14 @@ let chartdata_B_tags_labels = ref([]);
 // Period B counters
 let sent_total_B = ref(0);
 let rcvd_total_B = ref(0);
+let counter_customqry_B_sent_total = ref(0);
+let counter_customqry_B_sent_max = ref(0);
+let counter_customqry_B_sent_min = ref(0);
+let counter_customqry_B_sent_avg = ref(0);
+let counter_customqry_B_rcvd_total = ref(0);
+let counter_customqry_B_rcvd_max = ref(0);
+let counter_customqry_B_rcvd_min = ref(0);
+let counter_customqry_B_rcvd_avg = ref(0);
 
 // Delta summary
 let deltaSentText = ref('');
@@ -951,6 +967,8 @@ async function updateData() {
         });
       }
       chartData_Rcvd.value = chartData_Rcvd_Original.value;
+      is_loading_sent_chart.value = false;
+      is_loading_rcvd_chart.value = false;
       setChartWidth();
       //weeks
       chartData_Weeks_Sent.value.datasets = [];
@@ -1435,10 +1453,10 @@ async function updateData() {
               chartdata_customqry_labels.value = customqry_data.labels;
               // sent chart
               chartdata_customqry_sent.value = customqry_data.dataset_sent;
-              is_loading_sent_chart.value = false;
+              if (!compareIsReady.value) is_loading_sent_chart.value = false;
               // received chart
               chartdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
-              is_loading_rcvd_chart.value = false;
+              if (!compareIsReady.value) is_loading_rcvd_chart.value = false;
               // weeks view
               const customqry_weeks = tsCoreUtils.transformCountDataToDataset(result_customqry.dates_weeks, false, true);
               tsLog.log("customqry_weeks: " + JSON.stringify(customqry_weeks));
@@ -1511,6 +1529,17 @@ async function updateData() {
               tsLog.log("result_customqry_B: " + JSON.stringify(result_customqry_B, null, 2));
               sent_total_B.value = result_customqry_B.sent;
               rcvd_total_B.value = result_customqry_B.received;
+              if (!do_single_day.value && result_customqry_B.aggregate) {
+                let aggregate_B = result_customqry_B.aggregate;
+                counter_customqry_B_sent_total.value = aggregate_B.total_sent;
+                counter_customqry_B_sent_max.value = aggregate_B.max_sent;
+                counter_customqry_B_sent_min.value = aggregate_B.min_sent;
+                counter_customqry_B_sent_avg.value = aggregate_B.avg_sent;
+                counter_customqry_B_rcvd_total.value = aggregate_B.total_received;
+                counter_customqry_B_rcvd_max.value = aggregate_B.max_received;
+                counter_customqry_B_rcvd_min.value = aggregate_B.min_received;
+                counter_customqry_B_rcvd_avg.value = aggregate_B.avg_received;
+              }
               if (!do_single_day.value) {
                 // hours
                 const _hours_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.msg_hours, false);
@@ -1650,6 +1679,9 @@ function loadingDo(){
     is_loading_domains_chart.value = true;
     is_loading_folders_chart.value = true;
     is_loading_tags_chart.value = true;
+    if (compareIsReady.value) {
+      is_loading_compare.value = true;
+    }
 }
 
 function updateElapsed(function_name, time) {
@@ -1763,5 +1795,12 @@ defineExpose({ doQry, updateAdvFiltersPosition });
 .compare_disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+.list_heading_wrapper_compare {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2px;
+  color: -moz-nativehyperlinktext;
 }
 </style>

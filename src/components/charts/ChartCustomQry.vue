@@ -64,6 +64,10 @@ let props = defineProps({
     is_loading: {
         type: Boolean,
         default: true
+    },
+    is_comparing: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -130,7 +134,11 @@ var chartOptions = ref({
               enabled: false,
           },
           datalabels: {
-            display: true,
+            display: function(context) {
+              // Hide datalabels for Period B datasets (index > 0) when comparing
+              if (props.is_comparing && context.datasetIndex > 0) return false;
+              return true;
+            },
             anchor: 'end',
             align: function(context) {
               let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
@@ -154,7 +162,13 @@ var chartPlugins = [ChartDataLabels];
 watch(props.chartData, (newChartData) => {
     // console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
-        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
+        // Find max across ALL datasets (not just the first)
+        let allMax = 0;
+        for (let ds of newChartData.datasets) {
+            let dsMax = tsCoreUtils.getMaxFromData(ds.data);
+            if (dsMax > allMax) allMax = dsMax;
+        }
+        maxY.value = Math.ceil(allMax / 5) * 5;
     } else {
         maxY.value = 5;
     }
@@ -165,6 +179,11 @@ watch(props.chartData, (newChartData) => {
       chartOptions.value.scales.y.ticks.stepSize = 5;
     }
     chartOptions.value.scales.y.max = maxY.value;
+
+    // Show legend when comparing
+    chartOptions.value.plugins.legend.display = props.is_comparing;
+    // Enable tooltips when comparing
+    chartOptions.value.plugins.tooltip.enabled = props.is_comparing;
 
     if(tsStore.darkmode) {
       Chart.defaults.color = 'white';

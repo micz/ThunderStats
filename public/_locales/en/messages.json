@@ -828,5 +828,33 @@
   "Week": {
     "message": "Week",
     "description": ""
+  },
+  "ComparePeriods": {
+    "message": "Compare Periods",
+    "description": ""
+  },
+  "PeriodA": {
+    "message": "Period A",
+    "description": ""
+  },
+  "PeriodB": {
+    "message": "Period B",
+    "description": ""
+  },
+  "PeriodBStart": {
+    "message": "Period B start",
+    "description": ""
+  },
+  "ComparisonSentChange": {
+    "message": "Sent Change",
+    "description": ""
+  },
+  "ComparisonRcvdChange": {
+    "message": "Received Change",
+    "description": ""
+  },
+  "ComparisonNoData": {
+    "message": "No data for comparison period",
+    "description": ""
   }
 }

@@ -61,6 +61,14 @@ Advanced filtering and analysis for an arbitrary date range.
 - **Starred/Unstarred** — all, starred only, or unstarred only
 - **Subject keyword** — filter messages containing a keyword in the subject
 
+#### Compare Periods
+- Toggle button enables comparison mode
+- User selects only the start date for Period B; the end date is auto-calculated to match Period A's length
+- Period B data is overlaid on all charts with distinct colors (coral red for bars, purple/red for line charts)
+- Delta summary row shows percentage change in sent and received between periods (green for increase, red for decrease)
+- Disabled in single-day mode
+- Categorical charts (domains, folders, tags) merge labels from both periods
+
 #### Statistics Output
 - Aggregated sent/received chart (based on selected aggregation level)
 - Time-of-day distribution chart
@@ -73,6 +81,7 @@ Advanced filtering and analysis for an arbitrary date range.
 
 #### Export
 - CSV export of query results (multiple data types available)
+- When comparison is active, Period B data is also included in the export
 
 ---
 

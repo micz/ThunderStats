@@ -27,6 +27,10 @@
                 <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" ></VueDatePicker>
                 <img :src="advanced_filters_icon" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
                 <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
+                <img :src="compare_icon" @click="toggleCompare" title="__MSG_ComparePeriods__" class="filters_btn" :class="{ 'compare_disabled': do_single_day }"/>
+                <span v-if="compareEnabled" style="margin: 0px 10px;">__MSG_PeriodBStart__</span>
+                <VueDatePicker v-if="compareEnabled" v-model="dateQryB_start" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :max-date="maxDateB" :enable-time-picker="false" :clearable="false" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" style="max-width: 180px; display: inline-block;" />
+                <span v-if="compareEnabled && dateQryB_end" style="margin: 0px 5px;" class="compare_end_date"> → {{ formatDateB(dateQryB_end) }}</span>
                 <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
@@ -85,6 +89,12 @@
                   </table>
                 </div>
             </div>
+            <div id="customqry_compare_delta" v-if="compareEnabled && do_run && !is_loading_compare">
+              <span class="compare_delta_label">__MSG_ComparisonSentChange__:</span>
+              <span :class="deltaSentClass" v-text="deltaSentText"></span>
+              <span class="compare_delta_label" style="margin-left:2em;">__MSG_ComparisonRcvdChange__:</span>
+              <span :class="deltaRcvdClass" v-text="deltaRcvdText"></span>
+            </div>
     <div class="square_container" id="customqry_square_container">
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
@@ -98,7 +108,7 @@
                         <div class="spacer" v-if="!do_run"></div>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
-                      <ChartCustomQry v-if="do_run" ref="chartCustomQrySent_ref" :data_type="chartdata_type" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :key="chartData_Sent_length"/>
+                      <ChartCustomQry v-if="do_run" ref="chartCustomQrySent_ref" :data_type="chartdata_type" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :is_comparing="compareIsReady" :key="chartData_Sent_length"/>
     </div>
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
@@ -111,7 +121,7 @@
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
-					  <ChartCustomQry v-if="do_run" ref="chartCustomQryRcvd_ref" :data_type="chartdata_type" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_chart"  :key="chartData_Rcvd_length"/>
+					  <ChartCustomQry v-if="do_run" ref="chartCustomQryRcvd_ref" :data_type="chartdata_type" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_chart" :is_comparing="compareIsReady" :key="chartData_Rcvd_length"/>
     </div>
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
@@ -195,6 +205,8 @@ import Multiselect from '@vueform/multiselect';
 import '@vueform/multiselect/themes/default.css';
 import advancedFiltersIconPath from '@/assets/images/mzts-customqry_adv_filters.svg';
 import advancedFiltersIconPath_Set from '@/assets/images/mzts-customqry_adv_filters_set.svg';
+import comparePeriodsIconPath from '@/assets/images/mzts-compare-periods.svg';
+import comparePeriodsIconPath_Active from '@/assets/images/mzts-compare-periods_active.svg';
 import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
 import WidgetDomains from '../widgets/WidgetDomains.vue';
 import WidgetInboxZero from '../widgets/WidgetInboxZero.vue';
@@ -356,6 +368,72 @@ let chartdata_tags_labels = ref([]);
 
 let domains_chart_height = ref("275px");
 
+// comparison mode state
+let compareEnabled = ref(false);
+let dateQryB_start = ref(null);
+let compare_icon = ref(comparePeriodsIconPath);
+let is_loading_compare = ref(false);
+let result_customqry_B = null;
+
+// Period B raw chart data
+let chartdata_customqry_B_sent = ref([]);
+let chartdata_customqry_B_rcvd = ref([]);
+let chartdata_customqry_B_labels = ref([]);
+let chartdata_customqry_B_weeks_sent = ref([]);
+let chartdata_customqry_B_weeks_rcvd = ref([]);
+let chartdata_customqry_B_weeks_labels = ref([]);
+let chartdata_customqry_B_months_sent = ref([]);
+let chartdata_customqry_B_months_rcvd = ref([]);
+let chartdata_customqry_B_months_labels = ref([]);
+let chartdata_customqry_B_years_sent = ref([]);
+let chartdata_customqry_B_years_rcvd = ref([]);
+let chartdata_customqry_B_years_labels = ref([]);
+let chartdata_customqry_B_hours_sent = ref([]);
+let chartdata_customqry_B_hours_rcvd = ref([]);
+let chartdata_customqry_B_weekdays_sent = ref([]);
+let chartdata_customqry_B_weekdays_rcvd = ref([]);
+let chartdata_B_domains_sent = ref([]);
+let chartdata_B_domains_rcvd = ref([]);
+let chartdata_B_domains_labels = ref([]);
+let chartdata_B_folders_sent = ref([]);
+let chartdata_B_folders_rcvd = ref([]);
+let chartdata_B_folders_labels = ref([]);
+let chartdata_B_tags_sent = ref([]);
+let chartdata_B_tags_rcvd = ref([]);
+let chartdata_B_tags_labels = ref([]);
+
+// Period B counters
+let sent_total_B = ref(0);
+let rcvd_total_B = ref(0);
+
+// Delta summary
+let deltaSentText = ref('');
+let deltaRcvdText = ref('');
+let deltaSentClass = ref('');
+let deltaRcvdClass = ref('');
+
+// Period B end date auto-calculation
+const periodLengthMs = computed(() => {
+  if (!dateQry.value?.[0] || !dateQry.value?.[1]) return 0;
+  return dateQry.value[1].getTime() - dateQry.value[0].getTime();
+});
+const dateQryB_end = computed(() => {
+  if (!dateQryB_start.value || !periodLengthMs.value) return null;
+  return new Date(dateQryB_start.value.getTime() + periodLengthMs.value);
+});
+const maxDateB = computed(() => {
+  if (!periodLengthMs.value) return new Date();
+  return new Date(Date.now() - periodLengthMs.value);
+});
+const compareIsReady = computed(() => {
+  return compareEnabled.value && dateQryB_start.value != null;
+});
+
+function formatDateB(date) {
+  if (!date) return '';
+  return date.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
+}
+
 let _export_data = ref({});
 
 let _involved_num = 10;
@@ -494,6 +572,8 @@ watch(() => do_single_day.value, async (newValue, oldValue) => {
   if(newValue == true){
     doOnlyBD.value = false;
     customqry_only_bd_disabled.value = true;
+    compareEnabled.value = false;
+    compare_icon.value = comparePeriodsIconPath;
   }else{
     let prefs_bday = await tsPrefs.getPref("bday_default_only");
     customqry_only_bd_disabled.value = false;
@@ -614,6 +694,14 @@ async function rangeChoosen(modelData){
   if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
     update();
   }
+}
+
+async function toggleCompare() {
+  if (do_single_day.value) return;
+  compareEnabled.value = !compareEnabled.value;
+  compare_icon.value = compareEnabled.value ? comparePeriodsIconPath_Active : comparePeriodsIconPath;
+  await nextTick();
+  i18n.updateDocument();
 }
 
 const updateAdvFiltersIcon = () => {
@@ -813,6 +901,17 @@ async function updateData() {
       });
       tsLog.log("chartdata_customqry_sent.value: " + JSON.stringify(chartdata_customqry_sent.value));
       chartData_Sent_Original.value.labels = chartdata_customqry_labels.value;
+      if (compareIsReady.value) {
+        chartData_Sent_Original.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          data: chartdata_customqry_B_sent.value,
+          borderColor: tsStore.chart_colors.compare_default,
+          backgroundColor: tsStore.chart_colors.compare_default + '88',
+          borderWidth: 2,
+          pointRadius: 1,
+          minBarThickness: 15,
+        });
+      }
       chartData_Sent.value = chartData_Sent_Original.value;
       chartData_Rcvd_Original.value.datasets = [];
       chartData_Rcvd_Original.value.datasets.push({
@@ -827,6 +926,17 @@ async function updateData() {
       });
       tsLog.log("chartdata_customqry_rcvd.value: " + JSON.stringify(chartdata_customqry_rcvd.value));
       chartData_Rcvd_Original.value.labels = chartdata_customqry_labels.value;
+      if (compareIsReady.value) {
+        chartData_Rcvd_Original.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          data: chartdata_customqry_B_rcvd.value,
+          borderColor: tsStore.chart_colors.compare_default,
+          backgroundColor: tsStore.chart_colors.compare_default + '88',
+          borderWidth: 2,
+          pointRadius: 1,
+          minBarThickness: 15,
+        });
+      }
       chartData_Rcvd.value = chartData_Rcvd_Original.value;
       setChartWidth();
       //weeks
@@ -842,6 +952,15 @@ async function updateData() {
           minBarThickness: 15,
       });
       chartData_Weeks_Sent.value.labels = chartdata_customqry_weeks_labels.value;
+      if (compareIsReady.value) {
+        chartData_Weeks_Sent.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          data: chartdata_customqry_B_weeks_sent.value,
+          borderColor: tsStore.chart_colors.compare_default,
+          backgroundColor: tsStore.chart_colors.compare_default + '88',
+          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
+        });
+      }
       chartData_Weeks_Rcvd.value.datasets = [];
       chartData_Weeks_Rcvd.value.datasets.push({
           label: 'Received',
@@ -854,6 +973,15 @@ async function updateData() {
           minBarThickness: 15,
       });
       chartData_Weeks_Rcvd.value.labels = chartdata_customqry_weeks_labels.value;
+      if (compareIsReady.value) {
+        chartData_Weeks_Rcvd.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          data: chartdata_customqry_B_weeks_rcvd.value,
+          borderColor: tsStore.chart_colors.compare_default,
+          backgroundColor: tsStore.chart_colors.compare_default + '88',
+          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
+        });
+      }
       //months
       chartData_Months_Sent.value.datasets = [];
       chartData_Months_Sent.value.datasets.push({
@@ -867,6 +995,15 @@ async function updateData() {
           minBarThickness: 15,
       });
       chartData_Months_Sent.value.labels = chartdata_customqry_months_labels.value;
+      if (compareIsReady.value) {
+        chartData_Months_Sent.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          data: chartdata_customqry_B_months_sent.value,
+          borderColor: tsStore.chart_colors.compare_default,
+          backgroundColor: tsStore.chart_colors.compare_default + '88',
+          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
+        });
+      }
       chartData_Months_Rcvd.value.datasets = [];
       chartData_Months_Rcvd.value.datasets.push({
           label: 'Received',
@@ -879,6 +1016,15 @@ async function updateData() {
           minBarThickness: 15,
       });
       chartData_Months_Rcvd.value.labels = chartdata_customqry_months_labels.value;
+      if (compareIsReady.value) {
+        chartData_Months_Rcvd.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          data: chartdata_customqry_B_months_rcvd.value,
+          borderColor: tsStore.chart_colors.compare_default,
+          backgroundColor: tsStore.chart_colors.compare_default + '88',
+          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
+        });
+      }
       //years
       chartData_Years_Sent.value.datasets = [];
       chartData_Years_Sent.value.datasets.push({
@@ -892,6 +1038,15 @@ async function updateData() {
           minBarThickness: 15,
       });
       chartData_Years_Sent.value.labels = chartdata_customqry_years_labels.value;
+      if (compareIsReady.value) {
+        chartData_Years_Sent.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          data: chartdata_customqry_B_years_sent.value,
+          borderColor: tsStore.chart_colors.compare_default,
+          backgroundColor: tsStore.chart_colors.compare_default + '88',
+          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
+        });
+      }
       chartData_Years_Rcvd.value.datasets = [];
       chartData_Years_Rcvd.value.datasets.push({
           label: 'Received',
@@ -904,6 +1059,15 @@ async function updateData() {
           minBarThickness: 15,
       });
       chartData_Years_Rcvd.value.labels = chartdata_customqry_years_labels.value;
+      if (compareIsReady.value) {
+        chartData_Years_Rcvd.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          data: chartdata_customqry_B_years_rcvd.value,
+          borderColor: tsStore.chart_colors.compare_default,
+          backgroundColor: tsStore.chart_colors.compare_default + '88',
+          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
+        });
+      }
       tsLog.log("chartdata_customqry_hours_sent.value: " + JSON.stringify(chartdata_customqry_hours_sent.value));
       tsLog.log("chartdata_customqry_hours_rcvd.value: " + JSON.stringify(chartdata_customqry_hours_rcvd.value));
       chartData_TimeDay.value.datasets = [];
@@ -923,6 +1087,26 @@ async function updateData() {
           borderWidth: 2,
           pointRadius: 1,
       });
+      if (compareIsReady.value) {
+        chartData_TimeDay.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          data: chartdata_customqry_B_hours_sent.value,
+          borderColor: tsStore.chart_colors.compare_time_sent,
+          backgroundColor: tsStore.chart_colors.compare_time_sent,
+          borderWidth: 2,
+          pointRadius: 1,
+          borderDash: [5, 5],
+        });
+        chartData_TimeDay.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          data: chartdata_customqry_B_hours_rcvd.value,
+          borderColor: tsStore.chart_colors.compare_time_rcvd,
+          backgroundColor: tsStore.chart_colors.compare_time_rcvd,
+          borderWidth: 2,
+          pointRadius: 1,
+          borderDash: [5, 5],
+        });
+      }
       // week days
       tsLog.log("chartdata_customqry_hours_sent.value: " + JSON.stringify(chartdata_customqry_weekdays_rcvd.value));
       tsLog.log("chartdata_customqry_hours_rcvd.value: " + JSON.stringify(chartdata_customqry_weekdays_sent.value));
@@ -943,6 +1127,24 @@ async function updateData() {
           borderWidth: 2,
           pointRadius: 1,
       })
+      if (compareIsReady.value) {
+        chartData_WeekDays.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          data: chartdata_customqry_B_weekdays_sent.value,
+          borderColor: tsStore.chart_colors.compare_weekday_sent,
+          backgroundColor: tsStore.chart_colors.compare_weekday_sent + '88',
+          borderWidth: 2,
+          pointRadius: 1,
+        });
+        chartData_WeekDays.value.datasets.push({
+          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          data: chartdata_customqry_B_weekdays_rcvd.value,
+          borderColor: tsStore.chart_colors.compare_weekday_rcvd,
+          backgroundColor: tsStore.chart_colors.compare_weekday_rcvd + '88',
+          borderWidth: 2,
+          pointRadius: 1,
+        });
+      }
     }else{    //single day
       getInboxZeroData();
       // chart single day hours
@@ -981,18 +1183,31 @@ async function updateData() {
     }
 
     // chart domains
+    let _domains_labels = chartdata_domains_labels.value;
+    let _domains_sent_A = chartdata_domains_sent.value;
+    let _domains_rcvd_A = chartdata_domains_rcvd.value;
+    let _domains_sent_B = null;
+    let _domains_rcvd_B = null;
+    if (compareIsReady.value) {
+      let merged = tsCoreUtils.mergeCategoricalComparisonData(_domains_labels, _domains_sent_A, _domains_rcvd_A, chartdata_B_domains_labels.value, chartdata_B_domains_sent.value, chartdata_B_domains_rcvd.value);
+      _domains_labels = merged.labels;
+      _domains_sent_A = merged.sentA;
+      _domains_rcvd_A = merged.rcvdA;
+      _domains_sent_B = merged.sentB;
+      _domains_rcvd_B = merged.rcvdB;
+    }
     let chart_container_height = document.getElementById('chart_domains_customqry').clientHeight;
-    let chart_ipotetic_height = chartdata_domains_labels.value.length * 60;
+    let chart_ipotetic_height = _domains_labels.length * 60;
     if(chart_container_height < chart_ipotetic_height){
         domains_chart_height.value = String(chart_ipotetic_height) + "px";
     } else {
         domains_chart_height.value = String(chart_container_height) + "px";
     }
-    chartData_Domains.value.labels = chartdata_domains_labels.value;
+    chartData_Domains.value.labels = _domains_labels;
     chartData_Domains.value.datasets = [];
     chartData_Domains.value.datasets.push({
         label: 'tsent',
-        data: chartdata_domains_sent.value,
+        data: _domains_sent_A,
         borderColor: tsStore.chart_colors._time_sent,
         backgroundColor: tsStore.chart_colors._time_sent,
         borderWidth: 2,
@@ -1000,21 +1215,52 @@ async function updateData() {
     });
     chartData_Domains.value.datasets.push({
         label: 'trcvd',
-        data: chartdata_domains_rcvd.value,
+        data: _domains_rcvd_A,
         borderColor: tsStore.chart_colors._time_rcvd,
         backgroundColor: tsStore.chart_colors._time_rcvd,
         borderWidth: 2,
         pointRadius: 1,
     });
+    if (compareIsReady.value) {
+      chartData_Domains.value.datasets.push({
+        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+        data: _domains_sent_B,
+        borderColor: tsStore.chart_colors.compare_time_sent,
+        backgroundColor: tsStore.chart_colors.compare_time_sent + '88',
+        borderWidth: 2,
+        pointRadius: 1,
+      });
+      chartData_Domains.value.datasets.push({
+        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+        data: _domains_rcvd_B,
+        borderColor: tsStore.chart_colors.compare_time_rcvd,
+        backgroundColor: tsStore.chart_colors.compare_time_rcvd + '88',
+        borderWidth: 2,
+        pointRadius: 1,
+      });
+    }
     tsLog.log("chartData_Domains.value: " + JSON.stringify(chartData_Domains.value));
     tsLog.log("chartData_Domains.value.labels: " + JSON.stringify(chartData_Domains.value.labels));
 
     // chart folders
-    chartData_Folders.value.labels = chartdata_folders_labels.value;
+    let _folders_labels = chartdata_folders_labels.value;
+    let _folders_sent_A = chartdata_folders_sent.value;
+    let _folders_rcvd_A = chartdata_folders_rcvd.value;
+    let _folders_sent_B = null;
+    let _folders_rcvd_B = null;
+    if (compareIsReady.value) {
+      let merged = tsCoreUtils.mergeCategoricalComparisonData(_folders_labels, _folders_sent_A, _folders_rcvd_A, chartdata_B_folders_labels.value, chartdata_B_folders_sent.value, chartdata_B_folders_rcvd.value);
+      _folders_labels = merged.labels;
+      _folders_sent_A = merged.sentA;
+      _folders_rcvd_A = merged.rcvdA;
+      _folders_sent_B = merged.sentB;
+      _folders_rcvd_B = merged.rcvdB;
+    }
+    chartData_Folders.value.labels = _folders_labels;
     chartData_Folders.value.datasets = [];
     chartData_Folders.value.datasets.push({
         label: 'tsent',
-        data: chartdata_folders_sent.value,
+        data: _folders_sent_A,
         borderColor: tsStore.chart_colors._time_sent,
         backgroundColor: tsStore.chart_colors._time_sent,
         borderWidth: 2,
@@ -1022,21 +1268,50 @@ async function updateData() {
     });
     chartData_Folders.value.datasets.push({
         label: 'trcvd',
-        data: chartdata_folders_rcvd.value,
+        data: _folders_rcvd_A,
         borderColor: tsStore.chart_colors._time_rcvd,
         backgroundColor: tsStore.chart_colors._time_rcvd,
         borderWidth: 2,
         pointRadius: 1,
     });
+    if (compareIsReady.value) {
+      chartData_Folders.value.datasets.push({
+        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+        data: _folders_sent_B,
+        borderColor: tsStore.chart_colors.compare_time_sent,
+        backgroundColor: tsStore.chart_colors.compare_time_sent + '88',
+        borderWidth: 2, pointRadius: 1,
+      });
+      chartData_Folders.value.datasets.push({
+        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+        data: _folders_rcvd_B,
+        borderColor: tsStore.chart_colors.compare_time_rcvd,
+        backgroundColor: tsStore.chart_colors.compare_time_rcvd + '88',
+        borderWidth: 2, pointRadius: 1,
+      });
+    }
     tsLog.log("chartData_Folders.value: " + JSON.stringify(chartData_Folders.value));
     tsLog.log("chartData_Folders.value.labels: " + JSON.stringify(chartData_Folders.value.labels));
 
     // chart tags
-    chartData_Tags.value.labels = chartdata_tags_labels.value;
+    let _tags_labels = chartdata_tags_labels.value;
+    let _tags_sent_A = chartdata_tags_sent.value;
+    let _tags_rcvd_A = chartdata_tags_rcvd.value;
+    let _tags_sent_B = null;
+    let _tags_rcvd_B = null;
+    if (compareIsReady.value) {
+      let merged = tsCoreUtils.mergeCategoricalComparisonData(_tags_labels, _tags_sent_A, _tags_rcvd_A, chartdata_B_tags_labels.value, chartdata_B_tags_sent.value, chartdata_B_tags_rcvd.value);
+      _tags_labels = merged.labels;
+      _tags_sent_A = merged.sentA;
+      _tags_rcvd_A = merged.rcvdA;
+      _tags_sent_B = merged.sentB;
+      _tags_rcvd_B = merged.rcvdB;
+    }
+    chartData_Tags.value.labels = _tags_labels;
     chartData_Tags.value.datasets = [];
     chartData_Tags.value.datasets.push({
         label: 'tsent',
-        data: chartdata_tags_sent.value,
+        data: _tags_sent_A,
         borderColor: tsStore.chart_colors._time_sent,
         backgroundColor: tsStore.chart_colors._time_sent,
         borderWidth: 2,
@@ -1044,12 +1319,28 @@ async function updateData() {
     });
     chartData_Tags.value.datasets.push({
         label: 'trcvd',
-        data: chartdata_tags_rcvd.value,
+        data: _tags_rcvd_A,
         borderColor: tsStore.chart_colors._time_rcvd,
         backgroundColor: tsStore.chart_colors._time_rcvd,
         borderWidth: 2,
         pointRadius: 1,
     });
+    if (compareIsReady.value) {
+      chartData_Tags.value.datasets.push({
+        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+        data: _tags_sent_B,
+        borderColor: tsStore.chart_colors.compare_time_sent,
+        backgroundColor: tsStore.chart_colors.compare_time_sent + '88',
+        borderWidth: 2, pointRadius: 1,
+      });
+      chartData_Tags.value.datasets.push({
+        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+        data: _tags_rcvd_B,
+        borderColor: tsStore.chart_colors.compare_time_rcvd,
+        backgroundColor: tsStore.chart_colors.compare_time_rcvd + '88',
+        borderWidth: 2, pointRadius: 1,
+      });
+    }
     tsLog.log("chartData_Tags.value: " + JSON.stringify(chartData_Tags.value));
     tsLog.log("chartData_Tags.value.labels: " + JSON.stringify(chartData_Tags.value.labels));
 
@@ -1196,6 +1487,81 @@ async function updateData() {
             chartdata_tags_rcvd.value = tags_data.dataset_rcvd;
             chartdata_tags_labels.value = await tsCoreUtils.transformTagsLabels(tags_data.labels);
             is_loading_tags_chart.value = false;
+            // Period B comparison data
+            if (compareIsReady.value && dateQryB_end.value) {
+              is_loading_compare.value = true;
+              let fromDateB = new Date(dateQryB_start.value);
+              fromDateB.setHours(0, 0, 0, 0);
+              let toDateB = new Date(dateQryB_end.value);
+              toDateB.setHours(23, 59, 59, 999);
+              result_customqry_B = await tsCore.getCustomQryData(fromDateB, toDateB, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters);
+              tsLog.log("result_customqry_B: " + JSON.stringify(result_customqry_B, null, 2));
+              sent_total_B.value = result_customqry_B.sent;
+              rcvd_total_B.value = result_customqry_B.received;
+              if (!do_single_day.value) {
+                // hours
+                const _hours_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.msg_hours, false);
+                chartdata_customqry_B_hours_sent.value = _hours_data_B.dataset_sent;
+                chartdata_customqry_B_hours_rcvd.value = _hours_data_B.dataset_rcvd;
+                // sent and received charts
+                const customqry_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.dates, false, true);
+                chartdata_customqry_B_labels.value = customqry_data_B.labels;
+                chartdata_customqry_B_sent.value = customqry_data_B.dataset_sent;
+                chartdata_customqry_B_rcvd.value = customqry_data_B.dataset_rcvd;
+                // weeks
+                const customqry_weeks_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.dates_weeks, false, true);
+                chartdata_customqry_B_weeks_labels.value = customqry_weeks_B.labels;
+                chartdata_customqry_B_weeks_sent.value = customqry_weeks_B.dataset_sent;
+                chartdata_customqry_B_weeks_rcvd.value = customqry_weeks_B.dataset_rcvd;
+                // months
+                const customqry_months_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.dates_months, false, true);
+                chartdata_customqry_B_months_labels.value = customqry_months_B.labels;
+                chartdata_customqry_B_months_sent.value = customqry_months_B.dataset_sent;
+                chartdata_customqry_B_months_rcvd.value = customqry_months_B.dataset_rcvd;
+                // years
+                const customqry_years_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.dates_years, false, true);
+                chartdata_customqry_B_years_labels.value = customqry_years_B.labels;
+                chartdata_customqry_B_years_sent.value = customqry_years_B.dataset_sent;
+                chartdata_customqry_B_years_rcvd.value = customqry_years_B.dataset_rcvd;
+                // weekdays
+                const _weekdays_data_B = tsCoreUtils.transformCountDataToDataset(tsUtils.sortWeekdays(first_day_week, result_customqry_B.msg_weekdays), false);
+                chartdata_customqry_B_weekdays_sent.value = _weekdays_data_B.dataset_sent;
+                chartdata_customqry_B_weekdays_rcvd.value = _weekdays_data_B.dataset_rcvd;
+              }
+              // domains
+              const domains_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.domains, false, true);
+              chartdata_B_domains_sent.value = domains_data_B.dataset_sent;
+              chartdata_B_domains_rcvd.value = domains_data_B.dataset_rcvd;
+              chartdata_B_domains_labels.value = domains_data_B.labels;
+              // folders
+              const folders_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.folders, false, true);
+              chartdata_B_folders_sent.value = folders_data_B.dataset_sent;
+              chartdata_B_folders_rcvd.value = folders_data_B.dataset_rcvd;
+              chartdata_B_folders_labels.value = folders_data_B.labels;
+              // tags
+              const tags_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.tags, false, true);
+              chartdata_B_tags_sent.value = tags_data_B.dataset_sent;
+              chartdata_B_tags_rcvd.value = tags_data_B.dataset_rcvd;
+              chartdata_B_tags_labels.value = await tsCoreUtils.transformTagsLabels(tags_data_B.labels);
+              // export comparison data
+              if (!do_single_day.value) {
+                _export_data.value['compare_' + tsExport.export.daily_mails.type] = result_customqry_B.dates;
+                _export_data.value['compare_' + tsExport.export.weekdays.type] = result_customqry_B.msg_weekdays;
+                _export_data.value['compare_' + tsExport.export.weekly_mails.type] = result_customqry_B.dates_weeks;
+                _export_data.value['compare_' + tsExport.export.monthly_mails.type] = result_customqry_B.dates_months;
+                _export_data.value['compare_' + tsExport.export.yearly_mails.type] = result_customqry_B.dates_years;
+              }
+              _export_data.value['compare_' + tsExport.export.time_emails.type] = result_customqry_B.msg_hours;
+              _export_data.value['compare_' + tsExport.export.tags.type] = result_customqry_B.tags;
+              _export_data.value['compare_' + tsExport.export.folders.type] = result_customqry_B.folders;
+              _export_data.value['compare_' + tsExport.export.domains.type] = result_customqry_B.domains;
+              computeDeltas();
+              is_loading_compare.value = false;
+            } else {
+              // Clear comparison data when not comparing
+              result_customqry_B = null;
+              is_loading_compare.value = false;
+            }
             let stop_time = performance.now();
             updateElapsed('getCustomQryData', stop_time - start_time);
             doing_update = false;
@@ -1222,6 +1588,37 @@ async function updateData() {
             resolve(true);
         });
     };
+
+function computeDeltas() {
+  // Sent delta
+  let sentA = sent_total.value;
+  let sentB = sent_total_B.value;
+  if (sentA === 0 && sentB === 0) {
+    deltaSentText.value = '0%';
+    deltaSentClass.value = 'delta_neutral';
+  } else if (sentA === 0) {
+    deltaSentText.value = '+100%';
+    deltaSentClass.value = 'delta_positive';
+  } else {
+    let pct = ((sentB - sentA) / sentA * 100).toFixed(1);
+    deltaSentText.value = (pct > 0 ? '+' : '') + pct + '%';
+    deltaSentClass.value = pct > 0 ? 'delta_positive' : pct < 0 ? 'delta_negative' : 'delta_neutral';
+  }
+  // Received delta
+  let rcvdA = rcvd_total.value;
+  let rcvdB = rcvd_total_B.value;
+  if (rcvdA === 0 && rcvdB === 0) {
+    deltaRcvdText.value = '0%';
+    deltaRcvdClass.value = 'delta_neutral';
+  } else if (rcvdA === 0) {
+    deltaRcvdText.value = '+100%';
+    deltaRcvdClass.value = 'delta_positive';
+  } else {
+    let pct = ((rcvdB - rcvdA) / rcvdA * 100).toFixed(1);
+    deltaRcvdText.value = (pct > 0 ? '+' : '') + pct + '%';
+    deltaRcvdClass.value = pct > 0 ? 'delta_positive' : pct < 0 ? 'delta_negative' : 'delta_neutral';
+  }
+}
 
 function loadingDo(){
     is_loading_counter_sent_rcvd.value = true;
@@ -1327,5 +1724,26 @@ defineExpose({ doQry, updateAdvFiltersPosition });
 }
 :deep(.chart_inbox0_percent){
   top: 5.2em;
+}
+.delta_positive { color: #2bc285; font-weight: bold; }
+.delta_negative { color: #E86850; font-weight: bold; }
+.delta_neutral { color: #888; }
+#customqry_compare_delta {
+  padding: 5px 15px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.compare_delta_label {
+  font-weight: bold;
+}
+.compare_end_date {
+  font-style: italic;
+  opacity: 0.8;
+}
+.compare_disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 </style>

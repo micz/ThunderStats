@@ -32,7 +32,7 @@
                 <div id="customqry_compare_row" v-if="compareEnabled">
                   <span style="margin: 0px 10px;">__MSG_PeriodBStart__</span>
                   <VueDatePicker v-model="dateQryB_start" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :max-date="maxDateB" :enable-time-picker="false" :clearable="false" :auto-apply="true" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" style="max-width: 180px; display: inline-block;" />
-                  <span v-if="dateQryB_end" style="margin: 0px 5px;" class="compare_end_date"> → {{ formatDateB(dateQryB_end) }}</span>
+                  <span v-if="dateQryB_end" class="compare_end_date">→ {{ formatDateB(dateQryB_end) }}</span>
                 </div>
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
@@ -1742,8 +1742,8 @@ defineExpose({ doQry, updateAdvFiltersPosition });
   font-weight: bold;
 }
 .compare_end_date {
-  font-style: italic;
-  opacity: 0.8;
+  font-size: 15px;
+  margin-left: 8px;
 }
 #customqry_compare_row {
   display: flex;

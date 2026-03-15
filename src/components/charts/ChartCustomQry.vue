@@ -176,9 +176,7 @@ watch(props.chartData, (newChartData) => {
     }
     chartOptions.value.scales.y.max = maxY.value;
 
-    // Show legend when comparing
-    chartOptions.value.plugins.legend.display = props.is_comparing;
-    // Enable tooltips when comparing
+    // Enable tooltips when comparing (legend kept hidden to avoid taking chart space)
     chartOptions.value.plugins.tooltip.enabled = props.is_comparing;
 
     if(tsStore.darkmode) {

@@ -26,3 +26,5 @@ coverage
 
 *.tsbuildinfo
 dist
+
+.claude

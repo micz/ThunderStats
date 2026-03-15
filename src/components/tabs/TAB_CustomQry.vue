@@ -916,7 +916,7 @@ async function updateData() {
       chartData_Sent_Original.value.labels = chartdata_customqry_labels.value;
       if (compareIsReady.value) {
         chartData_Sent_Original.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
           data: chartdata_customqry_B_sent.value,
           borderColor: tsStore.chart_colors.compare_default,
           backgroundColor: tsStore.chart_colors.compare_default + '88',
@@ -941,7 +941,7 @@ async function updateData() {
       chartData_Rcvd_Original.value.labels = chartdata_customqry_labels.value;
       if (compareIsReady.value) {
         chartData_Rcvd_Original.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
           data: chartdata_customqry_B_rcvd.value,
           borderColor: tsStore.chart_colors.compare_default,
           backgroundColor: tsStore.chart_colors.compare_default + '88',
@@ -967,7 +967,7 @@ async function updateData() {
       chartData_Weeks_Sent.value.labels = chartdata_customqry_weeks_labels.value;
       if (compareIsReady.value) {
         chartData_Weeks_Sent.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
           data: chartdata_customqry_B_weeks_sent.value,
           borderColor: tsStore.chart_colors.compare_default,
           backgroundColor: tsStore.chart_colors.compare_default + '88',
@@ -988,7 +988,7 @@ async function updateData() {
       chartData_Weeks_Rcvd.value.labels = chartdata_customqry_weeks_labels.value;
       if (compareIsReady.value) {
         chartData_Weeks_Rcvd.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
           data: chartdata_customqry_B_weeks_rcvd.value,
           borderColor: tsStore.chart_colors.compare_default,
           backgroundColor: tsStore.chart_colors.compare_default + '88',
@@ -1010,7 +1010,7 @@ async function updateData() {
       chartData_Months_Sent.value.labels = chartdata_customqry_months_labels.value;
       if (compareIsReady.value) {
         chartData_Months_Sent.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
           data: chartdata_customqry_B_months_sent.value,
           borderColor: tsStore.chart_colors.compare_default,
           backgroundColor: tsStore.chart_colors.compare_default + '88',
@@ -1031,7 +1031,7 @@ async function updateData() {
       chartData_Months_Rcvd.value.labels = chartdata_customqry_months_labels.value;
       if (compareIsReady.value) {
         chartData_Months_Rcvd.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
           data: chartdata_customqry_B_months_rcvd.value,
           borderColor: tsStore.chart_colors.compare_default,
           backgroundColor: tsStore.chart_colors.compare_default + '88',
@@ -1053,7 +1053,7 @@ async function updateData() {
       chartData_Years_Sent.value.labels = chartdata_customqry_years_labels.value;
       if (compareIsReady.value) {
         chartData_Years_Sent.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
           data: chartdata_customqry_B_years_sent.value,
           borderColor: tsStore.chart_colors.compare_default,
           backgroundColor: tsStore.chart_colors.compare_default + '88',
@@ -1074,7 +1074,7 @@ async function updateData() {
       chartData_Years_Rcvd.value.labels = chartdata_customqry_years_labels.value;
       if (compareIsReady.value) {
         chartData_Years_Rcvd.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
           data: chartdata_customqry_B_years_rcvd.value,
           borderColor: tsStore.chart_colors.compare_default,
           backgroundColor: tsStore.chart_colors.compare_default + '88',
@@ -1102,7 +1102,7 @@ async function updateData() {
       });
       if (compareIsReady.value) {
         chartData_TimeDay.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
           data: chartdata_customqry_B_hours_sent.value,
           borderColor: tsStore.chart_colors.compare_time_sent,
           backgroundColor: tsStore.chart_colors.compare_time_sent,
@@ -1111,7 +1111,7 @@ async function updateData() {
           borderDash: [5, 5],
         });
         chartData_TimeDay.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
           data: chartdata_customqry_B_hours_rcvd.value,
           borderColor: tsStore.chart_colors.compare_time_rcvd,
           backgroundColor: tsStore.chart_colors.compare_time_rcvd,
@@ -1142,7 +1142,7 @@ async function updateData() {
       })
       if (compareIsReady.value) {
         chartData_WeekDays.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
           data: chartdata_customqry_B_weekdays_sent.value,
           borderColor: tsStore.chart_colors.compare_weekday_sent,
           backgroundColor: tsStore.chart_colors.compare_weekday_sent + '88',
@@ -1150,7 +1150,7 @@ async function updateData() {
           pointRadius: 1,
         });
         chartData_WeekDays.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
           data: chartdata_customqry_B_weekdays_rcvd.value,
           borderColor: tsStore.chart_colors.compare_weekday_rcvd,
           backgroundColor: tsStore.chart_colors.compare_weekday_rcvd + '88',
@@ -1236,7 +1236,7 @@ async function updateData() {
     });
     if (compareIsReady.value) {
       chartData_Domains.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
         data: _domains_sent_B,
         borderColor: tsStore.chart_colors.compare_time_sent,
         backgroundColor: tsStore.chart_colors.compare_time_sent + '88',
@@ -1244,7 +1244,7 @@ async function updateData() {
         pointRadius: 1,
       });
       chartData_Domains.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
         data: _domains_rcvd_B,
         borderColor: tsStore.chart_colors.compare_time_rcvd,
         backgroundColor: tsStore.chart_colors.compare_time_rcvd + '88',
@@ -1289,14 +1289,14 @@ async function updateData() {
     });
     if (compareIsReady.value) {
       chartData_Folders.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
         data: _folders_sent_B,
         borderColor: tsStore.chart_colors.compare_time_sent,
         backgroundColor: tsStore.chart_colors.compare_time_sent + '88',
         borderWidth: 2, pointRadius: 1,
       });
       chartData_Folders.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
         data: _folders_rcvd_B,
         borderColor: tsStore.chart_colors.compare_time_rcvd,
         backgroundColor: tsStore.chart_colors.compare_time_rcvd + '88',
@@ -1340,14 +1340,14 @@ async function updateData() {
     });
     if (compareIsReady.value) {
       chartData_Tags.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Sent"),
+        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
         data: _tags_sent_B,
         borderColor: tsStore.chart_colors.compare_time_sent,
         backgroundColor: tsStore.chart_colors.compare_time_sent + '88',
         borderWidth: 2, pointRadius: 1,
       });
       chartData_Tags.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + ' - ' + browser.i18n.getMessage("TimeChart.Rcvd"),
+        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
         data: _tags_rcvd_B,
         borderColor: tsStore.chart_colors.compare_time_rcvd,
         backgroundColor: tsStore.chart_colors.compare_time_rcvd + '88',

@@ -60,7 +60,13 @@ const getOrCreateLegendList = (chart, id) => {
             if(i==2){
               li_ty.classList.add('day_today_title_yesterday');
             }
-            li_ty.innerHTML = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : ((((i > 0) && options.is_today) || options.is_yesterday) ? (options.is_last_business_day ? browser.i18n.getMessage('LastBusinessDay') : browser.i18n.getMessage('Yesterday')) : browser.i18n.getMessage('Mails'));
+            if ((i == 0) && options.is_today) {
+              li_ty.innerHTML = browser.i18n.getMessage('Today');
+            } else if (((i > 0) && options.is_today) || options.is_yesterday) {
+              li_ty.innerHTML = options.is_last_business_day ? browser.i18n.getMessage('LastBusinessDay') : browser.i18n.getMessage('Yesterday');
+            } else {
+              li_ty.innerHTML = (i == 0) ? browser.i18n.getMessage('Mails') : '&nbsp;';
+            }
             //li_ty.innerHTML = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
             ul.appendChild(li_ty);
           }

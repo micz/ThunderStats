@@ -6,6 +6,8 @@
 <h3>Version 2.4.0 - ??/??/2026</h3>
 <ul>
       <li>Libraries updated.</li>
+      <li>Various fixes.</li>
+      <li>Correctly reloading the ThunderStats page when changing an option using the reload button.</li>
       <li>...</li>
 </ul>
 <h3>Version 2.3.8 - 22/12/2025</h3>

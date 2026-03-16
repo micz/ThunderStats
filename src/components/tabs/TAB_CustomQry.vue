@@ -110,9 +110,9 @@
                         <div class="spacer" v-if="!do_run"></div>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
-                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady && !is_loading_compare">
-                        <h2 class="list_heading cropped">__MSG_PeriodB__: {{ sent_total_B }}</h2>
-                        <CounterManyDays_Row :is_loading="false" :_total="counter_customqry_B_sent_total" :_max="counter_customqry_B_sent_max" :_min="counter_customqry_B_sent_min" :_avg="counter_customqry_B_sent_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
+                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady">
+                        <h2 class="list_heading cropped">__MSG_PeriodB__: <span v-if="!is_loading_compare">{{ sent_total_B }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_compare"/></h2>
+                        <CounterManyDays_Row :is_loading="is_loading_compare" :_total="counter_customqry_B_sent_total" :_max="counter_customqry_B_sent_max" :_min="counter_customqry_B_sent_min" :_avg="counter_customqry_B_sent_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
                       </div>
                       <ChartCustomQry v-if="do_run" ref="chartCustomQrySent_ref" :data_type="chartdata_type" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :is_comparing="compareIsReady" :key="chartData_Sent_length"/>
     </div>
@@ -127,9 +127,9 @@
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
-                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady && !is_loading_compare">
-                        <h2 class="list_heading cropped">__MSG_PeriodB__: {{ rcvd_total_B }}</h2>
-                        <CounterManyDays_Row :is_loading="false" :_total="counter_customqry_B_rcvd_total" :_max="counter_customqry_B_rcvd_max" :_min="counter_customqry_B_rcvd_min" :_avg="counter_customqry_B_rcvd_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
+                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady">
+                        <h2 class="list_heading cropped">__MSG_PeriodB__: <span v-if="!is_loading_compare">{{ rcvd_total_B }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_compare"/></h2>
+                        <CounterManyDays_Row :is_loading="is_loading_compare" :_total="counter_customqry_B_rcvd_total" :_max="counter_customqry_B_rcvd_max" :_min="counter_customqry_B_rcvd_min" :_avg="counter_customqry_B_rcvd_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
                       </div>
 					  <ChartCustomQry v-if="do_run" ref="chartCustomQryRcvd_ref" :data_type="chartdata_type" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_chart" :is_comparing="compareIsReady" :key="chartData_Rcvd_length"/>
     </div>

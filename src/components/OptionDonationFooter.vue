@@ -56,8 +56,13 @@ onMounted(() => {
     thstats_version.value = version;
 });
 
-function reloadThunderStats() {
+async function reloadThunderStats() {
     browser.runtime.sendMessage({command: "reloadThunderStats" });
+    // close the current options tab
+    const currentTab = await browser.tabs.getCurrent();
+    if (currentTab) {
+        browser.tabs.remove(currentTab.id);
+    }
 }
 </script>
 

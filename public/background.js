@@ -55,20 +55,12 @@ messenger.runtime.onMessage.addListener(async (message, sender, sendResponse) =>
 });
 
 async function reloadThunderStats() {
-  // check if the ThunderStats tab is already there
-      browser.tabs.query({url: browser.runtime.getURL("./index.thunderstats.html")}).then((tabs) => {
-      if (tabs.length > 0) {
-          // if the tab is already there, remove it
-          browser.tabs.remove(tabs[0].id);
-      }
-      });
-      // reload ThunderStats
-      browser.tabs.create({url: browser.runtime.getURL("./index.thunderstats.html")});
-      // check if the ThunderStats Options tab is already there
-      browser.tabs.query({url: browser.runtime.getURL("./index.ts-options.html")}).then((tabs) => {
-          if (tabs.length > 0) {
-          // if the tab is already there, remove it
-          browser.tabs.remove(tabs[0].id);
-          }
-      })
+  // reload the ThunderStats space tab
+  const thspace = await messenger.spaces.query({'name': 'thunderstats', isSelfOwned: true});
+  if (thspace.length > 0) {
+    const spaceTab = await messenger.spaces.open(thspace[0].id);
+    if (spaceTab && spaceTab.id) {
+      await browser.tabs.reload(spaceTab.id);
+    }
   }
+}

@@ -1,6 +1,7 @@
 export const prefs_default = {
     'do_debug': false,
     '_many_days': 7,
+    'many_days_show_inbox': true,
     '_involved_num': 10,
     'today_time_chart_show_yesterday': true,
     'today_time_chart_do_no_show_future': true,

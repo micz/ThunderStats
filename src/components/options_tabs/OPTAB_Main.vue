@@ -129,6 +129,14 @@
         <span class="dims_label">__MSG_ManyDays__</span>
       </td>
     </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="many_days_show_inbox" name="many_days_show_inbox" class="option-input" /></label>
+      </td>
+      <td>
+        <label><span class="dims_label" @click="toggle_options">__MSG_ManyDaysShowInbox__</span></label>
+      </td>
+    </tr>
     </table>
     <table class="miczPrefs">
     <tr>

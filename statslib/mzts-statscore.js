@@ -472,6 +472,13 @@ export class thunderStastsCore {
               dates_weeks[date_week_string].received++;
               dates_months[date_month_string].received++;
               dates_years[date_year_string].received++;
+              // group by inbox
+              if(message.folder.specialUse && message.folder.specialUse.includes('inbox')){
+                dates[date_message_string].inbox++;
+                dates_weeks[date_week_string].inbox++;
+                dates_months[date_month_string].inbox++;
+                dates_years[date_year_string].inbox++;
+              }
               // group by hour
               msg_hours[hour_message].received++;
               // group by weekday

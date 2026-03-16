@@ -137,6 +137,7 @@ let show_table_involved_senders = ref(false);
 
 let chartdata_manydays_sent = ref([]);
 let chartdata_manydays_rcvd = ref([]);
+let chartdata_manydays_inbox = ref([]);
 let chartdata_manydays_labels = ref([]);
 let chartdata_manydays_hours_sent = ref([]);
 let chartdata_manydays_hours_rcvd = ref([]);
@@ -255,9 +256,12 @@ async function updateData() {
     tsLog.log("chartdata_manydays_sent.value: " + JSON.stringify(chartdata_manydays_sent.value));
     chartData_Sent.value.labels = chartdata_manydays_labels.value;
     chartData_Rcvd.value.datasets = [];
+    const nonInboxRcvd = chartdata_manydays_rcvd.value.map(
+        (val, i) => val - (chartdata_manydays_inbox.value[i] || 0)
+    );
     chartData_Rcvd.value.datasets.push({
         label: 'Received',
-        data: chartdata_manydays_rcvd.value,
+        data: nonInboxRcvd,
         borderColor:  (ctx) => {
             return tsCoreUtils.getManyDaysBarColor(ctx, Object.keys(chartdata_manydays_rcvd.value).length);
         },
@@ -266,6 +270,16 @@ async function updateData() {
         },
         borderWidth: 2,
         pointRadius: 1,
+        stack: 'received',
+    });
+    chartData_Rcvd.value.datasets.push({
+        label: 'Inbox',
+        data: chartdata_manydays_inbox.value,
+        borderColor: tsStore.chart_colors.many_days_inbox,
+        backgroundColor: tsStore.chart_colors.many_days_inbox,
+        borderWidth: 0,
+        pointRadius: 1,
+        stack: 'received',
     });
     tsLog.log("chartdata_manydays_rcvd.value: " + JSON.stringify(chartdata_manydays_rcvd.value));
     chartData_Rcvd.value.labels = chartdata_manydays_labels.value;
@@ -461,6 +475,7 @@ async function updateData() {
             is_loading_sent_chart.value = false;
             // received chart
             chartdata_manydays_rcvd.value = many_days_data.dataset_rcvd;
+            chartdata_manydays_inbox.value = many_days_data.dataset_inbox;
             is_loading_rcvd_chart.value = false;
             // domains
             const domains_data = tsCoreUtils.transformCountDataToDataset(result_many_days.domains, false, true);

@@ -25,25 +25,30 @@ export const tsCoreUtils = {
     transformCountDataToDataset(data, do_progressive = false, get_labels = false) {
         let dataset_sent = [];
         let dataset_rcvd = [];
+        let dataset_inbox = [];
         for(let key in data) {
             let value = data[String(key)];
             dataset_sent.push(value.sent);
             dataset_rcvd.push(value.received);
+            dataset_inbox.push(value.inbox || 0);
         }
-        
+
         if (do_progressive) {
             let cumulative_sent = 0;
             let cumulative_rcvd = 0;
-            
+            let cumulative_inbox = 0;
+
             for (let key in dataset_sent) {
                 cumulative_sent += dataset_sent[key];
                 cumulative_rcvd += dataset_rcvd[key];
+                cumulative_inbox += dataset_inbox[key];
                 dataset_sent[key] = cumulative_sent;
                 dataset_rcvd[key] = cumulative_rcvd;
+                dataset_inbox[key] = cumulative_inbox;
             }
         }
 
-        let output = { dataset_sent, dataset_rcvd };
+        let output = { dataset_sent, dataset_rcvd, dataset_inbox };
         if(get_labels) {
             let labels = [];
             for(let key in data) {

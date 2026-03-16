@@ -18,6 +18,7 @@ export const tsStore = reactive({
     'current_account_id': 0,
     'chart_colors':{
         many_days_default: '#4682B4',
+        many_days_inbox: '#d62728',
         many_days_today_dark: '#1f9c6a',
         many_days_today_light: '#2bc285',
         _time_sent: '#1f77b4',

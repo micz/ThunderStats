@@ -70,7 +70,7 @@ var chartOptions = ref({
         responsive: true,
         animation: false,
         maintainAspectRatio: false,
-        hover: {mode: null},
+        hover: {mode: 'nearest', intersect: true},
         // categoryPercentage: 1,
         // barPercentage: 0.8,
         scales: {
@@ -120,7 +120,18 @@ var chartOptions = ref({
             display: false,
           },
           tooltip: {
-              enabled: false,
+              enabled: true,
+              filter: function(tooltipItem) {
+                return tooltipItem.dataset.label === 'Inbox';
+              },
+              callbacks: {
+                title: function() {
+                  return '';
+                },
+                label: function(tooltipItem) {
+                  return 'Inbox: ' + tooltipItem.raw;
+                },
+              },
           },
           datalabels: {
             display: function(context) {

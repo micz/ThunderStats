@@ -96,7 +96,7 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper.
 | `ChartTime.vue` | Hourly sent/received distribution (bar chart) |
 | `ChartWeekDays.vue` | Sent/received per weekday |
 | `ChartManyDays.vue` | Daily/weekly/monthly/yearly line or bar chart for a date range |
-| `ChartCustomQry.vue` | Chart for custom query results, adapts to selected aggregation level |
+| `ChartCustomQry.vue` | Chart for custom query results, adapts to selected aggregation level. Accepts `is_comparing` prop to enable legend, tooltips, and suppress Period B datalabels when comparing periods. |
 | `ChartInboxZeroDates.vue` | Timeline of inbox zero achievements |
 | `ChartInboxZeroDatesExtended.vue` | Extended inbox zero history |
 | `ChartInboxZeroFolders.vue` | Inbox zero by folder |

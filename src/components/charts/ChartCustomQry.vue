@@ -64,6 +64,10 @@ let props = defineProps({
     is_loading: {
         type: Boolean,
         default: true
+    },
+    is_comparing: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -132,15 +136,23 @@ var chartOptions = ref({
           datalabels: {
             display: true,
             anchor: 'end',
+            clamp: true,
             align: function(context) {
               let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
-              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
               return height <= 25 ? 'top' : 'bottom';
             },
             color: function(context) {
-              let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
-              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
-              return height > 25 ? '#fff' : tsStore.darkmode?'#bbb':'grey';
+              let meta = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex];
+              let height = meta.height;
+              if (height <= 25) {
+                return tsStore.darkmode ? '#bbb' : '#555';
+              }
+              let chartArea = context.chart.chartArea;
+              let barTop = meta.y;
+              if (barTop < chartArea.top) {
+                return tsStore.darkmode ? '#bbb' : '#555';
+              }
+              return '#fff';
             },
             font: {
               weight: 'bold',
@@ -154,7 +166,13 @@ var chartPlugins = [ChartDataLabels];
 watch(props.chartData, (newChartData) => {
     // console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
-        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
+        // Find max across ALL datasets (not just the first)
+        let allMax = 0;
+        for (let ds of newChartData.datasets) {
+            let dsMax = tsCoreUtils.getMaxFromData(ds.data);
+            if (dsMax > allMax) allMax = dsMax;
+        }
+        maxY.value = Math.ceil(allMax / 5) * 5;
     } else {
         maxY.value = 5;
     }
@@ -166,11 +184,14 @@ watch(props.chartData, (newChartData) => {
     }
     chartOptions.value.scales.y.max = maxY.value;
 
+    // Enable tooltips when comparing (legend kept hidden to avoid taking chart space)
+    chartOptions.value.plugins.tooltip.enabled = props.is_comparing;
+
     if(tsStore.darkmode) {
       Chart.defaults.color = 'white';
       Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.2)';
     }
-}, { immediate: true });
+}, { immediate: true, deep: true });
 
 </script>
 

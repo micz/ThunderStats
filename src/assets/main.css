@@ -222,7 +222,7 @@ td.align_end {
 #customqry_datamsg{
   display: inline-block;
   position: absolute;
-  right: 5px;
+  right: 8px;
   top: 1rem;
 }
 
@@ -318,7 +318,7 @@ td.align_end {
   background: #3593dd;
   border: #7fb5da;
   border-radius: 7px;
-  margin: 0px 5px;
+  margin: 8px 5px;
   color: white;
 }
 

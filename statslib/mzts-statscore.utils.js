@@ -930,6 +930,24 @@ export const tsCoreUtils = {
         return new Date(year, month - 1, day);
     },
 
+    mergeCategoricalComparisonData(labelsA, sentA, rcvdA, labelsB, sentB, rcvdB) {
+        let allLabels = [...new Set([...labelsA, ...labelsB])];
+        let mapA = Object.fromEntries(labelsA.map((l, i) => [l, { sent: sentA[i], rcvd: rcvdA[i] }]));
+        let mapB = Object.fromEntries(labelsB.map((l, i) => [l, { sent: sentB[i], rcvd: rcvdB[i] }]));
+        allLabels.sort((a, b) => {
+            let totalA = (mapA[a]?.sent ?? 0) + (mapA[a]?.rcvd ?? 0) + (mapB[a]?.sent ?? 0) + (mapB[a]?.rcvd ?? 0);
+            let totalB = (mapA[b]?.sent ?? 0) + (mapA[b]?.rcvd ?? 0) + (mapB[b]?.sent ?? 0) + (mapB[b]?.rcvd ?? 0);
+            return totalB - totalA;
+        });
+        return {
+            labels: allLabels,
+            sentA: allLabels.map(l => mapA[l]?.sent ?? 0),
+            rcvdA: allLabels.map(l => mapA[l]?.rcvd ?? 0),
+            sentB: allLabels.map(l => mapB[l]?.sent ?? 0),
+            rcvdB: allLabels.map(l => mapB[l]?.rcvd ?? 0),
+        };
+    },
+
 }
 
 

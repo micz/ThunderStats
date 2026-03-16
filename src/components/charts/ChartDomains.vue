@@ -87,7 +87,9 @@ let chartData_length = computed(() => (chartData.value.datasets.length + Math.fl
 let chartData = computed(() => {
   if (props.chartData.datasets && props.chartData.datasets.length > 0) {
   let data = tsUtils.safeConcat(props.chartData.datasets, 0)
-                  .concat(tsUtils.safeConcat(props.chartData.datasets, 1));
+                  .concat(tsUtils.safeConcat(props.chartData.datasets, 1))
+                  .concat(tsUtils.safeConcat(props.chartData.datasets, 2))
+                  .concat(tsUtils.safeConcat(props.chartData.datasets, 3));
         let maxData = tsCoreUtils.getMaxFromData(data);
         maxX.value = (Math.ceil(maxData / 5) * 5);
         if(maxX.value == maxData) {

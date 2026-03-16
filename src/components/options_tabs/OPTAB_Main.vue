@@ -201,5 +201,7 @@ import { tsStore } from '@statslib/mzts-store';
 
 
 <style scoped>
-
+#datepicker_locale{
+  width: 2rem;
+}
 </style>

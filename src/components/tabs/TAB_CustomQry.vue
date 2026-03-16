@@ -34,9 +34,9 @@
                   <VueDatePicker v-model="dateQryB_start" @update:model-value="periodBChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :max-date="maxDateB" :enable-time-picker="false" :clearable="false" :auto-apply="true" :disabled="do_run && is_loading_counter_sent_rcvd" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" style="max-width: 180px; display: inline-block;" />
                   <span v-if="dateQryB_end" class="compare_end_date">→ {{ formatDateB(dateQryB_end) }}</span>
                   <span id="customqry_compare_delta" v-if="do_run && !is_loading_compare">
-                    <span class="compare_delta_label">__MSG_ComparisonSentChange__:</span>
+                    <span class="compare_delta_label">__MSG_ComparisonSentChange__: </span>
                     <span :class="deltaSentClass" v-text="deltaSentText"></span>
-                    <span class="compare_delta_label" style="margin-left:2em;">__MSG_ComparisonRcvdChange__:</span>
+                    <span class="compare_delta_label" style="margin-left:2em;">__MSG_ComparisonRcvdChange__: </span>
                     <span :class="deltaRcvdClass" v-text="deltaRcvdText"></span>
                   </span>
                 </div>
@@ -1634,31 +1634,31 @@ async function updateData() {
     };
 
 function computeDeltas() {
-  // Sent delta
+  // Sent delta: variation of Period A relative to Period B
   let sentA = sent_total.value;
   let sentB = sent_total_B.value;
   if (sentA === 0 && sentB === 0) {
     deltaSentText.value = '0%';
     deltaSentClass.value = 'delta_neutral';
-  } else if (sentA === 0) {
+  } else if (sentB === 0) {
     deltaSentText.value = '+100%';
     deltaSentClass.value = 'delta_positive';
   } else {
-    let pct = ((sentB - sentA) / sentA * 100).toFixed(1);
+    let pct = ((sentA - sentB) / sentB * 100).toFixed(1);
     deltaSentText.value = (pct > 0 ? '+' : '') + pct + '%';
     deltaSentClass.value = pct > 0 ? 'delta_positive' : pct < 0 ? 'delta_negative' : 'delta_neutral';
   }
-  // Received delta
+  // Received delta: variation of Period A relative to Period B
   let rcvdA = rcvd_total.value;
   let rcvdB = rcvd_total_B.value;
   if (rcvdA === 0 && rcvdB === 0) {
     deltaRcvdText.value = '0%';
     deltaRcvdClass.value = 'delta_neutral';
-  } else if (rcvdA === 0) {
+  } else if (rcvdB === 0) {
     deltaRcvdText.value = '+100%';
     deltaRcvdClass.value = 'delta_positive';
   } else {
-    let pct = ((rcvdB - rcvdA) / rcvdA * 100).toFixed(1);
+    let pct = ((rcvdA - rcvdB) / rcvdB * 100).toFixed(1);
     deltaRcvdText.value = (pct > 0 ? '+' : '') + pct + '%';
     deltaRcvdClass.value = pct > 0 ? 'delta_positive' : pct < 0 ? 'delta_negative' : 'delta_neutral';
   }

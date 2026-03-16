@@ -1781,6 +1781,10 @@ defineExpose({ doQry, updateAdvFiltersPosition });
 .delta_neutral { color: #888; }
 #customqry_compare_delta {
   margin-left: 2em;
+  border: 3px solid #7FB5DA;
+  padding: 4px;
+  border-radius: 5px;
+  background: #96D5FF6E;
 }
 .compare_delta_label {
   font-weight: bold;
@@ -1793,6 +1797,7 @@ defineExpose({ doQry, updateAdvFiltersPosition });
   display: flex;
   align-items: center;
   margin-top: 4px;
+  padding-left:39px;
 }
 .compare_disabled {
   opacity: 0.4;

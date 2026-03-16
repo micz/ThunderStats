@@ -33,6 +33,12 @@
                   <span style="margin: 0px 10px;">__MSG_PeriodBStart__</span>
                   <VueDatePicker v-model="dateQryB_start" @update:model-value="periodBChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :max-date="maxDateB" :enable-time-picker="false" :clearable="false" :auto-apply="true" :disabled="do_run && is_loading_counter_sent_rcvd" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" style="max-width: 180px; display: inline-block;" />
                   <span v-if="dateQryB_end" class="compare_end_date">→ {{ formatDateB(dateQryB_end) }}</span>
+                  <span id="customqry_compare_delta" v-if="do_run && !is_loading_compare">
+                    <span class="compare_delta_label">__MSG_ComparisonSentChange__:</span>
+                    <span :class="deltaSentClass" v-text="deltaSentText"></span>
+                    <span class="compare_delta_label" style="margin-left:2em;">__MSG_ComparisonRcvdChange__:</span>
+                    <span :class="deltaRcvdClass" v-text="deltaRcvdText"></span>
+                  </span>
                 </div>
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
@@ -91,12 +97,6 @@
                   </table>
                 </div>
             </div>
-            <div id="customqry_compare_delta" v-if="compareEnabled && do_run && !is_loading_compare">
-              <span class="compare_delta_label">__MSG_ComparisonSentChange__:</span>
-              <span :class="deltaSentClass" v-text="deltaSentText"></span>
-              <span class="compare_delta_label" style="margin-left:2em;">__MSG_ComparisonRcvdChange__:</span>
-              <span :class="deltaRcvdClass" v-text="deltaRcvdText"></span>
-            </div>
     <div class="square_container" id="customqry_square_container">
     <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
@@ -110,9 +110,9 @@
                         <div class="spacer" v-if="!do_run"></div>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
                       </div>
-                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady">
-                        <h2 class="list_heading cropped">__MSG_PeriodB__: <span v-if="!is_loading_compare">{{ sent_total_B }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_compare"/></h2>
-                        <CounterManyDays_Row :is_loading="is_loading_compare" :_total="counter_customqry_B_sent_total" :_max="counter_customqry_B_sent_max" :_min="counter_customqry_B_sent_min" :_avg="counter_customqry_B_sent_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
+                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady && !is_loading_compare">
+                        <h2 class="list_heading cropped">__MSG_PeriodB__: {{ sent_total_B }}</h2>
+                        <CounterManyDays_Row :is_loading="false" :_total="counter_customqry_B_sent_total" :_max="counter_customqry_B_sent_max" :_min="counter_customqry_B_sent_min" :_avg="counter_customqry_B_sent_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
                       </div>
                       <ChartCustomQry v-if="do_run" ref="chartCustomQrySent_ref" :data_type="chartdata_type" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :is_comparing="compareIsReady" :key="chartData_Sent_length"/>
     </div>
@@ -127,9 +127,9 @@
 						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
                         <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
 					  </div>
-                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady">
-                        <h2 class="list_heading cropped">__MSG_PeriodB__: <span v-if="!is_loading_compare">{{ rcvd_total_B }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_compare"/></h2>
-                        <CounterManyDays_Row :is_loading="is_loading_compare" :_total="counter_customqry_B_rcvd_total" :_max="counter_customqry_B_rcvd_max" :_min="counter_customqry_B_rcvd_min" :_avg="counter_customqry_B_rcvd_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
+                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady && !is_loading_compare">
+                        <h2 class="list_heading cropped">__MSG_PeriodB__: {{ rcvd_total_B }}</h2>
+                        <CounterManyDays_Row :is_loading="false" :_total="counter_customqry_B_rcvd_total" :_max="counter_customqry_B_rcvd_max" :_min="counter_customqry_B_rcvd_min" :_avg="counter_customqry_B_rcvd_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
                       </div>
 					  <ChartCustomQry v-if="do_run" ref="chartCustomQryRcvd_ref" :data_type="chartdata_type" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_chart" :is_comparing="compareIsReady" :key="chartData_Rcvd_length"/>
     </div>
@@ -1599,6 +1599,8 @@ async function updateData() {
               _export_data.value['compare_' + tsExport.export.domains.type] = result_customqry_B.domains;
               computeDeltas();
               is_loading_compare.value = false;
+              await nextTick();
+              updateAdvFiltersPosition();
             } else {
               // Clear comparison data when not comparing
               result_customqry_B = null;
@@ -1738,17 +1740,21 @@ async function toggleAdvancedFilters(){
 function updateAdvFiltersPosition(){
   let container = document.getElementById('customqry_square_container');
   let customqry_adv_filters = document.getElementById('customqry_adv_filters');
-  container.style.marginTop = '4.6em';  //if you change this, change it also in the computed style at the bottom of this file.
-  if(show_advanced_filters.value){
-    let currentMarginTop = window.getComputedStyle(container).marginTop;
-    let currentMarginTopValue = parseFloat(currentMarginTop);
+  let currentMarginTopValue = parseFloat(getComputedStyle(document.documentElement).fontSize) * 4.6; // 4.6em base
+  if(compareEnabled.value){
+    let compareRow = document.getElementById('customqry_compare_row');
+    if(compareRow){
+      currentMarginTopValue += compareRow.offsetHeight + 4;
+    }
+  }
+  if(show_advanced_filters.value && customqry_adv_filters){
     let height = customqry_adv_filters.offsetHeight;
     let style = getComputedStyle(customqry_adv_filters);
     let marginTop = parseFloat(style.marginTop);
     let marginBottom = parseFloat(style.marginBottom);
-    let totalHeight = height + marginTop + marginBottom;
-    container.style.marginTop = `${currentMarginTopValue + totalHeight + 10}px`;
+    currentMarginTopValue += height + marginTop + marginBottom + 10;
   }
+  container.style.marginTop = `${currentMarginTopValue}px`;
 }
 
 function showEmailListTooltip(){
@@ -1774,11 +1780,7 @@ defineExpose({ doQry, updateAdvFiltersPosition });
 .delta_negative { color: #E86850; font-weight: bold; }
 .delta_neutral { color: #888; }
 #customqry_compare_delta {
-  padding: 5px 15px;
-  margin-top: 5px;
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
+  margin-left: 2em;
 }
 .compare_delta_label {
   font-weight: bold;

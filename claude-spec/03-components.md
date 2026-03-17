@@ -115,7 +115,7 @@ Small display components that show a single statistic value.
 | `CounterSentReceived.vue` | Shows total sent and received counts |
 | `CounterInbox.vue` | Shows current inbox count |
 | `CounterInboxPercent.vue` | Shows inbox zero percentage |
-| `CounterYesterdayThisTime.vue` | Compares current count to yesterday at the same time |
+| `CounterYesterdayThisTime.vue` | Compares current count to yesterday (or last business day, or user-chosen day) at the same time. The day label is clickable and opens an inline date picker to select a custom comparison day. Emits `customDaySelected` event. |
 | `CounterManyDays_Table.vue` | Summary table (max/min/avg) for many-days view |
 | `CounterManyDays_Row.vue` | A single row within the many-days summary table |
 

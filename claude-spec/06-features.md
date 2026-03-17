@@ -13,7 +13,7 @@ Displays statistics for the current day (from midnight to now).
 - **Sent / Received counters** — total sent and received emails
 - **Inbox count** — current number of messages in the inbox
 - **Inbox percent** — percentage of day's emails moved from inbox (or still in inbox, toggled via `inbox_percent_remaining` option)
-- **Yesterday-at-this-time comparison** — compares current counts to the same time yesterday
+- **Yesterday-at-this-time comparison** — compares current counts to the same time yesterday (or last business day). The "Yesterday" / "Last business day" label is clickable to open a date picker and choose any past day as the comparison. The custom day selection is session-only (resets when the TS tab is closed) but persists across data refreshes.
 - **Time-of-day chart** — hourly distribution of sent and received emails
 - **Weekday chart** — distribution across days of the week
 - **Top correspondents table** — configurable number of top senders and recipients

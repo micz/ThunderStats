@@ -68,6 +68,14 @@ let props = defineProps({
       type: Boolean,
       default: false
     },
+    is_custom_comparison_day: {
+      type: Boolean,
+      default: false
+    },
+    custom_comparison_day_text: {
+      type: String,
+      default: ''
+    },
 });
 
 let timeChartBar_ref = ref(null);
@@ -113,6 +121,8 @@ watch(props.chartData, (newChartData) => {
     }
     if(!chartOptions) return;
     chartOptions.value.plugins.htmlLegend.is_last_business_day = props.is_last_business_day;
+    chartOptions.value.plugins.htmlLegend.is_custom_comparison_day = props.is_custom_comparison_day;
+    chartOptions.value.plugins.htmlLegend.custom_comparison_day_text = props.custom_comparison_day_text;
     //console.log(">>>>>>>>>>>>>>>>>>>> maxY: " + maxY.value);
     if(maxY.value < 20) {
       chartOptions.value.scales.y.ticks.stepSize = 1;
@@ -193,7 +203,7 @@ var chartOptions = ref({
               mode: 'index',
               intersect: false,
               external: function(context) {
-                externalTooltipTimeChartLines(context, {is_generic_day: is_generic_day.value, is_last_business_day: is_last_business_day.value});
+                externalTooltipTimeChartLines(context, {is_generic_day: is_generic_day.value, is_last_business_day: is_last_business_day.value, is_custom_comparison_day: props.is_custom_comparison_day, custom_comparison_day_text: props.custom_comparison_day_text});
               }
             }
         },

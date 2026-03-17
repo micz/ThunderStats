@@ -25,9 +25,9 @@
         </div>
         <span id="today_date" class="list_heading_date" v-html="today_date"></span>
         <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_today_sent" :_rcvd="counter_today_rcvd" />
-        <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" :is_last_business_day="is_last_business_day" :last_bday_date="last_bday_text" />
+        <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" :is_last_business_day="is_last_business_day" :last_bday_date="last_bday_text" :is_custom_comparison_day="is_custom_comparison_day" :custom_comparison_day_text="custom_comparison_day_text" :datepicker_format="datepickerFormat" :datepicker_locale="prefLocale" :is_dark="tsStore.darkmode" :is_job_done="job_done" @customDaySelected="onCustomComparisonDaySelected" />
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
-        <ChartTime :chartData="chartData_Today" :is_loading="is_loading_today_chart" :is_last_business_day="is_last_business_day" :day_type="0" />
+        <ChartTime :chartData="chartData_Today" :is_loading="is_loading_today_chart" :is_last_business_day="is_last_business_day" :is_custom_comparison_day="is_custom_comparison_day" :custom_comparison_day_text="custom_comparison_day_text" :day_type="0" />
     </div>
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
@@ -119,6 +119,11 @@ let no_mails_sent_today = ref("");
 let no_mails_inbox = ref("");
 let is_last_business_day = ref(false);
 let last_bday_text = ref("");
+let customComparisonDay = ref(null);
+let is_custom_comparison_day = ref(false);
+let custom_comparison_day_text = ref("");
+let datepickerFormat = ref("dd-MM-yyyy");
+let prefLocale = ref("en-GB");
 
 let folderLocationNote_text = ref("");
 let showFolderLocationNoteAnchor = ref(false);
@@ -252,6 +257,8 @@ onMounted(async () => {
     no_mails_sent_today.value = browser.i18n.getMessage("NoMailsSent")+" "+browser.i18n.getMessage("today_small");
     no_mails_inbox.value = browser.i18n.getMessage("NoMailsInbox");
     folderLocationNote_text.value = browser.i18n.getMessage("InboxZeroFolderLocationNote");
+    prefLocale.value = await tsPrefs.getPref("datepicker_locale");
+    datepickerFormat.value = tsUtils.formatDateStringLocale(prefLocale.value);
 });
 
 
@@ -273,43 +280,7 @@ async function updateData() {
     // await Promise.all([getTodayData(), getYesterdayData(), getInboxZeroData()]);
     tsLog.log("chartdata_today_hours_sent.value: " + JSON.stringify(chartdata_today_hours_sent.value));
     tsLog.log("chartdata_today_hours_rcvd.value: " + JSON.stringify(chartdata_today_hours_rcvd.value));
-    chartData_Today.value.datasets = [];
-    chartData_Today.value.datasets.push({
-        label: 'tsent',
-        data: chartdata_today_hours_sent.value,
-        borderColor: tsStore.chart_colors._time_sent,
-        backgroundColor: tsStore.chart_colors._time_sent,
-        borderWidth: 2,
-        pointRadius: 1,
-    })
-    chartData_Today.value.datasets.push({
-        label: 'trcvd',
-        data: chartdata_today_hours_rcvd.value,
-        borderColor: tsStore.chart_colors._time_rcvd,
-        backgroundColor: tsStore.chart_colors._time_rcvd,
-        borderWidth: 2,
-        pointRadius: 1,
-    })
-    if(today_time_chart_show_yesterday){
-        chartData_Today.value.datasets.push({
-            label: 'ysent',
-            data: chartdata_yesterday_hours_sent.value,
-            borderColor: tsStore.chart_colors._time_sent_yesterday,
-            backgroundColor: tsStore.chart_colors._time_sent_yesterday,
-            borderDash: [12, 3, 3],
-            pointStyle: false,
-            borderWidth: 2,
-        })
-        chartData_Today.value.datasets.push({
-            label: 'yrcvd',
-            data: chartdata_yesterday_hours_rcvd.value,
-            borderColor: tsStore.chart_colors._time_rcvd_yesterday,
-            backgroundColor: tsStore.chart_colors._time_rcvd_yesterday,
-            borderDash: [12, 3, 3],
-            pointStyle: false,
-            borderWidth: 2,
-        })
-    }
+    rebuildTodayChart();
     // chart inbox zero folders
     let given_folders = tsCoreUtils.filterReceivedFolders(chartdata_inboxzero_folders.value);
     let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
@@ -498,27 +469,43 @@ async function updateData() {
         if(!today_time_chart_show_yesterday) { return; }
         return new Promise(async (resolve) => {
             let result_yesterday = null;
-            let yesterday_date = new Date();
-            yesterday_date.setDate(yesterday_date.getDate() - 1);
-            yesterday_date.setHours(0, 0, 0, 0);
-            // check Business Days
-            let prefs_bday_use_last_business_day = await tsPrefs.getPref("bday_use_last_business_day");
-            if(prefs_bday_use_last_business_day == true){
-                if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date)) == true){
+
+            if(customComparisonDay.value != null) {
+                // User chose a custom comparison day
+                is_custom_comparison_day.value = true;
+                is_last_business_day.value = false;
+                let customDay = new Date(customComparisonDay.value);
+                customDay.setHours(0, 0, 0, 0);
+                result_yesterday = await tsCore.getToday_SingleDayData(customDay, tsStore.current_account_id, props.accountEmails);
+                custom_comparison_day_text.value = customDay.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
+                tsLog.log("using custom comparison day: " + JSON.stringify(customDay, null, 2));
+            } else {
+                // Default logic
+                is_custom_comparison_day.value = false;
+                custom_comparison_day_text.value = "";
+                let yesterday_date = new Date();
+                yesterday_date.setDate(yesterday_date.getDate() - 1);
+                yesterday_date.setHours(0, 0, 0, 0);
+                // check Business Days
+                let prefs_bday_use_last_business_day = await tsPrefs.getPref("bday_use_last_business_day");
+                if(prefs_bday_use_last_business_day == true){
+                    if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date)) == true){
+                        is_last_business_day.value = false;
+                        result_yesterday = await tsCore.getToday_YesterdayData(tsStore.current_account_id, props.accountEmails);
+                    }else{
+                        is_last_business_day.value = true;
+                        emit('updateYesterdayTabName', browser.i18n.getMessage("LastBusinessDay"));
+                        let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date);
+                        result_yesterday = await tsCore.getToday_SingleDayData(last_bday,tsStore.current_account_id, props.accountEmails);
+                        tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
+                        last_bday_text.value = browser.i18n.getMessage("LastBusinessDayIs") + " " + last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
+                    }
+                }else{
                     is_last_business_day.value = false;
                     result_yesterday = await tsCore.getToday_YesterdayData(tsStore.current_account_id, props.accountEmails);
-                }else{
-                    is_last_business_day.value = true;
-                    emit('updateYesterdayTabName', browser.i18n.getMessage("LastBusinessDay"));
-                    let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date);
-                    result_yesterday = await tsCore.getToday_SingleDayData(last_bday,tsStore.current_account_id, props.accountEmails);
-                    tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
-                    last_bday_text.value = browser.i18n.getMessage("LastBusinessDayIs") + " " + last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
                 }
-            }else{
-                is_last_business_day.value = false;
-                result_yesterday = await tsCore.getToday_YesterdayData(tsStore.current_account_id, props.accountEmails);
             }
+
             tsLog.log("result_today_yesterday_data: " + JSON.stringify(result_yesterday, null, 2));
             counter_yesterday_thistime_rcvd.value = result_yesterday.received;
             counter_yesterday_thistime_sent.value = result_yesterday.sent;
@@ -573,6 +560,66 @@ function loadingDo(){
             'getTodayData':0,
             'getYesterdayData':0
         }
+}
+
+function rebuildTodayChart() {
+    chartData_Today.value.datasets = [];
+    chartData_Today.value.datasets.push({
+        label: 'tsent',
+        data: chartdata_today_hours_sent.value,
+        borderColor: tsStore.chart_colors._time_sent,
+        backgroundColor: tsStore.chart_colors._time_sent,
+        borderWidth: 2,
+        pointRadius: 1,
+    })
+    chartData_Today.value.datasets.push({
+        label: 'trcvd',
+        data: chartdata_today_hours_rcvd.value,
+        borderColor: tsStore.chart_colors._time_rcvd,
+        backgroundColor: tsStore.chart_colors._time_rcvd,
+        borderWidth: 2,
+        pointRadius: 1,
+    })
+    if(today_time_chart_show_yesterday){
+        chartData_Today.value.datasets.push({
+            label: 'ysent',
+            data: chartdata_yesterday_hours_sent.value,
+            borderColor: tsStore.chart_colors._time_sent_yesterday,
+            backgroundColor: tsStore.chart_colors._time_sent_yesterday,
+            borderDash: [12, 3, 3],
+            pointStyle: false,
+            borderWidth: 2,
+        })
+        chartData_Today.value.datasets.push({
+            label: 'yrcvd',
+            data: chartdata_yesterday_hours_rcvd.value,
+            borderColor: tsStore.chart_colors._time_rcvd_yesterday,
+            backgroundColor: tsStore.chart_colors._time_rcvd_yesterday,
+            borderDash: [12, 3, 3],
+            pointStyle: false,
+            borderWidth: 2,
+        })
+    }
+}
+
+async function onCustomComparisonDaySelected(date) {
+    customComparisonDay.value = date;
+    if(date != null) {
+        let d = new Date(date);
+        d.setHours(0, 0, 0, 0);
+        is_custom_comparison_day.value = true;
+        custom_comparison_day_text.value = d.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
+    } else {
+        is_custom_comparison_day.value = false;
+        custom_comparison_day_text.value = "";
+    }
+    is_loading_counter_yesterday_thistime.value = true;
+    is_loading_today_chart.value = true;
+    await getYesterdayData();
+    rebuildTodayChart();
+    nextTick(() => {
+        is_loading_today_chart.value = false;
+    });
 }
 
 function updateElapsed(function_name, time) {

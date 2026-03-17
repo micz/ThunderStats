@@ -749,6 +749,14 @@
     "message": "The last business day is",
     "description": ""
   },
+  "ClickToChangeComparisonDay": {
+    "message": "Click to change the comparison day",
+    "description": ""
+  },
+  "WaitForProcessing": {
+    "message": "Please wait for the current processing to finish",
+    "description": ""
+  },
   "ReadStatus": {
     "message": "Read Status",
     "description": ""

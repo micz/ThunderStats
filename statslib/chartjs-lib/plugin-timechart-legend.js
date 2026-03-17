@@ -61,13 +61,17 @@ const getOrCreateLegendList = (chart, id) => {
               li_ty.classList.add('day_today_title_yesterday');
             }
             if ((i == 0) && options.is_today) {
-              li_ty.innerHTML = browser.i18n.getMessage('Today');
+              li_ty.innerText = browser.i18n.getMessage('Today');
             } else if (((i > 0) && options.is_today) || options.is_yesterday) {
-              li_ty.innerHTML = options.is_last_business_day ? browser.i18n.getMessage('LastBusinessDay') : browser.i18n.getMessage('Yesterday');
+              if (options.is_custom_comparison_day) {
+                li_ty.innerText = options.custom_comparison_day_text;
+              } else {
+                li_ty.innerText = options.is_last_business_day ? browser.i18n.getMessage('LastBusinessDay') : browser.i18n.getMessage('Yesterday');
+              }
             } else {
-              li_ty.innerHTML = (i == 0) ? browser.i18n.getMessage('Mails') : '&nbsp;';
+              li_ty.innerText = (i == 0) ? browser.i18n.getMessage('Mails') : '&nbsp;';
             }
-            //li_ty.innerHTML = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
+            //li_ty.innerText = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
             ul.appendChild(li_ty);
           }
 

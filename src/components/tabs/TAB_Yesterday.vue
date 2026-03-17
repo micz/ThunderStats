@@ -44,6 +44,7 @@
                         :counter_rcvd="counter_yesterday_rcvd"
                         :chartData_InboxZeroFolders="chartData_InboxZeroFolders"
                         :inbox0_openFolderInFirstTab="inbox0_openFolderInFirstTab"
+                        :inbox_percent_show_remaining="inbox_percent_remaining"
                         :is_loading_inbox_chart_folders="is_loading_inbox_chart_folders"
                         :no_mails_inbox="no_mails_inbox"
                         :chartData_InboxZeroDates="chartData_InboxZeroDates"
@@ -119,6 +120,7 @@ let is_last_business_day = ref(false);
 
 let do_progressive = true;
 let inbox0_openFolderInFirstTab = ref(false);
+let inbox_percent_remaining = ref(false);
 let showFolderLocationNoteAnchor = ref(false);
 let folderLocationNote_text = ref("");
 
@@ -249,6 +251,7 @@ async function updateData() {
         await new Promise(r => setTimeout(r, 100));
     }
     let accounts_adv_settings = prefs.accounts_adv_settings;
+    inbox_percent_remaining.value = await tsPrefs.getPref("inbox_percent_remaining");
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     getManyDaysData();
@@ -417,7 +420,8 @@ async function updateData() {
             // inbox zero folders
             chartdata_inboxzero_folders.value = result_yesterday.folders;
             if(result_yesterday.received > 0){
-                counter_inbox_percent.value = (Math.round((1 - (result_yesterday.count_in_inbox / result_yesterday.received)) * 10000) / 100).toFixed(2) + '%';
+                let ratio = inbox_percent_remaining.value ? (result_yesterday.count_in_inbox / result_yesterday.received) : (1 - (result_yesterday.count_in_inbox / result_yesterday.received));
+                counter_inbox_percent.value = (Math.round(ratio * 10000) / 100).toFixed(2) + '%';
             }else{
                 counter_inbox_percent.value = '0%';
             }

@@ -6,8 +6,9 @@
         :inbox_unread="counter_inbox_unread" 
       />
       <CounterInboxPercent v-if="!show_extended"
-        :is_loading="is_loading_counter_inbox_percent" 
-        :inbox_percent="counter_inbox_percent" 
+        :is_loading="is_loading_counter_inbox_percent"
+        :inbox_percent="counter_inbox_percent"
+        :show_remaining="inbox_percent_show_remaining"
       />
       <div class="chart_inbox0_info" v-if="!show_extended">
         <p class="chart_info">
@@ -147,6 +148,10 @@ const props = defineProps({
     required: true,
   },
   is_loading_inbox_chart_dates: {
+    type: Boolean,
+    default: false,
+  },
+  inbox_percent_show_remaining: {
     type: Boolean,
     default: false,
   }

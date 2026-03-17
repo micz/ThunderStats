@@ -683,6 +683,10 @@
     "message": "Mails moved from the inbox folder",
     "description": ""
   },
+  "FolderLocation_percent_remaining": {
+    "message": "Mails still in the inbox folder",
+    "description": ""
+  },
   "AskUserWarningTitle": {
     "message": "Warning",
     "description": ""
@@ -731,6 +735,10 @@
   },
   "prefs_customqry_always_open_adv_filters": {
     "message": "Always open the Advanced Filters panel in Custom View",
+    "description": ""
+  },
+  "prefs_inbox_percent_remaining": {
+    "message": "Show the percentage of mails still in the inbox",
     "description": ""
   },
   "TimeDay": {

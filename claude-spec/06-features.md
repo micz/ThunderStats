@@ -12,7 +12,7 @@ Displays statistics for the current day (from midnight to now).
 
 - **Sent / Received counters** — total sent and received emails
 - **Inbox count** — current number of messages in the inbox
-- **Inbox percent** — percentage of day's emails that ended up in inbox
+- **Inbox percent** — percentage of day's emails moved from inbox (or still in inbox, toggled via `inbox_percent_remaining` option)
 - **Yesterday-at-this-time comparison** — compares current counts to the same time yesterday
 - **Time-of-day chart** — hourly distribution of sent and received emails
 - **Weekday chart** — distribution across days of the week
@@ -99,6 +99,7 @@ Accessible via the addon options page (opens in a Thunderbird tab).
 - **Number of days** for the Many Days view (default: 7)
 - **Number of correspondents** (top senders/recipients count, default: 10)
 - **Account-specific settings** toggle
+- **Show inbox remaining %** (`inbox_percent_remaining`) — when enabled, the inbox percentage shows mails still in inbox instead of mails moved out (default: off)
 
 ### Tab: Advanced
 - **Filter duplicates** — deduplicate messages that appear in multiple folders (e.g., sent + archive)

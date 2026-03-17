@@ -148,6 +148,7 @@
               :counter_rcvd="rcvd_total"
               :chartData_InboxZeroFolders="chartData_InboxZeroFolders"
               :inbox0_openFolderInFirstTab="inbox0_openFolderInFirstTab"
+              :inbox_percent_show_remaining="inbox_percent_remaining"
               :is_loading_inbox_chart_folders="is_loading_inbox_chart_folders"
               :no_mails_inbox="no_mails_inbox"
               :chartData_InboxZeroDates="chartData_InboxZeroDates"
@@ -270,6 +271,7 @@ let filterSubject = ref("");
 // single day view
 let do_progressive = true;
 let inbox0_openFolderInFirstTab = ref(false);
+let inbox_percent_remaining = ref(false);
 let do_single_day = ref(false);
 let singleDay = ref(null);
 let singleday_date_str = ref("");
@@ -912,6 +914,7 @@ async function updateData() {
     let prefs = await tsPrefs.getPrefs(["_time_chart_progressive", "accounts_adv_settings"]);
     do_progressive = prefs._time_chart_progressive;
     let accounts_adv_settings = prefs.accounts_adv_settings;
+    inbox_percent_remaining.value = await tsPrefs.getPref("inbox_percent_remaining");
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
@@ -1485,7 +1488,8 @@ async function updateData() {
               // console.log(">>>>>>>>>>>>>> count_total_rcvd: " + result_customqry.received);
               // console.log(">>>>>>>>>>>>>> count_in_inbox: " + result_customqry.count_in_inbox);
               if(result_customqry.received > 0){
-                counter_inbox_percent.value = (Math.round((1 - (result_customqry.count_in_inbox / result_customqry.received)) * 10000) / 100).toFixed(2) + '%';
+                let ratio = inbox_percent_remaining.value ? (result_customqry.count_in_inbox / result_customqry.received) : (1 - (result_customqry.count_in_inbox / result_customqry.received));
+                counter_inbox_percent.value = (Math.round(ratio * 10000) / 100).toFixed(2) + '%';
               }else{
                 counter_inbox_percent.value = '0%';
               }

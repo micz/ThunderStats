@@ -32,4 +32,5 @@ export const prefs_default = {
     'bday_easter': true,
     'customqry_warn_onlongperiod_days': 90,
     'customqry_always_open_adv_filters': false,
+    'inbox_percent_remaining': false,
 }

@@ -10,6 +10,7 @@
       <li>Correctly reloading the ThunderStats page when changing an option using the reload button.</li>
       <li>Added a comparison feature between two periods in the Custom View. [<a href="https://github.com/micz/ThunderStats/issues/80">#391</a>]</li>
       <li>In the Many Days View the graph bars show a red part if there are mails still in the inbox. This feature can be disabled in the options page [<a href="https://github.com/micz/ThunderStats/issues/80">#80</a>].</li>
+      <li>Added an option to show the percentage of the daily mails still in the inbox when viewing the statistics of single day [<a href="https://github.com/micz/ThunderStats/issues/385">#385</a>].</li>
       <li>...</li>
 </ul>
 <h3>Version 2.3.8 - 22/12/2025</h3>

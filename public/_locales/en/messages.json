@@ -387,6 +387,10 @@
     "message": "Number of days to be shown",
     "description": ""
   },
+  "ManyDaysShowInbox": {
+    "message": "Show inbox mails in the received chart",
+    "description": ""
+  },
   "CustomQueryBookmarkImmediateUpdate": {
     "message": "When selecting a custom date range view, update the statistics immediately",
     "description": ""

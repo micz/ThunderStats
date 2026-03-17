@@ -58,6 +58,7 @@ Static utility methods used by `thunderStastsCore`.
 - Message filtering by account, folder, tags
 - Duplicate message detection (`filter_duplicates`)
 - Business day calculations (including Easter)
+- `transformCountDataToDataset(data, do_progressive, get_labels)` — extracts `{ dataset_sent, dataset_rcvd, dataset_inbox }` arrays from date-keyed objects; supports cumulative mode
 - Statistics aggregation (max, min, average)
 - Date-range filtering helpers
 - Account email address resolution
@@ -75,6 +76,7 @@ General-purpose utility functions.
 - Date/time formatting for display
 - Date parsing and conversion
 - String manipulation helpers
+- Date array generators (`getDateArray`, `getDateArrayWeeks`, `getDateArrayMonths`, `getDateArrayYears`) — each entry has fields: `{ count, sent, received, inbox }`
 
 ---
 

@@ -95,7 +95,7 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper.
 |---|---|
 | `ChartTime.vue` | Hourly sent/received distribution (bar chart) |
 | `ChartWeekDays.vue` | Sent/received per weekday |
-| `ChartManyDays.vue` | Daily/weekly/monthly/yearly line or bar chart for a date range |
+| `ChartManyDays.vue` | Daily/weekly/monthly/yearly bar chart for a date range. Supports stacked bars (used by the Received chart to show inbox messages as a red segment on top of non-inbox). Datalabels show stacked totals. |
 | `ChartCustomQry.vue` | Chart for custom query results, adapts to selected aggregation level. Accepts `is_comparing` prop to enable legend, tooltips, and suppress Period B datalabels when comparing periods. |
 | `ChartInboxZeroDates.vue` | Timeline of inbox zero achievements |
 | `ChartInboxZeroDatesExtended.vue` | Extended inbox zero history |

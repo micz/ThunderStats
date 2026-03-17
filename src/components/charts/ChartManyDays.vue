@@ -70,11 +70,12 @@ var chartOptions = ref({
         responsive: true,
         animation: false,
         maintainAspectRatio: false,
-        hover: {mode: null},
+        hover: {mode: 'nearest', intersect: true},
         // categoryPercentage: 1,
         // barPercentage: 0.8,
         scales: {
           x: {
+            stacked: true,
             title: {
               display: false,
             },
@@ -95,6 +96,7 @@ var chartOptions = ref({
             },
           },
           y: {
+            stacked: true,
             title: {
               display: true,
               text: browser.i18n.getMessage('Mails')
@@ -118,33 +120,46 @@ var chartOptions = ref({
             display: false,
           },
           tooltip: {
-              enabled: false,
+              enabled: true,
+              filter: function(tooltipItem) {
+                return tooltipItem.dataset.label === 'Inbox';
+              },
+              callbacks: {
+                title: function() {
+                  return '';
+                },
+                label: function(tooltipItem) {
+                  return 'Inbox: ' + tooltipItem.raw;
+                },
+              },
           },
           datalabels: {
-            display: true,
+            display: function(context) {
+              return context.datasetIndex === context.chart.data.datasets.length - 1;
+            },
             anchor: 'end',
             align: function(context) {
-              let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
-              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
-              return height <= 25 ? 'top' : 'bottom';
+              let totalHeight = context.chart.data.datasets.reduce((sum, ds, dsIdx) => {
+                let meta = context.chart.getDatasetMeta(dsIdx);
+                return sum + (meta.data[context.dataIndex]?.height || 0);
+              }, 0);
+              return totalHeight <= 25 ? 'top' : 'bottom';
             },
             color: function(context) {
-              let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
-              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
-              //console.log(">>>>>>>>>>>>>>>>>>>>> darkMode: " + JSON.stringify(tsStore.darkmode));
-              return height > 25 ? '#fff' : tsStore.darkmode?'#bbb':'grey';
+              let totalHeight = context.chart.data.datasets.reduce((sum, ds, dsIdx) => {
+                let meta = context.chart.getDatasetMeta(dsIdx);
+                return sum + (meta.data[context.dataIndex]?.height || 0);
+              }, 0);
+              return totalHeight > 25 ? '#fff' : tsStore.darkmode?'#bbb':'grey';
             },
             font: {
               weight: 'bold',
             },
-            //formatter: function(value, context) {
-              // console.log(">>>>>>>>>>>>>>>>>>>>> context.dataIndex: " + JSON.stringify(context.dataIndex));
-              // console.log(">>>>>>>>>>>>>>>>>>>>> context.dataset: " + JSON.stringify(context.dataset));
-              // const dataValues = Object.values(context.dataset.data);
-              // value = dataValues[context.dataIndex];
-              //console.log(">>>>>>>>>>>>>>>>>>>>> value: " + JSON.stringify(value));
-            //   return value;
-            // },
+            formatter: function(value, context) {
+              return context.chart.data.datasets.reduce(
+                (sum, ds) => sum + (ds.data[context.dataIndex] || 0), 0
+              );
+            },
           },
         },
       });
@@ -154,7 +169,10 @@ var chartPlugins = [ChartDataLabels];
 watch(props.chartData, (newChartData) => {
     //console.log(">>>>>>>>>>>>> watch: " + JSON.stringify(newChartData));
     if (newChartData.datasets && newChartData.datasets.length > 0) {
-        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(newChartData.datasets[0].data) / 5) * 5;
+        const stackedTotals = newChartData.datasets[0].data.map((_, i) =>
+            newChartData.datasets.reduce((sum, ds) => sum + (ds.data[i] || 0), 0)
+        );
+        maxY.value = Math.ceil(tsCoreUtils.getMaxFromData(stackedTotals) / 5) * 5;
     } else {
         maxY.value = 5;
     }

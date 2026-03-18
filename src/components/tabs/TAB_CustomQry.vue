@@ -119,7 +119,7 @@
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
         <span class="list_heading_date" v-html="singleday_date_str"></span>
-        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="sent_total" :_rcvd="rcvd_total" />
+        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="sent_total" :_rcvd="rcvd_total" :show_internal_percent="show_internal_mail_percent && do_single_day" :internal_sent_percent="internal_sent_percent" :internal_rcvd_percent="internal_rcvd_percent" />
         <div class="singleday_spacing"></div>
         <ChartTime :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_chart" :day_type="1" />
     </div>
@@ -331,6 +331,9 @@ let top_senders_title = ref("");
 
 let sent_total = ref(0);
 let rcvd_total = ref(0);
+let show_internal_mail_percent = ref(false);
+let internal_sent_percent = ref('0.00%');
+let internal_rcvd_percent = ref('0.00%');
 
 let is_loading_counter_sent_rcvd = ref(true);
 let is_loading_counter_customqry = ref(true);
@@ -929,6 +932,7 @@ async function updateData() {
     do_progressive = prefs._time_chart_progressive;
     let accounts_adv_settings = prefs.accounts_adv_settings;
     inbox_percent_remaining.value = await tsPrefs.getPref("inbox_percent_remaining");
+    show_internal_mail_percent.value = (await tsPrefs.getPref("show_internal_mail_percent")) && props.internalDomains.length > 0;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
@@ -1444,6 +1448,11 @@ async function updateData() {
             sent_total.value = result_customqry.sent;
             rcvd_total.value = result_customqry.received;
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
+            if(show_internal_mail_percent.value && do_single_day.value) {
+                let internalData = tsCoreUtils.getInternalMailPercent(result_customqry.domains);
+                internal_sent_percent.value = internalData.sentPercent;
+                internal_rcvd_percent.value = internalData.receivedPercent;
+            }
             is_loading_counter_sent_rcvd.value = false;
             if(!do_single_day.value){
               // chart day hours

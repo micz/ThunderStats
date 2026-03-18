@@ -123,6 +123,7 @@ Accessible via the addon options page (opens in a Thunderbird tab).
   - Used to distinguish internal from external email traffic in statistics (domain entries gain an `internal: true/false` flag)
   - Supports wildcard patterns (e.g., `*.example.com`)
   - Stored in the `internal_domains` preference
+- **Show internal mail percentage** (`show_internal_mail_percent`) — when enabled, displays the percentage of internal mails (based on configured internal domains) next to the sent/received counters in the Today, Yesterday, and Custom Query (single-day) tabs
 
 ### Tab: License
 - Displays the full GNU General Public License v3 text

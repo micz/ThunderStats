@@ -402,7 +402,12 @@ export class thunderStastsCore {
                   domains[domain].count++;
                   domains[domain].sent++;
                 } else {
-                  domains[domain] = { count: 1, sent: 1, received: 0, internal: domainMatcher.matches(domain) };
+                  domains[domain] = {
+                    count: 1,
+                    sent: 1,
+                    received: 0,
+                    internal: domainMatcher.matches(domain)
+                  };
                 }
               }
               // group by tag
@@ -490,7 +495,12 @@ export class thunderStastsCore {
                 domains[curr_domain].count++;
                 domains[curr_domain].received++;
               } else {
-                domains[curr_domain] = { count: 1, sent: 0, received: 1, internal: domainMatcher.matches(curr_domain) };
+                domains[curr_domain] = {
+                  count: 1,
+                  sent: 0,
+                  received: 1,
+                  internal: domainMatcher.matches(curr_domain)
+                };
               }
               // group by tag
               for (let tag of message.tags) {

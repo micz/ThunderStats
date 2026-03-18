@@ -603,6 +603,24 @@ export const tsCoreUtils = {
         }
     },
 
+    getInternalMailPercent(domains) {
+        let totalSent = 0;
+        let totalReceived = 0;
+        let internalSent = 0;
+        let internalReceived = 0;
+        for (let domain in domains) {
+            totalSent += domains[domain].sent;
+            totalReceived += domains[domain].received;
+            if (domains[domain].internal) {
+                internalSent += domains[domain].sent;
+                internalReceived += domains[domain].received;
+            }
+        }
+        let sentPercent = totalSent > 0 ? (Math.round(internalSent / totalSent * 10000) / 100).toFixed(2) + '%' : '0.00%';
+        let receivedPercent = totalReceived > 0 ? (Math.round(internalReceived / totalReceived * 10000) / 100).toFixed(2) + '%' : '0.00%';
+        return { sentPercent, receivedPercent };
+    },
+
     async mergeAccountsAdvSettings(accounts, accounts_adv_settings) {
         let output = [];
         for(let account of accounts) {

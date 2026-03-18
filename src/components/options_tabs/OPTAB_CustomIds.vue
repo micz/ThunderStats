@@ -46,7 +46,7 @@
             </div>
         </td>
     </tr>
-    <tr><td>&nbsp;</td></tr>
+    <tr><td><hr class="hr_light"></td></tr>
     <tr>
         <td>
             <b>__MSG_InternalDomainsAccount__</b>
@@ -185,5 +185,11 @@ async function somethingChanged() {
 }
 .save-btn {
     flex-shrink: 0;
+}
+
+hr.hr_light{
+  color: #fff;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 </style>

@@ -20,7 +20,9 @@
 
 <template>
 <p><span>__MSG_SentMails__: </span><span  v-if="!is_loading">{{ _sent }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/></p>
+<p v-if="show_internal_percent" class="internal-percent"><span>{{ internalLabel }}: </span><span v-if="!is_loading">{{ internal_sent_percent }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/></p>
 <p><span>__MSG_ReceivedMails__: </span><span  v-if="!is_loading">{{ _rcvd }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/></p>
+<p v-if="show_internal_percent" class="internal-percent"><span>{{ internalLabel }}: </span><span v-if="!is_loading">{{ internal_rcvd_percent }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/></p>
 </template>
 
 
@@ -39,6 +41,18 @@ let props = defineProps({
     is_loading: {
         type: Boolean,
         default: true
+    },
+    show_internal_percent: {
+        type: Boolean,
+        default: false
+    },
+    internal_sent_percent: {
+        type: String,
+        default: '0.00%'
+    },
+    internal_rcvd_percent: {
+        type: String,
+        default: '0.00%'
     }
 });
 
@@ -51,11 +65,25 @@ let _rcvd = computed(() => {
 let is_loading = computed(() => {
     return props.is_loading
 })
+let show_internal_percent = computed(() => {
+    return props.show_internal_percent
+})
+let internal_sent_percent = computed(() => {
+    return props.internal_sent_percent
+})
+let internal_rcvd_percent = computed(() => {
+    return props.internal_rcvd_percent
+})
+const internalLabel = browser.i18n.getMessage("InternalMailPercent");
 
 </script>
 
 
 
 <style scoped>
-
+.internal-percent {
+    font-size: smaller;
+    color: #555;
+    margin-top: -2px;
+}
 </style>

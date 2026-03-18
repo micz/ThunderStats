@@ -64,6 +64,7 @@ Static utility methods used by `thunderStastsCore`.
 - Account email address resolution
 - `getFilterDuplicatesPreference(account_id)` — reads prefs to determine duplicate filtering
 - `getAccountInternalDomains(account_id)` — returns the internal domains list for a specific account; when `account_id` is `0`, returns internal domains for all accounts
+- `getInternalMailPercent(domains)` — computes the internal mail percentage from a domains object. Returns `{ percent, sent, received, internalSent, internalReceived }`
 
 ---
 

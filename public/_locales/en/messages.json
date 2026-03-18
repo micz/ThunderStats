@@ -761,6 +761,18 @@
     "message": "Show the percentage of mails still in the inbox",
     "description": ""
   },
+  "prefs_show_internal_mail_percent": {
+    "message": "Show the percentage of internal mails (requires Internal Domains to be configured)",
+    "description": ""
+  },
+  "InternalMailPercent": {
+    "message": "Internal",
+    "description": ""
+  },
+  "InternalDomainsNotConfiguredWarning": {
+    "message": "No internal domains configured. Please configure them in the \"Identities & Domains\" tab.",
+    "description": ""
+  },
   "TimeDay": {
     "message": "Time of the day",
     "description": ""

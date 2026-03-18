@@ -112,7 +112,7 @@ Small display components that show a single statistic value.
 
 | File | Description |
 |---|---|
-| `CounterSentReceived.vue` | Shows total sent and received counts |
+| `CounterSentReceived.vue` | Shows total sent and received counts. Accepts optional `show_internal_percent` and `internal_percent` props to display the internal mail percentage (based on configured internal domains) when enabled. |
 | `CounterInbox.vue` | Shows current inbox count |
 | `CounterInboxPercent.vue` | Shows inbox zero percentage |
 | `CounterYesterdayThisTime.vue` | Compares current count to yesterday (or last business day, or user-chosen day) at the same time. The day label is clickable and opens an inline date picker to select a custom comparison day. Emits `customDaySelected` event. |

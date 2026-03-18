@@ -51,10 +51,13 @@ export const tsCoreUtils = {
         let output = { dataset_sent, dataset_rcvd, dataset_inbox };
         if(get_labels) {
             let labels = [];
+            let internal_flags = [];
             for(let key in data) {
                 labels.push(key);
+                internal_flags.push(!!data[key].internal);
             }
             output.labels = labels;
+            output.internal_flags = internal_flags;
         }
         return output;
     },
@@ -444,26 +447,33 @@ export const tsCoreUtils = {
 
     sortDoubleDatasetsByTotal(data) {
       // console.log(">>>>>>>>>>>>>> [sortDoubleDatasetsByTotal] data: " + JSON.stringify(data));
+      const hasInternalFlags = Array.isArray(data.internal_flags);
       // Create an array of objects containing labels and the sum of data values
       const summedData = data.labels.map((label, index) => {
         const sum = data.datasets.reduce((acc, dataset) => acc + dataset.data[index], 0);
-        return { label, sum };
+        const entry = { label, sum, originalIndex: index };
+        if (hasInternalFlags) entry.internal = data.internal_flags[index];
+        return entry;
       });
-    
+
       // Sort the array by sum in descending order
       summedData.sort((a, b) => b.sum - a.sum);
-    
+
       // Rebuild the sorted object
       const sortedLabels = summedData.map(item => item.label);
       const sortedDatasets = data.datasets.map(dataset => ({
         ...dataset,
-        data: summedData.map(item => dataset.data[data.labels.indexOf(item.label)])
+        data: summedData.map(item => dataset.data[item.originalIndex])
       }));
-    
-      return {
+
+      let result = {
         labels: sortedLabels,
         datasets: sortedDatasets
       };
+      if (hasInternalFlags) {
+        result.internal_flags = summedData.map(item => item.internal);
+      }
+      return result;
     },      
 
     // getMaxFromData(data) {      // data is an object like this: {"20240517":2,"20240518":4,"20240519":4,"20240520":2,"20240521":0,"20240522":2,"20240523":4,"20240524":0}

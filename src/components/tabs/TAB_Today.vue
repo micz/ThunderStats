@@ -227,6 +227,7 @@ let chartdata_inboxzero_dates = ref([]);
 let chartdata_domains_sent = ref([]);
 let chartdata_domains_rcvd = ref([]);
 let chartdata_domains_labels = ref([]);
+let chartdata_domains_internal_flags = ref([]);
 let chartdata_folders_sent = ref([]);
 let chartdata_folders_rcvd = ref([]);
 let chartdata_folders_labels = ref([]);
@@ -316,6 +317,7 @@ async function updateData() {
         domains_chart_height.value = String(domains_container_height) + "px";
     }
     chartData_Domains.value.labels = chartdata_domains_labels.value;
+    chartData_Domains.value.internal_flags = chartdata_domains_internal_flags.value;
     chartData_Domains.value.datasets = [];
     chartData_Domains.value.datasets.push({
         label: 'tsent',
@@ -437,6 +439,7 @@ async function updateData() {
             chartdata_domains_sent.value = domains_data.dataset_sent;
             chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
             chartdata_domains_labels.value = domains_data.labels;
+            chartdata_domains_internal_flags.value = domains_data.internal_flags || [];
             is_loading_domains_chart.value = false;
             // folders
             const folders_data = tsCoreUtils.transformCountDataToDataset(result_today.folders, false, true);

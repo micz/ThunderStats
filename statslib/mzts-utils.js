@@ -383,3 +383,36 @@ export const tsUtils = {
       },
 
 }
+
+export class EmailMatcher {
+  constructor(emails) {
+    this.exactEmails = new Set();
+    this.patterns = [];
+
+    for (const entry of emails) {
+      if (entry.includes('*') || entry.startsWith('@')) {
+        this.patterns.push(this._patternToRegex(entry));
+      } else {
+        this.exactEmails.add(entry);
+      }
+    }
+  }
+
+  _patternToRegex(pattern) {
+    let p = pattern;
+    if (p.startsWith('@')) {
+      p = '*' + p;
+    }
+    let escaped = p.replace(/([.+?^${}()|[\]\\])/g, '\\$1');
+    escaped = escaped.replace(/\*/g, '.*');
+    return new RegExp('^' + escaped + '$', 'i');
+  }
+
+  matches(email) {
+    if (this.exactEmails.has(email)) return true;
+    for (const regex of this.patterns) {
+      if (regex.test(email)) return true;
+    }
+    return false;
+  }
+}

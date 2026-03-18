@@ -18,7 +18,7 @@
 
 import { tsLogger } from "./mzts-logger";
 import { tsCoreUtils } from "./mzts-statscore.utils";
-import { tsUtils } from "./mzts-utils";
+import { tsUtils, EmailMatcher } from "./mzts-utils";
 import { tsPrefs } from "./mzts-options";
 import { tsStore } from "./mzts-store";
 
@@ -173,6 +173,8 @@ export class thunderStastsCore {
       let messages_hash = new Map();
 
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
+
+      const emailMatcher = new EmailMatcher(account_emails);
 
       let queryInfo_FullStatsData = {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
@@ -353,7 +355,7 @@ export class thunderStastsCore {
               //count sent and received per folder
               if (match_author) {
                 const key_author = match_author[0].toLowerCase();
-                if(account_emails.includes(key_author)) {
+                if(emailMatcher.matches(key_author)) {
                   // group by folder
                   folders[message.folder.id].sent++;
                 }else{
@@ -377,7 +379,7 @@ export class thunderStastsCore {
           // check sender
           if (match_author) {
             const key_author = match_author[0].toLowerCase();
-            if(account_emails.includes(key_author)) {
+            if(emailMatcher.matches(key_author)) {
               //messageids_sent.push(message.id);
               sent++;
               // group by folder
@@ -421,7 +423,7 @@ export class thunderStastsCore {
                 if (match_recipient) {
                   const key_recipient = match_recipient[0].toLowerCase();
                   //if(!(account_emails.includes(key_recipient) || messageids_sent.includes(message.id))) {
-                  if(!(account_emails.includes(key_recipient))) {
+                  if(!(emailMatcher.matches(key_recipient))) {
                     if (recipients[key_recipient]) {
                       recipients[key_recipient].count++;
                     } else {
@@ -440,7 +442,7 @@ export class thunderStastsCore {
                 if (match_cc) {
                   const key_cc = match_cc[0].toLowerCase();
                   //if(!(account_emails.includes(key_cc) || messageids_sent.includes(message.id))) {
-                  if(!(account_emails.includes(key_cc))) {
+                  if(!(emailMatcher.matches(key_cc))) {
                     if (recipients[key_cc]) {
                       recipients[key_cc].count++;
                     } else {
@@ -540,6 +542,8 @@ export class thunderStastsCore {
 
       let start_time = performance.now();
 
+      const emailMatcher = new EmailMatcher(account_emails);
+
       let messages_hash = new Map();
 
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
@@ -600,7 +604,7 @@ export class thunderStastsCore {
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0].toLowerCase();
-            if(account_emails.includes(key_author)) {
+            if(emailMatcher.matches(key_author)) {
               if((count_data_to_current_time)&&(date_message_normalized <= now)){
                 sent++;
               }
@@ -632,6 +636,8 @@ export class thunderStastsCore {
       let messages_hash = new Map();
 
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
+
+      const emailMatcher = new EmailMatcher(account_emails);
 
       let queryInfo_getAggregatedStatsData = {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
@@ -683,7 +689,7 @@ export class thunderStastsCore {
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0].toLowerCase();
-            if(account_emails.includes(key_author)) {
+            if(emailMatcher.matches(key_author)) {
               sent++;
               // group by hour
               msg_days[day_message].sent++;

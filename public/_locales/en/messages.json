@@ -368,7 +368,7 @@
     "description": ""
   },
   "CustomIdentititesAccount.Info": {
-    "message": "Add an email address per line, or separated by a comma.",
+    "message": "Add an email address per line, or separated by a comma. Use * as a wildcard (e.g., *@example.com) or just @domain.com to match all addresses at a domain.",
     "description": ""
   },
   "ActivateDebug": {

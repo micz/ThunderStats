@@ -36,22 +36,14 @@
     <tr><td>&nbsp;</td></tr>
     <tr>
         <td>
-            <table>
-                <tr>
-                    <td colspan="2">
-                        <b>__MSG_CustomIdentititesAccount__</b><br>
-                        <textarea rows="6" cols="50" v-model="account_custom_ids" id="account_custom_ids" :disabled="current_account == 0" :class="{'has-changes': new_custom_ids_changes}" @input="customIdsChanged"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size: small;">
-                        __MSG_CustomIdentititesAccount.Info__
-                    </td>
-                    <td style="text-align: right;">
-                        <button v-on:click="updateCustomIds" style="margin-left:5px;" :disabled="!new_custom_ids_changes">__MSG_Save__</button>
-                    </td>
-                </tr>
-            </table>
+            <b>__MSG_CustomIdentititesAccount__</b>
+            <div class="custom-ids-container">
+                <textarea rows="6" cols="50" v-model="account_custom_ids" id="account_custom_ids" :disabled="current_account == 0" :class="{'has-changes': new_custom_ids_changes}" @input="customIdsChanged"></textarea>
+                <button v-on:click="updateCustomIds" class="save-btn" :disabled="!new_custom_ids_changes">__MSG_Save__</button>
+            </div>
+            <div style="font-size: small;">
+                __MSG_CustomIdentititesAccount.Info__
+            </div>
         </td>
     </tr>
 </table>
@@ -138,5 +130,13 @@ async function somethingChanged() {
 <style scoped>
 .has-changes {
     border: 1px solid blue;
+}
+.custom-ids-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
+.save-btn {
+    flex-shrink: 0;
 }
 </style>

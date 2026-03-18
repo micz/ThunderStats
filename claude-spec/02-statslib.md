@@ -78,6 +78,17 @@ General-purpose utility functions.
 - String manipulation helpers
 - Date array generators (`getDateArray`, `getDateArrayWeeks`, `getDateArrayMonths`, `getDateArrayYears`) — each entry has fields: `{ count, sent, received, inbox }`
 
+**Class:** `EmailMatcher`
+
+Matches email addresses against a list that may contain exact addresses and wildcard patterns. Used internally by `mzts-statscore.js` to classify sent/received emails.
+
+- Constructor accepts an array of email strings (already lowercased)
+- Entries containing `*` or starting with `@` are treated as wildcard patterns
+- `@domain.com` is shorthand for `*@domain.com`
+- `*` is converted to `.*` in a compiled regex; all other regex special chars are escaped
+- **`matches(email)`** — returns `true` if the email matches any exact address or wildcard pattern
+- Exact addresses use a `Set` for O(1) lookup; wildcard patterns use pre-compiled `RegExp` objects
+
 ---
 
 ### `mzts-export.js` — CSV Export

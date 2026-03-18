@@ -13,6 +13,7 @@
       <li>Added an option to show the percentage of the daily mails still in the inbox when viewing the statistics of single day [<a href="https://github.com/micz/ThunderStats/issues/385">#385</a>].</li>
       <li>In the Today View, it is now possible to select any day to compare sent and received email data, rather than being limited to comparisons with the previous day or the last business day [<a href="https://github.com/micz/ThunderStats/issues/104">#104</a>].</li>
       <li>Added an all e-mails option in the drop down menu of the Custom View tab [<a href="https://github.com/micz/ThunderStats/issues/149">#149</a>].</li>
+      <li>In custom identities is now possibile to use wildcards (*) [<a href="https://github.com/micz/ThunderStats/issues/178">#178</a>].</li>
       <li>...</li>
 </ul>
 <h3>Version 2.3.8 - 22/12/2025</h3>

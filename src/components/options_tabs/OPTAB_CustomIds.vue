@@ -46,6 +46,22 @@
             </div>
         </td>
     </tr>
+    <tr><td>&nbsp;</td></tr>
+    <tr>
+        <td>
+            <b>__MSG_InternalDomainsAccount__</b>
+            <div style="font-size: small; margin-bottom: 5px;">
+                __MSG_InternalDomainsAccount.Desc__
+            </div>
+            <div class="custom-ids-container">
+                <textarea rows="6" cols="50" v-model="account_internal_domains" id="account_internal_domains" :disabled="current_account == 0" :class="{'has-changes': new_internal_domains_changes}" @input="internalDomainsChanged"></textarea>
+                <button v-on:click="updateInternalDomains" class="save-btn" :disabled="!new_internal_domains_changes">__MSG_Save__</button>
+            </div>
+            <div style="font-size: small;">
+                __MSG_InternalDomainsAccount.Info__
+            </div>
+        </td>
+    </tr>
 </table>
 </template>
   
@@ -66,18 +82,23 @@ let tsCore = null;
 let current_account = ref(0);
 let SelectAccount_ref = ref(null);
 let account_custom_ids = ref("");
+let account_internal_domains = ref("");
 let new_changes = ref(false);
 let new_custom_ids_changes = ref(false);
+let new_internal_domains_changes = ref(false);
 let account_emails = ref(browser.i18n.getMessage("Identities") + ": -");
 
 let prefCustomIds = {};
+let prefInternalDomains = {};
 
 onMounted(async () => {
     tsLog = new tsLogger("OPTAB_CustomIds", tsStore.do_debug);
     tsPrefs.logger = tsLog;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     prefCustomIds = await tsPrefs.getPref("custom_identities");
+    prefInternalDomains = await tsPrefs.getPref("internal_domains");
     tsLog.log("prefCustomIds = " + JSON.stringify(prefCustomIds));
+    tsLog.log("prefInternalDomains = " + JSON.stringify(prefInternalDomains));
     tsLog.log("onMounted");
   });
 
@@ -85,6 +106,7 @@ function accountChanged(){
     tsLog.log("accountChanged: " + current_account.value);
     loadAccountEmails();
     loadCustomIds();
+    loadInternalDomains();
 }
 
 async function loadAccountEmails(){
@@ -117,6 +139,31 @@ function updateCustomIds(){
 
 function customIdsChanged(){
     new_custom_ids_changes.value = true;
+}
+
+function loadInternalDomains(){
+    if(prefInternalDomains.hasOwnProperty(current_account.value)){
+        account_internal_domains.value = prefInternalDomains[current_account.value].join("\n");
+        tsLog.log("loadInternalDomains => account_internal_domains.value: " + account_internal_domains.value);
+    } else {
+        account_internal_domains.value = "";
+    }
+    tsLog.log("loadInternalDomains done!");
+}
+
+function updateInternalDomains(){
+    let current_internal_domains = account_internal_domains.value.split(/[\n,]+/).filter(d => d.trim() !== '');
+    current_internal_domains = current_internal_domains.map(part => part.trim());
+    tsLog.log("current_internal_domains: " + JSON.stringify(current_internal_domains));
+    account_internal_domains.value = current_internal_domains.join("\n");
+    prefInternalDomains[current_account.value] = current_internal_domains;
+    tsPrefs.setPref("internal_domains", prefInternalDomains);
+    new_internal_domains_changes.value = false;
+    somethingChanged();
+}
+
+function internalDomainsChanged(){
+    new_internal_domains_changes.value = true;
 }
 
 async function somethingChanged() {

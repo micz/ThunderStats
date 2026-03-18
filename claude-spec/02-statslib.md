@@ -30,7 +30,7 @@ The central class that retrieves and processes email data from the Thunderbird `
 | `getYesterday(account_id, account_emails)` | Stats for the full previous day |
 | `getManyDaysData(account_id, account_emails)` | Stats for `_many_days` days including today |
 | `getCustomQryData(fromDate, toDate, account_id, account_emails, only_businessdays, adv_filters)` | Custom date range with optional filters |
-| `getFullStatsData(fromDate, toDate, ...)` | Base method: retrieves and processes all messages in a date range |
+| `getFullStatsData(fromDate, toDate, ..., internal_domains)` | Base method: retrieves and processes all messages in a date range. Accepts an `internal_domains` parameter; when provided, domain entries in the output include an `internal: true/false` flag indicating whether the domain belongs to the user's organization |
 | `getAggregatedStatsData(fromDate, toDate, ...)` | Aggregated by day/week/month/year |
 | `getCountStatsData(fromDate, toDate, ...)` | Lightweight count-only stats |
 | `getAccountEmails(account_id, no_custom_identities)` | Returns the email addresses for an account |
@@ -63,6 +63,7 @@ Static utility methods used by `thunderStastsCore`.
 - Date-range filtering helpers
 - Account email address resolution
 - `getFilterDuplicatesPreference(account_id)` — reads prefs to determine duplicate filtering
+- `getAccountInternalDomains(account_id)` — returns the internal domains list for a specific account; when `account_id` is `0`, returns internal domains for all accounts
 
 ---
 
@@ -88,6 +89,16 @@ Matches email addresses against a list that may contain exact addresses and wild
 - `*` is converted to `.*` in a compiled regex; all other regex special chars are escaped
 - **`matches(email)`** — returns `true` if the email matches any exact address or wildcard pattern
 - Exact addresses use a `Set` for O(1) lookup; wildcard patterns use pre-compiled `RegExp` objects
+
+**Class:** `DomainMatcher`
+
+Matches domain strings against a list that may contain exact domains and wildcard patterns. Used to identify internal (organizational) domains in email statistics.
+
+- Constructor accepts an array of domain strings (already lowercased)
+- Entries containing `*` are treated as wildcard patterns (e.g., `*.example.com`)
+- `*` is converted to `.*` in a compiled regex; all other regex special chars are escaped
+- **`matches(domain)`** — returns `true` if the domain matches any exact domain or wildcard pattern
+- Exact domains use a `Set` for O(1) lookup; wildcard patterns use pre-compiled `RegExp` objects
 
 ---
 

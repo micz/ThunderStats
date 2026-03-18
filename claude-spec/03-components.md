@@ -141,7 +141,7 @@ Composite components that combine multiple data points or sub-charts.
 | `OPTAB_Main.vue` | Basic settings (number of days, involved count, etc.) |
 | `OPTAB_Advanced.vue` | Advanced settings (duplicate filtering, archive inclusion, per-account settings) |
 | `OPTAB_BusinessDays.vue` | Configure which days are business days; define custom holidays; Easter detection |
-| `OPTAB_CustomIds.vue` | Define custom email identities for sent mail detection |
+| `OPTAB_CustomIds.vue` | "Identities & Domains" tab: define custom email identities for sent mail detection, and configure per-account Internal Domains (domain lists that identify domains belonging to the user's organization, used to distinguish internal from external email traffic) |
 | `OPTAB_License.vue` | Displays the GPL v3 license text |
 | `OPTAB_Info.vue` | Add-on version and info |
 

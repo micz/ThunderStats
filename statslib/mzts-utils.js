@@ -416,3 +416,34 @@ export class EmailMatcher {
     return false;
   }
 }
+
+export class DomainMatcher {
+  constructor(domains) {
+    this.exactDomains = new Set();
+    this.patterns = [];
+
+    for (const entry of domains) {
+      const d = entry.trim().toLowerCase();
+      if (d.includes('*')) {
+        this.patterns.push(this._patternToRegex(d));
+      } else {
+        this.exactDomains.add(d);
+      }
+    }
+  }
+
+  _patternToRegex(pattern) {
+    let escaped = pattern.replace(/([.+?^${}()|[\]\\])/g, '\\$1');
+    escaped = escaped.replace(/\*/g, '.*');
+    return new RegExp('^' + escaped + '$', 'i');
+  }
+
+  matches(domain) {
+    const d = domain.toLowerCase();
+    if (this.exactDomains.has(d)) return true;
+    for (const regex of this.patterns) {
+      if (regex.test(d)) return true;
+    }
+    return false;
+  }
+}

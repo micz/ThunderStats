@@ -116,9 +116,13 @@ Accessible via the addon options page (opens in a Thunderbird tab).
 - Toggle Easter holiday detection (automatic)
 - Business day stats are used in Many Days and Custom Query aggregations
 
-### Tab: Custom Identities
+### Tab: Identities & Domains (Custom Identities + Internal Domains)
 - Define additional email addresses that belong to the user
 - These are used to correctly classify "sent" vs "received" emails when the user has addresses not registered as Thunderbird account identities
+- **Internal Domains** — define per-account domain lists that identify domains belonging to the user's organization
+  - Used to distinguish internal from external email traffic in statistics (domain entries gain an `internal: true/false` flag)
+  - Supports wildcard patterns (e.g., `*.example.com`)
+  - Stored in the `internal_domains` preference
 
 ### Tab: License
 - Displays the full GNU General Public License v3 text

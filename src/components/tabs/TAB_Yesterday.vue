@@ -102,6 +102,10 @@ const props = defineProps({
         type: Array,
         default: []
     },
+    internalDomains: {
+        type: Array,
+        default: () => []
+    },
 });
 
 const emit = defineEmits(['updateElapsed','updateTabName']);
@@ -382,18 +386,18 @@ async function updateData() {
             if(prefs_bday_use_last_business_day == true){
                 if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date.value)) == true){
                     is_last_business_day.value = false;
-                    result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails);
+                    result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails, props.internalDomains);
                 }else{
                     is_last_business_day.value = true;
                     let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date.value);
                     yesterday_date_str.value = last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
                     emit('updateTabName', browser.i18n.getMessage("LastBusinessDay"));
-                    result_yesterday = await tsCore.getSingleDay(last_bday,tsStore.current_account_id, props.accountEmails);
+                    result_yesterday = await tsCore.getSingleDay(last_bday,tsStore.current_account_id, props.accountEmails, props.internalDomains);
                     tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
                 }
             }else{
                 is_last_business_day.value = false;
-                result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails);
+                result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails, props.internalDomains);
             }
             tsLog.log("result_yesterday: " + JSON.stringify(result_yesterday, null, 2));
             counter_yesterday_rcvd.value = result_yesterday.received;

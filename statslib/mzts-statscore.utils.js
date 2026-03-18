@@ -593,6 +593,16 @@ export const tsCoreUtils = {
         }
     },
 
+    async getAccountInternalDomains(account_id = 0) {
+        let prefInternalDomains = await tsPrefs.getPref("internal_domains");
+        if(account_id == 0){ return prefInternalDomains; }
+        if(prefInternalDomains.hasOwnProperty(account_id)){
+          return prefInternalDomains[account_id];
+        } else {
+            return [];
+        }
+    },
+
     async mergeAccountsAdvSettings(accounts, accounts_adv_settings) {
         let output = [];
         for(let account of accounts) {

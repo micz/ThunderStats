@@ -328,7 +328,7 @@
     "description": ""
   },
   "TabCustomIdentities.label": {
-    "message": "Custom Identities",
+    "message": "Identities & Domains",
     "description": ""
   },
   "Identities": {
@@ -369,6 +369,18 @@
   },
   "CustomIdentititesAccount.Info": {
     "message": "Add an email address per line, or separated by a comma. Use * as a wildcard (e.g., *@example.com) or just @domain.com to match all addresses at a domain.",
+    "description": ""
+  },
+  "InternalDomainsAccount": {
+    "message": "Internal Domains for the selected Account",
+    "description": ""
+  },
+  "InternalDomainsAccount.Desc": {
+    "message": "Internal domains are domains belonging to your organization. They are used to distinguish internal from external email traffic in your statistics.",
+    "description": ""
+  },
+  "InternalDomainsAccount.Info": {
+    "message": "Add a domain per line, or separated by a comma. Use * as a wildcard (e.g., *.example.com to match all subdomains).",
     "description": ""
   },
   "ActivateDebug": {

@@ -18,7 +18,7 @@
 
 import { tsLogger } from "./mzts-logger";
 import { tsCoreUtils } from "./mzts-statscore.utils";
-import { tsUtils, EmailMatcher } from "./mzts-utils";
+import { tsUtils, EmailMatcher, DomainMatcher } from "./mzts-utils";
 import { tsPrefs } from "./mzts-options";
 import { tsStore } from "./mzts-store";
 
@@ -47,7 +47,7 @@ export class thunderStastsCore {
     }
 
     // ================ TODAY TAB =====================
-    async getToday(account_id = 0, account_emails = []) {
+    async getToday(account_id = 0, account_emails = [], internal_domains = []) {
 
       let lastMidnight = new Date();
       lastMidnight.setHours(0, 0, 0, 0);
@@ -57,7 +57,7 @@ export class thunderStastsCore {
 
       // console.log(">>>>>>>> [getToday] filter_duplicates: " + filter_duplicates);
 
-      return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
 
     async getToday_YesterdayData(account_id = 0, account_emails = [], count_data_to_current_time = true) {
@@ -89,18 +89,18 @@ export class thunderStastsCore {
     // ================ TODAY TAB - END =====================
 
     // ================ YESTERDAY TAB =====================
-    async getYesterday(account_id = 0, account_emails = []) {
+    async getYesterday(account_id = 0, account_emails = [], internal_domains = []) {
 
       let yesterdayMidnight = new Date();
       yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
       yesterdayMidnight.setHours(0, 0, 0, 0);
 
-      return this.getSingleDay(yesterdayMidnight, account_id, account_emails);
+      return this.getSingleDay(yesterdayMidnight, account_id, account_emails, internal_domains);
     }
     // ================ YESTERDAY TAB - END =====================
 
     // ================ MANY DAYS TAB =====================
-    async getManyDaysData(account_id = 0, account_emails = []) {
+    async getManyDaysData(account_id = 0, account_emails = [], internal_domains = []) {
 
       let fromDate = new Date();
       let start_date = fromDate.getDate() - this._many_days; // we get 7 days + today
@@ -113,25 +113,25 @@ export class thunderStastsCore {
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
     // ================ MANY DAYS TAB - END =====================
 
     // ================ CUSTOM QUERY TAB =====================
-    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], only_businessdays = -99, adv_filters = null) {
+    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], only_businessdays = -99, adv_filters = null, internal_domains = []) {
 
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays, adv_filters);   // the "true" is to aggregate
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays, adv_filters, internal_domains);   // the "true" is to aggregate
     }
     // ================ CUSTOM QUERY TAB - END =====================
 
 
     // ================ SINGLE DAY METHODS =====================
-    async getSingleDay(theDay, account_id = 0, account_emails = []) {
+    async getSingleDay(theDay, account_id = 0, account_emails = [], internal_domains = []) {
 
       theDay.setHours(0, 0, 0, 0);
       let theMidnightAfter = new Date(theDay);
@@ -144,7 +144,7 @@ export class thunderStastsCore {
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
 
     async getToday_SingleDayData(theDay, account_id = 0, account_emails = [], count_data_to_current_time = true) {
@@ -166,7 +166,7 @@ export class thunderStastsCore {
     // ================ SINGLE DAY METHODS - END =====================
 
     // ================ BASE METHODS ========================
-    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99, adv_filters = null) {
+    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99, adv_filters = null, internal_domains = []) {
 
       let start_time = performance.now();
       // console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
@@ -175,6 +175,7 @@ export class thunderStastsCore {
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
 
       const emailMatcher = new EmailMatcher(account_emails);
+      const domainMatcher = new DomainMatcher(internal_domains);
 
       let queryInfo_FullStatsData = {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
@@ -401,10 +402,7 @@ export class thunderStastsCore {
                   domains[domain].count++;
                   domains[domain].sent++;
                 } else {
-                  domains[domain] = {}
-                  domains[domain].count = 1;
-                  domains[domain].sent = 1;
-                  domains[domain].received = 0;
+                  domains[domain] = { count: 1, sent: 1, received: 0, internal: domainMatcher.matches(domain) };
                 }
               }
               // group by tag
@@ -492,10 +490,7 @@ export class thunderStastsCore {
                 domains[curr_domain].count++;
                 domains[curr_domain].received++;
               } else {
-                domains[curr_domain] = {}
-                domains[curr_domain].count = 1;
-                domains[curr_domain].sent = 0;
-                domains[curr_domain].received = 1;
+                domains[curr_domain] = { count: 1, sent: 0, received: 1, internal: domainMatcher.matches(curr_domain) };
               }
               // group by tag
               for (let tag of message.tags) {

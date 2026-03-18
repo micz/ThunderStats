@@ -104,6 +104,10 @@ const props = defineProps({
         type: Array,
         default: []
     },
+    internalDomains: {
+        type: Array,
+        default: () => []
+    },
 });
 
 const emit = defineEmits(['updateElapsed','updateYesterdayTabName']);
@@ -385,7 +389,7 @@ async function updateData() {
     // get Today
     function getTodayData () {
         return new Promise(async (resolve) => {
-            let result_today = await tsCore.getToday(tsStore.current_account_id, props.accountEmails);
+            let result_today = await tsCore.getToday(tsStore.current_account_id, props.accountEmails, props.internalDomains);
             tsLog.log("result_today: " + JSON.stringify(result_today, null, 2));
             counter_today_rcvd.value = result_today.received;
             counter_today_sent.value = result_today.sent;

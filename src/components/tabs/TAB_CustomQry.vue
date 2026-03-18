@@ -231,6 +231,10 @@ const props = defineProps({
         type: Array,
         default: []
     },
+    internalDomains: {
+        type: Array,
+        default: () => []
+    },
 });
 
 let filterFolder_ref = ref(null);
@@ -1413,7 +1417,7 @@ async function updateData() {
             advFilters.flagged_unflagged = filterFlaggedUnflagged.value;
             advFilters.filterSubject = filterSubject.value.trim();
             tsLog.log("advFilters: " + JSON.stringify(advFilters, null, 2));
-            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters);
+            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters, props.internalDomains);
             tsLog.log("result_customqry: " + JSON.stringify(result_customqry, null, 2));
             // export data
             if(!do_single_day.value){
@@ -1539,7 +1543,7 @@ async function updateData() {
               fromDateB.setHours(0, 0, 0, 0);
               let toDateB = new Date(dateQryB_end.value);
               toDateB.setHours(23, 59, 59, 999);
-              result_customqry_B = await tsCore.getCustomQryData(fromDateB, toDateB, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters);
+              result_customqry_B = await tsCore.getCustomQryData(fromDateB, toDateB, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters, props.internalDomains);
               tsLog.log("result_customqry_B: " + JSON.stringify(result_customqry_B, null, 2));
               sent_total_B.value = result_customqry_B.sent;
               rcvd_total_B.value = result_customqry_B.received;

@@ -94,6 +94,10 @@ const props = defineProps({
         type: Array,
         default: []
     },
+    internalDomains: {
+        type: Array,
+        default: () => []
+    },
 });
 
 const emit = defineEmits(['updateElapsed']);
@@ -422,7 +426,7 @@ async function updateData() {
     function getManyDaysData () {
         return new Promise(async (resolve) => {
             let start_time = performance.now();
-            let result_many_days = await tsCore.getManyDaysData(tsStore.current_account_id, props.accountEmails);
+            let result_many_days = await tsCore.getManyDaysData(tsStore.current_account_id, props.accountEmails, props.internalDomains);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_many_days, null, 2));
             // export data
             _export_data.value[tsExport.export.time_emails.type] = result_many_days.msg_hours;

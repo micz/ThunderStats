@@ -29,6 +29,15 @@
         <label><SelectAccount v-model="current_account" id="startup_account" name="startup_account" class="option-input"/></label>
       </td>
     </tr>
+    <tr>
+      <td>
+        <label>&nbsp;</label>
+      </td>
+      <td>
+     <label><input type="checkbox" id="remember_last_account" name="remember_last_account" class="option-input" @change="onRememberLastAccountChange" />
+      <span class="dims_label" @click="toggle_options_remember_last_account">__MSG_prefs_remember_last_account__</span></label>
+      </td>
+    </tr>
   </table>
   <table class="miczPrefs">
       <tr>
@@ -175,16 +184,19 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import SelectAccount from '@/components/SelectAccount.vue';
 import { tsLogger } from '@statslib/mzts-logger';
+import { tsPrefs } from '@statslib/mzts-options';
 import { tsStore } from '@statslib/mzts-store';
-  
+
   const emit = defineEmits(['new_changes']);
 
   let current_account = ref(0);
   let tsLog = null;
   let new_changes = ref(false);
-  
-  onMounted(() => {
+
+  onMounted(async () => {
     tsLog = new tsLogger("OPTAB_Main", tsStore.do_debug);
+    let remember = await tsPrefs.getPref("remember_last_account");
+    updateStartupAccountDisabled(remember);
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
       input.addEventListener('change', somethingChanged);
@@ -212,6 +224,28 @@ import { tsStore } from '@statslib/mzts-store';
     let checkbox = row.querySelector('input[type="checkbox"]');
     checkbox.checked = !checkbox.checked;
     checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
+  }
+
+  function updateStartupAccountDisabled(disabled) {
+    let select = document.getElementById('startup_account');
+    if (select) {
+      select.disabled = disabled;
+    }
+  }
+
+  function toggle_options_remember_last_account() {
+    let checkbox = document.getElementById('remember_last_account');
+    checkbox.checked = !checkbox.checked;
+    checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
+  }
+
+  async function onRememberLastAccountChange() {
+    let checkbox = document.getElementById('remember_last_account');
+    updateStartupAccountDisabled(checkbox.checked);
+    if (checkbox.checked) {
+      let startup_account = await tsPrefs.getPref("startup_account");
+      await tsPrefs.setPref("_last_account_id", startup_account);
+    }
   }
 </script>
 

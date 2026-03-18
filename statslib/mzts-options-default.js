@@ -9,6 +9,8 @@ export const prefs_default = {
     'inbox0_openFolderInFirstTab': false,
     'startup_account': 0,
     'remember_last_tab': false,
+    'remember_last_account': false,
+    '_last_account_id': 0,
     'always_reload_tab_data': false,
     'load_data_changing_account': true,
     'customqry_loaddata_when_selectingrange': true,

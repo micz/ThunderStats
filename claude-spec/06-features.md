@@ -102,6 +102,8 @@ Accessible via the addon options page (opens in a Thunderbird tab).
 - **Number of correspondents** (top senders/recipients count, default: 10)
 - **Account-specific settings** toggle
 - **Show inbox remaining %** (`inbox_percent_remaining`) — when enabled, the inbox percentage shows mails still in inbox instead of mails moved out (default: off)
+- **Remember last tab** (`remember_last_tab`) — restore the last opened tab on startup (default: off)
+- **Remember last account** (`remember_last_account`) — restore the last used account on startup, overriding the startup account setting (default: off)
 
 ### Tab: Advanced
 - **Filter duplicates** — deduplicate messages that appear in multiple folders (e.g., sent + archive)

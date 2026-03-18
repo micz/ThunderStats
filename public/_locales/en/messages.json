@@ -471,6 +471,10 @@
     "message": "Remember the last opened tab",
     "description": ""
   },
+  "prefs_remember_last_account": {
+    "message": "Remember the last used account",
+    "description": ""
+  },
   "prefs_always_reload_tab_data": {
     "message": "Reload data when changing tab",
     "description": ""

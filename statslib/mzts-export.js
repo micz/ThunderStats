@@ -155,13 +155,15 @@ export const tsExport = {
         return correspondents;
     },
 
-    transformCorrespondentsJsonToArray(json) {
+    transformCorrespondentsJsonToArray(json, domainsData = null) {
         const resultArray = [];
         // console.log(">>>>>>>>>>>>> transformCorrespondentsJsonToArray json: " + JSON.stringify(json));
         const nameKey = browser.i18n.getMessage('Name');
         const mailKey = browser.i18n.getMessage('Mail');
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
+        const domainKey = browser.i18n.getMessage('Domains');
+        const internalKey = browser.i18n.getMessage('InternalMailPercent');
 
         for (const email in json) {
             // console.log(">>>>>>>>>>>>> transformCorrespondentsJsonToArray email: " + JSON.stringify(email));
@@ -171,11 +173,18 @@ export const tsExport = {
                 obj[mailKey] = email;
                 obj[sentKey] = json[email].sent;
                 obj[rcvdKey] = json[email].received;
+                const emailDomain = tsCoreUtils.extractDomain(email);
+                obj[domainKey] = emailDomain;
+                if (domainsData && domainsData[emailDomain]) {
+                    obj[internalKey] = domainsData[emailDomain].internal ? 'Yes' : 'No';
+                } else {
+                    obj[internalKey] = 'No';
+                }
 
                 resultArray.push(obj);
             }
         }
-    
+
         return resultArray;
     },
 
@@ -283,17 +292,19 @@ export const tsExport = {
         const tagKey = browser.i18n.getMessage('Domains');
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
-    
+        const internalKey = browser.i18n.getMessage('InternalMailPercent');
+
         for (let domain in json) {
             let mailData = json[domain];
             const obj = {};
             obj[tagKey] = domain;
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
-            
+            obj[internalKey] = mailData.internal ? 'Yes' : 'No';
+
             resultArray.push(obj);
         }
-    
+
         return resultArray;
     },
 

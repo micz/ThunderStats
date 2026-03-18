@@ -359,7 +359,7 @@ function exportData(data, export_type, export_name) {
 
     switch(export_type) {
         case "correspondents":
-            let output_data = tsExport.transformCorrespondentsJsonToArray(data);
+            let output_data = tsExport.transformCorrespondentsJsonToArray(data, export_data.value[tsExport.export.domains.type] || null);
             tsExport.downloadCSV(output_data, export_name);
           break;
         case 'daily_mails':

@@ -804,10 +804,17 @@ function openBookmarkMenu(e){
             setPeriod("currentyear");
           }
         },
-        { 
+        {
           label: browser.i18n.getMessage("LastYear"),
           onClick: () => {
             setPeriod("lastyear");
+          }
+        },
+        {
+          label: browser.i18n.getMessage("AllEmails"),
+          divided: 'up',
+          onClick: () => {
+            setPeriod("allemails");
           }
         },
         /*{
@@ -849,6 +856,9 @@ async function setPeriod(period){
             break;
         case "lastyear":
             dateQry.value = [tsUtils.getFirstDayOfLastYear(), tsUtils.getLastDayOfLastYear()];
+            break;
+        case "allemails":
+            dateQry.value = [new Date(0), new Date()];
             break;
     }
     if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){

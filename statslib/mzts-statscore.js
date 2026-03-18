@@ -129,6 +129,7 @@ export class thunderStastsCore {
     }
     // ================ CUSTOM QUERY TAB - END =====================
 
+
     // ================ SINGLE DAY METHODS =====================
     async getSingleDay(theDay, account_id = 0, account_emails = []) {
 

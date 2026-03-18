@@ -48,6 +48,8 @@ Advanced filtering and analysis for an arbitrary date range.
 #### Date Range
 - Date picker with manual date input
 - Start date and end date selection
+- Preset periods via context menu: Current Week, Last Week, Last 2 Weeks, Current Month, Last Month, Current Year, Last Year, All Emails
+- "All Emails" queries the oldest message date to set the start of the range
 
 #### Aggregation Level
 - Daily

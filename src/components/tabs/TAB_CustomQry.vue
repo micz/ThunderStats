@@ -19,7 +19,7 @@
 -->
 
 <template>
-        <ExportMenu :export_data="_export_data" :currentTab="tabId" v-if="job_done" :singleDay="singleDay" />
+        <ExportMenu :export_data="_export_data" :currentTab="tabId" :showInternalExternal="show_internal_mail_percent" v-if="job_done" :singleDay="singleDay" />
         <div id="customqry_dashboard">
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>

@@ -765,7 +765,7 @@
     "message": "Show the percentage of internal mails (requires Internal Domains to be configured)",
     "description": ""
   },
-  "InternalMailPercent": {
+  "InternalMailLabel": {
     "message": "Internal",
     "description": ""
   },

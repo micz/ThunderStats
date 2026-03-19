@@ -74,7 +74,7 @@ let internal_sent_percent = computed(() => {
 let internal_rcvd_percent = computed(() => {
     return props.internal_rcvd_percent
 })
-const internalLabel = browser.i18n.getMessage("InternalMailPercent");
+const internalLabel = browser.i18n.getMessage("InternalMailLabel");
 
 </script>
 

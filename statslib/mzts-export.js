@@ -173,7 +173,7 @@ export const tsExport = {
                 obj[rcvdKey] = json[email].received;
                 if (domainsData) {
                     const domainKey = browser.i18n.getMessage('Domains');
-                    const internalKey = browser.i18n.getMessage('InternalMailPercent');
+                    const internalKey = browser.i18n.getMessage('InternalMailLabel');
                     const emailDomain = tsCoreUtils.extractDomain(email);
                     obj[domainKey] = emailDomain;
                     if (domainsData[emailDomain]) {
@@ -221,9 +221,9 @@ export const tsExport = {
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
             if (includeInternalExternal) {
-                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailPercent')] = mailData.sent_internal || 0;
+                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.sent_internal || 0;
                 obj[sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.sent_external || 0;
-                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailPercent')] = mailData.received_internal || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.received_internal || 0;
                 obj[rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.received_external || 0;
             }
 
@@ -246,9 +246,9 @@ export const tsExport = {
             obj[sentKey] = json[hour].sent;
             obj[rcvdKey] = json[hour].received;
             if (includeInternalExternal) {
-                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailPercent')] = json[hour].sent_internal || 0;
+                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = json[hour].sent_internal || 0;
                 obj[sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = json[hour].sent_external || 0;
-                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailPercent')] = json[hour].received_internal || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = json[hour].received_internal || 0;
                 obj[rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = json[hour].received_external || 0;
             }
 
@@ -272,9 +272,9 @@ export const tsExport = {
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
             if (includeInternalExternal) {
-                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailPercent')] = mailData.sent_internal || 0;
+                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.sent_internal || 0;
                 obj[sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.sent_external || 0;
-                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailPercent')] = mailData.received_internal || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.received_internal || 0;
                 obj[rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.received_external || 0;
             }
 
@@ -298,9 +298,9 @@ export const tsExport = {
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
             if (includeInternalExternal) {
-                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailPercent')] = mailData.sent_internal || 0;
+                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.sent_internal || 0;
                 obj[sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.sent_external || 0;
-                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailPercent')] = mailData.received_internal || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.received_internal || 0;
                 obj[rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.received_external || 0;
             }
 
@@ -324,7 +324,7 @@ export const tsExport = {
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
             if (includeInternalExternal) {
-                obj[browser.i18n.getMessage('InternalMailPercent')] = mailData.internal ? browser.i18n.getMessage('Yes') : browser.i18n.getMessage('No');
+                obj[browser.i18n.getMessage('InternalMailLabel')] = mailData.internal ? browser.i18n.getMessage('Yes') : browser.i18n.getMessage('No');
             }
 
             resultArray.push(obj);
@@ -347,9 +347,9 @@ export const tsExport = {
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
             if (includeInternalExternal) {
-                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailPercent')] = mailData.sent_internal || 0;
+                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.sent_internal || 0;
                 obj[sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.sent_external || 0;
-                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailPercent')] = mailData.received_internal || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.received_internal || 0;
                 obj[rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.received_external || 0;
             }
 

@@ -613,7 +613,7 @@ export const tsCoreUtils = {
         }
     },
 
-    getInternalMailPercent(domains) {
+    getInternalMailLabel(domains) {
         let totalSent = 0;
         let totalReceived = 0;
         let internalSent = 0;

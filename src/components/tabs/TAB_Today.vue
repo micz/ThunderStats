@@ -400,7 +400,7 @@ async function updateData() {
             counter_today_rcvd.value = result_today.received;
             counter_today_sent.value = result_today.sent;
             if(show_internal_mail_percent.value) {
-                let internalData = tsCoreUtils.getInternalMailPercent(result_today.domains);
+                let internalData = tsCoreUtils.getInternalMailLabel(result_today.domains);
                 internal_sent_percent.value = internalData.sentPercent;
                 internal_rcvd_percent.value = internalData.receivedPercent;
             }

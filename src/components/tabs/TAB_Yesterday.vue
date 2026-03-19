@@ -409,7 +409,7 @@ async function updateData() {
             counter_yesterday_rcvd.value = result_yesterday.received;
             counter_yesterday_sent.value = result_yesterday.sent;
             if(show_internal_mail_percent.value) {
-                let internalData = tsCoreUtils.getInternalMailPercent(result_yesterday.domains);
+                let internalData = tsCoreUtils.getInternalMailLabel(result_yesterday.domains);
                 internal_sent_percent.value = internalData.sentPercent;
                 internal_rcvd_percent.value = internalData.receivedPercent;
             }

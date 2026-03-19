@@ -1451,7 +1451,7 @@ async function updateData() {
             rcvd_total.value = result_customqry.received;
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
             if(show_internal_mail_percent.value && do_single_day.value) {
-                let internalData = tsCoreUtils.getInternalMailPercent(result_customqry.domains);
+                let internalData = tsCoreUtils.getInternalMailLabel(result_customqry.domains);
                 internal_sent_percent.value = internalData.sentPercent;
                 internal_rcvd_percent.value = internalData.receivedPercent;
             }

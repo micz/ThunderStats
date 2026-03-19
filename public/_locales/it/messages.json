@@ -250,7 +250,7 @@
         "message": "Giorni Lavorativi"
     },
     "TabCustomIdentities.label": {
-        "message": "Identità Personalizzate"
+        "message": "Identità & Domini"
     },
     "Identities": {
         "message": "Identità"
@@ -280,7 +280,7 @@
         "message": "Identità Personalizzate per l'Account selezionato"
     },
     "CustomIdentititesAccount.Info": {
-        "message": "Aggiungi un indirizzo email per riga o separato da una virgola."
+        "message": "Aggiungi un indirizzo email per riga, oppure separali con una virgola. Usa l'asterisco * come carattere jolly (es. *@esempio.com) o scrivi semplicemente @dominio.com per includere tutti gli indirizzi di quel dominio."
     },
     "ActivateDebug": {
         "message": "Attiva il sistema di debug"
@@ -650,5 +650,56 @@
     },
     "ComparisonNoData": {
         "message": "Nessun dato per il periodo di confronto"
+    },
+    "AllEmails": {
+        "message": "Tutte le email"
+    },
+    "InternalDomainsAccount": {
+        "message": "Domini interni per l'account selezionato"
+    },
+    "InternalDomainsAccount.Desc": {
+        "message": "I domini interni sono i domini appartenenti alla tua organizzazione. Vengono utilizzati per distinguere il traffico email interno da quello esterno all'interno delle tue statistiche."
+    },
+    "InternalDomainsAccount.Info": {
+        "message": "Aggiungi un dominio per riga o separali con una virgola. Usa * come carattere jolly (es. *.example.com per includere tutti i sottodomini)."
+    },
+    "ManyDaysShowInbox": {
+        "message": "Mostra le email nella cartella della posta in arrivo nel grafico dei messaggi ricevuti"
+    },
+    "prefs_remember_last_account": {
+        "message": "Ricorda l'ultimo account usato"
+    },
+    "FolderLocation_percent_remaining": {
+        "message": "Mail ancora nella cartella della posta in arrivo"
+    },
+    "ResetAdvFilters": {
+        "message": "Resetta i filtri"
+    },
+    "prefs_inbox_percent_remaining": {
+        "message": "Mostra la percentuale di mail ancora nella cartella della posta in arrivo"
+    },
+    "prefs_show_internal_mail_percent": {
+        "message": "Mostra la percentuale di email interne (richiede la configurazione dei Domini Interni)"
+    },
+    "InternalMailLabel": {
+        "message": "Interne"
+    },
+    "ExternalMailLabel": {
+        "message": "Esterne"
+    },
+    "Yes": {
+        "message": "Si"
+    },
+    "No": {
+        "message": "No"
+    },
+    "InternalDomainsNotConfiguredWarning": {
+        "message": "Nessun dominio interno configurato. Configurali nella scheda \"Identità e Domini\"."
+    },
+    "ClickToChangeComparisonDay": {
+        "message": "Clicca per cambiare il giorno di confronto"
+    },
+    "WaitForProcessing": {
+        "message": "Attendi il completamento dell'operazione in corso"
     }
 }

@@ -629,5 +629,26 @@
     },
     "Week": {
         "message": "Settimana"
+    },
+    "ComparePeriods": {
+        "message": "Confronta periodi"
+    },
+    "PeriodA": {
+        "message": "Periodo A"
+    },
+    "PeriodB": {
+        "message": "Periodo B"
+    },
+    "PeriodBStart": {
+        "message": "Confronto Periodo B"
+    },
+    "ComparisonSentChange": {
+        "message": "Variazione Inviate"
+    },
+    "ComparisonRcvdChange": {
+        "message": "Variazione Ricevute"
+    },
+    "ComparisonNoData": {
+        "message": "Nessun dato per il periodo di confronto"
     }
 }

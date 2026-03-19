@@ -15,6 +15,8 @@
       <li>Added an all e-mails option in the drop down menu of the Custom View tab [<a href="https://github.com/micz/ThunderStats/issues/149">#149</a>].</li>
       <li>In custom identities is now possibile to use wildcards (*) [<a href="https://github.com/micz/ThunderStats/issues/178">#178</a>].</li>
       <li>Added an option to remember the last used account [<a href="https://github.com/micz/ThunderStats/issues/352">#352</a>].</li>
+      <li>It is now possible to define one or more domains as internal (e.g., for an organization or company) to display the percentage of internal emails [<a href="https://github.com/micz/ThunderStats/issues/163">#163</a>].</li>
+      <li>Export data can also include internal and external email counts, provided the corresponding option is enabled and domains are correctly configured [<a href="https://github.com/micz/ThunderStats/issues/321">#321</a>].</li>
       <li>...</li>
 </ul>
 <h3>Version 2.3.8 - 22/12/2025</h3>

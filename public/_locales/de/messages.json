@@ -160,7 +160,7 @@
         "message": "Wie funktioniert es?"
     },
     "OtherInfoText_1": {
-        "message": "Alle Statistiken werden mit Hilfe der internen Datenbank von Thunderbird errechnet und sind mit den EMail Adressen des gewählten Kontos verbunden."
+        "message": "Alle statistiken werden mit hilfe der internen datenbank von Thunderbird errechnet und sind mit den email adressen des gewählten kontos verbunden."
     },
     "OtherInfoText_2b": {
         "message": "Warten Sie bis der Indexer alle neuen Mails verarbeitet hat um die Statistik zu aktualisieren. Das Datum in der oberen rechten Ecke zeigt, wie aktuell die Daten sind."
@@ -271,7 +271,7 @@
         "message": "Eine benutzerdefinierte Identität ist eine E-Mail-Adresse, die sich von den für das Konto registrierten Adressen unterscheidet und mit der Sie E-Mails empfangen."
     },
     "ManageCustomIdentititesDesc_2": {
-        "message": "In der Regel handelt es sich dabei um E-Mail-Adressen von Mailinglisten, bei denen Ihre E-Mail-Adresse in keinem \"An\"- oder \"CC\"-Feld verwendet wird."
+        "message": "In der regel handelt es sich dabei um e-mail-adressen von mailinglisten, bei denen Ihre e-mail-adresse in keinem \"an\"- oder \"cc\"-feld verwendet wird."
     },
     "Account": {
         "message": "Konto"
@@ -629,5 +629,26 @@
     },
     "Week": {
         "message": "Woche"
+    },
+    "ComparePeriods": {
+        "message": "Zeiträume vergleichen"
+    },
+    "PeriodBStart": {
+        "message": "Vergleichszeitraum B"
+    },
+    "ComparisonNoData": {
+        "message": "Keine Daten für den Vergleichszeitraum"
+    },
+    "PeriodA": {
+        "message": "Zeitraum A"
+    },
+    "PeriodB": {
+        "message": "Zeitraum B"
+    },
+    "ComparisonSentChange": {
+        "message": "Änderung der gesendeten Anzahl"
+    },
+    "ComparisonRcvdChange": {
+        "message": "Abweichung beim Empfang"
     }
 }

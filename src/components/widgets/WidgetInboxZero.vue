@@ -1,3 +1,23 @@
+<!--
+/*
+ *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
+
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+
 <template>
     <div>
       <CounterInbox 
@@ -6,8 +26,9 @@
         :inbox_unread="counter_inbox_unread" 
       />
       <CounterInboxPercent v-if="!show_extended"
-        :is_loading="is_loading_counter_inbox_percent" 
-        :inbox_percent="counter_inbox_percent" 
+        :is_loading="is_loading_counter_inbox_percent"
+        :inbox_percent="counter_inbox_percent"
+        :show_remaining="inbox_percent_show_remaining"
       />
       <div class="chart_inbox0_info" v-if="!show_extended">
         <p class="chart_info">
@@ -147,6 +168,10 @@ const props = defineProps({
     required: true,
   },
   is_loading_inbox_chart_dates: {
+    type: Boolean,
+    default: false,
+  },
+  inbox_percent_show_remaining: {
     type: Boolean,
     default: false,
   }

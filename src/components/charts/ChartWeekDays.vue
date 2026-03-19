@@ -1,7 +1,7 @@
 <!--
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
- *  Copyright (C) 2024  Mic (m@micz.it)
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,18 +19,20 @@
 -->
 
 <template>
-<div class="chart_time_full">
-  <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
-  <Bar
-      :options="chartOptions"
-      :data="chartData"
-      :plugins="chartPlugins"
-      :key="chartData.datasets.length"
-      ref="weekdaysChartBar_ref"
-      v-if="!is_loading"
-    />
+<div class="chart_time_container">
+  <div class="chart_time_full">
+    <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
+    <Bar
+        :options="chartOptions"
+        :data="chartData"
+        :plugins="chartPlugins"
+        :key="chartData.datasets.length"
+        ref="weekdaysChartBar_ref"
+        v-if="!is_loading"
+      />
+  </div>
+  <div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </div>
-<div :id="legend_id" class="legend-time" v-if="!is_loading"></div>
 </template>
 
 
@@ -68,7 +70,9 @@ let maxY = ref(0);
 let chartData = computed(() => {
   if (props.chartData.datasets && props.chartData.datasets.length > 0) {
   let data = tsUtils.safeConcat(props.chartData.datasets, 0)
-                  .concat(tsUtils.safeConcat(props.chartData.datasets, 1));
+                  .concat(tsUtils.safeConcat(props.chartData.datasets, 1))
+                  .concat(tsUtils.safeConcat(props.chartData.datasets, 2))
+                  .concat(tsUtils.safeConcat(props.chartData.datasets, 3));
         let maxData = tsCoreUtils.getMaxFromData(data);
         maxY.value = (Math.ceil(maxData / 5) * 5);
         if(maxY.value == maxData) {
@@ -154,16 +158,23 @@ var chartOptions = ref({
           datalabels: {
             display: true,
             anchor: 'end',
+            clamp: true,
             align: function(context) {
               let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
-              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
               return height <= 25 ? 'top' : 'bottom';
             },
             color: function(context) {
-              let height = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex].height;
-              //console.log(">>>>>>>>>>>>>>>>>>>>> height: " + JSON.stringify(height));
-              //console.log(">>>>>>>>>>>>>>>>>>>>> darkMode: " + JSON.stringify(tsStore.darkmode));
-              return height > 25 ? '#fff' : tsStore.darkmode?'#bbb':'grey';
+              let meta = context.chart.getDatasetMeta(context.datasetIndex).data[context.dataIndex];
+              let height = meta.height;
+              if (height <= 25) {
+                return tsStore.darkmode ? '#bbb' : '#555';
+              }
+              let chartArea = context.chart.chartArea;
+              let barTop = meta.y;
+              if (barTop < chartArea.top) {
+                return tsStore.darkmode ? '#bbb' : '#555';
+              }
+              return '#fff';
             },
             font: {
               weight: 'bold',

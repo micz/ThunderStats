@@ -1,7 +1,7 @@
 <!--
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
- *  Copyright (C) 2024  Mic (m@micz.it)
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,6 +27,15 @@
       </td>
       <td>
         <label><SelectAccount v-model="current_account" id="startup_account" name="startup_account" class="option-input"/></label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>&nbsp;</label>
+      </td>
+      <td>
+     <label><input type="checkbox" id="remember_last_account" name="remember_last_account" class="option-input" @change="onRememberLastAccountChange" />
+      <span class="dims_label" @click="toggle_options_remember_last_account">__MSG_prefs_remember_last_account__</span></label>
       </td>
     </tr>
   </table>
@@ -74,6 +83,14 @@
      <label><span class="dims_label" @click="toggle_options">__MSG_prefs_customqry_loaddata_when_opening_addon__</span></label>
       </td>
     </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="show_internal_mail_percent" name="show_internal_mail_percent" class="option-input" /></label>
+      </td>
+      <td>
+        <label><span class="dims_label" @click="toggle_options">__MSG_prefs_show_internal_mail_percent__</span></label>
+      </td>
+    </tr>
   </table>
     <table class="miczPrefs" style="margin-top: 10px;">
       <tr>
@@ -116,6 +133,14 @@
      <label><span class="dims_label" @click="toggle_options">__MSG_folderspreadchart_openinfirsttab__</span></label>
       </td>
     </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="inbox_percent_remaining" name="inbox_percent_remaining" class="option-input" /></label>
+      </td>
+      <td>
+        <label><span class="dims_label" @click="toggle_options">__MSG_prefs_inbox_percent_remaining__</span></label>
+      </td>
+    </tr>
     </table>
     <table class="miczPrefs">
     <tr>
@@ -127,6 +152,14 @@
       </td>
       <td>
         <span class="dims_label">__MSG_ManyDays__</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="many_days_show_inbox" name="many_days_show_inbox" class="option-input" /></label>
+      </td>
+      <td>
+        <label><span class="dims_label" @click="toggle_options">__MSG_ManyDaysShowInbox__</span></label>
       </td>
     </tr>
     </table>
@@ -159,23 +192,26 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import SelectAccount from '@/components/SelectAccount.vue';
 import { tsLogger } from '@statslib/mzts-logger';
+import { tsPrefs } from '@statslib/mzts-options';
 import { tsStore } from '@statslib/mzts-store';
-  
+
   const emit = defineEmits(['new_changes']);
 
   let current_account = ref(0);
   let tsLog = null;
   let new_changes = ref(false);
-  
-  onMounted(() => {
+
+  onMounted(async () => {
     tsLog = new tsLogger("OPTAB_Main", tsStore.do_debug);
+    let remember = await tsPrefs.getPref("remember_last_account");
+    updateStartupAccountDisabled(remember);
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
       input.addEventListener('change', somethingChanged);
     });
     tsLog.log("onMounted");
   });
-  
+
   onUnmounted(() => {
     tsLog.log("onUnmounted");
   });
@@ -197,9 +233,37 @@ import { tsStore } from '@statslib/mzts-store';
     checkbox.checked = !checkbox.checked;
     checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
   }
+
+  function updateStartupAccountDisabled(disabled) {
+    let select = document.getElementById('startup_account');
+    if (select) {
+      select.disabled = disabled;
+    }
+  }
+
+  function toggle_options_remember_last_account() {
+    let checkbox = document.getElementById('remember_last_account');
+    checkbox.checked = !checkbox.checked;
+    checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
+  }
+
+  async function onRememberLastAccountChange() {
+    let checkbox = document.getElementById('remember_last_account');
+    updateStartupAccountDisabled(checkbox.checked);
+    if (checkbox.checked) {
+      let startup_account = await tsPrefs.getPref("startup_account");
+      await tsPrefs.setPref("_last_account_id", startup_account);
+    }
+  }
 </script>
 
 
 <style scoped>
-
+#datepicker_locale{
+  width: 2rem;
+}
+.warning-no-domains {
+  color: red;
+  font-size: small;
+}
 </style>

@@ -1,3 +1,21 @@
+/*
+ *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
+
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 const getOrCreateLegendList = (chart, id) => {
     const legendContainer = document.getElementById(id);
     if(legendContainer == null) return null;
@@ -60,8 +78,18 @@ const getOrCreateLegendList = (chart, id) => {
             if(i==2){
               li_ty.classList.add('day_today_title_yesterday');
             }
-            li_ty.innerHTML = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : ((((i > 0) && options.is_today) || options.is_yesterday) ? (options.is_last_business_day ? browser.i18n.getMessage('LastBusinessDay') : browser.i18n.getMessage('Yesterday')) : browser.i18n.getMessage('Mails'));
-            //li_ty.innerHTML = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
+            if ((i == 0) && options.is_today) {
+              li_ty.innerText = browser.i18n.getMessage('Today');
+            } else if (((i > 0) && options.is_today) || options.is_yesterday) {
+              if (options.is_custom_comparison_day) {
+                li_ty.innerText = options.custom_comparison_day_text;
+              } else {
+                li_ty.innerText = options.is_last_business_day ? browser.i18n.getMessage('LastBusinessDay') : browser.i18n.getMessage('Yesterday');
+              }
+            } else {
+              li_ty.innerText = (i == 0) ? browser.i18n.getMessage('Mails') : '&nbsp;';
+            }
+            //li_ty.innerText = ((i == 0) && options.is_today) ? browser.i18n.getMessage('Today') : browser.i18n.getMessage('Yesterday');
             ul.appendChild(li_ty);
           }
 

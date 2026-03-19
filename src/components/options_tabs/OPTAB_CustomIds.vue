@@ -1,7 +1,7 @@
 <!--
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
- *  Copyright (C) 2024  Mic (m@micz.it)
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -36,22 +36,30 @@
     <tr><td>&nbsp;</td></tr>
     <tr>
         <td>
-            <table>
-                <tr>
-                    <td colspan="2">
-                        <b>__MSG_CustomIdentititesAccount__</b><br>
-                        <textarea rows="6" cols="50" v-model="account_custom_ids" id="account_custom_ids" :disabled="current_account == 0" :class="{'has-changes': new_custom_ids_changes}" @input="customIdsChanged"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size: small;">
-                        __MSG_CustomIdentititesAccount.Info__
-                    </td>
-                    <td style="text-align: right;">
-                        <button v-on:click="updateCustomIds" style="margin-left:5px;" :disabled="!new_custom_ids_changes">__MSG_Save__</button>
-                    </td>
-                </tr>
-            </table>
+            <b>__MSG_CustomIdentititesAccount__</b>
+            <div class="custom-ids-container">
+                <textarea rows="6" cols="50" v-model="account_custom_ids" id="account_custom_ids" :disabled="current_account == 0" :class="{'has-changes': new_custom_ids_changes}" @input="customIdsChanged"></textarea>
+                <button v-on:click="updateCustomIds" class="save-btn" :disabled="!new_custom_ids_changes">__MSG_Save__</button>
+            </div>
+            <div style="font-size: small;">
+                __MSG_CustomIdentititesAccount.Info__
+            </div>
+        </td>
+    </tr>
+    <tr><td><hr class="hr_light"></td></tr>
+    <tr>
+        <td>
+            <b>__MSG_InternalDomainsAccount__</b>
+            <div style="font-size: small; margin-bottom: 5px;">
+                __MSG_InternalDomainsAccount.Desc__
+            </div>
+            <div class="custom-ids-container">
+                <textarea rows="6" cols="50" v-model="account_internal_domains" id="account_internal_domains" :disabled="current_account == 0" :class="{'has-changes': new_internal_domains_changes}" @input="internalDomainsChanged"></textarea>
+                <button v-on:click="updateInternalDomains" class="save-btn" :disabled="!new_internal_domains_changes">__MSG_Save__</button>
+            </div>
+            <div style="font-size: small;">
+                __MSG_InternalDomainsAccount.Info__
+            </div>
         </td>
     </tr>
 </table>
@@ -74,18 +82,23 @@ let tsCore = null;
 let current_account = ref(0);
 let SelectAccount_ref = ref(null);
 let account_custom_ids = ref("");
+let account_internal_domains = ref("");
 let new_changes = ref(false);
 let new_custom_ids_changes = ref(false);
+let new_internal_domains_changes = ref(false);
 let account_emails = ref(browser.i18n.getMessage("Identities") + ": -");
 
 let prefCustomIds = {};
+let prefInternalDomains = {};
 
 onMounted(async () => {
     tsLog = new tsLogger("OPTAB_CustomIds", tsStore.do_debug);
     tsPrefs.logger = tsLog;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     prefCustomIds = await tsPrefs.getPref("custom_identities");
+    prefInternalDomains = await tsPrefs.getPref("internal_domains");
     tsLog.log("prefCustomIds = " + JSON.stringify(prefCustomIds));
+    tsLog.log("prefInternalDomains = " + JSON.stringify(prefInternalDomains));
     tsLog.log("onMounted");
   });
 
@@ -93,6 +106,7 @@ function accountChanged(){
     tsLog.log("accountChanged: " + current_account.value);
     loadAccountEmails();
     loadCustomIds();
+    loadInternalDomains();
 }
 
 async function loadAccountEmails(){
@@ -127,6 +141,31 @@ function customIdsChanged(){
     new_custom_ids_changes.value = true;
 }
 
+function loadInternalDomains(){
+    if(prefInternalDomains.hasOwnProperty(current_account.value)){
+        account_internal_domains.value = prefInternalDomains[current_account.value].join("\n");
+        tsLog.log("loadInternalDomains => account_internal_domains.value: " + account_internal_domains.value);
+    } else {
+        account_internal_domains.value = "";
+    }
+    tsLog.log("loadInternalDomains done!");
+}
+
+function updateInternalDomains(){
+    let current_internal_domains = account_internal_domains.value.split(/[\n,]+/).filter(d => d.trim() !== '');
+    current_internal_domains = current_internal_domains.map(part => part.trim());
+    tsLog.log("current_internal_domains: " + JSON.stringify(current_internal_domains));
+    account_internal_domains.value = current_internal_domains.join("\n");
+    prefInternalDomains[current_account.value] = current_internal_domains;
+    tsPrefs.setPref("internal_domains", prefInternalDomains);
+    new_internal_domains_changes.value = false;
+    somethingChanged();
+}
+
+function internalDomainsChanged(){
+    new_internal_domains_changes.value = true;
+}
+
 async function somethingChanged() {
     new_changes.value = true;
     emit('new_changes', new_changes.value);
@@ -138,5 +177,19 @@ async function somethingChanged() {
 <style scoped>
 .has-changes {
     border: 1px solid blue;
+}
+.custom-ids-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
+.save-btn {
+    flex-shrink: 0;
+}
+
+hr.hr_light{
+  color: #fff;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 </style>

@@ -12,8 +12,8 @@ Displays statistics for the current day (from midnight to now).
 
 - **Sent / Received counters** — total sent and received emails
 - **Inbox count** — current number of messages in the inbox
-- **Inbox percent** — percentage of day's emails that ended up in inbox
-- **Yesterday-at-this-time comparison** — compares current counts to the same time yesterday
+- **Inbox percent** — percentage of day's emails moved from inbox (or still in inbox, toggled via `inbox_percent_remaining` option)
+- **Yesterday-at-this-time comparison** — compares current counts to the same time yesterday (or last business day). The "Yesterday" / "Last business day" label is clickable to open a date picker and choose any past day as the comparison. The custom day selection is session-only (resets when the TS tab is closed) but persists across data refreshes.
 - **Time-of-day chart** — hourly distribution of sent and received emails
 - **Weekday chart** — distribution across days of the week
 - **Top correspondents table** — configurable number of top senders and recipients
@@ -48,6 +48,8 @@ Advanced filtering and analysis for an arbitrary date range.
 #### Date Range
 - Date picker with manual date input
 - Start date and end date selection
+- Preset periods via context menu: Current Week, Last Week, Last 2 Weeks, Current Month, Last Month, Current Year, Last Year, All Emails
+- "All Emails" queries the oldest message date to set the start of the range
 
 #### Aggregation Level
 - Daily
@@ -60,6 +62,15 @@ Advanced filtering and analysis for an arbitrary date range.
 - **Read/Unread** — all, read only, or unread only
 - **Starred/Unstarred** — all, starred only, or unstarred only
 - **Subject keyword** — filter messages containing a keyword in the subject
+- **Reset button** — clears all advanced filters back to defaults; disabled when no filters are active
+
+#### Compare Periods
+- Toggle button enables comparison mode
+- User selects only the start date for Period B; the end date is auto-calculated to match Period A's length
+- Period B data is overlaid on all charts with distinct colors (coral red for bars, purple/red for line charts)
+- Delta summary row shows percentage change in sent and received between periods (green for increase, red for decrease)
+- Disabled in single-day mode
+- Categorical charts (domains, folders, tags) merge labels from both periods
 
 #### Statistics Output
 - Aggregated sent/received chart (based on selected aggregation level)
@@ -73,6 +84,7 @@ Advanced filtering and analysis for an arbitrary date range.
 
 #### Export
 - CSV export of query results (multiple data types available)
+- When comparison is active, Period B data is also included in the export
 
 ---
 
@@ -90,6 +102,9 @@ Accessible via the addon options page (opens in a Thunderbird tab).
 - **Number of days** for the Many Days view (default: 7)
 - **Number of correspondents** (top senders/recipients count, default: 10)
 - **Account-specific settings** toggle
+- **Show inbox remaining %** (`inbox_percent_remaining`) — when enabled, the inbox percentage shows mails still in inbox instead of mails moved out (default: off)
+- **Remember last tab** (`remember_last_tab`) — restore the last opened tab on startup (default: off)
+- **Remember last account** (`remember_last_account`) — restore the last used account on startup, overriding the startup account setting (default: off)
 
 ### Tab: Advanced
 - **Filter duplicates** — deduplicate messages that appear in multiple folders (e.g., sent + archive)
@@ -102,9 +117,14 @@ Accessible via the addon options page (opens in a Thunderbird tab).
 - Toggle Easter holiday detection (automatic)
 - Business day stats are used in Many Days and Custom Query aggregations
 
-### Tab: Custom Identities
+### Tab: Identities & Domains (Custom Identities + Internal Domains)
 - Define additional email addresses that belong to the user
 - These are used to correctly classify "sent" vs "received" emails when the user has addresses not registered as Thunderbird account identities
+- **Internal Domains** — define per-account domain lists that identify domains belonging to the user's organization
+  - Used to distinguish internal from external email traffic in statistics (domain entries gain an `internal: true/false` flag)
+  - Supports wildcard patterns (e.g., `*.example.com`)
+  - Stored in the `internal_domains` preference
+- **Show internal mail percentage** (`show_internal_mail_percent`) — when enabled, displays the percentage of internal mails (based on configured internal domains) next to the sent/received counters in the Today, Yesterday, and Custom Query (single-day) tabs
 
 ### Tab: License
 - Displays the full GNU General Public License v3 text

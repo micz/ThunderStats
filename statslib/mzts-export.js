@@ -1,6 +1,6 @@
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
- *  Copyright (C) 2024  Mic (m@micz.it)
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -155,7 +155,7 @@ export const tsExport = {
         return correspondents;
     },
 
-    transformCorrespondentsJsonToArray(json) {
+    transformCorrespondentsJsonToArray(json, domainsData = null) {
         const resultArray = [];
         // console.log(">>>>>>>>>>>>> transformCorrespondentsJsonToArray json: " + JSON.stringify(json));
         const nameKey = browser.i18n.getMessage('Name');
@@ -171,15 +171,26 @@ export const tsExport = {
                 obj[mailKey] = email;
                 obj[sentKey] = json[email].sent;
                 obj[rcvdKey] = json[email].received;
+                if (domainsData) {
+                    const domainKey = browser.i18n.getMessage('Domains');
+                    const internalKey = browser.i18n.getMessage('InternalMailLabel');
+                    const emailDomain = tsCoreUtils.extractDomain(email);
+                    obj[domainKey] = emailDomain;
+                    if (domainsData[emailDomain]) {
+                        obj[internalKey] = domainsData[emailDomain].internal ? browser.i18n.getMessage('Yes') : browser.i18n.getMessage('No');
+                    } else {
+                        obj[internalKey] = browser.i18n.getMessage('No');
+                    }
+                }
 
                 resultArray.push(obj);
             }
         }
-    
+
         return resultArray;
     },
 
-    transformPeriodMailsJsonToArray(json, data_type) {
+    transformPeriodMailsJsonToArray(json, data_type, includeInternalExternal = false) {
         let resultArray = [];
 
         let dateKey = "";
@@ -198,10 +209,10 @@ export const tsExport = {
                 dateKey = browser.i18n.getMessage('Year');
                 break;
         }
-        
+
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
-    
+
         for (let date in json) {
             let mailData = json[date];
             const obj = {};
@@ -209,111 +220,142 @@ export const tsExport = {
             obj[dateKey] = formatted_date;
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
-            
+            if (includeInternalExternal) {
+                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.sent_internal || 0;
+                obj[sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.sent_external || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.received_internal || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.received_external || 0;
+            }
+
             resultArray.push(obj);
         }
-    
+
         return resultArray;
     },
 
-    transformTimeMailsJsonToArray(json) {
+    transformTimeMailsJsonToArray(json, includeInternalExternal = false) {
         let resultArray = [];
 
         const timeKey = browser.i18n.getMessage('TimeChart.Time');
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
-    
-        const transformedArray = [];
 
-            for (let hour in json) {
-                const obj = {};
-                obj[timeKey] = parseInt(hour);
-                obj[sentKey] = json[hour].sent;
-                obj[rcvdKey] = json[hour].received;
-    
+        for (let hour in json) {
+            const obj = {};
+            obj[timeKey] = parseInt(hour);
+            obj[sentKey] = json[hour].sent;
+            obj[rcvdKey] = json[hour].received;
+            if (includeInternalExternal) {
+                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = json[hour].sent_internal || 0;
+                obj[sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = json[hour].sent_external || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = json[hour].received_internal || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = json[hour].received_external || 0;
+            }
+
             resultArray.push(obj);
         }
-    
+
         return resultArray;
     },
 
-    transformTagsJsonToArray(json) {
+    transformTagsJsonToArray(json, includeInternalExternal = false) {
         let resultArray = [];
 
         const tagKey = browser.i18n.getMessage('Tags');
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
-    
+
         for (let tag in json) {
             let mailData = json[tag];
             const obj = {};
             obj[tagKey] =  tsStore.tags_list[tag].tag;
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
-            
+            if (includeInternalExternal) {
+                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.sent_internal || 0;
+                obj[sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.sent_external || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.received_internal || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.received_external || 0;
+            }
+
             resultArray.push(obj);
         }
 
         return resultArray;
     },
 
-    transformFoldersJsonToArray(json) {
+    transformFoldersJsonToArray(json, includeInternalExternal = false) {
         let resultArray = [];
 
         const tagKey = browser.i18n.getMessage('Folders');
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
-    
+
         for (let folder in json) {
             let mailData = json[folder];
             const obj = {};
             obj[tagKey] = tsCoreUtils.getFolderPath(folder);
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
-            
+            if (includeInternalExternal) {
+                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.sent_internal || 0;
+                obj[sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.sent_external || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.received_internal || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.received_external || 0;
+            }
+
             resultArray.push(obj);
         }
-    
+
         return resultArray;
     },
 
-    transformDomainsJsonToArray(json) {
+    transformDomainsJsonToArray(json, includeInternalExternal = false) {
         let resultArray = [];
 
         const tagKey = browser.i18n.getMessage('Domains');
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
-    
+
         for (let domain in json) {
             let mailData = json[domain];
             const obj = {};
             obj[tagKey] = domain;
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
-            
+            if (includeInternalExternal) {
+                obj[browser.i18n.getMessage('InternalMailLabel')] = mailData.internal ? browser.i18n.getMessage('Yes') : browser.i18n.getMessage('No');
+            }
+
             resultArray.push(obj);
         }
-    
+
         return resultArray;
     },
 
-    transformWeekdaysJsonToArray(json) {
+    transformWeekdaysJsonToArray(json, includeInternalExternal = false) {
         let resultArray = [];
 
         const tagKey = browser.i18n.getMessage('Weekdays');
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
-    
+
         for (let weekday in json) {
             let mailData = json[weekday];
             const obj = {};
             obj[tagKey] = browser.i18n.getMessage('WeekDay'+weekday);
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
-            
+            if (includeInternalExternal) {
+                obj[sentKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.sent_internal || 0;
+                obj[sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.sent_external || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('InternalMailLabel')] = mailData.received_internal || 0;
+                obj[rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel')] = mailData.received_external || 0;
+            }
+
             resultArray.push(obj);
         }
-    
+
         return resultArray;
     },
 }

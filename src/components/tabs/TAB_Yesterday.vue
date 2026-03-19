@@ -1,7 +1,7 @@
 <!--
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
- *  Copyright (C) 2024  Mic (m@micz.it)
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,12 +19,12 @@
 -->
 
 <template>
-    <ExportMenu :export_data="_export_data" currentTab="tab-yesterday" v-if="job_done" />
+    <ExportMenu :export_data="_export_data" currentTab="tab-yesterday" :showInternalExternal="show_internal_mail_percent" v-if="job_done" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
         <span id="yesterday_date" class="list_heading_date" v-html="yesterday_date_str"></span>
-        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_yesterday_sent" :_rcvd="counter_yesterday_rcvd" />
+        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_yesterday_sent" :_rcvd="counter_yesterday_rcvd" :show_internal_percent="show_internal_mail_percent" :internal_sent_percent="internal_sent_percent" :internal_rcvd_percent="internal_rcvd_percent" />
         <div id="yesterday_spacing"></div>
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <ChartTime :chartData="chartData_Yesterday" :is_loading="is_loading_yesterday_chart" :is_last_business_day="is_last_business_day" :day_type="-1" />
@@ -44,6 +44,7 @@
                         :counter_rcvd="counter_yesterday_rcvd"
                         :chartData_InboxZeroFolders="chartData_InboxZeroFolders"
                         :inbox0_openFolderInFirstTab="inbox0_openFolderInFirstTab"
+                        :inbox_percent_show_remaining="inbox_percent_remaining"
                         :is_loading_inbox_chart_folders="is_loading_inbox_chart_folders"
                         :no_mails_inbox="no_mails_inbox"
                         :chartData_InboxZeroDates="chartData_InboxZeroDates"
@@ -101,6 +102,10 @@ const props = defineProps({
         type: Array,
         default: []
     },
+    internalDomains: {
+        type: Array,
+        default: () => []
+    },
 });
 
 const emit = defineEmits(['updateElapsed','updateTabName']);
@@ -119,6 +124,7 @@ let is_last_business_day = ref(false);
 
 let do_progressive = true;
 let inbox0_openFolderInFirstTab = ref(false);
+let inbox_percent_remaining = ref(false);
 let showFolderLocationNoteAnchor = ref(false);
 let folderLocationNote_text = ref("");
 
@@ -143,6 +149,9 @@ let is_loading_tags_chart = ref(true);
 
 let counter_yesterday_sent = ref(0);
 let counter_yesterday_rcvd = ref(0);
+let show_internal_mail_percent = ref(false);
+let internal_sent_percent = ref('0.00%');
+let internal_rcvd_percent = ref('0.00%');
 let counter_many_days_sent_total = ref(0);
 let counter_many_days_sent_max = ref(0);
 let counter_many_days_sent_min = ref(0);
@@ -203,6 +212,7 @@ let chartdata_inboxzero_dates = ref([]);
 let chartdata_domains_sent = ref([]);
 let chartdata_domains_rcvd = ref([]);
 let chartdata_domains_labels = ref([]);
+let chartdata_domains_internal_flags = ref([]);
 let chartdata_folders_sent = ref([]);
 let chartdata_folders_rcvd = ref([]);
 let chartdata_folders_labels = ref([]);
@@ -249,6 +259,8 @@ async function updateData() {
         await new Promise(r => setTimeout(r, 100));
     }
     let accounts_adv_settings = prefs.accounts_adv_settings;
+    inbox_percent_remaining.value = await tsPrefs.getPref("inbox_percent_remaining");
+    show_internal_mail_percent.value = (await tsPrefs.getPref("show_internal_mail_percent")) && props.internalDomains.length > 0;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     getManyDaysData();
@@ -296,6 +308,7 @@ async function updateData() {
         domains_chart_height.value = String(chart_container_height) + "px";
     }
     chartData_Domains.value.labels = chartdata_domains_labels.value;
+    chartData_Domains.value.internal_flags = chartdata_domains_internal_flags.value;
     chartData_Domains.value.datasets = [];
     chartData_Domains.value.datasets.push({
         label: 'tsent',
@@ -379,22 +392,27 @@ async function updateData() {
             if(prefs_bday_use_last_business_day == true){
                 if(tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(yesterday_date.value)) == true){
                     is_last_business_day.value = false;
-                    result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails);
+                    result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails, props.internalDomains);
                 }else{
                     is_last_business_day.value = true;
                     let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date.value);
                     yesterday_date_str.value = last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
                     emit('updateTabName', browser.i18n.getMessage("LastBusinessDay"));
-                    result_yesterday = await tsCore.getSingleDay(last_bday,tsStore.current_account_id, props.accountEmails);
+                    result_yesterday = await tsCore.getSingleDay(last_bday,tsStore.current_account_id, props.accountEmails, props.internalDomains);
                     tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
                 }
             }else{
                 is_last_business_day.value = false;
-                result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails);
+                result_yesterday = await tsCore.getYesterday(tsStore.current_account_id, props.accountEmails, props.internalDomains);
             }
             tsLog.log("result_yesterday: " + JSON.stringify(result_yesterday, null, 2));
             counter_yesterday_rcvd.value = result_yesterday.received;
             counter_yesterday_sent.value = result_yesterday.sent;
+            if(show_internal_mail_percent.value) {
+                let internalData = tsCoreUtils.getInternalMailLabel(result_yesterday.domains);
+                internal_sent_percent.value = internalData.sentPercent;
+                internal_rcvd_percent.value = internalData.receivedPercent;
+            }
             is_loading_counter_sent_rcvd.value = false;
             // export data
             _export_data.value[tsExport.export.time_emails.type] = result_yesterday.msg_hours;
@@ -417,7 +435,8 @@ async function updateData() {
             // inbox zero folders
             chartdata_inboxzero_folders.value = result_yesterday.folders;
             if(result_yesterday.received > 0){
-                counter_inbox_percent.value = (Math.round((1 - (result_yesterday.count_in_inbox / result_yesterday.received)) * 10000) / 100).toFixed(2) + '%';
+                let ratio = inbox_percent_remaining.value ? (result_yesterday.count_in_inbox / result_yesterday.received) : (1 - (result_yesterday.count_in_inbox / result_yesterday.received));
+                counter_inbox_percent.value = (Math.round(ratio * 10000) / 100).toFixed(2) + '%';
             }else{
                 counter_inbox_percent.value = '0%';
             }
@@ -428,6 +447,7 @@ async function updateData() {
             chartdata_domains_sent.value = domains_data.dataset_sent;
             chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
             chartdata_domains_labels.value = domains_data.labels;
+            chartdata_domains_internal_flags.value = domains_data.internal_flags || [];
             is_loading_domains_chart.value = false;
             // folders
             const folders_data = tsCoreUtils.transformCountDataToDataset(result_yesterday.folders, false, true);

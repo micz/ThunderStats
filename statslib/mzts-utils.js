@@ -1,6 +1,6 @@
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
- *  Copyright (C) 2024  Mic (m@micz.it)
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ export const tsUtils = {
     
         while (currentDate <= toDate) {
             let formattedDate = this.dateToYYYYMMDD(currentDate);
-            dateArray[formattedDate] = { count: 0, sent: 0, received: 0 };
+            dateArray[formattedDate] = { count: 0, sent: 0, received: 0, inbox: 0, sent_internal: 0, sent_external: 0, received_internal: 0, received_external: 0 };
             currentDate.setDate(currentDate.getDate() + 1); // Increment the date by one day
         }
         return dateArray;
@@ -111,7 +111,7 @@ export const tsUtils = {
       while (currentDate <= toDate) {
           let weekKey = this.dateToYYYYWW(currentDate);
           if (!weekArray[weekKey]) {
-              weekArray[weekKey] = { count: 0, sent: 0, received: 0 };
+              weekArray[weekKey] = { count: 0, sent: 0, received: 0, inbox: 0, sent_internal: 0, sent_external: 0, received_internal: 0, received_external: 0 };
           }
           currentDate.setDate(currentDate.getDate() + 1);
       }
@@ -125,7 +125,7 @@ export const tsUtils = {
       while (currentDate <= toDate) {
           let monthKey = this.dateToYYYYMM(currentDate);
           if (!monthArray[monthKey]) {
-              monthArray[monthKey] = { count: 0, sent: 0, received: 0 };
+              monthArray[monthKey] = { count: 0, sent: 0, received: 0, inbox: 0, sent_internal: 0, sent_external: 0, received_internal: 0, received_external: 0 };
           }
           currentDate.setDate(currentDate.getDate() + 1);
       }
@@ -139,7 +139,7 @@ export const tsUtils = {
       while (currentDate <= toDate) {
           let yearKey = this.dateToYYYY(currentDate);
           if (!yearArray[yearKey]) {
-              yearArray[yearKey] = { count: 0, sent: 0, received: 0 };
+              yearArray[yearKey] = { count: 0, sent: 0, received: 0, inbox: 0, sent_internal: 0, sent_external: 0, received_internal: 0, received_external: 0 };
           }
           currentDate.setDate(currentDate.getDate() + 1);
       }
@@ -382,4 +382,68 @@ export const tsUtils = {
         return 0;
       },
 
+}
+
+export class EmailMatcher {
+  constructor(emails) {
+    this.exactEmails = new Set();
+    this.patterns = [];
+
+    for (const entry of emails) {
+      if (entry.includes('*') || entry.startsWith('@')) {
+        this.patterns.push(this._patternToRegex(entry));
+      } else {
+        this.exactEmails.add(entry);
+      }
+    }
+  }
+
+  _patternToRegex(pattern) {
+    let p = pattern;
+    if (p.startsWith('@')) {
+      p = '*' + p;
+    }
+    let escaped = p.replace(/([.+?^${}()|[\]\\])/g, '\\$1');
+    escaped = escaped.replace(/\*/g, '.*');
+    return new RegExp('^' + escaped + '$', 'i');
+  }
+
+  matches(email) {
+    if (this.exactEmails.has(email)) return true;
+    for (const regex of this.patterns) {
+      if (regex.test(email)) return true;
+    }
+    return false;
+  }
+}
+
+export class DomainMatcher {
+  constructor(domains) {
+    this.exactDomains = new Set();
+    this.patterns = [];
+
+    for (const entry of domains) {
+      const d = entry.trim().toLowerCase();
+      if (d.includes('*')) {
+        this.patterns.push(this._patternToRegex(d));
+      } else {
+        this.exactDomains.add(d);
+      }
+    }
+  }
+
+  _patternToRegex(pattern) {
+    let escaped = pattern.replace(/([.+?^${}()|[\]\\])/g, '\\$1');
+    escaped = escaped.replace(/\*/g, '.*');
+    return new RegExp('^' + escaped + '$', 'i');
+  }
+
+  matches(domain) {
+    const d = domain.toLowerCase();
+    if (this.exactDomains.has(d)) return true;
+    for (const regex of this.patterns) {
+      if (regex.test(d)) return true;
+    }
+    return false;
+  }
 }

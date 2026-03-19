@@ -1,6 +1,6 @@
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
- *  Copyright (C) 2024  Mic (m@micz.it)
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 import { tsLogger } from "./mzts-logger";
 import { tsCoreUtils } from "./mzts-statscore.utils";
-import { tsUtils } from "./mzts-utils";
+import { tsUtils, EmailMatcher, DomainMatcher } from "./mzts-utils";
 import { tsPrefs } from "./mzts-options";
 import { tsStore } from "./mzts-store";
 
@@ -47,7 +47,7 @@ export class thunderStastsCore {
     }
 
     // ================ TODAY TAB =====================
-    async getToday(account_id = 0, account_emails = []) {
+    async getToday(account_id = 0, account_emails = [], internal_domains = []) {
 
       let lastMidnight = new Date();
       lastMidnight.setHours(0, 0, 0, 0);
@@ -57,7 +57,7 @@ export class thunderStastsCore {
 
       // console.log(">>>>>>>> [getToday] filter_duplicates: " + filter_duplicates);
 
-      return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getFullStatsData(lastMidnight, new Date(), account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
 
     async getToday_YesterdayData(account_id = 0, account_emails = [], count_data_to_current_time = true) {
@@ -89,18 +89,18 @@ export class thunderStastsCore {
     // ================ TODAY TAB - END =====================
 
     // ================ YESTERDAY TAB =====================
-    async getYesterday(account_id = 0, account_emails = []) {
+    async getYesterday(account_id = 0, account_emails = [], internal_domains = []) {
 
       let yesterdayMidnight = new Date();
       yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
       yesterdayMidnight.setHours(0, 0, 0, 0);
 
-      return this.getSingleDay(yesterdayMidnight, account_id, account_emails);
+      return this.getSingleDay(yesterdayMidnight, account_id, account_emails, internal_domains);
     }
     // ================ YESTERDAY TAB - END =====================
 
     // ================ MANY DAYS TAB =====================
-    async getManyDaysData(account_id = 0, account_emails = []) {
+    async getManyDaysData(account_id = 0, account_emails = [], internal_domains = []) {
 
       let fromDate = new Date();
       let start_date = fromDate.getDate() - this._many_days; // we get 7 days + today
@@ -113,24 +113,25 @@ export class thunderStastsCore {
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
     // ================ MANY DAYS TAB - END =====================
 
     // ================ CUSTOM QUERY TAB =====================
-    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], only_businessdays = -99, adv_filters = null) {
+    async getCustomQryData(fromDate, toDate, account_id = 0, account_emails = [], only_businessdays = -99, adv_filters = null, internal_domains = []) {
 
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays, adv_filters);   // the "true" is to aggregate
+      return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays, adv_filters, internal_domains);   // the "true" is to aggregate
     }
     // ================ CUSTOM QUERY TAB - END =====================
 
+
     // ================ SINGLE DAY METHODS =====================
-    async getSingleDay(theDay, account_id = 0, account_emails = []) {
+    async getSingleDay(theDay, account_id = 0, account_emails = [], internal_domains = []) {
 
       theDay.setHours(0, 0, 0, 0);
       let theMidnightAfter = new Date(theDay);
@@ -143,7 +144,7 @@ export class thunderStastsCore {
 
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
 
-      return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
 
     async getToday_SingleDayData(theDay, account_id = 0, account_emails = [], count_data_to_current_time = true) {
@@ -165,13 +166,16 @@ export class thunderStastsCore {
     // ================ SINGLE DAY METHODS - END =====================
 
     // ================ BASE METHODS ========================
-    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99, adv_filters = null) {
+    async getFullStatsData(fromDate, toDate, account_id = 0, account_emails = [], do_aggregate_stats = false, filter_duplicates = false, only_businessdays = -99, adv_filters = null, internal_domains = []) {
 
       let start_time = performance.now();
       // console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
       let messages_hash = new Map();
 
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
+
+      const emailMatcher = new EmailMatcher(account_emails);
+      const domainMatcher = new DomainMatcher(internal_domains);
 
       let queryInfo_FullStatsData = {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
@@ -308,6 +312,10 @@ export class thunderStastsCore {
         msg_hours[i] = {};
         msg_hours[i].sent = 0;
         msg_hours[i].received = 0;
+        msg_hours[i].sent_internal = 0;
+        msg_hours[i].sent_external = 0;
+        msg_hours[i].received_internal = 0;
+        msg_hours[i].received_external = 0;
       }
 
       let msg_weekdays = {};
@@ -315,6 +323,10 @@ export class thunderStastsCore {
         msg_weekdays[i] = {};
         msg_weekdays[i].sent = 0;
         msg_weekdays[i].received = 0;
+        msg_weekdays[i].sent_internal = 0;
+        msg_weekdays[i].sent_external = 0;
+        msg_weekdays[i].received_internal = 0;
+        msg_weekdays[i].received_external = 0;
       }
 
       for await (let message of messages) {
@@ -352,7 +364,7 @@ export class thunderStastsCore {
               //count sent and received per folder
               if (match_author) {
                 const key_author = match_author[0].toLowerCase();
-                if(account_emails.includes(key_author)) {
+                if(emailMatcher.matches(key_author)) {
                   // group by folder
                   folders[message.folder.id].sent++;
                 }else{
@@ -376,7 +388,7 @@ export class thunderStastsCore {
           // check sender
           if (match_author) {
             const key_author = match_author[0].toLowerCase();
-            if(account_emails.includes(key_author)) {
+            if(emailMatcher.matches(key_author)) {
               //messageids_sent.push(message.id);
               sent++;
               // group by folder
@@ -393,25 +405,61 @@ export class thunderStastsCore {
               // group by domain
               let allRecipients = [...message.recipients, ...message.ccList, ...message.bccList];
               let domains_array = tsCoreUtils.extractDomains(allRecipients);
+              let sent_has_internal = false;
+              let sent_has_external = false;
               for (let domain of domains_array) {
+                if (domainMatcher.matches(domain)) {
+                  sent_has_internal = true;
+                } else {
+                  sent_has_external = true;
+                }
                 if (domains[domain]) {
                   domains[domain].count++;
                   domains[domain].sent++;
                 } else {
-                  domains[domain] = {}
-                  domains[domain].count = 1;
-                  domains[domain].sent = 1;
-                  domains[domain].received = 0;
+                  domains[domain] = {
+                    count: 1,
+                    sent: 1,
+                    received: 0,
+                    internal: domainMatcher.matches(domain)
+                  };
                 }
+              }
+              // internal/external sent counters
+              if (sent_has_internal && !sent_has_external) {
+                dates[date_message_string].sent_internal++;
+                dates_weeks[date_week_string].sent_internal++;
+                dates_months[date_month_string].sent_internal++;
+                dates_years[date_year_string].sent_internal++;
+                msg_hours[hour_message].sent_internal++;
+                msg_weekdays[date_message.getDay()].sent_internal++;
+              } else {
+                dates[date_message_string].sent_external++;
+                dates_weeks[date_week_string].sent_external++;
+                dates_months[date_month_string].sent_external++;
+                dates_years[date_year_string].sent_external++;
+                msg_hours[hour_message].sent_external++;
+                msg_weekdays[date_message.getDay()].sent_external++;
               }
               // group by tag
               for (let tag of message.tags) {
                 if (tags[tag]) {
                   tags[tag].count++;
                   tags[tag].sent++;
+                  if (sent_has_internal && !sent_has_external) {
+                    tags[tag].sent_internal = (tags[tag].sent_internal || 0) + 1;
+                  } else {
+                    tags[tag].sent_external = (tags[tag].sent_external || 0) + 1;
+                  }
                 } else {
                   this.tsLog.error("tag: " + tag + " not found!");
                 }
+              }
+              // group by folder - internal/external
+              if (sent_has_internal && !sent_has_external) {
+                folders[message.folder.id].sent_internal = (folders[message.folder.id].sent_internal || 0) + 1;
+              } else {
+                folders[message.folder.id].sent_external = (folders[message.folder.id].sent_external || 0) + 1;
               }
               // check recipients
               //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
@@ -420,7 +468,7 @@ export class thunderStastsCore {
                 if (match_recipient) {
                   const key_recipient = match_recipient[0].toLowerCase();
                   //if(!(account_emails.includes(key_recipient) || messageids_sent.includes(message.id))) {
-                  if(!(account_emails.includes(key_recipient))) {
+                  if(!(emailMatcher.matches(key_recipient))) {
                     if (recipients[key_recipient]) {
                       recipients[key_recipient].count++;
                     } else {
@@ -439,7 +487,7 @@ export class thunderStastsCore {
                 if (match_cc) {
                   const key_cc = match_cc[0].toLowerCase();
                   //if(!(account_emails.includes(key_cc) || messageids_sent.includes(message.id))) {
-                  if(!(account_emails.includes(key_cc))) {
+                  if(!(emailMatcher.matches(key_cc))) {
                     if (recipients[key_cc]) {
                       recipients[key_cc].count++;
                     } else {
@@ -472,29 +520,66 @@ export class thunderStastsCore {
               dates_weeks[date_week_string].received++;
               dates_months[date_month_string].received++;
               dates_years[date_year_string].received++;
+              // group by inbox
+              if(message.folder.specialUse && message.folder.specialUse.includes('inbox')){
+                dates[date_message_string].inbox++;
+                dates_weeks[date_week_string].inbox++;
+                dates_months[date_month_string].inbox++;
+                dates_years[date_year_string].inbox++;
+              }
               // group by hour
               msg_hours[hour_message].received++;
               // group by weekday
               msg_weekdays[date_message.getDay()].received++;
               // group by domain
               let curr_domain = tsCoreUtils.extractDomain(key_author);
+              let is_received_internal = domainMatcher.matches(curr_domain);
               if (domains[curr_domain]) {
                 domains[curr_domain].count++;
                 domains[curr_domain].received++;
               } else {
-                domains[curr_domain] = {}
-                domains[curr_domain].count = 1;
-                domains[curr_domain].sent = 0;
-                domains[curr_domain].received = 1;
+                domains[curr_domain] = {
+                  count: 1,
+                  sent: 0,
+                  received: 1,
+                  internal: is_received_internal
+                };
+              }
+              // internal/external received counters
+              if (is_received_internal) {
+                dates[date_message_string].received_internal++;
+                dates_weeks[date_week_string].received_internal++;
+                dates_months[date_month_string].received_internal++;
+                dates_years[date_year_string].received_internal++;
+                msg_hours[hour_message].received_internal++;
+                msg_weekdays[date_message.getDay()].received_internal++;
+              } else {
+                dates[date_message_string].received_external++;
+                dates_weeks[date_week_string].received_external++;
+                dates_months[date_month_string].received_external++;
+                dates_years[date_year_string].received_external++;
+                msg_hours[hour_message].received_external++;
+                msg_weekdays[date_message.getDay()].received_external++;
               }
               // group by tag
               for (let tag of message.tags) {
                 if (tags[tag]) {
                   tags[tag].count++;
                   tags[tag].received++;
+                  if (is_received_internal) {
+                    tags[tag].received_internal = (tags[tag].received_internal || 0) + 1;
+                  } else {
+                    tags[tag].received_external = (tags[tag].received_external || 0) + 1;
+                  }
                 } else {
                   this.logger.error("tag: " + tag + " not found!");
                 }
+              }
+              // group by folder - internal/external
+              if (is_received_internal) {
+                folders[message.folder.id].received_internal = (folders[message.folder.id].received_internal || 0) + 1;
+              } else {
+                folders[message.folder.id].received_external = (folders[message.folder.id].received_external || 0) + 1;
               }
             }
           }
@@ -531,6 +616,8 @@ export class thunderStastsCore {
       //filter_duplicates = true; // to test
 
       let start_time = performance.now();
+
+      const emailMatcher = new EmailMatcher(account_emails);
 
       let messages_hash = new Map();
 
@@ -592,7 +679,7 @@ export class thunderStastsCore {
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0].toLowerCase();
-            if(account_emails.includes(key_author)) {
+            if(emailMatcher.matches(key_author)) {
               if((count_data_to_current_time)&&(date_message_normalized <= now)){
                 sent++;
               }
@@ -624,6 +711,8 @@ export class thunderStastsCore {
       let messages_hash = new Map();
 
       this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
+
+      const emailMatcher = new EmailMatcher(account_emails);
 
       let queryInfo_getAggregatedStatsData = {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
@@ -675,7 +764,7 @@ export class thunderStastsCore {
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0].toLowerCase();
-            if(account_emails.includes(key_author)) {
+            if(emailMatcher.matches(key_author)) {
               sent++;
               // group by hour
               msg_days[day_message].sent++;

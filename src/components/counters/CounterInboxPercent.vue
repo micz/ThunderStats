@@ -1,7 +1,7 @@
 <!--
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
- *  Copyright (C) 2024  Mic (m@micz.it)
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 <template>
     <div class="chart_inbox0_percent">
-        <div class="chart_inbox0_percent_text">__MSG_FolderLocation_percent_handled__</div>
+        <div class="chart_inbox0_percent_text">{{ percent_label }}</div>
         <div class="chart_inbox0_percent_num"><span v-if="!is_loading">{{ inbox_percent }}</span><img class="spinner_small" src="@/assets/images/mzts-wait_line.svg" alt="__MSG_Loading__..." v-if="is_loading" /></div>
     </div>
 </template>
@@ -36,6 +36,10 @@ let props = defineProps({
     is_loading: {
         type: Boolean,
         default: true
+    },
+    show_remaining: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -44,6 +48,11 @@ let inbox_percent = computed(() => {
 })
 let is_loading = computed(() => {
     return props.is_loading
+})
+let percent_label = computed(() => {
+    return props.show_remaining
+        ? browser.i18n.getMessage("FolderLocation_percent_remaining")
+        : browser.i18n.getMessage("FolderLocation_percent_handled");
 })
 
 </script>

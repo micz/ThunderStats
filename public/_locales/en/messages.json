@@ -279,6 +279,10 @@
     "message": "Last two weeks",
     "description": ""
   },
+  "AllEmails": {
+    "message": "All emails",
+    "description": ""
+  },
   "NoMailsSent": {
     "message": "No mails sent",
     "description": ""
@@ -324,7 +328,7 @@
     "description": ""
   },
   "TabCustomIdentities.label": {
-    "message": "Custom Identities",
+    "message": "Identities & Domains",
     "description": ""
   },
   "Identities": {
@@ -364,7 +368,19 @@
     "description": ""
   },
   "CustomIdentititesAccount.Info": {
-    "message": "Add an email address per line, or separated by a comma.",
+    "message": "Add an email address per line, or separated by a comma. Use * as a wildcard (e.g., *@example.com) or just @domain.com to match all addresses at a domain.",
+    "description": ""
+  },
+  "InternalDomainsAccount": {
+    "message": "Internal Domains for the selected Account",
+    "description": ""
+  },
+  "InternalDomainsAccount.Desc": {
+    "message": "Internal domains are domains belonging to your organization. They are used to distinguish internal from external email traffic in your statistics.",
+    "description": ""
+  },
+  "InternalDomainsAccount.Info": {
+    "message": "Add a domain per line, or separated by a comma. Use * as a wildcard (e.g., *.example.com to match all subdomains).",
     "description": ""
   },
   "ActivateDebug": {
@@ -385,6 +401,10 @@
   },
   "ManyDays": {
     "message": "Number of days to be shown",
+    "description": ""
+  },
+  "ManyDaysShowInbox": {
+    "message": "Show inbox mails in the received chart",
     "description": ""
   },
   "CustomQueryBookmarkImmediateUpdate": {
@@ -461,6 +481,10 @@
   },
   "prefs_remember_last_tab": {
     "message": "Remember the last opened tab",
+    "description": ""
+  },
+  "prefs_remember_last_account": {
+    "message": "Remember the last used account",
     "description": ""
   },
   "prefs_always_reload_tab_data": {
@@ -679,6 +703,10 @@
     "message": "Mails moved from the inbox folder",
     "description": ""
   },
+  "FolderLocation_percent_remaining": {
+    "message": "Mails still in the inbox folder",
+    "description": ""
+  },
   "AskUserWarningTitle": {
     "message": "Warning",
     "description": ""
@@ -709,6 +737,10 @@
     "message": "Advanced Filters",
     "description": ""
   },
+  "ResetAdvFilters": {
+    "message": "Reset filters",
+    "description": ""
+  },
   "ChooseFoldersFilter": {
     "message": "Choose folders",
     "description": ""
@@ -729,12 +761,48 @@
     "message": "Always open the Advanced Filters panel in Custom View",
     "description": ""
   },
+  "prefs_inbox_percent_remaining": {
+    "message": "Show the percentage of mails still in the inbox",
+    "description": ""
+  },
+  "prefs_show_internal_mail_percent": {
+    "message": "Show the percentage of internal mails (requires Internal Domains to be configured)",
+    "description": ""
+  },
+  "InternalMailLabel": {
+    "message": "Internal",
+    "description": ""
+  },
+  "ExternalMailLabel": {
+    "message": "External",
+    "description": ""
+  },
+  "Yes": {
+    "message": "Yes",
+    "description": ""
+  },
+  "No": {
+    "message": "No",
+    "description": ""
+  },
+  "InternalDomainsNotConfiguredWarning": {
+    "message": "No internal domains configured. Please configure them in the \"Identities & Domains\" tab.",
+    "description": ""
+  },
   "TimeDay": {
     "message": "Time of the day",
     "description": ""
   },
   "LastBusinessDayIs": {
     "message": "The last business day is",
+    "description": ""
+  },
+  "ClickToChangeComparisonDay": {
+    "message": "Click to change the comparison day",
+    "description": ""
+  },
+  "WaitForProcessing": {
+    "message": "Please wait for the current processing to finish",
     "description": ""
   },
   "ReadStatus": {
@@ -827,6 +895,34 @@
   },
   "Week": {
     "message": "Week",
+    "description": ""
+  },
+  "ComparePeriods": {
+    "message": "Compare Periods",
+    "description": ""
+  },
+  "PeriodA": {
+    "message": "Period A",
+    "description": ""
+  },
+  "PeriodB": {
+    "message": "Period B",
+    "description": ""
+  },
+  "PeriodBStart": {
+    "message": "Compare Period B",
+    "description": ""
+  },
+  "ComparisonSentChange": {
+    "message": "Sent Change",
+    "description": ""
+  },
+  "ComparisonRcvdChange": {
+    "message": "Received Change",
+    "description": ""
+  },
+  "ComparisonNoData": {
+    "message": "No data for comparison period",
     "description": ""
   }
 }

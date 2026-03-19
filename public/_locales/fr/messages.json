@@ -250,7 +250,7 @@
         "message": "Jours Ouvrés"
     },
     "TabCustomIdentities.label": {
-        "message": "Identités personnalisées"
+        "message": "Identités & Domaines"
     },
     "Identities": {
         "message": "Identités"
@@ -280,7 +280,7 @@
         "message": "identités personnalisées pour le compte sélectionné"
     },
     "CustomIdentititesAccount.Info": {
-        "message": "Ajouter une adresse électronique par ligne."
+        "message": "Ajoutez une adresse e-mail par ligne ou séparez-les par una virgule. Utilisez * comme caractère générique (ex. : @example.com) ou simplement @domain.com per faire correspondre toutes les adresses d'un domaine."
     },
     "ActivateDebug": {
         "message": "Activer le système de débogage"
@@ -629,5 +629,77 @@
     },
     "Week": {
         "message": "Semaine"
+    },
+    "AllEmails": {
+        "message": "Toutes le e-mails"
+    },
+    "InternalDomainsAccount": {
+        "message": "Domaines internes pour le compte sélectionné"
+    },
+    "InternalDomainsAccount.Desc": {
+        "message": "Les domaines internes sont les domaines appartenant à votre organisation. Ils permettent de distinguer le trafic e-mail interne du trafic externe dans vos statistiques."
+    },
+    "InternalDomainsAccount.Info": {
+        "message": "Ajoutez un domaine par ligne ou séparez-les par une virgule. Utilisez * comme caractère générique (ex. : *.example.com per inclure tous les sous-domaines)."
+    },
+    "ManyDaysShowInbox": {
+        "message": "Afficher les e-mails de la boîte de réception dans le graphique des messages reçus"
+    },
+    "prefs_remember_last_account": {
+        "message": "Mémoriser le dernier compte utilisé"
+    },
+    "FolderLocation_percent_remaining": {
+        "message": "E-mails encore dans la boîte de réception"
+    },
+    "ResetAdvFilters": {
+        "message": "Réinitialiser les filtres"
+    },
+    "prefs_inbox_percent_remaining": {
+        "message": "Afficher le pourcentage d'e-mails toujours dans la boîte de réception"
+    },
+    "prefs_show_internal_mail_percent": {
+        "message": "Afficher le pourcentage d'e-mails internes (nécessite la configuration des domaines internes)"
+    },
+    "InternalMailLabel": {
+        "message": "Internes"
+    },
+    "ExternalMailLabel": {
+        "message": "Externes"
+    },
+    "Yes": {
+        "message": "Oui"
+    },
+    "No": {
+        "message": "Non"
+    },
+    "InternalDomainsNotConfiguredWarning": {
+        "message": "Aucun domaine interne configuré. Veuillez les configurer dans l'onglet « Identités et domaines »."
+    },
+    "ClickToChangeComparisonDay": {
+        "message": "Cliquez pour changer le jour de comparaison"
+    },
+    "WaitForProcessing": {
+        "message": "Veuillez patienter jusqu'à la fin du traitement en cours"
+    },
+    "ComparePeriods": {
+        "message": "Comparer les périodes"
+    },
+    "PeriodA": {
+        "message": "Période A"
+    },
+    "PeriodB": {
+        "message": "Période B"
+    },
+    "PeriodBStart": {
+        "message": "Comparer la Période B"
+    },
+    "ComparisonRcvdChange": {
+        "message": "Écart de réception"
+    },
+    "ComparisonSentChange": {
+        "message": "Écart d'envoi"
+    },
+    "ComparisonNoData": {
+        "message": "Aucune donnée per la période di comparaison"
     }
 }

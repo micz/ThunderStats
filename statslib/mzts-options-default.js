@@ -1,6 +1,25 @@
+/*
+ *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
+
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 export const prefs_default = {
     'do_debug': false,
     '_many_days': 7,
+    'many_days_show_inbox': true,
     '_involved_num': 10,
     'today_time_chart_show_yesterday': true,
     'today_time_chart_do_no_show_future': true,
@@ -8,6 +27,8 @@ export const prefs_default = {
     'inbox0_openFolderInFirstTab': false,
     'startup_account': 0,
     'remember_last_tab': false,
+    'remember_last_account': false,
+    '_last_account_id': 0,
     'always_reload_tab_data': false,
     'load_data_changing_account': true,
     'customqry_loaddata_when_selectingrange': true,
@@ -15,6 +36,7 @@ export const prefs_default = {
     'first_day_week': 1,
     'datepicker_locale': 'en-US',
     'custom_identities': {},
+    'internal_domains': {},
     'include_archive_multi_account': true,
     'filter_duplicates_multi_account': false,
     'accounts_adv_settings': {},
@@ -31,4 +53,6 @@ export const prefs_default = {
     'bday_easter': true,
     'customqry_warn_onlongperiod_days': 90,
     'customqry_always_open_adv_filters': false,
+    'inbox_percent_remaining': false,
+    'show_internal_mail_percent': false,
 }

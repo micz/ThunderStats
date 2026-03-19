@@ -1,6 +1,6 @@
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
- *  Copyright (C) 2024  Mic (m@micz.it)
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,31 +25,39 @@ export const tsCoreUtils = {
     transformCountDataToDataset(data, do_progressive = false, get_labels = false) {
         let dataset_sent = [];
         let dataset_rcvd = [];
+        let dataset_inbox = [];
         for(let key in data) {
             let value = data[String(key)];
             dataset_sent.push(value.sent);
             dataset_rcvd.push(value.received);
+            dataset_inbox.push(value.inbox || 0);
         }
-        
+
         if (do_progressive) {
             let cumulative_sent = 0;
             let cumulative_rcvd = 0;
-            
+            let cumulative_inbox = 0;
+
             for (let key in dataset_sent) {
                 cumulative_sent += dataset_sent[key];
                 cumulative_rcvd += dataset_rcvd[key];
+                cumulative_inbox += dataset_inbox[key];
                 dataset_sent[key] = cumulative_sent;
                 dataset_rcvd[key] = cumulative_rcvd;
+                dataset_inbox[key] = cumulative_inbox;
             }
         }
 
-        let output = { dataset_sent, dataset_rcvd };
+        let output = { dataset_sent, dataset_rcvd, dataset_inbox };
         if(get_labels) {
             let labels = [];
+            let internal_flags = [];
             for(let key in data) {
                 labels.push(key);
+                internal_flags.push(!!data[key].internal);
             }
             output.labels = labels;
+            output.internal_flags = internal_flags;
         }
         return output;
     },
@@ -439,26 +447,33 @@ export const tsCoreUtils = {
 
     sortDoubleDatasetsByTotal(data) {
       // console.log(">>>>>>>>>>>>>> [sortDoubleDatasetsByTotal] data: " + JSON.stringify(data));
+      const hasInternalFlags = Array.isArray(data.internal_flags);
       // Create an array of objects containing labels and the sum of data values
       const summedData = data.labels.map((label, index) => {
         const sum = data.datasets.reduce((acc, dataset) => acc + dataset.data[index], 0);
-        return { label, sum };
+        const entry = { label, sum, originalIndex: index };
+        if (hasInternalFlags) entry.internal = data.internal_flags[index];
+        return entry;
       });
-    
+
       // Sort the array by sum in descending order
       summedData.sort((a, b) => b.sum - a.sum);
-    
+
       // Rebuild the sorted object
       const sortedLabels = summedData.map(item => item.label);
       const sortedDatasets = data.datasets.map(dataset => ({
         ...dataset,
-        data: summedData.map(item => dataset.data[data.labels.indexOf(item.label)])
+        data: summedData.map(item => dataset.data[item.originalIndex])
       }));
-    
-      return {
+
+      let result = {
         labels: sortedLabels,
         datasets: sortedDatasets
       };
+      if (hasInternalFlags) {
+        result.internal_flags = summedData.map(item => item.internal);
+      }
+      return result;
     },      
 
     // getMaxFromData(data) {      // data is an object like this: {"20240517":2,"20240518":4,"20240519":4,"20240520":2,"20240521":0,"20240522":2,"20240523":4,"20240524":0}
@@ -586,6 +601,34 @@ export const tsCoreUtils = {
         } else {
             return {};
         }
+    },
+
+    async getAccountInternalDomains(account_id = 0) {
+        let prefInternalDomains = await tsPrefs.getPref("internal_domains");
+        if(account_id == 0){ return prefInternalDomains; }
+        if(prefInternalDomains.hasOwnProperty(account_id)){
+          return prefInternalDomains[account_id];
+        } else {
+            return [];
+        }
+    },
+
+    getInternalMailLabel(domains) {
+        let totalSent = 0;
+        let totalReceived = 0;
+        let internalSent = 0;
+        let internalReceived = 0;
+        for (let domain in domains) {
+            totalSent += domains[domain].sent;
+            totalReceived += domains[domain].received;
+            if (domains[domain].internal) {
+                internalSent += domains[domain].sent;
+                internalReceived += domains[domain].received;
+            }
+        }
+        let sentPercent = totalSent > 0 ? (Math.round(internalSent / totalSent * 10000) / 100).toFixed(2) + '%' : '0.00%';
+        let receivedPercent = totalReceived > 0 ? (Math.round(internalReceived / totalReceived * 10000) / 100).toFixed(2) + '%' : '0.00%';
+        return { sentPercent, receivedPercent };
     },
 
     async mergeAccountsAdvSettings(accounts, accounts_adv_settings) {
@@ -928,6 +971,24 @@ export const tsCoreUtils = {
         const month = 3 + f((L + 40) / 44);  // March = 3, April = 4
         const day = L + 28 - 31 * f(month / 4);
         return new Date(year, month - 1, day);
+    },
+
+    mergeCategoricalComparisonData(labelsA, sentA, rcvdA, labelsB, sentB, rcvdB) {
+        let allLabels = [...new Set([...labelsA, ...labelsB])];
+        let mapA = Object.fromEntries(labelsA.map((l, i) => [l, { sent: sentA[i], rcvd: rcvdA[i] }]));
+        let mapB = Object.fromEntries(labelsB.map((l, i) => [l, { sent: sentB[i], rcvd: rcvdB[i] }]));
+        allLabels.sort((a, b) => {
+            let totalA = (mapA[a]?.sent ?? 0) + (mapA[a]?.rcvd ?? 0) + (mapB[a]?.sent ?? 0) + (mapB[a]?.rcvd ?? 0);
+            let totalB = (mapA[b]?.sent ?? 0) + (mapA[b]?.rcvd ?? 0) + (mapB[b]?.sent ?? 0) + (mapB[b]?.rcvd ?? 0);
+            return totalB - totalA;
+        });
+        return {
+            labels: allLabels,
+            sentA: allLabels.map(l => mapA[l]?.sent ?? 0),
+            rcvdA: allLabels.map(l => mapA[l]?.rcvd ?? 0),
+            sentB: allLabels.map(l => mapB[l]?.sent ?? 0),
+            rcvdB: allLabels.map(l => mapB[l]?.rcvd ?? 0),
+        };
     },
 
 }

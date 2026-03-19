@@ -1,6 +1,6 @@
 /*
  *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
- *  Copyright (C) 2024  Mic (m@micz.it)
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -77,6 +77,8 @@ export const externalTooltipTimeChartLines = (context, extra_params = null) => {
 
     let is_generic_day = false;
     let is_last_business_day = false;
+    let is_custom_comparison_day = false;
+    let custom_comparison_day_text = '';
 
     if(extra_params != null){
       if('is_generic_day' in extra_params){
@@ -84,6 +86,12 @@ export const externalTooltipTimeChartLines = (context, extra_params = null) => {
       }
       if('is_last_business_day' in extra_params){
         is_last_business_day = extra_params.is_last_business_day;
+      }
+      if('is_custom_comparison_day' in extra_params){
+        is_custom_comparison_day = extra_params.is_custom_comparison_day;
+      }
+      if('custom_comparison_day_text' in extra_params){
+        custom_comparison_day_text = extra_params.custom_comparison_day_text;
       }
     }
   
@@ -151,7 +159,7 @@ export const externalTooltipTimeChartLines = (context, extra_params = null) => {
           td_ty.classList.add('tooltip-content');
           td_ty.style.borderWidth = 0;
           const text_ty = document.createElement('span');
-          text_ty.innerHTML = ((i == 0) && (bodyLines.length > 2)) ? browser.i18n.getMessage('Today') : (is_generic_day ? '' : (is_last_business_day ? browser.i18n.getMessage('LastBusinessDay') : browser.i18n.getMessage('Yesterday')));
+          text_ty.innerText = ((i == 0) && (bodyLines.length > 2)) ? browser.i18n.getMessage('Today') : (is_generic_day ? '' : (is_custom_comparison_day ? custom_comparison_day_text : (is_last_business_day ? browser.i18n.getMessage('LastBusinessDay') : browser.i18n.getMessage('Yesterday'))));
           td_ty.appendChild(text_ty);
           tr_ty.appendChild(td_ty);
           tableBody.appendChild(tr_ty);

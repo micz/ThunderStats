@@ -95,8 +95,8 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper.
 |---|---|
 | `ChartTime.vue` | Hourly sent/received distribution (bar chart) |
 | `ChartWeekDays.vue` | Sent/received per weekday |
-| `ChartManyDays.vue` | Daily/weekly/monthly/yearly line or bar chart for a date range |
-| `ChartCustomQry.vue` | Chart for custom query results, adapts to selected aggregation level |
+| `ChartManyDays.vue` | Daily/weekly/monthly/yearly bar chart for a date range. Supports stacked bars (used by the Received chart to show inbox messages as a red segment on top of non-inbox). Datalabels show stacked totals. |
+| `ChartCustomQry.vue` | Chart for custom query results, adapts to selected aggregation level. Accepts `is_comparing` prop to enable legend, tooltips, and suppress Period B datalabels when comparing periods. |
 | `ChartInboxZeroDates.vue` | Timeline of inbox zero achievements |
 | `ChartInboxZeroDatesExtended.vue` | Extended inbox zero history |
 | `ChartInboxZeroFolders.vue` | Inbox zero by folder |
@@ -112,10 +112,10 @@ Small display components that show a single statistic value.
 
 | File | Description |
 |---|---|
-| `CounterSentReceived.vue` | Shows total sent and received counts |
+| `CounterSentReceived.vue` | Shows total sent and received counts. Accepts optional `show_internal_percent` and `internal_percent` props to display the internal mail percentage (based on configured internal domains) when enabled. |
 | `CounterInbox.vue` | Shows current inbox count |
 | `CounterInboxPercent.vue` | Shows inbox zero percentage |
-| `CounterYesterdayThisTime.vue` | Compares current count to yesterday at the same time |
+| `CounterYesterdayThisTime.vue` | Compares current count to yesterday (or last business day, or user-chosen day) at the same time. The day label is clickable and opens an inline date picker to select a custom comparison day. Emits `customDaySelected` event. |
 | `CounterManyDays_Table.vue` | Summary table (max/min/avg) for many-days view |
 | `CounterManyDays_Row.vue` | A single row within the many-days summary table |
 
@@ -141,7 +141,7 @@ Composite components that combine multiple data points or sub-charts.
 | `OPTAB_Main.vue` | Basic settings (number of days, involved count, etc.) |
 | `OPTAB_Advanced.vue` | Advanced settings (duplicate filtering, archive inclusion, per-account settings) |
 | `OPTAB_BusinessDays.vue` | Configure which days are business days; define custom holidays; Easter detection |
-| `OPTAB_CustomIds.vue` | Define custom email identities for sent mail detection |
+| `OPTAB_CustomIds.vue` | "Identities & Domains" tab: define custom email identities for sent mail detection, and configure per-account Internal Domains (domain lists that identify domains belonging to the user's organization, used to distinguish internal from external email traffic) |
 | `OPTAB_License.vue` | Displays the GPL v3 license text |
 | `OPTAB_Info.vue` | Add-on version and info |
 

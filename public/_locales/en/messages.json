@@ -737,6 +737,10 @@
     "message": "Advanced Filters",
     "description": ""
   },
+  "ResetAdvFilters": {
+    "message": "Reset filters",
+    "description": ""
+  },
   "ChooseFoldersFilter": {
     "message": "Choose folders",
     "description": ""

@@ -42,7 +42,7 @@
                 </div>
                 <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
                 <div id="customqry_adv_filters" v-if="show_advanced_filters">
-                  <div class="adv_filters_main_title">__MSG_AdvFilters__</div>
+                  <div class="adv_filters_title_row"><div class="adv_filters_main_title">__MSG_AdvFilters__</div><button type="button" class="btn_small btn_small_single" :disabled="!advanced_filters_set" @click="resetAdvFilters">__MSG_ResetAdvFilters__</button></div>
                   <table id="customqry_adv_filters_table">
                     <tr>
                       <td>
@@ -764,6 +764,15 @@ const updateAdvFiltersSet = () => {
   }
 
   advanced_filters_set.value = out_value;
+}
+
+function resetAdvFilters() {
+  filterFolder_ref.value.clear();
+  filterSubject.value = "";
+  filterReadUnread.value = 0;
+  filterFlaggedUnflagged.value = 0;
+  updateAdvFiltersSet();
+  updateAdvFiltersPosition();
 }
 
 function openBookmarkMenu(e){

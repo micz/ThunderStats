@@ -322,12 +322,18 @@ td.align_end {
   color: white;
 }
 
-.adv_filters_main_title{
-  font-weight: bold;
-  font-size: 1.05em;
+.adv_filters_title_row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   border-bottom: 2px solid #f1f9fd;
   padding-bottom: 3px;
   margin-bottom: 9px;
+}
+
+.adv_filters_main_title{
+  font-weight: bold;
+  font-size: 1.05em;
 }
 
 #filterFolder_container{

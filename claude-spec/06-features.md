@@ -62,6 +62,7 @@ Advanced filtering and analysis for an arbitrary date range.
 - **Read/Unread** — all, read only, or unread only
 - **Starred/Unstarred** — all, starred only, or unstarred only
 - **Subject keyword** — filter messages containing a keyword in the subject
+- **Reset button** — clears all advanced filters back to defaults; disabled when no filters are active
 
 #### Compare Periods
 - Toggle button enables comparison mode

@@ -446,9 +446,20 @@ export class thunderStastsCore {
                 if (tags[tag]) {
                   tags[tag].count++;
                   tags[tag].sent++;
+                  if (sent_has_internal && !sent_has_external) {
+                    tags[tag].sent_internal = (tags[tag].sent_internal || 0) + 1;
+                  } else {
+                    tags[tag].sent_external = (tags[tag].sent_external || 0) + 1;
+                  }
                 } else {
                   this.tsLog.error("tag: " + tag + " not found!");
                 }
+              }
+              // group by folder - internal/external
+              if (sent_has_internal && !sent_has_external) {
+                folders[message.folder.id].sent_internal = (folders[message.folder.id].sent_internal || 0) + 1;
+              } else {
+                folders[message.folder.id].sent_external = (folders[message.folder.id].sent_external || 0) + 1;
               }
               // check recipients
               //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
@@ -555,9 +566,20 @@ export class thunderStastsCore {
                 if (tags[tag]) {
                   tags[tag].count++;
                   tags[tag].received++;
+                  if (is_received_internal) {
+                    tags[tag].received_internal = (tags[tag].received_internal || 0) + 1;
+                  } else {
+                    tags[tag].received_external = (tags[tag].received_external || 0) + 1;
+                  }
                 } else {
                   this.logger.error("tag: " + tag + " not found!");
                 }
+              }
+              // group by folder - internal/external
+              if (is_received_internal) {
+                folders[message.folder.id].received_internal = (folders[message.folder.id].received_internal || 0) + 1;
+              } else {
+                folders[message.folder.id].received_external = (folders[message.folder.id].received_external || 0) + 1;
               }
             }
           }

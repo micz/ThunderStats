@@ -266,14 +266,22 @@ export const tsExport = {
         const tagKey = browser.i18n.getMessage('Tags');
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
-    
+        const sentIntKey = sentKey + ' ' + browser.i18n.getMessage('InternalMailPercent');
+        const sentExtKey = sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel');
+        const rcvdIntKey = rcvdKey + ' ' + browser.i18n.getMessage('InternalMailPercent');
+        const rcvdExtKey = rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel');
+
         for (let tag in json) {
             let mailData = json[tag];
             const obj = {};
             obj[tagKey] =  tsStore.tags_list[tag].tag;
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
-            
+            obj[sentIntKey] = mailData.sent_internal || 0;
+            obj[sentExtKey] = mailData.sent_external || 0;
+            obj[rcvdIntKey] = mailData.received_internal || 0;
+            obj[rcvdExtKey] = mailData.received_external || 0;
+
             resultArray.push(obj);
         }
 
@@ -286,17 +294,25 @@ export const tsExport = {
         const tagKey = browser.i18n.getMessage('Folders');
         const sentKey = browser.i18n.getMessage('TimeChart.Sent');
         const rcvdKey = browser.i18n.getMessage('TimeChart.Rcvd');
-    
+        const sentIntKey = sentKey + ' ' + browser.i18n.getMessage('InternalMailPercent');
+        const sentExtKey = sentKey + ' ' + browser.i18n.getMessage('ExternalMailLabel');
+        const rcvdIntKey = rcvdKey + ' ' + browser.i18n.getMessage('InternalMailPercent');
+        const rcvdExtKey = rcvdKey + ' ' + browser.i18n.getMessage('ExternalMailLabel');
+
         for (let folder in json) {
             let mailData = json[folder];
             const obj = {};
             obj[tagKey] = tsCoreUtils.getFolderPath(folder);
             obj[sentKey] = mailData.sent;
             obj[rcvdKey] = mailData.received;
-            
+            obj[sentIntKey] = mailData.sent_internal || 0;
+            obj[sentExtKey] = mailData.sent_external || 0;
+            obj[rcvdIntKey] = mailData.received_internal || 0;
+            obj[rcvdExtKey] = mailData.received_external || 0;
+
             resultArray.push(obj);
         }
-    
+
         return resultArray;
     },
 

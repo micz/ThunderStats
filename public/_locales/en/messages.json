@@ -769,6 +769,18 @@
     "message": "Internal",
     "description": ""
   },
+  "ExternalMailLabel": {
+    "message": "External",
+    "description": ""
+  },
+  "Yes": {
+    "message": "Yes",
+    "description": ""
+  },
+  "No": {
+    "message": "No",
+    "description": ""
+  },
   "InternalDomainsNotConfiguredWarning": {
     "message": "No internal domains configured. Please configure them in the \"Identities & Domains\" tab.",
     "description": ""

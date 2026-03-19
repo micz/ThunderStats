@@ -98,7 +98,7 @@ export const tsUtils = {
     
         while (currentDate <= toDate) {
             let formattedDate = this.dateToYYYYMMDD(currentDate);
-            dateArray[formattedDate] = { count: 0, sent: 0, received: 0, inbox: 0 };
+            dateArray[formattedDate] = { count: 0, sent: 0, received: 0, inbox: 0, sent_internal: 0, sent_external: 0, received_internal: 0, received_external: 0 };
             currentDate.setDate(currentDate.getDate() + 1); // Increment the date by one day
         }
         return dateArray;
@@ -111,7 +111,7 @@ export const tsUtils = {
       while (currentDate <= toDate) {
           let weekKey = this.dateToYYYYWW(currentDate);
           if (!weekArray[weekKey]) {
-              weekArray[weekKey] = { count: 0, sent: 0, received: 0, inbox: 0 };
+              weekArray[weekKey] = { count: 0, sent: 0, received: 0, inbox: 0, sent_internal: 0, sent_external: 0, received_internal: 0, received_external: 0 };
           }
           currentDate.setDate(currentDate.getDate() + 1);
       }
@@ -125,7 +125,7 @@ export const tsUtils = {
       while (currentDate <= toDate) {
           let monthKey = this.dateToYYYYMM(currentDate);
           if (!monthArray[monthKey]) {
-              monthArray[monthKey] = { count: 0, sent: 0, received: 0, inbox: 0 };
+              monthArray[monthKey] = { count: 0, sent: 0, received: 0, inbox: 0, sent_internal: 0, sent_external: 0, received_internal: 0, received_external: 0 };
           }
           currentDate.setDate(currentDate.getDate() + 1);
       }
@@ -139,7 +139,7 @@ export const tsUtils = {
       while (currentDate <= toDate) {
           let yearKey = this.dateToYYYY(currentDate);
           if (!yearArray[yearKey]) {
-              yearArray[yearKey] = { count: 0, sent: 0, received: 0, inbox: 0 };
+              yearArray[yearKey] = { count: 0, sent: 0, received: 0, inbox: 0, sent_internal: 0, sent_external: 0, received_internal: 0, received_external: 0 };
           }
           currentDate.setDate(currentDate.getDate() + 1);
       }

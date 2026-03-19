@@ -312,6 +312,10 @@ export class thunderStastsCore {
         msg_hours[i] = {};
         msg_hours[i].sent = 0;
         msg_hours[i].received = 0;
+        msg_hours[i].sent_internal = 0;
+        msg_hours[i].sent_external = 0;
+        msg_hours[i].received_internal = 0;
+        msg_hours[i].received_external = 0;
       }
 
       let msg_weekdays = {};
@@ -319,6 +323,10 @@ export class thunderStastsCore {
         msg_weekdays[i] = {};
         msg_weekdays[i].sent = 0;
         msg_weekdays[i].received = 0;
+        msg_weekdays[i].sent_internal = 0;
+        msg_weekdays[i].sent_external = 0;
+        msg_weekdays[i].received_internal = 0;
+        msg_weekdays[i].received_external = 0;
       }
 
       for await (let message of messages) {
@@ -397,7 +405,14 @@ export class thunderStastsCore {
               // group by domain
               let allRecipients = [...message.recipients, ...message.ccList, ...message.bccList];
               let domains_array = tsCoreUtils.extractDomains(allRecipients);
+              let sent_has_internal = false;
+              let sent_has_external = false;
               for (let domain of domains_array) {
+                if (domainMatcher.matches(domain)) {
+                  sent_has_internal = true;
+                } else {
+                  sent_has_external = true;
+                }
                 if (domains[domain]) {
                   domains[domain].count++;
                   domains[domain].sent++;
@@ -409,6 +424,22 @@ export class thunderStastsCore {
                     internal: domainMatcher.matches(domain)
                   };
                 }
+              }
+              // internal/external sent counters
+              if (sent_has_internal && !sent_has_external) {
+                dates[date_message_string].sent_internal++;
+                dates_weeks[date_week_string].sent_internal++;
+                dates_months[date_month_string].sent_internal++;
+                dates_years[date_year_string].sent_internal++;
+                msg_hours[hour_message].sent_internal++;
+                msg_weekdays[date_message.getDay()].sent_internal++;
+              } else {
+                dates[date_message_string].sent_external++;
+                dates_weeks[date_week_string].sent_external++;
+                dates_months[date_month_string].sent_external++;
+                dates_years[date_year_string].sent_external++;
+                msg_hours[hour_message].sent_external++;
+                msg_weekdays[date_message.getDay()].sent_external++;
               }
               // group by tag
               for (let tag of message.tags) {
@@ -491,6 +522,7 @@ export class thunderStastsCore {
               msg_weekdays[date_message.getDay()].received++;
               // group by domain
               let curr_domain = tsCoreUtils.extractDomain(key_author);
+              let is_received_internal = domainMatcher.matches(curr_domain);
               if (domains[curr_domain]) {
                 domains[curr_domain].count++;
                 domains[curr_domain].received++;
@@ -499,8 +531,24 @@ export class thunderStastsCore {
                   count: 1,
                   sent: 0,
                   received: 1,
-                  internal: domainMatcher.matches(curr_domain)
+                  internal: is_received_internal
                 };
+              }
+              // internal/external received counters
+              if (is_received_internal) {
+                dates[date_message_string].received_internal++;
+                dates_weeks[date_week_string].received_internal++;
+                dates_months[date_month_string].received_internal++;
+                dates_years[date_year_string].received_internal++;
+                msg_hours[hour_message].received_internal++;
+                msg_weekdays[date_message.getDay()].received_internal++;
+              } else {
+                dates[date_message_string].received_external++;
+                dates_weeks[date_week_string].received_external++;
+                dates_months[date_month_string].received_external++;
+                dates_years[date_year_string].received_external++;
+                msg_hours[hour_message].received_external++;
+                msg_weekdays[date_message.getDay()].received_external++;
               }
               // group by tag
               for (let tag of message.tags) {

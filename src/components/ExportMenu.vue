@@ -28,6 +28,10 @@ const props = defineProps({
   singleDay: {
     type: Date,
     default: new Date()
+  },
+  showInternalExternal: {
+    type: Boolean,
+    default: false
   }
   // additional_css_class: {
   //   type: String,
@@ -38,6 +42,7 @@ const props = defineProps({
 let export_data = computed(() => props.export_data)
 let currentTab = computed(() => props.currentTab)
 let singleDay = computed(() => props.singleDay)
+let showInternalExternal = computed(() => props.showInternalExternal)
 // let css_class = computed(() => "export_data " + props.additional_css_class)
 
 let exportdata_menu_dom_id = ref("exportdata_menu_" + currentTab.value);
@@ -356,48 +361,49 @@ function openExportMenu(e){
 
 function exportData(data, export_type, export_name) {
     // console.log(">>>>>>>>>>>>> exportData data: " + JSON.stringify(data));
+    let inclIntExt = showInternalExternal.value;
 
     switch(export_type) {
         case "correspondents":
-            let output_data = tsExport.transformCorrespondentsJsonToArray(data);
+            let output_data = tsExport.transformCorrespondentsJsonToArray(data, inclIntExt ? (export_data.value[tsExport.export.domains.type] || null) : null);
             tsExport.downloadCSV(output_data, export_name);
           break;
         case 'daily_mails':
           // console.log(">>>>>>> exportData daily_mails: " + JSON.stringify(data));
-          let output_data_daily_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYYMMDD");
+          let output_data_daily_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYYMMDD", inclIntExt);
           // console.log(">>>>>>>> output_data_daily_mails: " + JSON.stringify(output_data_daily_mails));
           tsExport.downloadCSV(output_data_daily_mails, export_name);
           break;
         case 'weekly_mails':
-          let output_data_weekly_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYYWW");
+          let output_data_weekly_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYYWW", inclIntExt);
           tsExport.downloadCSV(output_data_weekly_mails, export_name);
           break;
         case 'monthly_mails':
-          let output_data_monthly_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYYMM");
+          let output_data_monthly_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYYMM", inclIntExt);
           tsExport.downloadCSV(output_data_monthly_mails, export_name);
           break;
         case 'yearly_mails':
-          let output_data_yearly_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYY");
+          let output_data_yearly_mails = tsExport.transformPeriodMailsJsonToArray(data, "YYYY", inclIntExt);
           tsExport.downloadCSV(output_data_yearly_mails, export_name);
           break;
         case "time_emails":
-          let output_data_time_emails = tsExport.transformTimeMailsJsonToArray(data);
+          let output_data_time_emails = tsExport.transformTimeMailsJsonToArray(data, inclIntExt);
           tsExport.downloadCSV(output_data_time_emails, export_name);
           break;
         case "weekdays":
-          let output_data_weekdays = tsExport.transformWeekdaysJsonToArray(data);
+          let output_data_weekdays = tsExport.transformWeekdaysJsonToArray(data, inclIntExt);
           tsExport.downloadCSV(output_data_weekdays, export_name);
           break;
         case "tags":
-          let output_data_tags = tsExport.transformTagsJsonToArray(data);
+          let output_data_tags = tsExport.transformTagsJsonToArray(data, inclIntExt);
           tsExport.downloadCSV(output_data_tags, export_name);
           break;
         case "folders":
-          let output_data_folders = tsExport.transformFoldersJsonToArray(data);
+          let output_data_folders = tsExport.transformFoldersJsonToArray(data, inclIntExt);
           tsExport.downloadCSV(output_data_folders, export_name);
           break;
         case "domains":
-          let output_data_domains = tsExport.transformDomainsJsonToArray(data);
+          let output_data_domains = tsExport.transformDomainsJsonToArray(data, inclIntExt);
           tsExport.downloadCSV(output_data_domains, export_name);
           break;
         default: alert("export error: " + export_type);

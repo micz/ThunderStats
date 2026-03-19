@@ -24,16 +24,16 @@
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
         <tab id="tab-today" name="__MSG_Today__">
-            <TAB_Today :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateYesterdayTabName="updateYesterdayTabName" ref="TAB_Today_ref" />
+            <TAB_Today :accountEmails="accountEmails" :internalDomains="internalDomains" @updateElapsed="updateElapsed" @updateYesterdayTabName="updateYesterdayTabName" ref="TAB_Today_ref" />
         </tab>
         <tab id="tab-yesterday" :name="_yesterday_text">
-          <TAB_Yesterday :accountEmails="accountEmails" @updateElapsed="updateElapsed" @updateTabName="updateYesterdayTabName" ref="TAB_Yesterday_ref" />
+          <TAB_Yesterday :accountEmails="accountEmails" :internalDomains="internalDomains" @updateElapsed="updateElapsed" @updateTabName="updateYesterdayTabName" ref="TAB_Yesterday_ref" />
         </tab>
         <tab id="tab-manydays" :name="_many_days_text">
-          <TAB_ManyDays :accountEmails="accountEmails" @updateElapsed="updateElapsed" ref="TAB_ManyDays_ref" />
+          <TAB_ManyDays :accountEmails="accountEmails" :internalDomains="internalDomains" @updateElapsed="updateElapsed" ref="TAB_ManyDays_ref" />
         </tab>
         <tab id="tab-customqry" name="__MSG_CustomQry__">
-          <TAB_CustomQry @updateCustomQry="updateCustomQry" :accountEmails="accountEmails" @updateElapsed="updateElapsed" @customQryUserCancelled="customQryUserCancelled" ref="TAB_CustomQry_ref" />
+          <TAB_CustomQry @updateCustomQry="updateCustomQry" :accountEmails="accountEmails" :internalDomains="internalDomains" @updateElapsed="updateElapsed" @customQryUserCancelled="customQryUserCancelled" ref="TAB_CustomQry_ref" />
         </tab>
         <tab id="tab-info" name="__MSG_Info__">
             <TAB_Info />
@@ -57,6 +57,7 @@ import { tsPrefs } from '@statslib/mzts-options.js';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsUtils } from '@statslib/mzts-utils';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 
   let statsTabs_ref = ref(null);
   let TAB_Today_ref = ref(null);
@@ -67,6 +68,7 @@ import { tsUtils } from '@statslib/mzts-utils';
   
   let activeAccount = ref(0);
   let accountEmails = ref([]);
+  let internalDomains = ref([]);
   let _many_days_text = ref("");
   let _yesterday_text = ref("__MSG_Yesterday__");
   let cache_lifetime = ref(120000);
@@ -184,6 +186,17 @@ import { tsUtils } from '@statslib/mzts-utils';
     activeAccount.value = account_id;
     accountEmails.value = await tsCore.getAccountEmails(account_id);
     tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
+    let rawInternalDomains = await tsCoreUtils.getAccountInternalDomains(account_id);
+    if(account_id == 0) {
+      let allDomains = [];
+      for(let acc in rawInternalDomains) {
+        allDomains.push(...rawInternalDomains[acc]);
+      }
+      internalDomains.value = allDomains;
+    } else {
+      internalDomains.value = Array.isArray(rawInternalDomains) ? rawInternalDomains : [];
+    }
+    tsLog.log("internalDomains: " + JSON.stringify(internalDomains.value));
 //    resetStatsDone();
     nextTick(() => {
       // console.log(">>>>>>>>>>>>>> ThunderStatsView updateStats statsTabs_ref.value.activeTabHash: " + statsTabs_ref.value.activeTabHash);

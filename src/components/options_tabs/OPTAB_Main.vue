@@ -83,6 +83,14 @@
      <label><span class="dims_label" @click="toggle_options">__MSG_prefs_customqry_loaddata_when_opening_addon__</span></label>
       </td>
     </tr>
+    <tr>
+      <td>
+        <label><input type="checkbox" id="show_internal_mail_percent" name="show_internal_mail_percent" class="option-input" /></label>
+      </td>
+      <td>
+        <label><span class="dims_label" @click="toggle_options">__MSG_prefs_show_internal_mail_percent__</span></label>
+      </td>
+    </tr>
   </table>
     <table class="miczPrefs" style="margin-top: 10px;">
       <tr>
@@ -203,7 +211,7 @@ import { tsStore } from '@statslib/mzts-store';
     });
     tsLog.log("onMounted");
   });
-  
+
   onUnmounted(() => {
     tsLog.log("onUnmounted");
   });
@@ -253,5 +261,9 @@ import { tsStore } from '@statslib/mzts-store';
 <style scoped>
 #datepicker_locale{
   width: 2rem;
+}
+.warning-no-domains {
+  color: red;
+  font-size: small;
 }
 </style>

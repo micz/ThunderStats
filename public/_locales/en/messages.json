@@ -328,7 +328,7 @@
     "description": ""
   },
   "TabCustomIdentities.label": {
-    "message": "Custom Identities",
+    "message": "Identities & Domains",
     "description": ""
   },
   "Identities": {
@@ -369,6 +369,18 @@
   },
   "CustomIdentititesAccount.Info": {
     "message": "Add an email address per line, or separated by a comma. Use * as a wildcard (e.g., *@example.com) or just @domain.com to match all addresses at a domain.",
+    "description": ""
+  },
+  "InternalDomainsAccount": {
+    "message": "Internal Domains for the selected Account",
+    "description": ""
+  },
+  "InternalDomainsAccount.Desc": {
+    "message": "Internal domains are domains belonging to your organization. They are used to distinguish internal from external email traffic in your statistics.",
+    "description": ""
+  },
+  "InternalDomainsAccount.Info": {
+    "message": "Add a domain per line, or separated by a comma. Use * as a wildcard (e.g., *.example.com to match all subdomains).",
     "description": ""
   },
   "ActivateDebug": {
@@ -747,6 +759,30 @@
   },
   "prefs_inbox_percent_remaining": {
     "message": "Show the percentage of mails still in the inbox",
+    "description": ""
+  },
+  "prefs_show_internal_mail_percent": {
+    "message": "Show the percentage of internal mails (requires Internal Domains to be configured)",
+    "description": ""
+  },
+  "InternalMailPercent": {
+    "message": "Internal",
+    "description": ""
+  },
+  "ExternalMailLabel": {
+    "message": "External",
+    "description": ""
+  },
+  "Yes": {
+    "message": "Yes",
+    "description": ""
+  },
+  "No": {
+    "message": "No",
+    "description": ""
+  },
+  "InternalDomainsNotConfiguredWarning": {
+    "message": "No internal domains configured. Please configure them in the \"Identities & Domains\" tab.",
     "description": ""
   },
   "TimeDay": {

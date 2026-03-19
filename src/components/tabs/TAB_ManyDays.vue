@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <ExportMenu :export_data="_export_data" currentTab="tab-manydays" v-if="job_done" />
+    <ExportMenu :export_data="_export_data" currentTab="tab-manydays" :showInternalExternal="show_internal_mail_percent" v-if="job_done" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ sent_total }}</span><span v-if="sent_today > 0"> (+<span>{{ sent_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/><InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalInfoTooltip_text"></InfoTooltip></h2>
@@ -94,6 +94,10 @@ const props = defineProps({
         type: Array,
         default: []
     },
+    internalDomains: {
+        type: Array,
+        default: () => []
+    },
 });
 
 const emit = defineEmits(['updateElapsed']);
@@ -103,6 +107,7 @@ var tsCore = null;
 
 let top_recipients_title = ref("");
 let top_senders_title = ref("");
+let show_internal_mail_percent = ref(false);
 
 let sent_total = ref(0);
 let sent_today = ref(0);
@@ -239,6 +244,7 @@ async function updateData() {
         await new Promise(r => setTimeout(r, 100));
     }
     let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
+    show_internal_mail_percent.value = (await tsPrefs.getPref("show_internal_mail_percent")) && props.internalDomains.length > 0;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     await Promise.all([getManyDaysData()]);
@@ -422,7 +428,7 @@ async function updateData() {
     function getManyDaysData () {
         return new Promise(async (resolve) => {
             let start_time = performance.now();
-            let result_many_days = await tsCore.getManyDaysData(tsStore.current_account_id, props.accountEmails);
+            let result_many_days = await tsCore.getManyDaysData(tsStore.current_account_id, props.accountEmails, props.internalDomains);
             tsLog.log("result_manydays_data: " + JSON.stringify(result_many_days, null, 2));
             // export data
             _export_data.value[tsExport.export.time_emails.type] = result_many_days.msg_hours;

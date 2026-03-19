@@ -84,6 +84,8 @@ let legend_id = computed(() => props.chart_id + "-legend");
 let chart_height = computed(() => props.chart_height);
 let chartData_length = computed(() => (chartData.value.datasets.length + Math.floor(Math.random() * 101)));
 
+let internalFlags = computed(() => props.chartData.internal_flags || []);
+
 let chartData = computed(() => {
   if (props.chartData.datasets && props.chartData.datasets.length > 0) {
   let data = tsUtils.safeConcat(props.chartData.datasets, 0)
@@ -155,7 +157,11 @@ var chartOptions = ref({
             min: 0,
             ticks: {
               callback: function(value, index, ticks) {
-                          return this.getLabelForValue(value);
+                          let label = this.getLabelForValue(value);
+                          if (internalFlags.value && internalFlags.value[index]) {
+                            return [label, '(internal)'];
+                          }
+                          return label;
               },
             },
           },

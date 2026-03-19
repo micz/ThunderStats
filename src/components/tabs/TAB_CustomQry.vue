@@ -19,7 +19,7 @@
 -->
 
 <template>
-        <ExportMenu :export_data="_export_data" :currentTab="tabId" v-if="job_done" :singleDay="singleDay" />
+        <ExportMenu :export_data="_export_data" :currentTab="tabId" :showInternalExternal="show_internal_mail_percent" v-if="job_done" :singleDay="singleDay" />
         <div id="customqry_dashboard">
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
@@ -119,7 +119,7 @@
     <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
         <span class="list_heading_date" v-html="singleday_date_str"></span>
-        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="sent_total" :_rcvd="rcvd_total" />
+        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="sent_total" :_rcvd="rcvd_total" :show_internal_percent="show_internal_mail_percent && do_single_day" :internal_sent_percent="internal_sent_percent" :internal_rcvd_percent="internal_rcvd_percent" />
         <div class="singleday_spacing"></div>
         <ChartTime :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_chart" :day_type="1" />
     </div>
@@ -231,6 +231,10 @@ const props = defineProps({
         type: Array,
         default: []
     },
+    internalDomains: {
+        type: Array,
+        default: () => []
+    },
 });
 
 let filterFolder_ref = ref(null);
@@ -327,6 +331,9 @@ let top_senders_title = ref("");
 
 let sent_total = ref(0);
 let rcvd_total = ref(0);
+let show_internal_mail_percent = ref(false);
+let internal_sent_percent = ref('0.00%');
+let internal_rcvd_percent = ref('0.00%');
 
 let is_loading_counter_sent_rcvd = ref(true);
 let is_loading_counter_customqry = ref(true);
@@ -371,6 +378,7 @@ let chartdata_customqry_weekdays_rcvd = ref([]);
 let chartdata_domains_sent = ref([]);
 let chartdata_domains_rcvd = ref([]);
 let chartdata_domains_labels = ref([]);
+let chartdata_domains_internal_flags = ref([]);
 let chartdata_folders_sent = ref([]);
 let chartdata_folders_rcvd = ref([]);
 let chartdata_folders_labels = ref([]);
@@ -925,6 +933,7 @@ async function updateData() {
     do_progressive = prefs._time_chart_progressive;
     let accounts_adv_settings = prefs.accounts_adv_settings;
     inbox_percent_remaining.value = await tsPrefs.getPref("inbox_percent_remaining");
+    show_internal_mail_percent.value = (await tsPrefs.getPref("show_internal_mail_percent")) && props.internalDomains.length > 0;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
@@ -1248,6 +1257,7 @@ async function updateData() {
         domains_chart_height.value = String(chart_container_height) + "px";
     }
     chartData_Domains.value.labels = _domains_labels;
+    chartData_Domains.value.internal_flags = chartdata_domains_internal_flags.value;
     chartData_Domains.value.datasets = [];
     chartData_Domains.value.datasets.push({
         label: 'tsent',
@@ -1413,7 +1423,7 @@ async function updateData() {
             advFilters.flagged_unflagged = filterFlaggedUnflagged.value;
             advFilters.filterSubject = filterSubject.value.trim();
             tsLog.log("advFilters: " + JSON.stringify(advFilters, null, 2));
-            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters);
+            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters, props.internalDomains);
             tsLog.log("result_customqry: " + JSON.stringify(result_customqry, null, 2));
             // export data
             if(!do_single_day.value){
@@ -1440,6 +1450,11 @@ async function updateData() {
             sent_total.value = result_customqry.sent;
             rcvd_total.value = result_customqry.received;
             tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
+            if(show_internal_mail_percent.value && do_single_day.value) {
+                let internalData = tsCoreUtils.getInternalMailPercent(result_customqry.domains);
+                internal_sent_percent.value = internalData.sentPercent;
+                internal_rcvd_percent.value = internalData.receivedPercent;
+            }
             is_loading_counter_sent_rcvd.value = false;
             if(!do_single_day.value){
               // chart day hours
@@ -1517,6 +1532,7 @@ async function updateData() {
             chartdata_domains_sent.value = domains_data.dataset_sent;
             chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
             chartdata_domains_labels.value = domains_data.labels;
+            chartdata_domains_internal_flags.value = domains_data.internal_flags || [];
             is_loading_domains_chart.value = false;
             // folders
             const folders_data = tsCoreUtils.transformCountDataToDataset(result_customqry.folders, false, true);
@@ -1539,7 +1555,7 @@ async function updateData() {
               fromDateB.setHours(0, 0, 0, 0);
               let toDateB = new Date(dateQryB_end.value);
               toDateB.setHours(23, 59, 59, 999);
-              result_customqry_B = await tsCore.getCustomQryData(fromDateB, toDateB, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters);
+              result_customqry_B = await tsCore.getCustomQryData(fromDateB, toDateB, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters, props.internalDomains);
               tsLog.log("result_customqry_B: " + JSON.stringify(result_customqry_B, null, 2));
               sent_total_B.value = result_customqry_B.sent;
               rcvd_total_B.value = result_customqry_B.received;

@@ -19,12 +19,12 @@
 -->
 
 <template>
-    <ExportMenu :export_data="_export_data" currentTab="tab-today" v-if="job_done" />
+    <ExportMenu :export_data="_export_data" currentTab="tab-today" :showInternalExternal="show_internal_mail_percent" v-if="job_done" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
         <span id="today_date" class="list_heading_date" v-html="today_date"></span>
-        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_today_sent" :_rcvd="counter_today_rcvd" />
+        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="counter_today_sent" :_rcvd="counter_today_rcvd" :show_internal_percent="show_internal_mail_percent" :internal_sent_percent="internal_sent_percent" :internal_rcvd_percent="internal_rcvd_percent" />
         <CounterYesterdayThisTime :is_loading="is_loading_counter_yesterday_thistime" :sent="counter_yesterday_thistime_sent" :rcvd="counter_yesterday_thistime_rcvd" :is_last_business_day="is_last_business_day" :last_bday_date="last_bday_text" :is_custom_comparison_day="is_custom_comparison_day" :custom_comparison_day_text="custom_comparison_day_text" :datepicker_format="datepickerFormat" :datepicker_locale="prefLocale" :is_dark="tsStore.darkmode" :is_job_done="job_done" @customDaySelected="onCustomComparisonDaySelected" />
         <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
         <ChartTime :chartData="chartData_Today" :is_loading="is_loading_today_chart" :is_last_business_day="is_last_business_day" :is_custom_comparison_day="is_custom_comparison_day" :custom_comparison_day_text="custom_comparison_day_text" :day_type="0" />
@@ -104,6 +104,10 @@ const props = defineProps({
         type: Array,
         default: []
     },
+    internalDomains: {
+        type: Array,
+        default: () => []
+    },
 });
 
 const emit = defineEmits(['updateElapsed','updateYesterdayTabName']);
@@ -156,6 +160,9 @@ let is_loading_folders_chart = ref(true);
 
 let counter_today_sent = ref(0);
 let counter_today_rcvd = ref(0);
+let show_internal_mail_percent = ref(false);
+let internal_sent_percent = ref('0.00%');
+let internal_rcvd_percent = ref('0.00%');
 let counter_yesterday_thistime_sent = ref(0);
 let counter_yesterday_thistime_rcvd = ref(0);
 let counter_many_days_sent_total = ref(0);
@@ -220,6 +227,7 @@ let chartdata_inboxzero_dates = ref([]);
 let chartdata_domains_sent = ref([]);
 let chartdata_domains_rcvd = ref([]);
 let chartdata_domains_labels = ref([]);
+let chartdata_domains_internal_flags = ref([]);
 let chartdata_folders_sent = ref([]);
 let chartdata_folders_rcvd = ref([]);
 let chartdata_folders_labels = ref([]);
@@ -272,6 +280,7 @@ async function updateData() {
     }
     let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
     inbox_percent_remaining.value = await tsPrefs.getPref("inbox_percent_remaining");
+    show_internal_mail_percent.value = (await tsPrefs.getPref("show_internal_mail_percent")) && props.internalDomains.length > 0;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     getManyDaysData();
@@ -308,6 +317,7 @@ async function updateData() {
         domains_chart_height.value = String(domains_container_height) + "px";
     }
     chartData_Domains.value.labels = chartdata_domains_labels.value;
+    chartData_Domains.value.internal_flags = chartdata_domains_internal_flags.value;
     chartData_Domains.value.datasets = [];
     chartData_Domains.value.datasets.push({
         label: 'tsent',
@@ -385,10 +395,15 @@ async function updateData() {
     // get Today
     function getTodayData () {
         return new Promise(async (resolve) => {
-            let result_today = await tsCore.getToday(tsStore.current_account_id, props.accountEmails);
+            let result_today = await tsCore.getToday(tsStore.current_account_id, props.accountEmails, props.internalDomains);
             tsLog.log("result_today: " + JSON.stringify(result_today, null, 2));
             counter_today_rcvd.value = result_today.received;
             counter_today_sent.value = result_today.sent;
+            if(show_internal_mail_percent.value) {
+                let internalData = tsCoreUtils.getInternalMailPercent(result_today.domains);
+                internal_sent_percent.value = internalData.sentPercent;
+                internal_rcvd_percent.value = internalData.receivedPercent;
+            }
             is_loading_counter_sent_rcvd.value = false;
             // export data
             _export_data.value[tsExport.export.time_emails.type] = result_today.msg_hours;
@@ -424,6 +439,7 @@ async function updateData() {
             chartdata_domains_sent.value = domains_data.dataset_sent;
             chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
             chartdata_domains_labels.value = domains_data.labels;
+            chartdata_domains_internal_flags.value = domains_data.internal_flags || [];
             is_loading_domains_chart.value = false;
             // folders
             const folders_data = tsCoreUtils.transformCountDataToDataset(result_today.folders, false, true);

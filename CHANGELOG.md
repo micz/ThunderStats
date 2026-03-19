@@ -5,19 +5,19 @@
 
 <h3>Version 2.4.0 - ??/??/2026</h3>
 <ul>
-      <li>Libraries updated.</li>
-      <li>Various fixes.</li>
-      <li>Correctly reloading the ThunderStats page when changing an option using the reload button.</li>
       <li>Added a comparison feature between two periods in the Custom View. [<a href="https://github.com/micz/ThunderStats/issues/80">#391</a>]</li>
       <li>In the Many Days View the graph bars show a red part if there are mails still in the inbox. This feature can be disabled in the options page [<a href="https://github.com/micz/ThunderStats/issues/80">#80</a>].</li>
       <li>Added an option to show the percentage of the daily mails still in the inbox when viewing the statistics of single day [<a href="https://github.com/micz/ThunderStats/issues/385">#385</a>].</li>
       <li>In the Today View, it is now possible to select any day to compare sent and received email data, rather than being limited to comparisons with the previous day or the last business day [<a href="https://github.com/micz/ThunderStats/issues/104">#104</a>].</li>
-      <li>Added an all e-mails option in the drop down menu of the Custom View tab [<a href="https://github.com/micz/ThunderStats/issues/149">#149</a>].</li>
+      <li>Added an "All emails" option in the drop down menu of the Custom View tab [<a href="https://github.com/micz/ThunderStats/issues/149">#149</a>].</li>
       <li>In custom identities is now possibile to use wildcards (*) [<a href="https://github.com/micz/ThunderStats/issues/178">#178</a>].</li>
       <li>Added an option to remember the last used account [<a href="https://github.com/micz/ThunderStats/issues/352">#352</a>].</li>
       <li>It is now possible to define one or more domains as internal (e.g., for an organization or company) to display the percentage of internal emails [<a href="https://github.com/micz/ThunderStats/issues/163">#163</a>].</li>
       <li>Export data can also include internal and external email counts, provided the corresponding option is enabled and domains are correctly configured [<a href="https://github.com/micz/ThunderStats/issues/321">#321</a>].</li>
-      <li>...</li>
+      <li>Added a reset button in the advenced filters of the Custom View [<a href="https://github.com/micz/ThunderStats/issues/416">#416</a>].</li>
+      <li>Fix: Correctly reloading the ThunderStats page when changing an option using the reload button.</li>
+      <li>Libraries updated.</li>
+      <li>Various fixes.</li>
 </ul>
 <h3>Version 2.3.8 - 22/12/2025</h3>
 <ul>

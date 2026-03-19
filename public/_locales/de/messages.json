@@ -160,7 +160,7 @@
         "message": "Wie funktioniert es?"
     },
     "OtherInfoText_1": {
-        "message": "Alle Statistiken werden mit Hilfe der internen Datenbank von Thunderbird errechnet und sind mit den EMail Adressen des gewählten Kontos verbunden."
+        "message": "Alle statistiken werden mit hilfe der internen datenbank von Thunderbird errechnet und sind mit den email adressen des gewählten kontos verbunden."
     },
     "OtherInfoText_2b": {
         "message": "Warten Sie bis der Indexer alle neuen Mails verarbeitet hat um die Statistik zu aktualisieren. Das Datum in der oberen rechten Ecke zeigt, wie aktuell die Daten sind."
@@ -250,7 +250,7 @@
         "message": "Arbeitstage"
     },
     "TabCustomIdentities.label": {
-        "message": "Zusätzliche Identitäten"
+        "message": "Identitäten & Domänen"
     },
     "Identities": {
         "message": "Identitäten"
@@ -271,7 +271,7 @@
         "message": "Eine benutzerdefinierte Identität ist eine E-Mail-Adresse, die sich von den für das Konto registrierten Adressen unterscheidet und mit der Sie E-Mails empfangen."
     },
     "ManageCustomIdentititesDesc_2": {
-        "message": "In der Regel handelt es sich dabei um E-Mail-Adressen von Mailinglisten, bei denen Ihre E-Mail-Adresse in keinem \"An\"- oder \"CC\"-Feld verwendet wird."
+        "message": "In der regel handelt es sich dabei um e-mail-adressen von mailinglisten, bei denen Ihre e-mail-adresse in keinem \"an\"- oder \"cc\"-feld verwendet wird."
     },
     "Account": {
         "message": "Konto"
@@ -280,7 +280,7 @@
         "message": "Zusätzliche Identitäten für das selektierte Konto"
     },
     "CustomIdentititesAccount.Info": {
-        "message": "Eine Emailadresse pro Zeile hinzufügen."
+        "message": "Fügen Sie pro Zeile eine E-Mail-Adresse hinzu oder trennen Sie diese durch ein Komma. Verwenden Sie * als Platzhalter (z. B. *@example.com) oder einfach @domain.com, um alle Adressen einer Domain zu erfassen."
     },
     "ActivateDebug": {
         "message": "Diagnose System aktivieren"
@@ -629,5 +629,77 @@
     },
     "Week": {
         "message": "Woche"
+    },
+    "ComparePeriods": {
+        "message": "Zeiträume vergleichen"
+    },
+    "PeriodBStart": {
+        "message": "Vergleichszeitraum B"
+    },
+    "ComparisonNoData": {
+        "message": "Keine Daten für den Vergleichszeitraum"
+    },
+    "PeriodA": {
+        "message": "Zeitraum A"
+    },
+    "PeriodB": {
+        "message": "Zeitraum B"
+    },
+    "ComparisonSentChange": {
+        "message": "Änderung der gesendeten Anzahl"
+    },
+    "ComparisonRcvdChange": {
+        "message": "Abweichung beim Empfang"
+    },
+    "AllEmails": {
+        "message": "Alle E-Mails"
+    },
+    "InternalDomainsAccount": {
+        "message": "Interne Domains für das ausgewählte Konto"
+    },
+    "InternalDomainsAccount.Desc": {
+        "message": "Interne Domains sind Domains, die zu Ihrer Organisation gehören. Sie dienen dazu, den internen vom externen E-Mail-Verkehr in Ihren Statistiken zu unterscheiden."
+    },
+    "InternalDomainsAccount.Info": {
+        "message": "Fügen Sie pro Zeile eine Domain hinzu oder trennen Sie diese durch ein Komma. Verwenden Sie * als Platzhalter (z. B. *.example.com, um alle Subdomains zu erfassen)."
+    },
+    "ManyDaysShowInbox": {
+        "message": "Posteingangs-E-Mails im Empfangs-Diagramm anzeigen"
+    },
+    "prefs_remember_last_account": {
+        "message": "Zuletzt verwendeten Account merken"
+    },
+    "FolderLocation_percent_remaining": {
+        "message": "E-Mails, die sich noch im Posteingang befinden"
+    },
+    "ResetAdvFilters": {
+        "message": "Filter zurücksetzen"
+    },
+    "prefs_inbox_percent_remaining": {
+        "message": "Prozentualen Anteil der E-Mails im Posteingang anzeigen"
+    },
+    "prefs_show_internal_mail_percent": {
+        "message": "Prozentualen Anteil interner E-Mails anzeigen (Konfiguration interner Domains erforderlich)"
+    },
+    "InternalMailLabel": {
+        "message": "Interne"
+    },
+    "ExternalMailLabel": {
+        "message": "Externe"
+    },
+    "Yes": {
+        "message": "Ja"
+    },
+    "No": {
+        "message": "Nein"
+    },
+    "InternalDomainsNotConfiguredWarning": {
+        "message": "Keine internen Domains konfiguriert. Bitte konfigurieren Sie diese im Tab „Identitäten & Domains“."
+    },
+    "ClickToChangeComparisonDay": {
+        "message": "Klicken, um den Vergleichstag zu ändern"
+    },
+    "WaitForProcessing": {
+        "message": "Bitte warten Sie, bis loer laufende Vorgang abgeschlossen ist"
     }
 }

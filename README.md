@@ -63,7 +63,7 @@ Then, in the root folder of the project run:
 
 `npm run build`
 
-You'll find the compiled addon in the `dist` folder.
+You'll find the compiled addon in the `dist` folder and the final `.xpi` package in the parent folder of the project root.
 
 ### Development build (without minification, auto-rebuild on changes)
 

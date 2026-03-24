@@ -129,7 +129,7 @@ export function createXpi() {
 
   // Collect extra root-level md files if they exist
   const extraFiles = [];
-  for (const mdFile of ['VENDORS.md', 'DEVELOPER.md']) {
+  for (const mdFile of ['VENDORS.md', 'DEVELOPER.md', 'LICENSE']) {
     if (fs.existsSync(mdFile)) {
       extraFiles.push({ full: mdFile, rel: mdFile });
     }

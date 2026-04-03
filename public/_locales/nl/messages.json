@@ -174,7 +174,7 @@
         "message": "Werkdagen"
     },
     "TabCustomIdentities.label": {
-        "message": "Aangepaste identiteiten"
+        "message": "Identiteiten & Domeinen"
     },
     "Identities": {
         "message": "Identiteiten"
@@ -291,7 +291,7 @@
         "message": "Aangepaste identiteiten voor de geselecteerde account"
     },
     "CustomIdentititesAccount.Info": {
-        "message": "Voeg per regel een e-mailadres toe, of gescheiden door een komma."
+        "message": "Voeg per regel een e-mailadres toe, of gescheiden door een komma. Gebruik * als een wildcard, (bijv. *@example.com) of alleen @domein.nl om met alle adressen van een domein overeen te komen."
     },
     "ActivateDebug": {
         "message": "Het debug-systeem activeren"
@@ -586,5 +586,119 @@
     },
     "InboxMailsDateSpreadingExtended": {
         "message": "Postvak IN-e-mailbeichten – Datumdetailsbeeld"
+    },
+    "AllEmails": {
+        "message": "Alle e-mailberichten"
+    },
+    "InternalDomainsAccount": {
+        "message": "Interne domeinen voor de geselecteerde account"
+    },
+    "InternalDomainsAccount.Desc": {
+        "message": "Interne domeinen zijn domeinen toebehorend aan uw organisatie. Ze worden gebruikt om intern van extern e-mailverkeer in uw statistieken te onderscheiden."
+    },
+    "InternalDomainsAccount.Info": {
+        "message": "Voeg per regel een domein toe, of gescheiden door een komma. Gebruik * als een wildcard, (bijv. *@example.com) om met alle subdomeinen overeen te komen."
+    },
+    "ManyDaysShowInbox": {
+        "message": "E-mailbericht in uw Postvak IN in de diagram Ontvangen tonen"
+    },
+    "folderspreadchart_openinfirsttab": {
+        "message": "Open vanuit het e-mailmappendiagram de map altijd in het eerste tabblad"
+    },
+    "InvolvedNum": {
+        "message": "Aantal ontvangers of afzenders om in de ‘Top’-tabellen te tonen"
+    },
+    "prefs_remember_last_account": {
+        "message": "De laatst gebruikte account onthouden"
+    },
+    "ImportantInfoText_1": {
+        "message": "Sommige e-mailproviders, zoals Gmail, hebben een ‘Archief’ map die alle berichten bevatten. Echter, dezelfde berichten zijn ook aanwezig in individuele mappen. Het meenemen van de ‘Archief’ mappen in de statistieken zou kunnen leiden tot het dubbel tellen van de berichten."
+    },
+    "InboxZeroChart": {
+        "message": "Diagram Postvak IN-leeg"
+    },
+    "FolderLocation_percent_remaining": {
+        "message": "Nog steeds in de map Postvak IN aanwezige e-mailberichten"
+    },
+    "ResetAdvFilters": {
+        "message": "Filters opnieuw instellen"
+    },
+    "prefs_inbox_percent_remaining": {
+        "message": "Toon het percentage van e-mailberichten dat nog steeds in Postvak IN staat"
+    },
+    "prefs_show_internal_mail_percent": {
+        "message": "Toon het percentage van interne e-mailberichten (vereist configuratie van interne domeinen)"
+    },
+    "InternalMailLabel": {
+        "message": "Intern"
+    },
+    "ExternalMailLabel": {
+        "message": "Extern"
+    },
+    "Yes": {
+        "message": "Ja"
+    },
+    "No": {
+        "message": "Nee"
+    },
+    "InternalDomainsNotConfiguredWarning": {
+        "message": "Geen interne domeinen geconfigureerd. Configureer deze in het tabblad ‘Identiteiten & Domeinen’."
+    },
+    "ClickToChangeComparisonDay": {
+        "message": "Klik om de vergelijkingsdatum te wijzigen"
+    },
+    "WaitForProcessing": {
+        "message": "Wacht tot het huidige proces is voltooid"
+    },
+    "WarnSearchCaseSensitive": {
+        "message": "Let op dat de zoekterm hoofdlettergevoelig is. Zoeken naar ‘tekst’ is anders dan zoeken naar ‘Test’."
+    },
+    "ComparePeriods": {
+        "message": "Periodes vergelijken"
+    },
+    "PeriodA": {
+        "message": "Periode A"
+    },
+    "PeriodB": {
+        "message": "Periode B"
+    },
+    "PeriodBStart": {
+        "message": "Periode B vergelijken"
+    },
+    "ComparisonSentChange": {
+        "message": "Verzonden wijziging"
+    },
+    "ComparisonRcvdChange": {
+        "message": "Ontvangen wijziging"
+    },
+    "ComparisonNoData": {
+        "message": "Geen gegevens voor vergelijkingsperiode"
+    },
+    "ImportantInfoText_1b": {
+        "message": "Op de pagina Geavanceerde opties kunt u hoe u deze accounts kunt beheren. Als een account een ‘gmail.com’-adres heeft, zal het correct worden ingesteld; anders moet u het handmatig instellen."
+    },
+    "ImportantInfoText_2": {
+        "message": "Als u wilt helpen ThunderStats naar een andere taal wilt vertalen of een bestaande vertaling verbeteren, dat kan! Uw bijdragen zijn van onschatbare waarde om deze aan een breder publiek beschikbaar te maken."
+    },
+    "AdvancedAccountList_Desc": {
+        "message": "Hieronder kunt u kiezen om de archiefmappen te negeren of de dubbele berichten eruit te filteren. Het filteren van berichten zal het berekenen van de statistiek langer laten duren, maar het zal betere resultaten geven. Als u de archieffunctie van Gmail niet gebruikt, kunt u kiezen om deze functie niet te activeren en eenvoudig rechtstreeks de archiefmappen uit te sluiten. Het diagram voor de lege Postvak IN-mappen zal altijd alle berichten tonen. Daarom, als een ontvangen bericht in twee mappen verschijnt, zal het op het diagram in beide mappen worden getoond."
+    },
+    "PrivacyInfoText_1": {
+        "message": "Alle gegevens worden lokaal op uw apparaat uitgevoerd. Er worden geen gegevens verzonden, gedeeld of opgeslagen op wat voor externe servers dan ook, of services van derden. Dit zorgt ervoor dat uw informatie te allen tijde privé en veilig blijft."
+    },
+    "CustomViewTooMuchDaysText": {
+        "message": "Dit datuminterval is $QDAYS$ dagen lang en de statistiek kan wat tijd nodig hebben om te voltooien.\nWilt u doorgaan?",
+        "placeholders": {
+            "qdays": {
+                "content": "$1",
+                "example": "90"
+            }
+        }
+    },
+    "CustmQryWarnOnLongPeriod_1": {
+        "message": "Aantal dagen waarbij de gebruiker wordt gewaarschuwd dat de statistieken lang kunnen duren."
+    },
+    "prefs_customqry_loaddata_when_opening_addon": {
+        "message": "Laad gegevens zelfs wanneer Aangepast beeld het eerste tabblad is dat is geopend in ThunderStats"
     }
 }

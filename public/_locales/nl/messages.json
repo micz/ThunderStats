@@ -42,7 +42,7 @@
         "message": "Voor"
     },
     "Mails": {
-        "message": "E-mails"
+        "message": "E-mailberichten"
     },
     "TimeChart.Time": {
         "message": "Tijd"
@@ -57,13 +57,13 @@
         "message": "Bijwerken"
     },
     "Save": {
-        "message": "Bewaren"
+        "message": "Opslaan"
     },
     "ExecutionTime": {
         "message": "Totale tijd"
     },
     "Setup": {
-        "message": "Tabblad opties openen"
+        "message": "Tabbladopties openen"
     },
     "Today": {
         "message": "Vandaag"

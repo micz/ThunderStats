@@ -1,0 +1,101 @@
+{
+    "AllAccounts": {
+        "message": "Alle accounts"
+    },
+    "Name": {
+        "message": "Namme"
+    },
+    "Mail": {
+        "message": "E-mail"
+    },
+    "Total": {
+        "message": "Totaal"
+    },
+    "Before": {
+        "message": "Foar"
+    },
+    "Mails": {
+        "message": "E-mailberjochten"
+    },
+    "TimeChart.Time": {
+        "message": "Tiid"
+    },
+    "TimeChart.Sent": {
+        "message": "Ferstjoerd"
+    },
+    "TimeChart.Rcvd": {
+        "message": "Untfongen"
+    },
+    "DonateLink": {
+        "message": "Doch in donaasje!"
+    },
+    "ChooseAccount": {
+        "message": "Account kieze"
+    },
+    "Update": {
+        "message": "Bywurkje"
+    },
+    "Save": {
+        "message": "Bewarje"
+    },
+    "ExecutionTime": {
+        "message": "Totale tiid"
+    },
+    "Setup": {
+        "message": "Ljepblêdopsjes iepenje"
+    },
+    "Today": {
+        "message": "Hjoed"
+    },
+    "Yesterday": {
+        "message": "Juster"
+    },
+    "today_small": {
+        "message": "hjoed"
+    },
+    "yesterday_small": {
+        "message": "juster"
+    },
+    "days": {
+        "message": "dagen"
+    },
+    "TotalDays": {
+        "message": "Totaal oantal dagen"
+    },
+    "Info": {
+        "message": "Ynfo"
+    },
+    "Loading": {
+        "message": "Lade"
+    },
+    "SentMails": {
+        "message": "Ferstjoerde e-mailberjochten"
+    },
+    "ReceivedMails": {
+        "message": "Untfongen e-mailberjochten"
+    },
+    "InboxZeroStatus": {
+        "message": "Postfek YN-nulstatus"
+    },
+    "TotalInbox": {
+        "message": "Totaal oantal e-mailberjochten yn Postfek YN"
+    },
+    "TotalInboxUnread": {
+        "message": "net-lêzen"
+    },
+    "YesterdayThisTime": {
+        "message": "op dit stuit"
+    },
+    "sent": {
+        "message": "ferstjoerd"
+    },
+    "received": {
+        "message": "ûntfongen"
+    },
+    "FolderLocation": {
+        "message": "E-mailmapdiagram"
+    },
+    "clickhere": {
+        "message": "klik hjir"
+    }
+}

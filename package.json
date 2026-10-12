@@ -21,7 +21,9 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.7",
+    "@vue/test-utils": "^2.5.1",
     "esbuild": "^0.28.1",
+    "happy-dom": "^21.0.1",
     "vite": "^8.0.16",
     "vitest": "^5.0.4"
   }

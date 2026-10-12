@@ -36,11 +36,11 @@ describe('getFullStatsData', () => {
   // 2 sent (one with an external recipient, one internal only), plus mails that must not be counted
   function fillDay() {
     addMails(mailbox, 3, { key: YESTERDAY, hour: 9 });
-    addMail(mailbox, { key: YESTERDAY, hour: 11, from: 'Anna <anna@work.it>', folder: 'acc1:/Clients', tags: ['$label1'] });
-    addMail(mailbox, { key: YESTERDAY, folder: 'acc1:/Archives' });
+    addMail(mailbox, { key: YESTERDAY, hour: 11, from: 'Anna <anna@work.it>', folder: 'acc1://Clients', tags: ['$label1'] });
+    addMail(mailbox, { key: YESTERDAY, folder: 'acc1://Archives' });
     addMail(mailbox, { key: YESTERDAY, hour: 15, sent: true, cc: ['luca@work.it'] });
     addMail(mailbox, { key: YESTERDAY, hour: 15, sent: true, to: ['anna@work.it'] });
-    for (let folder of ['acc1:/Trash', 'acc1:/Trash/Old', 'acc1:/Drafts', 'acc1:/Junk', 'acc1:/Templates', 'acc2:/INBOX']) {
+    for (let folder of ['acc1://Trash', 'acc1://Trash/Old', 'acc1://Drafts', 'acc1://Junk', 'acc1://Templates', 'acc2://INBOX']) {
       addMail(mailbox, { key: YESTERDAY, folder });
     }
     addMail(mailbox, { key: TODAY });
@@ -74,8 +74,8 @@ describe('getFullStatsData', () => {
     fillDay();
     let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
     let folders = Object.fromEntries(Object.entries(result.folders).map(([id, f]) => [id, [f.received, f.sent]]));
-    expect(folders).toEqual({ 'acc1:/INBOX': [3, 0], 'acc1:/Clients': [1, 0], 'acc1:/Archives': [1, 0], 'acc1:/Sent': [0, 2] });
-    expect(result.folders['acc1:/INBOX'].folder_data.specialUse).toEqual(['inbox']);
+    expect(folders).toEqual({ 'acc1://INBOX': [3, 0], 'acc1://Clients': [1, 0], 'acc1://Archives': [1, 0], 'acc1://Sent': [0, 2] });
+    expect(result.folders['acc1://INBOX'].folder_data.specialUse).toEqual(['inbox']);
   });
 
   it('lists the correspondents with the address book names first', async () => {
@@ -103,7 +103,7 @@ describe('getFullStatsData', () => {
     let core = new thunderStastsCore();
     await core.getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
     let query = browser.calls.query[0];
-    expect(query.folderId).toEqual(['acc1:/INBOX', 'acc1:/INBOX/Projects', 'acc1:/Sent', 'acc1:/Clients', 'acc1:/Archives', 'acc1:/Archives/2025']);
+    expect(query.folderId).toEqual(['acc1://INBOX', 'acc1://INBOX/Projects', 'acc1://Sent', 'acc1://Clients', 'acc1://Archives', 'acc1://Archives/2025']);
     expect(query.includeSubFolders).toBe(false);
     expect(query.messagesPerPage).toBe(MESSAGES_PER_PAGE);
   });
@@ -112,7 +112,7 @@ describe('getFullStatsData', () => {
     fillDay();
     await browser.storage.sync.set({ accounts_adv_settings: [{ id: 'acc1', include_archive: false }] });
     let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
-    expect(browser.calls.query[0].folderId).not.toContain('acc1:/Archives');
+    expect(browser.calls.query[0].folderId).not.toContain('acc1://Archives');
     expect(result.received).toBe(4);
   });
 
@@ -125,39 +125,39 @@ describe('getFullStatsData', () => {
 
   it('counts a duplicated message once, but in every folder it is in', async () => {
     addMail(mailbox, { key: YESTERDAY, header_id: 'same@test' });
-    addMail(mailbox, { key: YESTERDAY, header_id: 'same@test', folder: 'acc1:/Clients' });
+    addMail(mailbox, { key: YESTERDAY, header_id: 'same@test', folder: 'acc1://Clients' });
     await browser.storage.sync.set({ accounts_adv_settings: [{ id: 'acc1', filter_duplicates: true }] });
     let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
     expect(result.received).toBe(1);
-    expect(result.folders['acc1:/INBOX'].received).toBe(1);
-    expect(result.folders['acc1:/Clients'].received).toBe(1);
+    expect(result.folders['acc1://INBOX'].received).toBe(1);
+    expect(result.folders['acc1://Clients'].received).toBe(1);
   });
 
   it('counts the duplicates when the filter is off', async () => {
     addMail(mailbox, { key: YESTERDAY, header_id: 'same@test' });
-    addMail(mailbox, { key: YESTERDAY, header_id: 'same@test', folder: 'acc1:/Clients' });
+    addMail(mailbox, { key: YESTERDAY, header_id: 'same@test', folder: 'acc1://Clients' });
     let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
     expect(result.received).toBe(2);
   });
 });
 
 describe('Custom Query advanced filters', () => {
-  const FILTERS = { folders: ['acc1:/INBOX', 'acc1:/INBOX'], folders_do_subfolders: true, filterSubject: 'Invoice', read_unread: 2, flagged_unflagged: 1 };
+  const FILTERS = { folders: ['acc1://INBOX', 'acc1://INBOX'], folders_do_subfolders: true, filterSubject: 'Invoice', read_unread: 2, flagged_unflagged: 1 };
 
   it('pass the filters to the query', async () => {
-    addMail(mailbox, { key: YESTERDAY, folder: 'acc1:/INBOX/Projects', subject: 'Invoice 42', read: false, flagged: true });
+    addMail(mailbox, { key: YESTERDAY, folder: 'acc1://INBOX/Projects', subject: 'Invoice 42', read: false, flagged: true });
     addMail(mailbox, { key: YESTERDAY, subject: 'Invoice 43', read: true, flagged: true });
-    addMail(mailbox, { key: YESTERDAY, folder: 'acc1:/Clients', subject: 'Invoice 44', read: false, flagged: true });
+    addMail(mailbox, { key: YESTERDAY, folder: 'acc1://Clients', subject: 'Invoice 44', read: false, flagged: true });
     let result = await new thunderStastsCore().getCustomQryData(day(YESTERDAY), day(YESTERDAY), 'acc1', [ME], false, FILTERS, []);
     expect(browser.calls.query[0]).toMatchObject({
-      folderId: ['acc1:/INBOX'], includeSubFolders: true, subject: 'Invoice', unread: true, flagged: true,
+      folderId: ['acc1://INBOX'], includeSubFolders: true, subject: 'Invoice', unread: true, flagged: true,
     });
     expect(result.received).toBe(1);
   });
 
   it('ignore the folders for all the accounts', async () => {
     await new thunderStastsCore().getCustomQryData(day(YESTERDAY), day(YESTERDAY), 0, [ME], false, FILTERS, []);
-    expect(browser.calls.query[0].folderId).toContain('acc2:/INBOX');
+    expect(browser.calls.query[0].folderId).toContain('acc2://INBOX');
     expect(browser.calls.query[0].includeSubFolders).toBe(false);
   });
 
@@ -171,8 +171,8 @@ describe('Custom Query advanced filters', () => {
   });
 
   it('still skip trash and drafts when the user picks them', async () => {
-    addMail(mailbox, { key: YESTERDAY, folder: 'acc1:/Trash' });
-    let result = await new thunderStastsCore().getCustomQryData(day(YESTERDAY), day(YESTERDAY), 'acc1', [ME], false, { folders: ['acc1:/Trash'] }, []);
+    addMail(mailbox, { key: YESTERDAY, folder: 'acc1://Trash' });
+    let result = await new thunderStastsCore().getCustomQryData(day(YESTERDAY), day(YESTERDAY), 'acc1', [ME], false, { folders: ['acc1://Trash'] }, []);
     expect(result.received).toBe(0);
   });
 
@@ -225,8 +225,8 @@ describe('folders and preferences', () => {
   it('getStatsFoldersIds covers every account and is read once per instance', async () => {
     let core = new thunderStastsCore();
     let ids = await core.getStatsFoldersIds(0);
-    expect(ids).toContain('acc2:/Sent');
-    expect(ids).not.toContain('acc1:/Trash/Old');
+    expect(ids).toContain('acc2://Sent');
+    expect(ids).not.toContain('acc1://Trash/Old');
     await core.getStatsFoldersIds(0);
     expect(browser.calls.accountsList).toBe(1);
   });
@@ -258,8 +258,8 @@ describe('Inbox Zero cache', () => {
   beforeEach(() => {
     addMail(mailbox, { key: '20261001', read: false });
     addMails(mailbox, 2, { key: YESTERDAY });
-    addMail(mailbox, { key: YESTERDAY, folder: 'acc1:/INBOX/Projects' });
-    addMail(mailbox, { key: YESTERDAY, folder: 'acc2:/INBOX', read: false });
+    addMail(mailbox, { key: YESTERDAY, folder: 'acc1://INBOX/Projects' });
+    addMail(mailbox, { key: YESTERDAY, folder: 'acc2://INBOX', read: false });
   });
 
   it('counts total, unread and arrival dates of the inbox folders', async () => {

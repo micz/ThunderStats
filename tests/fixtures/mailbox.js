@@ -3,7 +3,7 @@ import { day } from '../helpers.js';
 
 function folder(account_id, path, special_use = [], sub_folders = []) {
   return {
-    id: account_id + ':/' + path,
+    id: account_id + '://' + path,      // like Thunderbird: accountId + ':/' + folder.path
     accountId: account_id,
     name: path.split('/').at(-1),
     path: '/' + path,
@@ -82,7 +82,7 @@ export function addMail(mailbox, options) {
     read: options.read ?? true,
     flagged: !!options.flagged,
     tags: options.tags || [],
-    folder: findFolder(mailbox, options.folder || (sent ? 'acc1:/Sent' : 'acc1:/INBOX')),
+    folder: findFolder(mailbox, options.folder || (sent ? 'acc1://Sent' : 'acc1://INBOX')),
   };
   mailbox.messages.push(message);
   return message;

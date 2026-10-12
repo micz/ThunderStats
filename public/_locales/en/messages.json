@@ -512,7 +512,7 @@
     "description": ""
   },
   "Non-BDays": {
-    "message": "Holidays",
+    "message": "Non-Business Days",
     "description": ""
   },
   "Date": {
@@ -540,7 +540,7 @@
     "description": ""
   },
   "Non-Business_Day": {
-    "message": "Holiday",
+    "message": "Non-Business Day",
     "description": ""
   },
   "deletePromptNBD_text": {
@@ -1874,15 +1874,15 @@
     "description": ""
   },
   "Opt_HolidaysNone": {
-    "message": "No fixed holidays",
+    "message": "No fixed non-business days",
     "description": ""
   },
   "Opt_HolidaysOne": {
-    "message": "1 fixed holiday",
+    "message": "1 fixed non-business day",
     "description": ""
   },
   "Opt_HolidaysCount": {
-    "message": "$NUM$ fixed holidays",
+    "message": "$NUM$ fixed non-business days",
     "description": "",
     "placeholders": {
       "num": {
@@ -1896,7 +1896,7 @@
     "description": ""
   },
   "Opt_AddHoliday": {
-    "message": "Add holiday",
+    "message": "Add non-business day",
     "description": ""
   },
   "Opt_HolidayNamePlaceholder": {

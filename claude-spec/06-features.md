@@ -111,7 +111,7 @@ Pref keys and defaults: `statslib/mzts-options-default.js`.
 
 ### Section: Business days
 - Define which weekdays are business days (Mon–Fri by default), as day buttons
-- Holidays (`bday_custom_days`): add, edit (click the row) and delete fixed holidays, every year or only one year, inline form
+- Non-business days (`bday_custom_days`): add, edit (click the row) and delete fixed non-business days, every year or only one year, inline form
 - Exclude Easter Sunday and Monday (`bday_easter`, default on)
 - Use only business days by default (`bday_default_only`)
 - Use the last business day instead of yesterday (`bday_use_last_business_day`) in the Yesterday tab and the Today comparison counter

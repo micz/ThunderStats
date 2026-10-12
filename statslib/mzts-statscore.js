@@ -82,9 +82,7 @@ export class thunderStastsCore {
 
       this.tsLog.log("[getToday_manyDaysData] fromDate: " + fromDate + " - toDate: " + toDate);
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
-
-      return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates);
+      return this.getAggregatedRecentDays(fromDate, toDate, account_id, account_emails);
      }
     // ================ TODAY TAB - END =====================
 
@@ -151,9 +149,7 @@ export class thunderStastsCore {
       toDate.setDate(toDate.getDate() - 1);
       toDate.setHours(23, 59, 59, 999);
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
-
-      return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates);
+      return this.getAggregatedRecentDays(fromDate, toDate, account_id, account_emails);
     }
     // ================ CUSTOM QUERY TAB - END =====================
 
@@ -193,31 +189,23 @@ export class thunderStastsCore {
     }
     // Hourly counts of the same weekday in the previous num_weeks weeks, used as the "usual day" baseline.
     // When theDay is a business day, past non-business days (holidays) are skipped.
-    // A single query covers the whole range: a date-filtered query scans every message anyway,
-    // so one scan costs the same as a single-day one and avoids num_weeks concurrent scans.
+    // The days come from the recent days cache when the range is covered, otherwise from a single scan.
     async getWeekdayBaseline(theDay, account_id = 0, account_emails = [], num_weeks = 6) {
 
       let start_time = performance.now();
       let only_business_days = tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(theDay));
 
-      // the days we are interested in, keyed by YYYYMMDD, each one with an empty hourly grid
-      let days = {};
-      let days_order = [];
+      let days_keys = [];
       for(let week = num_weeks; week >= 1; week--) {
         let pastDay = new Date(theDay);
         pastDay.setDate(pastDay.getDate() - (7 * week));
         pastDay.setHours(0, 0, 0, 0);
         let key = tsUtils.dateToYYYYMMDD(pastDay);
         if(only_business_days && !tsCoreUtils.checkBusinessDay(key)) continue;
-        let msg_hours = {};
-        for(let i = 0; i < 24; i++) {
-          msg_hours[i] = {sent: 0, received: 0};
-        }
-        days[key] = msg_hours;
-        days_order.push(key);
+        days_keys.push(key);
       }
 
-      if(days_order.length == 0) {
+      if(days_keys.length == 0) {
         return {days: [], elapsed: performance.now() - start_time};
       }
 
@@ -228,11 +216,98 @@ export class thunderStastsCore {
       toDate.setDate(toDate.getDate() - 1);
       toDate.setHours(23, 59, 59, 999);
 
+      let scan = await this.getDays(fromDate, toDate, account_id, account_emails);
+      let stop_time = performance.now();
+
+      return {days: days_keys.map(key => scan.days[key].msg_hours), elapsed: stop_time - start_time};
+    }
+
+    // ================ RECENT DAYS CACHE =====================
+    // Per-day sent/received counts and hourly grid of a date range, from the recent days cache when
+    // the range is covered by it, otherwise from a direct scan. Output: {days: {YYYYMMDD: {sent, received, msg_hours}}, elapsed}
+    async getDays(fromDate, toDate, account_id = 0, account_emails = []) {
       let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
+      let range = tsRecentDaysCache.getRange();
+      if(fromDate >= range.fromDate && toDate <= range.toDate) {
+        let recent = await this.getRecentDays(account_id, account_emails, filter_duplicates);
+        let days = {};
+        for(let key of Object.keys(tsUtils.getDateArray(fromDate, toDate))) {
+          days[key] = recent.days[key];
+        }
+        return {days: days, elapsed: recent.elapsed, from_cache: true};
+      }
+
+      return this.scanDays(fromDate, toDate, account_id, account_emails, filter_duplicates);
+    }
+
+    // Same output as getAggregatedStatsData, built from getDays (so from the cache when possible)
+    async getAggregatedRecentDays(fromDate, toDate, account_id = 0, account_emails = []) {
+      let start_time = performance.now();
+      let scan = await this.getDays(fromDate, toDate, account_id, account_emails);
+
+      let sent = 0;
+      let received = 0;
+      let msg_days = tsUtils.getDateArray(fromDate, toDate);
+      for(let key in msg_days) {
+        msg_days[key].sent = scan.days[key].sent;
+        msg_days[key].received = scan.days[key].received;
+        sent += scan.days[key].sent;
+        received += scan.days[key].received;
+      }
+
+      let output = {sent: sent, received: received, count: sent + received, msg_days: msg_days};
+      output.aggregate = await this.aggregateData(msg_days);
+      output.elapsed = scan.from_cache ? performance.now() - start_time : scan.elapsed;
+      return output;
+    }
+
+    // The last RECENT_DAYS_CACHE_DAYS days before today, scanned once and shared by all the tabs
+    // (Today/Yesterday baseline and previous days, Custom Query pace). The cache key includes today's
+    // date, the account and the settings that change the result; clearRecentDaysCache() resets it.
+    getRecentDays(account_id = 0, account_emails = [], filter_duplicates = false) {
+      let range = tsRecentDaysCache.getRange();
+      let key = [
+        tsUtils.dateToYYYYMMDD(range.toDate),
+        account_id,
+        [...account_emails].sort().join(','),
+        filter_duplicates,
+        JSON.stringify(this.accounts_adv_settings),
+      ].join('|');
+
+      if(tsRecentDaysCache.key != key) {
+        this.tsLog.log("[getRecentDays] scanning, cache key: " + key);
+        tsRecentDaysCache.key = key;
+        tsRecentDaysCache.promise = this.scanDays(range.fromDate, range.toDate, account_id, account_emails, filter_duplicates)
+          .catch((error) => {
+            if(tsRecentDaysCache.key == key) clearRecentDaysCache();
+            throw error;
+          });
+      } else {
+        this.tsLog.log("[getRecentDays] using the cache");
+      }
+
+      return tsRecentDaysCache.promise;
+    }
+
+    // One scan of a date range, grouped by day and hour. Output: {days: {YYYYMMDD: {sent, received, msg_hours}}, elapsed}
+    async scanDays(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicates = false) {
+
+      let start_time = performance.now();
+
+      let days = {};
+      for(let key of Object.keys(tsUtils.getDateArray(fromDate, toDate))) {
+        let msg_hours = {};
+        for(let i = 0; i < 24; i++) {
+          msg_hours[i] = {sent: 0, received: 0};
+        }
+        days[key] = {sent: 0, received: 0, msg_hours: msg_hours};
+      }
+
       const emailMatcher = new EmailMatcher(account_emails);
       let messages_hash = new Map();
 
-      let queryInfo_Baseline = {
+      let queryInfo_ScanDays = {
         fromDate: fromDate,
         toDate: toDate,
         includeSubFolders: true,
@@ -240,17 +315,17 @@ export class thunderStastsCore {
 
       if(account_id != 0){
         if(tsStore.isTB128plus){
-          queryInfo_Baseline.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
+          queryInfo_ScanDays.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
         }
       }
 
-      this.tsLog.log("queryInfo_Baseline: " + JSON.stringify(queryInfo_Baseline));
+      this.tsLog.log("queryInfo_ScanDays: " + JSON.stringify(queryInfo_ScanDays));
 
       let messages = null;
       if(tsStore.isTB128plus){
-        messages = this.getMessages(() => browser.messages.query(queryInfo_Baseline));
+        messages = this.getMessages(() => browser.messages.query(queryInfo_ScanDays));
       }else{
-        messages = this.getAccountMessages_TB115(queryInfo_Baseline, account_id, null, false);
+        messages = this.getAccountMessages_TB115(queryInfo_ScanDays, account_id, null, false);
       }
 
       for await (let message of messages) {
@@ -260,25 +335,27 @@ export class thunderStastsCore {
             messages_hash.set(message.headerMessageId, true);
           }
           let date_message = new Date(message.date);
-          let day_key = tsUtils.dateToYYYYMMDD(date_message);
-          let msg_hours = days[day_key];
-          if(msg_hours === undefined) continue;   // not one of the baseline days
+          let day = days[tsUtils.dateToYYYYMMDD(date_message)];
+          if(day === undefined) continue;   // outside the range (should not happen)
           let hour_message = date_message.getHours();
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {
             const key_author = match_author[0].toLowerCase();
             if(emailMatcher.matches(key_author)) {
-              msg_hours[hour_message].sent++;
+              day.sent++;
+              day.msg_hours[hour_message].sent++;
             }else{
-              msg_hours[hour_message].received++;
+              day.received++;
+              day.msg_hours[hour_message].received++;
             }
           }
       }
 
       let stop_time = performance.now();
 
-      return {days: days_order.map(key => days[key]), elapsed: stop_time - start_time};
+      return {days: days, elapsed: stop_time - start_time};
     }
+    // ================ RECENT DAYS CACHE - END =====================
     // ================ SINGLE DAY METHODS - END =====================
 
     // ================ BASE METHODS ========================
@@ -1192,3 +1269,27 @@ class QueryQueue {
 }
 
 const tsQueryQueue = new QueryQueue(MAX_CONCURRENT_QUERIES);
+
+// Recent days cache: the last RECENT_DAYS_CACHE_DAYS days before today (7 weeks, so the baseline
+// of yesterday always has 6 full weeks), shared by all core instances. See getRecentDays().
+export const RECENT_DAYS_CACHE_DAYS = 49;
+
+const tsRecentDaysCache = {
+  key: null,
+  promise: null,
+  getRange() {
+    let fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - RECENT_DAYS_CACHE_DAYS);
+    fromDate.setHours(0, 0, 0, 0);
+    let toDate = new Date();
+    toDate.setDate(toDate.getDate() - 1);
+    toDate.setHours(23, 59, 59, 999);
+    return {fromDate: fromDate, toDate: toDate};
+  },
+};
+
+// Forget the cached recent days, so the next request scans the messages again (data refresh, account change)
+export function clearRecentDaysCache() {
+  tsRecentDaysCache.key = null;
+  tsRecentDaysCache.promise = null;
+}

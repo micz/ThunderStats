@@ -30,21 +30,24 @@ The central class that retrieves and processes email data from the Thunderbird `
 | `getYesterday(account_id, account_emails, internal_domains)` | Stats for the full previous day |
 | `getManyDaysData(account_id, account_emails, internal_domains)` | Per-day stats for the last `_many_days` days plus today, not aggregated (`TAB_ManyDays.vue` aggregates) |
 | `getManyDaysPreviousPeriod(account_id, account_emails)` | Count-only stats of the `_many_days` days before the Many Days period (KPI changes against the previous period) |
-| `getToday_manyDaysData(account_id, account_emails)` | Aggregated stats for the previous `_many_days` days excluding today (Today/Yesterday summary) |
+| `getToday_manyDaysData(account_id, account_emails)` | Aggregated stats for the previous `_many_days` days excluding today (Today/Yesterday summary); served from the recent days cache |
 | `getToday_YesterdayData(...)` / `getToday_SingleDayData(theDay, ...)` | Count-only data for the "yesterday at this time" / custom comparison day counter |
 | `getSingleDay(theDay, account_id, account_emails, internal_domains)` | Full stats for one day |
-| `getWeekdayBaseline(theDay, account_id, account_emails, num_weeks)` | Hourly counts (`msg_hours`) of the same weekday in the previous `num_weeks` weeks (non-business days skipped when `theDay` is a business day); the "usual day" of the Today/Yesterday dashboards. Runs a single query over the whole range and buckets messages by day: a date-filtered query scans every message anyway, so one scan costs the same as a single-day one |
+| `getWeekdayBaseline(theDay, account_id, account_emails, num_weeks)` | Hourly counts (`msg_hours`) of the same weekday in the previous `num_weeks` weeks (non-business days skipped when `theDay` is a business day); the "usual day" of the Today/Yesterday dashboards; served from the recent days cache when the range is covered, otherwise by a single scan of the range |
 | `getCustomQryData(fromDate, toDate, account_id, account_emails, only_businessdays, adv_filters, internal_domains)` | Custom date range with optional filters |
-| `getDaysBefore(theDay, num_days, account_id, account_emails)` | Count-only stats of the `num_days` days before `theDay` (pace of a single-day Custom Query) |
+| `getDaysBefore(theDay, num_days, account_id, account_emails)` | Count-only stats of the `num_days` days before `theDay` (pace of a single-day Custom Query); served from the recent days cache when the range is covered |
 | `getFullStatsData(fromDate, toDate, account_id, account_emails, do_aggregate_stats, filter_duplicates, only_businessdays, adv_filters, internal_domains)` | Base method: retrieves and processes all messages in a date range. When `internal_domains` is provided, domain entries in the output include an `internal: true/false` flag. The output also has `msg_weekday_hours` (weekday × hour sent/received grid, used by the heatmap) |
 | `getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates)` | Aggregated (total/max/min/avg) stats |
 | `getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates)` | Lightweight count-only stats |
 | `aggregateData(dates, only_businessdays)` | Computes total/max/min/avg from per-day data, optionally business days only |
 | `getInboxZeroDates(account_id)` / `getInboxFolders(account_id)` | Inbox Zero data |
 | `getAccountEmails(account_id, no_custom_identities)` | Returns the email addresses for an account |
+| `getDays(fromDate, toDate, account_id, account_emails)` / `scanDays(...)` / `getRecentDays(...)` / `getAggregatedRecentDays(...)` | Recent days cache (see below): per-day `{sent, received, msg_hours}` of a range, from the cache or from one scan |
 | `getMessages(queryFn)` | Async generator over the pages of a message list. `queryFn` starts the `browser.messages.query` call and is invoked only when a slot of the query queue is free |
 
 **Query queue.** Every `browser.messages.query` runs on Thunderbird's main thread, so many concurrent queries make the Thunderbird UI unresponsive. A module-level `QueryQueue` (shared by all `thunderStastsCore` instances) limits the running queries to `MAX_CONCURRENT_QUERIES` (2); `getMessages` acquires a slot before starting the query and releases it when the iteration ends (also on early exit or error). The tabs also start their main query first and launch the secondary ones (inbox zero, baseline, previous period, days before) only after it has resolved.
+
+**Recent days cache.** A date-filtered query scans every message anyway, so one scan of a wide range costs the same as a single-day one. The core keeps a module-level cache (shared by all instances) with the per-day sent/received counts and hourly grid of the last `RECENT_DAYS_CACHE_DAYS` (49) days before today. `getRecentDays` fills it once (the promise is shared by concurrent callers); `getDays` serves any range inside it without a new query and falls back to `scanDays` otherwise. The weekday baseline, the previous days of Today/Yesterday and the "days before" of a single-day Custom Query all come from it, so switching between Today and Yesterday starts no new heavy scan. The cache key includes today's date, the account, its emails, the duplicates filter and the advanced account settings; `clearRecentDaysCache()` (exported) is called by `ThunderStatsView.updateStats` on every refresh or account change.
 
 **Advanced filters object (`adv_filters`):**
 ```js

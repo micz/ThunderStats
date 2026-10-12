@@ -54,6 +54,8 @@ The compiled addon lives in `dist/`; the production build also packages it as an
 | `public/` | manifest.json, icons, locale files |
 | `public/_locales/` | i18n message files (one folder per locale; only those listed in `LANG.md` are shipped) |
 | `dist/` | Build output (compiled addon) |
+| `tests/` | Vitest suites (`tests/real/`: real data tests on mailbox dumps, `npm run test:real`) |
+| `tools/mailbox-dump/` | Development extension that exports a mailbox dump for the real data tests (not in the XPI) |
 
 ## Entry Points
 

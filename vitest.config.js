@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { defineConfig, mergeConfig } from 'vitest/config'
+import { defineConfig, mergeConfig, configDefaults } from 'vitest/config'
 import viteConfig from './vite.config.js'
 
 // The stats work on local dates: a fixed time zone with DST makes the tests repeatable on every machine.
@@ -27,6 +27,8 @@ export default defineConfig((env) => mergeConfig(viteConfig(env), {
   test: {
     environment: 'node',
     include: ['tests/**/*.test.js'],
+    // real data tests: npm run test:real (vitest.real.config.js)
+    exclude: [...configDefaults.exclude, 'tests/real/**'],
     setupFiles: ['tests/setup.js'],
   },
 }))

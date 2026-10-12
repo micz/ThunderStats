@@ -28,3 +28,5 @@ coverage
 dist
 
 .claude
+# Mailbox dumps of the real data tests (personal data)
+tests/real/data/

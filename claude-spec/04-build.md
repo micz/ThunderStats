@@ -21,6 +21,10 @@ npm run preview
 # Tests: single run / watch mode
 npm test
 npm run test:watch
+
+# Real data tests on the mailbox dumps in tests/real/data (see "Real data tests")
+npm run test:real
+npm run test:real:sample   # writes a synthetic dump (tests/real/data/sample-dump.json)
 ```
 
 ---
@@ -89,7 +93,7 @@ Every build (dev or production) writes the unpacked addon to `dist/`: the two HT
 
 ## Tests (Vitest)
 
-`vitest.config.js` merges `vite.config.js` (aliases, Vue plugin; the XPI packager only applies to builds) and sets `TZ=Europe/Rome`, so the local-date logic and the DST changes behave the same on every machine. Tests live in `tests/` (not bundled, not in the XPI):
+`vitest.config.js` merges `vite.config.js` (aliases, Vue plugin; the XPI packager only applies to builds) and sets `TZ=Europe/Rome`, so the local-date logic and the DST changes behave the same on every machine. It excludes `tests/real/` (see "Real data tests"). Tests live in `tests/` (not bundled, not in the XPI):
 
 | Path | Contents |
 |---|---|
@@ -98,12 +102,26 @@ Every build (dev or production) writes the unpacked addon to `dist/`: the two HT
 | `tests/fixtures/mailbox.js` | `createMailbox()` (folder ids like Thunderbird, `acc1://INBOX`; account `acc1` with inbox+subfolder, sent, a user folder, archives, trash, drafts, junk, templates; Gmail account `acc2`), `addMail`/`addMails` (received into the `acc1` inbox by default, `sent: true` from `ME`), `vCard(name, ...emails)` |
 | `tests/helpers.js` | `day("YYYYMMDD", hours)` local date (noon by default) |
 | `tests/fixtures/result.js` | `makeResult(mails, {from, to, folders, tags})` builds a `getFullStatsData`-shaped output from a list of mails; `makeInbox(dates)` (`getInboxZeroDates` output), `mails(n, mail)`, `dayKeys(from, to)` |
-| `tests/unit/` | Pure functions: `tsUtils`, `EmailMatcher`/`DomainMatcher`, `tsCoreUtils` (business days, Easter, domains, labels), `tsInsights`; dashboard models `tsDayModel` and `tsPeriodModel` (loading state, badges, KPIs, charts, notes, Period B), with the clock fixed by fake timers |
+| `tests/unit/` | Pure functions: `tsUtils`, `EmailMatcher`/`DomainMatcher`, `tsCoreUtils` (business days, Easter, domains, labels), `tsInsights`; dashboard models `tsDayModel` and `tsPeriodModel` (loading state, badges, KPIs, charts, notes, Period B), with the clock fixed by fake timers; the mailbox dump anonymizer (`anonymize.test.js`) |
 | `tests/integration/` | `thunderStastsCore` on the mocked mailbox: counts by day/hour/weekday/folder/domain/tag, correspondents and address book names, folders queried, archives and duplicates settings, paging, Custom Query filters, `aggregateData`, count-only stats, account emails and preferences, Inbox Zero and recent days caches (one scan shared by every caller, rescan after a failure or account change, size clamp), query queue (limit, release on error and early exit, clamp) |
 | `tests/integration/export.test.js` | `tsExport`: CSV helpers, file name and download (stubbed `document` and `URL.createObjectURL`), every transform, and the CSV files built from a real `getCustomQryData` result |
 | `tests/components/` | Vue components with `@vue/test-utils` in `happy-dom` (`// @vitest-environment happy-dom` at the top of the file): option controls (`OptSwitch`, `OptRow`, `OptNumber`, `OptTagInput`, with a stub `optPrefs` provide), `tsTheme` + `ThemeToggle`, `WidgetStatusStrip`, `WidgetInboxZeroCalendar`, and `WidgetDayDashboard`/`WidgetPeriodDashboard` mounted with the `tsDayModel`/`tsPeriodModel` output while loading and loaded. The charts are stubbed (no canvas) and any Vue warning (wrong prop type, missing prop) fails the test, so the models and the widgets cannot drift apart |
 
 Code that reads the current date is tested with `vi.useFakeTimers()` + `vi.setSystemTime()` (only `Date` is faked in the integration tests, so `setImmediate` still flushes the pending promises). The core caches and the query queue are module-level: the integration tests call `clearCoreCaches()` and reset the cache size and the queue limit before each test, and resolve every pending query before the end. Known bugs are kept as `it.fails` tests with a comment: they start failing (as a reminder to turn them into normal tests) once the bug is fixed.
+
+### Real data tests
+
+`thunderStastsCore` and the dashboard models run on real mailboxes, loaded into the same browser mock from a **mailbox dump**: a JSON file with accounts, folder trees, tags, contacts and the message headers (no bodies), as returned by the WebExtension APIs.
+
+- **Creating a dump:** `tools/mailbox-dump/` is a separate development extension (not built, not in the XPI): load its `manifest.json` as a temporary add-on, click its toolbar button, choose how many months and whether to anonymize (default on), and save the file. Format and anonymization rules in `tools/mailbox-dump/README.md`. `dump-format.js` (conversion) and `anonymize.js` are ES modules shared with the tests.
+- **Where the dumps go:** `tests/real/data/*.json` (ignored by git: personal data) and/or the `TS_DUMP` environment variable (paths separated like `PATH`). `npm run test:real:sample` writes a synthetic dump with the cases a real mailbox has (`tests/real/make-sample-dump.js`, options `--days`, `--scale`, `--seed`, `--now`, `--plain`, `--out`).
+- **Running:** `npm run test:real` uses `vitest.real.config.js` (only `tests/real/`, 10 minute timeout, `TZ` from `TS_TZ`, default `Europe/Rome`: use the time zone of the dump). Without dumps the suite is skipped. The clock is fixed to the dump creation time.
+
+| Path | Contents |
+|---|---|
+| `tests/real/dump.js` | `findDumps()`, `loadDump(file)` (dates back to `Date`, folder ids to the folder objects of the trees), `installDump(dump)` into the mock |
+| `tests/real/reference.js` | A second, plain implementation of the main counts of `getFullStatsData` (stats folders, sent/received/unmatched authors, inbox, per day, per folder, duplicates) |
+| `tests/real/realdata.test.js` | Per dump: a data quality report (`console.table`: excluded folders, authors without an address, missing or duplicated Message-IDs, unknown tags, mixed case domains, recipients whose domain `extractDomains` misreads). Per account and for all the accounts: the reference counts over the last 365 days, the totals of every grouping adding up (dates/weeks/months/years, hours, weekdays, internal/external, domains, folders), the duplicates filter, single days vs a period, the recent days cache vs a full scan, Inbox Zero totals, the day and period dashboard models without NaN or infinite numbers; the accounts adding up to all the accounts |
 
 ---
 

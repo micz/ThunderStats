@@ -8,7 +8,9 @@
     "build": "vite build --mode production",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:real": "vitest run --config vitest.real.config.js",
+    "test:real:sample": "node tests/real/make-sample-dump.js"
   },
   "dependencies": {
     "@imengyu/vue3-context-menu": "^1.4.1",

@@ -17,6 +17,10 @@ npm run build
 
 # Preview (rarely used; standard Vite preview server)
 npm run preview
+
+# Tests: single run / watch mode
+npm test
+npm run test:watch
 ```
 
 ---
@@ -83,6 +87,21 @@ Every build (dev or production) writes the unpacked addon to `dist/`: the two HT
 
 ---
 
+## Tests (Vitest)
+
+`vitest.config.js` merges `vite.config.js` (aliases, Vue plugin; the XPI packager only applies to builds) and sets `TZ=Europe/Rome`, so the local-date logic and the DST changes behave the same on every machine. Tests live in `tests/` (not bundled, not in the XPI):
+
+| Path | Contents |
+|---|---|
+| `tests/setup.js` | Before each test: a fresh `browser`/`messenger` mock and the shipped business day settings of `tsStore`; real timers restored after each test |
+| `tests/mocks/browser.js` | `createBrowserMock()`: in-memory `storage.sync` (defaults object like the real API), `i18n.getMessage` returning `key` or `key[sub1\|sub2]`, `getUILanguage` = `en-US` |
+| `tests/helpers.js` | `day("YYYYMMDD", hours)` local date (noon by default) |
+| `tests/unit/` | Pure functions: `tsUtils`, `EmailMatcher`/`DomainMatcher`, `tsCoreUtils` (business days, Easter, domains, labels), `tsInsights` |
+
+Code that reads the current date is tested with `vi.useFakeTimers()` + `vi.setSystemTime()`. Known bugs are kept as `it.fails` tests with a comment: they start failing (as a reminder to turn them into normal tests) once the bug is fixed.
+
+---
+
 ## Installing for Development in Thunderbird
 
 1. Run `npm run dev` to build and watch for changes.
@@ -95,4 +114,4 @@ Every build (dev or production) writes the unpacked addon to `dist/`: the two HT
 
 ## Dependencies
 
-See `package.json`. Runtime libraries bundled into the addon: `vue`, `chart.js`, `vue-chartjs`, `vue3-tabs-component`, `@vueform/multiselect`, `@vuepic/vue-datepicker`, `@imengyu/vue3-context-menu`. Dev only: `vite`, `@vitejs/plugin-vue`, `esbuild`.
+See `package.json`. Runtime libraries bundled into the addon: `vue`, `chart.js`, `vue-chartjs`, `vue3-tabs-component`, `@vueform/multiselect`, `@vuepic/vue-datepicker`, `@imengyu/vue3-context-menu`. Dev only: `vite`, `@vitejs/plugin-vue`, `esbuild`, `vitest`.

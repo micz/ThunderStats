@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite build --watch --mode development",
     "build": "vite build --mode production",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@imengyu/vue3-context-menu": "^1.4.1",
@@ -20,6 +22,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.7",
     "esbuild": "^0.28.1",
-    "vite": "^8.0.16"
+    "vite": "^8.0.16",
+    "vitest": "^5.0.4"
   }
 }

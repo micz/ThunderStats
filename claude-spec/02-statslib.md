@@ -84,7 +84,7 @@ Utility methods used by `thunderStastsCore` and the Vue components.
 - Account email address resolution (`getAccountEmails`, `getAccountCustomIdentities`)
 - `getFilterDuplicatesPreference(account_id)` / `getIncludeArchivePreference(account_id)` — read global or per-account prefs
 - `getAccountInternalDomains(account_id)` — returns the internal domains list for a specific account; when `account_id` is `0`, returns internal domains for all accounts
-- `getInternalMailLabel(domains)` — computes the internal mail percentage from a domains object. Returns `{ percent, sent, received, internalSent, internalReceived }`
+- `getInternalMailLabel(domains)` — computes the internal mail percentage from a domains object. Returns `{ sentPercent, receivedPercent }` (strings like `75.00%`)
 
 ---
 

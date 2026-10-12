@@ -90,7 +90,11 @@ describe('getCustomQryLabel', () => {
     expect(tsCoreUtils.getCustomQryLabel('2026', 'YYYY')).toBe('2026');
     expect(tsCoreUtils.getCustomQryLabel('202610', 'YYYYMM')).toBe('10/2026');
     expect(tsCoreUtils.getCustomQryLabel('202642', 'YYYYWW')).toBe('42 [2026]');
-    expect(tsCoreUtils.getCustomQryLabel('20261013', 'YYYYMMDD'))
-      .toBe(new Intl.DateTimeFormat(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' }).format(day('20261013')));
+    expect(tsCoreUtils.getCustomQryLabel('20261013', 'YYYYMMDD')).toBe('10/13/2026');
+  });
+
+  it('formats the days in the Thunderbird UI language', () => {
+    browser.i18n.getUILanguage = () => 'it-IT';
+    expect(tsCoreUtils.getCustomQryLabel('20261013', 'YYYYMMDD')).toBe('13/10/2026');
   });
 });

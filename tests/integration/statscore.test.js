@@ -29,6 +29,8 @@ afterEach(() => {
 });
 
 const key = (date) => tsUtils.dateToYYYYMMDD(date);
+// first and last day asked by a query, without the one-second margin the core adds on both sides
+const queryRange = (query) => [key(new Date(query.fromDate.getTime() + 1000)), key(new Date(query.toDate.getTime() - 1000))];
 const flush = () => new Promise(resolve => setImmediate(resolve));
 
 describe('getFullStatsData', () => {
@@ -167,6 +169,40 @@ describe('getFullStatsData', () => {
   });
 });
 
+// Thunderbird does not document whether messages.query returns a message dated exactly fromDate or toDate:
+// with both behaviors, a mail at midnight or at 23:59:59 belongs to exactly one day of every range
+describe.each(['exclusive', 'inclusive'])('mails at the day boundaries, query bounds %s', (bounds) => {
+  beforeEach(() => {
+    browser.dateBounds = bounds;
+    addMail(mailbox, { key: YESTERDAY, hour: 0, minute: 0 });
+    addMail(mailbox, { key: YESTERDAY }).date = new Date(2026, 9, 12, 23, 59, 59);
+    addMail(mailbox, { key: TODAY, hour: 0, minute: 0 });
+    addMail(mailbox, { key: '20261011' }).date = new Date(2026, 9, 11, 23, 59, 59);
+  });
+
+  it('single day and Custom Query', async () => {
+    let core = new thunderStastsCore();
+    let single = await core.getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
+    expect([single.received, single.msg_hours[0].received, single.msg_hours[23].received]).toEqual([2, 1, 1]);
+    let custom = await core.getCustomQryData(day('20261011'), day(YESTERDAY), 'acc1', [ME], false, null, []);
+    expect([custom.dates['20261011'].received, custom.dates[YESTERDAY].received, custom.received]).toEqual([1, 2, 3]);
+  });
+
+  it('today, Many Days and the count-only stats', async () => {
+    let core = new thunderStastsCore({ _many_days: 7 });
+    expect((await core.getToday('acc1', [ME], [])).received).toBe(1);
+    let many = await core.getManyDaysData('acc1', [ME], []);
+    expect([many.dates['20261011'].received, many.dates[YESTERDAY].received, many.dates[TODAY].received]).toEqual([1, 2, 1]);
+    let count = await core.getToday_YesterdayData('acc1', [ME], false);
+    expect([count.msg_hours[0].received, count.msg_hours[23].received]).toEqual([1, 1]);
+  });
+
+  it('recent days cache', async () => {
+    let prev = await new thunderStastsCore({ _many_days: 7 }).getToday_manyDaysData('acc1', [ME]);
+    expect([prev.msg_days['20261011'].received, prev.msg_days[YESTERDAY].received, prev.received]).toEqual([1, 2, 3]);
+  });
+});
+
 describe('Custom Query advanced filters', () => {
   const FILTERS = { folders: ['acc1://INBOX', 'acc1://INBOX'], folders_do_subfolders: true, filterSubject: 'Invoice', read_unread: 2, flagged_unflagged: 1 };
 
@@ -207,18 +243,6 @@ describe('Custom Query advanced filters', () => {
     addMails(mailbox, 1, { key: '20261010' });    // Saturday
     let result = await new thunderStastsCore().getCustomQryData(day('20261009'), day('20261011'), 'acc1', [ME], true, null, []);
     expect(result.aggregate).toMatchObject({ total_received: 4, max_received: 4, min_received: 4, avg_received: 4 });
-  });
-});
-
-describe('getAggregatedStatsData', () => {
-  it('counts by day and ignores the messages of the days outside the range', async () => {
-    addMails(mailbox, 2, { key: YESTERDAY, hour: 15 });
-    addMail(mailbox, { key: TODAY, hour: 9 });
-    // from 12:00 to the next day 11:00: the days array has only the first day
-    let result = await new thunderStastsCore().getAggregatedStatsData(day(YESTERDAY, 12), day(TODAY, 11), 'acc1', [ME], false);
-    expect(result.msg_days).toEqual({ [YESTERDAY]: expect.objectContaining({ sent: 0, received: 2 }) });
-    expect([result.received, result.count]).toEqual([2, 2]);
-    expect(result.aggregate.total_received).toBe(2);
   });
 });
 
@@ -292,6 +316,19 @@ describe('folders and preferences', () => {
     expect(await tsCoreUtils.getFilterDuplicatesPreference(0)).toBe(true);
   });
 
+  it('the account advanced settings are a list, also when an old {} is stored', async () => {
+    await browser.storage.sync.set({ accounts_adv_settings: {} });
+    expect(await tsCoreUtils.getIncludeArchivePreference('acc1')).toBe(true);
+    expect(await tsCoreUtils.getFilterDuplicatesPreference('acc2')).toBe(true);
+    let merged = await tsCoreUtils.mergeAccountsAdvSettings([{ id: 'acc2', name: 'Gmail' }, { id: 'acc1', name: 'Work' }], {});
+    expect(merged).toEqual([
+      { id: 'acc2', name: 'Gmail', include_archive: true, filter_duplicates: true },
+      { id: 'acc1', name: 'Work', include_archive: true, filter_duplicates: false },
+    ]);
+    merged = await tsCoreUtils.mergeAccountsAdvSettings([{ id: 'acc1', name: 'Work' }], [{ id: 'acc1', include_archive: false, filter_duplicates: true }]);
+    expect(merged[0]).toMatchObject({ include_archive: false, filter_duplicates: true });
+  });
+
   it('the archives are included by default', async () => {
     expect(await tsCoreUtils.getIncludeArchivePreference('acc1')).toBe(true);
     expect(await tsCoreUtils.getIncludeArchivePreference(0)).toBe(true);
@@ -348,7 +385,7 @@ describe('recent days cache', () => {
 
     expect(browser.calls.query).toHaveLength(1);
     let query = browser.calls.query[0];
-    expect([key(query.fromDate), key(query.toDate)]).toEqual(['20260825', YESTERDAY]);
+    expect(queryRange(query)).toEqual(['20260825', YESTERDAY]);
 
     expect(baseline.days).toHaveLength(6);
     expect(baseline.days.map(d => d[9].received)).toEqual([0, 0, 3, 0, 0, 2]);
@@ -369,7 +406,7 @@ describe('recent days cache', () => {
     let before = await new thunderStastsCore().getDaysBefore(day('20260602'), 3, 'acc1', [ME]);
     expect(before.received).toBe(4);
     expect(browser.calls.query).toHaveLength(1);
-    expect(key(browser.calls.query[0].fromDate)).toBe('20260530');
+    expect(queryRange(browser.calls.query[0])[0]).toBe('20260530');
   });
 
   it('is scanned again for another account', async () => {
@@ -392,7 +429,7 @@ describe('recent days cache', () => {
   ])('size %s starts the cache on %s', async (size, from) => {
     setRecentDaysCacheDays(size);
     await new thunderStastsCore().getToday_manyDaysData('acc1', [ME]);
-    expect(key(browser.calls.query[0].fromDate)).toBe(from);
+    expect(queryRange(browser.calls.query[0])[0]).toBe(from);
   });
 });
 

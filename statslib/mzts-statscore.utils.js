@@ -126,7 +126,8 @@ export const tsCoreUtils = {
 
                 const date = new Date(year, month - 1, day);
 
-                const dateFormatter = new Intl.DateTimeFormat(undefined, {
+                // the Thunderbird UI language, like the dates of the dashboards
+                const dateFormatter = new Intl.DateTimeFormat(browser.i18n.getUILanguage(), {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric'
@@ -294,13 +295,11 @@ export const tsCoreUtils = {
 
     async mergeAccountsAdvSettings(accounts, accounts_adv_settings) {
         let output = [];
+        let settings = Array.isArray(accounts_adv_settings) ? accounts_adv_settings : [];
         for(let account of accounts) {
-            let include_archive = true;
-            let filter_duplicates = await this.getDefaultAccountFilterDuplicatesOption(account.id);
-            if(accounts_adv_settings.length > 0) {
-                include_archive = accounts_adv_settings.find(element => element.id === account.id)?.include_archive ?? include_archive;
-                filter_duplicates = accounts_adv_settings.find(element => element.id === account.id)?.filter_duplicates ?? filter_duplicates;
-            }
+            let element = settings.find(element => element.id === account.id);
+            let include_archive = element?.include_archive ?? true;
+            let filter_duplicates = element?.filter_duplicates ?? await this.getDefaultAccountFilterDuplicatesOption(account.id);
             output.push({
                 id: account.id,
                 name: account.name,
@@ -350,35 +349,29 @@ export const tsCoreUtils = {
         return output;
     },
 
+    // The advanced settings of an account ({id, include_archive, filter_duplicates}), or null when it has none
+    async getAccountAdvSettings(account_id) {
+        let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
+        if(!Array.isArray(accounts_adv_settings)) return null;
+        return accounts_adv_settings.find(account => account.id == account_id) ?? null;
+    },
+
     // Whether the messages in the "archives" folders are included: the global preference for all the
     // accounts, the advanced account setting (default true) for a single account
     async getIncludeArchivePreference(account_id) {
         if(account_id == 0) {
            return await tsPrefs.getPref("include_archive_multi_account");
         }
-        let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
-        let element = null;
-        if(accounts_adv_settings.length > 0) {
-          element = accounts_adv_settings.find(account => account.id == account_id);
-        }
+        let element = await this.getAccountAdvSettings(account_id);
         return element?.include_archive ?? true;
      },
 
     async getFilterDuplicatesPreference(account_id) {
         if(account_id == 0) {
             return await tsPrefs.getPref("filter_duplicates_multi_account");
-        } else {
-            let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
-            //console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
-            let element = null;
-            if(accounts_adv_settings.length > 0) {
-                element = accounts_adv_settings.find(account => account.id == account_id);
-            }
-            //console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
-            let filter_duplicates_defaults = await this.getDefaultAccountFilterDuplicatesOption(account_id);
-            if(!element) return filter_duplicates_defaults;
-            return element.filter_duplicates ?? filter_duplicates_defaults;
         }
+        let element = await this.getAccountAdvSettings(account_id);
+        return element?.filter_duplicates ?? await this.getDefaultAccountFilterDuplicatesOption(account_id);
     },
 
     extractDomain(email) {

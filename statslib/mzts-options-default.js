@@ -39,7 +39,7 @@ export const prefs_default = {
     'internal_domains': {},
     'include_archive_multi_account': true,
     'filter_duplicates_multi_account': false,
-    'accounts_adv_settings': {},
+    'accounts_adv_settings': [],    // [{id, include_archive, filter_duplicates}]
     'bday_use_last_business_day': false,
     'bday_default_only': false,
     'bday_weekdays_0': false,   //Sunday

@@ -4,6 +4,7 @@
 //   mock.tags     = [{key, tag, color, ordinal}]
 //   mock.contacts = [vCard strings]
 //   mock.onQuery  = async (queryInfo) => {}  awaited before a messages.query resolves (to hold queries open)
+//   mock.dateBounds = 'exclusive' | 'inclusive'  messages dated exactly fromDate / toDate (not documented by Thunderbird)
 //   mock.calls    = { query: [queryInfo], continueList: [id], accountsList: n }
 
 // MailFolder as found in message.folder: no subFolders
@@ -30,6 +31,7 @@ export function createBrowserMock() {
     tags: [],
     contacts: [],
     onQuery: null,
+    dateBounds: 'exclusive',    // whether messages.query returns the messages dated exactly fromDate / toDate: 'exclusive' | 'inclusive'
     calls: { query: [], continueList: [], accountsList: 0 },
 
     storage: {
@@ -91,7 +93,8 @@ export function createBrowserMock() {
     },
 
     messages: {
-      // Filters like Thunderbird: fromDate included, toDate excluded, folderId with or without subfolders
+      // Filters by dates (both ends excluded or included, see dateBounds), folderId with or without subfolders,
+      // subject, unread, flagged
       async query(queryInfo) {
         mock.calls.query.push(queryInfo);
         if (mock.onQuery) await mock.onQuery(queryInfo);
@@ -105,9 +108,10 @@ export function createBrowserMock() {
             }
           }
         }
+        let inclusive = mock.dateBounds == 'inclusive';
         let found = mock.mailbox.messages.filter(m =>
-          (!queryInfo.fromDate || m.date >= queryInfo.fromDate) &&
-          (!queryInfo.toDate || m.date < queryInfo.toDate) &&
+          (!queryInfo.fromDate || (inclusive ? m.date >= queryInfo.fromDate : m.date > queryInfo.fromDate)) &&
+          (!queryInfo.toDate || (inclusive ? m.date <= queryInfo.toDate : m.date < queryInfo.toDate)) &&
           (!folder_ids || folder_ids.has(m.folder.id)) &&
           (queryInfo.subject === undefined || m.subject.includes(queryInfo.subject)) &&
           (queryInfo.unread === undefined || m.read != queryInfo.unread) &&

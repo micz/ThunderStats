@@ -47,7 +47,7 @@ export const tsDayModel = {
         result: object,               // getFullStatsData output for the day
         inbox: object,                // getInboxZeroDates output
         baseline_days: array,         // getWeekdayBaseline(...).days
-        prev_days: object,            // msg_days of the previous days (getAggregatedStatsData)
+        prev_days: object,            // msg_days of the previous days (getAggregatedRecentDays)
         prev_days_num: number,
         progressive: boolean,         // _time_chart_progressive pref
         hide_future: boolean,         // today_time_chart_do_no_show_future pref

@@ -112,6 +112,20 @@ describe('formatting', () => {
     expect(tsUtils.formatDateStringLocale('it-IT')).toBe('dd/MM/yyyy');
     expect(tsUtils.formatDateStringLocale('en-US')).toBe('MM/dd/yyyy');
     expect(tsUtils.formatDateStringLocale('de-DE')).toBe('dd.MM.yyyy');
+    expect(tsUtils.formatDateStringLocale('ja-JP')).toBe('yyyy/MM/dd');
+  });
+
+  it('builds the date pattern with non-Latin digits and quotes the Latin literals', () => {
+    expect(tsUtils.formatDateStringLocale('ar-EG')).toMatch(/^dd\W+MM\W+yyyy$/u);
+    expect(tsUtils.formatDateStringLocale('fa-IR')).toMatch(/yyyy.*MM.*dd/u);
+    // a literal with Latin letters would be read as tokens by date-fns
+    let parts = [{ type: 'day', value: '27' }, { type: 'literal', value: ' de ' }, { type: 'month', value: '07' }, { type: 'literal', value: " o'k " }, { type: 'year', value: '2000' }];
+    let spy = vi.spyOn(Intl.DateTimeFormat.prototype, 'formatToParts').mockReturnValue(parts);
+    try {
+      expect(tsUtils.formatDateStringLocale('xx')).toBe("dd' de 'MM' o''k 'yyyy");
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   it.each([
@@ -128,7 +142,10 @@ describe('formatting', () => {
     expect(tsUtils.sortDays(0, days).map(d => d.idx)).toEqual([0, 1, 2, 3, 4, 5, 6]);
     expect(tsUtils.sortDays(6, days).map(d => d.idx)).toEqual([6, 0, 1, 2, 3, 4, 5]);
     expect(tsUtils.sortDays(1, days).map(d => d.idx)).toEqual([1, 2, 3, 4, 5, 6, 0]);
+    expect(tsUtils.sortDays('3', days).map(d => d.idx)).toEqual([3, 4, 5, 6, 0, 1, 2]);
     expect(days.map(d => d.idx)).toEqual([1, 2, 3, 4, 5, 6, 0]);
+    // the input order does not matter
+    expect(tsUtils.sortDays(1, [...days].reverse()).map(d => d.idx)).toEqual([1, 2, 3, 4, 5, 6, 0]);
   });
 });
 

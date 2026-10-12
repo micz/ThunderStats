@@ -130,7 +130,7 @@ export const tsExport = {
     },
 
     // Correspondents from the user's point of view: the mails received from them (senders) and sent to them (recipients)
-    mergeRecipientsAndSenders(senders, recipients) {
+    mergeSendersAndRecipients(senders, recipients) {
         const correspondents = {};
 
         // Process senders

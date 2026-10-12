@@ -8,9 +8,9 @@ import { day } from '../helpers.js';
 const YESTERDAY = '20261012';
 const INTERNAL_COLUMNS = (prefix) => [prefix + ' InternalMailLabel', prefix + ' ExternalMailLabel'];
 
-// Same format as getCustomQryLabel for YYYYMMDD keys
+// Same format as getCustomQryLabel for YYYYMMDD keys (the mocked UI language is en-US)
 function dateLabel(key) {
-  return new Intl.DateTimeFormat(undefined, { day: '2-digit', month: '2-digit', year: 'numeric' }).format(day(key));
+  return new Intl.DateTimeFormat('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(day(key));
 }
 
 beforeEach(() => {
@@ -63,8 +63,8 @@ describe('CSV helpers', () => {
 });
 
 describe('transforms', () => {
-  it('mergeRecipientsAndSenders: mails received from the senders, sent to the recipients', () => {
-    expect(tsExport.mergeRecipientsAndSenders(
+  it('mergeSendersAndRecipients: mails received from the senders, sent to the recipients', () => {
+    expect(tsExport.mergeSendersAndRecipients(
       { 'a@x.it': { count: 2, name: 'A' }, 'b@y.com': { count: 1, name: 'B' } },
       { 'a@x.it': { count: 5, name: 'A' }, 'c@z.org': { count: 3, name: '' } },
     )).toEqual({
@@ -74,10 +74,10 @@ describe('transforms', () => {
     });
   });
 
-  it('mergeRecipientsAndSenders keeps the first non-empty name', () => {
-    let merged = tsExport.mergeRecipientsAndSenders({ 'a@x.it': { count: 1, name: '' } }, { 'a@x.it': { count: 1, name: 'Anna' } });
+  it('mergeSendersAndRecipients keeps the first non-empty name', () => {
+    let merged = tsExport.mergeSendersAndRecipients({ 'a@x.it': { count: 1, name: '' } }, { 'a@x.it': { count: 1, name: 'Anna' } });
     expect(merged['a@x.it'].name).toBe('Anna');
-    merged = tsExport.mergeRecipientsAndSenders({ 'a@x.it': { count: 1, name: 'Anna B.' } }, { 'a@x.it': { count: 1, name: 'Anna' } });
+    merged = tsExport.mergeSendersAndRecipients({ 'a@x.it': { count: 1, name: 'Anna B.' } }, { 'a@x.it': { count: 1, name: 'Anna' } });
     expect(merged['a@x.it'].name).toBe('Anna B.');
   });
 
@@ -162,7 +162,7 @@ describe('export of real stats', () => {
     expect(hours[10]).toBe('9,0,3');
     expect(hours[17]).toBe('16,1,0');
 
-    let correspondents = tsExport.mergeRecipientsAndSenders(result.senders, result.recipients);    // as the tabs call it
+    let correspondents = tsExport.mergeSendersAndRecipients(result.senders, result.recipients);    // as the tabs call it
     expect(tsExport.arrayToCsv(tsExport.transformCorrespondentsJsonToArray(correspondents, result.domains)).split('\n')).toEqual([
       'Name,Mail,TimeChart.Sent,TimeChart.Rcvd,Domains,InternalMailLabel',
       'Mario Rossi,mario@client.com,0,2,client.com,No',

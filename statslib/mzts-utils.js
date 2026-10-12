@@ -253,23 +253,22 @@ export const tsUtils = {
         return last_year_day;
     },
 
+    // Date pattern of a locale for the date picker (date-fns tokens), e.g. 'dd/MM/yyyy'.
+    // Built from the parts of a formatted date, so it works with any numbering system (e.g. Arabic digits);
+    // literals with Latin letters are quoted, since date-fns would read them as tokens.
     formatDateStringLocale(locale) {
-        const date = new Date(2000, 6, 27);
-
         const formatter = new Intl.DateTimeFormat(locale, {
           day: '2-digit',
           month: '2-digit',
           year: 'numeric'
         });
+        const tokens = { day: 'dd', month: 'MM', year: 'yyyy' };
 
-        const formattedDate = formatter.format(date);
-        //console.log(">>>>>>>>>>>>>> formattedDate: " + formattedDate);
-        const formatString = formattedDate.replace('27', 'dd')
-                                          .replace('07', 'MM')
-                                          .replace('2000', 'yyyy');
-
-        //console.log(">>>>>>>>>>>>>> formatString: " + formatString);
-        return formatString;
+        return formatter.formatToParts(new Date(2000, 6, 27)).map(part => {
+            if (tokens[part.type]) return tokens[part.type];
+            if (/[a-zA-Z]/.test(part.value)) return "'" + part.value.replace(/'/g, "''") + "'";
+            return part.value;
+        }).join('');
     },
 
     // convertToMilliseconds(timeStr) {
@@ -310,25 +309,12 @@ export const tsUtils = {
         return result.trim();
     },
 
+    // Days ({idx: 0 = Sunday ... 6 = Saturday}) ordered starting from firstDayWeek, as a new array
     sortDays(firstDayWeek, days) {
-        const sortedDays = [...days]; // Create a shallow copy of the days array
-
-        if (firstDayWeek == 0) {
-          // Sort days normally by index if the first day of the week is 0 (Sunday)
-          sortedDays.sort((a, b) => a.idx - b.idx);
-        } else if (firstDayWeek == 6) {
-          // Custom sort for when the first day of the week is 6 (Saturday)
-          sortedDays.sort((a, b) => {
-            if (a.idx === 6) return -1; // Move Saturday to the front
-            if (b.idx === 6) return 1;
-            if (a.idx === 0) return -1; // Then move Sunday to the second position
-            if (b.idx === 0) return 1;
-            return a.idx - b.idx; // Sort the rest normally
-          });
-        }
-
-        return sortedDays; // Return the sorted copy
-      },
+        const first = Number(firstDayWeek) || 0;
+        const position = (idx) => (idx - first + 7) % 7;
+        return [...days].sort((a, b) => position(a.idx) - position(b.idx));
+    },
 }
 
 export class EmailMatcher {

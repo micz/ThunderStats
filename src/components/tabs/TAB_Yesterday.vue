@@ -205,7 +205,7 @@ async function updateData() {
             }
             // export data
             _export_data.value[tsExport.export.time_emails.type] = result.msg_hours;
-            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result.senders, result.recipients);
+            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeSendersAndRecipients(result.senders, result.recipients);
             _export_data.value[tsExport.export.tags.type] = result.tags;
             _export_data.value[tsExport.export.folders.type] = result.folders;
             _export_data.value[tsExport.export.domains.type] = result.domains;

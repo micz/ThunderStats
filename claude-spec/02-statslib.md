@@ -36,7 +36,7 @@ The central class that retrieves and processes email data from the Thunderbird `
 | `getWeekdayBaseline(theDay, account_id, account_emails, num_weeks)` | Hourly counts (`msg_hours`) of the same weekday in the previous `num_weeks` weeks (non-business days skipped when `theDay` is a business day); the "usual day" of the Today/Yesterday dashboards; served from the recent days cache when the range is covered, otherwise by a single scan of the range |
 | `getCustomQryData(fromDate, toDate, account_id, account_emails, only_businessdays, adv_filters, internal_domains)` | Custom date range with optional filters |
 | `getDaysBefore(theDay, num_days, account_id, account_emails)` | Count-only stats of the `num_days` days before `theDay` (pace of a single-day Custom Query); served from the recent days cache when the range is covered |
-| `getFullStatsData(fromDate, toDate, account_id, account_emails, do_aggregate_stats, filter_duplicates, only_businessdays, adv_filters, internal_domains)` | Base method: retrieves and processes all messages in a date range. When `internal_domains` is provided, domain entries in the output include an `internal: true/false` flag. The output also has `msg_weekday_hours` (weekday × hour sent/received grid, used by the heatmap) and `msg_hours_days` (`{YYYYMMDD: {hour: {sent, received}}}`, only the days with mails, used to leave the day in progress out of the time-of-day averages). `count_in_inbox` and every other counter skip the duplicates when the filter is on || `getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates)` | Aggregated (total/max/min/avg) stats |
+| `getFullStatsData(fromDate, toDate, account_id, account_emails, do_aggregate_stats, filter_duplicates, only_businessdays, adv_filters, internal_domains)` | Base method: retrieves and processes all messages in a date range. When `internal_domains` is provided, domain entries in the output include an `internal: true/false` flag. The output also has `msg_weekday_hours` (weekday × hour sent/received grid, used by the heatmap) and `msg_hours_days` (`{YYYYMMDD: {hour: {sent, received}}}`, only the days with mails, used to leave the day in progress out of the time-of-day averages). `count_in_inbox` and every other counter skip the duplicates when the filter is on |
 | `getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates)` | Lightweight count-only stats |
 | `aggregateData(dates, only_businessdays)` | Computes total/max/min/avg from per-day data, optionally business days only; all zeros when no day is left |
 | `getInboxZeroDates(account_id)` / `scanInboxZeroDates(account_id)` / `getInboxFolders(account_id)` | Inbox Zero data; `getInboxZeroDates` serves it from the Inbox Zero cache (one scan per account, shared by all the tabs) |
@@ -46,7 +46,7 @@ The central class that retrieves and processes email data from the Thunderbird `
 | `getDays(fromDate, toDate, account_id, account_emails)` / `scanDays(...)` / `getRecentDays(...)` / `getAggregatedRecentDays(...)` | Recent days cache (see below): per-day `{sent, received, msg_hours}` of a range, from the cache or from one scan |
 | `getMessages(queryFn)` | Async generator over the pages of a message list. `queryFn` starts the `browser.messages.query` call and is invoked only when a slot of the query queue is free |
 
-**Query shape.** Every stats query passes the explicit list of folders to read (`folderId` from `getStatsFoldersIds`, `includeSubFolders: false`), so Thunderbird never converts the messages of drafts, trash, junk, templates, outbox or excluded archives, and `messagesPerPage: MESSAGES_PER_PAGE` (500) to cut the round trips. The Custom Query folder filters pass the user's folders instead; `excludeMessage` stays as a safety net. The minimum Thunderbird version is 140, there are no version checks or TB 115 fallbacks.
+**Query shape.** Every stats query passes the explicit list of folders to read (`folderId` from `getStatsFoldersIds`, `includeSubFolders: false`), so Thunderbird never converts the messages of drafts, trash, junk, templates, outbox or excluded archives, and `messagesPerPage: MESSAGES_PER_PAGE` (500) to cut the round trips. The Custom Query folder filters pass the user's folders instead; `excludeMessage` stays as a safety net. Thunderbird does not document whether a message dated exactly `fromDate` or `toDate` is returned, so every query asks for one more second on both sides (`queryDates`) and the core checks the range itself, both ends included (`inRange`); the ranges of a day end at 23:59:59.999, so a mail at midnight always belongs to exactly one day. The minimum Thunderbird version is 140, there are no version checks or TB 115 fallbacks.
 
 **Query queue.** Every `browser.messages.query` runs on Thunderbird's main thread, so many concurrent queries make the Thunderbird UI unresponsive. A module-level `QueryQueue` (shared by all `thunderStastsCore` instances) limits the running queries to the `max_concurrent_queries` preference (default 2, clamped to 1-10 by the exported `setMaxConcurrentQueries`, which `ThunderStatsView.updateStats` applies at every load); `getMessages` acquires a slot before starting the query and releases it when the iteration ends (also on early exit or error). The tabs also start their main query first and launch the secondary ones (inbox zero, baseline, previous period, days before) only after it has resolved.
 
@@ -79,9 +79,9 @@ Utility methods used by `thunderStastsCore` and the Vue components.
 - Folder, tag, and account helpers (labels, colors, folder IDs, subfolders, archive inclusion); `openFolder(folder_data, in_first_tab)` shows a folder in a mail tab (a new tab unless `in_first_tab`)
 - Business day calculations (`checkBusinessDay`, `findPreviousBusinessDay`, `isEasterOrEasterMonday`)
 - Correspondent names: `getCorrespondantName(address)` looks the email up in the address book names cache (a Map email → vCard FN built once with `addressBooks.list(true)` by `loadAddressBookNames`, shared by every query) and falls back to the display name in the address; `clearContactsNamesCache()` (exported) is called by `clearCoreCaches()`
-- `getCustomQryLabel(label, data_type)` — date, week, month or year key formatted for the CSV export
+- `getCustomQryLabel(label, data_type)` — date, week, month or year key formatted for the CSV export (days in the Thunderbird UI language)
 - Account email address resolution (`getAccountEmails`, `getAccountCustomIdentities`)
-- `getFilterDuplicatesPreference(account_id)` / `getIncludeArchivePreference(account_id)` — read global or per-account prefs
+- `getFilterDuplicatesPreference(account_id)` / `getIncludeArchivePreference(account_id)` — read global or per-account prefs; the per-account ones come from `getAccountAdvSettings(account_id)`, the entry of the `accounts_adv_settings` list (default `[]`; any other stored value counts as an empty list)
 - `getAccountInternalDomains(account_id)` — returns the internal domains list for a specific account; when `account_id` is `0`, returns internal domains for all accounts
 - `getInternalMailLabel(domains)` — computes the internal mail percentage from a domains object. Returns `{ sentPercent, receivedPercent }` (strings like `75.00%`)
 
@@ -96,6 +96,8 @@ General-purpose utility functions.
 **Key responsibilities:**
 - Date key formatting (`dateToYYYYMMDD`, `dateToYYYYMM`, `dateToYYYYWW`, `dateToYYYY`) and parsing; `dateToYYYYWW` is the ISO week with the ISO year (the year of its Thursday: 2024-12-30 is `202501`)
 - Preset period helpers (`getLastMonday`, `getFirstDayOfLastMonth`, ...)
+- `sortDays(first_day_week, days)` — weekdays (`idx` 0 = Sunday) ordered from any first day of the week
+- `formatDateStringLocale(locale)` — date-fns pattern of a locale for the date picker, built with `formatToParts` (works with non-Latin digits, literals with Latin letters quoted)
 - `daysBetween` (days of a range, both ends included, not affected by the DST changes)
 - `regexEmail` finds the address in an author or recipient string; the local part may contain `+` (sub-addressing), `%` and apostrophes (not as first character)
 - Date array generators (`getDateArray`, `getDateArrayWeeks`, `getDateArrayMonths`, `getDateArrayYears`) — each entry has fields: `{ count, sent, received, inbox }`
@@ -130,7 +132,7 @@ Matches domain strings against a list that may contain exact domains and wildcar
 Handles generation and download of CSV files from statistics data. Most transforms accept `includeInternalExternal` to add internal/external counts.
 
 - `arrayToCsv(rows)` writes the header from the keys of the first row; fields with a comma, a quote or a line break are quoted, with the quotes doubled (RFC 4180, `csvField`).
-- `mergeRecipientsAndSenders(senders, recipients)` builds the correspondents from the user's point of view (`received` = mails from the senders, `sent` = mails to the recipients), keeping the first non-empty name.
+- `mergeSendersAndRecipients(senders, recipients)` builds the correspondents from the user's point of view (`received` = mails from the senders, `sent` = mails to the recipients), keeping the first non-empty name.
 
 **Exportable data types:**
 - Correspondents (senders/recipients)

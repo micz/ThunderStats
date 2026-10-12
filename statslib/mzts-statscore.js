@@ -28,6 +28,23 @@ export const MESSAGES_PER_PAGE = 500;
 // Folders never counted in the stats (with their subfolders)
 const EXCLUDED_FOLDERS_SPECIAL_USE = ['drafts', 'trash', 'junk', 'templates', 'outbox'];
 
+// messages.query does not document whether a message dated exactly fromDate or toDate is returned:
+// every query asks for one more second on both sides and inRange() checks the range, both ends included.
+// The ranges of a day end at 23:59:59.999, so a mail at midnight always belongs to exactly one day.
+const QUERY_DATE_MARGIN_MS = 1000;
+
+function queryDates(fromDate, toDate) {
+  return {
+    fromDate: new Date(fromDate.getTime() - QUERY_DATE_MARGIN_MS),
+    toDate: new Date(toDate.getTime() + QUERY_DATE_MARGIN_MS),
+  };
+}
+
+function inRange(message, fromDate, toDate) {
+  let time = new Date(message.date).getTime();
+  return time >= fromDate.getTime() && time <= toDate.getTime();
+}
+
 export class thunderStastsCore {
 
   tsLog = null;
@@ -178,14 +195,11 @@ export class thunderStastsCore {
     async getToday_SingleDayData(theDay, account_id = 0, account_emails = [], count_data_to_current_time = true) {
 
       theDay.setHours(0, 0, 0, 0);
-      let theMidnightAfter = new Date(theDay);
-      theMidnightAfter.setDate(theMidnightAfter.getDate() + 1);
-      theMidnightAfter.setHours(0, 0, 0, 0);
 
+      // the whole day, up to its last millisecond (a mail at the next midnight belongs to the next day)
       let fromDate = new Date(theDay);
-      let toDate = new Date(theMidnightAfter);
-      // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
-      // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
+      let toDate = new Date(theDay);
+      toDate.setHours(23, 59, 59, 999);
 
       let filter_duplicates = await this.getFilterDuplicates(account_id);
 
@@ -245,7 +259,8 @@ export class thunderStastsCore {
       return this.scanDays(fromDate, toDate, account_id, account_emails, filter_duplicates);
     }
 
-    // Same output as getAggregatedStatsData, built from getDays (so from the cache when possible)
+    // Per-day sent/received counts of a range with their total/max/min/avg ({sent, received, count, msg_days, aggregate, elapsed}),
+    // built from getDays (so from the cache when possible)
     async getAggregatedRecentDays(fromDate, toDate, account_id = 0, account_emails = []) {
       let start_time = performance.now();
       let scan = await this.getDays(fromDate, toDate, account_id, account_emails);
@@ -313,8 +328,7 @@ export class thunderStastsCore {
       let messages_hash = new Map();
 
       let queryInfo_ScanDays = {
-        fromDate: fromDate,
-        toDate: toDate,
+        ...queryDates(fromDate, toDate),
         folderId: await this.getStatsFoldersIds(account_id),
         includeSubFolders: false,
         messagesPerPage: MESSAGES_PER_PAGE,
@@ -326,6 +340,7 @@ export class thunderStastsCore {
 
       await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
+          if(!inRange(message, fromDate, toDate)) continue;
           if(this.excludeMessage(message,account_id)) continue;
           if(filter_duplicates){
             if(messages_hash.has(message.headerMessageId)) continue;
@@ -369,8 +384,7 @@ export class thunderStastsCore {
 
       let queryInfo_FullStatsData = {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
-        fromDate: fromDate,
-        toDate: toDate,
+        ...queryDates(fromDate, toDate),
       }
 
       // ====================== Advanced Filters ======================
@@ -518,6 +532,7 @@ export class thunderStastsCore {
 
       await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
+          if(!inRange(message, fromDate, toDate)) continue;
           if(this.excludeMessage(message,account_id)) continue;
           // this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
@@ -814,8 +829,7 @@ export class thunderStastsCore {
 
       let queryInfo_CountStatsData = {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
-        fromDate: fromDate,
-        toDate: toDate,
+        ...queryDates(fromDate, toDate),
         folderId: await this.getStatsFoldersIds(account_id),
         includeSubFolders: false,
         messagesPerPage: MESSAGES_PER_PAGE,
@@ -839,6 +853,7 @@ export class thunderStastsCore {
       await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
         //console.log(">>>>>>>>>>>>>> filter_duplicates: iterating message.headerMessageId: " + message.headerMessageId);
+          if(!inRange(message, fromDate, toDate)) continue;
           if(this.excludeMessage(message,account_id)) continue;
           if(filter_duplicates){
             //console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
@@ -882,91 +897,13 @@ export class thunderStastsCore {
       return {sent: sent, received: received, count: count, msg_hours: msg_hours, elapsed: stop_time - start_time};
     }
 
-     async getAggregatedStatsData(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicates = false) {
-
-      //filter_duplicates = true; // to test
-
-      let start_time = performance.now();
-
-      let messages_hash = new Map();
-
-      this.tsLog.log(() => "account_emails: " + JSON.stringify(account_emails));
-
-      const emailMatcher = new EmailMatcher(account_emails);
-
-      let queryInfo_getAggregatedStatsData = {
-        //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
-        fromDate: fromDate,
-        toDate: toDate,
-        folderId: await this.getStatsFoldersIds(account_id),
-        includeSubFolders: false,
-        messagesPerPage: MESSAGES_PER_PAGE,
-      }
-
-      this.tsLog.log(() => "queryInfo_getAggregatedStatsData: " + JSON.stringify(queryInfo_getAggregatedStatsData));
-      
-      let count = 0;
-      let sent = 0;
-      let received = 0;
-
-      let messages = this.getMessages(() => browser.messages.query(queryInfo_getAggregatedStatsData));
-
-      let msg_days = tsUtils.getDateArray(fromDate,toDate);
-
-      this.tsLog.log(() => "[getAggregatedStatsData] msg_days: " + JSON.stringify(msg_days));
-
-      await this.loadIncludeArchive(account_id);
-      for await (let message of messages) {
-          if(this.excludeMessage(message,account_id)) continue;
-          //this.tsLog.log("message: " + JSON.stringify(message));
-          if(filter_duplicates){
-            // console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
-            if(messages_hash.has(message.headerMessageId)){ 
-              // console.log(">>>>>>>>>>>>>> filter_duplicates: found message.headerMessageId: " + message.headerMessageId);
-              continue;
-            }
-            messages_hash.set(message.headerMessageId, true);
-            // console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
-          }
-          let date_message = new Date(message.date);
-          let day_message = tsUtils.dateToYYYYMMDD(date_message);
-          if(msg_days[day_message] === undefined) continue;   // outside the range (should not happen)
-          // check sender
-          const match_author = message.author.match(tsUtils.regexEmail);
-          if (match_author) {
-            const key_author = match_author[0].toLowerCase();
-            if(emailMatcher.matches(key_author)) {
-              sent++;
-              // group by hour
-              msg_days[day_message].sent++;
-            }else{
-              received++;
-              // group by hour
-              msg_days[day_message].received++;
-            }
-          }
-        
-        count++;
-      }
-
-      let output = {sent: sent, received: received, count: count, msg_days: msg_days};
-
-      output.aggregate = await this.aggregateData(msg_days);
-
-      let stop_time = performance.now();
-
-      output.elapsed = stop_time - start_time;
-
-      return output;
-    }
-
     async aggregateData(dates, only_businessdays = -99) {
       
       let filtered_dates = {};
       let prefs_bday_default_only = false;
 
       if(only_businessdays == -99) {
-        prefs_bday_default_only = await tsPrefs.getPref(['bday_default_only']);
+        prefs_bday_default_only = await tsPrefs.getPref('bday_default_only');
       } else {
         prefs_bday_default_only = only_businessdays;
       }

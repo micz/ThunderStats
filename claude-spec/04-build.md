@@ -39,14 +39,23 @@ plugins: [
 ],
 build: {
   minify: mode === 'production',   // minify only for "npm run build"
-  rollupOptions: {
+  rolldownOptions: {
     input: {
       main:    'index.thunderstats.html',   // main stats window
       options: 'index.ts-options.html'      // options page
+    },
+    output: {
+      codeSplitting: { groups: [            // third party libraries in their own chunks
+        { name: 'vendor-chartjs', ... },    // chart.js, vue-chartjs, @kurkle/color
+        { name: 'vendor-vue', ... },        // vue and @vue/*
+        { name: 'vendor', ... },            // every other node_modules package
+      ] }
     }
   }
 }
 ```
+
+The vendor chunk groups keep every chunk under Vite's 500 kB warning limit (the main chunk alone was over 600 kB minified).
 
 ### Path Aliases
 

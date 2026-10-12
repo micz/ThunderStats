@@ -45,10 +45,20 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     minify: mode === 'production',
-    rollupOptions: {
+    rolldownOptions: {
       input: {
         main: fileURLToPath(new URL('./index.thunderstats.html', import.meta.url)),
         options: fileURLToPath(new URL('./index.ts-options.html', import.meta.url))
+      },
+      output: {
+        // Put the third party libraries in their own chunks, so the app chunk stays small
+        codeSplitting: {
+          groups: [
+            { name: 'vendor-chartjs', test: /[\\/]node_modules[\\/](chart\.js|vue-chartjs|@kurkle)[\\/]/, priority: 2 },
+            { name: 'vendor-vue', test: /[\\/]node_modules[\\/]@?vue[\\/-]/, priority: 1 },
+            { name: 'vendor', test: /[\\/]node_modules[\\/]/ },
+          ]
+        }
       }
     }
   },

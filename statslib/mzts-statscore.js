@@ -30,6 +30,8 @@ export class thunderStastsCore {
   _many_days = 7;
   accounts_adv_settings = [];
   include_archive = {};     // account_id -> include the "archives" folders (loaded by loadIncludeArchive before each scan)
+  filter_duplicates = {};   // account_id -> filter duplicates setting (see getFilterDuplicates)
+  folders_ids = {};         // account_id -> folder ids of the account, TB 128+ (see getAccountFoldersIds)
 
   constructor(options = {}) {
     this.do_debug = options.hasOwnProperty('do_debug') ? options.do_debug : false;
@@ -54,7 +56,7 @@ export class thunderStastsCore {
       lastMidnight.setHours(0, 0, 0, 0);
       //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
       // console.log(">>>>>>>> [getToday] filter_duplicates: " + filter_duplicates);
 
@@ -110,7 +112,7 @@ export class thunderStastsCore {
       toDate.setDate(stop_date);
       toDate.setHours(23, 59, 59, 999);
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
@@ -135,7 +137,7 @@ export class thunderStastsCore {
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays, adv_filters, internal_domains);   // the "true" is to aggregate
     }
@@ -166,7 +168,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
       // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
       return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
@@ -183,7 +185,7 @@ export class thunderStastsCore {
       // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
       // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
       return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates);
     }
@@ -226,7 +228,7 @@ export class thunderStastsCore {
     // Per-day sent/received counts and hourly grid of a date range, from the recent days cache when
     // the range is covered by it, otherwise from a direct scan. Output: {days: {YYYYMMDD: {sent, received, msg_hours}}, elapsed}
     async getDays(fromDate, toDate, account_id = 0, account_emails = []) {
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
       let range = tsRecentDaysCache.getRange();
       if(fromDate >= range.fromDate && toDate <= range.toDate) {
@@ -315,7 +317,7 @@ export class thunderStastsCore {
 
       if(account_id != 0){
         if(tsStore.isTB128plus){
-          queryInfo_ScanDays.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
+          queryInfo_ScanDays.folderId = await this.getAccountFoldersIds(account_id);
         }
       }
 
@@ -456,7 +458,7 @@ export class thunderStastsCore {
           }
         }else{
           if(tsStore.isTB128plus){
-            queryInfo_FullStatsData.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
+            queryInfo_FullStatsData.folderId = await this.getAccountFoldersIds(account_id);
             queryInfo_FullStatsData.includeSubFolders = true;
           }else{
             filter_folders_115 = null;
@@ -838,7 +840,7 @@ export class thunderStastsCore {
 
       if(account_id != 0){
         if(tsStore.isTB128plus){
-          queryInfo_CountStatsData.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
+          queryInfo_CountStatsData.folderId = await this.getAccountFoldersIds(account_id);
         }
       }
 
@@ -930,7 +932,7 @@ export class thunderStastsCore {
 
       if(account_id != 0){
         if(tsStore.isTB128plus){
-          queryInfo_getAggregatedStatsData.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
+          queryInfo_getAggregatedStatsData.folderId = await this.getAccountFoldersIds(account_id);
         }
       }
 
@@ -1058,6 +1060,23 @@ export class thunderStastsCore {
       let avg_received = parseFloat((total_received / num_days).toFixed(2));
       
       return {total_sent: total_sent, max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, total_received: total_received, max_received: max_received, min_received: min_received, avg_received: avg_received};
+    }
+
+    // Per-instance memo of the settings and folder ids every query needs: the core of a tab is created
+    // at each data load, so they are read once per load instead of once per query
+
+    async getFilterDuplicates(account_id = 0) {
+      if(!(account_id in this.filter_duplicates)) {
+        this.filter_duplicates[account_id] = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      }
+      return this.filter_duplicates[account_id];
+    }
+
+    async getAccountFoldersIds(account_id = 0) {
+      if(!(account_id in this.folders_ids)) {
+        this.folders_ids[account_id] = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
+      }
+      return this.folders_ids[account_id];
     }
 
     // Reads the "include archives" preference of the account once, so excludeMessage can be synchronous

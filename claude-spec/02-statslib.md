@@ -42,6 +42,7 @@ The central class that retrieves and processes email data from the Thunderbird `
 | `aggregateData(dates, only_businessdays)` | Computes total/max/min/avg from per-day data, optionally business days only |
 | `getInboxZeroDates(account_id)` / `scanInboxZeroDates(account_id)` / `getInboxFolders(account_id)` | Inbox Zero data; `getInboxZeroDates` serves it from the Inbox Zero cache (one scan per account, shared by all the tabs) |
 | `getAccountEmails(account_id, no_custom_identities)` | Returns the email addresses for an account |
+| `getFilterDuplicates(account_id)` / `getAccountFoldersIds(account_id)` | Per-instance memo of the duplicates setting and of the account folder ids (TB 128+), read once per data load instead of once per query |
 | `loadIncludeArchive(account_id)` / `excludeMessage(message, account_id)` | `excludeMessage` is synchronous and skips drafts, trash and junk, plus the archives when the account setting excludes them; every scan awaits `loadIncludeArchive` first, which reads the setting once per account into the instance |
 | `getDays(fromDate, toDate, account_id, account_emails)` / `scanDays(...)` / `getRecentDays(...)` / `getAggregatedRecentDays(...)` | Recent days cache (see below): per-day `{sent, received, msg_hours}` of a range, from the cache or from one scan |
 | `getMessages(queryFn)` | Async generator over the pages of a message list. `queryFn` starts the `browser.messages.query` call and is invoked only when a slot of the query queue is free |

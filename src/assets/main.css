@@ -1,5 +1,6 @@
 @import './base.css';
 @import './tokens.css';
+@import './dashboard.css';
 
 #yesterday_spacing{height:0.85vw;}
 .singleday_spacing{height:1.85vw;}

@@ -163,6 +163,27 @@ export class thunderStastsCore {
 
       return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates);
     }
+    // Hourly counts of the same weekday in the previous num_weeks weeks, used as the "usual day" baseline.
+    // When theDay is a business day, past non-business days (holidays) are skipped.
+    async getWeekdayBaseline(theDay, account_id = 0, account_emails = [], num_weeks = 6) {
+
+      let start_time = performance.now();
+      let only_business_days = tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(theDay));
+      let queries = [];
+
+      for(let week = 1; week <= num_weeks; week++) {
+        let pastDay = new Date(theDay);
+        pastDay.setDate(pastDay.getDate() - (7 * week));
+        pastDay.setHours(0, 0, 0, 0);
+        if(only_business_days && !tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(pastDay))) continue;
+        queries.push(this.getToday_SingleDayData(pastDay, account_id, account_emails, false));
+      }
+
+      let days = await Promise.all(queries);
+      let stop_time = performance.now();
+
+      return {days: days.map(day => day.msg_hours), elapsed: stop_time - start_time};
+    }
     // ================ SINGLE DAY METHODS - END =====================
 
     // ================ BASE METHODS ========================

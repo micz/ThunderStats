@@ -32,6 +32,7 @@ The central class that retrieves and processes email data from the Thunderbird `
 | `getToday_manyDaysData(account_id, account_emails)` | Aggregated stats for the previous `_many_days` days excluding today (Today/Yesterday summary) |
 | `getToday_YesterdayData(...)` / `getToday_SingleDayData(theDay, ...)` | Count-only data for the "yesterday at this time" / custom comparison day counter |
 | `getSingleDay(theDay, account_id, account_emails, internal_domains)` | Full stats for one day |
+| `getWeekdayBaseline(theDay, account_id, account_emails, num_weeks)` | Hourly counts (`msg_hours`) of the same weekday in the previous `num_weeks` weeks (non-business days skipped when `theDay` is a business day); the "usual day" of the Today/Yesterday dashboards |
 | `getCustomQryData(fromDate, toDate, account_id, account_emails, only_businessdays, adv_filters, internal_domains)` | Custom date range with optional filters |
 | `getFullStatsData(fromDate, toDate, account_id, account_emails, do_aggregate_stats, filter_duplicates, only_businessdays, adv_filters, internal_domains)` | Base method: retrieves and processes all messages in a date range. When `internal_domains` is provided, domain entries in the output include an `internal: true/false` flag |
 | `getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates)` | Aggregated (total/max/min/avg) stats |
@@ -163,6 +164,28 @@ Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `d
 
 ---
 
+### `mzts-insights.js` — Dashboard Metrics
+
+**Object:** `tsInsights` (pure functions) plus constants (`BASELINE_WEEKS` = 6, `INBOX_FEW_LEFT` = 5, `STREAK_STRIP_DAYS` = 14, `STREAK_WINDOW_DAYS` = 90, `CLEAR_IN_GOOD_DAYS` = 5).
+
+- `weekdayBaseline(days_msg_hours, progressive)` — usual range per hour (min–max of the past same weekdays, dropping the highest and lowest day when there are 5+ samples), cumulative ranges and averages, average received/sent per day.
+- `delta(value, reference, increase_is_bad)` — KPI change text (`▲ 12%`, `▼ 25%`, `±0%`) and color (`--warn` when an increase is bad).
+- Inbox approximations, based on the arrival dates of the mails still in the inbox (`getInboxZeroDates().dates`), since Thunderbird keeps no inbox history:
+  - `inboxZeroDays` — per day: `zero` (no mail of that day left in the inbox), `few` (≤ 5 left), `missed`.
+  - `inboxZeroStreak` — consecutive `zero` days up to the given day (a day still in progress is skipped if not at zero). No "best streak": old days always end up at zero once processed.
+  - `backlogAdded` — mails received in a date range still in the inbox (status strip "Backlog trend", since the first day of the week).
+  - `clearInDays` — current inbox / average mails per working day that left the inbox (received minus still in inbox) over the previous days.
+  - `oldestDays` — age of the oldest mail in the inbox.
+- `topCorrespondents`, `endedUpFolders` (received mails by folder, inbox first), `endedUpTags`, `domainRows`.
+
+---
+
+### `mzts-daymodel.js` — Single-Day Dashboard Model
+
+**Object:** `tsDayModel`. `build(input)` returns the props of `WidgetDayDashboard` (status strip, KPIs, chart, top correspondents, tables, domains, folders/tags) from the data loaded by a tab; every input except `kind` and `day` may be `null` while loading. `kind` is `today` (day in progress: "by now" comparisons, now line), `yesterday` or `day` (other single day, e.g. last business day). The status badge is "Inbox zero" (empty inbox), "Keeping up" (clear in ≤ 5 working days) or "Backlog growing". Dates use the Thunderbird UI language.
+
+---
+
 ### `mzts-theme.js` — Color Theme
 
 **Object:** `tsTheme`
@@ -194,7 +217,7 @@ Custom plugins and external tooltip handlers used by chart components.
 | `plugin-timechart-vertical-line.js` | Vertical line overlay on time charts |
 | `external-tooltip-timechartlines.js` | Custom tooltip for time charts |
 | `external-tooltip-inboxzerodates.js` | Custom tooltip for Inbox Zero date charts |
-| `chart-theme.js` | `applyChartTheme(is_dark)` sets the global `Chart.defaults` text/grid colors and redraws open charts; called by `ThunderStatsView` when `tsStore.darkmode` changes. Charts must not set `Chart.defaults` themselves |
+| `chart-theme.js` | `applyChartTheme(is_dark)` sets the global `Chart.defaults` text/grid colors and redraws open charts; called by `ThunderStatsView` when `tsStore.darkmode` changes. Charts must not set `Chart.defaults` themselves. Also exports `themeColor(name)` (current value of a CSS token) and `withAlpha(hex, alpha)` |
 
 ---
 

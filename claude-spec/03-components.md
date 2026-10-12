@@ -12,14 +12,9 @@ App_ThunderStats.vue
     └── [tab-based navigation]
         ├── TAB_Today.vue
         │   ├── ExportMenu.vue
-        │   ├── CounterSentReceived.vue
-        │   ├── CounterYesterdayThisTime.vue
-        │   ├── CounterManyDays_Table.vue   (previous N days summary)
-        │   ├── ChartTime.vue
-        │   ├── WidgetInboxZero.vue
-        │   ├── TableInvolved.vue
-        │   ├── WidgetDomains.vue
-        │   └── WidgetFoldersTags.vue
+        │   └── WidgetDayDashboard.vue
+        │       ├── rail slot:   CounterYesterdayThisTime.vue, CounterManyDays_Table.vue (previous N days summary)
+        │       └── bottom slot: WidgetInboxZero.vue
         ├── TAB_Yesterday.vue
         │   └── (same as Today, without CounterYesterdayThisTime)
         ├── TAB_ManyDays.vue
@@ -45,6 +40,8 @@ App_ThunderStats.vue
         └── TAB_Info.vue
 
 Widget / counter children:
+    WidgetDayDashboard.vue  → WidgetStatusStrip, CounterKpi, ChartDayVsNormal, WidgetTopCorrespondents,
+                              TableInvolved (when "See all" is open), WidgetDomainBars, WidgetEndedUp
     WidgetInboxZero.vue     → CounterInbox, CounterInboxPercent, ChartInboxZeroDates,
                               ChartInboxZeroDatesExtended, ChartInboxZeroFolders, InfoTooltip
     WidgetDomains.vue       → ChartDomains
@@ -88,8 +85,8 @@ App_Options.vue
 
 | File | Description |
 |---|---|
-| `TAB_Today.vue` | Statistics for today: sent/received counts, comparison with yesterday at this time, previous N days summary, time chart, inbox zero, top correspondents, domain/folder/tag widgets |
-| `TAB_Yesterday.vue` | Same layout as Today (without the "yesterday at this time" comparison) for yesterday's data |
+| `TAB_Today.vue` | Today (midnight to now): loads the day, inbox, previous days, comparison day and weekday baseline, builds the dashboard with `tsDayModel` and renders `WidgetDayDashboard`; rail adds the "yesterday at this time" comparison (with custom day picker) and the previous N days summary; bottom adds the Inbox Zero widget |
+| `TAB_Yesterday.vue` | Same dashboard for yesterday (or the last business day with `bday_use_last_business_day`), without the comparison card |
 | `TAB_ManyDays.vue` | Multi-day overview (`_many_days` pref, default 7): daily chart, total/max/min/avg, time and weekday charts, correspondents, domains, folders/tags |
 | `TAB_CustomQry.vue` | Advanced query with date range picker and presets, filters (read/unread, starred, subject, folders), aggregation level selector, period comparison, and CSV export. A one-day range switches to single-day mode (Today-like counters and inbox zero) |
 | `TAB_Info.vue` | About page with version and credits |
@@ -103,6 +100,7 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper.
 | File | Description |
 |---|---|
 | `ChartTime.vue` | Hourly sent/received distribution (bar chart) |
+| `ChartDayVsNormal.vue` | Line chart of a single day (cumulative or hourly, per `_time_chart_progressive`): received and sent lines with an end dot, usual-range band of the same weekday, optional dashed comparison day, dashed "now" line and an HTML callout kept on its left. Colors from the CSS tokens, recomputed on theme change |
 | `ChartWeekDays.vue` | Sent/received per weekday |
 | `ChartManyDays.vue` | Daily bar chart for the Many Days tab. Supports stacked bars (used by the Received chart to show inbox messages as a red segment on top of non-inbox). Datalabels show stacked totals. |
 | `ChartCustomQry.vue` | Chart for custom query results, adapts to selected aggregation level. Accepts `is_comparing` prop to enable legend, tooltips, and suppress Period B datalabels when comparing periods. |
@@ -127,6 +125,7 @@ Small display components that show a single statistic value.
 | `CounterYesterdayThisTime.vue` | Compares current count to yesterday (or last business day, or user-chosen day) at the same time. The day label is clickable and opens an inline date picker to select a custom comparison day. Emits `customDaySelected` event. |
 | `CounterManyDays_Table.vue` | Total/max/min/avg sent and received over the previous `_many_days` days (excluding today); used in Today and Yesterday |
 | `CounterManyDays_Row.vue` | Total/max/min/avg row for a period; used in Many Days and Custom Query |
+| `CounterKpi.vue` | KPI card: uppercase label, big value, delta, aside text, sub line, default slot (Inbox Zero strip) |
 
 ---
 
@@ -140,6 +139,11 @@ Composite components that combine multiple data points or sub-charts.
 | `WidgetFoldersTags.vue` | Folder and tag distribution (wraps `ChartFolders`, `ChartTags`) |
 | `WidgetWeekDay.vue` | Thin wrapper around `ChartWeekDays` |
 | `WidgetInboxZero.vue` | Inbox Zero section: inbox counters and inbox zero charts |
+| `WidgetDayDashboard.vue` | Single-day layout: status strip, KPI row, chart card + right rail (top correspondents + `rail` slot), full recipients/senders tables when "See all" is open, domains + folders/tags row, `bottom` slot |
+| `WidgetStatusStrip.vue` | Status badge (good / warn / neutral), date lines, flow values (Arrived → Filed or answered → Still in inbox), side values and the proportional bar. Generic, reusable by the period views |
+| `WidgetTopCorrespondents.vue` | Rail card: top 5 merged senders/recipients with bars (`--rcvd` if mostly received, `--sent` otherwise) and a "See all" toggle |
+| `WidgetDomainBars.vue` | Domains as two horizontal bars (sent, received) with the "internal" tag; first 8 rows, expandable |
+| `WidgetEndedUp.vue` | "Where mails ended up": Folders / Tags toggle; inbox bar in `--rcvd`, filed folders in `--good`, tags in their own color; computed footnote |
 
 ---
 
@@ -167,7 +171,7 @@ Composite components that combine multiple data points or sub-charts.
 | `InfoTooltip.vue` | Reusable info tooltip icon |
 | `OptionDonationHeader.vue` | Donation banner (in `OPTAB_Info` and `OPTAB_License`) |
 | `OptionDonationFooter.vue` | Donation banner at the bottom of `OptionsView` |
-| `tables/TableInvolved.vue` | Table of top senders and recipients |
+| `tables/TableInvolved.vue` | Ranked list of top senders or recipients: rank, name over address, bar, count. `kind` = `sent` (recipients, `--sent` bars) or `rcvd` (senders) |
 
 ---
 

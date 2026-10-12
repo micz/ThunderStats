@@ -948,5 +948,439 @@
   "UpdatedAt": {
     "message": "Updated",
     "description": "Shown in the toolbar before the time of the last data update, e.g. Updated 18:04"
+  },
+  "Received": {
+    "message": "Received",
+    "description": "Legend label for received mails"
+  },
+  "Sent": {
+    "message": "Sent",
+    "description": "Legend label for sent mails"
+  },
+  "InboxAtZero": {
+    "message": "Inbox zero",
+    "description": "Status badge when the inbox is empty"
+  },
+  "KeepingUp": {
+    "message": "Keeping up",
+    "description": "Status badge"
+  },
+  "BacklogGrowing": {
+    "message": "Backlog growing",
+    "description": "Status badge"
+  },
+  "FullDayRange": {
+    "message": "Full day · 00:00 → 23:59",
+    "description": ""
+  },
+  "Arrived": {
+    "message": "Arrived",
+    "description": "Mails received in the period"
+  },
+  "FiledOrAnswered": {
+    "message": "Filed or answered",
+    "description": "Received mails that left the inbox"
+  },
+  "FiledOrAnsweredTooltip": {
+    "message": "Mails received in the period that are no longer in the inbox",
+    "description": ""
+  },
+  "StillInInbox": {
+    "message": "Still in inbox",
+    "description": ""
+  },
+  "OfInboxTotal": {
+    "message": "of $TOTAL$ total",
+    "description": "Next to the mails still in the inbox",
+    "placeholders": {
+      "total": {
+        "content": "$1",
+        "example": "124"
+      }
+    }
+  },
+  "BacklogTrend": {
+    "message": "Backlog trend",
+    "description": ""
+  },
+  "SinceWeekday": {
+    "message": "since $WEEKDAY$",
+    "description": "e.g. since Mon",
+    "placeholders": {
+      "weekday": {
+        "content": "$1",
+        "example": "Mon"
+      }
+    }
+  },
+  "BacklogTrendTooltip": {
+    "message": "Mails received since the start of the week that are still in the inbox",
+    "description": ""
+  },
+  "ClearIn": {
+    "message": "Clear in",
+    "description": "Time needed to empty the inbox"
+  },
+  "WorkingDaysSmall": {
+    "message": "working days",
+    "description": ""
+  },
+  "ClearInTooltip": {
+    "message": "Working days needed to empty the inbox at your usual pace (mails that left the inbox per working day in the last $NUM$ days)",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "BaselineTooltip": {
+    "message": "Compared with the same weekday in the last $NUM$ weeks",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "6"
+      }
+    }
+  },
+  "NoWeekdayHistory": {
+    "message": "No history for this weekday yet",
+    "description": ""
+  },
+  "VsUsualByNow": {
+    "message": "vs your usual $WEEKDAY$ by now ($NUM$)",
+    "description": "",
+    "placeholders": {
+      "weekday": {
+        "content": "$1",
+        "example": "Thursday"
+      },
+      "num": {
+        "content": "$2",
+        "example": "42"
+      }
+    }
+  },
+  "VsWeekdayAverage": {
+    "message": "vs your $WEEKDAY$ average ($NUM$)",
+    "description": "",
+    "placeholders": {
+      "weekday": {
+        "content": "$1",
+        "example": "Thursday"
+      },
+      "num": {
+        "content": "$2",
+        "example": "42"
+      }
+    }
+  },
+  "InboxBacklog": {
+    "message": "Inbox backlog",
+    "description": ""
+  },
+  "InboxBacklogDeltaTooltip": {
+    "message": "Mails received that day still in the inbox",
+    "description": ""
+  },
+  "InboxBacklogSub": {
+    "message": "$UNREAD$ unread · oldest $DAYS$ days",
+    "description": "",
+    "placeholders": {
+      "unread": {
+        "content": "$1",
+        "example": "112"
+      },
+      "days": {
+        "content": "$2",
+        "example": "46"
+      }
+    }
+  },
+  "InternalTraffic": {
+    "message": "Internal traffic",
+    "description": ""
+  },
+  "InternalTrafficSub": {
+    "message": "received · $PERCENT$ of what you sent",
+    "description": "",
+    "placeholders": {
+      "percent": {
+        "content": "$1",
+        "example": "58%"
+      }
+    }
+  },
+  "InboxZeroDayLeft": {
+    "message": "$DATE$: $NUM$ still in the inbox",
+    "description": "Tooltip of a day in the Inbox Zero strip",
+    "placeholders": {
+      "date": {
+        "content": "$1",
+        "example": "Thu 30 Jul"
+      },
+      "num": {
+        "content": "$2",
+        "example": "3"
+      }
+    }
+  },
+  "InboxZeroStreak": {
+    "message": "Inbox Zero streak",
+    "description": ""
+  },
+  "InboxZeroStreakSub": {
+    "message": "days · $ZERO$ of the last $NUM$ at zero",
+    "description": "",
+    "placeholders": {
+      "zero": {
+        "content": "$1",
+        "example": "9"
+      },
+      "num": {
+        "content": "$2",
+        "example": "14"
+      }
+    }
+  },
+  "InboxZeroStreakTooltip": {
+    "message": "A day counts when none of the mails received that day is still in the inbox.",
+    "description": ""
+  },
+  "ChartTodayTitle": {
+    "message": "Today against your normal day",
+    "description": ""
+  },
+  "ChartDayTitle": {
+    "message": "$DAY$ against your normal day",
+    "description": "",
+    "placeholders": {
+      "day": {
+        "content": "$1",
+        "example": "29 July"
+      }
+    }
+  },
+  "UsualRange": {
+    "message": "Usual range",
+    "description": "Range of the same weekday in the previous weeks"
+  },
+  "CalloutReceived": {
+    "message": "$TIME$ · $NUM$ received",
+    "description": "",
+    "placeholders": {
+      "time": {
+        "content": "$1",
+        "example": "18:04"
+      },
+      "num": {
+        "content": "$2",
+        "example": "47"
+      }
+    }
+  },
+  "UsualByNow": {
+    "message": "usual by now: $LOW$–$HIGH$",
+    "description": "",
+    "placeholders": {
+      "low": {
+        "content": "$1",
+        "example": "39"
+      },
+      "high": {
+        "content": "$2",
+        "example": "44"
+      }
+    }
+  },
+  "UsualByEndOfDay": {
+    "message": "usual by end of day: $LOW$–$HIGH$",
+    "description": "",
+    "placeholders": {
+      "low": {
+        "content": "$1",
+        "example": "40"
+      },
+      "high": {
+        "content": "$2",
+        "example": "49"
+      }
+    }
+  },
+  "ChartNoteBusier": {
+    "message": "Busier than a usual $WEEKDAY$.",
+    "description": "",
+    "placeholders": {
+      "weekday": {
+        "content": "$1",
+        "example": "Thursday"
+      }
+    }
+  },
+  "ChartNoteQuieter": {
+    "message": "Quieter than a usual $WEEKDAY$.",
+    "description": "",
+    "placeholders": {
+      "weekday": {
+        "content": "$1",
+        "example": "Thursday"
+      }
+    }
+  },
+  "ChartNoteUsual": {
+    "message": "In line with a usual $WEEKDAY$.",
+    "description": "",
+    "placeholders": {
+      "weekday": {
+        "content": "$1",
+        "example": "Thursday"
+      }
+    }
+  },
+  "NoCorrespondents": {
+    "message": "No correspondents",
+    "description": ""
+  },
+  "EndedUpNote": {
+    "message": "$MOVED$ of $TOTAL$ mails left the inbox — most went to $FOLDER$.",
+    "description": "",
+    "placeholders": {
+      "moved": {
+        "content": "$1",
+        "example": "18"
+      },
+      "total": {
+        "content": "$2",
+        "example": "48"
+      },
+      "folder": {
+        "content": "$3",
+        "example": "Projects"
+      }
+    }
+  },
+  "EndedUpNoteAllMoved": {
+    "message": "All $TOTAL$ mails left the inbox — most went to $FOLDER$.",
+    "description": "",
+    "placeholders": {
+      "total": {
+        "content": "$1",
+        "example": "48"
+      },
+      "folder": {
+        "content": "$2",
+        "example": "Projects"
+      }
+    }
+  },
+  "EndedUpNoteNoneMoved": {
+    "message": "None of the $TOTAL$ mails has left the inbox yet.",
+    "description": "",
+    "placeholders": {
+      "total": {
+        "content": "$1",
+        "example": "48"
+      }
+    }
+  },
+  "KpiReceivedToday": {
+    "message": "Received today",
+    "description": ""
+  },
+  "KpiSentToday": {
+    "message": "Sent today",
+    "description": ""
+  },
+  "KpiReceivedYesterday": {
+    "message": "Received yesterday",
+    "description": ""
+  },
+  "KpiSentYesterday": {
+    "message": "Sent yesterday",
+    "description": ""
+  },
+  "KpiReceivedDay": {
+    "message": "Received that day",
+    "description": ""
+  },
+  "KpiSentDay": {
+    "message": "Sent that day",
+    "description": ""
+  },
+  "TopCorrespondentsToday": {
+    "message": "Top correspondents today",
+    "description": ""
+  },
+  "TopCorrespondentsYesterday": {
+    "message": "Top correspondents yesterday",
+    "description": ""
+  },
+  "TopCorrespondentsDay": {
+    "message": "Top correspondents that day",
+    "description": ""
+  },
+  "EndedUpToday": {
+    "message": "Where today's mails ended up",
+    "description": ""
+  },
+  "EndedUpYesterday": {
+    "message": "Where yesterday's mails ended up",
+    "description": ""
+  },
+  "EndedUpDay": {
+    "message": "Where that day's mails ended up",
+    "description": ""
+  },
+  "ShowLess": {
+    "message": "Show less",
+    "description": ""
+  },
+  "SeeAllCorrespondents": {
+    "message": "See all $NUM$ →",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "InternalTag": {
+    "message": "internal",
+    "description": "Tag next to an internal domain"
+  },
+  "ShowMoreRows": {
+    "message": "+ $NUM$ more",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "NoTaggedMails": {
+    "message": "No tagged mails",
+    "description": ""
+  },
+  "ComparisonCardTitle": {
+    "message": "Compared with another day",
+    "description": ""
+  },
+  "InboxDetailsTitle": {
+    "message": "Inbox details",
+    "description": ""
+  },
+  "PreviousDaysTitle": {
+    "message": "Previous $NUM$ days",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
   }
 }

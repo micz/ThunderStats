@@ -27,3 +27,18 @@ export function applyChartTheme(is_dark) {
         chart.update('none');
     }
 }
+
+// Current value of a color token defined in src/assets/tokens.css (e.g. 'rcvd' -> '#e8833a')
+export function themeColor(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue('--' + name).trim();
+}
+
+// '#e8833a', 0.16 -> 'rgba(232, 131, 58, 0.16)'
+export function withAlpha(hex_color, alpha) {
+    let hex = hex_color.replace('#', '');
+    if(hex.length == 3) hex = hex.split('').map(c => c + c).join('');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}

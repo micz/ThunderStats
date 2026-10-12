@@ -66,6 +66,8 @@
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   padding: 18px 20px;
+  position: relative;
+  display: flow-root;   /* contains the floating charts of older widgets */
 }
 
 .ts-card-title {

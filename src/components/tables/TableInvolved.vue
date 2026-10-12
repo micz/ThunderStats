@@ -19,51 +19,105 @@
 -->
 
 <template>
-    <table class='mzts-tinvolved' v-if="!is_loading" >
-        <tr class='mzts-thead'>
-            <td class='mzts-row-num'>#</td>
-            <td>__MSG_Name__</td>
-            <td>__MSG_Mail__</td>
-            <td>__MSG_Total__</td>
-        </tr>
-        <tr v-for="(element, email, index) in tableData" :key="email" class='mzts-trow'>
-            <td class='mzts-row-num'>{{ index + 1 }}</td>
-            <td>{{element.name}}</td>
-            <td>{{email}}</td>
-            <td>{{element.count}}</td>
-        </tr>
-    </table>
+    <div class="ts-involved" v-if="!is_loading">
+        <div class="ts-involved-row" v-for="(element, email, index) in tableData" :key="email">
+            <div class="ts-involved-rank">{{ index + 1 }}</div>
+            <div class="ts-involved-who">
+                <div class="ts-involved-name">{{ element.name || email }}</div>
+                <div class="ts-involved-email">{{ email }}</div>
+            </div>
+            <div class="ts-involved-track"><div class="ts-involved-bar" :style="{ width: barWidth(element.count), background: bar_color }"></div></div>
+            <div class="ts-involved-count">{{ element.count }}</div>
+        </div>
+    </div>
     <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="__MSG_Loading__..." /></div>
 </template>
-
-
 
 <script setup>
 import { computed } from 'vue'
 
 let props = defineProps({
     tableData: {
-        type: Array,
-        default: []
+        type: [Object, Array],
+        default: () => ({})
     },
     is_loading: {
         type: Boolean,
         default: true
     },
-    do_debug: {
-        type: Boolean,
-        default: false
-    }
+    kind: {             // 'sent' for recipients, 'rcvd' for senders
+        type: String,
+        default: 'rcvd'
+    },
 });
 
-let is_loading = computed(() => props.is_loading)
-let tableData = computed(() => props.tableData)
+let bar_color = computed(() => props.kind == 'sent' ? 'var(--sent)' : 'var(--rcvd)');
+let max_count = computed(() => Math.max(1, ...Object.values(props.tableData).map(e => e.count)));
 
+function barWidth(count) {
+    return (count / max_count.value * 100).toFixed(1) + '%';
+}
 </script>
 
-
-
-
 <style scoped>
+.ts-involved {
+    display: flex;
+    flex-direction: column;
+}
 
+.ts-involved-row {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1.3fr) minmax(0, 1fr) 34px;
+    gap: 12px;
+    align-items: center;
+    padding: 9px 0;
+    border-top: 1px solid var(--line);
+}
+
+.ts-involved-rank {
+    font-size: 12px;
+    color: var(--text3);
+    font-variant-numeric: tabular-nums;
+}
+
+.ts-involved-who {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.ts-involved-name {
+    font-size: 13px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ts-involved-email {
+    font-size: 12px;
+    color: var(--text3);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ts-involved-track {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--surface3);
+}
+
+.ts-involved-bar {
+    height: 8px;
+    border-radius: 4px;
+}
+
+.ts-involved-count {
+    font-size: 13px;
+    font-weight: 660;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
 </style>

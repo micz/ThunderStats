@@ -70,6 +70,8 @@ The addon has two separate UI surfaces, each a self-contained Vue 3 application:
 │   ├── mzts-logger.js            # Debug logging
 │   ├── mzts-store.js             # Shared reactive state (tsStore)
 │   ├── mzts-theme.js             # Light/dark theme (tsTheme)
+│   ├── mzts-insights.js          # Dashboard metrics (tsInsights)
+│   ├── mzts-daymodel.js          # Single-day dashboard model (tsDayModel)
 │   └── chartjs-lib/              # Custom Chart.js plugins
 └── dist/                         # Compiled addon output
 ```

@@ -178,7 +178,7 @@
     <div class="square_item"><div class="list_heading_wrapper">
 						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
 					  </div>
-					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="do_run && (is_loading_involved_table_recipients || show_table_involved_recipients)" />
+					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" kind="sent" v-if="do_run && (is_loading_involved_table_recipients || show_table_involved_recipients)" />
                     <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
     </div>
     <div class="square_item"><div class="list_heading_wrapper">

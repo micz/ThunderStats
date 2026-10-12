@@ -8,22 +8,23 @@ The main window opens from the Thunderbird toolbar button. Its sticky top toolba
 
 ### Tab: Today
 
-Displays statistics for the current day (from midnight to now).
+Displays statistics for the current day (from midnight to now), putting each number in context against the user's own usual day. Layout (`WidgetDayDashboard`, data shaped by `tsDayModel`):
 
-- **Sent / Received counters** — total sent and received emails
-- **Previous days summary** — total/max/min/average sent and received over the previous `_many_days` days (excluding today)
-- **Yesterday-at-this-time comparison** — compares current counts to the same time yesterday (or last business day). The "Yesterday" / "Last business day" label is clickable to open a date picker and choose any past day as the comparison. The custom day selection is session-only (resets when the TS tab is closed) but persists across data refreshes.
-- **Time-of-day chart** — hourly distribution of sent and received emails (optionally with yesterday's lines and without future hours)
-- **Inbox Zero widget** — inbox count, inbox percent (mails moved out of the inbox, or still in it with `inbox_percent_remaining`), inbox zero history and per-folder charts
-- **Top correspondents table** — configurable number of top senders and recipients
-- **Domains widget** — email count by domain
-- **Folders/Tags widget** — email distribution by folder and tag
+- **Status strip** — badge ("Inbox zero", "Keeping up" when the inbox can be cleared in ≤ 5 working days at the usual pace, otherwise "Backlog growing"), date and time range; flow Arrived → Filed or answered (received mails no longer in the inbox, with %) → Still in inbox (of the inbox total); Backlog trend (mails received since the first day of the week still in the inbox); Clear in (~N working days); proportional bar
+- **KPI cards** — Received / Sent today with the change against the usual same weekday by now (average of the last 6 weeks); Inbox backlog (total, mails of the day still there, unread, age of the oldest); Internal traffic (only with `show_internal_mail_percent` and internal domains); Inbox Zero streak with a 14-day strip
+- **Today against your normal day** — line chart (cumulative with `_time_chart_progressive`, hourly otherwise) with the usual range of the same weekday, the "now" line and a callout ("usual by now"); future hours hidden with `today_time_chart_do_no_show_future`; the comparison day as dashed lines with `today_time_chart_show_yesterday`; computed note (busier / quieter / in line with a usual weekday)
+- **Right rail** — top 5 correspondents (senders and recipients merged), "See all" opens the full Top N Recipients / Top N Senders lists; the **yesterday-at-this-time comparison** (with `today_time_chart_show_yesterday`): compares current counts to the same time yesterday (or last business day). The "Yesterday" / "Last business day" label is clickable to open a date picker and choose any past day as the comparison. The custom day selection is session-only (resets when the TS tab is closed) but persists across data refreshes; the **previous days summary** (total/max/min/average over the previous `_many_days` days, excluding today)
+- **Domains** — sent and received bars per domain, "internal" tag, first 8 rows expandable
+- **Where today's mails ended up** — received mails by folder (inbox first) or by tag, with a computed footnote
+- **Inbox details** — the Inbox Zero widget: inbox count, inbox percent (mails moved out of the inbox, or still in it with `inbox_percent_remaining`), inbox zero history and per-folder charts
+
+The Inbox Zero streak, Backlog trend and Clear in are approximations (Thunderbird keeps no inbox history): see `tsInsights` in [02-statslib.md](02-statslib.md).
 
 ---
 
 ### Tab: Yesterday
 
-Same layout as Today, without the "yesterday at this time" comparison, showing full statistics for the previous day. With `bday_use_last_business_day` enabled and yesterday not a business day, it shows the last business day instead (tab renamed "Last business day").
+Same layout as Today, without the "yesterday at this time" comparison, showing full statistics for the previous day: comparisons use the full-day average of the same weekday, the chart has no "now" line and its callout shows the "usual by end of day" range. With `bday_use_last_business_day` enabled and yesterday not a business day, it shows the last business day instead (tab renamed "Last business day").
 
 ---
 

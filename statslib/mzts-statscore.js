@@ -17,7 +17,7 @@
  */
 
 import { tsLogger } from "./mzts-logger";
-import { tsCoreUtils } from "./mzts-statscore.utils";
+import { tsCoreUtils, clearContactsNamesCache } from "./mzts-statscore.utils";
 import { tsUtils, EmailMatcher, DomainMatcher } from "./mzts-utils";
 import { tsPrefs } from "./mzts-options";
 import { tsStore } from "./mzts-store";
@@ -1320,4 +1320,5 @@ export function clearCoreCaches() {
   tsRecentDaysCache.promise = null;
   tsInboxZeroCache.key = null;
   tsInboxZeroCache.promise = null;
+  clearContactsNamesCache();
 }

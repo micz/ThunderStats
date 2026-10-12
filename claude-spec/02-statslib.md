@@ -49,6 +49,8 @@ The central class that retrieves and processes email data from the Thunderbird `
 
 **Recent days cache.** A date-filtered query scans every message anyway, so one scan of a wide range costs the same as a single-day one. The core keeps a module-level cache (shared by all instances) with the per-day sent/received counts and hourly grid of the last `RECENT_DAYS_CACHE_DAYS` (49) days before today. `getRecentDays` fills it once (the promise is shared by concurrent callers); `getDays` serves any range inside it without a new query and falls back to `scanDays` otherwise. The weekday baseline, the previous days of Today/Yesterday and the "days before" of a single-day Custom Query all come from it, so switching between Today and Yesterday starts no new heavy scan. The cache key includes today's date, the account, its emails, the duplicates filter and the advanced account settings; `clearCoreCaches()` (exported) is called by `ThunderStatsView.updateStats` on every refresh or account change.
 
+**Address book names cache.** `getFullStatsData` needs a name for every distinct correspondent; instead of a `contacts.quickSearch` per address inside the message loop, `tsCoreUtils` loads all the address books once and resolves names from a Map (see `mzts-statscore.utils.js`).
+
 **Inbox Zero cache.** Same pattern for `getInboxZeroDates`: the scan of the inbox folders (total, unread, mails per date) is done once per account and day, the promise is shared by concurrent callers and every tab reads the same result. `clearCoreCaches()` resets it too.
 
 **Advanced filters object (`adv_filters`):**
@@ -73,6 +75,7 @@ Utility methods used by `thunderStastsCore` and the Vue components.
 **Key responsibilities:**
 - Folder, tag, and account helpers (labels, colors, folder IDs, subfolders, archive inclusion); `openFolder(folder_data, in_first_tab)` shows a folder in a mail tab (TB 128+: new tab unless `in_first_tab`; TB 115: always the first mail tab)
 - Business day calculations (`checkBusinessDay`, `findPreviousBusinessDay`, `isEasterOrEasterMonday`)
+- Correspondent names: `getCorrespondantName(address)` looks the email up in the address book names cache (a Map email → vCard FN built once with `addressBooks.list(true)` by `loadAddressBookNames`, shared by every query) and falls back to the display name in the address; `clearContactsNamesCache()` (exported) is called by `clearCoreCaches()`
 - `getCustomQryLabel(label, data_type)` — date, week, month or year key formatted for the CSV export
 - Account email address resolution (`getAccountEmails`, `getAccountCustomIdentities`)
 - `getFilterDuplicatesPreference(account_id)` / `getIncludeArchivePreference(account_id)` — read global or per-account prefs

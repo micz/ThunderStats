@@ -20,6 +20,15 @@ import { tsUtils } from "./mzts-utils";
 import { tsPrefs } from "./mzts-options";
 import { tsStore } from "./mzts-store";
 
+// Address book names cache: a promise of a Map email -> display name (vCard FN), built once from all the
+// address books and shared by every query. One addressBooks.list call replaces a contacts.quickSearch
+// per correspondent. clearContactsNamesCache() resets it (data refresh, account change).
+let contactsNamesCache = null;
+
+export function clearContactsNamesCache() {
+    contactsNamesCache = null;
+}
+
 export const tsCoreUtils = {
 
     // Shows a folder in a Thunderbird mail tab: the first mail tab when in_first_tab is true,
@@ -139,29 +148,47 @@ export const tsCoreUtils = {
       
 
 
+    // The names of all the contacts in the address books, keyed by lowercase email (see contactsNamesCache)
+    getAddressBookNames() {
+        if(contactsNamesCache == null) {
+            contactsNamesCache = this.loadAddressBookNames().catch((error) => {
+                console.error("[ThunderStats] loadAddressBookNames: " + error);
+                return new Map();
+            });
+        }
+        return contactsNamesCache;
+    },
+
+    async loadAddressBookNames() {
+        let names = new Map();
+        let books = await browser.addressBooks.list(true);
+        // vCard lines: "FN:Name", "EMAIL;TYPE=work:addr", "item1.EMAIL:addr"; long lines are folded on "\r\n "
+        const fnRegex = /^(?:[^:\r\n]*\.)?FN[^:\r\n]*:(.*)$/im;
+        const emailRegex = /^(?:[^:\r\n]*\.)?EMAIL[^:\r\n]*:(.*)$/gim;
+        for (let book of books) {
+            for (let contact of (book.contacts || [])) {
+                let vCard = contact.properties ? contact.properties.vCard : null;
+                if(!vCard) continue;
+                vCard = vCard.replace(/\r?\n[ \t]/g, '');
+                let fn = vCard.match(fnRegex);
+                let name = fn ? fn[1].trim() : '';
+                if(name == '') continue;
+                let match_email = null;
+                emailRegex.lastIndex = 0;
+                while ((match_email = emailRegex.exec(vCard)) !== null) {
+                    let email = match_email[1].trim().toLowerCase();
+                    if(email != '' && !names.has(email)) names.set(email, name);
+                }
+            }
+        }
+        return names;
+    },
+
     async getNameFromAddressBook(address) {
-        //console.log(">>>>>>>>>>>>>> [getNameFromAddressBook] address: " + address);
         const match_address = address.match(tsUtils.regexEmail);
-        if (match_address) {
-            address = match_address[0];
-        }
-        //console.log(">>>>>>>>>>>>>> [getNameFromAddressBook] address cleared: " + address);
-        let contacts = await browser.contacts.quickSearch(address);
-        if(contacts.length == 0) return '';
-
-        let vCard = contacts[0].properties.vCard;
-
-        //console.log(">>>>>>>>>>>>>> [getNameFromAddressBook] vCard: " + vCard);
-
-        const nameRegex = /FN:(.*)/i;
-        const match = vCard.match(nameRegex);
-
-        let name = '';
-
-        if (match && match[1]) {
-            name = match[1].trim();
-        }
-        return name;
+        if (!match_address) return '';
+        let names = await this.getAddressBookNames();
+        return names.get(match_address[0].toLowerCase()) || '';
     },
 
     getNameFromAddress(address) {

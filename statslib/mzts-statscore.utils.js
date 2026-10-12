@@ -124,6 +124,29 @@ export const tsCoreUtils = {
         return result;
     },
 
+    // Shows a folder in a Thunderbird mail tab: the first mail tab when in_first_tab is true,
+    // otherwise a new one (on TB 115 the first mail tab is always used)
+    async openFolder(folder_data, in_first_tab = false) {
+        let first_mail_tab = null;
+        let tabs = await browser.tabs.query({windowId: browser.mailTabs.WINDOW_ID_CURRENT});
+        for(let tab of tabs) {
+            if(tab.mailTab) {
+                first_mail_tab = tab;
+                break;
+            }
+        }
+        if(!folder_data.id) folder_data.id = this.getFolderId(folder_data);
+        // TB 115 wants a MailFolder object without the fields added by ThunderStats
+        let { id, specialUse, ...folder_115 } = folder_data;
+        if(tsStore.isTB128plus && !in_first_tab) {
+            browser.mailTabs.create({displayedFolder: folder_data.id});
+            return;
+        }
+        if(first_mail_tab == null) return;
+        browser.mailTabs.update(first_mail_tab.id, {displayedFolder: tsStore.isTB128plus ? folder_data.id : folder_115});
+        browser.tabs.update(first_mail_tab.id, {active: true});
+    },
+
     getFolderId(folder) {
       return `${folder.accountId}:/${folder.path}`
     },

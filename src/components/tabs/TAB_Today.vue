@@ -32,29 +32,7 @@
             </div>
         </template>
         <template #bottom>
-            <div class="ts-card">
-                <div class="ts-card-head"><div class="ts-card-title">{{ inbox_details_title }}</div></div>
-                <WidgetInboxZero
-                    :is_loading_counter_inbox="is_loading_counter_inbox"
-                    :counter_inbox_total="counter_inbox_total"
-                    :counter_inbox_unread="counter_inbox_unread"
-                    :is_loading_counter_inbox_percent="is_loading_counter_inbox_percent"
-                    :counter_inbox_percent="counter_inbox_percent"
-                    :showFolderLocationNoteAnchor="showFolderLocationNoteAnchor"
-                    :folderLocationNote_text="folderLocationNote_text"
-                    :is_loading_counter_sent_rcvd="is_loading_counter_sent_rcvd"
-                    :counter_rcvd="counter_today_rcvd"
-                    :chartData_InboxZeroFolders="chartData_InboxZeroFolders"
-                    :inbox0_openFolderInFirstTab="inbox0_openFolderInFirstTab"
-                    :inbox_percent_show_remaining="inbox_percent_remaining"
-                    :is_loading_inbox_chart_folders="is_loading_inbox_chart_folders"
-                    :no_mails_inbox="no_mails_inbox"
-                    :chartData_InboxZeroDates="chartData_InboxZeroDates"
-                    :chartData_InboxZeroDates_extended = "chartdata_inboxzero_dates"
-                    :is_loading_inbox_chart_dates="is_loading_inbox_chart_dates"
-                    :no_mails_received="no_mails_received_today"
-                />
-            </div>
+            <WidgetInboxAge :inbox_dates="result_inbox ? result_inbox.dates : {}" :is_loading="is_loading_counter_inbox" />
         </template>
     </WidgetDayDashboard>
 </template>
@@ -75,7 +53,7 @@ import { tsUtils } from '@statslib/mzts-utils';
 import { tsExport } from '@statslib/mzts-export';
 import { tsDayModel } from '@statslib/mzts-daymodel';
 import { BASELINE_WEEKS } from '@statslib/mzts-insights';
-import WidgetInboxZero from '../widgets/WidgetInboxZero.vue';
+import WidgetInboxAge from '../widgets/WidgetInboxAge.vue';
 import WidgetDayDashboard from '../widgets/WidgetDayDashboard.vue';
 
 
@@ -95,11 +73,8 @@ const emit = defineEmits(['updateElapsed','updateYesterdayTabName']);
 let tsLog = null;
 var tsCore = null;
 
-let no_mails_received_today = ref("");
-let no_mails_inbox = ref("");
 let previous_days_title = ref("");
 const comparison_card_title = browser.i18n.getMessage("ComparisonCardTitle");
-const inbox_details_title = browser.i18n.getMessage("InboxDetailsTitle");
 let is_last_business_day = ref(false);
 let last_bday_text = ref("");
 let customComparisonDay = ref(null);
@@ -108,14 +83,11 @@ let custom_comparison_day_text = ref("");
 let datepickerFormat = ref("dd-MM-yyyy");
 let prefLocale = ref("en-GB");
 
-let folderLocationNote_text = ref("");
-let showFolderLocationNoteAnchor = ref(false);
-
 let do_progressive = ref(false);
 let hide_future_hours = ref(true);
 let today_time_chart_show_yesterday = ref(true);
 let inbox0_openFolderInFirstTab = ref(false);
-let inbox_percent_remaining = ref(false);
+let filter_duplicates = ref(false);
 let first_day_week = ref(1);
 
 let elapsed = {
@@ -130,12 +102,8 @@ let is_loading_counter_sent_rcvd = ref(true);
 let is_loading_counter_yesterday_thistime = ref(true);
 let is_loading_counter_many_days = ref(true);
 let is_loading_counter_inbox = ref(true);
-let is_loading_counter_inbox_percent = ref(true);
-let is_loading_inbox_chart_folders = ref(true);
-let is_loading_inbox_chart_dates = ref(true);
 let is_loading_baseline = ref(true);
 
-let counter_today_rcvd = ref(0);
 let show_internal_mail_percent = ref(false);
 let internal_sent_percent = ref('0.00%');
 let internal_rcvd_percent = ref('0.00%');
@@ -149,12 +117,8 @@ let counter_many_days_rcvd_total = ref(0);
 let counter_many_days_rcvd_max = ref(0);
 let counter_many_days_rcvd_min = ref(0);
 let counter_many_days_rcvd_avg = ref(0);
-let counter_inbox_percent = ref(0);
 
 let _export_data = ref({});
-
-let counter_inbox_total = ref(0);
-let counter_inbox_unread = ref(0);
 
 let _involved_num = 10;
 let _many_days = 7;
@@ -166,19 +130,6 @@ let result_prev_days = ref(null);
 let result_comparison_day = ref(null);
 let baseline_days = ref(null);
 
-let chartData_InboxZeroFolders = ref({
-    labels: [],
-    datasets: []
-});
-
-let chartData_InboxZeroDates = ref({
-    labels: [],
-    datasets: []
-});
-
-let chartdata_inboxzero_folders = ref([]);
-let chartdata_inboxzero_dates = ref([]);
-
 let ExportMenu_ref = ref(null);
 
 let job_done = computed(() => {
@@ -186,9 +137,6 @@ let job_done = computed(() => {
     !is_loading_counter_yesterday_thistime.value &&
     !is_loading_counter_many_days.value &&
     !is_loading_counter_inbox.value &&
-    !is_loading_counter_inbox_percent.value &&
-    !is_loading_inbox_chart_folders.value &&
-    !is_loading_inbox_chart_dates.value &&
     !is_loading_baseline.value;
 })
 
@@ -211,6 +159,8 @@ let day_model = computed(() => tsDayModel.build({
     internal: { enabled: show_internal_mail_percent.value, sent_percent: internal_sent_percent.value, rcvd_percent: internal_rcvd_percent.value },
     involved_num: _involved_num,
     first_day_week: first_day_week.value,
+    duplicates_note: filter_duplicates.value,
+    open_folder_in_first_tab: inbox0_openFolderInFirstTab.value,
 }));
 
 let dashboard_loading = computed(() => ({
@@ -225,9 +175,6 @@ onMounted(async () => {
     tsLog = new tsLogger("TAB_Today", tsStore.do_debug);
     tsPrefs.logger = tsLog;
     _involved_num = await tsPrefs.getPref("_involved_num");
-    no_mails_received_today.value = browser.i18n.getMessage("NoMailsReceived")+" "+browser.i18n.getMessage("today_small");
-    no_mails_inbox.value = browser.i18n.getMessage("NoMailsInbox");
-    folderLocationNote_text.value = browser.i18n.getMessage("InboxZeroFolderLocationNote");
     previous_days_title.value = browser.i18n.getMessage("PreviousDaysTitle", [_many_days]);
     prefLocale.value = await tsPrefs.getPref("datepicker_locale");
     datepickerFormat.value = tsUtils.formatDateStringLocale(prefLocale.value);
@@ -236,36 +183,21 @@ onMounted(async () => {
 
 async function updateData() {
     loadingDo();
-    let prefs = await tsPrefs.getPrefs(["_time_chart_progressive", "today_time_chart_show_yesterday", "today_time_chart_do_no_show_future", "accounts_adv_settings", "inbox_percent_remaining", "show_internal_mail_percent", "first_day_week"]);
+    let prefs = await tsPrefs.getPrefs(["_time_chart_progressive", "today_time_chart_show_yesterday", "today_time_chart_do_no_show_future", "accounts_adv_settings", "inbox0_openFolderInFirstTab", "show_internal_mail_percent", "first_day_week"]);
     do_progressive.value = prefs._time_chart_progressive;
     today_time_chart_show_yesterday.value = prefs.today_time_chart_show_yesterday;
     hide_future_hours.value = prefs.today_time_chart_do_no_show_future;
-    inbox_percent_remaining.value = prefs.inbox_percent_remaining;
+    inbox0_openFolderInFirstTab.value = prefs.inbox0_openFolderInFirstTab;
     first_day_week.value = Number(prefs.first_day_week);
     show_internal_mail_percent.value = prefs.show_internal_mail_percent && props.internalDomains.length > 0;
+    filter_duplicates.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: prefs.accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     getManyDaysData();
     getInboxZeroData();
     getBaselineData();
     await Promise.all([getTodayData(), getYesterdayData()]);
-    // chart inbox zero folders
-    let given_folders = tsCoreUtils.filterReceivedFolders(chartdata_inboxzero_folders.value);
-    let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
-    chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
-    if("folders" in folders_data){
-        chartData_InboxZeroFolders.value.folders = folders_data.folders;
-    }
-    chartData_InboxZeroFolders.value.labels = folders_data.labels;
-    chartData_InboxZeroFolders.value.datasets = [];
-    chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(given_folders), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
-    tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
-    inbox0_openFolderInFirstTab.value = await tsPrefs.getPref("inbox0_openFolderInFirstTab");
-
-    nextTick(async () => {
-        is_loading_inbox_chart_folders.value = false;
-        showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id);
-        await nextTick();
+    nextTick(() => {
         i18n.updateDocument();
     });
 };
@@ -275,7 +207,6 @@ async function updateData() {
         return new Promise(async (resolve) => {
             let result = await tsCore.getToday(tsStore.current_account_id, props.accountEmails, props.internalDomains);
             tsLog.log("result_today: " + JSON.stringify(result, null, 2));
-            counter_today_rcvd.value = result.received;
             if(show_internal_mail_percent.value) {
                 let internalData = tsCoreUtils.getInternalMailLabel(result.domains);
                 internal_sent_percent.value = internalData.sentPercent;
@@ -287,15 +218,6 @@ async function updateData() {
             _export_data.value[tsExport.export.tags.type] = result.tags;
             _export_data.value[tsExport.export.folders.type] = result.folders;
             _export_data.value[tsExport.export.domains.type] = result.domains;
-            // inbox zero folders
-            chartdata_inboxzero_folders.value = result.folders;
-            if(result.received > 0){
-                let ratio = inbox_percent_remaining.value ? (result.count_in_inbox / result.received) : (1 - (result.count_in_inbox / result.received));
-                counter_inbox_percent.value = (Math.round(ratio * 10000) / 100).toFixed(2) + '%';
-            }else{
-                counter_inbox_percent.value = '0%';
-            }
-            is_loading_counter_inbox_percent.value = false;
             result_today.value = result;
             is_loading_counter_sent_rcvd.value = false;
             updateElapsed('getTodayData', result.elapsed);
@@ -305,20 +227,9 @@ async function updateData() {
 
     function getInboxZeroData () {
         return new Promise(async (resolve) => {
-            let result = await tsCore.getInboxZeroDates(tsStore.current_account_id, props.accountEmails);
-            counter_inbox_total.value = result.total;
-            counter_inbox_unread.value = result.unread;
-            // inbox zero dates
-            chartdata_inboxzero_dates.value = result.dates;
+            let result = await tsCore.getInboxZeroDates(tsStore.current_account_id);
             result_inbox.value = result;
             is_loading_counter_inbox.value = false;
-            chartData_InboxZeroDates.value.labels = ['date'];
-            chartData_InboxZeroDates.value.datasets = [];
-            chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(chartdata_inboxzero_dates.value);
-            tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
-            nextTick(() => {
-                is_loading_inbox_chart_dates.value = false;
-            });
             updateElapsed('getInboxZeroData', result.elapsed);
             resolve(true);
         });
@@ -419,9 +330,6 @@ function loadingDo(){
     is_loading_counter_yesterday_thistime.value = true;
     is_loading_counter_many_days.value = true;
     is_loading_counter_inbox.value = true;
-    is_loading_counter_inbox_percent.value = true;
-    is_loading_inbox_chart_folders.value = true;
-    is_loading_inbox_chart_dates.value = true;
     is_loading_baseline.value = true;
     result_today.value = null;
     result_inbox.value = null;

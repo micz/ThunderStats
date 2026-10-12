@@ -211,6 +211,7 @@ export const tsInsights = {
                 name: folder.folder_data.name,
                 n: folder.received,
                 kind: is_inbox ? 'inbox' : 'filed',
+                folder_data: folder.folder_data,
             });
         }
         rows.sort((a, b) => (a.kind == 'inbox' ? -1 : 0) - (b.kind == 'inbox' ? -1 : 0) || b.n - a.n);
@@ -254,6 +255,26 @@ export const tsInsights = {
             }
         }
         return best > 0 ? best_start : null;
+    },
+
+    // Mails still in the inbox grouped by age (days since their arrival date), newest first
+    inboxAgeBuckets(inbox_dates, ref_date = new Date()) {
+        let buckets = [
+            { id: 'today', max_days: 0, n: 0 },
+            { id: 'yesterday', max_days: 1, n: 0 },
+            { id: 'week', max_days: 7, n: 0 },
+            { id: 'month', max_days: 30, n: 0 },
+            { id: 'quarter', max_days: 90, n: 0 },
+            { id: 'older', max_days: Infinity, n: 0 },
+        ];
+        let today = new Date(ref_date);
+        today.setHours(0, 0, 0, 0);
+        for(let key in inbox_dates) {
+            let age = Math.round((today - tsUtils.parseYYYYMMDDToDate(key)) / 86400000);
+            let bucket = buckets.find(b => age <= b.max_days) || buckets[buckets.length - 1];
+            bucket.n += inbox_dates[key];
+        }
+        return buckets;
     },
 
     // Weekdays (0 = Sunday) ordered starting from first_day_week

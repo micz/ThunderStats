@@ -464,7 +464,7 @@
     "description": ""
   },
   "folderspreadchart_openinfirsttab": {
-    "message": "From the mails folder locations chart, open the folder always in the first tab",
+    "message": "When clicking a folder in Where mails ended up, open it in the first mail tab",
     "description": ""
   },
   "InvolvedNum": {
@@ -1369,10 +1369,6 @@
     "message": "Compared with another day",
     "description": ""
   },
-  "InboxDetailsTitle": {
-    "message": "Inbox details",
-    "description": ""
-  },
   "PreviousDaysTitle": {
     "message": "Previous $NUM$ days",
     "description": "",
@@ -1695,6 +1691,60 @@
   },
   "EndedUpPeriod": {
     "message": "Where mails ended up",
+    "description": ""
+  },
+  "OpenFolder": {
+    "message": "Open the folder",
+    "description": "Tooltip of a folder row that opens the folder in Thunderbird"
+  },
+  "InboxAgeTitle": {
+    "message": "How old is your inbox",
+    "description": "Card with the mails still in the inbox grouped by age"
+  },
+  "InboxAgeToday": {
+    "message": "Today",
+    "description": ""
+  },
+  "InboxAgeYesterday": {
+    "message": "Yesterday",
+    "description": ""
+  },
+  "InboxAgeWeek": {
+    "message": "2–7 days",
+    "description": ""
+  },
+  "InboxAgeMonth": {
+    "message": "8–30 days",
+    "description": ""
+  },
+  "InboxAgeQuarter": {
+    "message": "1–3 months",
+    "description": ""
+  },
+  "InboxAgeOlder": {
+    "message": "Older",
+    "description": ""
+  },
+  "InboxAgeDetails": {
+    "message": "Details by date",
+    "description": "Link that shows the inbox mails by arrival date"
+  },
+  "InboxAgeByAge": {
+    "message": "Back to ages",
+    "description": "Link that goes back to the inbox mails by age"
+  },
+  "InboxAgeNote": {
+    "message": "$NUM$ mails have been waiting for more than a month.",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "24"
+      }
+    }
+  },
+  "InboxAgeNoteFresh": {
+    "message": "Nothing in the inbox is older than a month.",
     "description": ""
   }
 }

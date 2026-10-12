@@ -64,7 +64,7 @@
 
     <div class="ts-two-col">
       <WidgetDomainBars :title="domains_title" :rows="domains" :empty_text="empty_text" :is_loading="loading.domains" />
-      <WidgetEndedUp :title="ended.title" :folder_rows="ended.folders" :tag_rows="ended.tags" :note="ended.note" :empty_text="empty_text" :is_loading="loading.folders" />
+      <WidgetEndedUp :title="ended.title" :folder_rows="ended.folders" :tag_rows="ended.tags" :note="ended.note" :info="ended.info" :open_in_first_tab="ended.open_in_first_tab" :empty_text="empty_text" :is_loading="loading.folders" />
     </div>
 
     <div class="ts-two-col">
@@ -80,7 +80,7 @@
       </div>
     </div>
 
-    <div class="ts-two-col">
+    <div class="ts-two-col-fill">
       <slot name="bottom"></slot>
     </div>
   </div>
@@ -154,7 +154,8 @@ let has_senders = computed(() => props.loading.involved || Object.keys(props.inv
   gap: 8px 16px;
 }
 
-.ts-two-col:empty {
+.ts-two-col:empty,
+.ts-two-col-fill:empty {
   display: none;
 }
 

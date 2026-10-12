@@ -61,6 +61,8 @@ export const tsPeriodModel = {
         internal: { enabled, sent_percent, rcvd_percent },
         involved_num: number,
         first_day_week: number,
+        duplicates_note: boolean,          // folder counts include duplicates (filter_duplicates on): explain it
+        open_folder_in_first_tab: boolean, // inbox0_openFolderInFirstTab pref
       }
     */
     build(input) {
@@ -344,7 +346,7 @@ export const tsPeriodModel = {
     },
 
     ended(input, d) {
-        let output = { title: msg("EndedUpPeriod"), folders: [], tags: [], note: '' };
+        let output = { title: msg("EndedUpPeriod"), folders: [], tags: [], note: '', info: input.duplicates_note ? msg("InboxZeroFolderLocationNote") : '', open_in_first_tab: !!input.open_folder_in_first_tab };
         if(!input.result) return output;
         output.folders = tsInsights.endedUpFolders(input.result.folders);
         output.tags = tsInsights.endedUpTags(input.result.tags);

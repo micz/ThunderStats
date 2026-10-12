@@ -62,7 +62,7 @@ The central class that retrieves and processes email data from the Thunderbird `
 Utility methods used by `thunderStastsCore` and the Vue components.
 
 **Key responsibilities:**
-- Folder, tag, and account helpers (labels, colors, folder IDs, subfolders, archive inclusion)
+- Folder, tag, and account helpers (labels, colors, folder IDs, subfolders, archive inclusion); `openFolder(folder_data, in_first_tab)` shows a folder in a mail tab (TB 128+: new tab unless `in_first_tab`; TB 115: always the first mail tab)
 - Business day calculations (`checkBusinessDay`, `findPreviousBusinessDay`, `isEasterOrEasterMonday`)
 - `transformCountDataToDataset(data, do_progressive, get_labels)` — extracts `{ dataset_sent, dataset_rcvd, dataset_inbox }` arrays from date-keyed objects; supports cumulative mode
 - Chart label/color helpers and dataset transforms
@@ -177,7 +177,8 @@ Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `d
   - `backlogAdded` — mails received in a date range still in the inbox (status strip "Backlog trend", since the first day of the week).
   - `clearInDays` — current inbox / average mails per working day that left the inbox (received minus still in inbox) over the previous days.
   - `oldestDays` — age of the oldest mail in the inbox.
-- `topCorrespondents`, `endedUpFolders` (received mails by folder, inbox first), `endedUpTags`, `domainRows`.
+- `topCorrespondents`, `endedUpFolders` (received mails by folder, inbox first, with `folder_data` to open the folder), `endedUpTags`, `domainRows`.
+- `inboxAgeBuckets(inbox_dates, ref_date)` — inbox mails by age: today, yesterday, ≤ 7, ≤ 30, ≤ 90 days, older.
 - `peakWindow(values, width)` (busiest consecutive hours), `orderedWeekdays(first_day_week)`, `weekdayAverages(dates, msg_weekdays, first_day_week)` (weekday totals / occurrences of that weekday), `heatGrid(msg_weekday_hours, from_hour, to_hour, first_day_week)`.
 
 ---

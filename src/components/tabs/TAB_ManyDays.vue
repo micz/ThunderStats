@@ -70,6 +70,8 @@ let _involved_num = 10;
 let _many_days = ref(7);
 let _many_days_show_inbox = ref(true);
 let first_day_week = ref(1);
+let inbox0_openFolderInFirstTab = ref(false);
+let filter_duplicates = ref(false);
 
 // raw results used to build the dashboard
 let result_period = ref(null);
@@ -116,6 +118,8 @@ let period_model = computed(() => tsPeriodModel.build({
     internal: { enabled: show_internal_mail_percent.value, sent_percent: internal_sent_percent.value, rcvd_percent: internal_rcvd_percent.value },
     involved_num: _involved_num,
     first_day_week: first_day_week.value,
+    duplicates_note: filter_duplicates.value,
+    open_folder_in_first_tab: inbox0_openFolderInFirstTab.value,
 }));
 
 let dashboard_loading = computed(() => ({
@@ -139,7 +143,9 @@ onMounted(async () => {
 
 async function updateData() {
     loadingDo();
-    let prefs = await tsPrefs.getPrefs(["accounts_adv_settings", "show_internal_mail_percent", "_many_days", "many_days_show_inbox", "first_day_week"]);
+    let prefs = await tsPrefs.getPrefs(["accounts_adv_settings", "show_internal_mail_percent", "_many_days", "many_days_show_inbox", "first_day_week", "inbox0_openFolderInFirstTab"]);
+    inbox0_openFolderInFirstTab.value = prefs.inbox0_openFolderInFirstTab;
+    filter_duplicates.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id);
     _many_days.value = prefs._many_days;
     _many_days_show_inbox.value = prefs.many_days_show_inbox;
     first_day_week.value = Number(prefs.first_day_week);

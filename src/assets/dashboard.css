@@ -215,3 +215,28 @@
   align-items: center;
   padding: 12px 0;
 }
+
+/* Small "i" next to a card title, the explanation is in its tooltip */
+.ts-info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  margin-left: 7px;
+  border-radius: 8px;
+  background: var(--surface3);
+  color: var(--text2);
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
+  vertical-align: 2px;
+  cursor: help;
+}
+
+/* Grid where a single card keeps the width of one column */
+.ts-two-col-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(380px, 100%), 1fr));
+  gap: 18px;
+}

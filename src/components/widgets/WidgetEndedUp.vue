@@ -21,7 +21,7 @@
 <template>
   <div class="ts-card ts-bars-card">
     <div class="ts-bars-head">
-      <div class="ts-card-title">{{ title }}</div>
+      <div class="ts-card-title">{{ title }}<span class="ts-info-icon" v-if="info" :title="info">i</span></div>
       <div class="ts-mini-segmented">
         <button type="button" :class="{ 'is-active': view == 'folders' }" @click="view = 'folders'">{{ folders_label }}</button>
         <button type="button" :class="{ 'is-active': view == 'tags' }" @click="view = 'tags'">{{ tags_label }}</button>
@@ -31,7 +31,7 @@
     <template v-else>
       <div class="ts-bars-empty" v-if="current_rows.length == 0">{{ view == 'folders' ? empty_text : no_tags_text }}</div>
       <div class="ts-bars-rows" v-else>
-        <div class="ts-ended-row" v-for="row in shown_rows" :key="row.id">
+        <div class="ts-ended-row" v-for="row in shown_rows" :key="row.id" :class="{ 'is-clickable': isClickable(row) }" :title="isClickable(row) ? open_folder_label : ''" @click="openRow(row)">
           <div class="ts-ended-name" :title="row.name">{{ row.name }}</div>
           <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(row.n), background: rowColor(row) }"></div><span class="ts-bar-count">{{ row.n }}</span></div>
         </div>
@@ -45,12 +45,15 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { tsStore } from '@statslib/mzts-store';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 
 const props = defineProps({
   title: { type: String, default: '' },
   folder_rows: { type: Array, default: () => [] },  // [{ id, name, n, kind: inbox|filed }]
   tag_rows: { type: Array, default: () => [] },     // [{ id, name, n, color }]
   note: { type: String, default: '' },
+  info: { type: String, default: '' },              // explanation shown by the info icon next to the title
+  open_in_first_tab: { type: Boolean, default: false }, // inbox0_openFolderInFirstTab pref
   max_rows: { type: Number, default: 8 },
   empty_text: { type: String, default: '' },
   is_loading: { type: Boolean, default: false },
@@ -60,6 +63,7 @@ const folders_label = browser.i18n.getMessage("Folders");
 const tags_label = browser.i18n.getMessage("Tags");
 const no_tags_text = browser.i18n.getMessage("NoTaggedMails");
 const show_less_label = browser.i18n.getMessage("ShowLess");
+const open_folder_label = browser.i18n.getMessage("OpenFolder");
 
 let view = ref('folders');
 let show_all = ref(false);
@@ -72,6 +76,15 @@ let max_value = computed(() => Math.max(1, ...current_rows.value.map(r => r.n)))
 function barWidth(value) {
   // leave room for the count after the bar
   return 'calc(' + (value / max_value.value * 100).toFixed(1) + '% - 40px)';
+}
+
+// folder rows open the folder in Thunderbird
+function isClickable(row) {
+  return view.value == 'folders' && !!row.folder_data;
+}
+
+function openRow(row) {
+  if(isClickable(row)) tsCoreUtils.openFolder(row.folder_data, props.open_in_first_tab);
 }
 
 function rowColor(row) {
@@ -101,5 +114,14 @@ function rowColor(row) {
 
 .ts-ended-row .ts-bar {
   height: 15px;
+}
+
+.ts-ended-row.is-clickable {
+  cursor: pointer;
+}
+
+.ts-ended-row.is-clickable:hover .ts-ended-name {
+  color: var(--accent);
+  text-decoration: underline;
 }
 </style>

@@ -14,7 +14,7 @@ App_ThunderStats.vue
         │   ├── ExportMenu.vue
         │   └── WidgetDayDashboard.vue
         │       ├── rail slot:   CounterYesterdayThisTime.vue, CounterManyDays_Table.vue (previous N days summary)
-        │       └── bottom slot: WidgetInboxZero.vue
+        │       └── bottom slot: WidgetInboxAge.vue
         ├── TAB_Yesterday.vue
         │   └── (same as Today, without CounterYesterdayThisTime)
         ├── TAB_ManyDays.vue
@@ -135,12 +135,13 @@ Composite components that combine multiple data points or sub-charts.
 | `WidgetDomains.vue` | Wraps `ChartDomains` |
 | `WidgetFoldersTags.vue` | Folder and tag distribution (wraps `ChartFolders`, `ChartTags`) |
 | `WidgetWeekDay.vue` | Thin wrapper around `ChartWeekDays` |
-| `WidgetInboxZero.vue` | Inbox Zero section: inbox counters and inbox zero charts |
+| `WidgetInboxZero.vue` | Inbox Zero section: inbox counters and inbox zero charts (still used by the Custom Query single-day mode) |
+| `WidgetInboxAge.vue` | "How old is your inbox": mails still in the inbox by age (today, yesterday, 2–7 days, 8–30 days, 1–3 months, older; older than a month in `--warn`) with a note; "Details by date" shows one row per arrival date, sortable by date or by mails |
 | `WidgetDayDashboard.vue` | Single-day layout: status strip, KPI row, chart card + right rail (top correspondents + `rail` slot), full recipients/senders tables when "See all" is open, domains + folders/tags row, `bottom` slot |
 | `WidgetStatusStrip.vue` | Status badge (good / warn / neutral), date lines, flow values (Arrived → Filed or answered → Still in inbox), side values and the proportional bar. Generic, reusable by the period views |
 | `WidgetTopCorrespondents.vue` | Rail card: top 5 merged senders/recipients with bars (`--rcvd` if mostly received, `--sent` otherwise) and a "See all" toggle |
 | `WidgetDomainBars.vue` | Domains as two horizontal bars (sent, received) with the "internal" tag; first 8 rows, expandable |
-| `WidgetEndedUp.vue` | "Where mails ended up": Folders / Tags toggle; inbox bar in `--rcvd`, filed folders in `--good`, tags in their own color; computed footnote |
+| `WidgetEndedUp.vue` | "Where mails ended up": Folders / Tags toggle; inbox bar in `--rcvd`, filed folders in `--good`, tags in their own color; computed footnote. Folder rows open the folder in Thunderbird (`tsCoreUtils.openFolder`, first mail tab with `inbox0_openFolderInFirstTab`); an info icon explains that folder counts include duplicates when `filter_duplicates` is on |
 | `WidgetPeriodDashboard.vue` | Many-days layout: status strip, KPI grid, day-by-day chart, time of day + Inbox Zero calendar, heatmap + weekday bars, domains + folders/tags, Top N recipients + senders, `bottom` slot |
 | `WidgetInboxZeroCalendar.vue` | Inbox Zero calendar: one cell per day aligned on the first day of the week, states closed at zero / ≤ 5 left / missed, today outlined; days at zero and streak at end |
 | `WidgetHeatmap.vue` | "When mail arrives": received mails by hour (rows) and weekday (columns), 07–20 / 24h toggle, cell color mixes `--rcvd` with `--surface3` |

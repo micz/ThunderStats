@@ -173,6 +173,8 @@ Thin wrapper around `console.log`. Logging is gated by a `do_debug` flag so it c
 
 Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `do_debug`), `warn(msg)`, `error(msg)` (always).
 
+`msg` can be a function returning the message: it is called only when debugging is on. Use this form for messages that serialize large data (`tsLog.log(() => "result: " + JSON.stringify(result))`), so nothing is built when debugging is off.
+
 ---
 
 ### `mzts-insights.js` — Dashboard Metrics

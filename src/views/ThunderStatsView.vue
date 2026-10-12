@@ -183,7 +183,7 @@ import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
     clearCoreCaches();
     activeAccount.value = account_id;
     accountEmails.value = await tsCore.getAccountEmails(account_id);
-    tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
+    tsLog.log(() => "accountEmails: " + JSON.stringify(accountEmails.value));
     let rawInternalDomains = await tsCoreUtils.getAccountInternalDomains(account_id);
     if(account_id == 0) {
       let allDomains = [];
@@ -194,7 +194,7 @@ import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
     } else {
       internalDomains.value = Array.isArray(rawInternalDomains) ? rawInternalDomains : [];
     }
-    tsLog.log("internalDomains: " + JSON.stringify(internalDomains.value));
+    tsLog.log(() => "internalDomains: " + JSON.stringify(internalDomains.value));
 //    resetStatsDone();
     nextTick(() => {
       // console.log(">>>>>>>>>>>>>> ThunderStatsView updateStats statsTabs_ref.value.activeTabHash: " + statsTabs_ref.value.activeTabHash);
@@ -234,7 +234,7 @@ import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
     }
     // console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
      //console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
-    tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));
+    tsLog.log(() => "tabChanged: " + JSON.stringify(id.tab.computedId));
     //console.log(">>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id.tab.computedId));
      //console.log(">>>>>>>>>>>>> stats_done[id.tab.computedId]: " + stats_done[id.tab.computedId]);
     if((id.tab.computedId != "tab-customqry") && (id.tab.computedId != "tab-info") && ((!stats_done[id.tab.computedId]) || always_reload_tab_data)) {

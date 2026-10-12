@@ -50,7 +50,7 @@ const tsLog = new tsLogger("SelectAccount", tsStore.do_debug);
 onMounted(async () => {
     tsLog.log("onMounted");
     accounts_options.value = await tsCoreUtils.getAccountsList(hide_AllAccount.value);
-    tsLog.log(JSON.stringify(accounts_options.value));
+    tsLog.log(() => JSON.stringify(accounts_options.value));
 });
 
 const updateCurrentAccount = (new_value) => {

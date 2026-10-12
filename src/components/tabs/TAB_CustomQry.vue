@@ -528,7 +528,7 @@ async function doQry(){
     filterFolder.value = [];
     if(filterFolder_ref.value) filterFolder_ref.value.clear();
   }
-  tsLog.log("filterFolder.value: "+JSON.stringify(filterFolder.value));
+  tsLog.log(() => "filterFolder.value: "+JSON.stringify(filterFolder.value));
   customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
   let pref_warn_days = await tsPrefs.getPref("customqry_warn_onlongperiod_days");
   if(pref_warn_days > 0 && customqry_totaldays_num.value > pref_warn_days){
@@ -569,8 +569,8 @@ async function updateData() {
     show_internal_mail_percent.value = prefs.show_internal_mail_percent && props.internalDomains.length > 0;
     filter_duplicates.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: prefs.accounts_adv_settings});
-    tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
-    tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
+    tsLog.log(() => "props.accountEmails: " + JSON.stringify(props.accountEmails));
+    tsLog.log(() => "dateQry: " + JSON.stringify(dateQry.value));
     // main data first, then the secondary queries: every query runs on Thunderbird's main thread
     await getCustomQryData();
     getInboxZeroData();
@@ -597,9 +597,9 @@ async function updateData() {
               flagged_unflagged: filterFlaggedUnflagged.value,
               filterSubject: filterSubject.value.trim(),
             };
-            tsLog.log("advFilters: " + JSON.stringify(advFilters, null, 2));
+            tsLog.log(() => "advFilters: " + JSON.stringify(advFilters, null, 2));
             let result = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters, props.internalDomains);
-            tsLog.log("result_customqry: " + JSON.stringify(result, null, 2));
+            tsLog.log(() => "result_customqry: " + JSON.stringify(result, null, 2));
             // export data
             if(!do_single_day.value){
               _export_data.value[tsExport.export.daily_mails.type] = result.dates;
@@ -625,7 +625,7 @@ async function updateData() {
               let toDateB = new Date(dateQryB_end.value);
               toDateB.setHours(23, 59, 59, 999);
               let result_period_b = await tsCore.getCustomQryData(fromDateB, toDateB, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters, props.internalDomains);
-              tsLog.log("result_customqry_B: " + JSON.stringify(result_period_b, null, 2));
+              tsLog.log(() => "result_customqry_B: " + JSON.stringify(result_period_b, null, 2));
               // export comparison data
               _export_data.value['compare_' + tsExport.export.daily_mails.type] = result_period_b.dates;
               _export_data.value['compare_' + tsExport.export.weekdays.type] = result_period_b.msg_weekdays;

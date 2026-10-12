@@ -192,7 +192,7 @@ async function updateData() {
     show_internal_mail_percent.value = prefs.show_internal_mail_percent && props.internalDomains.length > 0;
     filter_duplicates.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: prefs.accounts_adv_settings});
-    tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
+    tsLog.log(() => "props.accountEmails: " + JSON.stringify(props.accountEmails));
     // main data first, then the secondary queries: every query runs on Thunderbird's main thread
     await Promise.all([getTodayData(), getYesterdayData()]);
     getManyDaysData();
@@ -207,7 +207,7 @@ async function updateData() {
     function getTodayData () {
         return new Promise(async (resolve) => {
             let result = await tsCore.getToday(tsStore.current_account_id, props.accountEmails, props.internalDomains);
-            tsLog.log("result_today: " + JSON.stringify(result, null, 2));
+            tsLog.log(() => "result_today: " + JSON.stringify(result, null, 2));
             if(show_internal_mail_percent.value) {
                 let internalData = tsCoreUtils.getInternalMailLabel(result.domains);
                 internal_sent_percent.value = internalData.sentPercent;
@@ -267,7 +267,7 @@ async function updateData() {
                 customDay.setHours(0, 0, 0, 0);
                 result_yesterday = await tsCore.getToday_SingleDayData(customDay, tsStore.current_account_id, props.accountEmails);
                 custom_comparison_day_text.value = customDay.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
-                tsLog.log("using custom comparison day: " + JSON.stringify(customDay, null, 2));
+                tsLog.log(() => "using custom comparison day: " + JSON.stringify(customDay, null, 2));
             } else {
                 // Default logic
                 is_custom_comparison_day.value = false;
@@ -286,7 +286,7 @@ async function updateData() {
                         emit('updateYesterdayTabName', browser.i18n.getMessage("LastBusinessDay"));
                         let last_bday = tsCoreUtils.findPreviousBusinessDay(yesterday_date);
                         result_yesterday = await tsCore.getToday_SingleDayData(last_bday,tsStore.current_account_id, props.accountEmails);
-                        tsLog.log("using last business day: " + JSON.stringify(last_bday, null, 2));
+                        tsLog.log(() => "using last business day: " + JSON.stringify(last_bday, null, 2));
                         last_bday_text.value = browser.i18n.getMessage("LastBusinessDayIs") + " " + last_bday.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
                     }
                 }else{
@@ -295,7 +295,7 @@ async function updateData() {
                 }
             }
 
-            tsLog.log("result_today_yesterday_data: " + JSON.stringify(result_yesterday, null, 2));
+            tsLog.log(() => "result_today_yesterday_data: " + JSON.stringify(result_yesterday, null, 2));
             counter_yesterday_thistime_rcvd.value = result_yesterday.received;
             counter_yesterday_thistime_sent.value = result_yesterday.sent;
             result_comparison_day.value = result_yesterday;
@@ -309,7 +309,7 @@ async function updateData() {
     async function getManyDaysData () {
         return new Promise(async (resolve) => {
             let result_many_days = await tsCore.getToday_manyDaysData(tsStore.current_account_id, props.accountEmails);
-            tsLog.log("result_today_manydays_data: " + JSON.stringify(result_many_days, null, 2));
+            tsLog.log(() => "result_today_manydays_data: " + JSON.stringify(result_many_days, null, 2));
             counter_many_days_rcvd_total.value = result_many_days.aggregate.total_received;
             counter_many_days_rcvd_max.value = result_many_days.aggregate.max_received;
             counter_many_days_rcvd_min.value = result_many_days.aggregate.min_received;

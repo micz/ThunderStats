@@ -151,7 +151,7 @@ async function updateData() {
     first_day_week.value = Number(prefs.first_day_week);
     show_internal_mail_percent.value = prefs.show_internal_mail_percent && props.internalDomains.length > 0;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days.value, accounts_adv_settings: prefs.accounts_adv_settings});
-    tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
+    tsLog.log(() => "props.accountEmails: " + JSON.stringify(props.accountEmails));
     // main data first, then the secondary queries: every query runs on Thunderbird's main thread
     await getManyDaysData();
     getInboxZeroData();
@@ -165,7 +165,7 @@ async function updateData() {
     function getManyDaysData () {
         return new Promise(async (resolve) => {
             let result = await tsCore.getManyDaysData(tsStore.current_account_id, props.accountEmails, props.internalDomains);
-            tsLog.log("result_manydays_data: " + JSON.stringify(result, null, 2));
+            tsLog.log(() => "result_manydays_data: " + JSON.stringify(result, null, 2));
             // export data
             _export_data.value[tsExport.export.time_emails.type] = result.msg_hours;
             _export_data.value[tsExport.export.daily_mails.type] = result.dates;
@@ -183,7 +183,7 @@ async function updateData() {
             let dates_without_today = Object.assign({}, result.dates);
             delete dates_without_today[tsUtils.dateToYYYYMMDD(new Date())];
             aggregate.value = await tsCore.aggregateData(dates_without_today);
-            tsLog.log("aggregate: " + JSON.stringify(aggregate.value, null, 2));
+            tsLog.log(() => "aggregate: " + JSON.stringify(aggregate.value, null, 2));
             result_period.value = result;
             is_loading_data.value = false;
             updateElapsed('getManyDaysData', result.elapsed);

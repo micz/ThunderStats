@@ -42,7 +42,7 @@ export class thunderStastsCore {
     async getAccountEmails(account_id = 0, no_custom_identities = false) {
       let account_emails = tsCoreUtils.getAccountEmails(account_id, no_custom_identities);
       
-      this.tsLog.log("getAccountEmails => account_emails: " + JSON.stringify(account_emails));
+      this.tsLog.log(() => "getAccountEmails => account_emails: " + JSON.stringify(account_emails));
       return account_emails;
     }
 
@@ -319,7 +319,7 @@ export class thunderStastsCore {
         }
       }
 
-      this.tsLog.log("queryInfo_ScanDays: " + JSON.stringify(queryInfo_ScanDays));
+      this.tsLog.log(() => "queryInfo_ScanDays: " + JSON.stringify(queryInfo_ScanDays));
 
       let messages = null;
       if(tsStore.isTB128plus){
@@ -365,7 +365,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
       let messages_hash = new Map();
 
-      this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
+      this.tsLog.log(() => "account_emails: " + JSON.stringify(account_emails));
 
       const emailMatcher = new EmailMatcher(account_emails);
       const domainMatcher = new DomainMatcher(internal_domains);
@@ -397,7 +397,7 @@ export class thunderStastsCore {
 
       let filter_folders = null;
 
-      this.tsLog.log("adv_filters: " + JSON.stringify(adv_filters));
+      this.tsLog.log(() => "adv_filters: " + JSON.stringify(adv_filters));
 
       if(adv_filters != null){
         //Folders
@@ -445,7 +445,7 @@ export class thunderStastsCore {
 
       if(account_id != 0){
         if(filter_folders != null){
-          this.tsLog.log("filter_folders: " + JSON.stringify(filter_folders));
+          this.tsLog.log(() => "filter_folders: " + JSON.stringify(filter_folders));
           if(tsStore.isTB128plus){
             queryInfo_FullStatsData.folderId = filter_folders;
             queryInfo_FullStatsData.includeSubFolders = adv_filters.folders_do_subfolders;
@@ -464,7 +464,7 @@ export class thunderStastsCore {
         }
       }
       
-      this.tsLog.log("queryInfo_FullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
+      this.tsLog.log(() => "queryInfo_FullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
       
       let count = 0;
       let sent = 0;
@@ -776,7 +776,7 @@ export class thunderStastsCore {
                     tags[tag].received_external = (tags[tag].received_external || 0) + 1;
                   }
                 } else {
-                  this.logger.error("tag: " + tag + " not found!");
+                  this.tsLog.error("tag: " + tag + " not found!");
                 }
               }
               // group by folder - internal/external
@@ -825,7 +825,7 @@ export class thunderStastsCore {
 
       let messages_hash = new Map();
 
-      this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
+      this.tsLog.log(() => "account_emails: " + JSON.stringify(account_emails));
 
       let queryInfo_CountStatsData = {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
@@ -840,7 +840,7 @@ export class thunderStastsCore {
         }
       }
 
-      this.tsLog.log("queryInfo_CountStatsData: " + JSON.stringify(queryInfo_CountStatsData));
+      this.tsLog.log(() => "queryInfo_CountStatsData: " + JSON.stringify(queryInfo_CountStatsData));
 
       let count = 0;
       let sent = 0;
@@ -914,7 +914,7 @@ export class thunderStastsCore {
 
       let messages_hash = new Map();
 
-      this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
+      this.tsLog.log(() => "account_emails: " + JSON.stringify(account_emails));
 
       const emailMatcher = new EmailMatcher(account_emails);
 
@@ -931,7 +931,7 @@ export class thunderStastsCore {
         }
       }
 
-      this.tsLog.log("queryInfo_getAggregatedStatsData: " + JSON.stringify(queryInfo_getAggregatedStatsData));
+      this.tsLog.log(() => "queryInfo_getAggregatedStatsData: " + JSON.stringify(queryInfo_getAggregatedStatsData));
       
       let count = 0;
       let sent = 0;
@@ -947,7 +947,7 @@ export class thunderStastsCore {
 
       let msg_days = tsUtils.getDateArray(fromDate,toDate);
 
-      this.tsLog.log("[getAggregatedStatsData] msg_days: " + JSON.stringify(msg_days));
+      this.tsLog.log(() => "[getAggregatedStatsData] msg_days: " + JSON.stringify(msg_days));
 
       for await (let message of messages) {
           if(this.excludeMessage(message,account_id)) continue;
@@ -1122,7 +1122,7 @@ export class thunderStastsCore {
             queryInfo_InboxZeroData.folder = folder;
           }
 
-          this.tsLog.log("queryInfo_InboxZeroData: " + JSON.stringify(queryInfo_InboxZeroData));
+          this.tsLog.log(() => "queryInfo_InboxZeroData: " + JSON.stringify(queryInfo_InboxZeroData));
           
           let messages = this.getMessages(() => browser.messages.query(queryInfo_InboxZeroData));
 
@@ -1156,7 +1156,7 @@ export class thunderStastsCore {
       }
 
       let folders = await browser.folders.query(queryInfo_InboxFolders);
-      this.tsLog.log("folders: " + JSON.stringify(folders));
+      this.tsLog.log(() => "folders: " + JSON.stringify(folders));
       return folders;
     }
 
@@ -1183,12 +1183,12 @@ export class thunderStastsCore {
       // let account_folders = await browser.folders.getSubFolders(await browser.accounts.get(account_id));
       // console.log(">>>>>>>>>>>>>>> account_folders: " + JSON.stringify(account_folders));
 
-      this.tsLog.log("folders: " + JSON.stringify(folders));
+      this.tsLog.log(() => "folders: " + JSON.stringify(folders));
       return folders;
     }
 
     async *getAccountMessages_TB115(queryInfo, account_id = 0, filter_folders_115 = null, do_subfolders = true) {
-      this.tsLog.log("getAccountMessages_TB115 queryInfo: " + JSON.stringify(queryInfo));
+      this.tsLog.log(() => "getAccountMessages_TB115 queryInfo: " + JSON.stringify(queryInfo));
       if(account_id == 0) {
         yield* this.getMessages(() => browser.messages.query(queryInfo));
         return;
@@ -1200,14 +1200,14 @@ export class thunderStastsCore {
       if(filter_folders_115 == null) {
         folders = await browser.folders.getSubFolders(account, do_subfolders);
       } else {
-        this.tsLog.log("filter_folders_115: " + JSON.stringify(filter_folders_115));
+        this.tsLog.log(() => "filter_folders_115: " + JSON.stringify(filter_folders_115));
         folders = await tsCoreUtils.getFoldersArrayFromIds(filter_folders_115, account_id);
       }
 
-      this.tsLog.log("getAccountMessages_TB115 folders: " + JSON.stringify(folders));
+      this.tsLog.log(() => "getAccountMessages_TB115 folders: " + JSON.stringify(folders));
 
       for (let folder of folders) {
-        this.tsLog.log("processFolderAndSubfolders_TB115 on folder: " + JSON.stringify(folder));
+        this.tsLog.log(() => "processFolderAndSubfolders_TB115 on folder: " + JSON.stringify(folder));
         yield* this.processFolderAndSubfolders_TB115(folder, queryInfo, account_id, do_subfolders);
       }
     }
@@ -1215,16 +1215,16 @@ export class thunderStastsCore {
     async *processFolderAndSubfolders_TB115(folder, queryInfo, account_id, do_subfolders = true) {
       //if (this.excludeFolder(folder, account_id)) return;
       queryInfo = { ...queryInfo };
-      this.tsLog.log("processFolderAndSubfolders_TB115 queryInfo: " + JSON.stringify(queryInfo));
+      this.tsLog.log(() => "processFolderAndSubfolders_TB115 queryInfo: " + JSON.stringify(queryInfo));
       this.tsLog.log(` processFolderAndSubfolders Listing messages for folder: ${folder.name}, path: ${folder.path}`);
       queryInfo.folder = folder;
-      this.tsLog.log("processFolderAndSubfolders queryInfo: " + JSON.stringify(queryInfo));
+      this.tsLog.log(() => "processFolderAndSubfolders queryInfo: " + JSON.stringify(queryInfo));
       yield* this.getMessages(() => browser.messages.query(queryInfo));
   
       if(do_subfolders){
         let subfolders = await browser.folders.getSubFolders(folder);
         for (let subfolder of subfolders) {
-          this.tsLog.log("processFolderAndSubfolders_TB115 on subfolder: " + JSON.stringify(subfolder));
+          this.tsLog.log(() => "processFolderAndSubfolders_TB115 on subfolder: " + JSON.stringify(subfolder));
             yield* this.processFolderAndSubfolders_TB115(subfolder, queryInfo, account_id);
         }
       }

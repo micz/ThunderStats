@@ -123,7 +123,7 @@
     let archive_accounts = await tsPrefs.getPref("accounts_adv_settings");
     let all_accounts = await tsCoreUtils.getAccountsList();
     accounts_adv_settings.value = await tsCoreUtils.mergeAccountsAdvSettings(all_accounts, archive_accounts);
-    tsLog.log("accounts_adv_settings: " + JSON.stringify(accounts_adv_settings.value));
+    tsLog.log(() => "accounts_adv_settings: " + JSON.stringify(accounts_adv_settings.value));
     tsLog.log("onMounted");
   });
   

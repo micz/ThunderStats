@@ -97,8 +97,8 @@ onMounted(async () => {
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
     prefCustomIds = await tsPrefs.getPref("custom_identities");
     prefInternalDomains = await tsPrefs.getPref("internal_domains");
-    tsLog.log("prefCustomIds = " + JSON.stringify(prefCustomIds));
-    tsLog.log("prefInternalDomains = " + JSON.stringify(prefInternalDomains));
+    tsLog.log(() => "prefCustomIds = " + JSON.stringify(prefCustomIds));
+    tsLog.log(() => "prefInternalDomains = " + JSON.stringify(prefInternalDomains));
     tsLog.log("onMounted");
   });
 
@@ -129,7 +129,7 @@ function loadCustomIds(){
 function updateCustomIds(){
     let current_custom_ids = account_custom_ids.value.split(/[\n,]+/).filter(id => id.trim() !== '');;
     current_custom_ids = current_custom_ids.map(part => part.trim());
-    tsLog.log("current_custom_ids: " + JSON.stringify(current_custom_ids));
+    tsLog.log(() => "current_custom_ids: " + JSON.stringify(current_custom_ids));
     account_custom_ids.value = current_custom_ids.join("\n");
     prefCustomIds[current_account.value] = current_custom_ids;
     tsPrefs.setPref("custom_identities", prefCustomIds);
@@ -154,7 +154,7 @@ function loadInternalDomains(){
 function updateInternalDomains(){
     let current_internal_domains = account_internal_domains.value.split(/[\n,]+/).filter(d => d.trim() !== '');
     current_internal_domains = current_internal_domains.map(part => part.trim());
-    tsLog.log("current_internal_domains: " + JSON.stringify(current_internal_domains));
+    tsLog.log(() => "current_internal_domains: " + JSON.stringify(current_internal_domains));
     account_internal_domains.value = current_internal_domains.join("\n");
     prefInternalDomains[current_account.value] = current_internal_domains;
     tsPrefs.setPref("internal_domains", prefInternalDomains);

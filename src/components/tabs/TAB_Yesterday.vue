@@ -179,7 +179,7 @@ async function updateData() {
         day = tsCoreUtils.findPreviousBusinessDay(day);
         day.setHours(0, 0, 0, 0);
         emit('updateTabName', browser.i18n.getMessage("LastBusinessDay"));
-        tsLog.log("using last business day: " + JSON.stringify(day, null, 2));
+        tsLog.log(() => "using last business day: " + JSON.stringify(day, null, 2));
     }
     shown_day.value = day;
 
@@ -197,7 +197,7 @@ async function updateData() {
     function getDayData (day) {
         return new Promise(async (resolve) => {
             let result = await tsCore.getSingleDay(new Date(day), tsStore.current_account_id, props.accountEmails, props.internalDomains);
-            tsLog.log("result_yesterday: " + JSON.stringify(result, null, 2));
+            tsLog.log(() => "result_yesterday: " + JSON.stringify(result, null, 2));
             if(show_internal_mail_percent.value) {
                 let internalData = tsCoreUtils.getInternalMailLabel(result.domains);
                 internal_sent_percent.value = internalData.sentPercent;
@@ -241,7 +241,7 @@ async function updateData() {
     async function getManyDaysData () {
         return new Promise(async (resolve) => {
             let result_many_days = await tsCore.getToday_manyDaysData(tsStore.current_account_id, props.accountEmails);
-            tsLog.log("result_today_manydays_data: " + JSON.stringify(result_many_days, null, 2));
+            tsLog.log(() => "result_today_manydays_data: " + JSON.stringify(result_many_days, null, 2));
             counter_many_days_rcvd_total.value = result_many_days.aggregate.total_received;
             counter_many_days_rcvd_max.value = result_many_days.aggregate.max_received;
             counter_many_days_rcvd_min.value = result_many_days.aggregate.min_received;

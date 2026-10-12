@@ -26,11 +26,12 @@ describe('date keys', () => {
     expect(tsUtils.dateToYYYYWW(day(key))).toBe(week);
   });
 
-  // Known bug: the year comes from the date itself instead of the Thursday of its ISO week
-  it.fails.each([
+  it.each([
     ['20241230', '202501'],
     ['20210101', '202053'],
-  ])('ISO week of %s at the year boundary is %s', (key, week) => {
+    ['20261231', '202653'],
+    ['20270101', '202653'],
+  ])('ISO week of %s at the year boundary is %s (the year of its Thursday)', (key, week) => {
     expect(tsUtils.dateToYYYYWW(day(key))).toBe(week);
   });
 });
@@ -72,8 +73,7 @@ describe('daysBetween', () => {
     expect(tsUtils.daysBetween(day('20260328'), day('20260330'))).toBe(3);
   });
 
-  // Known bug: across the end of DST the range is 49 hours long and Math.ceil adds a day
-  it.fails('is not affected by the end of DST', () => {
+  it('is not affected by the end of DST', () => {
     expect(tsUtils.daysBetween(day('20261024'), day('20261026'))).toBe(3);
   });
 });

@@ -25,8 +25,7 @@ describe('CSV helpers', () => {
     expect(tsExport.arrayToCsv(null)).toBe('');
   });
 
-  // Known bug: the values are not quoted, so a comma, a quote or a new line in a name shifts the columns
-  it.fails.each([
+  it.each([
     ['Rossi, Mario', '"Rossi, Mario"'],
     ['The "Boss"', '"The ""Boss"""'],
     ['two\nlines', '"two\nlines"'],
@@ -64,7 +63,7 @@ describe('CSV helpers', () => {
 });
 
 describe('transforms', () => {
-  it('mergeRecipientsAndSenders: recipients in "received", senders in "sent" (the correspondent point of view)', () => {
+  it('mergeRecipientsAndSenders: mails received from the senders, sent to the recipients', () => {
     expect(tsExport.mergeRecipientsAndSenders(
       { 'a@x.it': { count: 2, name: 'A' }, 'b@y.com': { count: 1, name: 'B' } },
       { 'a@x.it': { count: 5, name: 'A' }, 'c@z.org': { count: 3, name: '' } },
@@ -73,6 +72,13 @@ describe('transforms', () => {
       'b@y.com': { sent: 0, received: 1, name: 'B' },
       'c@z.org': { sent: 3, received: 0, name: '' },
     });
+  });
+
+  it('mergeRecipientsAndSenders keeps the first non-empty name', () => {
+    let merged = tsExport.mergeRecipientsAndSenders({ 'a@x.it': { count: 1, name: '' } }, { 'a@x.it': { count: 1, name: 'Anna' } });
+    expect(merged['a@x.it'].name).toBe('Anna');
+    merged = tsExport.mergeRecipientsAndSenders({ 'a@x.it': { count: 1, name: 'Anna B.' } }, { 'a@x.it': { count: 1, name: 'Anna' } });
+    expect(merged['a@x.it'].name).toBe('Anna B.');
   });
 
   it('correspondents, with the domain columns when the domains are given', () => {
@@ -156,12 +162,11 @@ describe('export of real stats', () => {
     expect(hours[10]).toBe('9,0,3');
     expect(hours[17]).toBe('16,1,0');
 
-    let correspondents = tsExport.mergeRecipientsAndSenders(result.recipients, result.senders);
+    let correspondents = tsExport.mergeRecipientsAndSenders(result.senders, result.recipients);    // as the tabs call it
     expect(tsExport.arrayToCsv(tsExport.transformCorrespondentsJsonToArray(correspondents, result.domains)).split('\n')).toEqual([
       'Name,Mail,TimeChart.Sent,TimeChart.Rcvd,Domains,InternalMailLabel',
-      // the name comes from the list where the address is found first: recipients, here written as a bare address
-      ',anna@work.it,1,1,work.it,Yes',
-      'Mario Rossi,mario@client.com,2,0,client.com,No',
+      'Mario Rossi,mario@client.com,0,2,client.com,No',
+      'Anna,anna@work.it,1,1,work.it,Yes',    // the name of the received mail, not the bare address it was sent to
     ]);
 
     expect(tsExport.arrayToCsv(tsExport.transformTagsJsonToArray(result.tags))).toBe('Tags,TimeChart.Sent,TimeChart.Rcvd\nImportant,0,2');

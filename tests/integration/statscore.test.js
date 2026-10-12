@@ -133,6 +133,15 @@ describe('getFullStatsData', () => {
     expect(result.folders['acc1://Clients'].received).toBe(1);
   });
 
+  it('skips a duplicated message also when its author has no address', async () => {
+    addMail(mailbox, { key: YESTERDAY, header_id: 'same@test', from: 'Mailer Daemon' });
+    addMail(mailbox, { key: YESTERDAY, header_id: 'same@test', from: 'Mailer Daemon', folder: 'acc1://Clients' });
+    await browser.storage.sync.set({ accounts_adv_settings: [{ id: 'acc1', filter_duplicates: true }] });
+    let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
+    expect(result.count).toBe(1);
+    expect(result.dates[YESTERDAY].count).toBe(1);
+  });
+
   it('counts the duplicates when the filter is off', async () => {
     addMail(mailbox, { key: YESTERDAY, header_id: 'same@test' });
     addMail(mailbox, { key: YESTERDAY, header_id: 'same@test', folder: 'acc1://Clients' });
@@ -181,6 +190,18 @@ describe('Custom Query advanced filters', () => {
     addMails(mailbox, 1, { key: '20261010' });    // Saturday
     let result = await new thunderStastsCore().getCustomQryData(day('20261009'), day('20261011'), 'acc1', [ME], true, null, []);
     expect(result.aggregate).toMatchObject({ total_received: 4, max_received: 4, min_received: 4, avg_received: 4 });
+  });
+});
+
+describe('getAggregatedStatsData', () => {
+  it('counts by day and ignores the messages of the days outside the range', async () => {
+    addMails(mailbox, 2, { key: YESTERDAY, hour: 15 });
+    addMail(mailbox, { key: TODAY, hour: 9 });
+    // from 12:00 to the next day 11:00: the days array has only the first day
+    let result = await new thunderStastsCore().getAggregatedStatsData(day(YESTERDAY, 12), day(TODAY, 11), 'acc1', [ME], false);
+    expect(result.msg_days).toEqual({ [YESTERDAY]: expect.objectContaining({ sent: 0, received: 2 }) });
+    expect([result.received, result.count]).toEqual([2, 2]);
+    expect(result.aggregate.total_received).toBe(2);
   });
 });
 

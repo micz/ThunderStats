@@ -77,8 +77,14 @@ export const tsExport = {
         const array = [Object.keys(data[0])].concat(data)
 
         return array.map(it => {
-            return Object.values(it).toString()
+            return Object.values(it).map(tsExport.csvField).join(',')
         }).join('\n');
+    },
+
+    // A CSV field: quoted when it contains a comma, a quote or a line break, with the quotes doubled (RFC 4180)
+    csvField(value) {
+        let text = (value === null || value === undefined) ? '' : String(value);
+        return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
     },
 
     /* https://stackoverflow.com/a/68146412 */
@@ -123,11 +129,12 @@ export const tsExport = {
         return `${year}${month}${day}${hours}${minutes}${seconds}`;
     },
 
-    mergeRecipientsAndSenders(recipients, senders) {
+    // Correspondents from the user's point of view: the mails received from them (senders) and sent to them (recipients)
+    mergeRecipientsAndSenders(senders, recipients) {
         const correspondents = {};
-    
-        // Process recipients
-        for (const [email, details] of Object.entries(recipients)) {
+
+        // Process senders
+        for (const [email, details] of Object.entries(senders)) {
             if (!correspondents[email]) {
                 correspondents[email] = {
                     sent: 0,
@@ -138,9 +145,9 @@ export const tsExport = {
                 correspondents[email].received = details.count;
             }
         }
-    
-        // Process senders
-        for (const [email, details] of Object.entries(senders)) {
+
+        // Process recipients; the name may be empty in one list (bare address): keep the first non-empty one
+        for (const [email, details] of Object.entries(recipients)) {
             if (!correspondents[email]) {
                 correspondents[email] = {
                     sent: details.count,
@@ -149,6 +156,7 @@ export const tsExport = {
                 };
             } else {
                 correspondents[email].sent = details.count;
+                if (!correspondents[email].name) correspondents[email].name = details.name;
             }
         }
     

@@ -546,10 +546,10 @@ export class thunderStastsCore {
                 }else{
                   folders[message.folder.id].received++;
                 }
-                  continue;
-                }
               }
-              messages_hash.set(message.headerMessageId, true);
+              continue;
+            }
+            messages_hash.set(message.headerMessageId, true);
             // console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
           }
           // dates
@@ -919,7 +919,7 @@ export class thunderStastsCore {
           }
           let date_message = new Date(message.date);
           let day_message = tsUtils.dateToYYYYMMDD(date_message);
-          msg_days[day_message] = msg_days[day_message] || {}; //ensure the object for that day exists
+          if(msg_days[day_message] === undefined) continue;   // outside the range (should not happen)
           // check sender
           const match_author = message.author.match(tsUtils.regexEmail);
           if (match_author) {

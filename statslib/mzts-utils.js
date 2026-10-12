@@ -57,16 +57,15 @@ export const tsUtils = {
     },
 
     dateToYYYYWW(originalDate) {
-      // Extract the year from the date
-      let year = originalDate.getFullYear();
-  
       // Create a copy of the date to avoid modifying the original
       let date = new Date(originalDate.getTime());
       date.setHours(0, 0, 0, 0);
-  
+
       // Set the date to the nearest Thursday (ISO week starts on Monday and counts from the first Thursday)
       date.setDate(date.getDate() + 4 - (date.getDay() || 7));
-      let yearStart = new Date(date.getFullYear(), 0, 1);
+      // The ISO week belongs to the year of its Thursday (e.g. 2024-12-30 is in week 1 of 2025)
+      let year = date.getFullYear();
+      let yearStart = new Date(year, 0, 1);
       
       // Calculate the week number
       let weekNumber = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
@@ -152,9 +151,10 @@ export const tsUtils = {
         
         const differenceInTime = to - from;
         
+        // Both dates are at noon, so the difference is a whole number of days give or take the DST hour
         const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-        
-        return Math.ceil(differenceInDays) +1;
+
+        return Math.round(differenceInDays) +1;
     },
 
     isToday(date) {

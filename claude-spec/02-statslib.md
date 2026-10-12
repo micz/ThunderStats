@@ -95,9 +95,9 @@ Utility methods used by `thunderStastsCore` and the Vue components.
 General-purpose utility functions.
 
 **Key responsibilities:**
-- Date key formatting (`dateToYYYYMMDD`, `dateToYYYYMM`, `dateToYYYYWW`, `dateToYYYY`) and parsing
+- Date key formatting (`dateToYYYYMMDD`, `dateToYYYYMM`, `dateToYYYYWW`, `dateToYYYY`) and parsing; `dateToYYYYWW` is the ISO week with the ISO year (the year of its Thursday: 2024-12-30 is `202501`)
 - Preset period helpers (`getLastMonday`, `getFirstDayOfLastMonth`, ...)
-- Thunderbird version comparison, `daysBetween`
+- `daysBetween` (days of a range, both ends included, not affected by the DST changes)
 - Date array generators (`getDateArray`, `getDateArrayWeeks`, `getDateArrayMonths`, `getDateArrayYears`) — each entry has fields: `{ count, sent, received, inbox }`
 
 **Class:** `EmailMatcher`
@@ -128,6 +128,9 @@ Matches domain strings against a list that may contain exact domains and wildcar
 **Object:** `tsExport`
 
 Handles generation and download of CSV files from statistics data. Most transforms accept `includeInternalExternal` to add internal/external counts.
+
+- `arrayToCsv(rows)` writes the header from the keys of the first row; fields with a comma, a quote or a line break are quoted, with the quotes doubled (RFC 4180, `csvField`).
+- `mergeRecipientsAndSenders(senders, recipients)` builds the correspondents from the user's point of view (`received` = mails from the senders, `sent` = mails to the recipients), keeping the first non-empty name.
 
 **Exportable data types:**
 - Correspondents (senders/recipients)

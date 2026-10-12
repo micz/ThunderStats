@@ -94,12 +94,14 @@ Every build (dev or production) writes the unpacked addon to `dist/`: the two HT
 | Path | Contents |
 |---|---|
 | `tests/setup.js` | Before each test: a fresh `browser`/`messenger` mock and the shipped business day settings of `tsStore`; real timers restored after each test |
-| `tests/mocks/browser.js` | `createBrowserMock()`: in-memory `storage.sync` (defaults object like the real API), `i18n.getMessage` returning `key` or `key[sub1\|sub2]`, `getUILanguage` = `en-US` |
+| `tests/mocks/browser.js` | `createBrowserMock()`: in-memory `storage.sync` (defaults object like the real API), `i18n.getMessage` returning `key` or `key[sub1\|sub2]`, `getUILanguage` = `en-US`; `accounts`, `folders` (`getSubFolders`, `query`), `messages.query` (dates with `toDate` excluded, `folderId` with or without subfolders, subject/unread/flagged, pages of `messagesPerPage` continued by `continueList`), `messages.tags.list`, `addressBooks.list`. Tests fill `mailbox`, `tags`, `contacts`, can hold or fail queries with `onQuery`, and read the calls in `calls` |
+| `tests/fixtures/mailbox.js` | `createMailbox()` (account `acc1` with inbox+subfolder, sent, a user folder, archives, trash, drafts, junk, templates; Gmail account `acc2`), `addMail`/`addMails` (received into the `acc1` inbox by default, `sent: true` from `ME`), `vCard(name, ...emails)` |
 | `tests/helpers.js` | `day("YYYYMMDD", hours)` local date (noon by default) |
 | `tests/fixtures/result.js` | `makeResult(mails, {from, to, folders, tags})` builds a `getFullStatsData`-shaped output from a list of mails; `makeInbox(dates)` (`getInboxZeroDates` output), `mails(n, mail)`, `dayKeys(from, to)` |
 | `tests/unit/` | Pure functions: `tsUtils`, `EmailMatcher`/`DomainMatcher`, `tsCoreUtils` (business days, Easter, domains, labels), `tsInsights`; dashboard models `tsDayModel` and `tsPeriodModel` (loading state, badges, KPIs, charts, notes, Period B), with the clock fixed by fake timers |
+| `tests/integration/` | `thunderStastsCore` on the mocked mailbox: counts by day/hour/weekday/folder/domain/tag, correspondents and address book names, folders queried, archives and duplicates settings, paging, Custom Query filters, `aggregateData`, count-only stats, account emails and preferences, Inbox Zero and recent days caches (one scan shared by every caller, rescan after a failure or account change, size clamp), query queue (limit, release on error and early exit, clamp) |
 
-Code that reads the current date is tested with `vi.useFakeTimers()` + `vi.setSystemTime()`. Known bugs are kept as `it.fails` tests with a comment: they start failing (as a reminder to turn them into normal tests) once the bug is fixed.
+Code that reads the current date is tested with `vi.useFakeTimers()` + `vi.setSystemTime()` (only `Date` is faked in the integration tests, so `setImmediate` still flushes the pending promises). The core caches and the query queue are module-level: the integration tests call `clearCoreCaches()` and reset the cache size and the queue limit before each test, and resolve every pending query before the end. Known bugs are kept as `it.fails` tests with a comment: they start failing (as a reminder to turn them into normal tests) once the bug is fixed.
 
 ---
 

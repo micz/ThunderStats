@@ -571,6 +571,8 @@ async function updateData() {
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: prefs.accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
     tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
+    // main data first, then the secondary queries: every query runs on Thunderbird's main thread
+    await getCustomQryData();
     getInboxZeroData();
     if(do_single_day.value) {
       getExtraData();
@@ -578,7 +580,6 @@ async function updateData() {
       is_loading_extra.value = false;
       updateElapsed('getExtraData', 1);
     }
-    await getCustomQryData();
     nextTick(() => {
         i18n.updateDocument();
     });

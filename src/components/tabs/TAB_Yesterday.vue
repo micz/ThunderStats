@@ -183,10 +183,11 @@ async function updateData() {
     }
     shown_day.value = day;
 
+    // main data first, then the secondary queries: every query runs on Thunderbird's main thread
+    await getDayData(day);
     getManyDaysData();
     getInboxZeroData();
     getBaselineData(day);
-    await getDayData(day);
     nextTick(() => {
         i18n.updateDocument();
     });

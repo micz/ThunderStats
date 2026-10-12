@@ -193,24 +193,91 @@ export class thunderStastsCore {
     }
     // Hourly counts of the same weekday in the previous num_weeks weeks, used as the "usual day" baseline.
     // When theDay is a business day, past non-business days (holidays) are skipped.
+    // A single query covers the whole range: a date-filtered query scans every message anyway,
+    // so one scan costs the same as a single-day one and avoids num_weeks concurrent scans.
     async getWeekdayBaseline(theDay, account_id = 0, account_emails = [], num_weeks = 6) {
 
       let start_time = performance.now();
       let only_business_days = tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(theDay));
-      let queries = [];
 
-      for(let week = 1; week <= num_weeks; week++) {
+      // the days we are interested in, keyed by YYYYMMDD, each one with an empty hourly grid
+      let days = {};
+      let days_order = [];
+      for(let week = num_weeks; week >= 1; week--) {
         let pastDay = new Date(theDay);
         pastDay.setDate(pastDay.getDate() - (7 * week));
         pastDay.setHours(0, 0, 0, 0);
-        if(only_business_days && !tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(pastDay))) continue;
-        queries.push(this.getToday_SingleDayData(pastDay, account_id, account_emails, false));
+        let key = tsUtils.dateToYYYYMMDD(pastDay);
+        if(only_business_days && !tsCoreUtils.checkBusinessDay(key)) continue;
+        let msg_hours = {};
+        for(let i = 0; i < 24; i++) {
+          msg_hours[i] = {sent: 0, received: 0};
+        }
+        days[key] = msg_hours;
+        days_order.push(key);
       }
 
-      let days = await Promise.all(queries);
+      if(days_order.length == 0) {
+        return {days: [], elapsed: performance.now() - start_time};
+      }
+
+      let fromDate = new Date(theDay);
+      fromDate.setDate(fromDate.getDate() - (7 * num_weeks));
+      fromDate.setHours(0, 0, 0, 0);
+      let toDate = new Date(theDay);
+      toDate.setDate(toDate.getDate() - 1);
+      toDate.setHours(23, 59, 59, 999);
+
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      const emailMatcher = new EmailMatcher(account_emails);
+      let messages_hash = new Map();
+
+      let queryInfo_Baseline = {
+        fromDate: fromDate,
+        toDate: toDate,
+        includeSubFolders: true,
+      }
+
+      if(account_id != 0){
+        if(tsStore.isTB128plus){
+          queryInfo_Baseline.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
+        }
+      }
+
+      this.tsLog.log("queryInfo_Baseline: " + JSON.stringify(queryInfo_Baseline));
+
+      let messages = null;
+      if(tsStore.isTB128plus){
+        messages = this.getMessages(() => browser.messages.query(queryInfo_Baseline));
+      }else{
+        messages = this.getAccountMessages_TB115(queryInfo_Baseline, account_id, null, false);
+      }
+
+      for await (let message of messages) {
+          if(this.excludeMessage(message,account_id)) continue;
+          if(filter_duplicates){
+            if(messages_hash.has(message.headerMessageId)) continue;
+            messages_hash.set(message.headerMessageId, true);
+          }
+          let date_message = new Date(message.date);
+          let day_key = tsUtils.dateToYYYYMMDD(date_message);
+          let msg_hours = days[day_key];
+          if(msg_hours === undefined) continue;   // not one of the baseline days
+          let hour_message = date_message.getHours();
+          const match_author = message.author.match(tsUtils.regexEmail);
+          if (match_author) {
+            const key_author = match_author[0].toLowerCase();
+            if(emailMatcher.matches(key_author)) {
+              msg_hours[hour_message].sent++;
+            }else{
+              msg_hours[hour_message].received++;
+            }
+          }
+      }
+
       let stop_time = performance.now();
 
-      return {days: days.map(day => day.msg_hours), elapsed: stop_time - start_time};
+      return {days: days_order.map(key => days[key]), elapsed: stop_time - start_time};
     }
     // ================ SINGLE DAY METHODS - END =====================
 
@@ -345,7 +412,7 @@ export class thunderStastsCore {
       let messages = null;
       
       if(tsStore.isTB128plus){
-        messages = this.getMessages(browser.messages.query(queryInfo_FullStatsData));
+        messages = this.getMessages(() => browser.messages.query(queryInfo_FullStatsData));
       }else{
         if(filter_folders_115 == null){
           // get all messages for the account
@@ -705,7 +772,7 @@ export class thunderStastsCore {
       let messages = null;
       
       if(tsStore.isTB128plus){
-        messages = this.getMessages(browser.messages.query(queryInfo_CountStatsData));
+        messages = this.getMessages(() => browser.messages.query(queryInfo_CountStatsData));
       }else{
         messages = this.getAccountMessages_TB115(queryInfo_CountStatsData, account_id, null, false);
       }
@@ -796,7 +863,7 @@ export class thunderStastsCore {
       let messages = null;
       
       if(tsStore.isTB128plus){
-        messages = this.getMessages(browser.messages.query(queryInfo_getAggregatedStatsData));
+        messages = this.getMessages(() => browser.messages.query(queryInfo_getAggregatedStatsData));
       }else{
         messages = this.getAccountMessages_TB115(queryInfo_getAggregatedStatsData, account_id, null, false);
       }
@@ -960,7 +1027,7 @@ export class thunderStastsCore {
 
           this.tsLog.log("queryInfo_InboxZeroData: " + JSON.stringify(queryInfo_InboxZeroData));
           
-          let messages = this.getMessages(browser.messages.query(queryInfo_InboxZeroData));
+          let messages = this.getMessages(() => browser.messages.query(queryInfo_InboxZeroData));
 
           for await (let message of messages) {
             total++;
@@ -1026,7 +1093,7 @@ export class thunderStastsCore {
     async *getAccountMessages_TB115(queryInfo, account_id = 0, filter_folders_115 = null, do_subfolders = true) {
       this.tsLog.log("getAccountMessages_TB115 queryInfo: " + JSON.stringify(queryInfo));
       if(account_id == 0) {
-        yield* this.getMessages(browser.messages.query(queryInfo));
+        yield* this.getMessages(() => browser.messages.query(queryInfo));
         return;
       }
 
@@ -1055,7 +1122,7 @@ export class thunderStastsCore {
       this.tsLog.log(` processFolderAndSubfolders Listing messages for folder: ${folder.name}, path: ${folder.path}`);
       queryInfo.folder = folder;
       this.tsLog.log("processFolderAndSubfolders queryInfo: " + JSON.stringify(queryInfo));
-      yield* this.getMessages(browser.messages.query(queryInfo));
+      yield* this.getMessages(() => browser.messages.query(queryInfo));
   
       if(do_subfolders){
         let subfolders = await browser.folders.getSubFolders(folder);
@@ -1066,17 +1133,62 @@ export class thunderStastsCore {
       }
     }
 
-    async *getMessages(list) {
-      let page = await list;
-      for (let message of page.messages) {
-        yield message;
-      }
-    
-      while (page.id) {
-        page = await messenger.messages.continueList(page.id);
+    // Pages of a message list, one message at a time.
+    // queryFn starts the query (browser.messages.query) and is called only when a slot
+    // of the query queue is free: every query runs on Thunderbird's main thread, so
+    // too many at once make the Thunderbird UI unresponsive.
+    async *getMessages(queryFn) {
+      const release = await tsQueryQueue.acquire();
+      try {
+        let page = await queryFn();
         for (let message of page.messages) {
           yield message;
         }
+
+        while (page.id) {
+          page = await messenger.messages.continueList(page.id);
+          for (let message of page.messages) {
+            yield message;
+          }
+        }
+      } finally {
+        release();
       }
     }
 }
+
+// Limits the number of message queries running at the same time (shared by all core instances).
+export const MAX_CONCURRENT_QUERIES = 2;
+
+class QueryQueue {
+  running = 0;
+  waiting = [];
+
+  constructor(max_concurrent) {
+    this.max_concurrent = max_concurrent;
+  }
+
+  // Resolves with a release function when a slot is free; the caller must always call it (use finally).
+  acquire() {
+    return new Promise((resolve) => {
+      const start = () => {
+        this.running++;
+        let released = false;
+        resolve(() => {
+          if(released) return;
+          released = true;
+          this.running--;
+          const next = this.waiting.shift();
+          if(next) next();
+        });
+      };
+      if(this.running < this.max_concurrent) {
+        start();
+      } else {
+        this.waiting.push(start);
+      }
+    });
+  }
+}
+
+const tsQueryQueue = new QueryQueue(MAX_CONCURRENT_QUERIES);

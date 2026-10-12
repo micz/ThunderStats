@@ -33,7 +33,7 @@ The central class that retrieves and processes email data from the Thunderbird `
 | `getToday_manyDaysData(account_id, account_emails)` | Aggregated stats for the previous `_many_days` days excluding today (Today/Yesterday summary) |
 | `getToday_YesterdayData(...)` / `getToday_SingleDayData(theDay, ...)` | Count-only data for the "yesterday at this time" / custom comparison day counter |
 | `getSingleDay(theDay, account_id, account_emails, internal_domains)` | Full stats for one day |
-| `getWeekdayBaseline(theDay, account_id, account_emails, num_weeks)` | Hourly counts (`msg_hours`) of the same weekday in the previous `num_weeks` weeks (non-business days skipped when `theDay` is a business day); the "usual day" of the Today/Yesterday dashboards |
+| `getWeekdayBaseline(theDay, account_id, account_emails, num_weeks)` | Hourly counts (`msg_hours`) of the same weekday in the previous `num_weeks` weeks (non-business days skipped when `theDay` is a business day); the "usual day" of the Today/Yesterday dashboards. Runs a single query over the whole range and buckets messages by day: a date-filtered query scans every message anyway, so one scan costs the same as a single-day one |
 | `getCustomQryData(fromDate, toDate, account_id, account_emails, only_businessdays, adv_filters, internal_domains)` | Custom date range with optional filters |
 | `getDaysBefore(theDay, num_days, account_id, account_emails)` | Count-only stats of the `num_days` days before `theDay` (pace of a single-day Custom Query) |
 | `getFullStatsData(fromDate, toDate, account_id, account_emails, do_aggregate_stats, filter_duplicates, only_businessdays, adv_filters, internal_domains)` | Base method: retrieves and processes all messages in a date range. When `internal_domains` is provided, domain entries in the output include an `internal: true/false` flag. The output also has `msg_weekday_hours` (weekday × hour sent/received grid, used by the heatmap) |
@@ -42,6 +42,9 @@ The central class that retrieves and processes email data from the Thunderbird `
 | `aggregateData(dates, only_businessdays)` | Computes total/max/min/avg from per-day data, optionally business days only |
 | `getInboxZeroDates(account_id)` / `getInboxFolders(account_id)` | Inbox Zero data |
 | `getAccountEmails(account_id, no_custom_identities)` | Returns the email addresses for an account |
+| `getMessages(queryFn)` | Async generator over the pages of a message list. `queryFn` starts the `browser.messages.query` call and is invoked only when a slot of the query queue is free |
+
+**Query queue.** Every `browser.messages.query` runs on Thunderbird's main thread, so many concurrent queries make the Thunderbird UI unresponsive. A module-level `QueryQueue` (shared by all `thunderStastsCore` instances) limits the running queries to `MAX_CONCURRENT_QUERIES` (2); `getMessages` acquires a slot before starting the query and releases it when the iteration ends (also on early exit or error). The tabs also start their main query first and launch the secondary ones (inbox zero, baseline, previous period, days before) only after it has resolved.
 
 **Advanced filters object (`adv_filters`):**
 ```js

@@ -152,9 +152,10 @@ async function updateData() {
     show_internal_mail_percent.value = prefs.show_internal_mail_percent && props.internalDomains.length > 0;
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days.value, accounts_adv_settings: prefs.accounts_adv_settings});
     tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
+    // main data first, then the secondary queries: every query runs on Thunderbird's main thread
+    await getManyDaysData();
     getInboxZeroData();
     getPreviousPeriodData();
-    await getManyDaysData();
     nextTick(() => {
         i18n.updateDocument();
     });

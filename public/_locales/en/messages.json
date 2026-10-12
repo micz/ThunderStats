@@ -471,6 +471,14 @@
     "message": "Number of message queries run at the same time while loading the statistics (1-10). Lower it if Thunderbird becomes unresponsive while loading, raise it if loading is too slow.",
     "description": ""
   },
+  "RecentDaysCacheDays_1": {
+    "message": "Number of days before today read in a single pass and shared by the Today, Yesterday, Many Days and Custom views (43-365).",
+    "description": ""
+  },
+  "RecentDaysCacheDays_2": {
+    "message": "The \"usual day\", the previous days and the previous period come from this data without new queries as long as they fall inside it. Raise it if your \"Many days\" period is longer than 24 days; a bigger value makes the first load slower.",
+    "description": ""
+  },
   "InvolvedNum": {
     "message": "Number of recipients or senders to be shown in \"Top\" tables",
     "description": ""

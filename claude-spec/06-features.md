@@ -105,6 +105,7 @@ Pref keys and defaults: `statslib/mzts-options-default.js`.
 - **First day of the week** (`first_day_week`)
 - **Custom Query long period warning** (`customqry_warn_onlongperiod_days`, default 90)
 - **Concurrent message queries** (`max_concurrent_queries`, default 2, 1-10) — how many `messages.query` run at the same time while loading; lower it if Thunderbird stutters while loading, raise it if loading is too slow
+- **Recent days cache size** (`recent_days_cache_days`, default 49, 43-365) — days before today read in one pass and shared by the tabs (baseline, previous days, previous period); raise it when the Many Days period is longer than 24 days
 - **Debug logging** (`do_debug`)
 - **Filter duplicates** — deduplicate messages that appear in multiple folders (e.g., sent + archive)
 - **Include archive folders** — whether to count archived emails in statistics

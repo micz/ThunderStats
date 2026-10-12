@@ -52,6 +52,7 @@ export const prefs_default = {
     'bday_custom_days': [],
     'bday_easter': true,
     'customqry_warn_onlongperiod_days': 90,
+    'recent_days_cache_days': 49,   // days before today kept in the recent days cache (43-365)
     'max_concurrent_queries': 2,    // message queries run at the same time while loading the stats (1-10)
     'customqry_always_open_adv_filters': false,
     'show_internal_mail_percent': false,

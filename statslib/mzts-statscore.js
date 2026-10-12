@@ -123,7 +123,7 @@ export class thunderStastsCore {
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
     // Counts of the _many_days days before the Many Days period (which ends yesterday), for the comparison with the previous period.
-    // Served from the recent days cache when the range is covered (_many_days up to 24), so the scan is shared with Today/Yesterday
+    // Served from the recent days cache when the range is covered (2 * _many_days within the cache size), so the scan is shared with Today/Yesterday
     async getManyDaysPreviousPeriod(account_id = 0, account_emails = []) {
 
       let fromDate = new Date();
@@ -270,13 +270,14 @@ export class thunderStastsCore {
       return output;
     }
 
-    // The last RECENT_DAYS_CACHE_DAYS days before today, scanned once and shared by all the tabs
+    // The last recent_days_cache_days days before today, scanned once and shared by all the tabs
     // (Today/Yesterday baseline and previous days, Custom Query pace). The cache key includes today's
     // date, the account, its emails, the duplicates and archive settings; clearCoreCaches() resets it.
     async getRecentDays(account_id = 0, account_emails = [], filter_duplicates = false) {
       let range = tsRecentDaysCache.getRange();
       let key = [
         tsUtils.dateToYYYYMMDD(range.toDate),
+        tsRecentDaysCache.days,
         account_id,
         [...account_emails].sort().join(','),
         filter_duplicates,
@@ -1231,16 +1232,20 @@ export function setMaxConcurrentQueries(value) {
   tsQueryQueue.setMaxConcurrent(max_concurrent);
 }
 
-// Recent days cache: the last RECENT_DAYS_CACHE_DAYS days before today (7 weeks, so the baseline
+// Recent days cache: the last recent_days_cache_days days before today (default 7 weeks, so the baseline
 // of yesterday always has 6 full weeks), shared by all core instances. See getRecentDays().
-export const RECENT_DAYS_CACHE_DAYS = 49;
+// The size comes from the recent_days_cache_days preference, applied with setRecentDaysCacheDays():
+// at least MIN_RECENT_DAYS_CACHE_DAYS (6 full weeks before yesterday, needed by the weekday baseline).
+export const MIN_RECENT_DAYS_CACHE_DAYS = 43;
+export const MAX_RECENT_DAYS_CACHE_DAYS = 365;
 
 const tsRecentDaysCache = {
   key: null,
   promise: null,
+  days: prefs_default.recent_days_cache_days,
   getRange() {
     let fromDate = new Date();
-    fromDate.setDate(fromDate.getDate() - RECENT_DAYS_CACHE_DAYS);
+    fromDate.setDate(fromDate.getDate() - this.days);
     fromDate.setHours(0, 0, 0, 0);
     let toDate = new Date();
     toDate.setDate(toDate.getDate() - 1);
@@ -1254,6 +1259,13 @@ const tsInboxZeroCache = {
   key: null,
   promise: null,
 };
+
+// Applies the recent_days_cache_days preference (clamped to MIN/MAX_RECENT_DAYS_CACHE_DAYS); a new size invalidates the cache through its key
+export function setRecentDaysCacheDays(value) {
+  let days = Number(value);
+  if(!Number.isFinite(days)) days = prefs_default.recent_days_cache_days;
+  tsRecentDaysCache.days = Math.min(MAX_RECENT_DAYS_CACHE_DAYS, Math.max(MIN_RECENT_DAYS_CACHE_DAYS, Math.round(days)));
+}
 
 // Forget all the cached scans, so the next requests read the messages again (data refresh, account change)
 export function clearCoreCaches() {

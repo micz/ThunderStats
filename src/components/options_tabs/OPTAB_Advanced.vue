@@ -96,6 +96,14 @@
       </td>
     </tr>
     <tr>
+      <td class="td_padding_right">
+        <label><input type="number" id="recent_days_cache_days" name="recent_days_cache_days" min="43" max="365" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_RecentDaysCacheDays_1__<br>__MSG_RecentDaysCacheDays_2__</span>
+      </td>
+    </tr>
+    <tr>
       <td>
         <label><input type="checkbox" id="do_debug" name="do_debug" class="option-input" /></label>
       </td>

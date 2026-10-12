@@ -186,11 +186,6 @@ watch(props.chartData, (newChartData) => {
 
     // Enable tooltips when comparing (legend kept hidden to avoid taking chart space)
     chartOptions.value.plugins.tooltip.enabled = props.is_comparing;
-
-    if(tsStore.darkmode) {
-      Chart.defaults.color = 'white';
-      Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.2)';
-    }
 }, { immediate: true, deep: true });
 
 </script>

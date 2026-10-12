@@ -55,4 +55,5 @@ export const prefs_default = {
     'customqry_always_open_adv_filters': false,
     'inbox_percent_remaining': false,
     'show_internal_mail_percent': false,
+    'theme_mode': 'auto',    // 'auto' follows the system color scheme, 'light' or 'dark' force it
 }

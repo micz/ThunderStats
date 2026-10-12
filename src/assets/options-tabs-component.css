@@ -151,119 +151,118 @@ li.tabs-component-tab.is-active{
 }
 
 /* Dark mode styles */
-@media (prefers-color-scheme: dark) {
-    .tabs-component {
-        margin: 10px 0;
-    }
 
-    .tabs-component-tabs {
-        border-color: #555;
-        background: #333;
-    }
+:root[data-theme="dark"] .tabs-component {
+  margin: 10px 0;
+}
 
-    @media (min-width: 700px) {
-        .tabs-component-tabs {
-            border-bottom-color: #555;
-            background: #333;
-        }
-    }
+:root[data-theme="dark"] .tabs-component-tabs {
+  border-color: #555;
+  background: #333;
+}
 
-    .tabs-component-tab, .tabs-component-tab--custom {
-        color: #ccc;
-    }
+@media (min-width: 700px) {
+  :root[data-theme="dark"] .tabs-component-tabs {
+    border-bottom-color: #555;
+    background: #333;
+  }
+}
 
-    .tabs-component-tab:not(:last-child) {
-        border-bottom: dotted 1px #555;
-    }
+:root[data-theme="dark"] .tabs-component-tab, :root[data-theme="dark"] .tabs-component-tab--custom {
+  color: #ccc;
+}
 
-    .tabs-component-tab:hover {
-        color: #fff;
-    }
+:root[data-theme="dark"] .tabs-component-tab:not(:last-child) {
+  border-bottom: dotted 1px #555;
+}
 
-    .tabs-component-tab.is-active {
-        color: #fff;
-    }
+:root[data-theme="dark"] .tabs-component-tab:hover {
+  color: #fff;
+}
 
-    .tabs-component-tab.is-disabled *, .tabs-component-tab--custom.is-disabled * {
-        color: #777;
-    }
+:root[data-theme="dark"] .tabs-component-tab.is-active {
+  color: #fff;
+}
 
-    @media (min-width: 700px) {
-        .tabs-component-tab, .tabs-component-tab--custom {
-            background-color: #444;
-            border: solid 1px #555;
-        }
+:root[data-theme="dark"] .tabs-component-tab.is-disabled *, :root[data-theme="dark"] .tabs-component-tab--custom.is-disabled * {
+  color: #777;
+}
 
-        .tabs-component-tab.is-active, .tabs-component-tab--custom.is-active {
-            border-color: #444;
-        }
-    }
+@media (min-width: 700px) {
+  :root[data-theme="dark"] .tabs-component-tab, :root[data-theme="dark"] .tabs-component-tab--custom {
+    background-color: #444;
+    border: solid 1px #555;
+  }
 
-    .tabs-component-tab-a, .tabs-component-tab-a--custom {
-        background: #3a3a3a; /* Dark gray background color */
-        color: #ffffff; /* White text color */
-    }
-    
-    .tabs-component-tab-a.is-inactive{
-        color:#b9b9b9;
-    }
+  :root[data-theme="dark"] .tabs-component-tab.is-active, :root[data-theme="dark"] .tabs-component-tab--custom.is-active {
+    border-color: #444;
+  }
+}
 
-    .tabs-component-panels {
-        background-color: #222;
-        color: #ccc;
-    }
+:root[data-theme="dark"] .tabs-component-tab-a, :root[data-theme="dark"] .tabs-component-tab-a--custom {
+  background: #3a3a3a; /* Dark gray background color */
+  color: #ffffff; /* White text color */
+}
 
-    @media (min-width: 700px) {
-        .tabs-component-panels {
-            box-shadow: 0 0 10px rgba(255, 255, 255, .1);
-        }
+:root[data-theme="dark"] .tabs-component-tab-a.is-inactive{
+  color:#b9b9b9;
+}
 
-        .tabs-component-panel {
-            background-color: #333;
-        }
-    }
+:root[data-theme="dark"] .tabs-component-panels {
+  background-color: #222;
+  color: #ccc;
+}
 
-    .tabs-component-btn {
-        background: #555;
-        border: 1px solid #888;
-        color: #ccc;
-    }
+@media (min-width: 700px) {
+  :root[data-theme="dark"] .tabs-component-panels {
+    box-shadow: 0 0 10px rgba(255, 255, 255, .1);
+  }
 
-    .tabs-component-btn:hover {
-        background-color: #666;
-        color: #fff;
-    }
+  :root[data-theme="dark"] .tabs-component-panel {
+    background-color: #333;
+  }
+}
 
-    .tabs-component-btn:active {
-        background-color: #777;
-        color: #fff;
-    }
+:root[data-theme="dark"] .tabs-component-btn {
+  background: #555;
+  border: 1px solid #888;
+  color: #ccc;
+}
 
-    .tabs-component-tab--custom {
-        border-color: #555;
-        color: #aaa;
-    }
+:root[data-theme="dark"] .tabs-component-btn:hover {
+  background-color: #666;
+  color: #fff;
+}
 
-    .tabs-component-tab--custom:hover {
-        border-color: #666;
-        color: #fff;
-    }
+:root[data-theme="dark"] .tabs-component-btn:active {
+  background-color: #777;
+  color: #fff;
+}
 
-    .tabs-component-tab--custom.is-active {
-        color: #fff;
-        border-color: #888;
-    }
+:root[data-theme="dark"] .tabs-component-tab--custom {
+  border-color: #555;
+  color: #aaa;
+}
 
-    li.tabs-component-tab.is-inactive {
-        background-color: #444;
-    }
+:root[data-theme="dark"] .tabs-component-tab--custom:hover {
+  border-color: #666;
+  color: #fff;
+}
 
-    li.tabs-component-tab.is-active {
-        background-color: #555;
-    }
+:root[data-theme="dark"] .tabs-component-tab--custom.is-active {
+  color: #fff;
+  border-color: #888;
+}
 
-    .tabs-component-tab-a.is-active {
-        background-color: #2a2a2a;
-        color: #ffffff;
-    }
+:root[data-theme="dark"] li.tabs-component-tab.is-inactive {
+  background-color: #444;
+}
+
+:root[data-theme="dark"] li.tabs-component-tab.is-active {
+  background-color: #555;
+}
+
+:root[data-theme="dark"] .tabs-component-tab-a.is-active {
+  background-color: #2a2a2a;
+  color: #ffffff;
 }

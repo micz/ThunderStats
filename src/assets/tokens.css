@@ -1,0 +1,162 @@
+/*
+ *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
+
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* Design tokens of the dashboard (direction 1b).
+   The theme is selected by the data-theme attribute on the root element (see statslib/mzts-theme.js). */
+
+:root {
+  color-scheme: light;
+  --surface: #ffffff;
+  --surface2: #f7f8fa;
+  --surface3: #eceef1;
+  --line: #e3e5e9;
+  --text: #16181d;
+  --text2: #5b616e;
+  --text3: #8b909b;
+  --accent: #2f6fed;
+  --accentSoft: #e8effd;
+  --sent: #2f6fed;
+  --rcvd: #e8833a;
+  --good: #17916b;
+  --goodSoft: #e6f4ee;
+  --warn: #d9534f;
+  --newsletters: #8b6ee3;
+
+  --radius-card: 12px;
+  --radius-input: 8px;
+  --radius-segment: 6px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #1e2126;
+  --surface2: #242830;
+  --surface3: #2f343d;
+  --line: #33383f;
+  --text: #eceef2;
+  --text2: #a2a8b4;
+  --text3: #767c88;
+  --accent: #6aa2ff;
+  --accentSoft: #1f2c45;
+  --sent: #6aa2ff;
+  --rcvd: #f0a45a;
+  --good: #3cb891;
+  --goodSoft: #17332a;
+  --warn: #f07a7a;
+}
+
+/* Shared card language */
+.ts-card {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 18px 20px;
+}
+
+.ts-card-title {
+  font-size: 15px;
+  font-weight: 660;
+  color: var(--text);
+}
+
+.ts-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+/* Round icon button (toolbar and card headers) */
+.ts-icon-btn {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 15px;
+  padding: 0;
+  background: var(--surface2);
+  color: var(--text2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ts-icon-btn:hover {
+  color: var(--text);
+  background: var(--surface3);
+}
+
+.ts-icon-btn:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.ts-icon-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Segmented control */
+.ts-segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 20px;
+  background: var(--surface2);
+}
+
+.ts-segmented button {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 17px;
+  background: transparent;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+.ts-segmented button:hover {
+  color: var(--text);
+}
+
+.ts-segmented button.is-active {
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 620;
+}
+
+.ts-segmented.ts-segmented-small {
+  gap: 4px;
+  border-radius: 16px;
+}
+
+.ts-segmented.ts-segmented-small button {
+  padding: 5px 12px;
+  border-radius: 13px;
+  font-size: 12px;
+  font-weight: 600;
+}

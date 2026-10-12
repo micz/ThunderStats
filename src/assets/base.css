@@ -48,72 +48,64 @@ div#customqry_adv_filters input, div#customqry_adv_filters select{
   border-radius: var(--ms-radius,4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
+:root[data-theme="dark"] {
+  --color-background: var(--vt-c-black);
+  --color-background-soft: var(--vt-c-black-soft);
+  --color-background-mute: var(--vt-c-black-mute);
+  --color-border: var(--vt-c-divider-dark-2);
+  --color-border-hover: var(--vt-c-divider-dark-1);
+  --color-heading: var(--vt-c-text-dark-1);
+  --color-text: var(--vt-c-text-dark-2);
 
     /* Vue Multiselect */
-    --ms-bg: #313131;
-    --ms-bg-disabled: #4B5563;
-    --ms-border-color: #4B5563;
-    --ms-border-color-active: #6B7280;
-    --ms-ring-color: #10B98130;
-    --ms-placeholder-color: #9CA3AF;
-    --ms-spinner-color: #10B981;
-    --ms-caret-color: #CCCCCC;
-    --ms-clear-color: #FFFFFF;
-    --ms-clear-color-hover: #10B981;
+  --ms-bg: #313131;
+  --ms-bg-disabled: #4B5563;
+  --ms-border-color: #4B5563;
+  --ms-border-color-active: #6B7280;
+  --ms-ring-color: #10B98130;
+  --ms-placeholder-color: #9CA3AF;
+  --ms-spinner-color: #10B981;
+  --ms-caret-color: #CCCCCC;
+  --ms-clear-color: #FFFFFF;
+  --ms-clear-color-hover: #10B981;
+  --ms-tag-bg: #0D3977;
+  --ms-tag-bg-disabled: #374151;
+  --ms-tag-color: #E5E7EB;
+  --ms-tag-color-disabled: #9CA3AF;
+  --ms-dropdown-bg: #313131;
+  --ms-dropdown-border-color: #4B5563;
+  --ms-group-label-bg: #374151;
+  --ms-group-label-color: #D1D5DB;
+  --ms-group-label-bg-pointed: #4B5563;
+  --ms-group-label-color-pointed: #E5E7EB;
+  --ms-group-label-bg-disabled: #2D3748;
+  --ms-group-label-color-disabled: #6B7280;
+  --ms-group-label-bg-selected: #10B981;
+  --ms-group-label-color-selected: #FFFFFF;
+  --ms-group-label-bg-selected-pointed: #0c9e70;
+  --ms-group-label-color-selected-pointed: #FFFFFF;
+  --ms-group-label-bg-selected-disabled: #2D3748;
+  --ms-group-label-color-selected-disabled: #A7F3D0;
+  --ms-option-bg-pointed: #4B5563;
+  --ms-option-color-pointed: #E5E7EB;
+  --ms-option-bg-selected: #10B981;
+  --ms-option-color-selected: #FFFFFF;
+  --ms-option-bg-disabled: #2D3748;
+  --ms-option-color-disabled: #6B7280;
+  --ms-option-bg-selected-pointed: #26C08E;
+  --ms-option-color-selected-pointed: #FFFFFF;
+  --ms-option-bg-selected-disabled: #2D3748;
+  --ms-option-color-selected-disabled: #A7F3D0;
+  --ms-empty-color: #D1D5DB;
+}
 
-    --ms-tag-bg: #0D3977;
-    --ms-tag-bg-disabled: #374151;
-    --ms-tag-color: #E5E7EB;
-    --ms-tag-color-disabled: #9CA3AF;
+:root[data-theme="dark"] .multiselect-option{
+  color: var(--ms-caret-color);
+}
 
-    --ms-dropdown-bg: #313131;
-    --ms-dropdown-border-color: #4B5563;
-
-    --ms-group-label-bg: #374151;
-    --ms-group-label-color: #D1D5DB;
-    --ms-group-label-bg-pointed: #4B5563;
-    --ms-group-label-color-pointed: #E5E7EB;
-    --ms-group-label-bg-disabled: #2D3748;
-    --ms-group-label-color-disabled: #6B7280;
-    --ms-group-label-bg-selected: #10B981;
-    --ms-group-label-color-selected: #FFFFFF;
-    --ms-group-label-bg-selected-pointed: #0c9e70;
-    --ms-group-label-color-selected-pointed: #FFFFFF;
-    --ms-group-label-bg-selected-disabled: #2D3748;
-    --ms-group-label-color-selected-disabled: #A7F3D0;
-
-    --ms-option-bg-pointed: #4B5563;
-    --ms-option-color-pointed: #E5E7EB;
-    --ms-option-bg-selected: #10B981;
-    --ms-option-color-selected: #FFFFFF;
-    --ms-option-bg-disabled: #2D3748;
-    --ms-option-color-disabled: #6B7280;
-    --ms-option-bg-selected-pointed: #26C08E;
-    --ms-option-color-selected-pointed: #FFFFFF;
-    --ms-option-bg-selected-disabled: #2D3748;
-    --ms-option-color-selected-disabled: #A7F3D0;
-
-    --ms-empty-color: #D1D5DB;
-  }
-
-  .multiselect-option{
-    color: var(--ms-caret-color);
-  }
-  .multiselect-tags-search{
-    background-color: var(--ms-bg);
-    color: var(--ms-caret-color);
-  }
+:root[data-theme="dark"] .multiselect-tags-search{
+  background-color: var(--ms-bg);
+  color: var(--ms-caret-color);
 }
 
 *,
@@ -125,8 +117,8 @@ div#customqry_adv_filters input, div#customqry_adv_filters select{
 
 body {
   min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
+  color: var(--text);
+  background: var(--surface);
   /* line-height: 1.6; */
   font-size: 15px;
   text-rendering: optimizeLegibility;

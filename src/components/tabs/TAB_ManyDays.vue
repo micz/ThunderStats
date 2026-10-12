@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <ExportMenu :export_data="_export_data" currentTab="tab-manydays" :showInternalExternal="show_internal_mail_percent" v-if="job_done" />
+    <ExportMenu ref="ExportMenu_ref" :export_data="_export_data" currentTab="tab-manydays" :showInternalExternal="show_internal_mail_percent" v-if="job_done" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper">
                         <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="!is_loading_counter_sent_rcvd">{{ sent_total }}</span><span v-if="sent_today > 0"> (+<span>{{ sent_today }}</span> __MSG_today_small__)</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_counter_sent_rcvd"/><InfoTooltip :showAnchor="showTotalInfoTooltip" :noteText="totalInfoTooltip_text"></InfoTooltip></h2>
@@ -206,6 +206,8 @@ let chartData_Tags = ref({
     labels: [],
     datasets: []
 });
+
+let ExportMenu_ref = ref(null);
 
 let job_done = computed(() => {
     return !is_loading_counter_sent_rcvd.value &&
@@ -546,7 +548,11 @@ function updateElapsed(elapsed) {
     emit('updateElapsed', elapsed);
 }
 
-defineExpose({ updateData });
+function openExportMenu(anchor_el) {
+  if(ExportMenu_ref.value) ExportMenu_ref.value.openExportMenu(null, anchor_el);
+}
+
+defineExpose({ updateData, openExportMenu });
 
 </script>
 

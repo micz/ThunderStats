@@ -185,6 +185,25 @@
       </td>
     </tr>
     </table>
+    <table class="miczPrefs">
+    <tr>
+      <td colspan="2" class="grouptitle">__MSG_Appearance__</td>
+    </tr>
+    <tr>
+      <td class="td_padding_right">
+        <label>
+        <select id="theme_mode" name="theme_mode" class="option-input">
+          <option value="auto">__MSG_ThemeAuto__</option>
+          <option value="light">__MSG_ThemeLight__</option>
+          <option value="dark">__MSG_ThemeDark__</option>
+        </select>
+        </label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_prefs_theme_mode__</span>
+      </td>
+    </tr>
+    </table>
 </template>
 
 

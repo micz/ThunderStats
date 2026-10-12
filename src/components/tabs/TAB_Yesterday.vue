@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <ExportMenu :export_data="_export_data" currentTab="tab-yesterday" :showInternalExternal="show_internal_mail_percent" v-if="job_done" />
+    <ExportMenu ref="ExportMenu_ref" :export_data="_export_data" currentTab="tab-yesterday" :showInternalExternal="show_internal_mail_percent" v-if="job_done" />
     <div class="square_container">
     <div class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
         </div>
@@ -221,6 +221,8 @@ let chartdata_tags_rcvd = ref([]);
 let chartdata_tags_labels = ref([]);
 
 let domains_chart_height = ref("275px");
+
+let ExportMenu_ref = ref(null);
 
 let job_done = computed(() => {
     return !is_loading_counter_sent_rcvd.value &&
@@ -536,7 +538,11 @@ function updateElapsed(function_name, time) {
 }
 
 
-defineExpose({ updateData });
+function openExportMenu(anchor_el) {
+  if(ExportMenu_ref.value) ExportMenu_ref.value.openExportMenu(null, anchor_el);
+}
+
+defineExpose({ updateData, openExportMenu });
 
 </script>
 

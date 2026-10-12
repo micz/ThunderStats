@@ -19,30 +19,50 @@
 -->
 
 <template>
-    <div id="heading_wrapper">
-		  <div id="mzts-account-sel">__MSG_ChooseAccount__:
-          <SelectAccount id="account_selector" @change="accountSelected()" v-model="current_account" ref="SelectAccount_ref"/>
-			<div id="mzts-btn-update">
-        <button type="button" @click="update()">__MSG_Update__</button><span class="bday_icon" v-if="businessdays_only"><img src="@/assets/images/mzts-businessdays.png" alt="__MSG_BusinessDayOnlyWarning__" title="__MSG_BusinessDayOnlyWarning__"/></span>
-      </div>
-      <div id="mzts-warn-msg" v-if="warn_message != ''">
-        {{ warn_message }}
-      </div>
-      <div class="mzts-execution-time" v-if="is_loading && currentTab != 'tab-info'">
-        <span v-text="elapsed_time_label"></span>: <span v-text="elapsed_time_string" v-if="elapsed_time != 0"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="elapsed_time == 0"/>
-      </div>
-      <div class="mzts-last-exec" v-if="(is_loading && currentTab != 'tab-info') || (last_exec_datetime != '')">
-        <span v-text="last_exec_label"></span>: <span v-text="last_exec_datetime"></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small_absolute" alt="__MSG_Loading__..." v-if="last_exec_datetime == ''"/>
-      </div>
-		  </div>
-		<div id="mzts-setup_icon">
-			<img src="@/assets/images/mzts-setup.png" alt="__MSG_Setup__" title="__MSG_Setup__" class="tooltip" @click="openOptions()"/>
-		</div>
-		<div id="mzts-updates">
-			<div id="mzts-last_run"></div>
-			<div id="mzts-last_msg"></div>
-		</div>
+  <header id="heading_wrapper">
+    <div class="ts-brand"><span class="ts-brand-mark"></span>ThunderStats</div>
+
+    <div class="ts-account-pill" :title="choose_account_label">
+      <SelectAccount id="account_selector" @change="accountSelected()" v-model="current_account" ref="SelectAccount_ref"/>
     </div>
+
+    <div class="ts-spacer"></div>
+
+    <nav class="ts-segmented" role="tablist">
+      <button type="button" role="tab" v-for="tab in tabs" :key="tab.id" :class="{ 'is-active': tab.id == currentTab }" :aria-selected="tab.id == currentTab" @click="emit('selectTab', tab.id)">{{ tab.label }}</button>
+    </nav>
+
+    <div class="ts-spacer"></div>
+
+    <div id="mzts-warn-msg" v-if="warn_message != ''">{{ warn_message }}</div>
+
+    <span class="bday_icon" v-if="businessdays_only"><img src="@/assets/images/mzts-businessdays.png" alt="__MSG_BusinessDayOnlyWarning__" title="__MSG_BusinessDayOnlyWarning__"/></span>
+
+    <div class="ts-status" v-if="currentTab != 'tab-info'" :title="status_title">
+      <template v-if="is_loading && elapsed_time == 0"><img src="@/assets/images/mzts-wait_line.svg" class="ts-status-spinner" alt=""/>{{ loading_label }}…</template>
+      <template v-else-if="last_exec_datetime != ''">{{ updated_label }} {{ last_exec_datetime }}</template>
+    </div>
+
+    <div class="ts-icon-group">
+      <button type="button" class="ts-icon-btn" :title="refresh_label" :disabled="currentTab == 'tab-info'" @click="update()">
+        <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg>
+      </button>
+      <button type="button" class="ts-icon-btn" :title="export_label" :disabled="currentTab == 'tab-info'" @click="emit('exportData', $event.currentTarget)">
+        <svg viewBox="0 0 24 24"><path d="M12 4v11"></path><path d="M7.5 10.5 12 15l4.5-4.5"></path><path d="M5 19h14"></path></svg>
+      </button>
+      <button type="button" class="ts-icon-btn" :title="settings_label" @click="openOptions()">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>
+      </button>
+      <button type="button" class="ts-icon-btn" :class="{ 'is-active': currentTab == 'tab-info' }" :title="info_label" @click="emit('selectTab', 'tab-info')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 7.5v.01"></path></svg>
+      </button>
+    </div>
+
+    <div class="ts-segmented ts-segmented-small">
+      <button type="button" :class="{ 'is-active': !tsStore.darkmode }" @click="tsTheme.setMode('light')">{{ light_label }}</button>
+      <button type="button" :class="{ 'is-active': tsStore.darkmode }" @click="tsTheme.setMode('dark')">{{ dark_label }}</button>
+    </div>
+  </header>
 </template>
 
 <script setup>
@@ -50,17 +70,19 @@ import { ref, onMounted, computed } from 'vue';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsPrefs } from "@statslib/mzts-options.js";
 import { tsStore } from "@statslib/mzts-store.js";
+import { tsTheme } from "@statslib/mzts-theme.js";
 import { tsUtils } from "@statslib/mzts-utils.js";
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import SelectAccount from './SelectAccount.vue';
 
-const emit = defineEmits(['chooseAccount']);
+const emit = defineEmits(['chooseAccount', 'selectTab', 'exportData']);
 
 const props = defineProps({
   elapsed_time: { type: Number, default:0 },
   last_exec_datetime: { type: Array, default: '' },
   currentTab: { type: String, default:'' },
   is_loading: { type: Boolean, default:false },
+  tabs: { type: Array, default: () => [] },
 })
 
 let current_account = ref(0);
@@ -89,18 +111,27 @@ let elapsed_time = computed(() => {
   return props.elapsed_time;
 })
 
-let elapsed_time_string = computed(() => {
-  return tsUtils.convertFromMilliseconds(props.elapsed_time);
-})
-
 let is_loading = computed(() => {
   return props.is_loading;
 })
 
-let elapsed_time_label = ref("");
-let last_exec_label = ref("");
-let warn_message = ref("");
+let status_title = computed(() => {
+  if(props.elapsed_time == 0) return "";
+  return execution_time_label + ": " + tsUtils.convertFromMilliseconds(props.elapsed_time);
+})
 
+const choose_account_label = browser.i18n.getMessage("ChooseAccount");
+const refresh_label = browser.i18n.getMessage("Update");
+const export_label = browser.i18n.getMessage("ExportData");
+const settings_label = browser.i18n.getMessage("Setup");
+const info_label = browser.i18n.getMessage("Info");
+const light_label = browser.i18n.getMessage("ThemeLight");
+const dark_label = browser.i18n.getMessage("ThemeDark");
+const updated_label = browser.i18n.getMessage("UpdatedAt");
+const loading_label = browser.i18n.getMessage("Loading");
+const execution_time_label = browser.i18n.getMessage("ExecutionTime");
+
+let warn_message = ref("");
 
 let tsLog = null;
 
@@ -120,7 +151,7 @@ onMounted(async () => {
 function update(){
   tsLog.log("update: " + current_account.value);
   emit('chooseAccount', current_account.value);
-  doAgain();
+  checkAccountEmails();
 }
 
 async function accountSelected(){
@@ -131,7 +162,7 @@ async function accountSelected(){
   }
   if(await tsPrefs.getPref("load_data_changing_account")){
     emit('chooseAccount', current_account.value);
-    doAgain();
+    checkAccountEmails();
   }
 }
 
@@ -149,20 +180,16 @@ function openOptions(){
 }
 
 function getCurrentIdn(){
-  doAgain();
+  checkAccountEmails();
   tsStore.current_account_id = current_account.value;
   return current_account.value;
 }
 
-async function doAgain(){
-  is_loading.value = true;
-  elapsed_time_label.value = await browser.i18n.getMessage("ExecutionTime");
-  last_exec_label.value = await browser.i18n.getMessage("LastExecution");
-  props.elapsed_time = 0;
+async function checkAccountEmails(){
   let account_emails = await tsCoreUtils.getAccountEmails(current_account.value);
   warn_message.value = "";
   if(account_emails.length == 0){
-    warn_message.value = await browser.i18n.getMessage("AccountWithNoEmails");
+    warn_message.value = browser.i18n.getMessage("AccountWithNoEmails");
   }
 }
 
@@ -171,5 +198,110 @@ defineExpose({ getCurrentIdn });
 
 
 <style scoped>
+#heading_wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
 
+.ts-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 660;
+}
+
+.ts-brand-mark {
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.ts-account-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  background: var(--surface2);
+}
+
+.ts-account-pill::after {
+  content: "\25BE";
+  position: absolute;
+  right: 12px;
+  color: var(--text3);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.ts-account-pill :deep(select) {
+  appearance: none;
+  border: 0;
+  border-radius: 20px;
+  padding: 6px 30px 6px 12px;
+  max-width: 260px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+
+.ts-spacer {
+  flex: 1;
+}
+
+.ts-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text3);
+  white-space: nowrap;
+}
+
+.ts-status-spinner {
+  height: 12px;
+}
+
+.ts-icon-group {
+  display: flex;
+  gap: 6px;
+}
+
+.ts-icon-btn.is-active {
+  color: var(--accent);
+  background: var(--accentSoft);
+}
+
+.bday_icon {
+  display: flex;
+  align-items: center;
+}
+
+.bday_icon img {
+  width: 16px;
+  height: 16px;
+}
+
+#mzts-warn-msg {
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--warn);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+}
 </style>

@@ -81,7 +81,7 @@ General-purpose utility functions.
 **Key responsibilities:**
 - Date key formatting (`dateToYYYYMMDD`, `dateToYYYYMM`, `dateToYYYYWW`, `dateToYYYY`) and parsing
 - Preset period helpers (`getLastMonday`, `getFirstDayOfLastMonth`, ...)
-- Weekday sorting, dark mode detection, Thunderbird version comparison
+- Weekday sorting, system dark mode detection (`isDarkMode`), Thunderbird version comparison
 - Date array generators (`getDateArray`, `getDateArrayWeeks`, `getDateArrayMonths`, `getDateArrayYears`) — each entry has fields: `{ count, sent, received, inbox }`
 
 **Class:** `EmailMatcher`
@@ -163,11 +163,22 @@ Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `d
 
 ---
 
+### `mzts-theme.js` — Color Theme
+
+**Object:** `tsTheme`
+
+- Reads the `theme_mode` pref (`auto` | `light` | `dark`; `auto` follows `prefers-color-scheme`).
+- `init()` — called by both entry points before mounting; applies the theme, follows system changes while in `auto`, and listens to `browser.storage.onChanged` so every open ThunderStats page stays in sync.
+- `apply(mode)` — sets `tsStore.theme_mode`, `tsStore.darkmode` and `data-theme="light|dark"` on the root element. All CSS dark rules are keyed on `:root[data-theme="dark"]` (no `prefers-color-scheme` media queries).
+- `setMode(mode)` — applies and saves the pref (used by the toolbar Light/Dark switch).
+
+---
+
 ### `mzts-store.js` — Global State
 
 **Object:** `tsStore`
 
-A Vue `reactive()` object (not Vuex/Pinia) holding shared app state: debug flag, dark mode, current account, current tab, business day settings, first day of week, tags list, and the `chart_colors` palette. Imported by both components and statslib modules.
+A Vue `reactive()` object (not Vuex/Pinia) holding shared app state: debug flag, dark mode, current account, current tab, business day settings, first day of week, tags list, and the `chart_colors` palette. Imported by both components and statslib modules. `darkmode` (effective theme) and `theme_mode` (pref value) are written only by `tsTheme`.
 
 ---
 
@@ -183,6 +194,7 @@ Custom plugins and external tooltip handlers used by chart components.
 | `plugin-timechart-vertical-line.js` | Vertical line overlay on time charts |
 | `external-tooltip-timechartlines.js` | Custom tooltip for time charts |
 | `external-tooltip-inboxzerodates.js` | Custom tooltip for Inbox Zero date charts |
+| `chart-theme.js` | `applyChartTheme(is_dark)` sets the global `Chart.defaults` text/grid colors and redraws open charts; called by `ThunderStatsView` when `tsStore.darkmode` changes. Charts must not set `Chart.defaults` themselves |
 
 ---
 

@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <HeadingNAV @chooseAccount="updateStats" :is_loading="is_loading" :elapsed_time="elapsed_time" :last_exec_datetime="last_exec_datetime" :currentTab="currentTab" ref="HeadingNAV_ref"/>
+    <HeadingNAV @chooseAccount="updateStats" @selectTab="selectTab" @exportData="openExportMenu" :tabs="tabs_list" :is_loading="is_loading" :elapsed_time="elapsed_time" :last_exec_datetime="last_exec_datetime" :currentTab="currentTab" ref="HeadingNAV_ref"/>
   
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
@@ -44,7 +44,7 @@
   
   
 <script setup>
-import { ref, onMounted, nextTick, onBeforeMount } from 'vue'
+import { ref, computed, watch, onMounted, nextTick, onBeforeMount } from 'vue'
 import HeadingNAV from "@/components/HeadingNAV.vue";
 import TAB_Info from "@/components/tabs/TAB_Info.vue";
 import TAB_Today from '@/components/tabs/TAB_Today.vue';
@@ -56,8 +56,8 @@ import { i18n } from "@statslib/mzts-i18n.js";
 import { tsPrefs } from '@statslib/mzts-options.js';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsStore } from '@statslib/mzts-store';
-import { tsUtils } from '@statslib/mzts-utils';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
 
   let statsTabs_ref = ref(null);
   let TAB_Today_ref = ref(null);
@@ -70,7 +70,7 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
   let accountEmails = ref([]);
   let internalDomains = ref([]);
   let _many_days_text = ref("");
-  let _yesterday_text = ref("__MSG_Yesterday__");
+  let _yesterday_text = ref(browser.i18n.getMessage("Yesterday"));
   let cache_lifetime = ref(120000);
   let elapsed_time = ref(0);
   let last_exec_datetime = ref([]);
@@ -143,9 +143,6 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
     }
     // console.log(">>>>>>>>>>>>>>>>> cache_lifetime: " + cache_lifetime.value);
     // console.log(">>>>>>>>>>>>>>>>> tabs-storage-key: " + JSON.stringify(localStorage.getItem('tabs-storage-key')));
-    if(tsStore.darkmode === undefined) {
-      tsStore.darkmode = tsUtils.isDarkMode();
-    }
   });
 
   onMounted(async () => {
@@ -245,10 +242,6 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
       //statsDone(id.tab.computedId);
     }
-    if(id.tab.computedId == "tab-customqry"){
-      await nextTick();
-      TAB_CustomQry_ref.value.updateAdvFiltersPosition();
-    }
   }
 
   async function updateCustomQry() {
@@ -276,15 +269,38 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
     _yesterday_text.value = name;
   }
 
+  // Tabs shown in the toolbar segmented control (the Info tab is reached from the toolbar icon)
+  let tabs_list = computed(() => [
+    { id: "tab-today", label: browser.i18n.getMessage("Today") },
+    { id: "tab-yesterday", label: _yesterday_text.value },
+    { id: "tab-manydays", label: _many_days_text.value },
+    { id: "tab-customqry", label: browser.i18n.getMessage("CustomQry") },
+  ]);
+
+  function selectTab(id) {
+    statsTabs_ref.value.selectTab('#' + id);
+  }
+
+  function openExportMenu(anchor_el) {
+    let tab_refs = {
+      "tab-today": TAB_Today_ref,
+      "tab-yesterday": TAB_Yesterday_ref,
+      "tab-manydays": TAB_ManyDays_ref,
+      "tab-customqry": TAB_CustomQry_ref,
+    };
+    let tab_ref = tab_refs[currentTab.value];
+    if(tab_ref && tab_ref.value) {
+      tab_ref.value.openExportMenu(anchor_el);
+    }
+  }
+
+  watch(() => tsStore.darkmode, (is_dark) => applyChartTheme(is_dark), { immediate: true });
+
   </script>
   
   
   
   
   <style scoped>
-  main{
-    position: relative;
-    top: 28px;
-  }
   </style>
   

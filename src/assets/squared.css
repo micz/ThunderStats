@@ -1,31 +1,18 @@
+/* Card grid used by the stats tabs (design direction 1b card language) */
 .square_container {
     display: grid;
-    grid-template-rows: auto auto; /* two rows */
-    grid-template-columns: auto auto; /* two columns */
-    gap: 0px;
-    color: black;
-    margin-top: 1.4em;
+    grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+    gap: 18px;
+    color: var(--text);
 }
 
 .square_item {
-    background-color: lightgray;
-    padding: 5px;
-    width: 49.2vw;
+    background: var(--surface2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: 18px 20px;
+    min-width: 0;
     min-height: 22vw;
-}
-
-.square_item:nth-child(1),
-.square_item:nth-child(4),
-.square_item:nth-child(5),
-.square_item:nth-child(8) {
-    background-color: #F1F9FD;
-}
-
-.square_item:nth-child(2),
-.square_item:nth-child(3),
-.square_item:nth-child(6),
-.square_item:nth-child(7) {
-    background-color: white;
 }
 
 .square_item p{
@@ -33,23 +20,24 @@
 }
 
 .list_heading_wrapper {
-    color: -moz-nativehyperlinktext; /*#2F61A1*/
+    color: var(--text);
     padding: 0;
-    -moz-padding-start: 2px;
-    -moz-padding-end: 0;
+    padding-inline-start: 2px;
+    padding-inline-end: 0;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 4px;
 }
 
 .list_heading {
-    font-size: medium;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 660;
     margin: 0;
 }
 
 h2.list_heading{
     text-transform:capitalize;
-    color: #2F61A1;
+    color: var(--text);
 }
 
 h2.lowercase{
@@ -59,7 +47,7 @@ h2.lowercase{
 .list_heading_date{
     font-size:12px;
     font-weight:normal;
-    color:grey;
+    color: var(--text2);
 }
 
 .cropped {
@@ -69,41 +57,4 @@ h2.lowercase{
     width: -moz-min-content;
     max-width: -moz-available;
     margin-top:0px;
-}
-
-/* Dark mode styles */
-@media (prefers-color-scheme: dark) {
-    .square_container {
-        color: white;
-    }
-
-    .square_item {
-        background-color: #555;
-    }
-
-    .square_item:nth-child(1),
-    .square_item:nth-child(4),
-    .square_item:nth-child(5),
-    .square_item:nth-child(8) {
-        background-color: #333;
-    }
-
-    .square_item:nth-child(2),
-    .square_item:nth-child(3),
-    .square_item:nth-child(6),
-    .square_item:nth-child(7) {
-        background-color: #444;
-    }
-
-    .list_heading_wrapper {
-        color: #a3d1ff;
-    }
-
-    .list_heading_date {
-        color: lightgrey;
-    }
-
-    h2.list_heading{
-        color: #a3d1ff;
-    }
 }

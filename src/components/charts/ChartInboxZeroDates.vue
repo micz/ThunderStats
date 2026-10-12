@@ -32,12 +32,11 @@
 
 
 <script setup>
-import { ref, computed, onBeforeMount } from 'vue'
+import { ref, computed } from 'vue'
 import { Bar } from 'vue-chartjs'
 import { Chart, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Colors } from 'chart.js'
 import { externalTooltipInboxZeroDates } from '@statslib/chartjs-lib/external-tooltip-inboxzerodates';
 import { tsStore } from '@statslib/mzts-store';
-import { tsUtils } from '@statslib/mzts-utils';
 
 Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Colors)
 
@@ -57,16 +56,6 @@ let todayChartBar_ref = ref(null);
 
 let chartData = computed(() => props.chartData)
 let is_loading = computed(() => props.is_loading)
-
-onBeforeMount(() => {
-  if(tsStore.darkmode === undefined) {
-    tsStore.darkmode = tsUtils.isDarkMode();
-  }
-  if(tsStore.darkmode) {
-      Chart.defaults.color = 'white';
-      Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.2)';
-    }
-})
 
 let chartOptions = ref({
         responsive: true,

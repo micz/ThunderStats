@@ -2,7 +2,7 @@
 
 ## Main Statistics Window
 
-The main window has five tabs accessible via the toolbar button.
+The main window opens from the Thunderbird toolbar button. Its sticky top toolbar holds the account selector, a segmented control for the four stats tabs (Today, Yesterday, Many Days, Custom Query), the last-update time, Refresh / Export / Settings / Info icon buttons and a Light/Dark theme switch. The Info tab is reached from the Info icon, not from the segmented control. Tab content is laid out as a responsive grid of cards (design tokens in `src/assets/tokens.css`).
 
 ---
 
@@ -89,7 +89,7 @@ Advanced filtering and analysis for an arbitrary date range.
 
 ### Tab: Info
 
-Displays add-on version, credits, and links.
+Displays add-on version, credits, and links. Opened from the toolbar Info icon.
 
 ---
 
@@ -107,6 +107,7 @@ Pref keys and defaults: `statslib/mzts-options-default.js`.
 - **Date picker locale** (`datepicker_locale`)
 - **Show inbox remaining %** (`inbox_percent_remaining`) — inbox percentage shows mails still in inbox instead of mails moved out (default: off)
 - **Show internal mail percentage** (`show_internal_mail_percent`) — shows the percentage of internal mails (based on configured internal domains) next to the sent/received counters in the Today, Yesterday, and Custom Query (single-day) tabs (default: off)
+- **Color theme** (`theme_mode`) — `auto` (default, follows the system), `light` or `dark`. The toolbar Light/Dark switch sets it too; changes apply live to every open ThunderStats page
 
 ### Tab: Advanced
 - **Number of correspondents** (`_involved_num`, default 10)
@@ -144,7 +145,7 @@ Pref keys and defaults: `statslib/mzts-options-default.js`.
 
 ## CSV Export
 
-Available via the export menu in each stats tab (Today, Yesterday, Many Days, Custom Query). When `show_internal_mail_percent` is enabled and internal domains are configured, exports can include internal/external counts.
+Available via the toolbar Export button, which opens the export menu of the current stats tab (Today, Yesterday, Many Days, Custom Query). When `show_internal_mail_percent` is enabled and internal domains are configured, exports can include internal/external counts.
 
 **Exportable data types:**
 

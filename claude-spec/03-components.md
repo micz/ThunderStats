@@ -160,9 +160,9 @@ Composite components that combine multiple data points or sub-charts.
 
 | File | Description |
 |---|---|
-| `HeadingNAV.vue` | Top navigation bar; contains `SelectAccount` and applies the startup/remembered account |
+| `HeadingNAV.vue` | Sticky toolbar: brand, account pill (`SelectAccount`), tab segmented control (tabs list passed by `ThunderStatsView`, emits `selectTab`), last-update time, Refresh / Export / Settings / Info icon buttons (Export emits `exportData` with the button as anchor), Light/Dark switch (`tsTheme.setMode`). Applies the startup/remembered account |
 | `SelectAccount.vue` | Account dropdown (uses `@vueform/multiselect`) |
-| `ExportMenu.vue` | CSV export menu, embedded in each stats tab (uses `@imengyu/vue3-context-menu`) |
+| `ExportMenu.vue` | CSV export menu, embedded in each stats tab (uses `@imengyu/vue3-context-menu`). Its own icon is hidden; each tab exposes `openExportMenu(anchor_el)`, which `ThunderStatsView` calls when the toolbar Export button is clicked |
 | `AdvancedAccountList.vue` | Per-account advanced settings list (in `OPTAB_Advanced`) |
 | `InfoTooltip.vue` | Reusable info tooltip icon |
 | `OptionDonationHeader.vue` | Donation banner (in `OPTAB_Info` and `OPTAB_License`) |
@@ -175,7 +175,7 @@ Composite components that combine multiple data points or sub-charts.
 
 | Library | Usage |
 |---|---|
-| `vue3-tabs-component` | Tab navigation in main and options views |
+| `vue3-tabs-component` | Tab panels in the main view (its tab strip is hidden; `HeadingNAV` drives `selectTab`) and tab navigation in the options view |
 | `@vueform/multiselect` | Account selector dropdown |
 | `@vuepic/vue-datepicker` | Date range picker in Custom Query tab |
 | `@imengyu/vue3-context-menu` | Right-click export context menu |

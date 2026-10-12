@@ -19,7 +19,7 @@
 -->
 
 <template>
-        <ExportMenu :export_data="_export_data" :currentTab="tabId" :showInternalExternal="show_internal_mail_percent" v-if="job_done" :singleDay="singleDay" />
+        <ExportMenu ref="ExportMenu_ref" :export_data="_export_data" :currentTab="tabId" :showInternalExternal="show_internal_mail_percent" v-if="job_done" :singleDay="singleDay" />
         <div id="customqry_dashboard">
             <div id="customqry_menu">
                 <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
@@ -71,7 +71,7 @@
                       </td>
                       <td colspan="2">
                         <span class="adv_filters_title">__MSG_FilterSubject__</span>
-                      <br><input type="text" id="filterSubject" name="filterSubject" v-model="filterSubject" @input="updateAdvFiltersSet" @change="updateAdvFiltersPosition" />
+                      <br><input type="text" id="filterSubject" name="filterSubject" v-model="filterSubject" @input="updateAdvFiltersSet" />
                       <br>__MSG_WarnSearchCaseSensitive__
                       </td>
                     </tr>
@@ -258,7 +258,7 @@ let do_run = ref(false);
 let customqry_current_account = ref("");
 let customqry_current_account_tooltip = ref("");
 let customqry_totaldays_num = ref(0);
-let isDark = ref(false);
+let isDark = computed(() => tsStore.darkmode);
 let chart_width = ref("1500px");
 let emailListTooltipVisible = ref(false);
 let show_advanced_filters = ref(false);
@@ -554,6 +554,8 @@ let elapsed = {
     'getCustomQryData':0,
 }
 
+let ExportMenu_ref = ref(null);
+
 let job_done = computed(() => {
   if(!do_single_day.value){
     return !is_loading_counter_sent_rcvd.value &&
@@ -649,10 +651,6 @@ onBeforeMount(async () => {
   tsPrefs.logger = tsLog;
   prefLocale.value = await tsPrefs.getPref("datepicker_locale");
   datepickerFormat.value = tsUtils.formatDateStringLocale(prefLocale.value);
-  if(tsStore.darkmode === undefined) {
-    tsStore.darkmode = tsUtils.isDarkMode();
-  }
-  isDark.value = tsStore.darkmode;
 })
 
 onMounted(async () => {
@@ -740,7 +738,6 @@ async function toggleCompare() {
   compare_icon.value = compareEnabled.value ? comparePeriodsIconPath_Active : comparePeriodsIconPath;
   await nextTick();
   i18n.updateDocument();
-  updateAdvFiltersPosition();
 }
 
 const updateAdvFiltersIcon = () => {
@@ -772,7 +769,6 @@ function resetAdvFilters() {
   filterReadUnread.value = 0;
   filterFlaggedUnflagged.value = 0;
   updateAdvFiltersSet();
-  updateAdvFiltersPosition();
 }
 
 function openBookmarkMenu(e){
@@ -1638,8 +1634,6 @@ async function updateData() {
               _export_data.value['compare_' + tsExport.export.domains.type] = result_customqry_B.domains;
               computeDeltas();
               is_loading_compare.value = false;
-              await nextTick();
-              updateAdvFiltersPosition();
             } else {
               // Clear comparison data when not comparing
               result_customqry_B = null;
@@ -1740,7 +1734,6 @@ async function toggleAdvancedFilters(){
   // let currentMarginTopValue = parseFloat(currentMarginTop);
   show_advanced_filters.value = !show_advanced_filters.value;
   await nextTick();
-  updateAdvFiltersPosition();
   // if(show_advanced_filters.value){
   //   let adv_filters = document.getElementById('customqry_adv_filters');
   //   if(adv_filters) {
@@ -1776,26 +1769,6 @@ async function toggleAdvancedFilters(){
   // }
 }
 
-function updateAdvFiltersPosition(){
-  let container = document.getElementById('customqry_square_container');
-  let customqry_adv_filters = document.getElementById('customqry_adv_filters');
-  let currentMarginTopValue = parseFloat(getComputedStyle(document.documentElement).fontSize) * 4.6; // 4.6em base
-  if(compareEnabled.value){
-    let compareRow = document.getElementById('customqry_compare_row');
-    if(compareRow){
-      currentMarginTopValue += compareRow.offsetHeight + 4;
-    }
-  }
-  if(show_advanced_filters.value && customqry_adv_filters){
-    let height = customqry_adv_filters.offsetHeight;
-    let style = getComputedStyle(customqry_adv_filters);
-    let marginTop = parseFloat(style.marginTop);
-    let marginBottom = parseFloat(style.marginBottom);
-    currentMarginTopValue += height + marginTop + marginBottom + 10;
-  }
-  container.style.marginTop = `${currentMarginTopValue}px`;
-}
-
 function showEmailListTooltip(){
   emailListTooltipVisible.value = (customqry_current_account_tooltip.value != "");
 }
@@ -1804,14 +1777,15 @@ function hideEmailListTooltip(){
   emailListTooltipVisible.value = false;
 }
 
-defineExpose({ doQry, updateAdvFiltersPosition });
+function openExportMenu(anchor_el) {
+  if(ExportMenu_ref.value) ExportMenu_ref.value.openExportMenu(null, anchor_el);
+}
+
+defineExpose({ doQry, openExportMenu });
 
 </script>
 
 <style scoped>
-.square_container {
-    margin-top: 4.6em;
-}
 :deep(.chart_inbox0_percent){
   top: 5.2em;
 }

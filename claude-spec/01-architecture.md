@@ -69,6 +69,7 @@ The addon has two separate UI surfaces, each a self-contained Vue 3 application:
 │   ├── mzts-i18n.js              # i18n resolver
 │   ├── mzts-logger.js            # Debug logging
 │   ├── mzts-store.js             # Shared reactive state (tsStore)
+│   ├── mzts-theme.js             # Light/dark theme (tsTheme)
 │   └── chartjs-lib/              # Custom Chart.js plugins
 └── dist/                         # Compiled addon output
 ```
@@ -88,6 +89,7 @@ Vue Tab Components (TAB_Today, TAB_Yesterday, TAB_ManyDays, TAB_CustomQry)
 Chart/Counter/Widget Components (display only, receive data as props)
 
 Shared state (current account, business day settings, colors, dark mode): statslib/mzts-store.js
+Theme: statslib/mzts-theme.js sets tsStore.darkmode and the data-theme attribute on <html>; all colors come from the CSS tokens in src/assets/tokens.css
 Preferences: browser.storage.sync via statslib/mzts-options.js
 ```
 

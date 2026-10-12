@@ -168,7 +168,7 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount, onMounted, nextTick } from 'vue';
+import { ref, computed, onBeforeMount, onMounted, nextTick } from 'vue';
 import { tsPrefs } from '@statslib/mzts-options';
 import { tsLogger } from '@statslib/mzts-logger';
 import { tsStore } from '@statslib/mzts-store';
@@ -207,7 +207,7 @@ const nbDayShowDialogEdit = ref(false);
 const nbday_edit_description = ref("");
 const nbday_edit_date = ref(null);
 const nbday_edit_yearly = ref(false);
-let isDark = ref(false);
+let isDark = computed(() => tsStore.darkmode);
 let datepickerFormat = ref("dd-MM-yyyy");
 let prefLocale = ref("en-GB");
 
@@ -217,10 +217,6 @@ onBeforeMount(async () => {
   tsPrefs.logger = tsLog;
   prefLocale.value = await tsPrefs.getPref("datepicker_locale");
   datepickerFormat.value = tsUtils.formatDateStringLocale(prefLocale.value);
-  if(tsStore.darkmode === undefined) {
-    tsStore.darkmode = tsUtils.isDarkMode();
-  }
-  isDark.value = tsStore.darkmode;
 })
 
 onMounted(async () => {

@@ -924,5 +924,29 @@
   "ComparisonNoData": {
     "message": "No data for comparison period",
     "description": ""
+  },
+  "Appearance": {
+    "message": "Appearance",
+    "description": "Options group title for the color theme settings"
+  },
+  "prefs_theme_mode": {
+    "message": "Color theme",
+    "description": ""
+  },
+  "ThemeAuto": {
+    "message": "Automatic (follow the system)",
+    "description": ""
+  },
+  "ThemeLight": {
+    "message": "Light",
+    "description": "Light color theme"
+  },
+  "ThemeDark": {
+    "message": "Dark",
+    "description": "Dark color theme"
+  },
+  "UpdatedAt": {
+    "message": "Updated",
+    "description": "Shown in the toolbar before the time of the last data update, e.g. Updated 18:04"
   }
 }

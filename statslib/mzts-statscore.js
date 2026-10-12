@@ -264,7 +264,7 @@ export class thunderStastsCore {
 
     // The last RECENT_DAYS_CACHE_DAYS days before today, scanned once and shared by all the tabs
     // (Today/Yesterday baseline and previous days, Custom Query pace). The cache key includes today's
-    // date, the account and the settings that change the result; clearRecentDaysCache() resets it.
+    // date, the account and the settings that change the result; clearCoreCaches() resets it.
     getRecentDays(account_id = 0, account_emails = [], filter_duplicates = false) {
       let range = tsRecentDaysCache.getRange();
       let key = [
@@ -280,7 +280,7 @@ export class thunderStastsCore {
         tsRecentDaysCache.key = key;
         tsRecentDaysCache.promise = this.scanDays(range.fromDate, range.toDate, account_id, account_emails, filter_duplicates)
           .catch((error) => {
-            if(tsRecentDaysCache.key == key) clearRecentDaysCache();
+            if(tsRecentDaysCache.key == key) clearCoreCaches();
             throw error;
           });
       } else {
@@ -1073,7 +1073,27 @@ export class thunderStastsCore {
       return false;
     }
 
-    async getInboxZeroDates(account_id = 0) {
+    // Inbox Zero data (total, unread, mails per date of the inbox folders), scanned once per account and
+    // shared by all the tabs; the promise is shared by concurrent callers. clearCoreCaches() resets it.
+    getInboxZeroDates(account_id = 0) {
+      let key = tsUtils.dateToYYYYMMDD(new Date()) + '|' + account_id;
+
+      if(tsInboxZeroCache.key != key) {
+        this.tsLog.log("[getInboxZeroDates] scanning, cache key: " + key);
+        tsInboxZeroCache.key = key;
+        tsInboxZeroCache.promise = this.scanInboxZeroDates(account_id)
+          .catch((error) => {
+            if(tsInboxZeroCache.key == key) clearCoreCaches();
+            throw error;
+          });
+      } else {
+        this.tsLog.log("[getInboxZeroDates] using the cache");
+      }
+
+      return tsInboxZeroCache.promise;
+    }
+
+    async scanInboxZeroDates(account_id = 0) {
 
       let start_time = performance.now();
 
@@ -1288,8 +1308,16 @@ const tsRecentDaysCache = {
   },
 };
 
-// Forget the cached recent days, so the next request scans the messages again (data refresh, account change)
-export function clearRecentDaysCache() {
+// Inbox Zero cache: the inbox folders scan of an account, shared by all core instances. See getInboxZeroDates().
+const tsInboxZeroCache = {
+  key: null,
+  promise: null,
+};
+
+// Forget all the cached scans, so the next requests read the messages again (data refresh, account change)
+export function clearCoreCaches() {
   tsRecentDaysCache.key = null;
   tsRecentDaysCache.promise = null;
+  tsInboxZeroCache.key = null;
+  tsInboxZeroCache.promise = null;
 }

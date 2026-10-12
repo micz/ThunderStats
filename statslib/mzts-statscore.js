@@ -515,10 +515,6 @@ export class thunderStastsCore {
           let hour_message = date_message.getHours();
           // folder
           if(message.folder){
-          	if(!("id" in message.folder)){
-          		message.folder.id = tsCoreUtils.getFolderId(message.folder);
-              message.folder.specialUse = [message.folder.type];
-          	}
             if (folders[message.folder.id]) {
               folders[message.folder.id].count ++;
             } else {

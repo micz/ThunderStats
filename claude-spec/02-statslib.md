@@ -26,13 +26,18 @@ The central class that retrieves and processes email data from the Thunderbird `
 
 | Method | Description |
 |---|---|
-| `getToday(account_id, account_emails)` | Stats from midnight to now |
-| `getYesterday(account_id, account_emails)` | Stats for the full previous day |
-| `getManyDaysData(account_id, account_emails)` | Stats for `_many_days` days including today |
-| `getCustomQryData(fromDate, toDate, account_id, account_emails, only_businessdays, adv_filters)` | Custom date range with optional filters |
-| `getFullStatsData(fromDate, toDate, ..., internal_domains)` | Base method: retrieves and processes all messages in a date range. Accepts an `internal_domains` parameter; when provided, domain entries in the output include an `internal: true/false` flag indicating whether the domain belongs to the user's organization |
-| `getAggregatedStatsData(fromDate, toDate, ...)` | Aggregated by day/week/month/year |
-| `getCountStatsData(fromDate, toDate, ...)` | Lightweight count-only stats |
+| `getToday(account_id, account_emails, internal_domains)` | Stats from midnight to now |
+| `getYesterday(account_id, account_emails, internal_domains)` | Stats for the full previous day |
+| `getManyDaysData(account_id, account_emails, internal_domains)` | Per-day stats for the last `_many_days` days plus today, not aggregated (`TAB_ManyDays.vue` aggregates) |
+| `getToday_manyDaysData(account_id, account_emails)` | Aggregated stats for the previous `_many_days` days excluding today (Today/Yesterday summary) |
+| `getToday_YesterdayData(...)` / `getToday_SingleDayData(theDay, ...)` | Count-only data for the "yesterday at this time" / custom comparison day counter |
+| `getSingleDay(theDay, account_id, account_emails, internal_domains)` | Full stats for one day |
+| `getCustomQryData(fromDate, toDate, account_id, account_emails, only_businessdays, adv_filters, internal_domains)` | Custom date range with optional filters |
+| `getFullStatsData(fromDate, toDate, account_id, account_emails, do_aggregate_stats, filter_duplicates, only_businessdays, adv_filters, internal_domains)` | Base method: retrieves and processes all messages in a date range. When `internal_domains` is provided, domain entries in the output include an `internal: true/false` flag |
+| `getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates)` | Aggregated (total/max/min/avg) stats |
+| `getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates)` | Lightweight count-only stats |
+| `aggregateData(dates, only_businessdays)` | Computes total/max/min/avg from per-day data, optionally business days only |
+| `getInboxZeroDates(account_id)` / `getInboxFolders(account_id)` | Inbox Zero data |
 | `getAccountEmails(account_id, no_custom_identities)` | Returns the email addresses for an account |
 
 **Advanced filters object (`adv_filters`):**
@@ -50,19 +55,18 @@ The central class that retrieves and processes email data from the Thunderbird `
 
 ### `mzts-statscore.utils.js` — Stats Utilities
 
-**Class:** `tsCoreUtils`
+**Object:** `tsCoreUtils`
 
-Static utility methods used by `thunderStastsCore`.
+Utility methods used by `thunderStastsCore` and the Vue components.
 
 **Key responsibilities:**
-- Message filtering by account, folder, tags
-- Duplicate message detection (`filter_duplicates`)
-- Business day calculations (including Easter)
+- Folder, tag, and account helpers (labels, colors, folder IDs, subfolders, archive inclusion)
+- Business day calculations (`checkBusinessDay`, `findPreviousBusinessDay`, `isEasterOrEasterMonday`)
 - `transformCountDataToDataset(data, do_progressive, get_labels)` — extracts `{ dataset_sent, dataset_rcvd, dataset_inbox }` arrays from date-keyed objects; supports cumulative mode
-- Statistics aggregation (max, min, average)
-- Date-range filtering helpers
-- Account email address resolution
-- `getFilterDuplicatesPreference(account_id)` — reads prefs to determine duplicate filtering
+- Chart label/color helpers and dataset transforms
+- Account email address resolution (`getAccountEmails`, `getAccountCustomIdentities`)
+- `mergeCategoricalComparisonData(...)` — merges labels of two periods for categorical charts in compare mode
+- `getFilterDuplicatesPreference(account_id)` / `getIncludeArchivePreference(account_id)` — read global or per-account prefs
 - `getAccountInternalDomains(account_id)` — returns the internal domains list for a specific account; when `account_id` is `0`, returns internal domains for all accounts
 - `getInternalMailLabel(domains)` — computes the internal mail percentage from a domains object. Returns `{ percent, sent, received, internalSent, internalReceived }`
 
@@ -70,14 +74,14 @@ Static utility methods used by `thunderStastsCore`.
 
 ### `mzts-utils.js` — General Helpers
 
-**Class:** `tsUtils`
+**Object:** `tsUtils`
 
 General-purpose utility functions.
 
 **Key responsibilities:**
-- Date/time formatting for display
-- Date parsing and conversion
-- String manipulation helpers
+- Date key formatting (`dateToYYYYMMDD`, `dateToYYYYMM`, `dateToYYYYWW`, `dateToYYYY`) and parsing
+- Preset period helpers (`getLastMonday`, `getFirstDayOfLastMonth`, ...)
+- Weekday sorting, dark mode detection, Thunderbird version comparison
 - Date array generators (`getDateArray`, `getDateArrayWeeks`, `getDateArrayMonths`, `getDateArrayYears`) — each entry has fields: `{ count, sent, received, inbox }`
 
 **Class:** `EmailMatcher`
@@ -105,9 +109,9 @@ Matches domain strings against a list that may contain exact domains and wildcar
 
 ### `mzts-export.js` — CSV Export
 
-**Class:** `tsExport`
+**Object:** `tsExport`
 
-Handles generation of CSV files from statistics data.
+Handles generation and download of CSV files from statistics data. Most transforms accept `includeInternalExternal` to add internal/external counts.
 
 **Exportable data types:**
 - Correspondents (senders/recipients)
@@ -125,29 +129,27 @@ Handles generation of CSV files from statistics data.
 
 ### `mzts-options.js` — Preferences API
 
-**Class:** `tsPrefs`
+**Object:** `tsPrefs`
 
-Wraps the Thunderbird/browser `storage` API for reading and writing user preferences.
+Wraps the `storage` API for reading and writing user preferences.
 
-- Uses `browser.storage.local`
-- Async get/set methods
-- Provides default values via `mzts-options-default.js`
+- Uses `browser.storage.sync`
+- `getPref(id)`, `getPrefs(ids)`, `setPref(id, value)`; `saveOptions` / `restoreOptions` bind options-page inputs by element `id`
+- Missing values fall back to `prefs_default` from `mzts-options-default.js`
 
 ---
 
 ### `mzts-options-default.js` — Default Settings
 
-Plain object exporting all default preference values. Referenced by `tsPrefs` when a preference has not been set by the user.
+Exports `prefs_default`, the object with all preference keys and default values (source of truth for pref names and defaults). Referenced by `tsPrefs` when a preference has not been set by the user.
 
 ---
 
 ### `mzts-i18n.js` — Internationalization
 
-**Class:** `tsI18n`
+**Object:** `i18n`
 
-Resolves `__MSG_key__` placeholders in strings using the Thunderbird i18n API (`browser.i18n.getMessage`).
-
-Usage: replaces all `__MSG_xxx__` occurrences in a string with the translated string for key `xxx`.
+Replaces `__MSG_key__` placeholders in the DOM (`updateDocument`, `updateSubtree`) or in a string (`updateString`), using `messenger.i18n.getMessage`. See [05-i18n.md](05-i18n.md).
 
 ---
 
@@ -157,7 +159,7 @@ Usage: replaces all `__MSG_xxx__` occurrences in a string with the translated st
 
 Thin wrapper around `console.log`. Logging is gated by a `do_debug` flag so it can be silenced in production without changing call sites.
 
-Constructor: `new tsLogger(label, do_debug)`
+Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `do_debug`), `warn(msg)`, `error(msg)` (always).
 
 ---
 
@@ -165,7 +167,7 @@ Constructor: `new tsLogger(label, do_debug)`
 
 **Object:** `tsStore`
 
-A simple shared state object (not a Vuex/Pinia store) used to pass data between statslib modules without coupling them to Vue's reactivity system.
+A Vue `reactive()` object (not Vuex/Pinia) holding shared app state: debug flag, dark mode, current account, current tab, business day settings, first day of week, tags list, and the `chart_colors` palette. Imported by both components and statslib modules.
 
 ---
 

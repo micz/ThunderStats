@@ -11,21 +11,19 @@ The main window has five tabs accessible via the toolbar button.
 Displays statistics for the current day (from midnight to now).
 
 - **Sent / Received counters** — total sent and received emails
-- **Inbox count** — current number of messages in the inbox
-- **Inbox percent** — percentage of day's emails moved from inbox (or still in inbox, toggled via `inbox_percent_remaining` option)
+- **Previous days summary** — total/max/min/average sent and received over the previous `_many_days` days (excluding today)
 - **Yesterday-at-this-time comparison** — compares current counts to the same time yesterday (or last business day). The "Yesterday" / "Last business day" label is clickable to open a date picker and choose any past day as the comparison. The custom day selection is session-only (resets when the TS tab is closed) but persists across data refreshes.
-- **Time-of-day chart** — hourly distribution of sent and received emails
-- **Weekday chart** — distribution across days of the week
+- **Time-of-day chart** — hourly distribution of sent and received emails (optionally with yesterday's lines and without future hours)
+- **Inbox Zero widget** — inbox count, inbox percent (mails moved out of the inbox, or still in it with `inbox_percent_remaining`), inbox zero history and per-folder charts
 - **Top correspondents table** — configurable number of top senders and recipients
-- **Domains widget** — top sender domains
+- **Domains widget** — email count by domain
 - **Folders/Tags widget** — email distribution by folder and tag
-- **Inbox Zero widget** — history of inbox zero achievements with embedded charts
 
 ---
 
 ### Tab: Yesterday
 
-Same layout as Today but showing full statistics for the previous day.
+Same layout as Today, without the "yesterday at this time" comparison, showing full statistics for the previous day. With `bday_use_last_business_day` enabled and yesterday not a business day, it shows the last business day instead (tab renamed "Last business day").
 
 ---
 
@@ -33,11 +31,12 @@ Same layout as Today but showing full statistics for the previous day.
 
 Shows aggregated statistics for the last N days (default: 7, configurable in options).
 
-- **Summary table** — max, min, and average sent/received over the period
-- **Daily/weekly/monthly/yearly charts** — aggregated line/bar charts
+- **Summary rows** — total, max, min, and average sent/received over the period
+- **Daily chart** — sent and received per day; received bars show mails still in the inbox as a red segment (`many_days_show_inbox`)
 - **Time-of-day chart** — hourly distribution aggregated over the period
 - **Weekday chart** — per-weekday totals over the period
-- **Business days support** — statistics can exclude non-business days
+- **Top correspondents, domains, folders/tags**
+- **Business days support** — total/max/min/avg can exclude non-business days
 
 ---
 
@@ -73,7 +72,7 @@ Advanced filtering and analysis for an arbitrary date range.
 - Categorical charts (domains, folders, tags) merge labels from both periods
 
 #### Statistics Output
-- Aggregated sent/received chart (based on selected aggregation level)
+- Aggregated sent/received chart (based on selected aggregation level); a one-day range switches to single-day mode, showing sent/received counters (with internal %) and the Inbox Zero widget instead
 - Time-of-day distribution chart
 - Weekday distribution chart
 - Tags distribution chart
@@ -99,14 +98,21 @@ Displays add-on version, credits, and links.
 Accessible via the addon options page (opens in a Thunderbird tab).
 
 ### Tab: Main
-- **Number of days** for the Many Days view (default: 7)
-- **Number of correspondents** (top senders/recipients count, default: 10)
-- **Account-specific settings** toggle
-- **Show inbox remaining %** (`inbox_percent_remaining`) — when enabled, the inbox percentage shows mails still in inbox instead of mails moved out (default: off)
-- **Remember last tab** (`remember_last_tab`) — restore the last opened tab on startup (default: off)
-- **Remember last account** (`remember_last_account`) — restore the last used account on startup, overriding the startup account setting (default: off)
+Pref keys and defaults: `statslib/mzts-options-default.js`.
+- **Startup account** (`startup_account`), **Remember last account** (`remember_last_account`, overrides the startup account), **Remember last tab** (`remember_last_tab`)
+- **Data loading** — reload data on every tab switch (`always_reload_tab_data`), reload when changing account (`load_data_changing_account`)
+- **Many Days** — number of days (`_many_days`, default 7), show inbox mails in the bars (`many_days_show_inbox`)
+- **Time chart** — show yesterday (`today_time_chart_show_yesterday`), hide future hours (`today_time_chart_do_no_show_future`), progressive/cumulative lines (`_time_chart_progressive`)
+- **Custom Query** — load data when selecting a range / when opening the add-on, always open advanced filters
+- **Date picker locale** (`datepicker_locale`)
+- **Show inbox remaining %** (`inbox_percent_remaining`) — inbox percentage shows mails still in inbox instead of mails moved out (default: off)
+- **Show internal mail percentage** (`show_internal_mail_percent`) — shows the percentage of internal mails (based on configured internal domains) next to the sent/received counters in the Today, Yesterday, and Custom Query (single-day) tabs (default: off)
 
 ### Tab: Advanced
+- **Number of correspondents** (`_involved_num`, default 10)
+- **First day of the week** (`first_day_week`)
+- **Custom Query long period warning** (`customqry_warn_onlongperiod_days`, default 90)
+- **Debug logging** (`do_debug`)
 - **Filter duplicates** — deduplicate messages that appear in multiple folders (e.g., sent + archive)
 - **Include archive folders** — whether to count archived emails in statistics
 - **Per-account advanced settings** — configure archive inclusion and duplicate filtering per account
@@ -114,7 +120,9 @@ Accessible via the addon options page (opens in a Thunderbird tab).
 ### Tab: Business Days
 - Define which weekdays are business days (Mon–Fri by default)
 - Add custom holiday dates to exclude from business day count
-- Toggle Easter holiday detection (automatic)
+- Exclude Easter Sunday and Monday (`bday_easter`, default on)
+- Use only business days by default (`bday_default_only`)
+- Use the last business day instead of yesterday (`bday_use_last_business_day`) in the Yesterday tab and the Today comparison counter
 - Business day stats are used in Many Days and Custom Query aggregations
 
 ### Tab: Identities & Domains (Custom Identities + Internal Domains)
@@ -124,7 +132,7 @@ Accessible via the addon options page (opens in a Thunderbird tab).
   - Used to distinguish internal from external email traffic in statistics (domain entries gain an `internal: true/false` flag)
   - Supports wildcard patterns (e.g., `*.example.com`)
   - Stored in the `internal_domains` preference
-- **Show internal mail percentage** (`show_internal_mail_percent`) — when enabled, displays the percentage of internal mails (based on configured internal domains) next to the sent/received counters in the Today, Yesterday, and Custom Query (single-day) tabs
+  - The percentage display is toggled in the Main tab (`show_internal_mail_percent`)
 
 ### Tab: License
 - Displays the full GNU General Public License v3 text
@@ -136,7 +144,7 @@ Accessible via the addon options page (opens in a Thunderbird tab).
 
 ## CSV Export
 
-Available in the Custom Query tab and via the export menu in other tabs.
+Available via the export menu in each stats tab (Today, Yesterday, Many Days, Custom Query). When `show_internal_mail_percent` is enabled and internal domains are configured, exports can include internal/external counts.
 
 **Exportable data types:**
 
@@ -161,8 +169,8 @@ The business days feature (in `mzts-statscore.utils.js`) allows filtering statis
 
 - Configurable per-weekday (any combination of Mon–Sun)
 - Supports a list of custom holiday dates (excluded even if they fall on a configured business day)
-- Optional **Easter detection**: automatically calculates Easter Sunday (and optionally Monday) for any year and excludes it
-- Applied in: Many Days aggregation, Custom Query aggregation
+- Optional **Easter** exclusion: calculates Easter Sunday for any year and excludes both Sunday and Monday
+- Applied in: Many Days and Custom Query aggregation (total/max/min/avg), and the "last business day" logic in Today and Yesterday
 
 ---
 
@@ -175,9 +183,11 @@ The business days feature (in `mzts-statscore.utils.js`) allows filtering statis
 
 ---
 
-## Caching
+## Tab Data Loading
 
-Tab data is cached for ~2 minutes to avoid redundant API calls when switching between tabs. The cache is invalidated when the user changes the selected account or refreshes manually.
+Each stats tab loads its data the first time it is opened in a session and is not reloaded on later visits, unless `always_reload_tab_data` is enabled (`ThunderStatsView.vue`, `tabChanged`). Custom Query loading is controlled by its own prefs. Changing account reloads data if `load_data_changing_account` is enabled.
+
+When `remember_last_tab` is enabled, the selected tab is remembered by vue3-tabs-component for 2 minutes (`cache-lifetime` = 120000 ms); this is tab selection memory, not a data cache.
 
 ---
 

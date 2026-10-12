@@ -11,7 +11,7 @@ ThunderStats intentionally deviates from some general Thunderbird WebExtension r
 | Deviation | General guideline | ThunderStats choice | Reason |
 |---|---|---|---|
 | Manifest version | Use MV3 for new extensions | **Manifest V2** | Thunderbird compatibility requirement |
-| Build tools | Avoid build tools for beginners | **Vite 6.4** | Vue 3 SFC components require a bundler |
+| Build tools | Avoid build tools for beginners | **Vite** | Vue 3 SFC components require a bundler |
 | Background page | Use `"type": "module"` in background scripts array | **`background.html`** (page-based) | MV2 pattern |
 | Dependencies | Use VENDOR.md + direct file inclusion | **npm + package.json** | Build pipeline manages dependencies |
 | UI framework | Plain JavaScript | **Vue 3 Composition API** | Full rewrite architectural decision |
@@ -201,7 +201,7 @@ Only request permissions that are actually needed. Unnecessary permissions may c
 ThunderStats uses Vite as a build tool, so it falls under the "advanced developer" path requiring source code submission:
 
 - Upload the source code archive during the ATN submission process
-- Include a `DEVELOPER.md` file in the root of the source archive with build instructions:
+- Include a `DEVELOPER.md` file in the root of the source archive with build instructions (if `DEVELOPER.md` exists in the repo root, `build.js` also adds it to the XPI):
   ```
   npm ci
   npm run build
@@ -224,7 +224,7 @@ Before finalizing any code that uses Thunderbird APIs, produce an audit table:
 | `browser.mailTabs.query()` | `array of MailTab` | `result[0]` | (none) |
 | `browser.tabs.query()` | `array of Tab` | `result[0]` | (none) |
 | `browser.folders.query()` | `array of MailFolder` | `result[0]` | accountsRead |
-| `browser.storage.local.get()` | `object` | `result.keyName` | storage |
+| `browser.storage.sync.get()` | `object` | `result.keyName` | storage |
 | `browser.i18n.getMessage()` | `string` | direct | (none) |
 
 For each method used, verify:

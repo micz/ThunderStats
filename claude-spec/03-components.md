@@ -2,57 +2,66 @@
 
 ## Component Hierarchy
 
+Source of truth: the `import` statements in each `.vue` file.
+
 ```
 App_ThunderStats.vue
 └── ThunderStatsView.vue
-    ├── HeadingNAV.vue              (account selector + navigation)
-    ├── SelectAccount.vue           (account dropdown)
-    ├── ExportMenu.vue              (CSV export trigger)
+    ├── HeadingNAV.vue
+    │   └── SelectAccount.vue
     └── [tab-based navigation]
         ├── TAB_Today.vue
+        │   ├── ExportMenu.vue
         │   ├── CounterSentReceived.vue
-        │   ├── CounterInbox.vue
-        │   ├── CounterInboxPercent.vue
         │   ├── CounterYesterdayThisTime.vue
+        │   ├── CounterManyDays_Table.vue   (previous N days summary)
         │   ├── ChartTime.vue
-        │   ├── ChartWeekDays.vue
-        │   ├── WidgetDomains.vue
-        │   ├── WidgetFoldersTags.vue
         │   ├── WidgetInboxZero.vue
-        │   │   ├── ChartInboxZeroDates.vue
-        │   │   ├── ChartInboxZeroDatesExtended.vue
-        │   │   └── ChartInboxZeroFolders.vue
-        │   └── TableInvolved.vue
+        │   ├── TableInvolved.vue
+        │   ├── WidgetDomains.vue
+        │   └── WidgetFoldersTags.vue
         ├── TAB_Yesterday.vue
-        │   └── (same counter/chart structure as Today)
+        │   └── (same as Today, without CounterYesterdayThisTime)
         ├── TAB_ManyDays.vue
-        │   ├── CounterManyDays_Table.vue
+        │   ├── ExportMenu.vue
         │   ├── CounterManyDays_Row.vue
         │   ├── ChartManyDays.vue
         │   ├── ChartTime.vue
-        │   └── ChartWeekDays.vue
+        │   ├── WidgetWeekDay.vue
+        │   ├── TableInvolved.vue
+        │   ├── WidgetDomains.vue
+        │   └── WidgetFoldersTags.vue
         ├── TAB_CustomQry.vue
-        │   ├── ChartCustomQry.vue
+        │   ├── ExportMenu.vue
+        │   ├── CounterSentReceived.vue     (single-day mode only)
+        │   ├── WidgetInboxZero.vue         (single-day mode only)
+        │   ├── CounterManyDays_Row.vue     (multi-day mode)
+        │   ├── ChartCustomQry.vue          (multi-day mode)
         │   ├── ChartTime.vue
-        │   ├── ChartWeekDays.vue
-        │   ├── ChartTags.vue
-        │   ├── ChartFolders.vue
-        │   ├── ChartDomains.vue
-        │   └── TableInvolved.vue
+        │   ├── WidgetWeekDay.vue
+        │   ├── TableInvolved.vue
+        │   ├── WidgetDomains.vue
+        │   └── WidgetFoldersTags.vue
         └── TAB_Info.vue
+
+Widget / counter children:
+    WidgetInboxZero.vue     → CounterInbox, CounterInboxPercent, ChartInboxZeroDates,
+                              ChartInboxZeroDatesExtended, ChartInboxZeroFolders, InfoTooltip
+    WidgetDomains.vue       → ChartDomains
+    WidgetFoldersTags.vue   → ChartFolders, ChartTags
+    WidgetWeekDay.vue       → ChartWeekDays
+    CounterManyDays_Row.vue → InfoTooltip
 
 App_Options.vue
 └── OptionsView.vue
-    ├── OptionDonationHeader.vue
     ├── OptionDonationFooter.vue
-    ├── AdvancedAccountList.vue
     └── [options tab navigation]
-        ├── OPTAB_Main.vue
-        ├── OPTAB_Advanced.vue
+        ├── OPTAB_Main.vue          → SelectAccount
+        ├── OPTAB_Advanced.vue      → AdvancedAccountList
         ├── OPTAB_BusinessDays.vue
-        ├── OPTAB_CustomIds.vue
-        ├── OPTAB_License.vue
-        └── OPTAB_Info.vue
+        ├── OPTAB_CustomIds.vue     → SelectAccount
+        ├── OPTAB_License.vue       → OptionDonationHeader
+        └── OPTAB_Info.vue          → OptionDonationHeader
 ```
 
 ---
@@ -79,10 +88,10 @@ App_Options.vue
 
 | File | Description |
 |---|---|
-| `TAB_Today.vue` | Statistics for today: sent/received counts, time chart, top correspondents, domain/folder/tag widgets, inbox zero |
-| `TAB_Yesterday.vue` | Same layout as Today but for yesterday's data |
-| `TAB_ManyDays.vue` | Multi-day overview (default: last 7 days + today), aggregated charts |
-| `TAB_CustomQry.vue` | Advanced query with date range picker, filters (read/unread, starred, subject, folders), aggregation level selector, and CSV export |
+| `TAB_Today.vue` | Statistics for today: sent/received counts, comparison with yesterday at this time, previous N days summary, time chart, inbox zero, top correspondents, domain/folder/tag widgets |
+| `TAB_Yesterday.vue` | Same layout as Today (without the "yesterday at this time" comparison) for yesterday's data |
+| `TAB_ManyDays.vue` | Multi-day overview (`_many_days` pref, default 7): daily chart, total/max/min/avg, time and weekday charts, correspondents, domains, folders/tags |
+| `TAB_CustomQry.vue` | Advanced query with date range picker and presets, filters (read/unread, starred, subject, folders), aggregation level selector, period comparison, and CSV export. A one-day range switches to single-day mode (Today-like counters and inbox zero) |
 | `TAB_Info.vue` | About page with version and credits |
 
 ---
@@ -95,7 +104,7 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper.
 |---|---|
 | `ChartTime.vue` | Hourly sent/received distribution (bar chart) |
 | `ChartWeekDays.vue` | Sent/received per weekday |
-| `ChartManyDays.vue` | Daily/weekly/monthly/yearly bar chart for a date range. Supports stacked bars (used by the Received chart to show inbox messages as a red segment on top of non-inbox). Datalabels show stacked totals. |
+| `ChartManyDays.vue` | Daily bar chart for the Many Days tab. Supports stacked bars (used by the Received chart to show inbox messages as a red segment on top of non-inbox). Datalabels show stacked totals. |
 | `ChartCustomQry.vue` | Chart for custom query results, adapts to selected aggregation level. Accepts `is_comparing` prop to enable legend, tooltips, and suppress Period B datalabels when comparing periods. |
 | `ChartInboxZeroDates.vue` | Timeline of inbox zero achievements |
 | `ChartInboxZeroDatesExtended.vue` | Extended inbox zero history |
@@ -116,8 +125,8 @@ Small display components that show a single statistic value.
 | `CounterInbox.vue` | Shows current inbox count |
 | `CounterInboxPercent.vue` | Shows inbox zero percentage |
 | `CounterYesterdayThisTime.vue` | Compares current count to yesterday (or last business day, or user-chosen day) at the same time. The day label is clickable and opens an inline date picker to select a custom comparison day. Emits `customDaySelected` event. |
-| `CounterManyDays_Table.vue` | Summary table (max/min/avg) for many-days view |
-| `CounterManyDays_Row.vue` | A single row within the many-days summary table |
+| `CounterManyDays_Table.vue` | Total/max/min/avg sent and received over the previous `_many_days` days (excluding today); used in Today and Yesterday |
+| `CounterManyDays_Row.vue` | Total/max/min/avg row for a period; used in Many Days and Custom Query |
 
 ---
 
@@ -127,10 +136,10 @@ Composite components that combine multiple data points or sub-charts.
 
 | File | Description |
 |---|---|
-| `WidgetDomains.vue` | Shows top email domains with counts |
-| `WidgetFoldersTags.vue` | Shows folder and tag distribution |
-| `WidgetWeekDay.vue` | Highlights the busiest weekday |
-| `WidgetInboxZero.vue` | Inbox Zero summary with embedded charts |
+| `WidgetDomains.vue` | Wraps `ChartDomains` |
+| `WidgetFoldersTags.vue` | Folder and tag distribution (wraps `ChartFolders`, `ChartTags`) |
+| `WidgetWeekDay.vue` | Thin wrapper around `ChartWeekDays` |
+| `WidgetInboxZero.vue` | Inbox Zero section: inbox counters and inbox zero charts |
 
 ---
 
@@ -138,9 +147,9 @@ Composite components that combine multiple data points or sub-charts.
 
 | File | Description |
 |---|---|
-| `OPTAB_Main.vue` | Basic settings (number of days, involved count, etc.) |
-| `OPTAB_Advanced.vue` | Advanced settings (duplicate filtering, archive inclusion, per-account settings) |
-| `OPTAB_BusinessDays.vue` | Configure which days are business days; define custom holidays; Easter detection |
+| `OPTAB_Main.vue` | General settings: startup/remembered account and tab, data reload behavior, many-days count and inbox bars, time chart options, custom query loading, date picker locale, inbox %, internal mail % |
+| `OPTAB_Advanced.vue` | Advanced settings: number of correspondents, first day of week, long-period warning, archive inclusion and duplicate filtering (global and per account), debug |
+| `OPTAB_BusinessDays.vue` | Business weekdays, custom holidays, Easter, "business days only" default, compare with last business day |
 | `OPTAB_CustomIds.vue` | "Identities & Domains" tab: define custom email identities for sent mail detection, and configure per-account Internal Domains (domain lists that identify domains belonging to the user's organization, used to distinguish internal from external email traffic) |
 | `OPTAB_License.vue` | Displays the GPL v3 license text |
 | `OPTAB_Info.vue` | Add-on version and info |
@@ -151,13 +160,13 @@ Composite components that combine multiple data points or sub-charts.
 
 | File | Description |
 |---|---|
-| `HeadingNAV.vue` | Top navigation bar with account selector and controls |
+| `HeadingNAV.vue` | Top navigation bar; contains `SelectAccount` and applies the startup/remembered account |
 | `SelectAccount.vue` | Account dropdown (uses `@vueform/multiselect`) |
-| `ExportMenu.vue` | Context menu for CSV export (uses `@imengyu/vue3-context-menu`) |
-| `AdvancedAccountList.vue` | Per-account advanced settings list in options |
+| `ExportMenu.vue` | CSV export menu, embedded in each stats tab (uses `@imengyu/vue3-context-menu`) |
+| `AdvancedAccountList.vue` | Per-account advanced settings list (in `OPTAB_Advanced`) |
 | `InfoTooltip.vue` | Reusable info tooltip icon |
-| `OptionDonationHeader.vue` | Donation banner shown at top of options page |
-| `OptionDonationFooter.vue` | Donation banner shown at bottom of options page |
+| `OptionDonationHeader.vue` | Donation banner (in `OPTAB_Info` and `OPTAB_License`) |
+| `OptionDonationFooter.vue` | Donation banner at the bottom of `OptionsView` |
 | `tables/TableInvolved.vue` | Table of top senders and recipients |
 
 ---

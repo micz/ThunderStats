@@ -2,12 +2,7 @@
 
 ## Tooling
 
-| Tool | Version | Role |
-|---|---|---|
-| Vite | ^6.4.1 | Bundler and dev server |
-| @vitejs/plugin-vue | ^5.2.3 | Vue 3 SFC support |
-| esbuild | ^0.25.1 | JavaScript transformation (used by Vite) |
-| Node.js + npm | any LTS | Runtime and package manager |
+Vite + `@vitejs/plugin-vue` (with esbuild), run via Node.js + npm. Versions: see `package.json`.
 
 ---
 
@@ -29,6 +24,11 @@ npm run preview
 ## Vite Configuration (`vite.config.js`)
 
 ```js
+plugins: [
+  vue(),
+  { name: 'xpi-packager', apply: 'build',
+    closeBundle() { if (mode === 'production') createXpi(); } },   // from build.js
+],
 build: {
   minify: mode === 'production',   // minify only for "npm run build"
   rollupOptions: {
@@ -66,23 +66,20 @@ build: {
 
 ## Build Output (`dist/`)
 
-After running `npm run build`, the `dist/` folder contains the ready-to-install Thunderbird addon:
+Every build (dev or production) writes the unpacked addon to `dist/`: the two HTML entry points, `assets/` (hashed JS/CSS bundles), and everything copied from `public/` (`manifest.json`, `background.html`, `background.js`, `images/`, `_locales/`).
 
-```
-dist/
-├── index.thunderstats.html
-├── index.ts-options.html
-├── background.html
-├── manifest.json
-├── images/
-├── _locales/
-└── assets/
-    ├── index.thunderstats-[hash].js   (main app bundle)
-    ├── index.ts-options-[hash].js     (options bundle)
-    └── *.css
-```
+`dist/` can be loaded directly in Thunderbird as a temporary addon.
 
-The `dist/` folder can be loaded directly in Thunderbird as a temporary addon (via the addon manager debug interface) or packaged as a `.xpi` file.
+---
+
+## XPI Packaging (`build.js`)
+
+`npm run build` (production mode only) also runs `createXpi()` after bundling:
+
+- Output: `../thunderstats-<version>.xpi` (parent folder of the repo), version read from `package.json`
+- Zips the content of `dist/`
+- **Locale filter:** every `_locales/<code>` folder not listed in `LANG.md` is excluded. `LANG.md` is the author-maintained list of locales ready to ship; do not edit it.
+- Adds `VENDORS.md`, `DEVELOPER.md`, and `LICENSE` from the repo root, if they exist
 
 ---
 
@@ -98,23 +95,4 @@ The `dist/` folder can be loaded directly in Thunderbird as a temporary addon (v
 
 ## Dependencies
 
-### Runtime (bundled into the addon)
-
-| Package | Version | Purpose |
-|---|---|---|
-| vue | ^3.5.13 | UI framework |
-| chart.js | ^4.4.2 | Charting library |
-| vue-chartjs | ^5.3.1 | Vue wrapper for Chart.js |
-| chartjs-plugin-datalabels | ^2.2.0 | Data labels on charts |
-| vue3-tabs-component | ^1.3.7 | Tab navigation |
-| @vueform/multiselect | ^2.6.10 | Multi-select dropdown |
-| @vuepic/vue-datepicker | ^8.7.0 | Date picker |
-| @imengyu/vue3-context-menu | ^1.4.1 | Context menu for export |
-
-### Dev Only (not in addon)
-
-| Package | Version | Purpose |
-|---|---|---|
-| vite | ^6.4.1 | Build tool |
-| @vitejs/plugin-vue | ^5.2.3 | Vite Vue plugin |
-| esbuild | ^0.25.1 | Fast JS transformer |
+See `package.json`. Runtime libraries bundled into the addon: `vue`, `chart.js`, `vue-chartjs`, `chartjs-plugin-datalabels`, `vue3-tabs-component`, `@vueform/multiselect`, `@vuepic/vue-datepicker`, `@imengyu/vue3-context-menu`. Dev only: `vite`, `@vitejs/plugin-vue`, `esbuild`.

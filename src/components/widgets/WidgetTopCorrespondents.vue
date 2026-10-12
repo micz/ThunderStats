@@ -24,7 +24,7 @@
       <div class="ts-rail-title">{{ title }}</div>
       <button type="button" class="ts-link-btn" v-if="!is_loading && total_count > 0" @click="emit('toggleAll')">{{ expanded ? show_less_label : see_all_label }}</button>
     </div>
-    <img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="" v-if="is_loading"/>
+    <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="" /></div>
     <div class="ts-rail-empty" v-else-if="rows.length == 0">{{ empty_text }}</div>
     <div class="ts-top-rows" v-else>
       <div class="ts-top-row" v-for="row in rows" :key="row.email" :title="rowTitle(row)">

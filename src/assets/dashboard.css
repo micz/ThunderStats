@@ -206,3 +206,12 @@
   color: var(--text);
   font-weight: 620;
 }
+
+/* Loading indicator of a whole card (the dots spinner is only for single numbers) */
+.ts-card .circle_wait,
+.ts-dashboard .circle_wait {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
+}

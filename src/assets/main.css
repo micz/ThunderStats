@@ -98,6 +98,9 @@ table.mzts-tinvolved tr.mzts-trow td.mzts-row-num{text-align:center;word-break:n
 .spinner_small{
   position: relative;
   top: 4px;
+  flex: none;
+  width: 16px;
+  height: 16px;
 }
 
 .spinner_small_absolute{

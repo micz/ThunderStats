@@ -96,7 +96,8 @@ Every build (dev or production) writes the unpacked addon to `dist/`: the two HT
 | `tests/setup.js` | Before each test: a fresh `browser`/`messenger` mock and the shipped business day settings of `tsStore`; real timers restored after each test |
 | `tests/mocks/browser.js` | `createBrowserMock()`: in-memory `storage.sync` (defaults object like the real API), `i18n.getMessage` returning `key` or `key[sub1\|sub2]`, `getUILanguage` = `en-US` |
 | `tests/helpers.js` | `day("YYYYMMDD", hours)` local date (noon by default) |
-| `tests/unit/` | Pure functions: `tsUtils`, `EmailMatcher`/`DomainMatcher`, `tsCoreUtils` (business days, Easter, domains, labels), `tsInsights` |
+| `tests/fixtures/result.js` | `makeResult(mails, {from, to, folders, tags})` builds a `getFullStatsData`-shaped output from a list of mails; `makeInbox(dates)` (`getInboxZeroDates` output), `mails(n, mail)`, `dayKeys(from, to)` |
+| `tests/unit/` | Pure functions: `tsUtils`, `EmailMatcher`/`DomainMatcher`, `tsCoreUtils` (business days, Easter, domains, labels), `tsInsights`; dashboard models `tsDayModel` and `tsPeriodModel` (loading state, badges, KPIs, charts, notes, Period B), with the clock fixed by fake timers |
 
 Code that reads the current date is tested with `vi.useFakeTimers()` + `vi.setSystemTime()`. Known bugs are kept as `it.fails` tests with a comment: they start failing (as a reminder to turn them into normal tests) once the bug is fixed.
 

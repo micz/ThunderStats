@@ -20,7 +20,6 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
 import { createXpi } from './build.js'
 
 // https://vitejs.dev/config/
@@ -48,8 +47,8 @@ export default defineConfig(({ mode }) => ({
     minify: mode === 'production',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.thunderstats.html'),
-        options: resolve(__dirname, 'index.ts-options.html')
+        main: fileURLToPath(new URL('./index.thunderstats.html', import.meta.url)),
+        options: fileURLToPath(new URL('./index.ts-options.html', import.meta.url))
       }
     }
   },

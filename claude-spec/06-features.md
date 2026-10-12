@@ -16,7 +16,7 @@ Displays statistics for the current day (from midnight to now), putting each num
 - **Right rail** — top 5 correspondents (senders and recipients merged), "See all" opens the full Top N Recipients / Top N Senders lists; the **yesterday-at-this-time comparison** (with `today_time_chart_show_yesterday`): compares current counts to the same time yesterday (or last business day). The "Yesterday" / "Last business day" label is clickable to open a date picker and choose any past day as the comparison. The custom day selection is session-only (resets when the TS tab is closed) but persists across data refreshes; the **previous days summary** (total/max/min/average over the previous `_many_days` days, excluding today)
 - **Domains** — sent and received bars per domain, "internal" tag, first 8 rows expandable
 - **Where today's mails ended up** — received mails by folder (inbox first) or by tag, with a computed footnote; clicking a folder opens it in Thunderbird (in the first mail tab with `inbox0_openFolderInFirstTab`); with `filter_duplicates` an info icon explains that duplicates are counted in every folder they are in. The same applies to "Where mails ended up" in Many Days
-- **How old is your inbox** — mails still in the inbox by age, with "Details by date" (one row per arrival date, sortable by date or by mails). It replaces the old Inbox Zero widget in Today and Yesterday: inbox total and unread are in the Inbox backlog KPI, the moved-out percentage in the status strip ("Filed or answered"), the day's folder distribution in "Where today's mails ended up". `inbox_percent_remaining` now only affects the Custom Query single-day mode
+- **How old is your inbox** — mails still in the inbox by age, with "Details by date" (one row per arrival date, sortable by date or by mails). It replaces the old Inbox Zero widget in Today and Yesterday: inbox total and unread are in the Inbox backlog KPI, the moved-out percentage in the status strip ("Filed or answered"), the day's folder distribution in "Where today's mails ended up".
 
 The Inbox Zero streak, Backlog trend and Clear in are approximations (Thunderbird keeps no inbox history): see `tsInsights` in [02-statslib.md](02-statslib.md).
 
@@ -45,44 +45,33 @@ Shows statistics for the last N days (default: 7, configurable in options), endi
 
 ### Tab: Custom Query
 
-Advanced filtering and analysis for an arbitrary date range.
+Analysis of an arbitrary date range. The query panel is a card at the top of the tab; the results use the same layouts as the other tabs.
 
-#### Date Range
-- Date picker with manual date input
-- Start date and end date selection
-- Preset periods via context menu: Current Week, Last Week, Last 2 Weeks, Current Month, Last Month, Current Year, Last Year, All Emails
-- "All Emails" queries the oldest message date to set the start of the range
-
-#### Aggregation Level
-- Daily
-- Weekly
-- Monthly
-- Yearly
+#### Query panel
+- **Period** — date range picker with manual date input
+- **Compare periods** switch — shows the Period B start date picker; the end date is auto-calculated to match the length of the period. Disabled when the period is a single day
+- **Working days only** switch (`bday_default_only` as default) — totals/max/min/average and the average lines count business days only. Disabled for a single day
+- **Run query** button (the query also runs when a range or a quick range is chosen, with `customqry_loaddata_when_selectingrange`)
+- **Quick ranges** chips: Yesterday, Current Week, Last Week, Last 2 Weeks, Current Month, Last Month, Current Year, Last Year, All Emails (the chosen chip stays highlighted until the dates are changed by hand). "All Emails" starts the range on 1 January 1970
+- **Filters**: each active advanced filter is a removable chip; "+ Add filter" opens the advanced filters panel (`customqry_always_open_adv_filters` opens it at start)
+- After a query: the account addresses (all of them in a tooltip when there are many) and the number of days
+- Ranges longer than `customqry_warn_onlongperiod_days` ask for confirmation
 
 #### Advanced Filters
-- **Folders** — restrict to specific folders (with optional subfolder inclusion)
+- **Folders** — restrict to specific folders (with optional subfolder inclusion); needs a single account
 - **Read/Unread** — all, read only, or unread only
 - **Starred/Unstarred** — all, starred only, or unstarred only
-- **Subject keyword** — filter messages containing a keyword in the subject
-- **Reset button** — clears all advanced filters back to defaults; disabled when no filters are active
+- **Subject keyword** — filter messages containing a keyword in the subject (case sensitive)
+- **Reset filters** — clears all advanced filters; disabled when no filters are active
+
+#### Results
+- **One day** — the Today/Yesterday layout (`WidgetDayDashboard`) with a "Query result" badge: comparison with the usual same weekday (not shown when filters are active, since the usual day is not filtered), pace from the 7 previous days, "How old is your inbox"
+- **Longer range** — the Many Days layout (`WidgetPeriodDashboard`) with a "Query result" badge and no comparison with a previous period. The main chart has a **Days / Weeks / Months / Years** toggle; the default depends on the length of the range (days up to 62 days, weeks up to ~6 months, months up to 3 years, then years). The Inbox Zero calendar shows at most the last 6 weeks of the range
 
 #### Compare Periods
-- Toggle button enables comparison mode
-- User selects only the start date for Period B; the end date is auto-calculated to match Period A's length
-- Period B data is overlaid on all charts with distinct colors (coral red for bars, purple/red for line charts)
-- Delta summary row shows percentage change in sent and received between periods (green for increase, red for decrease)
-- Disabled in single-day mode
-- Categorical charts (domains, folders, tags) merge labels from both periods
-
-#### Statistics Output
-- Aggregated sent/received chart (based on selected aggregation level); a one-day range switches to single-day mode, showing sent/received counters (with internal %) and the Inbox Zero widget instead
-- Time-of-day distribution chart
-- Weekday distribution chart
-- Tags distribution chart
-- Folders distribution chart
-- Domains distribution chart
-- Top correspondents table
-- Max / min / average summary
+- KPI cards show the change of Period A against Period B
+- Period B is drawn as dotted lines on the main chart (in the chosen grouping, aligned by position) and as dashed lines on the time-of-day chart
+- Weekdays, domains, folders and tags show the Period B value next to each Period A value ("B 42")
 
 #### Export
 - CSV export of query results (multiple data types available)
@@ -90,7 +79,6 @@ Advanced filtering and analysis for an arbitrary date range.
 
 ---
 
-### Tab: Info
 
 Displays add-on version, credits, and links. Opened from the toolbar Info icon.
 
@@ -106,10 +94,10 @@ Pref keys and defaults: `statslib/mzts-options-default.js`.
 - **Data loading** — reload data on every tab switch (`always_reload_tab_data`), reload when changing account (`load_data_changing_account`)
 - **Many Days** — number of days (`_many_days`, default 7), show inbox mails in the bars (`many_days_show_inbox`)
 - **Time chart** — show yesterday (`today_time_chart_show_yesterday`), hide future hours (`today_time_chart_do_no_show_future`), progressive/cumulative lines (`_time_chart_progressive`)
+- **Folders** (TB 128+) — open the folder clicked in "Where mails ended up" in the first mail tab (`inbox0_openFolderInFirstTab`)
 - **Custom Query** — load data when selecting a range / when opening the add-on, always open advanced filters
 - **Date picker locale** (`datepicker_locale`)
-- **Show inbox remaining %** (`inbox_percent_remaining`) — inbox percentage shows mails still in inbox instead of mails moved out (default: off)
-- **Show internal mail percentage** (`show_internal_mail_percent`) — shows the percentage of internal mails (based on configured internal domains) next to the sent/received counters in the Today, Yesterday, and Custom Query (single-day) tabs (default: off)
+- **Show internal mail percentage** (`show_internal_mail_percent`) — shows the Internal traffic KPI card (received internal %, and % of the sent) in every stats tab, when internal domains are configured (default: off)
 - **Color theme** (`theme_mode`) — `auto` (default, follows the system), `light` or `dark`. The toolbar Light/Dark switch sets it too; changes apply live to every open ThunderStats page
 
 ### Tab: Advanced

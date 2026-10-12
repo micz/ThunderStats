@@ -33,7 +33,7 @@
       <div class="ts-bars-rows" v-else>
         <div class="ts-ended-row" v-for="row in shown_rows" :key="row.id" :class="{ 'is-clickable': isClickable(row) }" :title="isClickable(row) ? open_folder_label : ''" @click="openRow(row)">
           <div class="ts-ended-name" :title="row.name">{{ row.name }}</div>
-          <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(row.n), background: rowColor(row) }"></div><span class="ts-bar-count">{{ row.n }}</span></div>
+          <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(row.n), background: rowColor(row) }"></div><span class="ts-bar-count">{{ row.n }}</span><span class="ts-cmp-value" v-if="row.cmp_n !== undefined">{{ period_b_short }} {{ row.cmp_n }}</span></div>
         </div>
         <button type="button" class="ts-link-btn ts-bars-more" v-if="current_rows.length > max_rows" @click="show_all = !show_all">{{ show_all ? show_less_label : more_label }}</button>
       </div>
@@ -64,6 +64,7 @@ const tags_label = browser.i18n.getMessage("Tags");
 const no_tags_text = browser.i18n.getMessage("NoTaggedMails");
 const show_less_label = browser.i18n.getMessage("ShowLess");
 const open_folder_label = browser.i18n.getMessage("OpenFolder");
+const period_b_short = browser.i18n.getMessage("PeriodBShort");
 
 let view = ref('folders');
 let show_all = ref(false);

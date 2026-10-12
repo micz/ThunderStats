@@ -33,8 +33,8 @@
       <div class="ts-domain-row" v-for="row in shown_rows" :key="row.name">
         <div class="ts-domain-name" :title="row.name">{{ row.name }} <span class="ts-domain-tag" v-if="row.internal">{{ internal_label }}</span></div>
         <div class="ts-domain-bars">
-          <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(row.sent), background: 'var(--sent)' }"></div><span class="ts-bar-count">{{ row.sent }}</span></div>
-          <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(row.received), background: 'var(--rcvd)' }"></div><span class="ts-bar-count">{{ row.received }}</span></div>
+          <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(row.sent), background: 'var(--sent)' }"></div><span class="ts-bar-count">{{ row.sent }}</span><span class="ts-cmp-value" v-if="row.cmp_sent !== undefined">{{ period_b_short }} {{ row.cmp_sent }}</span></div>
+          <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(row.received), background: 'var(--rcvd)' }"></div><span class="ts-bar-count">{{ row.received }}</span><span class="ts-cmp-value" v-if="row.cmp_received !== undefined">{{ period_b_short }} {{ row.cmp_received }}</span></div>
         </div>
       </div>
       <button type="button" class="ts-link-btn ts-bars-more" v-if="rows.length > max_rows" @click="show_all = !show_all">{{ show_all ? show_less_label : more_label }}</button>
@@ -47,7 +47,7 @@ import { ref, computed } from 'vue';
 
 const props = defineProps({
   title: { type: String, default: '' },
-  rows: { type: Array, default: () => [] },     // [{ name, sent, received, internal }], sorted
+  rows: { type: Array, default: () => [] },     // [{ name, sent, received, internal, cmp_sent, cmp_received }], sorted
   max_rows: { type: Number, default: 8 },
   empty_text: { type: String, default: '' },
   is_loading: { type: Boolean, default: false },
@@ -56,6 +56,7 @@ const props = defineProps({
 const sent_label = browser.i18n.getMessage("Sent");
 const received_label = browser.i18n.getMessage("Received");
 const internal_label = browser.i18n.getMessage("InternalTag");
+const period_b_short = browser.i18n.getMessage("PeriodBShort");
 const show_less_label = browser.i18n.getMessage("ShowLess");
 
 let show_all = ref(false);

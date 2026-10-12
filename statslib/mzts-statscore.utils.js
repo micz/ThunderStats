@@ -22,108 +22,6 @@ import { tsStore } from "./mzts-store";
 
 export const tsCoreUtils = {
 
-    transformCountDataToDataset(data, do_progressive = false, get_labels = false) {
-        let dataset_sent = [];
-        let dataset_rcvd = [];
-        let dataset_inbox = [];
-        for(let key in data) {
-            let value = data[String(key)];
-            dataset_sent.push(value.sent);
-            dataset_rcvd.push(value.received);
-            dataset_inbox.push(value.inbox || 0);
-        }
-
-        if (do_progressive) {
-            let cumulative_sent = 0;
-            let cumulative_rcvd = 0;
-            let cumulative_inbox = 0;
-
-            for (let key in dataset_sent) {
-                cumulative_sent += dataset_sent[key];
-                cumulative_rcvd += dataset_rcvd[key];
-                cumulative_inbox += dataset_inbox[key];
-                dataset_sent[key] = cumulative_sent;
-                dataset_rcvd[key] = cumulative_rcvd;
-                dataset_inbox[key] = cumulative_inbox;
-            }
-        }
-
-        let output = { dataset_sent, dataset_rcvd, dataset_inbox };
-        if(get_labels) {
-            let labels = [];
-            let internal_flags = [];
-            for(let key in data) {
-                labels.push(key);
-                internal_flags.push(!!data[key].internal);
-            }
-            output.labels = labels;
-            output.internal_flags = internal_flags;
-        }
-        return output;
-    },
-
-    getFoldersLabelsColors(folders) {
-        let availableColors = [...inboxZeroColors];
-        let output_labels = [];
-        let output_colors = [];
-        let output_paths = [];
-        //console.log(">>>>>>>>>>>> folders: " + JSON.stringify(folders));
-        for(let key in folders) {
-            output_labels.push(folders[key].folder_data.name);
-            if(!("id" in folders[key].folder_data)){
-            	folders[key].folder_data.id = tsCoreUtils.getFolderId(folders[key].folder_data);
-            }
-            output_paths.push(folders[key].folder_data.id);
-            if(folders[key].folder_data.type == 'inbox') {
-                output_colors.push(inboxZeroInboxColor);
-            } else {
-                // Random color
-                // let index = Math.floor(Math.random() * availableColors.length);
-                // let color = availableColors[index];
-                // availableColors.splice(index, 1);
-                let color = availableColors.shift();
-                output_colors.push(color);
-            }
-        }
-        let output = {labels: output_labels, colors: output_colors, folder_paths: output_paths}
-
-        if(!tsStore.isTB128plus) {
-            const foldersArray = Object.values(folders);
-            output.folders = foldersArray.map(({folder_data: { id, specialUse, ...item }}) => item);
-            // console.log(">>>>>>>>>> getFoldersLabelsColors output: " + JSON.stringify(output));
-        }
-
-        return output;
-    },
-
-    getFoldersCounts(folders, type = 'rcvd') {  //type is 'sent' or 'rcvd'
-        let output = [];
-        switch(type) {
-            case 'sent':
-                for(let key in folders) {
-                    output.push(folders[key].sent);
-                }
-                break;
-            case 'rcvd':
-                for(let key in folders) {
-                    output.push(folders[key].received);
-                }
-                break;
-        }
-        return output;
-    },
-
-    // Function to filter folders with received > 0
-    filterReceivedFolders(folders) {
-        let result = {};
-        for (let key in folders) {
-            if (folders[key].received > 0) {
-                result[key] = folders[key];
-            }
-        }
-        return result;
-    },
-
     // Shows a folder in a Thunderbird mail tab: the first mail tab when in_first_tab is true,
     // otherwise a new one (on TB 115 the first mail tab is always used)
     async openFolder(folder_data, in_first_tab = false) {
@@ -160,15 +58,6 @@ export const tsCoreUtils = {
       }
     },
 
-    filterTodayNextHours(hours) {
-        // Get the current time
-        const now = new Date();
-        const currentHour = now.getHours();
-
-        // Iterate over the array and set null for hours after the current hour
-        return hours.map((value, index) => index > currentHour ? null : value);
-    },
-
     async getTagsList(){
         let messageTags = {};
         if(tsStore.isTB128plus) {
@@ -190,24 +79,6 @@ export const tsCoreUtils = {
           }, {});
         // console.log(">>>>>>>>>>> getTagsList: " + JSON.stringify(output));
         return output;
-    },
-
-    async transformTagsLabels(labels) {
-        let output = [];
-        let tags = tsStore.tags_list;
-        for(let label of labels) {
-            output.push(tags[label].tag);
-        }
-        return output;
-    },
-
-    getTagsLabelColor(label) {
-        let color = Object.values(tsStore.tags_list).find(tag => tag.tag === label).color;
-        if(tsStore.darkmode && color === '#000000') {
-            color = '#ffffff';
-        }
-        
-        return color;
     },
 
     // getManyDaysLabels(labels) {
@@ -233,26 +104,6 @@ export const tsCoreUtils = {
     //         return dayOfWeek + "\r\n" + formattedDate;
     //     });
     // },
-
-    getDaysLabelColor(label, color_today = true, color_nobusiness_day = true) {
-        let isBusinessDay = true;
-
-        // console.log(">>>>>>>>>> color_today: " + color_today);
-        // console.log(">>>>>>>>>> color_nobusiness_day: " + color_nobusiness_day);
-
-        const bd_color = tsStore.darkmode ? "white" : "black";
-        const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
-
-        if(color_today && tsCoreUtils.isToday(label)) {
-            return tsStore.darkmode ? tsStore.chart_colors.many_days_today_dark : tsStore.chart_colors.many_days_today_light;
-        }
-
-        if(color_nobusiness_day) {
-            isBusinessDay = this.checkBusinessDay(label);
-        }
-
-        return (isBusinessDay ? bd_color : nbd_color);
-    },
 
     getCustomQryLabel(label, data_type) {      // data_type = "YYYY" | "YYYYMM" | "YYYYWW" | "YYYYMMDD"
         switch(data_type) {
@@ -285,208 +136,8 @@ export const tsCoreUtils = {
                 return formattedDate;
         }
     },
-
-    getWeekDaysLabel(label) {
-        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
-        let first_day_week = tsStore.first_day_week;
-        label = parseInt(label) + parseInt(first_day_week);
-        if(label >= 7) label = label - 7;
-        const dayOfWeek = browser.i18n.getMessage(daysOfWeek[label]);
-        return [
-            dayOfWeek
-        ];
-    },
-
-    getWeekDaysLabelColor(label) {
-        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
-        let first_day_week = tsStore.first_day_week;
-        label = parseInt(label) + parseInt(first_day_week);
-        if(label >= 7) label = label - 7;
-        // check weekeday preference
-        let isBusinessDay = tsStore["bday_weekdays_" + label]
-        const bd_color = tsStore.darkmode ? "white" : "black";
-        const nbd_color = tsStore.darkmode ? "#C18F2A" : "#725419";
-        return (isBusinessDay ? bd_color : nbd_color);
-    },
-
-    transformInboxZeroDatesDataToDataset(data) {
-        let datasets = [];
-        let availableColors = [...inboxZeroColors];
-        let total = 0;
-        let aggregate_day_date_string = '';
-
-        for(let key in data) {
-            total += data[key];
-        }
-        let data_length = Object.keys(data).length;
-         //we are going to aggregate old days
-        let max_el = 20; //choose how much to aggregate
-        if( data_length > max_el) {  // ok, we really need to aggregate
-            let spin_day = Object.keys(data)[data_length - max_el - 1];
-            let spin_day_date = tsUtils.parseYYYYMMDDToDate(spin_day);
-            let tmp_array = {};
-            let aggregate_day_value = 0;
-            let aggregate_day_date = new Date(1900, 0, 1);
-            for(let key in data) {
-                let current_date = tsUtils.parseYYYYMMDDToDate(key);
-                if(current_date <= spin_day_date) {
-                    aggregate_day_value += data[key];
-                    aggregate_day_date = (aggregate_day_date < current_date) ? current_date : aggregate_day_date;
-                }else{
-                    tmp_array[key] = data[key];
-                }
-            }
-            aggregate_day_date_string = tsUtils.dateToYYYYMMDD(aggregate_day_date);
-            tmp_array[aggregate_day_date_string] = aggregate_day_value;
-            data = tmp_array;
-        }
-        for(let key in data) {
-            let color = availableColors.shift();
-            let value = data[key];
-            let value_percentage = value / total;
-            let current_date = tsUtils.parseYYYYMMDDToDate(key);
-            let dataset = {
-                label: (key==aggregate_day_date_string?browser.i18n.getMessage('Before') +'<br>':'') + current_date.toLocaleDateString(undefined,{day: '2-digit', month: '2-digit', year: 'numeric'}) + "<br>" + browser.i18n.getMessage('Mail') +':&nbsp;' + value + '&nbsp;(' + Math.round(value_percentage * 100) + '%)',
-                data: [value_percentage],
-                backgroundColor: color,
-                borderColor: color,
-            }
-            datasets.push(dataset);
-        }
-        return datasets;
-    },
-
-    transformQueryDataToDataset(data) {
-        let output = {};
-        let dataset = {};
-        dataset.data = [];
-        let labels = [];
-        let total = 0;
-
-        for(let key in data) {
-            total += data[key];
-        }
-
-        for(let key in data) {
-            let value = data[key];
-            dataset.data.push(value);
-            // let current_date = tsUtils.parseYYYYMMDDToDate(key);
-            // labels.push(current_date.toLocaleDateString(undefined,{day: '2-digit', month: '2-digit', year: 'numeric'}));
-            labels.push(key);
-        }
-
-        let targetLength = labels.length;
-        let availableColors = [...inboxZeroColors];
-        while (availableColors.length < targetLength) {
-          availableColors.push(...inboxZeroColors);
-        }
-        dataset.backgroundColor = [...availableColors];
-        dataset.borderColor = [...availableColors];
-
-        output.dataset = dataset;
-        output.labels = labels;
-        output.total = total;
-
-        // console.log(">>>>>>>>>>>>>> Length of labels: " + labels.length);
-        // console.log(">>>>>>>>>>>>>> Length of available colors: " + availableColors.length);
-        // console.log(">>>>>>>>>>>>>> Length of dataset.data: " + dataset.data.length);
-        // console.log(">>>>>>>>>>>>>> targetLength: " + targetLength);
-
-        return output;
-    },
-
-    transformDatasetToOrdinableArray(dataObject) {
-      return dataObject.labels.map((label, index) => {
-        //   const [day, month, year] = label.split("/").map(Number);
-          return {
-            // date: new Date(year, month - 1, day),
-            date: tsUtils.parseYYYYMMDDToDate(label),
-            label,
-            value: dataObject.datasets[0].data[index],
-            bgColor: dataObject.datasets[0].backgroundColor[index],
-            borderColor: dataObject.datasets[0].borderColor[index]
-          };
-      });
-    },
-
-    sortDatasetOrdinableArray(tempArray, type = 'date', order = 'asc') {
-      if (type === 'date') {
-        if (order === 'asc') {
-          return tempArray.sort((a, b) => a.date - b.date);
-        } else if (order === 'desc') {
-          return tempArray.sort((a, b) => b.date - a.date);
-        }
-      } else if (type === 'mails') {
-        if (order === 'asc') {
-          return tempArray.sort((a, b) => a.value - b.value);
-        } else if (order === 'desc') {
-          return tempArray.sort((a, b) => b.value - a.value);
-         }
-      } else {
-        throw new Error("Invalid type. Use 'date' or 'mails' for sorting.");
-      }
       
-      throw new Error("Invalid order. Use 'asc' or 'mails' for sorting.");
-    },
 
-    updateDatasetFromSorted(dataObject, sortedArray) {
-      dataObject.labels = sortedArray.map(item => item.label);
-      dataObject.datasets[0].data = sortedArray.map(item => item.value);
-      dataObject.datasets[0].backgroundColor = sortedArray.map(item => item.bgColor);
-      dataObject.datasets[0].borderColor = sortedArray.map(item => item.borderColor);
-    },
-
-    sortDoubleDatasetsByTotal(data) {
-      // console.log(">>>>>>>>>>>>>> [sortDoubleDatasetsByTotal] data: " + JSON.stringify(data));
-      const hasInternalFlags = Array.isArray(data.internal_flags);
-      // Create an array of objects containing labels and the sum of data values
-      const summedData = data.labels.map((label, index) => {
-        const sum = data.datasets.reduce((acc, dataset) => acc + dataset.data[index], 0);
-        const entry = { label, sum, originalIndex: index };
-        if (hasInternalFlags) entry.internal = data.internal_flags[index];
-        return entry;
-      });
-
-      // Sort the array by sum in descending order
-      summedData.sort((a, b) => b.sum - a.sum);
-
-      // Rebuild the sorted object
-      const sortedLabels = summedData.map(item => item.label);
-      const sortedDatasets = data.datasets.map(dataset => ({
-        ...dataset,
-        data: summedData.map(item => dataset.data[item.originalIndex])
-      }));
-
-      let result = {
-        labels: sortedLabels,
-        datasets: sortedDatasets
-      };
-      if (hasInternalFlags) {
-        result.internal_flags = summedData.map(item => item.internal);
-      }
-      return result;
-    },      
-
-    // getMaxFromData(data) {      // data is an object like this: {"20240517":2,"20240518":4,"20240519":4,"20240520":2,"20240521":0,"20240522":2,"20240523":4,"20240524":0}
-    //     let maxValue = 0;
-    //     for (const [date, value] of Object.entries(data)) {
-    //         if (value > maxValue) {
-    //             maxValue = value;
-    //         }
-    //     }
-    //     return maxValue;
-    // },
-
-    getMaxFromData(data) {      // data is an array like this: [2,0,2,4,0,2,0,0]
-        let maxValue = 0;
-        //console.log(">>>>>>>>>>>>>>> [getMaxFromData] data: " + JSON.stringify(data));
-        for (const value of data) {
-            if (value > maxValue) {
-                maxValue = value;
-            }
-        }
-        return maxValue;
-    },
 
     async getNameFromAddressBook(address) {
         //console.log(">>>>>>>>>>>>>> [getNameFromAddressBook] address: " + address);
@@ -964,37 +615,5 @@ export const tsCoreUtils = {
         return new Date(year, month - 1, day);
     },
 
-    mergeCategoricalComparisonData(labelsA, sentA, rcvdA, labelsB, sentB, rcvdB) {
-        let allLabels = [...new Set([...labelsA, ...labelsB])];
-        let mapA = Object.fromEntries(labelsA.map((l, i) => [l, { sent: sentA[i], rcvd: rcvdA[i] }]));
-        let mapB = Object.fromEntries(labelsB.map((l, i) => [l, { sent: sentB[i], rcvd: rcvdB[i] }]));
-        allLabels.sort((a, b) => {
-            let totalA = (mapA[a]?.sent ?? 0) + (mapA[a]?.rcvd ?? 0) + (mapB[a]?.sent ?? 0) + (mapB[a]?.rcvd ?? 0);
-            let totalB = (mapA[b]?.sent ?? 0) + (mapA[b]?.rcvd ?? 0) + (mapB[b]?.sent ?? 0) + (mapB[b]?.rcvd ?? 0);
-            return totalB - totalA;
-        });
-        return {
-            labels: allLabels,
-            sentA: allLabels.map(l => mapA[l]?.sent ?? 0),
-            rcvdA: allLabels.map(l => mapA[l]?.rcvd ?? 0),
-            sentB: allLabels.map(l => mapB[l]?.sent ?? 0),
-            rcvdB: allLabels.map(l => mapB[l]?.rcvd ?? 0),
-        };
-    },
-
 }
 
-
-const inboxZeroColors = [
-    "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", 
-    "#98df8a", "#ff9896", "#9467bd", "#c5b0d5", 
-    "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", 
-    "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5",
-    "#393b79", "#5254a3", "#6b6ecf", "#9c9ede",
-    "#637939", "#8ca252", "#b5cf6b", "#cedb9c",
-    "#8c6d31", "#bd9e39", "#e7ba52", "#e7cb94",
-    "#843c39", "#ad494a", "#d6616b", "#e7969c",
-    "#7b4173", "#a55194", "#ce6dbd", "#de9ed6"
-];
-
-const inboxZeroInboxColor = "#d62728";

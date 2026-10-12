@@ -1746,5 +1746,101 @@
   "InboxAgeNoteFresh": {
     "message": "Nothing in the inbox is older than a month.",
     "description": ""
+  },
+  "CustomQryPeriod": {
+    "message": "Period",
+    "description": "Custom query panel field"
+  },
+  "CompareNotOnSingleDay": {
+    "message": "The comparison needs a period of more than one day",
+    "description": ""
+  },
+  "QuickRanges": {
+    "message": "Quick ranges",
+    "description": "Custom query panel, preset periods"
+  },
+  "FiltersLabel": {
+    "message": "Filters",
+    "description": "Custom query panel"
+  },
+  "AddFilter": {
+    "message": "+ Add filter",
+    "description": "Custom query panel, opens the advanced filters"
+  },
+  "CloseFilters": {
+    "message": "Close filters",
+    "description": "Custom query panel, closes the advanced filters"
+  },
+  "RemoveFilter": {
+    "message": "Remove this filter",
+    "description": ""
+  },
+  "ChoosePeriodAndRun": {
+    "message": "Choose a period and run the query.",
+    "description": "Shown in the Custom Query tab before the first query"
+  },
+  "AggregationDays": {
+    "message": "Days",
+    "description": "Grouping of the main chart"
+  },
+  "AggregationWeeks": {
+    "message": "Weeks",
+    "description": "Grouping of the main chart"
+  },
+  "AggregationMonths": {
+    "message": "Months",
+    "description": "Grouping of the main chart"
+  },
+  "AggregationYears": {
+    "message": "Years",
+    "description": "Grouping of the main chart"
+  },
+  "FilterChipFolders": {
+    "message": "Folders: $FOLDERS$",
+    "description": "Active filter chip",
+    "placeholders": {
+      "folders": {
+        "content": "$1",
+        "example": "Inbox, Projects"
+      }
+    }
+  },
+  "FilterChipSubject": {
+    "message": "Subject contains \"$TEXT$\"",
+    "description": "Active filter chip",
+    "placeholders": {
+      "text": {
+        "content": "$1",
+        "example": "invoice"
+      }
+    }
+  },
+  "VsPeriodB": {
+    "message": "vs Period B ($NUM$)",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "269"
+      }
+    }
+  },
+  "WeekLabel": {
+    "message": "W$WEEK$ $YEAR$",
+    "description": "Label of a week in the charts, e.g. W12 2026",
+    "placeholders": {
+      "week": {
+        "content": "$1",
+        "example": "12"
+      },
+      "year": {
+        "content": "$2",
+        "example": "2026"
+      }
+    }
+  },
+  "PeriodBShort": {
+    "message": "B",
+    "description": "Short label before a Period B value, e.g. B 42"
   }
 }

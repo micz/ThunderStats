@@ -240,3 +240,12 @@
   grid-template-columns: repeat(auto-fill, minmax(min(380px, 100%), 1fr));
   gap: 18px;
 }
+
+/* Period B value next to a Period A value (Custom Query comparison) */
+.ts-cmp-value {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

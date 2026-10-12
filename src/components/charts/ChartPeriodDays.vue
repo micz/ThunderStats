@@ -29,11 +29,11 @@
 <script setup>
 import { computed } from 'vue';
 import { Bar } from 'vue-chartjs';
-import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip } from 'chart.js';
+import { Chart, BarController, BarElement, LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip } from 'chart.js';
 import { tsStore } from '@statslib/mzts-store';
 import { themeColor, withAlpha } from '@statslib/chartjs-lib/chart-theme.js';
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
+Chart.register(BarController, BarElement, LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip);
 
 const props = defineProps({
   days: { type: Array, default: () => [] },        // [{ key, label, date_label, is_today, is_business }]
@@ -43,6 +43,9 @@ const props = defineProps({
   avg_rcvd: { type: Number, default: 0 },
   avg_sent: { type: Number, default: 0 },
   avg_label: { type: String, default: 'avg' },
+  cmp_rcvd: { type: Array, default: null },        // Period B (Custom Query comparison), drawn as lines
+  cmp_sent: { type: Array, default: null },
+  cmp_label: { type: String, default: '' },
   is_loading: { type: Boolean, default: true },
 });
 
@@ -69,6 +72,12 @@ let chartData = computed(() => {
     datasets.push(Object.assign({ label: label_inbox, data: props.rcvd_inbox, backgroundColor: barColor(themeColor('warn')), stack: 'received' }, bar));
   }
   datasets.push(Object.assign({ label: label_sent, data: props.sent, backgroundColor: barColor(sent_color), stack: 'sent' }, bar));
+  if(props.cmp_rcvd && props.cmp_sent) {
+    // each line has its own stack, so the stacked scale does not add them up
+    let line = { type: 'line', borderWidth: 1.5, pointRadius: 2, pointHoverRadius: 3, tension: 0.3, fill: false, order: -1 };
+    datasets.push(Object.assign({ label: props.cmp_label + ' · ' + label_received, data: props.cmp_rcvd, borderColor: rcvd_color, backgroundColor: rcvd_color, borderDash: [2, 3], stack: 'cmp_received' }, line));
+    datasets.push(Object.assign({ label: props.cmp_label + ' · ' + label_sent, data: props.cmp_sent, borderColor: sent_color, backgroundColor: sent_color, borderDash: [2, 3], stack: 'cmp_sent' }, line));
+  }
   return { labels: props.days.map(d => d.label), datasets };
 });
 
@@ -85,7 +94,6 @@ let chartOptions = computed(() => {
     plugins: {
       legend: { display: false },
       title: { display: false },
-      datalabels: { display: false },
       tooltip: {
         callbacks: {
           title: (items) => items.length ? props.days[items[0].dataIndex].date_label : '',

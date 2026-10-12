@@ -270,14 +270,6 @@ export const tsUtils = {
         return formatString;
     },
 
-    safeConcat(dataArray, index) {
-        return (dataArray[index] && dataArray[index].data) ? dataArray[index].data : [];
-    },
-
-    isDarkMode() {
-        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    },
-
     // convertToMilliseconds(timeStr) {
     //     const parts = timeStr.split(' ');
     //     const hours = parts[0].includes('h') ? parseInt(parts[0].slice(0, -1)) : 0;
@@ -336,26 +328,6 @@ export const tsUtils = {
         return sortedDays; // Return the sorted copy
       },
 
-      sortWeekdays(firstDayWeek, msg_weekdays) {
-        // console.log(">>>>>>>>>> sortWeekdays: msg_weekdays: " + JSON.stringify(msg_weekdays));
-        // console.log(">>>>>>>>>> sortWeekdays: firstDayWeek: " + firstDayWeek);
-        // Convert the object to an array of entries to sort
-        const weekdaysArray = Object.entries(msg_weekdays).map(([key, value]) => ({
-          idx: parseInt(key),
-          ...value
-        }));
-        // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
-        // Sort the array based on the firstDayWeek value
-        weekdaysArray.sort((a, b) => {
-          const aAdjusted = (a.idx - firstDayWeek + 7) % 7;
-          const bAdjusted = (b.idx - firstDayWeek + 7) % 7;
-          return aAdjusted - bAdjusted;
-        });
-        // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
-        
-        return weekdaysArray;
-      },
-      
       async isThunderbird128OrGreater(){
         try {
           const info = await browser.runtime.getBrowserInfo();

@@ -126,7 +126,6 @@ let chartOptions = computed(() => {
     plugins: {
       legend: { display: false },
       title: { display: false },
-      datalabels: { display: false },
       tooltip: {
         filter: (item) => !item.dataset.ts_band,
         callbacks: {

@@ -20,6 +20,8 @@
 // Every input except kind, days and stat_days may be null while it is still loading.
 
 import { tsInsights, CLEAR_IN_GOOD_DAYS } from "./mzts-insights.js";
+
+const INBOX_CALENDAR_MAX_DAYS = 42;     // the Inbox Zero calendar shows at most the last 6 weeks of the period
 import { tsCoreUtils } from "./mzts-statscore.utils.js";
 import { tsUtils } from "./mzts-utils.js";
 
@@ -63,6 +65,8 @@ export const tsPeriodModel = {
         first_day_week: number,
         duplicates_note: boolean,          // folder counts include duplicates (filter_duplicates on): explain it
         open_folder_in_first_tab: boolean, // inbox0_openFolderInFirstTab pref
+        aggregation: 'day' | 'week' | 'month' | 'year',   // grouping of the main chart (Custom Query)
+        cmp_result: object,          // Period B getFullStatsData output (Custom Query comparison), or null
       }
     */
     build(input) {
@@ -86,7 +90,7 @@ export const tsPeriodModel = {
             heat: this.heat(input),
             weekday: this.weekday(input),
             involved: this.involved(input),
-            domains: input.result ? tsInsights.domainRows(input.result.domains) : [],
+            domains: this.domains(input),
             ended: this.ended(input, d),
             empty_text: msg("NoMailsReceived"),
         };
@@ -159,27 +163,31 @@ export const tsPeriodModel = {
     kpis(input, d) {
         let kpis = [];
         let today = (input.today_key && d.dates[input.today_key]) ? d.dates[input.today_key] : null;
-        let compare = input.kind == 'manydays' && input.prev;
         let agg = input.aggregate;
         let daily = (field) => agg ? msg("DailyStats", [agg['max_' + field], agg['min_' + field], agg['avg_' + field]]) : '';
         let daily_title = input.only_businessdays ? msg("InfoTotal_BDMails_Only") : '';
 
-        kpis.push({
-            id: 'rcvd', label: msg("Received"), value: d.R, color: 'var(--rcvd)',
-            delta: compare ? tsInsights.delta(d.R, input.prev.received, true) : null,
-            aside: (today && today.received > 0) ? msg("PlusToday", [today.received]) : '',
-            sub: compare ? msg("VsPreviousPeriod", [d.stat.length, input.prev.received]) : msg("AvgPerDay", [round1(d.R / Math.max(1, d.stat.length))]),
-            sub2: daily('received'), sub_title: daily_title,
-            is_loading: !input.result || (input.kind == 'manydays' && !input.prev),
+        // reference for the change: the previous period (Many Days) or Period B (Custom Query comparison)
+        let reference = null, reference_sub = null;
+        if(input.kind == 'manydays' && input.prev) {
+            reference = input.prev;
+            reference_sub = (value) => msg("VsPreviousPeriod", [d.stat.length, value]);
+        } else if(input.cmp_result) {
+            reference = { received: input.cmp_result.received, sent: input.cmp_result.sent };
+            reference_sub = (value) => msg("VsPeriodB", [value]);
+        }
+        let waiting_reference = input.kind == 'manydays' && !input.prev;
+
+        let counter = (id, field, color, increase_is_bad) => ({
+            id, label: msg(id == 'rcvd' ? "Received" : "Sent"), value: d[field == 'received' ? 'R' : 'S'], color,
+            delta: reference ? tsInsights.delta(d[field == 'received' ? 'R' : 'S'], reference[field], increase_is_bad) : null,
+            aside: (today && today[field] > 0) ? msg("PlusToday", [today[field]]) : '',
+            sub: reference ? reference_sub(reference[field]) : msg("AvgPerDay", [round1(d[field == 'received' ? 'R' : 'S'] / Math.max(1, d.stat.length))]),
+            sub2: daily(field), sub_title: daily_title,
+            is_loading: !input.result || waiting_reference,
         });
-        kpis.push({
-            id: 'sent', label: msg("Sent"), value: d.S, color: 'var(--sent)',
-            delta: compare ? tsInsights.delta(d.S, input.prev.sent, false) : null,
-            aside: (today && today.sent > 0) ? msg("PlusToday", [today.sent]) : '',
-            sub: compare ? msg("VsPreviousPeriod", [d.stat.length, input.prev.sent]) : msg("AvgPerDay", [round1(d.S / Math.max(1, d.stat.length))]),
-            sub2: daily('sent'), sub_title: daily_title,
-            is_loading: !input.result || (input.kind == 'manydays' && !input.prev),
-        });
+        kpis.push(counter('rcvd', 'received', 'var(--rcvd)', true));
+        kpis.push(counter('sent', 'sent', 'var(--sent)', false));
 
         if(input.internal && input.internal.enabled) {
             kpis.push({
@@ -237,7 +245,7 @@ export const tsPeriodModel = {
             }
         }
 
-        return {
+        let chart = {
             title, days,
             rcvd: input.show_inbox ? rcvd.map((v, i) => Math.max(0, v - inbox[i])) : rcvd,
             rcvd_inbox: input.show_inbox ? inbox : null,
@@ -246,6 +254,59 @@ export const tsPeriodModel = {
             avg_label: input.only_businessdays ? msg("AvgPerWorkingDayChip") : msg("AvgChip"),
             note,
         };
+        if(input.aggregation && input.aggregation != 'day') chart = this.bucketChart(input, chart);
+        return this.addComparison(input, chart);
+    },
+
+    // Main chart grouped by week, month or year (Custom Query)
+    bucketChart(input, chart) {
+        let source = { week: 'dates_weeks', month: 'dates_months', year: 'dates_years' }[input.aggregation];
+        let buckets = input.result ? input.result[source] : {};
+        let keys = Object.keys(buckets).sort();
+        let value = (k, field) => buckets[k][field] || 0;
+        let rcvd = keys.map(k => value(k, 'received'));
+        let inbox = keys.map(k => value(k, 'inbox'));
+        let sent = keys.map(k => value(k, 'sent'));
+        let step = keys.length <= 14 ? 1 : Math.ceil(keys.length / 7);
+        let days = keys.map((key, i) => {
+            let label = this.bucketLabel(key, input.aggregation);
+            return { key, label: i % step == 0 ? label : '', date_label: label, is_today: false, is_business: true };
+        });
+        let peak = keys.length ? keys.reduce((a, b) => value(b, 'received') > value(a, 'received') ? b : a) : null;
+        return Object.assign(chart, {
+            days,
+            rcvd: input.show_inbox ? rcvd.map((v, i) => Math.max(0, v - inbox[i])) : rcvd,
+            rcvd_inbox: input.show_inbox ? inbox : null,
+            sent,
+            avg_rcvd: keys.length ? tsInsights.sum(rcvd) / keys.length : 0,
+            avg_sent: keys.length ? tsInsights.sum(sent) / keys.length : 0,
+            avg_label: msg("AvgChip"),
+            note: (peak && value(peak, 'received') > 0) ? msg("PeriodNotePeak", [this.bucketLabel(peak, input.aggregation), value(peak, 'received')]) : '',
+        });
+    },
+
+    bucketLabel(key, aggregation) {
+        switch(aggregation) {
+            case 'week':
+                return msg("WeekLabel", [String(parseInt(key.slice(4), 10)), key.slice(0, 4)]);
+            case 'month':
+                return new Date(parseInt(key.slice(0, 4), 10), parseInt(key.slice(4, 6), 10) - 1, 1).toLocaleDateString(locale(), { month: 'short', year: 'numeric' });
+            default:
+                return key;
+        }
+    },
+
+    // Period B (Custom Query comparison) on the main chart, aligned by position with Period A
+    addComparison(input, chart) {
+        if(!input.cmp_result) return chart;
+        let aggregation = input.aggregation || 'day';
+        let source = { day: 'dates', week: 'dates_weeks', month: 'dates_months', year: 'dates_years' }[aggregation];
+        let buckets = input.cmp_result[source];
+        let keys = Object.keys(buckets).sort().slice(0, chart.days.length);
+        chart.cmp_rcvd = keys.map(k => buckets[k].received || 0);
+        chart.cmp_sent = keys.map(k => buckets[k].sent || 0);
+        chart.cmp_label = msg("PeriodB");
+        return chart;
     },
 
     timeOfDay(input) {
@@ -261,7 +322,13 @@ export const tsPeriodModel = {
         } else if(r_peak !== null) {
             note = msg("TimeOfDayNoteReceived", [hourText(r_peak), hourText(r_peak + 2)]);
         }
-        return { rcvd, sent, note };
+        let output = { rcvd, sent, note };
+        if(input.cmp_result) {
+            let cmp_days = Math.max(1, Object.keys(input.cmp_result.dates).length);
+            output.cmp_rcvd = tsInsights.hoursArray(input.cmp_result.msg_hours, 'received').map(v => v / cmp_days);
+            output.cmp_sent = tsInsights.hoursArray(input.cmp_result.msg_hours, 'sent').map(v => v / cmp_days);
+        }
+        return output;
     },
 
     weekdayName(weekday, style) {
@@ -270,13 +337,14 @@ export const tsPeriodModel = {
     },
 
     inboxZero(input) {
-        let output = { cells: [], weekday_labels: [], zero: 0, total: input.days.length, streak: 0, big: input.days.length <= 8, is_loading: !input.inbox };
+        let shown = input.days.slice(-INBOX_CALENDAR_MAX_DAYS);
+        let output = { cells: [], weekday_labels: [], zero: 0, total: shown.length, streak: 0, big: shown.length <= 8, is_loading: !input.inbox };
         output.weekday_labels = tsInsights.orderedWeekdays(input.first_day_week).map(wd => this.weekdayName(wd, 'short'));
-        if(!input.inbox || input.days.length == 0) return output;
+        if(!input.inbox || shown.length == 0) return output;
 
-        let last = toDate(input.days[input.days.length - 1]);
-        let days = tsInsights.inboxZeroDays(input.inbox.dates, last, input.days.length);
-        let pad = (toDate(input.days[0]).getDay() - Number(input.first_day_week) + 7) % 7;
+        let last = toDate(shown[shown.length - 1]);
+        let days = tsInsights.inboxZeroDays(input.inbox.dates, last, shown.length);
+        let pad = (toDate(shown[0]).getDay() - Number(input.first_day_week) + 7) % 7;
         for(let i = 0; i < pad; i++) output.cells.push({ key: 'pad' + i, pad: true });
         for(let day of days) {
             let key = tsUtils.dateToYYYYMMDD(day.date);
@@ -308,9 +376,11 @@ export const tsPeriodModel = {
     weekday(input) {
         if(!input.result) return { rows: [], note: '' };
         let averages = tsInsights.weekdayAverages(input.result.dates, input.result.msg_weekdays, input.first_day_week);
-        let rows = averages.map(a => ({
+        let cmp = input.cmp_result ? tsInsights.weekdayAverages(input.cmp_result.dates, input.cmp_result.msg_weekdays, input.first_day_week) : null;
+        let rows = averages.map((a, i) => ({
             label: this.weekdayName(a.weekday, 'short'),
             received: a.received, sent: a.sent,
+            cmp_received: cmp ? cmp[i].received : null,
             title: this.weekdayName(a.weekday, 'long') + ': ' + msg("WeekdayTooltip", [round1(a.received), round1(a.sent)]),
         }));
         // busiest weekday against the lightest business weekday
@@ -334,6 +404,19 @@ export const tsPeriodModel = {
         return tsUtils.dateToYYYYMMDD(date);
     },
 
+    domains(input) {
+        if(!input.result) return [];
+        let rows = tsInsights.domainRows(input.result.domains);
+        if(input.cmp_result) {
+            let cmp = input.cmp_result.domains;
+            rows.forEach(row => {
+                row.cmp_sent = cmp[row.name] ? cmp[row.name].sent : 0;
+                row.cmp_received = cmp[row.name] ? cmp[row.name].received : 0;
+            });
+        }
+        return rows;
+    },
+
     involved(input) {
         return {
             recipients: input.result ? input.result.recipients : {},
@@ -350,6 +433,13 @@ export const tsPeriodModel = {
         if(!input.result) return output;
         output.folders = tsInsights.endedUpFolders(input.result.folders);
         output.tags = tsInsights.endedUpTags(input.result.tags);
+        if(input.cmp_result) {
+            let cmp_folders = {}, cmp_tags = {};
+            for(let row of tsInsights.endedUpFolders(input.cmp_result.folders)) cmp_folders[row.id] = row.n;
+            for(let row of tsInsights.endedUpTags(input.cmp_result.tags)) cmp_tags[row.id] = row.n;
+            output.folders.forEach(row => row.cmp_n = cmp_folders[row.id] || 0);
+            output.tags.forEach(row => row.cmp_n = cmp_tags[row.id] || 0);
+        }
         let total = input.result.received;
         if(total > 0) {
             let in_inbox = output.folders.filter(f => f.kind == 'inbox').reduce((acc, f) => acc + f.n, 0);

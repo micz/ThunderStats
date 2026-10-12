@@ -35,6 +35,7 @@ The central class that retrieves and processes email data from the Thunderbird `
 | `getSingleDay(theDay, account_id, account_emails, internal_domains)` | Full stats for one day |
 | `getWeekdayBaseline(theDay, account_id, account_emails, num_weeks)` | Hourly counts (`msg_hours`) of the same weekday in the previous `num_weeks` weeks (non-business days skipped when `theDay` is a business day); the "usual day" of the Today/Yesterday dashboards |
 | `getCustomQryData(fromDate, toDate, account_id, account_emails, only_businessdays, adv_filters, internal_domains)` | Custom date range with optional filters |
+| `getDaysBefore(theDay, num_days, account_id, account_emails)` | Count-only stats of the `num_days` days before `theDay` (pace of a single-day Custom Query) |
 | `getFullStatsData(fromDate, toDate, account_id, account_emails, do_aggregate_stats, filter_duplicates, only_businessdays, adv_filters, internal_domains)` | Base method: retrieves and processes all messages in a date range. When `internal_domains` is provided, domain entries in the output include an `internal: true/false` flag. The output also has `msg_weekday_hours` (weekday × hour sent/received grid, used by the heatmap) |
 | `getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates)` | Aggregated (total/max/min/avg) stats |
 | `getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates)` | Lightweight count-only stats |
@@ -64,10 +65,8 @@ Utility methods used by `thunderStastsCore` and the Vue components.
 **Key responsibilities:**
 - Folder, tag, and account helpers (labels, colors, folder IDs, subfolders, archive inclusion); `openFolder(folder_data, in_first_tab)` shows a folder in a mail tab (TB 128+: new tab unless `in_first_tab`; TB 115: always the first mail tab)
 - Business day calculations (`checkBusinessDay`, `findPreviousBusinessDay`, `isEasterOrEasterMonday`)
-- `transformCountDataToDataset(data, do_progressive, get_labels)` — extracts `{ dataset_sent, dataset_rcvd, dataset_inbox }` arrays from date-keyed objects; supports cumulative mode
-- Chart label/color helpers and dataset transforms
+- `getCustomQryLabel(label, data_type)` — date, week, month or year key formatted for the CSV export
 - Account email address resolution (`getAccountEmails`, `getAccountCustomIdentities`)
-- `mergeCategoricalComparisonData(...)` — merges labels of two periods for categorical charts in compare mode
 - `getFilterDuplicatesPreference(account_id)` / `getIncludeArchivePreference(account_id)` — read global or per-account prefs
 - `getAccountInternalDomains(account_id)` — returns the internal domains list for a specific account; when `account_id` is `0`, returns internal domains for all accounts
 - `getInternalMailLabel(domains)` — computes the internal mail percentage from a domains object. Returns `{ percent, sent, received, internalSent, internalReceived }`
@@ -83,7 +82,7 @@ General-purpose utility functions.
 **Key responsibilities:**
 - Date key formatting (`dateToYYYYMMDD`, `dateToYYYYMM`, `dateToYYYYWW`, `dateToYYYY`) and parsing
 - Preset period helpers (`getLastMonday`, `getFirstDayOfLastMonth`, ...)
-- Weekday sorting, system dark mode detection (`isDarkMode`), Thunderbird version comparison
+- Thunderbird version comparison, `daysBetween`
 - Date array generators (`getDateArray`, `getDateArrayWeeks`, `getDateArrayMonths`, `getDateArrayYears`) — each entry has fields: `{ count, sent, received, inbox }`
 
 **Class:** `EmailMatcher`
@@ -185,13 +184,13 @@ Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `d
 
 ### `mzts-daymodel.js` — Single-Day Dashboard Model
 
-**Object:** `tsDayModel`. `build(input)` returns the props of `WidgetDayDashboard` (status strip, KPIs, chart, top correspondents, tables, domains, folders/tags) from the data loaded by a tab; every input except `kind` and `day` may be `null` while loading. `kind` is `today` (day in progress: "by now" comparisons, now line), `yesterday` or `day` (other single day, e.g. last business day). The status badge is "Inbox zero" (empty inbox), "Keeping up" (clear in ≤ 5 working days) or "Backlog growing". Dates use the Thunderbird UI language.
+**Object:** `tsDayModel`. `build(input)` returns the props of `WidgetDayDashboard` (status strip, KPIs, chart, top correspondents, tables, domains, folders/tags) from the data loaded by a tab; every input except `kind` and `day` may be `null` while loading. `kind` is `today` (day in progress: "by now" comparisons, now line), `yesterday` or `day` (other single day, e.g. last business day). The status badge is "Inbox zero" (empty inbox), "Keeping up" (clear in ≤ 5 working days) or "Backlog growing". Dates use the Thunderbird UI language. `neutral_badge` (Custom Query single day) shows "Query result" instead of the keeping-up status.
 
 ---
 
 ### `mzts-periodmodel.js` — Period Dashboard Model
 
-**Object:** `tsPeriodModel`. `build(input)` returns the props of `WidgetPeriodDashboard` from the data loaded by a tab. `days` are the days shown (chart, calendar), `stat_days` the days counted in totals and averages (Many Days: without today, reported apart as "+N today"). `kind` is `manydays` (keeping-up badge, changes against the previous period) or `custom` ("Query result" badge, no comparison, for any range length). Averages count business days only when `only_businessdays` is set. Computed notes: working days vs other days and peak day, time-of-day peaks, heatmap peak and busiest weekday, busiest vs lightest business weekday, folders footnote.
+**Object:** `tsPeriodModel`. `build(input)` returns the props of `WidgetPeriodDashboard` from the data loaded by a tab. `days` are the days shown (chart, calendar), `stat_days` the days counted in totals and averages (Many Days: without today, reported apart as "+N today"). `kind` is `manydays` (keeping-up badge, changes against the previous period) or `custom` ("Query result" badge, for any range length). For `custom`, `aggregation` groups the main chart by day, week, month or year, and `cmp_result` (Period B) adds the changes against Period B to the KPIs, Period B lines to the main and time-of-day charts and "B n" values to weekdays, domains, folders and tags (Period B buckets are aligned by position). The Inbox Zero calendar shows at most the last 6 weeks. Averages count business days only when `only_businessdays` is set. Computed notes: working days vs other days and peak day, time-of-day peaks, heatmap peak and busiest weekday, busiest vs lightest business weekday, folders footnote.
 
 ---
 
@@ -210,22 +209,17 @@ Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `d
 
 **Object:** `tsStore`
 
-A Vue `reactive()` object (not Vuex/Pinia) holding shared app state: debug flag, dark mode, current account, current tab, business day settings, first day of week, tags list, and the `chart_colors` palette. Imported by both components and statslib modules. `darkmode` (effective theme) and `theme_mode` (pref value) are written only by `tsTheme`.
+A Vue `reactive()` object (not Vuex/Pinia) holding shared app state: debug flag, dark mode, current account, current tab, business day settings, first day of week, tags list. Imported by both components and statslib modules. `darkmode` (effective theme) and `theme_mode` (pref value) are written only by `tsTheme`.
 
 ---
 
 ## `chartjs-lib/` — Custom Chart.js Plugins
 
-Custom plugins and external tooltip handlers used by chart components.
+Chart helpers. The plugins used by a single chart (the "now" line, the average lines) live in the chart component itself.
 
 | File | Purpose |
 |---|---|
-| `plugin-barposition.js` | Adjusts bar chart positioning |
-| `plugin-doughnutlabels.js` | Labels inside doughnut charts |
-| `plugin-timechart-legend.js` | Custom legend for time charts |
-| `plugin-timechart-vertical-line.js` | Vertical line overlay on time charts |
-| `external-tooltip-timechartlines.js` | Custom tooltip for time charts |
-| `external-tooltip-inboxzerodates.js` | Custom tooltip for Inbox Zero date charts |
+| `plugin-barposition.js` | Adjusts bar chart positioning (not used by any chart) |
 | `chart-theme.js` | `applyChartTheme(is_dark)` sets the global `Chart.defaults` text/grid colors and redraws open charts; called by `ThunderStatsView` when `tsStore.darkmode` changes. Charts must not set `Chart.defaults` themselves. Also exports `themeColor(name)` (current value of a CSS token) and `withAlpha(hex, alpha)` |
 
 ---

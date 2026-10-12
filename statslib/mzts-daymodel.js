@@ -57,6 +57,7 @@ export const tsDayModel = {
         first_day_week: number,
         duplicates_note: boolean,          // folder counts include duplicates (filter_duplicates on): explain it
         open_folder_in_first_tab: boolean, // inbox0_openFolderInFirstTab pref
+        neutral_badge: boolean,            // Custom Query: "Query result" badge instead of the keeping-up status
       }
     */
     build(input) {
@@ -97,7 +98,9 @@ export const tsDayModel = {
         let clear_in = (input.inbox && input.prev_days) ? tsInsights.clearInDays(d.inbox_total, input.prev_days, d.inbox_dates) : null;
 
         let tone = 'neutral', badge = '';
-        if(input.inbox && input.prev_days) {
+        if(input.neutral_badge) {
+            badge = msg("QueryResult");
+        } else if(input.inbox && input.prev_days) {
             if(d.inbox_total == 0) {
                 tone = 'good'; badge = msg("InboxAtZero");
             } else if(clear_in !== null && clear_in <= CLEAR_IN_GOOD_DAYS) {

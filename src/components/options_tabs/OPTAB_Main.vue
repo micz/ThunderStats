@@ -123,7 +123,7 @@
     </table>
     <table class="miczPrefs" v-if="tsStore.isTB128plus">
     <tr>
-      <td colspan="2" class="grouptitle">__MSG_InboxZeroChart__</td>
+      <td colspan="2" class="grouptitle">__MSG_Folders__</td>
     </tr>
     <tr>
       <td>
@@ -131,14 +131,6 @@
       </td>
       <td>
      <label><span class="dims_label" @click="toggle_options">__MSG_folderspreadchart_openinfirsttab__</span></label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="inbox_percent_remaining" name="inbox_percent_remaining" class="option-input" /></label>
-      </td>
-      <td>
-        <label><span class="dims_label" @click="toggle_options">__MSG_prefs_inbox_percent_remaining__</span></label>
       </td>
     </tr>
     </table>

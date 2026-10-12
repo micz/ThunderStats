@@ -29,16 +29,22 @@
 
     <div class="ts-card ts-chart-card">
       <div class="ts-chart-head">
-        <div class="ts-card-title">{{ chart.title }}</div>
+        <div class="ts-chart-title-row">
+          <div class="ts-card-title">{{ chart.title }}</div>
+          <div class="ts-mini-segmented" v-if="aggregations.length">
+            <button type="button" v-for="item in aggregations" :key="item.id" :class="{ 'is-active': item.id == aggregation }" @click="emit('aggregation', item.id)">{{ item.label }}</button>
+          </div>
+        </div>
         <div class="ts-legend">
           <div class="ts-legend-item"><span class="ts-legend-square" style="background: var(--rcvd)"></span>{{ received_label }}</div>
           <div class="ts-legend-item" v-if="chart.rcvd_inbox"><span class="ts-legend-square" style="background: var(--warn)"></span>{{ inbox_label }}</div>
           <div class="ts-legend-item"><span class="ts-legend-square" style="background: var(--sent)"></span>{{ sent_label }}</div>
           <div class="ts-legend-item"><span class="ts-legend-dash" style="border-color: var(--rcvd)"></span>{{ avg_received_label }}</div>
           <div class="ts-legend-item"><span class="ts-legend-dash" style="border-color: var(--sent)"></span>{{ avg_sent_label }}</div>
+          <div class="ts-legend-item" v-if="chart.cmp_rcvd"><span class="ts-legend-dots"></span>{{ chart.cmp_label }}</div>
         </div>
       </div>
-      <ChartPeriodDays :days="chart.days" :rcvd="chart.rcvd" :rcvd_inbox="chart.rcvd_inbox" :sent="chart.sent" :avg_rcvd="chart.avg_rcvd" :avg_sent="chart.avg_sent" :avg_label="chart.avg_label" :is_loading="loading.chart" />
+      <ChartPeriodDays :days="chart.days" :rcvd="chart.rcvd" :rcvd_inbox="chart.rcvd_inbox" :sent="chart.sent" :avg_rcvd="chart.avg_rcvd" :avg_sent="chart.avg_sent" :avg_label="chart.avg_label" :cmp_rcvd="chart.cmp_rcvd" :cmp_sent="chart.cmp_sent" :cmp_label="chart.cmp_label" :is_loading="loading.chart" />
       <div class="ts-card-note" v-if="chart.note && !loading.chart">{{ chart.note }}</div>
     </div>
 
@@ -49,9 +55,10 @@
           <div class="ts-legend">
             <div class="ts-legend-item"><span class="ts-legend-line" style="background: var(--rcvd)"></span>{{ received_label }}</div>
             <div class="ts-legend-item"><span class="ts-legend-line" style="background: var(--sent)"></span>{{ sent_label }}</div>
+            <div class="ts-legend-item" v-if="tod.cmp_rcvd"><span class="ts-legend-dash" style="border-color: var(--text3)"></span>{{ period_b_label }}</div>
           </div>
         </div>
-        <ChartHourlyAverage :rcvd="tod.rcvd" :sent="tod.sent" :is_loading="loading.chart" />
+        <ChartHourlyAverage :rcvd="tod.rcvd" :sent="tod.sent" :cmp_rcvd="tod.cmp_rcvd" :cmp_sent="tod.cmp_sent" :cmp_label="period_b_label" :is_loading="loading.chart" />
         <div class="ts-card-note" v-if="tod.note && !loading.chart">{{ tod.note }}</div>
       </div>
       <WidgetInboxZeroCalendar v-bind="iz" />
@@ -112,7 +119,11 @@ const props = defineProps({
   ended: { type: Object, default: () => ({}) },       // { title, folders, tags, note }
   empty_text: { type: String, default: '' },
   loading: { type: Object, default: () => ({}) },     // { strip, chart, involved, domains, folders }
+  aggregations: { type: Array, default: () => [] },   // [{ id, label }] grouping choices of the main chart (Custom Query)
+  aggregation: { type: String, default: 'day' },
 });
+
+const emit = defineEmits(['aggregation']);
 
 const received_label = browser.i18n.getMessage("Received");
 const sent_label = browser.i18n.getMessage("Sent");
@@ -120,6 +131,7 @@ const inbox_label = browser.i18n.getMessage("StillInInbox");
 const avg_received_label = browser.i18n.getMessage("AvgReceivedPerDay");
 const avg_sent_label = browser.i18n.getMessage("AvgSentPerDay");
 const tod_title = browser.i18n.getMessage("TimeOfDayTitle");
+const period_b_label = browser.i18n.getMessage("PeriodB");
 const domains_title = browser.i18n.getMessage("Domains");
 
 let has_recipients = computed(() => props.loading.involved || Object.keys(props.involved.recipients || {}).length > 0);
@@ -157,6 +169,19 @@ let has_senders = computed(() => props.loading.involved || Object.keys(props.inv
 .ts-two-col:empty,
 .ts-two-col-fill:empty {
   display: none;
+}
+
+.ts-chart-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.ts-legend-dots {
+  display: block;
+  width: 14px;
+  border-top: 2px dotted var(--text2);
 }
 
 .ts-legend-dash {

@@ -141,6 +141,20 @@ export class thunderStastsCore {
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays, adv_filters, internal_domains);   // the "true" is to aggregate
     }
+    // Count-only stats of the num_days days before theDay (theDay excluded), for the pace of a single-day query
+    async getDaysBefore(theDay, num_days, account_id = 0, account_emails = []) {
+
+      let fromDate = new Date(theDay);
+      fromDate.setDate(fromDate.getDate() - num_days);
+      fromDate.setHours(0, 0, 0, 0);
+      let toDate = new Date(theDay);
+      toDate.setDate(toDate.getDate() - 1);
+      toDate.setHours(23, 59, 59, 999);
+
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
+      return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates);
+    }
     // ================ CUSTOM QUERY TAB - END =====================
 
 

@@ -38,6 +38,7 @@
             <div class="ts-wd-bar" :style="{ height: barHeight(row.sent), background: 'var(--sent)' }"></div>
           </div>
           <div class="ts-wd-label">{{ row.label }}</div>
+          <div class="ts-cmp-value" v-if="row.cmp_received !== null && row.cmp_received !== undefined">{{ period_b_short }} {{ Math.round(row.cmp_received) }}</div>
         </div>
       </div>
       <div class="ts-card-note" v-if="note">{{ note }}</div>
@@ -49,7 +50,7 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-  rows: { type: Array, default: () => [] },     // [{ label, received, sent, title }] ordered from the first day of the week
+  rows: { type: Array, default: () => [] },     // [{ label, received, sent, title, cmp_received }] ordered from the first day of the week
   note: { type: String, default: '' },
   is_loading: { type: Boolean, default: false },
 });
@@ -57,6 +58,7 @@ const props = defineProps({
 const title = browser.i18n.getMessage("WeekdayTitle");
 const received_label = browser.i18n.getMessage("Received");
 const sent_label = browser.i18n.getMessage("Sent");
+const period_b_short = browser.i18n.getMessage("PeriodBShort");
 
 let max_value = computed(() => Math.max(1, ...props.rows.map(r => Math.max(r.received, r.sent))));
 

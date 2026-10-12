@@ -38,6 +38,9 @@ Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineEle
 const props = defineProps({
   rcvd: { type: Array, default: () => [] },    // 24 average values
   sent: { type: Array, default: () => [] },
+  cmp_rcvd: { type: Array, default: null },    // Period B (Custom Query comparison), dashed
+  cmp_sent: { type: Array, default: null },
+  cmp_label: { type: String, default: '' },
   is_loading: { type: Boolean, default: true },
 });
 
@@ -54,13 +57,16 @@ let chartData = computed(() => {
   let rcvd_color = themeColor('rcvd');
   let sent_color = themeColor('sent');
   let line = { borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 3, tension: 0.35, fill: 'origin' };
-  return {
-    labels,
-    datasets: [
-      Object.assign({ label: label_received, data: props.rcvd, borderColor: rcvd_color, backgroundColor: withAlpha(rcvd_color, 0.12) }, line),
-      Object.assign({ label: label_sent, data: props.sent, borderColor: sent_color, backgroundColor: withAlpha(sent_color, 0.10) }, line),
-    ],
-  };
+  let datasets = [
+    Object.assign({ label: label_received, data: props.rcvd, borderColor: rcvd_color, backgroundColor: withAlpha(rcvd_color, 0.12) }, line),
+    Object.assign({ label: label_sent, data: props.sent, borderColor: sent_color, backgroundColor: withAlpha(sent_color, 0.10) }, line),
+  ];
+  if(props.cmp_rcvd && props.cmp_sent) {
+    let dashed = { borderWidth: 1.5, borderDash: [5, 4], pointRadius: 0, pointHoverRadius: 3, tension: 0.35, fill: false };
+    datasets.push(Object.assign({ label: props.cmp_label + ' · ' + label_received, data: props.cmp_rcvd, borderColor: rcvd_color }, dashed));
+    datasets.push(Object.assign({ label: props.cmp_label + ' · ' + label_sent, data: props.cmp_sent, borderColor: sent_color }, dashed));
+  }
+  return { labels, datasets };
 });
 
 let chartOptions = computed(() => {
@@ -73,7 +79,6 @@ let chartOptions = computed(() => {
     plugins: {
       legend: { display: false },
       title: { display: false },
-      datalabels: { display: false },
       tooltip: {
         callbacks: {
           title: (items) => items.length ? items[0].label + ':00' : '',

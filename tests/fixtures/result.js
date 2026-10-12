@@ -18,6 +18,7 @@ export function makeResult(mails, options) {
     dates_months: tsUtils.getDateArrayMonths(from, to),
     dates_years: tsUtils.getDateArrayYears(from, to),
     msg_hours: Object.fromEntries(Array.from({ length: 24 }, (_, h) => [h, empty()])),
+    msg_hours_days: {},
     msg_weekdays: Array.from({ length: 7 }, empty),
     msg_weekday_hours: Array.from({ length: 7 }, () => Array.from({ length: 24 }, empty)),
     senders: {},
@@ -51,6 +52,8 @@ export function makeResult(mails, options) {
       if (!mail.sent && mail.inbox) bucket.inbox++;
     }
     result.msg_hours[h][field]++;
+    result.msg_hours_days[mail.key] ??= Object.fromEntries(Array.from({ length: 24 }, (_, hh) => [hh, empty()]));
+    result.msg_hours_days[mail.key][h][field]++;
     result.msg_weekdays[wd][field]++;
     result.msg_weekday_hours[wd][h][field]++;
 

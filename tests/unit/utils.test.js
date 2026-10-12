@@ -132,6 +132,22 @@ describe('formatting', () => {
   });
 });
 
+describe('regexEmail', () => {
+  it.each([
+    ['Mario Rossi <mario@client.com>', 'mario@client.com'],
+    ['Me <me+news@work.it>', 'me+news@work.it'],
+    ["o'brien@example.ie", "o'brien@example.ie"],
+    ["'mario@client.com' <mario@client.com>", 'mario@client.com'],
+    ['first.last-x_y%z@sub.example.co.uk', 'first.last-x_y%z@sub.example.co.uk'],
+  ])('finds the address in %s', (text, address) => {
+    expect(text.match(tsUtils.regexEmail)[0]).toBe(address);
+  });
+
+  it('finds nothing without an address', () => {
+    expect('Mailer Daemon'.match(tsUtils.regexEmail)).toBeNull();
+  });
+});
+
 describe('EmailMatcher', () => {
   const matcher = new EmailMatcher(['me@example.com', '*@work.it', '@corp.org', 'info+*@shop.com']);
 

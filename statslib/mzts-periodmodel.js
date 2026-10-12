@@ -77,18 +77,22 @@ export const tsPeriodModel = {
         let S = sumOf(stat, 'sent');
         let L = sumOf(stat, 'inbox');
         let business_days = stat.filter(k => tsCoreUtils.checkBusinessDay(k));
-        let avg_keys = (input.only_businessdays && business_days.length > 0) ? business_days : stat;
+        // The averages leave out the day in progress (Many Days keeps it out of stat_days already, a Custom Query may end today)
+        let current_key = tsUtils.dateToYYYYMMDD(new Date());
+        let avg_days = stat.filter(k => k != current_key);
+        let avg_business_days = business_days.filter(k => k != current_key);
+        let avg_keys = (input.only_businessdays && avg_business_days.length > 0) ? avg_business_days : avg_days;
 
-        let d = { dates, stat, R, S, L, H: Math.max(0, R - L), business_days, avg_keys };
+        let d = { dates, stat, R, S, L, H: Math.max(0, R - L), business_days, current_key, avg_days, avg_business_days, avg_keys };
 
         return {
             strip: this.strip(input, d),
             kpis: this.kpis(input, d),
             chart: this.chart(input, d),
-            tod: this.timeOfDay(input),
+            tod: this.timeOfDay(input, d),
             iz: this.inboxZero(input),
             heat: this.heat(input),
-            weekday: this.weekday(input),
+            weekday: this.weekday(input, d),
             involved: this.involved(input),
             domains: this.domains(input),
             ended: this.ended(input, d),
@@ -124,7 +128,7 @@ export const tsPeriodModel = {
         }
 
         let pct = (v) => d.R > 0 ? (v / d.R * 100).toFixed(1) + '%' : '0%';
-        let per_working_day = d.business_days.length ? Math.round(this.sumKeys(d, d.business_days, 'received') / d.business_days.length) : 0;
+        let per_working_day = d.avg_business_days.length ? Math.round(this.sumKeys(d, d.avg_business_days, 'received') / d.avg_business_days.length) : 0;
         let busiest = null;
         for(let key of d.stat) {
             if(d.dates[key] && (!busiest || d.dates[key].received > d.dates[busiest].received)) busiest = key;
@@ -153,6 +157,43 @@ export const tsPeriodModel = {
         return keys.reduce((acc, k) => acc + (d.dates[k] ? d.dates[k][field] : 0), 0);
     },
 
+    // total/max/min/avg of the given days, like thunderStastsCore.aggregateData
+    aggregateKeys(d, keys) {
+        let output = {};
+        for(let field of ['sent', 'received']) {
+            let values = keys.map(k => d.dates[k] ? d.dates[k][field] : 0);
+            let total = tsInsights.sum(values);
+            output['total_' + field] = total;
+            output['max_' + field] = values.length ? Math.max(...values) : 0;
+            output['min_' + field] = values.length ? Math.min(...values) : 0;
+            output['avg_' + field] = values.length ? parseFloat((total / values.length).toFixed(2)) : 0;
+        }
+        return output;
+    },
+
+    // Hourly totals of a result without the day in progress, and the number of days they cover
+    hoursWithoutCurrentDay(result, current_key) {
+        let current = (result.msg_hours_days && result.msg_hours_days[current_key]) || null;
+        let hours = (field) => tsInsights.hoursArray(result.msg_hours, field).map((v, h) => v - (current && current[h] ? current[h][field] : 0));
+        let num_days = Object.keys(result.dates).filter(k => k != current_key).length;
+        return { rcvd: hours('received'), sent: hours('sent'), num_days: Math.max(1, num_days) };
+    },
+
+    // Days and weekday totals of a result without the day in progress
+    weekdaysWithoutCurrentDay(result, current_key) {
+        let dates = Object.assign({}, result.dates);
+        let msg_weekdays = result.msg_weekdays;
+        if(dates[current_key]) {
+            let wd = toDate(current_key).getDay();
+            msg_weekdays = Object.assign({}, msg_weekdays, { [wd]: {
+                received: msg_weekdays[wd].received - dates[current_key].received,
+                sent: msg_weekdays[wd].sent - dates[current_key].sent,
+            } });
+            delete dates[current_key];
+        }
+        return { dates, msg_weekdays };
+    },
+
     // {YYYYMMDD: {received}} of the counted days, as expected by tsInsights.clearInDays
     daysObject(d) {
         let output = {};
@@ -163,7 +204,8 @@ export const tsPeriodModel = {
     kpis(input, d) {
         let kpis = [];
         let today = (input.today_key && d.dates[input.today_key]) ? d.dates[input.today_key] : null;
-        let agg = input.aggregate;
+        // the aggregate of the tab counts the day in progress when the range ends today
+        let agg = (input.aggregate && d.stat.includes(d.current_key)) ? this.aggregateKeys(d, input.only_businessdays ? d.avg_business_days : d.avg_days) : input.aggregate;
         let daily = (field) => agg ? msg("DailyStats", [agg['max_' + field], agg['min_' + field], agg['avg_' + field]]) : '';
         let daily_title = input.only_businessdays ? msg("InfoTotal_BDMails_Only") : '';
 
@@ -182,7 +224,7 @@ export const tsPeriodModel = {
             id, label: msg(id == 'rcvd' ? "ReceivedMails" : "SentMails"), value: d[field == 'received' ? 'R' : 'S'], color,
             delta: reference ? tsInsights.delta(d[field == 'received' ? 'R' : 'S'], reference[field], increase_is_bad) : null,
             aside: (today && today[field] > 0) ? msg("PlusToday", [today[field]]) : '',
-            sub: reference ? reference_sub(reference[field]) : msg("AvgPerDay", [round1(d[field == 'received' ? 'R' : 'S'] / Math.max(1, d.stat.length))]),
+            sub: reference ? reference_sub(reference[field]) : msg("AvgPerDay", [round1(this.sumKeys(d, d.avg_days, field) / Math.max(1, d.avg_days.length))]),
             sub2: daily(field), sub_title: daily_title,
             is_loading: !input.result || waiting_reference,
         });
@@ -229,15 +271,15 @@ export const tsPeriodModel = {
 
         // note: working days against the other days, and the peak day
         let note = '';
-        let other_days = d.stat.filter(k => !tsCoreUtils.checkBusinessDay(k));
+        let other_days = d.avg_days.filter(k => !tsCoreUtils.checkBusinessDay(k));
         let busiest = null;
         for(let key of d.stat) {
             if(d.dates[key] && (!busiest || d.dates[key].received > d.dates[busiest].received)) busiest = key;
         }
         if(input.result && busiest && d.dates[busiest].received > 0) {
             let peak = msg("PeriodNotePeak", [this.shortDay(busiest), d.dates[busiest].received]);
-            if(d.business_days.length && other_days.length) {
-                let bd_avg = Math.round(this.sumKeys(d, d.business_days, 'received') / d.business_days.length);
+            if(d.avg_business_days.length && other_days.length) {
+                let bd_avg = Math.round(this.sumKeys(d, d.avg_business_days, 'received') / d.avg_business_days.length);
                 let other_avg = Math.round(this.sumKeys(d, other_days, 'received') / other_days.length);
                 note = msg("PeriodNoteWorkingDays", [bd_avg, other_avg]) + ' ' + peak;
             } else {
@@ -309,11 +351,11 @@ export const tsPeriodModel = {
         return chart;
     },
 
-    timeOfDay(input) {
+    timeOfDay(input, d) {
         if(!input.result) return { rcvd: [], sent: [], note: '' };
-        let num_days = Math.max(1, Object.keys(input.result.dates).length);
-        let rcvd = tsInsights.hoursArray(input.result.msg_hours, 'received').map(v => v / num_days);
-        let sent = tsInsights.hoursArray(input.result.msg_hours, 'sent').map(v => v / num_days);
+        let hours = this.hoursWithoutCurrentDay(input.result, d.current_key);
+        let rcvd = hours.rcvd.map(v => v / hours.num_days);
+        let sent = hours.sent.map(v => v / hours.num_days);
         let r_peak = tsInsights.peakWindow(rcvd, 2);
         let s_peak = tsInsights.peakWindow(sent, 2);
         let note = '';
@@ -324,9 +366,9 @@ export const tsPeriodModel = {
         }
         let output = { rcvd, sent, note };
         if(input.cmp_result) {
-            let cmp_days = Math.max(1, Object.keys(input.cmp_result.dates).length);
-            output.cmp_rcvd = tsInsights.hoursArray(input.cmp_result.msg_hours, 'received').map(v => v / cmp_days);
-            output.cmp_sent = tsInsights.hoursArray(input.cmp_result.msg_hours, 'sent').map(v => v / cmp_days);
+            let cmp = this.hoursWithoutCurrentDay(input.cmp_result, d.current_key);
+            output.cmp_rcvd = cmp.rcvd.map(v => v / cmp.num_days);
+            output.cmp_sent = cmp.sent.map(v => v / cmp.num_days);
         }
         return output;
     },
@@ -373,10 +415,15 @@ export const tsPeriodModel = {
         return { msg_weekday_hours: input.result.msg_weekday_hours, first_day_week: input.first_day_week, weekday_labels, note };
     },
 
-    weekday(input) {
+    weekday(input, d) {
         if(!input.result) return { rows: [], note: '' };
-        let averages = tsInsights.weekdayAverages(input.result.dates, input.result.msg_weekdays, input.first_day_week);
-        let cmp = input.cmp_result ? tsInsights.weekdayAverages(input.cmp_result.dates, input.cmp_result.msg_weekdays, input.first_day_week) : null;
+        let main = this.weekdaysWithoutCurrentDay(input.result, d.current_key);
+        let averages = tsInsights.weekdayAverages(main.dates, main.msg_weekdays, input.first_day_week);
+        let cmp = null;
+        if(input.cmp_result) {
+            let cmp_days = this.weekdaysWithoutCurrentDay(input.cmp_result, d.current_key);
+            cmp = tsInsights.weekdayAverages(cmp_days.dates, cmp_days.msg_weekdays, input.first_day_week);
+        }
         let rows = averages.map((a, i) => ({
             label: this.weekdayName(a.weekday, 'short'),
             received: a.received, sent: a.sent,
@@ -440,10 +487,10 @@ export const tsPeriodModel = {
             output.folders.forEach(row => row.cmp_n = cmp_folders[row.id] || 0);
             output.tags.forEach(row => row.cmp_n = cmp_tags[row.id] || 0);
         }
-        let total = input.result.received;
+        // same days as the KPIs and the status strip: received in the counted days and no longer in the inbox
+        let total = d.R;
         if(total > 0) {
-            let in_inbox = output.folders.filter(f => f.kind == 'inbox').reduce((acc, f) => acc + f.n, 0);
-            let moved = Math.max(0, total - in_inbox);
+            let moved = d.H;
             let top_filed = output.folders.find(f => f.kind == 'filed');
             if(moved == 0 || !top_filed) {
                 output.note = msg("EndedUpNoteNoneMoved", [total]);

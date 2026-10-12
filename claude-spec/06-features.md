@@ -35,10 +35,10 @@ Shows statistics for the last N days (default: 7, configurable in options), endi
 - **Status strip** — keeping-up badge (as in Today), date range, days and working days; Arrived → Filed or answered → Still in inbox ("added to backlog"); received per working day; busiest day
 - **KPI cards** — Received and Sent with the change against the previous N days and "+N today", plus max / min / average per day (business days only with `bday_default_only`, explained in the tooltip); Internal traffic (with `show_internal_mail_percent` and internal domains); Reply ratio (1 : received/sent)
 - **Day by day** — grouped bars per day (received, sent); with `many_days_show_inbox` the received mails still in the inbox are stacked on top in the warning color; today's bars are lighter; non-business days have muted labels; dashed lines for the average received and sent per day (per working day with `bday_default_only`); computed note (working days vs other days, peak day)
-- **Time of day · average per day** — average received / sent per hour, with a note on the peak hours
+- **Time of day · average per day** — average received / sent per hour (today left out, like every average of the tab), with a note on the peak hours
 - **Inbox Zero** — calendar of the period with closed at zero / ≤ 5 left / missed days, days at zero, streak at end (same approximation as Today)
 - **When mail arrives** — heatmap of received mails by hour and weekday, 07–20 or 24h
-- **By weekday · average per day** — received / sent averages per weekday, with a note on the busiest and lightest business weekday
+- **By weekday · average per day** — received / sent averages per weekday (today left out), with a note on the busiest and lightest business weekday
 - **Domains, Where mails ended up, Top N Recipients / Top N Senders**
 
 ---
@@ -66,7 +66,7 @@ Analysis of an arbitrary date range. The query panel is a card at the top of the
 
 #### Results
 - **One day** — the Today/Yesterday layout (`WidgetDayDashboard`) with a "Query result" badge: comparison with the usual same weekday (not shown when filters are active, since the usual day is not filtered), pace from the 7 previous days, "How old is your inbox"
-- **Longer range** — the Many Days layout (`WidgetPeriodDashboard`) with a "Query result" badge and no comparison with a previous period. The main chart has a **Days / Weeks / Months / Years** toggle; the default depends on the length of the range (days up to 62 days, weeks up to ~6 months, months up to 3 years, then years). The Inbox Zero calendar shows at most the last 6 weeks of the range
+- **Longer range** — the Many Days layout (`WidgetPeriodDashboard`) with a "Query result" badge and no comparison with a previous period. The main chart has a **Days / Weeks / Months / Years** toggle; the default depends on the length of the range (days up to 62 days, weeks up to ~6 months, months up to 3 years, then years). The Inbox Zero calendar shows at most the last 6 weeks of the range. When the range ends today, the totals include today but every average (per day, per working day, max/min/average, average lines, time of day, weekdays) leaves the day in progress out, as in Many Days
 
 #### Compare Periods
 - KPI cards show the change of Period A against Period B

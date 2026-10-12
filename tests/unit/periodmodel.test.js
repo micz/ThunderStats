@@ -101,6 +101,52 @@ describe('KPIs', () => {
   });
 });
 
+describe('averages of a Custom Query ending today', () => {
+  const days = dayKeys('20261009', TODAY);    // Fri, Sat, Sun, Mon and today
+  const result = () => makeResult([
+    ...mails(4, { key: '20261009' }),
+    ...mails(1, { key: '20261010' }),
+    ...mails(1, { key: '20261011' }),
+    ...mails(6, { key: '20261012' }),
+    ...mails(20, { key: TODAY, hour: 9 }),
+  ], { from: days[0], to: TODAY });
+  // the aggregate computed by the tab counts today
+  const core_aggregate = { max_received: 20, min_received: 1, avg_received: 6.4, max_sent: 0, min_sent: 0, avg_sent: 0 };
+
+  function build(only_businessdays) {
+    return tsPeriodModel.build(input({
+      kind: 'custom', days, stat_days: days, today_key: null, result: result(), aggregate: core_aggregate, only_businessdays,
+    }));
+  }
+
+  it('leave out the day in progress, the totals keep it', () => {
+    let model = build(false);
+    expect(model.kpis[0].value).toBe(32);
+    expect(model.kpis[0].sub).toBe('AvgPerDay[3]');
+    expect(model.kpis[0].sub2).toBe('DailyStats[6|1|3]');
+    expect(model.chart.avg_rcvd).toBe(3);
+    expect(model.strip.side[0].value).toBe(5);              // Friday and Monday
+    expect(model.tod.rcvd[9]).toBe(0);                      // today's mails at 9:00 left out
+    expect(model.tod.rcvd[12]).toBe(3);
+    expect(model.weekday.rows[1]).toMatchObject({ received: 0, sent: 0 });    // Tuesday: only today
+    expect(model.chart.note).toMatch(/^PeriodNoteWorkingDays\[5\|1\] PeriodNotePeak\[.+\|20\]$/);
+  });
+
+  it('on business days only', () => {
+    let model = build(true);
+    expect(model.kpis[0].sub2).toBe('DailyStats[6|4|5]');
+    expect(model.chart.avg_rcvd).toBe(5);
+  });
+
+  it('keep the aggregate of the tab when the range does not include today', () => {
+    let past = dayKeys('20261005', '20261009');
+    let model = tsPeriodModel.build(input({
+      kind: 'custom', days: past, stat_days: past, today_key: null, result: makeResult([], { from: past[0], to: past.at(-1) }), aggregate: core_aggregate,
+    }));
+    expect(model.kpis[0].sub2).toBe('DailyStats[20|1|6.4]');
+  });
+});
+
 describe('status strip', () => {
   it('Many Days shows the keeping-up status, Custom Query the query result', () => {
     expect(tsPeriodModel.build(input({ result: RESULT(), inbox: makeInbox({}) })).strip.badge_label).toBe('InboxAtZero');
@@ -192,18 +238,32 @@ describe('notes of the other widgets', () => {
   it('time of day peaks', () => {
     let tod = tsPeriodModel.build(input({ result: RESULT() })).tod;
     expect(tod.note).toBe('TimeOfDayNote[08:00|10:00|14:00|16:00]');
-    expect(tod.rcvd[9]).toBe((50 + 3) / DAYS.length);
+    expect(tod.rcvd[9]).toBe(50 / STAT_DAYS.length);    // today left out
+    expect(tod.sent[15]).toBe(10 / STAT_DAYS.length);
   });
 
   it('heatmap peak and busiest weekday', () => {
     expect(tsPeriodModel.build(input({ result: RESULT() })).heat.note).toBe('HeatNote[08:00|10:00|Tuesday]');
   });
 
-  it('busiest against lightest business weekday', () => {
+  it('weekday averages leave out today', () => {
     let weekday = tsPeriodModel.build(input({ result: RESULT() })).weekday;
     expect(weekday.rows.map(r => r.label)).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
-    expect(weekday.rows[1].received).toBe(6.5);    // two Tuesdays: 10 and 3 (today)
-    expect(weekday.note).toBe('WeekdayNote[Monday|Tuesday|35]');
+    expect(weekday.rows[1]).toMatchObject({ received: 10, sent: 2 });    // only Tuesday 6, not today (3 received, 1 sent)
+    expect(weekday.note).toBe('');    // every business weekday has 10
+  });
+
+  it('busiest against lightest business weekday', () => {
+    let days = dayKeys('20260928', '20261004');
+    let result = makeResult([
+      ...mails(10, { key: '20260928' }),    // Monday
+      ...mails(5, { key: '20260929' }),     // Tuesday
+      ...mails(8, { key: '20260930' }),
+      ...mails(8, { key: '20261001' }),
+      ...mails(8, { key: '20261002' }),
+    ], { from: days[0], to: days.at(-1) });
+    let weekday = tsPeriodModel.build(input({ kind: 'custom', days, stat_days: days, today_key: null, result })).weekday;
+    expect(weekday.note).toBe('WeekdayNote[Monday|Tuesday|50]');
   });
 
   it('domains, folders and tags get the Period B values', () => {
@@ -217,7 +277,9 @@ describe('notes of the other widgets', () => {
     expect(model.ended.folders.map(f => [f.id, f.cmp_n])).toEqual([['inbox', 0], ['work', 1]]);
   });
 
-  it('folders footnote', () => {
-    expect(tsPeriodModel.build(input({ result: RESULT() })).ended.note).toBe('EndedUpNote[40|55|Work]');
+  it('folders footnote counts the same days as the KPIs and the strip', () => {
+    let model = tsPeriodModel.build(input({ result: RESULT() }));
+    expect(model.ended.note).toBe('EndedUpNote[42|52|Work]');
+    expect(model.strip.flow.map(f => f.value).slice(0, 2)).toEqual([52, 42]);
   });
 });

@@ -50,9 +50,11 @@ describe('getFullStatsData', () => {
     fillDay();
     let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], ['work.it']);
     expect([result.received, result.sent, result.count, result.count_in_inbox]).toEqual([5, 2, 7, 3]);
-    expect(Object.keys(result.dates)).toEqual([YESTERDAY, TODAY]);    // the range ends at the next midnight
+    expect(Object.keys(result.dates)).toEqual([YESTERDAY]);
+    expect(Object.keys(result.dates_weeks)).toEqual(['202642']);
     expect(result.dates[YESTERDAY]).toMatchObject({ count: 7, sent: 2, received: 5, inbox: 3 });
-    expect(result.dates[TODAY].count).toBe(0);
+    expect(result.msg_hours_days[YESTERDAY][9].received).toBe(3);
+    expect(result.msg_hours_days[YESTERDAY][15].sent).toBe(2);
     expect([result.msg_hours[9].received, result.msg_hours[10].received, result.msg_hours[11].received, result.msg_hours[15].sent])
       .toEqual([3, 1, 1, 2]);
     expect(result.msg_weekdays[1]).toMatchObject({ received: 5, sent: 2 });
@@ -142,6 +144,21 @@ describe('getFullStatsData', () => {
     expect(result.dates[YESTERDAY].count).toBe(1);
   });
 
+  it('counts a duplicated inbox message once in count_in_inbox', async () => {
+    addMail(mailbox, { key: YESTERDAY, header_id: 'same@test' });
+    addMail(mailbox, { key: YESTERDAY, header_id: 'same@test', folder: 'acc1://INBOX/Projects' });
+    mailbox.accounts[0].folders[0].subFolders[0].specialUse = ['inbox'];
+    await browser.storage.sync.set({ accounts_adv_settings: [{ id: 'acc1', filter_duplicates: true }] });
+    let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
+    expect([result.received, result.count_in_inbox, result.dates[YESTERDAY].inbox]).toEqual([1, 1, 1]);
+  });
+
+  it('recognizes an identity with sub-addressing as the author', async () => {
+    addMail(mailbox, { key: YESTERDAY, sent: true, from: 'Me <me+news@work.it>' });
+    let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME, 'me+news@work.it'], []);
+    expect([result.sent, result.received]).toEqual([1, 0]);
+  });
+
   it('counts the duplicates when the filter is off', async () => {
     addMail(mailbox, { key: YESTERDAY, header_id: 'same@test' });
     addMail(mailbox, { key: YESTERDAY, header_id: 'same@test', folder: 'acc1://Clients' });
@@ -216,6 +233,14 @@ describe('aggregateData', () => {
     expect(await new thunderStastsCore().aggregateData(dates, false)).toEqual({
       total_sent: 3, max_sent: 2, min_sent: 0, avg_sent: 1,
       total_received: 12, max_received: 7, min_received: 1, avg_received: 4,
+    });
+  });
+
+  it('returns zeros when no day is left', async () => {
+    let weekend = { '20261010': { sent: 1, received: 2 }, '20261011': { sent: 0, received: 3 } };
+    expect(await new thunderStastsCore().aggregateData(weekend, true)).toEqual({
+      total_sent: 0, max_sent: 0, min_sent: 0, avg_sent: 0,
+      total_received: 0, max_received: 0, min_received: 0, avg_received: 0,
     });
   });
 

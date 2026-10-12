@@ -18,7 +18,9 @@
 
 export const tsUtils = {
 
-    regexEmail: /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
+    // The local part may contain + (sub-addressing), % and apostrophes, but does not start with an apostrophe
+    // (so a quoted 'name@x.com' display name is not taken with its quote)
+    regexEmail: /[a-zA-Z0-9._%+-][a-zA-Z0-9._%+'-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
     
     dateToYYYYMMDD(originalDate) {
         // Extract the year from the date

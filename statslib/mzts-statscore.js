@@ -166,17 +166,13 @@ export class thunderStastsCore {
     async getSingleDay(theDay, account_id = 0, account_emails = [], internal_domains = []) {
 
       theDay.setHours(0, 0, 0, 0);
-      let theMidnightAfter = new Date(theDay);
-      theMidnightAfter.setDate(theMidnightAfter.getDate() + 1);
-      theMidnightAfter.setHours(0, 0, 0, 0);
-      //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
-
-      // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
-      // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
+      // the end of the day, not the next midnight: the date arrays of the output must not get the next day
+      let theDayEnd = new Date(theDay);
+      theDayEnd.setHours(23, 59, 59, 999);
 
       let filter_duplicates = await this.getFilterDuplicates(account_id);
 
-      return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getFullStatsData(theDay, theDayEnd, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
 
     async getToday_SingleDayData(theDay, account_id = 0, account_emails = [], count_data_to_current_time = true) {
@@ -488,6 +484,18 @@ export class thunderStastsCore {
         msg_hours[i].received_external = 0;
       }
 
+      // day x hour sent/received counts (only the days with mails), so the averages can leave out the day in progress
+      let msg_hours_days = {};
+      const dayHours = (day_string) => {
+        if(!msg_hours_days[day_string]) {
+          msg_hours_days[day_string] = {};
+          for(let h = 0; h < 24; h++) {
+            msg_hours_days[day_string][h] = { sent: 0, received: 0 };
+          }
+        }
+        return msg_hours_days[day_string];
+      };
+
       // weekday x hour grid, used by the "when mail arrives" heatmap
       let msg_weekday_hours = {};
       for(let d = 0; d < 7; d++) {
@@ -525,9 +533,6 @@ export class thunderStastsCore {
               folders[message.folder.id].received = 0;
               folders[message.folder.id].folder_data = message.folder;
             }
-            if(message.folder.specialUse && message.folder.specialUse.includes('inbox')){
-              count_in_inbox++;
-            }
           }
 
           const match_author = message.author.match(tsUtils.regexEmail);
@@ -551,6 +556,10 @@ export class thunderStastsCore {
             }
             messages_hash.set(message.headerMessageId, true);
             // console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
+          }
+          // inbox (after the duplicates check, like every other counter)
+          if(message.folder && message.folder.specialUse && message.folder.specialUse.includes('inbox')){
+            count_in_inbox++;
           }
           // dates
           let date_message_string = tsUtils.dateToYYYYMMDD(message.date);
@@ -576,6 +585,7 @@ export class thunderStastsCore {
               dates_years[date_year_string].sent++;
               // group by hour
               msg_hours[hour_message].sent++;
+              dayHours(date_message_string)[hour_message].sent++;
               // group by weekday
               msg_weekdays[date_message.getDay()].sent++;
               msg_weekday_hours[date_message.getDay()][hour_message].sent++;
@@ -706,6 +716,7 @@ export class thunderStastsCore {
               }
               // group by hour
               msg_hours[hour_message].received++;
+              dayHours(date_message_string)[hour_message].received++;
               // group by weekday
               msg_weekdays[date_message.getDay()].received++;
               msg_weekday_hours[date_message.getDay()][hour_message].received++;
@@ -775,7 +786,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
       // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, dates_weeks: dates_weeks, dates_months: dates_months, dates_years: dates_years, msg_weekdays: msg_weekdays, msg_weekday_hours: msg_weekday_hours, domains: domains, tags: tags};
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, msg_hours_days: msg_hours_days, folders: folders, dates: dates, dates_weeks: dates_weeks, dates_months: dates_months, dates_years: dates_years, msg_weekdays: msg_weekdays, msg_weekday_hours: msg_weekday_hours, domains: domains, tags: tags};
 
       if(do_aggregate_stats) {
         output.aggregate = await this.aggregateData(dates, only_businessdays);
@@ -1003,6 +1014,11 @@ export class thunderStastsCore {
           min_received = filtered_dates[i].received;
         }
         num_days++;
+      }
+
+      // no days left (e.g. business days only on a weekend range): zeros instead of NaN and Infinity
+      if(num_days == 0) {
+        return {total_sent: 0, max_sent: 0, min_sent: 0, avg_sent: 0, total_received: 0, max_received: 0, min_received: 0, avg_received: 0};
       }
 
       // filtered_dates must be popolated with all the days, even with 0 values

@@ -45,8 +45,8 @@ const props = defineProps({
 });
 
 const labels = Array.from({length: 24}, (_, i) => String(i).padStart(2, '0'));
-const label_received = browser.i18n.getMessage("Received");
-const label_sent = browser.i18n.getMessage("Sent");
+const label_received = browser.i18n.getMessage("ReceivedMails");
+const label_sent = browser.i18n.getMessage("SentMails");
 
 function oneDecimal(value) {
   return value < 10 ? value.toFixed(1) : String(Math.round(value));

@@ -21,42 +21,42 @@
 <template>
   <div class="opt-section-head">
     <h1 class="opt-section-title">{{ t('TabAdvanced.label') }}</h1>
-    <div class="opt-section-desc">{{ t('Opt_AdvancedDesc') }}</div>
+    <div class="opt-section-desc">{{ t('AdvancedSettingTabDesc') }}</div>
   </div>
 
   <section class="opt-card">
     <div class="opt-card-head">
       <div class="opt-card-title">{{ t('Opt_ArchiveFolders') }}</div>
-      <div class="opt-card-desc">{{ t('Opt_ArchiveFoldersDesc') }}</div>
+      <div class="opt-card-desc">{{ t('ImportantInfoText_1') }}</div>
     </div>
-    <OptRow pref="include_archive_multi_account" :label="t('Opt_InclArchMulti')"/>
-    <OptRow pref="filter_duplicates_multi_account" :label="t('Opt_FilterDupMulti')" :hint="t('Opt_FilterDupHint')"/>
+    <OptRow pref="include_archive_multi_account" :label="t('prefs_include_archive_multi_account')"/>
+    <OptRow pref="filter_duplicates_multi_account" :label="t('prefs_filter_duplicates_multi_account')" :hint="t('Opt_FilterDupHint')"/>
     <div class="opt-acct-grid opt-acct-head">
-      <div>{{ t('Opt_PerAccount') }}</div><div>{{ t('IncludeArchive') }}</div><div>{{ t('Opt_FilterDuplicates') }}</div>
+      <div>{{ t('Opt_PerAccount') }}</div><div>{{ t('IncludeArchive') }}</div><div>{{ t('FilterDuplicateMessages') }}</div>
     </div>
     <div class="opt-acct-grid opt-acct-row" v-for="account in accounts" :key="account.id">
       <div class="opt-acct-name" :title="account.name">{{ account.name }}</div>
       <div><OptSwitch :modelValue="account.include_archive" :label="account.name + ' — ' + t('IncludeArchive')" @update:modelValue="updateAccount(account, 'include_archive', $event)"/></div>
-      <div><OptSwitch :modelValue="account.filter_duplicates" :label="account.name + ' — ' + t('Opt_FilterDuplicates')" @update:modelValue="updateAccount(account, 'filter_duplicates', $event)"/></div>
+      <div><OptSwitch :modelValue="account.filter_duplicates" :label="account.name + ' — ' + t('FilterDuplicateMessages')" @update:modelValue="updateAccount(account, 'filter_duplicates', $event)"/></div>
     </div>
     <div class="opt-card-note">{{ t('Opt_ArchiveFoldersNote') }}</div>
   </section>
 
   <section class="opt-card">
     <div class="opt-card-head"><div class="opt-card-title">{{ t('Other') }}</div></div>
-    <OptRow :label="t('Opt_FirstDayWeek')">
-      <select class="opt-input" :value="Number(prefs.values.first_day_week)" :aria-label="t('Opt_FirstDayWeek')" @change="prefs.set('first_day_week', Number($event.target.value))">
+    <OptRow :label="t('prefs_FirstDayWeek')">
+      <select class="opt-input" :value="Number(prefs.values.first_day_week)" :aria-label="t('prefs_FirstDayWeek')" @change="prefs.set('first_day_week', Number($event.target.value))">
         <option :value="1">{{ t('WeekDay1') }}</option>
         <option :value="0">{{ t('WeekDay0') }}</option>
         <option :value="6">{{ t('WeekDay6') }}</option>
       </select>
     </OptRow>
-    <OptRow :label="t('Opt_TopRows')" :hint="t('Opt_TopRowsHint')">
-      <OptNumber pref="_involved_num" :min="3" :max="50" :label="t('Opt_TopRows')"/>
+    <OptRow :label="t('InvolvedNum')" :hint="t('Opt_TopRowsHint')">
+      <OptNumber pref="_involved_num" :min="3" :max="50" :label="t('InvolvedNum')"/>
     </OptRow>
-    <OptRow :label="t('Opt_WarnLongPeriods')" :hint="t('Opt_WarnLongPeriodsHint')">
+    <OptRow :label="t('Opt_WarnLongPeriods')" :hint="t('CustmQryWarnOnLongPeriod_1') + ' (0: ' + t('CustmQryWarnOnLongPeriod_2') + ')'">
       <OptNumber pref="customqry_warn_onlongperiod_days" :min="0" :max="3650" :label="t('Opt_WarnLongPeriods')"/>
-      {{ t('Opt_Days') }}
+      {{ t('days') }}
     </OptRow>
   </section>
 
@@ -65,14 +65,14 @@
       <div class="opt-card-title">{{ t('Opt_Performance') }}</div>
       <div class="opt-card-desc">{{ t('Opt_PerformanceDesc') }}</div>
     </div>
-    <OptRow :label="t('Opt_ConcurrentQueries')" :hint="t('Opt_ConcurrentQueriesHint')">
+    <OptRow :label="t('Opt_ConcurrentQueries')" :hint="t('MaxConcurrentQueries')">
       <OptNumber pref="max_concurrent_queries" :min="1" :max="10" :label="t('Opt_ConcurrentQueries')"/>
     </OptRow>
-    <OptRow :label="t('Opt_RecentDaysCache')" :hint="t('Opt_RecentDaysCacheHint')">
+    <OptRow :label="t('Opt_RecentDaysCache')" :hint="t('RecentDaysCacheDays_1') + ' ' + t('RecentDaysCacheDays_2')">
       <OptNumber pref="recent_days_cache_days" :min="43" :max="365" :label="t('Opt_RecentDaysCache')"/>
-      {{ t('Opt_Days') }}
+      {{ t('days') }}
     </OptRow>
-    <OptRow pref="do_debug" :label="t('Opt_DebugLog')" :hint="t('Opt_DebugLogHint')"/>
+    <OptRow pref="do_debug" :label="t('ActivateDebug')" :hint="t('Opt_DebugLogHint')"/>
   </section>
 </template>
 

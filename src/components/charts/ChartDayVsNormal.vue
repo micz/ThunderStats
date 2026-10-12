@@ -54,8 +54,8 @@ const props = defineProps({
 const labels = Array.from({length: 24}, (_, i) => String(i).padStart(2, '0'));
 const shown_ticks = [0, 6, 12, 18, 23];
 
-const label_received = browser.i18n.getMessage("Received");
-const label_sent = browser.i18n.getMessage("Sent");
+const label_received = browser.i18n.getMessage("ReceivedMails");
+const label_sent = browser.i18n.getMessage("SentMails");
 const label_usual = browser.i18n.getMessage("UsualRange");
 
 // x position (px) of the "now" line, set by the plugin and used to keep the callout on its left

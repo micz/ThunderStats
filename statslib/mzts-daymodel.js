@@ -124,8 +124,8 @@ export const tsDayModel = {
             date_line2,
             flow: [
                 { label: msg("Arrived"), value: d.R, sub: '' },
-                { label: msg("FiledOrAnswered"), value: d.H, sub: pct(d.H), color: 'var(--good)', title: msg("FiledOrAnsweredTooltip") },
-                { label: msg("StillInInbox"), value: d.L, sub: input.inbox ? msg("OfInboxTotal", [d.inbox_total]) : '', color: 'var(--rcvd)' },
+                { label: msg("FiledOrAnswered"), value: d.H, sub: pct(d.H), color: 'var(--good)', title: msg("FolderLocation_percent_handled") },
+                { label: msg("FolderLocation_percent_remaining"), value: d.L, sub: input.inbox ? msg("OfInboxTotal", [d.inbox_total]) : '', color: 'var(--rcvd)' },
             ],
             side: [
                 { label: msg("BacklogTrend"), value: '+' + backlog_added, sub: msg("SinceWeekday", [weekstart_name]), title: msg("BacklogTrendTooltip") },
@@ -159,7 +159,7 @@ export const tsDayModel = {
 
         // inbox backlog
         kpis.push({
-            id: 'inbox', label: msg("InboxBacklog"), value: d.inbox_total,
+            id: 'inbox', label: msg("TotalInbox"), value: d.inbox_total,
             delta: (input.result && d.L > 0) ? { text: '+' + d.L, color: 'var(--warn)', title: msg("InboxBacklogDeltaTooltip") } : null,
             sub: input.inbox ? msg("InboxBacklogSub", [input.inbox.unread, tsInsights.oldestDays(d.inbox_dates)]) : '',
             is_loading: !input.inbox || !input.result,

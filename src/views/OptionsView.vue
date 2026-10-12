@@ -42,7 +42,7 @@
           <div class="opt-donate-text">{{ t('Opt_DonateSidebar') }}</div>
           <a :href="donation_url" class="opt-btn">
             <svg viewBox="0 0 24 24" class="opt-heart"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
-            {{ t('Opt_MakeDonation') }}
+            {{ t('DonateLink') }}
           </a>
           <div class="opt-version">{{ t('Version') }} {{ version }}</div>
         </div>
@@ -82,8 +82,8 @@ const SAVE_DELAY = 400;     // ms, debounce for the values typed in number and t
 const sections = [
   { id: 'general', label: t('TabSettings.label') },
   { id: 'advanced', label: t('TabAdvanced.label') },
-  { id: 'business', label: t('Opt_BusinessDays') },
-  { id: 'identities', label: t('Opt_IdentitiesDomains') },
+  { id: 'business', label: t('TabBusinessDays.label') },
+  { id: 'identities', label: t('TabCustomIdentities.label') },
   { id: 'about', label: t('Opt_About') },
 ];
 

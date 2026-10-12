@@ -26,7 +26,7 @@
 
   <div class="opt-donate-banner">
     <div class="opt-donate-banner-text">{{ t('Opt_DonateBanner') }}</div>
-    <a :href="donation_url" class="opt-btn-accent opt-donate-banner-btn">{{ t('Opt_MakeDonation') }}</a>
+    <a :href="donation_url" class="opt-btn-accent opt-donate-banner-btn">{{ t('DonateLink') }}</a>
   </div>
 
   <section class="opt-card">

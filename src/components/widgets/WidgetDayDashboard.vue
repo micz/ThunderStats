@@ -98,8 +98,8 @@ const props = defineProps({
   loading: { type: Object, default: () => ({}) },     // { strip, chart, involved, domains, folders }
 });
 
-const received_label = browser.i18n.getMessage("Received");
-const sent_label = browser.i18n.getMessage("Sent");
+const received_label = browser.i18n.getMessage("ReceivedMails");
+const sent_label = browser.i18n.getMessage("SentMails");
 const usual_label = browser.i18n.getMessage("UsualRange");
 const domains_title = browser.i18n.getMessage("Domains");
 

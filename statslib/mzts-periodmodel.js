@@ -137,8 +137,8 @@ export const tsPeriodModel = {
             date_line2: msg("PeriodDaysInfo", [d.stat.length, d.business_days.length]),
             flow: [
                 { label: msg("Arrived"), value: d.R, sub: '' },
-                { label: msg("FiledOrAnswered"), value: d.H, sub: pct(d.H), color: 'var(--good)', title: msg("FiledOrAnsweredTooltip") },
-                { label: msg("StillInInbox"), value: d.L, sub: msg("AddedToBacklog"), color: 'var(--rcvd)' },
+                { label: msg("FiledOrAnswered"), value: d.H, sub: pct(d.H), color: 'var(--good)', title: msg("FolderLocation_percent_handled") },
+                { label: msg("FolderLocation_percent_remaining"), value: d.L, sub: msg("AddedToBacklog"), color: 'var(--rcvd)' },
             ],
             side: [
                 { label: msg("PerWorkingDay"), value: per_working_day, sub: msg("received") },
@@ -179,7 +179,7 @@ export const tsPeriodModel = {
         let waiting_reference = input.kind == 'manydays' && !input.prev;
 
         let counter = (id, field, color, increase_is_bad) => ({
-            id, label: msg(id == 'rcvd' ? "Received" : "Sent"), value: d[field == 'received' ? 'R' : 'S'], color,
+            id, label: msg(id == 'rcvd' ? "ReceivedMails" : "SentMails"), value: d[field == 'received' ? 'R' : 'S'], color,
             delta: reference ? tsInsights.delta(d[field == 'received' ? 'R' : 'S'], reference[field], increase_is_bad) : null,
             aside: (today && today[field] > 0) ? msg("PlusToday", [today[field]]) : '',
             sub: reference ? reference_sub(reference[field]) : msg("AvgPerDay", [round1(d[field == 'received' ? 'R' : 'S'] / Math.max(1, d.stat.length))]),
@@ -429,7 +429,7 @@ export const tsPeriodModel = {
     },
 
     ended(input, d) {
-        let output = { title: msg("EndedUpPeriod"), folders: [], tags: [], note: '', info: input.duplicates_note ? msg("InboxZeroFolderLocationNote") : '', open_in_first_tab: !!input.open_folder_in_first_tab };
+        let output = { title: msg("FolderLocation"), folders: [], tags: [], note: '', info: input.duplicates_note ? msg("InboxZeroFolderLocationNote") : '', open_in_first_tab: !!input.open_folder_in_first_tab };
         if(!input.result) return output;
         output.folders = tsInsights.endedUpFolders(input.result.folders);
         output.tags = tsInsights.endedUpTags(input.result.tags);

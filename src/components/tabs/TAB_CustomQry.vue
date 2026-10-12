@@ -161,14 +161,14 @@ const props = defineProps({
 const msg = (key, subs) => browser.i18n.getMessage(key, subs);
 
 const labels = {
-    period: msg("CustomQryPeriod"),
+    period: msg("DateRange"),
     period_b: msg("PeriodB"),
     compare: msg("ComparePeriods"),
     compare_single_day: msg("CompareNotOnSingleDay"),
     only_bd: msg("OnlyBDCustomQry"),
     run: msg("UpdateCustomQry"),
-    quick_ranges: msg("QuickRanges"),
-    filters: msg("FiltersLabel"),
+    quick_ranges: msg("Bookmarks_Menu"),
+    filters: msg("AdvFilters"),
     add_filter: msg("AddFilter"),
     close_filters: msg("CloseFilters"),
     remove_filter: msg("RemoveFilter"),

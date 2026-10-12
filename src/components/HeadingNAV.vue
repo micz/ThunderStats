@@ -122,7 +122,7 @@ const refresh_label = browser.i18n.getMessage("Update");
 const export_label = browser.i18n.getMessage("ExportData");
 const settings_label = browser.i18n.getMessage("Setup");
 const info_label = browser.i18n.getMessage("Info");
-const updated_label = browser.i18n.getMessage("UpdatedAt");
+const updated_label = browser.i18n.getMessage("LastExecution");
 const loading_label = browser.i18n.getMessage("Loading");
 const execution_time_label = browser.i18n.getMessage("ExecutionTime");
 

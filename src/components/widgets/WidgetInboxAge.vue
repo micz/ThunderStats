@@ -62,13 +62,13 @@ const props = defineProps({
 });
 
 const BUCKET_LABELS = {
-  today: "InboxAgeToday", yesterday: "InboxAgeYesterday", week: "InboxAgeWeek",
+  today: "today_small", yesterday: "yesterday_small", week: "InboxAgeWeek",
   month: "InboxAgeMonth", quarter: "InboxAgeQuarter", older: "InboxAgeOlder",
 };
 
-const title = browser.i18n.getMessage("InboxAgeTitle");
+const title = browser.i18n.getMessage("InboxMailsDateSpreading");
 const empty_label = browser.i18n.getMessage("NoMailsInbox");
-const details_label = browser.i18n.getMessage("InboxAgeDetails");
+const details_label = browser.i18n.getMessage("InboxMailsDateSpreadingExtended");
 const by_age_label = browser.i18n.getMessage("InboxAgeByAge");
 const by_date_label = browser.i18n.getMessage("Date");
 const by_mails_label = browser.i18n.getMessage("Mails");

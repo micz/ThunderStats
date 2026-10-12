@@ -49,9 +49,9 @@ const props = defineProps({
   is_loading: { type: Boolean, default: true },
 });
 
-const label_received = browser.i18n.getMessage("Received");
-const label_inbox = browser.i18n.getMessage("StillInInbox");
-const label_sent = browser.i18n.getMessage("Sent");
+const label_received = browser.i18n.getMessage("ReceivedMails");
+const label_inbox = browser.i18n.getMessage("FolderLocation_percent_remaining");
+const label_sent = browser.i18n.getMessage("SentMails");
 
 let today_index = computed(() => props.days.findIndex(d => d.is_today));
 

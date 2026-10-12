@@ -53,8 +53,8 @@ const props = defineProps({
   is_loading: { type: Boolean, default: false },
 });
 
-const sent_label = browser.i18n.getMessage("Sent");
-const received_label = browser.i18n.getMessage("Received");
+const sent_label = browser.i18n.getMessage("SentMails");
+const received_label = browser.i18n.getMessage("ReceivedMails");
 const internal_label = browser.i18n.getMessage("InternalTag");
 const period_b_short = browser.i18n.getMessage("PeriodBShort");
 const show_less_label = browser.i18n.getMessage("ShowLess");

@@ -56,8 +56,8 @@ const props = defineProps({
 });
 
 const title = browser.i18n.getMessage("WeekdayTitle");
-const received_label = browser.i18n.getMessage("Received");
-const sent_label = browser.i18n.getMessage("Sent");
+const received_label = browser.i18n.getMessage("ReceivedMails");
+const sent_label = browser.i18n.getMessage("SentMails");
 const period_b_short = browser.i18n.getMessage("PeriodBShort");
 
 let max_value = computed(() => Math.max(1, ...props.rows.map(r => Math.max(r.received, r.sent))));

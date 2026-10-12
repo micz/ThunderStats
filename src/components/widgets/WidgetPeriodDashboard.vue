@@ -125,9 +125,9 @@ const props = defineProps({
 
 const emit = defineEmits(['aggregation']);
 
-const received_label = browser.i18n.getMessage("Received");
-const sent_label = browser.i18n.getMessage("Sent");
-const inbox_label = browser.i18n.getMessage("StillInInbox");
+const received_label = browser.i18n.getMessage("ReceivedMails");
+const sent_label = browser.i18n.getMessage("SentMails");
+const inbox_label = browser.i18n.getMessage("FolderLocation_percent_remaining");
 const avg_received_label = browser.i18n.getMessage("AvgReceivedPerDay");
 const avg_sent_label = browser.i18n.getMessage("AvgSentPerDay");
 const tod_title = browser.i18n.getMessage("TimeOfDayTitle");

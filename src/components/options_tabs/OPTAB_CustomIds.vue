@@ -20,7 +20,7 @@
 
 <template>
   <div class="opt-section-head">
-    <h1 class="opt-section-title">{{ t('Opt_IdentitiesDomains') }}</h1>
+    <h1 class="opt-section-title">{{ t('TabCustomIdentities.label') }}</h1>
     <div class="opt-section-desc">{{ t('Opt_IdentitiesDesc') }}</div>
   </div>
 
@@ -33,7 +33,7 @@
 
   <section class="opt-card opt-card-padded">
     <div class="opt-card-head">
-      <div class="opt-card-title">{{ t('Opt_AccountIdentities') }}</div>
+      <div class="opt-card-title">{{ t('Identities') }}</div>
       <div class="opt-card-desc">{{ t('Opt_AccountIdentitiesDesc') }}</div>
     </div>
     <div class="opt-id-list" v-if="account_emails.length > 0">
@@ -44,20 +44,20 @@
 
   <section class="opt-card opt-card-padded">
     <div class="opt-card-head">
-      <div class="opt-card-title">{{ t('Opt_CustomIdentities') }}</div>
-      <div class="opt-card-desc">{{ t('Opt_CustomIdentitiesDesc') }}</div>
+      <div class="opt-card-title">{{ t('CustomIdentititesAccount') }}</div>
+      <div class="opt-card-desc">{{ t('ManageCustomIdentititesDesc_1') }}</div>
     </div>
     <OptTagInput :key="'ids-' + current_account" :modelValue="custom_ids" variant="accent" :placeholder="t('Opt_AddAddress')" :validate="isValidIdentity" :invalidMessage="t('Opt_InvalidAddress')" :disabled="!current_account" @update:modelValue="saveList('custom_identities', $event)"/>
-    <div class="opt-id-hint"><template v-for="(part, idx) in withCode('Opt_CustomIdentitiesHint', ['*@example.com', '@example.com'])" :key="idx"><code v-if="part.code">{{ part.text }}</code><template v-else>{{ part.text }}</template></template></div>
+    <div class="opt-id-hint"><template v-for="(part, idx) in withCode('CustomIdentititesAccount.Info', ['*@example.com', '@example.com'])" :key="idx"><code v-if="part.code">{{ part.text }}</code><template v-else>{{ part.text }}</template></template></div>
   </section>
 
   <section class="opt-card opt-card-padded">
     <div class="opt-card-head">
-      <div class="opt-card-title">{{ t('Opt_InternalDomains') }}</div>
-      <div class="opt-card-desc">{{ t('Opt_InternalDomainsDesc') }}</div>
+      <div class="opt-card-title">{{ t('InternalDomainsAccount') }}</div>
+      <div class="opt-card-desc">{{ t('InternalDomainsAccount.Desc') }}</div>
     </div>
     <OptTagInput :key="'dom-' + current_account" :modelValue="internal_domains" variant="good" :placeholder="t('Opt_AddDomain')" :validate="isValidDomain" :invalidMessage="t('Opt_InvalidDomain')" :disabled="!current_account" @update:modelValue="saveList('internal_domains', $event)"/>
-    <div class="opt-id-hint"><template v-for="(part, idx) in withCode('Opt_InternalDomainsHint', ['*.example.com'])" :key="idx"><code v-if="part.code">{{ part.text }}</code><template v-else>{{ part.text }}</template></template></div>
+    <div class="opt-id-hint"><template v-for="(part, idx) in withCode('InternalDomainsAccount.Info', ['*.example.com'])" :key="idx"><code v-if="part.code">{{ part.text }}</code><template v-else>{{ part.text }}</template></template></div>
   </section>
 </template>
 

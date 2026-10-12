@@ -21,13 +21,13 @@
 <template>
   <div class="opt-section-head">
     <h1 class="opt-section-title">{{ t('TabSettings.label') }}</h1>
-    <div class="opt-section-desc">{{ t('Opt_GeneralDesc') }}</div>
+    <div class="opt-section-desc">{{ t('GlobalDescSettingTab') }}</div>
   </div>
 
   <section class="opt-card">
     <div class="opt-card-head"><div class="opt-card-title">{{ t('Opt_Startup') }}</div></div>
-    <OptRow :label="t('Opt_StartupAccount')" :hint="t('Opt_StartupAccountHint')" :disabled="!!prefs.values.remember_last_account">
-      <select class="opt-input" :value="String(prefs.values.startup_account)" :disabled="!!prefs.values.remember_last_account" :aria-label="t('Opt_StartupAccount')" @change="prefs.set('startup_account', $event.target.value)">
+    <OptRow :label="t('StartupAccount')" :hint="t('Opt_StartupAccountHint')" :disabled="!!prefs.values.remember_last_account">
+      <select class="opt-input" :value="String(prefs.values.startup_account)" :disabled="!!prefs.values.remember_last_account" :aria-label="t('StartupAccount')" @change="prefs.set('startup_account', $event.target.value)">
         <option v-for="account in accounts" :key="account.id" :value="String(account.id)">{{ account.name }}</option>
       </select>
     </OptRow>
@@ -36,42 +36,42 @@
 
   <section class="opt-card">
     <div class="opt-card-head"><div class="opt-card-title">{{ t('Opt_LoadingData') }}</div></div>
-    <OptRow pref="load_data_changing_account" :label="t('Opt_ReloadSwitchingAccount')"/>
-    <OptRow pref="always_reload_tab_data" :label="t('Opt_ReloadSwitchingTab')"/>
-    <OptRow pref="remember_last_tab" :label="t('Opt_ReopenLastTab')"/>
-    <OptRow pref="customqry_loaddata_when_opening_addon" :label="t('Opt_LoadCustomFirstTab')" :hint="t('Opt_LoadCustomFirstTabHint')"/>
-    <OptRow pref="customqry_loaddata_when_selectingrange" :label="t('Opt_LoadCustomOnRange')" :hint="t('Opt_LoadCustomOnRangeHint')"/>
-    <OptRow pref="customqry_always_open_adv_filters" :label="t('Opt_ExpandAdvFilters')"/>
+    <OptRow pref="load_data_changing_account" :label="t('prefs_load_data_changing_account')"/>
+    <OptRow pref="always_reload_tab_data" :label="t('prefs_always_reload_tab_data')"/>
+    <OptRow pref="remember_last_tab" :label="t('prefs_remember_last_tab')"/>
+    <OptRow pref="customqry_loaddata_when_opening_addon" :label="t('prefs_customqry_loaddata_when_opening_addon')" :hint="t('Opt_LoadCustomFirstTabHint')"/>
+    <OptRow pref="customqry_loaddata_when_selectingrange" :label="t('CustomQueryBookmarkImmediateUpdate')" :hint="t('Opt_LoadCustomOnRangeHint')"/>
+    <OptRow pref="customqry_always_open_adv_filters" :label="t('prefs_customqry_always_open_adv_filters')"/>
   </section>
 
   <section class="opt-card">
-    <div class="opt-card-head"><div class="opt-card-title">{{ t('Opt_TodayYesterdayChart') }}</div></div>
-    <OptRow pref="today_time_chart_show_yesterday" :label="t('Opt_OverlayYesterday')"/>
-    <OptRow pref="_time_chart_progressive" :label="t('Opt_ShowCumulative')"/>
-    <OptRow pref="today_time_chart_do_no_show_future" :label="t('Opt_HideFutureHours')" :hint="t('Opt_TodayOnly')"/>
+    <div class="opt-card-head"><div class="opt-card-title">{{ t('TimeChart') }}</div></div>
+    <OptRow pref="today_time_chart_show_yesterday" :label="t('TodayTimeChartShowYesterday')"/>
+    <OptRow pref="_time_chart_progressive" :label="t('TimeChartProgressive')"/>
+    <OptRow pref="today_time_chart_do_no_show_future" :label="t('TimeChartNoFutureHours')" :hint="t('Opt_TodayOnly')"/>
   </section>
 
   <section class="opt-card">
     <div class="opt-card-head"><div class="opt-card-title">{{ t('Opt_ManyDaysCustom') }}</div></div>
-    <OptRow :label="t('Opt_ManyDaysNum')" :hint="t('Opt_ManyDaysNumHint')">
-      <OptNumber pref="_many_days" :min="2" :max="365" :label="t('Opt_ManyDaysNum')"/>
-      {{ t('Opt_Days') }}
+    <OptRow :label="t('ManyDays')" :hint="t('Opt_ManyDaysNumHint')">
+      <OptNumber pref="_many_days" :min="2" :max="365" :label="t('ManyDays')"/>
+      {{ t('days') }}
     </OptRow>
-    <OptRow :label="t('Opt_DatePickerLocale')" :hint="t('Opt_DatePickerLocaleHint')">
-      <input type="text" class="opt-input opt-locale" :value="prefs.values.datepicker_locale" :aria-label="t('Opt_DatePickerLocale')" @input="prefs.set('datepicker_locale', $event.target.value.trim(), true)"/>
-      <button type="button" class="opt-btn" @click="prefs.set('datepicker_locale', ui_language)">{{ t('Opt_UseSystem') }}</button>
+    <OptRow :label="t('DatePickerLocale')" :hint="t('Opt_DatePickerLocaleHint')">
+      <input type="text" class="opt-input opt-locale" :value="prefs.values.datepicker_locale" :aria-label="t('DatePickerLocale')" @input="prefs.set('datepicker_locale', $event.target.value.trim(), true)"/>
+      <button type="button" class="opt-btn" @click="prefs.set('datepicker_locale', ui_language)">{{ t('SetDefault') }}</button>
     </OptRow>
   </section>
 
   <section class="opt-card">
     <div class="opt-card-head"><div class="opt-card-title">{{ t('Opt_InboxZero') }}</div></div>
-    <OptRow pref="many_days_show_inbox" :label="t('Opt_MarkInboxBars')" :hint="t('Opt_MarkInboxBarsHint')"/>
-    <OptRow pref="inbox0_openFolderInFirstTab" :label="t('Opt_OpenFolderFirstTab')" :hint="t('Opt_OpenFolderFirstTabHint')"/>
+    <OptRow pref="many_days_show_inbox" :label="t('ManyDaysShowInbox')" :hint="t('Opt_MarkInboxBarsHint')"/>
+    <OptRow pref="inbox0_openFolderInFirstTab" :label="t('folderspreadchart_openinfirsttab')"/>
   </section>
 
   <section class="opt-card">
     <div class="opt-card-head"><div class="opt-card-title">{{ t('Opt_InternalMail') }}</div></div>
-    <OptRow pref="show_internal_mail_percent" :label="t('Opt_ShowInternalShare')" :disabled="!has_internal_domains && !prefs.values.show_internal_mail_percent">
+    <OptRow pref="show_internal_mail_percent" :label="t('prefs_show_internal_mail_percent')" :disabled="!has_internal_domains && !prefs.values.show_internal_mail_percent">
       <template #hint>{{ t('Opt_ShowInternalShareHint') }} <button type="button" class="opt-link" @click="goto('identities')">{{ t('Opt_SetInternalDomains') }}</button></template>
     </OptRow>
   </section>

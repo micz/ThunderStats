@@ -1,8 +1,4 @@
 {
-  "extensionDescription": {
-    "message": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
-    "description": "Description of the extension."
-  },
   "AllAccounts": {
     "message": "All Accounts",
     "description": ""
@@ -13,14 +9,6 @@
   },
   "Mail": {
     "message": "Mail",
-    "description": ""
-  },
-  "Total": {
-    "message": "Total",
-    "description": ""
-  },
-  "Before": {
-    "message": "Before",
     "description": ""
   },
   "Mails": {
@@ -40,7 +28,7 @@
     "description": ""
   },
   "DonateLink": {
-    "message": "Make a donation!",
+    "message": "Make a donation",
     "description": ""
   },
   "ChooseAccount": {
@@ -71,18 +59,6 @@
     "message": "Yesterday",
     "description": ""
   },
-  "today_small": {
-    "message": "today",
-    "description": ""
-  },
-  "yesterday_small": {
-    "message": "yesterday",
-    "description": ""
-  },
-  "days": {
-    "message": "days",
-    "description": ""
-  },
   "TotalDays": {
     "message": "Total days",
     "description": ""
@@ -93,26 +69,6 @@
   },
   "Loading": {
     "message": "Loading",
-    "description": ""
-  },
-  "SentMails": {
-    "message": "Sent Mails",
-    "description": ""
-  },
-  "ReceivedMails": {
-    "message": "Received Mails",
-    "description": ""
-  },
-  "InboxZeroStatus": {
-    "message": "Inbox Zero Status",
-    "description": ""
-  },
-  "TotalInbox": {
-    "message": "Total mails in the inbox",
-    "description": ""
-  },
-  "TotalInboxUnread": {
-    "message": "unread",
     "description": ""
   },
   "YesterdayThisTime": {
@@ -127,20 +83,12 @@
     "message": "received",
     "description": ""
   },
-  "FolderLocation": {
-    "message": "Mails folder locations chart",
-    "description": ""
-  },
   "InboxZeroFolderLocationNote": {
     "message": "In this chart, all messages are considered, including duplicates that are filtered in the other charts. So, for example, if you use Gmail, you will see messages both in the folder they are in and in the \"All Mail\" folder.",
     "description": ""
   },
   "NoMailsReceived": {
     "message": "No mails received",
-    "description": ""
-  },
-  "InboxMailsDateSpreading": {
-    "message": "Inbox mails date spreading chart",
     "description": ""
   },
   "NoMailsInbox": {
@@ -243,15 +191,7 @@
     "message": "Data extract for",
     "description": ""
   },
-  "DateRange": {
-    "message": "Date Range",
-    "description": ""
-  },
-  "Bookmarks_Menu": {
-    "message": "Choose a predefined period",
-    "description": ""
-  },
-    "CurrentWeek": {
+  "CurrentWeek": {
     "message": "Current week",
     "description": ""
   },
@@ -308,11 +248,11 @@
     }
   },
   "GlobalDescSettingTab": {
-    "message": "Use these options to customize your ThunderStats experience!",
+    "message": "How ThunderStats opens, loads data and draws its charts.",
     "description": ""
   },
   "AdvancedSettingTabDesc": {
-    "message": "These are advanced options, use them if you know what you're doing.",
+    "message": "Fine-tuning for how mail is counted. The defaults work for most people.",
     "description": ""
   },
   "TabSettings.label": {
@@ -324,15 +264,15 @@
     "description": ""
   },
   "TabBusinessDays.label": {
-    "message": "Business Days",
+    "message": "Business days",
     "description": ""
   },
   "TabCustomIdentities.label": {
-    "message": "Identities & Domains",
+    "message": "Identities & domains",
     "description": ""
   },
   "Identities": {
-    "message": "Identities",
+    "message": "Account identities",
     "description": ""
   },
   "InfoMainDesc": {
@@ -344,19 +284,11 @@
     "description": ""
   },
   "StartupAccount": {
-    "message": "Startup Account",
-    "description": ""
-  },
-  "ManageCustomIdentitites": {
-    "message": "Manage your custom identitites here",
+    "message": "Startup account",
     "description": ""
   },
   "ManageCustomIdentititesDesc_1": {
-    "message": "A custom identity is an email address, different from the ones registered for the account, with which you receive mails.",
-    "description": ""
-  },
-  "ManageCustomIdentititesDesc_2": {
-    "message": "Usually these are email addresses of mailing lists that you're subscribed to, where your email address is not used in any 'to' or 'cc' fields.",
+    "message": "Other addresses you receive mail on — typically mailing lists where your own address isn’t in To or Cc.",
     "description": ""
   },
   "Account": {
@@ -364,51 +296,63 @@
     "description": ""
   },
   "CustomIdentititesAccount": {
-    "message": "Custom Identitites for the selected Account",
+    "message": "Custom identities",
     "description": ""
   },
   "CustomIdentititesAccount.Info": {
-    "message": "Add an email address per line, or separated by a comma. Use * as a wildcard (e.g., *@example.com) or just @domain.com to match all addresses at a domain.",
-    "description": ""
+    "message": "Use $PATTERN1$ or $PATTERN2$ to match a whole domain.",
+    "description": "",
+    "placeholders": {
+      "pattern1": {
+        "content": "$1",
+        "example": "*@example.com"
+      },
+      "pattern2": {
+        "content": "$2",
+        "example": "@example.com"
+      }
+    }
   },
   "InternalDomainsAccount": {
-    "message": "Internal Domains for the selected Account",
+    "message": "Internal domains",
     "description": ""
   },
   "InternalDomainsAccount.Desc": {
-    "message": "Internal domains are domains belonging to your organization. They are used to distinguish internal from external email traffic in your statistics.",
+    "message": "Domains that belong to your organisation. Used to split internal from external traffic in your stats.",
     "description": ""
   },
   "InternalDomainsAccount.Info": {
-    "message": "Add a domain per line, or separated by a comma. Use * as a wildcard (e.g., *.example.com to match all subdomains).",
-    "description": ""
+    "message": "Use $PATTERN$ to match all the subdomains.",
+    "description": "",
+    "placeholders": {
+      "pattern": {
+        "content": "$1",
+        "example": "*.example.com"
+      }
+    }
   },
   "ActivateDebug": {
-    "message": "Activate the debug system",
+    "message": "Debug logging",
     "description": ""
   },
   "TodayTimeChartShowYesterday": {
-    "message": "Show also yesterday's mails in the today time chart",
+    "message": "Overlay yesterday on today’s chart",
     "description": ""
   },
   "TimeChartProgressive": {
-    "message": "Show cumulative values in the today and yesterday time charts",
-    "description": ""
-  },
-  "ManyDaysChart": {
-    "message": "Multiple Days Chart",
+    "message": "Show cumulative values",
     "description": ""
   },
   "ManyDays": {
-    "message": "Number of days to be shown",
+    "message": "Days shown in Many days",
     "description": ""
   },
   "ManyDaysShowInbox": {
-    "message": "Show inbox mails in the received chart",
+    "message": "Mark mail still in the inbox on chart bars",
     "description": ""
   },
   "CustomQueryBookmarkImmediateUpdate": {
-    "message": "When selecting a custom date range view, update the statistics immediately",
+    "message": "Load data as soon as you pick a predefined period in Custom",
     "description": ""
   },
   "EmailAddresses": {
@@ -448,7 +392,7 @@
     "description": ""
   },
   "DatePickerLocale": {
-    "message": "Locale setting for the date picker",
+    "message": "Date picker language",
     "description": ""
   },
   "ShowRelNotes1x": {
@@ -459,28 +403,24 @@
     "message": "License",
     "description": ""
   },
-  "CustomQryTabGroupbox": {
-    "message": "Custom Range Statistics",
-    "description": ""
-  },
   "folderspreadchart_openinfirsttab": {
-    "message": "When clicking a folder in Where mails ended up, open it in the first mail tab",
+    "message": "Open the folders clicked in “Where mails ended up” in the first mail tab",
     "description": ""
   },
   "MaxConcurrentQueries": {
-    "message": "Number of message queries run at the same time while loading the statistics (1-10). Lower it if Thunderbird becomes unresponsive while loading, raise it if loading is too slow.",
+    "message": "Lower it if Thunderbird stutters while loading, raise it if loading is too slow (1–10)",
     "description": ""
   },
   "RecentDaysCacheDays_1": {
-    "message": "Number of days before today read in a single pass and shared by the Today, Yesterday, Many Days and Custom views (43-365).",
+    "message": "Days before today read in one pass and shared by the views (43–365).",
     "description": ""
   },
   "RecentDaysCacheDays_2": {
-    "message": "The \"usual day\", the previous days and the previous period come from this data without new queries as long as they fall inside it. Raise it if your \"Many days\" period is longer than 24 days; a bigger value makes the first load slower.",
+    "message": "Raise it if Many days covers more than 24 days; a bigger value makes the first load slower.",
     "description": ""
   },
   "InvolvedNum": {
-    "message": "Number of recipients or senders to be shown in \"Top\" tables",
+    "message": "Rows in “Top” tables",
     "description": ""
   },
   "Other": {
@@ -488,11 +428,11 @@
     "description": ""
   },
   "prefs_FirstDayWeek": {
-    "message": "Choose the first day of the week",
+    "message": "First day of the week",
     "description": ""
   },
   "prefs_remember_last_tab": {
-    "message": "Remember the last opened tab",
+    "message": "Reopen the last tab you used",
     "description": ""
   },
   "prefs_remember_last_account": {
@@ -500,19 +440,19 @@
     "description": ""
   },
   "prefs_always_reload_tab_data": {
-    "message": "Reload data when changing tab",
+    "message": "Reload data when switching tab",
     "description": ""
   },
   "prefs_load_data_changing_account": {
-    "message": "Reload data when changing the account",
+    "message": "Reload data when switching account",
     "description": ""
   },
   "prefs_filter_duplicates_multi_account": {
-    "message": "Filter duplicate messages when multiple accounts are selected",
+    "message": "Filter duplicates when several accounts are selected",
     "description": ""
   },
   "prefs_include_archive_multi_account": {
-    "message": "Include archives when multiple accounts are selected",
+    "message": "Include archives when several accounts are selected",
     "description": ""
   },
   "ImportantInfoTitle": {
@@ -524,7 +464,7 @@
     "description": ""
   },
   "ImportantInfoText_1": {
-    "message": "Some email providers, such as Gmail, have an \"Archive\" folder that contains all messages. However, the same messages are also present in individual folders. Considering the \"Archive\" folders in the statistics could lead to counting them twice.",
+    "message": "Providers like Gmail keep every message in an Archive folder as well as in its own folder, so counting archives can double your numbers. Exclude archives, or keep them and filter duplicates — slower, but more accurate.",
     "description": ""
   },
   "ImportantInfoText_1b": {
@@ -543,32 +483,12 @@
     "message": "  Find out how clicking here!",
     "description": ""
   },
-  "prefsDonation_1": {
-    "message": "Do you like this addon?",
-    "description": ""
-  },
-  "prefsDonation_2": {
-    "message": "Consider to make a donation!",
-    "description": ""
-  },
-  "InboxZeroChart": {
-    "message": "Inbox Zero Chart",
-    "description": ""
-  },
-  "AdvancedAccountList": {
-    "message": "Account Advanced Settings",
-    "description": ""
-  },
   "IncludeArchive": {
     "message": "Include Archive",
     "description": ""
   },
   "FilterDuplicateMessages": {
-    "message": "Filter duplicate messages",
-    "description": ""
-  },
-  "AdvancedAccountList_Desc": {
-    "message": "Below, you can choose to ignore the archive folders or filter out the duplicate messages. Filtering messages will increase the time required to calculate the statistics, but it will yield better results. If you do not use Gmail's archiving function, you can choose not to activate this feature and simply exclude the archive folders directly. The Inbox Zero folder locations chart will always display all emails. Therefore, if an email is received and appears in two folders, it will be shown in both folders on the chart.",
+    "message": "Filter duplicates",
     "description": ""
   },
   "PrivacySubtitle": {
@@ -584,15 +504,15 @@
     "description": ""
   },
   "Label_bday_use_last_business_day": {
-    "message": "If yesterday is not a business day, show the last business day instead.",
+    "message": "When yesterday was a day off, show the last business day",
     "description": ""
   },
   "Label_bday_default_only": {
-    "message": "Consider business days only in aggregate statistics (max, min, average).",
+    "message": "Use business days only for averages, min and max",
     "description": ""
   },
   "Non-BDays": {
-    "message": "Non-Business Days",
+    "message": "Holidays",
     "description": ""
   },
   "Date": {
@@ -600,11 +520,7 @@
     "description": ""
   },
   "Description": {
-    "message": "Description",
-    "description": ""
-  },
-  "New": {
-    "message": "New",
+    "message": "Name",
     "description": ""
   },
   "Edit": {
@@ -619,16 +535,12 @@
     "message": "Every year",
     "description": ""
   },
-  "Yearly_Desc": {
-    "message": "This day will be a non-business day on every year.",
-    "description": ""
-  },
   "Cancel": {
     "message": "Cancel",
     "description": ""
   },
   "Non-Business_Day": {
-    "message": "Non-Business Day",
+    "message": "Holiday",
     "description": ""
   },
   "deletePromptNBD_text": {
@@ -636,7 +548,7 @@
     "description": ""
   },
   "EasterNoBusinessDay": {
-    "message": "Easter and Easter Monday are non-business days.",
+    "message": "Easter and Easter Monday",
     "description": ""
   },
   "Year": {
@@ -671,28 +583,16 @@
     "message": "The selected account has no associated emails. You need to add a custom identity in the options page.",
     "description": ""
   },
-  "InfoTotal_AllMails": {
-    "message": "This total value accounts for both business and non-business days.",
-    "description": ""
-  },
   "InfoTotal_BDMails_Only": {
     "message": "These values account for business days only.",
     "description": ""
   },
   "TimeChartNoFutureHours": {
-    "message": "Do not show future hours in the today time chart",
+    "message": "Hide hours that haven’t happened yet",
     "description": ""
   },
-  "Miscellaneous": {
-    "message": "Miscellaneous",
-    "description": ""
-  },
-  "TimeChart": {  
-    "message": "Time Chart",
-    "description": ""
-  },
-  "LastExecution": {
-    "message": "Last execution",
+  "TimeChart": {
+    "message": "Today & Yesterday chart",
     "description": ""
   },
   "ExportData": {
@@ -711,19 +611,7 @@
     "message": "Time of the day",
     "description": ""
   },
-  "FolderLocation_percent_handled": {
-    "message": "Mails moved from the inbox folder",
-    "description": ""
-  },
-  "FolderLocation_percent_remaining": {
-    "message": "Mails still in the inbox folder",
-    "description": ""
-  },
-  "AskUserWarningTitle": {
-    "message": "Warning",
-    "description": ""
-  },
-  "CustomViewTooMuchDaysText" : {
+  "CustomViewTooMuchDaysText": {
     "message": "This date interval is $QDAYS$ days long and the statistic could need some time to complete.\r\nDo you want to continue?",
     "description": "",
     "placeholders": {
@@ -734,19 +622,11 @@
     }
   },
   "CustmQryWarnOnLongPeriod_1": {
-    "message": "Number of days after which the user is warned that the statistics may take a long time.",
+    "message": "Show a “this may take a while” notice in Custom for ranges longer than this",
     "description": ""
   },
   "CustmQryWarnOnLongPeriod_2": {
-    "message": "Never warn",
-    "description": ""
-  },
-  "ShowAdvFilters": {
-    "message": "Show Advanced Filters",
-    "description": ""
-  },
-  "AdvFilters": {
-    "message": "Advanced Filters",
+    "message": "never",
     "description": ""
   },
   "ResetAdvFilters": {
@@ -770,15 +650,11 @@
     "description": ""
   },
   "prefs_customqry_always_open_adv_filters": {
-    "message": "Always open the Advanced Filters panel in Custom View",
-    "description": ""
-  },
-  "prefs_inbox_percent_remaining": {
-    "message": "Show the percentage of mails still in the inbox",
+    "message": "Always expand advanced filters in Custom",
     "description": ""
   },
   "prefs_show_internal_mail_percent": {
-    "message": "Show the percentage of internal mails (requires Internal Domains to be configured)",
+    "message": "Show the share of internal mail",
     "description": ""
   },
   "InternalMailLabel": {
@@ -795,14 +671,6 @@
   },
   "No": {
     "message": "No",
-    "description": ""
-  },
-  "InternalDomainsNotConfiguredWarning": {
-    "message": "No internal domains configured. Please configure them in the \"Identities & Domains\" tab.",
-    "description": ""
-  },
-  "TimeDay": {
-    "message": "Time of the day",
     "description": ""
   },
   "LastBusinessDayIs": {
@@ -835,7 +703,7 @@
   },
   "FilterFoldersOnlyFlagged": {
     "message": "Starred",
-    "description": "" 
+    "description": ""
   },
   "FilterFoldersOnlyUnflagged": {
     "message": "Unstarred",
@@ -861,36 +729,12 @@
     "message": "Tags",
     "description": ""
   },
-  "InboxMailsDateSpreadingExtended": {
-    "message": "Inbox mails - Date details view",
-    "description": ""
-  },
-  "OrderBy": {
-    "message": "Order by",
-    "description": ""
-  },
-  "Close": {
-    "message": "Close",
-    "description": ""
-  },
-  "ViewDetails": {
-    "message": "View Details",
-    "description": ""
-  },
   "Folders": {
     "message": "Folders",
     "description": ""
   },
-  "ShowTags": {
-    "message": "Show Tags",
-    "description": ""
-  },
-  "ShowFolders": {
-    "message": "Show Folders",
-    "description": ""
-  },
   "prefs_customqry_loaddata_when_opening_addon": {
-    "message": "Load data even when Custom View is the first tab opened in ThunderStats",
+    "message": "Load data when Custom is the first tab opened",
     "description": ""
   },
   "WeeklyMails": {
@@ -913,28 +757,8 @@
     "message": "Compare Periods",
     "description": ""
   },
-  "PeriodA": {
-    "message": "Period A",
-    "description": ""
-  },
   "PeriodB": {
     "message": "Period B",
-    "description": ""
-  },
-  "PeriodBStart": {
-    "message": "Compare Period B",
-    "description": ""
-  },
-  "ComparisonSentChange": {
-    "message": "Sent Change",
-    "description": ""
-  },
-  "ComparisonRcvdChange": {
-    "message": "Received Change",
-    "description": ""
-  },
-  "ComparisonNoData": {
-    "message": "No data for comparison period",
     "description": ""
   },
   "Appearance": {
@@ -957,15 +781,15 @@
     "message": "Dark",
     "description": "Dark color theme"
   },
-  "UpdatedAt": {
+  "LastExecution": {
     "message": "Updated",
     "description": "Shown in the toolbar before the time of the last data update, e.g. Updated 18:04"
   },
-  "Received": {
+  "ReceivedMails": {
     "message": "Received",
     "description": "Legend label for received mails"
   },
-  "Sent": {
+  "SentMails": {
     "message": "Sent",
     "description": "Legend label for sent mails"
   },
@@ -993,11 +817,11 @@
     "message": "Filed or answered",
     "description": "Received mails that left the inbox"
   },
-  "FiledOrAnsweredTooltip": {
+  "FolderLocation_percent_handled": {
     "message": "Mails received in the period that are no longer in the inbox",
     "description": ""
   },
-  "StillInInbox": {
+  "FolderLocation_percent_remaining": {
     "message": "Still in inbox",
     "description": ""
   },
@@ -1089,7 +913,7 @@
       }
     }
   },
-  "InboxBacklog": {
+  "TotalInbox": {
     "message": "Inbox backlog",
     "description": ""
   },
@@ -1701,7 +1525,7 @@
       }
     }
   },
-  "EndedUpPeriod": {
+  "FolderLocation": {
     "message": "Where mails ended up",
     "description": ""
   },
@@ -1709,15 +1533,15 @@
     "message": "Open the folder",
     "description": "Tooltip of a folder row that opens the folder in Thunderbird"
   },
-  "InboxAgeTitle": {
+  "InboxMailsDateSpreading": {
     "message": "How old is your inbox",
     "description": "Card with the mails still in the inbox grouped by age"
   },
-  "InboxAgeToday": {
+  "today_small": {
     "message": "Today",
     "description": ""
   },
-  "InboxAgeYesterday": {
+  "yesterday_small": {
     "message": "Yesterday",
     "description": ""
   },
@@ -1737,7 +1561,7 @@
     "message": "Older",
     "description": ""
   },
-  "InboxAgeDetails": {
+  "InboxMailsDateSpreadingExtended": {
     "message": "Details by date",
     "description": "Link that shows the inbox mails by arrival date"
   },
@@ -1759,7 +1583,7 @@
     "message": "Nothing in the inbox is older than a month.",
     "description": ""
   },
-  "CustomQryPeriod": {
+  "DateRange": {
     "message": "Period",
     "description": "Custom query panel field"
   },
@@ -1767,11 +1591,11 @@
     "message": "The comparison needs a period of more than one day",
     "description": ""
   },
-  "QuickRanges": {
+  "Bookmarks_Menu": {
     "message": "Quick ranges",
     "description": "Custom query panel, preset periods"
   },
-  "FiltersLabel": {
+  "AdvFilters": {
     "message": "Filters",
     "description": "Custom query panel"
   },
@@ -1871,18 +1695,6 @@
     "message": "ThunderStats is free and built in spare time. If it's part of your routine, consider supporting it.",
     "description": ""
   },
-  "Opt_MakeDonation": {
-    "message": "Make a donation",
-    "description": ""
-  },
-  "Opt_BusinessDays": {
-    "message": "Business days",
-    "description": ""
-  },
-  "Opt_IdentitiesDomains": {
-    "message": "Identities & domains",
-    "description": ""
-  },
   "Opt_About": {
     "message": "About",
     "description": ""
@@ -1941,16 +1753,8 @@
     "message": "In development",
     "description": ""
   },
-  "Opt_GeneralDesc": {
-    "message": "How ThunderStats opens, loads data and draws its charts.",
-    "description": ""
-  },
   "Opt_Startup": {
     "message": "Startup",
-    "description": ""
-  },
-  "Opt_StartupAccount": {
-    "message": "Startup account",
     "description": ""
   },
   "Opt_StartupAccountHint": {
@@ -1965,52 +1769,12 @@
     "message": "Loading data",
     "description": ""
   },
-  "Opt_ReloadSwitchingAccount": {
-    "message": "Reload data when switching account",
-    "description": ""
-  },
-  "Opt_ReloadSwitchingTab": {
-    "message": "Reload data when switching tab",
-    "description": ""
-  },
-  "Opt_ReopenLastTab": {
-    "message": "Reopen the last tab you used",
-    "description": ""
-  },
-  "Opt_LoadCustomFirstTab": {
-    "message": "Load data when Custom is the first tab opened",
-    "description": ""
-  },
   "Opt_LoadCustomFirstTabHint": {
     "message": "Otherwise Custom waits until you run a query",
     "description": ""
   },
-  "Opt_LoadCustomOnRange": {
-    "message": "Load data as soon as you pick a predefined period in Custom",
-    "description": ""
-  },
   "Opt_LoadCustomOnRangeHint": {
     "message": "Otherwise the period is only set in the date picker",
-    "description": ""
-  },
-  "Opt_ExpandAdvFilters": {
-    "message": "Always expand advanced filters in Custom",
-    "description": ""
-  },
-  "Opt_TodayYesterdayChart": {
-    "message": "Today & Yesterday chart",
-    "description": ""
-  },
-  "Opt_OverlayYesterday": {
-    "message": "Overlay yesterday on today’s chart",
-    "description": ""
-  },
-  "Opt_ShowCumulative": {
-    "message": "Show cumulative values",
-    "description": ""
-  },
-  "Opt_HideFutureHours": {
-    "message": "Hide hours that haven’t happened yet",
     "description": ""
   },
   "Opt_TodayOnly": {
@@ -2021,56 +1785,28 @@
     "message": "Many days & Custom",
     "description": ""
   },
-  "Opt_ManyDaysNum": {
-    "message": "Days shown in Many days",
-    "description": ""
-  },
   "Opt_ManyDaysNumHint": {
     "message": "For more than 24 days, raise the recent days cache in Advanced",
     "description": ""
   },
-  "Opt_Days": {
+  "days": {
     "message": "days",
-    "description": ""
-  },
-  "Opt_DatePickerLocale": {
-    "message": "Date picker language",
     "description": ""
   },
   "Opt_DatePickerLocaleHint": {
     "message": "A locale code such as en-US or it-IT, for the date format of the date pickers",
     "description": ""
   },
-  "Opt_UseSystem": {
-    "message": "Use Thunderbird’s",
-    "description": ""
-  },
   "Opt_InboxZero": {
     "message": "Inbox Zero",
-    "description": ""
-  },
-  "Opt_MarkInboxBars": {
-    "message": "Mark mail still in the inbox on chart bars",
     "description": ""
   },
   "Opt_MarkInboxBarsHint": {
     "message": "Multi-day views",
     "description": ""
   },
-  "Opt_OpenFolderFirstTab": {
-    "message": "Open folders in the first mail tab",
-    "description": ""
-  },
-  "Opt_OpenFolderFirstTabHint": {
-    "message": "When you click a folder in “Where mails ended up”",
-    "description": ""
-  },
   "Opt_InternalMail": {
     "message": "Internal mail",
-    "description": ""
-  },
-  "Opt_ShowInternalShare": {
-    "message": "Show the share of internal mail",
     "description": ""
   },
   "Opt_ShowInternalShareHint": {
@@ -2085,20 +1821,8 @@
     "message": "Automatic follows the system; the sun/moon button in the toolbar switches it too",
     "description": ""
   },
-  "Opt_AdvancedDesc": {
-    "message": "Fine-tuning for how mail is counted. The defaults work for most people.",
-    "description": ""
-  },
   "Opt_ArchiveFolders": {
     "message": "Archive folders",
-    "description": ""
-  },
-  "Opt_ArchiveFoldersDesc": {
-    "message": "Providers like Gmail keep every message in an Archive folder as well as in its own folder, so counting archives can double your numbers. Exclude archives, or keep them and filter duplicates — slower, but more accurate.",
-    "description": ""
-  },
-  "Opt_FilterDupMulti": {
-    "message": "Filter duplicates when several accounts are selected",
     "description": ""
   },
   "Opt_FilterDupHint": {
@@ -2109,20 +1833,8 @@
     "message": "Per account",
     "description": ""
   },
-  "Opt_FilterDuplicates": {
-    "message": "Filter duplicates",
-    "description": ""
-  },
   "Opt_ArchiveFoldersNote": {
     "message": "Folder counts in “Where mails ended up” always show all mail — a message stored in two folders appears in both.",
-    "description": ""
-  },
-  "Opt_FirstDayWeek": {
-    "message": "First day of the week",
-    "description": ""
-  },
-  "Opt_TopRows": {
-    "message": "Rows in “Top” tables",
     "description": ""
   },
   "Opt_TopRowsHint": {
@@ -2131,10 +1843,6 @@
   },
   "Opt_WarnLongPeriods": {
     "message": "Warn for long periods",
-    "description": ""
-  },
-  "Opt_WarnLongPeriodsHint": {
-    "message": "Show a “this may take a while” notice in Custom for ranges longer than this (0: never)",
     "description": ""
   },
   "Opt_Performance": {
@@ -2149,20 +1857,8 @@
     "message": "Message queries at the same time",
     "description": ""
   },
-  "Opt_ConcurrentQueriesHint": {
-    "message": "Lower it if Thunderbird stutters while loading, raise it if loading is too slow (1–10)",
-    "description": ""
-  },
   "Opt_RecentDaysCache": {
     "message": "Recent days cache",
-    "description": ""
-  },
-  "Opt_RecentDaysCacheHint": {
-    "message": "Days before today read in one pass and shared by the views (43–365). Raise it if Many days covers more than 24 days; a bigger value makes the first load slower",
-    "description": ""
-  },
-  "Opt_DebugLog": {
-    "message": "Debug logging",
     "description": ""
   },
   "Opt_DebugLogHint": {
@@ -2175,18 +1871,6 @@
   },
   "Opt_WorkingWeek": {
     "message": "Working week",
-    "description": ""
-  },
-  "Opt_BdayDefaultOnly": {
-    "message": "Use business days only for averages, min and max",
-    "description": ""
-  },
-  "Opt_BdayLastBusinessDay": {
-    "message": "When yesterday was a day off, show the last business day",
-    "description": ""
-  },
-  "Opt_Holidays": {
-    "message": "Holidays",
     "description": ""
   },
   "Opt_HolidaysNone": {
@@ -2215,16 +1899,8 @@
     "message": "Add holiday",
     "description": ""
   },
-  "Opt_HolidayName": {
-    "message": "Name",
-    "description": ""
-  },
   "Opt_HolidayNamePlaceholder": {
     "message": "e.g. Festa della Repubblica",
-    "description": ""
-  },
-  "Opt_HolidayDefaultName": {
-    "message": "Holiday",
     "description": ""
   },
   "Opt_YearOnly": {
@@ -2239,10 +1915,6 @@
   },
   "Opt_Add": {
     "message": "Add",
-    "description": ""
-  },
-  "Opt_Easter": {
-    "message": "Easter and Easter Monday",
     "description": ""
   },
   "Opt_EasterHint": {
@@ -2267,24 +1939,12 @@
     "message": "Tell ThunderStats which addresses are yours and which domains are internal.",
     "description": ""
   },
-  "Opt_AccountIdentities": {
-    "message": "Account identities",
-    "description": ""
-  },
   "Opt_AccountIdentitiesDesc": {
     "message": "Read from Thunderbird’s account settings",
     "description": ""
   },
   "Opt_NoIdentities": {
     "message": "This account has no identities.",
-    "description": ""
-  },
-  "Opt_CustomIdentities": {
-    "message": "Custom identities",
-    "description": ""
-  },
-  "Opt_CustomIdentitiesDesc": {
-    "message": "Other addresses you receive mail on — typically mailing lists where your own address isn’t in To or Cc.",
     "description": ""
   },
   "Opt_AddAddress": {
@@ -2295,48 +1955,12 @@
     "message": "Not a valid address or pattern: use name@example.com, *@example.com or @example.com.",
     "description": ""
   },
-  "Opt_CustomIdentitiesHint": {
-    "message": "Use $PATTERN1$ or $PATTERN2$ to match a whole domain.",
-    "description": "",
-    "placeholders": {
-      "pattern1": {
-        "content": "$1",
-        "example": "*@example.com"
-      },
-      "pattern2": {
-        "content": "$2",
-        "example": "@example.com"
-      }
-    }
-  },
-  "Opt_InternalDomains": {
-    "message": "Internal domains",
-    "description": ""
-  },
-  "Opt_InternalDomainsDesc": {
-    "message": "Domains that belong to your organisation. Used to split internal from external traffic in your stats.",
-    "description": ""
-  },
   "Opt_AddDomain": {
     "message": "Add domain and press Enter",
     "description": ""
   },
   "Opt_InvalidDomain": {
     "message": "Not a valid domain: use example.com or *.example.com.",
-    "description": ""
-  },
-  "Opt_InternalDomainsHint": {
-    "message": "Use $PATTERN$ to match all the subdomains.",
-    "description": "",
-    "placeholders": {
-      "pattern": {
-        "content": "$1",
-        "example": "*.example.com"
-      }
-    }
-  },
-  "Opt_InclArchMulti": {
-    "message": "Include archives when several accounts are selected",
     "description": ""
   },
   "Remove": {

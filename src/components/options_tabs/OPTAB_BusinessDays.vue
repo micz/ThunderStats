@@ -20,7 +20,7 @@
 
 <template>
   <div class="opt-section-head">
-    <h1 class="opt-section-title">{{ t('Opt_BusinessDays') }}</h1>
+    <h1 class="opt-section-title">{{ t('TabBusinessDays.label') }}</h1>
     <div class="opt-section-desc">{{ t('Opt_BusinessDaysDesc') }}</div>
   </div>
 
@@ -31,14 +31,14 @@
         <button type="button" v-for="day in week_days" :key="day.idx" :class="{ 'is-on': prefs.values['bday_weekdays_' + day.idx] }" :aria-pressed="prefs.values['bday_weekdays_' + day.idx] ? 'true' : 'false'" :title="day.long" @click="prefs.set('bday_weekdays_' + day.idx, !prefs.values['bday_weekdays_' + day.idx])">{{ day.short }}</button>
       </div>
     </div>
-    <OptRow pref="bday_default_only" :label="t('Opt_BdayDefaultOnly')"/>
-    <OptRow pref="bday_use_last_business_day" :label="t('Opt_BdayLastBusinessDay')"/>
+    <OptRow pref="bday_default_only" :label="t('Label_bday_default_only')"/>
+    <OptRow pref="bday_use_last_business_day" :label="t('Label_bday_use_last_business_day')"/>
   </section>
 
   <section class="opt-card">
     <div class="opt-hol-head">
       <div class="opt-row-text">
-        <div class="opt-card-title">{{ t('Opt_Holidays') }}</div>
+        <div class="opt-card-title">{{ t('Non-BDays') }}</div>
         <div class="opt-row-hint">{{ holidays_count }}</div>
       </div>
       <button type="button" class="opt-btn" @click="startAdd">
@@ -59,7 +59,7 @@
         </select>
       </label>
       <label class="opt-field opt-hol-name">
-        <span class="opt-field-label">{{ t('Opt_HolidayName') }}</span>
+        <span class="opt-field-label">{{ t('Description') }}</span>
         <input type="text" class="opt-input" :placeholder="t('Opt_HolidayNamePlaceholder')" v-model="draft.description"/>
       </label>
       <div class="opt-seg" role="group">
@@ -78,7 +78,7 @@
           <span class="opt-hol-badge-month">{{ month_names[holiday.month] }}</span>
           <span class="opt-hol-badge-day">{{ holiday.day }}</span>
         </span>
-        <span class="opt-hol-desc">{{ holiday.description || t('Opt_HolidayDefaultName') }}</span>
+        <span class="opt-hol-desc">{{ holiday.description || t('Non-Business_Day') }}</span>
         <span class="opt-hol-pill">{{ holiday.year == 'every_year' ? t('Yearly') : t('Opt_YearOnly', [holiday.year]) }}</span>
       </button>
       <button type="button" class="opt-hol-delete" :title="t('Delete')" :aria-label="t('Delete') + ' ' + (holiday.description || '')" @click="deleteHoliday(holiday)">
@@ -86,7 +86,7 @@
       </button>
     </div>
 
-    <OptRow class="opt-easter" pref="bday_easter" :label="t('Opt_Easter')" :hint="easter_hint"/>
+    <OptRow class="opt-easter" pref="bday_easter" :label="t('EasterNoBusinessDay')" :hint="easter_hint"/>
   </section>
 </template>
 
@@ -187,7 +187,7 @@ function saveDraft() {
     year: d.yearly ? 'every_year' : d.year,
     month: d.month,
     day: Number(d.day),
-    description: (d.description || '').trim() || t('Opt_HolidayDefaultName'),
+    description: (d.description || '').trim() || t('Non-Business_Day'),
   };
   let list = [...holidays.value];
   if (d.id === null) {

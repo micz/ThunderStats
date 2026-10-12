@@ -327,33 +327,6 @@ export const tsUtils = {
 
         return sortedDays; // Return the sorted copy
       },
-
-      async isThunderbird128OrGreater(){
-        try {
-          const info = await browser.runtime.getBrowserInfo();
-          const version = info.version;
-          // console.log(">>>>>>>>>> version: " + info.version)
-          // console.log(">>>>>>>>>> isThunderbird128OrGreater: " + tsUtils.compareThunderbirdVersions(version, '128.0') >= 0)
-          return tsUtils.compareThunderbirdVersions(version, '128.0') >= 0;
-        } catch (error) {
-          console.error('[ThunderStats] Error retrieving browser information:', error);
-          return false;
-        }
-      },
-
-      compareThunderbirdVersions(v1, v2) {
-        const v1parts = v1.split('.').map(Number);
-        const v2parts = v2.split('.').map(Number);
-
-        for (let i = 0; i < Math.max(v1parts.length, v2parts.length); i++) {
-          const v1part = v1parts[i] || 0;
-          const v2part = v2parts[i] || 0;
-          if (v1part > v2part) return 1;
-          if (v1part < v2part) return -1;
-        }
-        return 0;
-      },
-
 }
 
 export class EmailMatcher {

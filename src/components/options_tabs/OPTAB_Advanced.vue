@@ -88,6 +88,14 @@
       </td>
     </tr>
     <tr>
+      <td class="td_padding_right">
+        <label><input type="number" id="max_concurrent_queries" name="max_concurrent_queries" min="1" max="10" class="option-input" /></label>
+      </td>
+      <td>
+        <span class="dims_label">__MSG_MaxConcurrentQueries__</span>
+      </td>
+    </tr>
+    <tr>
       <td>
         <label><input type="checkbox" id="do_debug" name="do_debug" class="option-input" /></label>
       </td>

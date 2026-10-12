@@ -6,7 +6,7 @@
 
 - Author: Mic (m@micz.it)
 - License: GNU GPL v3
-- Minimum Thunderbird: 115.0
+- Minimum Thunderbird: 140.0
 - Addon ID: `thunderstats@micz.it`
 
 ## Tech Stack

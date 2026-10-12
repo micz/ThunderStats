@@ -467,6 +467,10 @@
     "message": "When clicking a folder in Where mails ended up, open it in the first mail tab",
     "description": ""
   },
+  "MaxConcurrentQueries": {
+    "message": "Number of message queries run at the same time while loading the statistics (1-10). Lower it if Thunderbird becomes unresponsive while loading, raise it if loading is too slow.",
+    "description": ""
+  },
   "InvolvedNum": {
     "message": "Number of recipients or senders to be shown in \"Top\" tables",
     "description": ""

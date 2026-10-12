@@ -121,7 +121,7 @@
       </td>
     </tr>
     </table>
-    <table class="miczPrefs" v-if="tsStore.isTB128plus">
+    <table class="miczPrefs">
     <tr>
       <td colspan="2" class="grouptitle">__MSG_Folders__</td>
     </tr>

@@ -15,7 +15,7 @@ The addon has two separate UI surfaces, each a self-contained Vue 3 application:
 
 - **Manifest Version:** 2
 - **Gecko ID:** `thunderstats@micz.it`
-- **Min Thunderbird version:** 115.0
+- **Min Thunderbird version:** 140.0
 - **Browser action:** toolbar button that opens the stats window
 - **Options UI:** `index.ts-options.html` (opens in a tab)
 - **Background page:** `background.html` (loads `background.js`)

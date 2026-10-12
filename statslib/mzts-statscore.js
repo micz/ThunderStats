@@ -21,6 +21,12 @@ import { tsCoreUtils, clearContactsNamesCache } from "./mzts-statscore.utils";
 import { tsUtils, EmailMatcher, DomainMatcher } from "./mzts-utils";
 import { tsPrefs } from "./mzts-options";
 import { tsStore } from "./mzts-store";
+import { prefs_default } from "./mzts-options-default";
+
+// Messages per page of a messages.query: bigger pages mean fewer round trips to Thunderbird for the same messages
+export const MESSAGES_PER_PAGE = 500;
+// Folders never counted in the stats (with their subfolders)
+const EXCLUDED_FOLDERS_SPECIAL_USE = ['drafts', 'trash', 'junk', 'templates', 'outbox'];
 
 export class thunderStastsCore {
 
@@ -31,7 +37,7 @@ export class thunderStastsCore {
   accounts_adv_settings = [];
   include_archive = {};     // account_id -> include the "archives" folders (loaded by loadIncludeArchive before each scan)
   filter_duplicates = {};   // account_id -> filter duplicates setting (see getFilterDuplicates)
-  folders_ids = {};         // account_id -> folder ids of the account, TB 128+ (see getAccountFoldersIds)
+  folders_ids = {};         // account_id -> ids of the folders to query (see getStatsFoldersIds)
 
   constructor(options = {}) {
     this.do_debug = options.hasOwnProperty('do_debug') ? options.do_debug : false;
@@ -312,23 +318,14 @@ export class thunderStastsCore {
       let queryInfo_ScanDays = {
         fromDate: fromDate,
         toDate: toDate,
-        includeSubFolders: true,
-      }
-
-      if(account_id != 0){
-        if(tsStore.isTB128plus){
-          queryInfo_ScanDays.folderId = await this.getAccountFoldersIds(account_id);
-        }
+        folderId: await this.getStatsFoldersIds(account_id),
+        includeSubFolders: false,
+        messagesPerPage: MESSAGES_PER_PAGE,
       }
 
       this.tsLog.log(() => "queryInfo_ScanDays: " + JSON.stringify(queryInfo_ScanDays));
 
-      let messages = null;
-      if(tsStore.isTB128plus){
-        messages = this.getMessages(() => browser.messages.query(queryInfo_ScanDays));
-      }else{
-        messages = this.getAccountMessages_TB115(queryInfo_ScanDays, account_id, null, false);
-      }
+      let messages = this.getMessages(() => browser.messages.query(queryInfo_ScanDays));
 
       await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
@@ -444,28 +441,16 @@ export class thunderStastsCore {
         }
       }
 
-      let filter_folders_115 = null;
-
-      if(account_id != 0){
-        if(filter_folders != null){
-          this.tsLog.log(() => "filter_folders: " + JSON.stringify(filter_folders));
-          if(tsStore.isTB128plus){
-            queryInfo_FullStatsData.folderId = filter_folders;
-            queryInfo_FullStatsData.includeSubFolders = adv_filters.folders_do_subfolders;
-          }else{
-            filter_folders_115 = filter_folders;
-            queryInfo_FullStatsData.includeSubFolders = adv_filters.folders_do_subfolders;
-          }
-        }else{
-          if(tsStore.isTB128plus){
-            queryInfo_FullStatsData.folderId = await this.getAccountFoldersIds(account_id);
-            queryInfo_FullStatsData.includeSubFolders = true;
-          }else{
-            filter_folders_115 = null;
-            queryInfo_FullStatsData.includeSubFolders = true;
-          }
-        }
+      if(filter_folders != null){
+        // folders chosen by the user in the Custom Query advanced filters
+        this.tsLog.log(() => "filter_folders: " + JSON.stringify(filter_folders));
+        queryInfo_FullStatsData.folderId = filter_folders;
+        queryInfo_FullStatsData.includeSubFolders = adv_filters.folders_do_subfolders;
+      }else{
+        queryInfo_FullStatsData.folderId = await this.getStatsFoldersIds(account_id);
+        queryInfo_FullStatsData.includeSubFolders = false;
       }
+      queryInfo_FullStatsData.messagesPerPage = MESSAGES_PER_PAGE;
       
       this.tsLog.log(() => "queryInfo_FullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
       
@@ -489,19 +474,7 @@ export class thunderStastsCore {
 
       //let messageids_sent = [];
 
-      let messages = null;
-      
-      if(tsStore.isTB128plus){
-        messages = this.getMessages(() => browser.messages.query(queryInfo_FullStatsData));
-      }else{
-        if(filter_folders_115 == null){
-          // get all messages for the account
-          messages = this.getAccountMessages_TB115(queryInfo_FullStatsData, account_id, null, false);
-        }else{
-          //filter messages
-          messages = this.getAccountMessages_TB115(queryInfo_FullStatsData, account_id, filter_folders_115, false);
-        }
-      }
+      let messages = this.getMessages(() => browser.messages.query(queryInfo_FullStatsData));
 
       let msg_hours = {};
       for(let i = 0; i < 24; i++) {
@@ -835,13 +808,9 @@ export class thunderStastsCore {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
         fromDate: fromDate,
         toDate: toDate,
-        includeSubFolders: true,
-      }
-
-      if(account_id != 0){
-        if(tsStore.isTB128plus){
-          queryInfo_CountStatsData.folderId = await this.getAccountFoldersIds(account_id);
-        }
+        folderId: await this.getStatsFoldersIds(account_id),
+        includeSubFolders: false,
+        messagesPerPage: MESSAGES_PER_PAGE,
       }
 
       this.tsLog.log(() => "queryInfo_CountStatsData: " + JSON.stringify(queryInfo_CountStatsData));
@@ -850,13 +819,7 @@ export class thunderStastsCore {
       let sent = 0;
       let received = 0;
 
-      let messages = null;
-      
-      if(tsStore.isTB128plus){
-        messages = this.getMessages(() => browser.messages.query(queryInfo_CountStatsData));
-      }else{
-        messages = this.getAccountMessages_TB115(queryInfo_CountStatsData, account_id, null, false);
-      }
+      let messages = this.getMessages(() => browser.messages.query(queryInfo_CountStatsData));
 
       let msg_hours = {};
       for(let i = 0; i < 24; i++) {
@@ -927,13 +890,9 @@ export class thunderStastsCore {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
         fromDate: fromDate,
         toDate: toDate,
-        includeSubFolders: true,
-      }
-
-      if(account_id != 0){
-        if(tsStore.isTB128plus){
-          queryInfo_getAggregatedStatsData.folderId = await this.getAccountFoldersIds(account_id);
-        }
+        folderId: await this.getStatsFoldersIds(account_id),
+        includeSubFolders: false,
+        messagesPerPage: MESSAGES_PER_PAGE,
       }
 
       this.tsLog.log(() => "queryInfo_getAggregatedStatsData: " + JSON.stringify(queryInfo_getAggregatedStatsData));
@@ -942,13 +901,7 @@ export class thunderStastsCore {
       let sent = 0;
       let received = 0;
 
-      let messages = null;
-      
-      if(tsStore.isTB128plus){
-        messages = this.getMessages(() => browser.messages.query(queryInfo_getAggregatedStatsData));
-      }else{
-        messages = this.getAccountMessages_TB115(queryInfo_getAggregatedStatsData, account_id, null, false);
-      }
+      let messages = this.getMessages(() => browser.messages.query(queryInfo_getAggregatedStatsData));
 
       let msg_days = tsUtils.getDateArray(fromDate,toDate);
 
@@ -1072,11 +1025,37 @@ export class thunderStastsCore {
       return this.filter_duplicates[account_id];
     }
 
-    async getAccountFoldersIds(account_id = 0) {
-      if(!(account_id in this.folders_ids)) {
-        this.folders_ids[account_id] = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
+    // The ids of the folders to query for the stats of an account (0 = all the accounts): every folder except
+    // drafts, trash, junk, templates and outbox with their subfolders and, when the account setting excludes
+    // them, the archives. Filtering at the folder level saves Thunderbird from converting the skipped messages at all.
+    async getStatsFoldersIds(account_id = 0) {
+      if(account_id in this.folders_ids) return this.folders_ids[account_id];
+
+      let include_archive = await this.loadIncludeArchive(account_id);
+      let account_ids = [];
+      if(account_id != 0) {
+        account_ids = [account_id];
+      } else {
+        account_ids = (await browser.accounts.list(false)).map(account => account.id);
       }
-      return this.folders_ids[account_id];
+
+      let output = [];
+      const explore = (folders) => {
+        for(let folder of folders) {
+          let specialUse = folder.specialUse || [];
+          if(EXCLUDED_FOLDERS_SPECIAL_USE.some(use => specialUse.includes(use))) continue;
+          if(!include_archive && specialUse.includes('archives')) continue;
+          output.push(folder.id);
+          if(folder.subFolders && folder.subFolders.length > 0) explore(folder.subFolders);
+        }
+      };
+      for(let id of account_ids) {
+        explore(await browser.folders.getSubFolders(id, true));
+      }
+
+      this.tsLog.log(() => "[getStatsFoldersIds] account " + account_id + ": " + output.length + " folders");
+      this.folders_ids[account_id] = output;
+      return output;
     }
 
     // Reads the "include archives" preference of the account once, so excludeMessage can be synchronous
@@ -1087,12 +1066,11 @@ export class thunderStastsCore {
       return this.include_archive[account_id];
     }
 
-    excludeMessage(message, account_id = 0){    // Returns true if the message should be excluded from the stats (call loadIncludeArchive first)
-      if(!("specialUse" in message.folder)){
-        message.folder.specialUse = [message.folder.type];
-      }
-      // do not include messages from drafts, trash, junk folders
-      if(message.folder.specialUse && ['drafts', 'trash', 'junk'].some(specialUse => message.folder.specialUse.includes(specialUse))){
+    // Returns true if the message should be excluded from the stats (call loadIncludeArchive first).
+    // The queries already skip these folders (see getStatsFoldersIds); this is the safety net for the
+    // folders chosen by the user in the Custom Query filters
+    excludeMessage(message, account_id = 0){
+      if(message.folder.specialUse && EXCLUDED_FOLDERS_SPECIAL_USE.some(specialUse => message.folder.specialUse.includes(specialUse))){
         return true;
       }
       
@@ -1128,13 +1106,7 @@ export class thunderStastsCore {
 
       let start_time = performance.now();
 
-      let inboxFolders = null;
-      
-      if(tsStore.isTB128plus){
-        inboxFolders = await this.getInboxFolders(account_id);
-      }else{
-        inboxFolders = await this.getInboxFolders_TB115(account_id);
-      }
+      let inboxFolders = await this.getInboxFolders(account_id);
 
       //total and unread mails in inbox
       let total = 0;
@@ -1144,13 +1116,8 @@ export class thunderStastsCore {
 
       for(let folder of inboxFolders) {
           let queryInfo_InboxZeroData = {
-            //accountId: account_id == 0?'':account_id,
-          }
-
-          if(tsStore.isTB128plus){
-            queryInfo_InboxZeroData.folderId = folder.id;
-          }else{
-            queryInfo_InboxZeroData.folder = folder;
+            folderId: folder.id,
+            messagesPerPage: MESSAGES_PER_PAGE,
           }
 
           this.tsLog.log(() => "queryInfo_InboxZeroData: " + JSON.stringify(queryInfo_InboxZeroData));
@@ -1191,76 +1158,6 @@ export class thunderStastsCore {
       return folders;
     }
 
-    async getInboxFolders_TB115(account_id = 0){
-      // let queryInfo_InboxFolders = {
-      //   accountId: account_id == 0?'':account_id,
-      //   specialUse: ['inbox']
-      // }
-
-      // let folders = await browser.folders.query(queryInfo_InboxFolders);
-
-      let account = null;
-      let folders = null;
-
-      if(account_id == 0) {
-        account = await browser.accounts.list(true);
-        folders = account.flatMap(acc => acc.folders.filter(folder => folder.type === 'inbox'));
-      } else {
-        account = await browser.accounts.get(account_id, true);
-        folders = account.folders.filter(folder => folder.type == 'inbox');
-      }
-
-      //test code to print the account_folders
-      // let account_folders = await browser.folders.getSubFolders(await browser.accounts.get(account_id));
-      // console.log(">>>>>>>>>>>>>>> account_folders: " + JSON.stringify(account_folders));
-
-      this.tsLog.log(() => "folders: " + JSON.stringify(folders));
-      return folders;
-    }
-
-    async *getAccountMessages_TB115(queryInfo, account_id = 0, filter_folders_115 = null, do_subfolders = true) {
-      this.tsLog.log(() => "getAccountMessages_TB115 queryInfo: " + JSON.stringify(queryInfo));
-      if(account_id == 0) {
-        yield* this.getMessages(() => browser.messages.query(queryInfo));
-        return;
-      }
-
-      let account = await browser.accounts.get(account_id, true);
-      let folders = null;
-      
-      if(filter_folders_115 == null) {
-        folders = await browser.folders.getSubFolders(account, do_subfolders);
-      } else {
-        this.tsLog.log(() => "filter_folders_115: " + JSON.stringify(filter_folders_115));
-        folders = await tsCoreUtils.getFoldersArrayFromIds(filter_folders_115, account_id);
-      }
-
-      this.tsLog.log(() => "getAccountMessages_TB115 folders: " + JSON.stringify(folders));
-
-      for (let folder of folders) {
-        this.tsLog.log(() => "processFolderAndSubfolders_TB115 on folder: " + JSON.stringify(folder));
-        yield* this.processFolderAndSubfolders_TB115(folder, queryInfo, account_id, do_subfolders);
-      }
-    }
-
-    async *processFolderAndSubfolders_TB115(folder, queryInfo, account_id, do_subfolders = true) {
-      //if (this.excludeFolder(folder, account_id)) return;
-      queryInfo = { ...queryInfo };
-      this.tsLog.log(() => "processFolderAndSubfolders_TB115 queryInfo: " + JSON.stringify(queryInfo));
-      this.tsLog.log(` processFolderAndSubfolders Listing messages for folder: ${folder.name}, path: ${folder.path}`);
-      queryInfo.folder = folder;
-      this.tsLog.log(() => "processFolderAndSubfolders queryInfo: " + JSON.stringify(queryInfo));
-      yield* this.getMessages(() => browser.messages.query(queryInfo));
-  
-      if(do_subfolders){
-        let subfolders = await browser.folders.getSubFolders(folder);
-        for (let subfolder of subfolders) {
-          this.tsLog.log(() => "processFolderAndSubfolders_TB115 on subfolder: " + JSON.stringify(subfolder));
-            yield* this.processFolderAndSubfolders_TB115(subfolder, queryInfo, account_id);
-        }
-      }
-    }
-
     // Pages of a message list, one message at a time.
     // queryFn starts the query (browser.messages.query) and is called only when a slot
     // of the query queue is free: every query runs on Thunderbird's main thread, so
@@ -1274,7 +1171,7 @@ export class thunderStastsCore {
         }
 
         while (page.id) {
-          page = await messenger.messages.continueList(page.id);
+          page = await browser.messages.continueList(page.id);
           for (let message of page.messages) {
             yield message;
           }
@@ -1286,7 +1183,9 @@ export class thunderStastsCore {
 }
 
 // Limits the number of message queries running at the same time (shared by all core instances).
-export const MAX_CONCURRENT_QUERIES = 2;
+// The limit is the max_concurrent_queries preference, applied with setMaxConcurrentQueries().
+export const MIN_CONCURRENT_QUERIES = 1;
+export const MAX_CONCURRENT_QUERIES = 10;
 
 class QueryQueue {
   running = 0;
@@ -1294,6 +1193,13 @@ class QueryQueue {
 
   constructor(max_concurrent) {
     this.max_concurrent = max_concurrent;
+  }
+
+  setMaxConcurrent(max_concurrent) {
+    this.max_concurrent = max_concurrent;
+    while(this.running < this.max_concurrent && this.waiting.length > 0) {
+      this.waiting.shift()();
+    }
   }
 
   // Resolves with a release function when a slot is free; the caller must always call it (use finally).
@@ -1319,7 +1225,15 @@ class QueryQueue {
   }
 }
 
-const tsQueryQueue = new QueryQueue(MAX_CONCURRENT_QUERIES);
+const tsQueryQueue = new QueryQueue(prefs_default.max_concurrent_queries);
+
+// Applies the max_concurrent_queries preference (clamped to MIN/MAX_CONCURRENT_QUERIES)
+export function setMaxConcurrentQueries(value) {
+  let max_concurrent = Number(value);
+  if(!Number.isFinite(max_concurrent)) max_concurrent = prefs_default.max_concurrent_queries;
+  max_concurrent = Math.min(MAX_CONCURRENT_QUERIES, Math.max(MIN_CONCURRENT_QUERIES, Math.round(max_concurrent)));
+  tsQueryQueue.setMaxConcurrent(max_concurrent);
+}
 
 // Recent days cache: the last RECENT_DAYS_CACHE_DAYS days before today (7 weeks, so the baseline
 // of yesterday always has 6 full weeks), shared by all core instances. See getRecentDays().

@@ -29,7 +29,7 @@ The `applications` manifest entry is deprecated. Always use `browser_specific_se
     "browser_specific_settings": {
         "gecko": {
             "id": "thunderstats@micz.it",
-            "strict_min_version": "115.0"
+            "strict_min_version": "140.0"
         }
     }
 }
@@ -121,7 +121,7 @@ See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/r
 
 ### 6. Set correct `strict_min_version`
 
-Ensure `manifest.json` has a `strict_min_version` matching the minimum Thunderbird version that supports all used APIs. ThunderStats currently targets `115.0`.
+Ensure `manifest.json` has a `strict_min_version` matching the minimum Thunderbird version that supports all used APIs. ThunderStats currently targets `140.0`; the code has no Thunderbird version checks and no fallbacks for older versions.
 
 ### 7. Parse Mailbox Strings using `messengerUtilities`
 
@@ -241,7 +241,7 @@ For each method used, verify:
 1. Re-read the official API documentation for the exact method signature.
 2. Check that the required permission is in `manifest.json`.
 3. Verify the return type — do not assume it is a direct array (see Section 4 above).
-4. Check the Thunderbird version — the API may not be available in `strict_min_version: 115.0`.
+4. Check the Thunderbird version — the API may not be available in `strict_min_version: 140.0`.
 
 ### "Experiment not loading"
 1. Check `manifest.json` has the correct `experiment_apis` entry.

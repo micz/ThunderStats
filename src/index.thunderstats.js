@@ -24,13 +24,11 @@ import {Tabs, Tab} from 'vue3-tabs-component';
 import App_ThunderStats from './App_ThunderStats.vue'
 import { tsStore } from '@statslib/mzts-store.js';
 import { tsPrefs } from '@statslib/mzts-options';
-import { tsUtils } from '@statslib/mzts-utils';
 import { tsTheme } from '@statslib/mzts-theme';
 
 async function main() {
 
     tsStore.do_debug = await tsPrefs.getPref("do_debug");
-    tsStore.isTB128plus = await tsUtils.isThunderbird128OrGreater();
     await tsTheme.init();
     tsStore.currentTab = "tab-today";
 

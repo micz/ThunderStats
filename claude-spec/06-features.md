@@ -94,7 +94,7 @@ Pref keys and defaults: `statslib/mzts-options-default.js`.
 - **Data loading** — reload data on every tab switch (`always_reload_tab_data`), reload when changing account (`load_data_changing_account`)
 - **Many Days** — number of days (`_many_days`, default 7), show inbox mails in the bars (`many_days_show_inbox`)
 - **Time chart** — show yesterday (`today_time_chart_show_yesterday`), hide future hours (`today_time_chart_do_no_show_future`), progressive/cumulative lines (`_time_chart_progressive`)
-- **Folders** (TB 128+) — open the folder clicked in "Where mails ended up" in the first mail tab (`inbox0_openFolderInFirstTab`)
+- **Folders** — open the folder clicked in "Where mails ended up" in the first mail tab (`inbox0_openFolderInFirstTab`)
 - **Custom Query** — load data when selecting a range / when opening the add-on, always open advanced filters
 - **Date picker locale** (`datepicker_locale`)
 - **Show internal mail percentage** (`show_internal_mail_percent`) — shows the Internal traffic KPI card (received internal %, and % of the sent) in every stats tab, when internal domains are configured (default: off)
@@ -104,6 +104,7 @@ Pref keys and defaults: `statslib/mzts-options-default.js`.
 - **Number of correspondents** (`_involved_num`, default 10)
 - **First day of the week** (`first_day_week`)
 - **Custom Query long period warning** (`customqry_warn_onlongperiod_days`, default 90)
+- **Concurrent message queries** (`max_concurrent_queries`, default 2, 1-10) — how many `messages.query` run at the same time while loading; lower it if Thunderbird stutters while loading, raise it if loading is too slow
 - **Debug logging** (`do_debug`)
 - **Filter duplicates** — deduplicate messages that appear in multiple folders (e.g., sent + archive)
 - **Include archive folders** — whether to count archived emails in statistics

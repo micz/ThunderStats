@@ -52,6 +52,7 @@ export const prefs_default = {
     'bday_custom_days': [],
     'bday_easter': true,
     'customqry_warn_onlongperiod_days': 90,
+    'max_concurrent_queries': 2,    // message queries run at the same time while loading the stats (1-10)
     'customqry_always_open_adv_filters': false,
     'show_internal_mail_percent': false,
     'theme_mode': 'auto',    // 'auto' follows the system color scheme, 'light' or 'dark' force it

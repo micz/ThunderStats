@@ -493,21 +493,18 @@ export const tsCoreUtils = {
         }
     },
 
+    // Whether the messages in the "archives" folders are included: the global preference for all the
+    // accounts, the advanced account setting (default true) for a single account
     async getIncludeArchivePreference(account_id) {
         if(account_id == 0) {
            return await tsPrefs.getPref("include_archive_multi_account");
-        } else {
-           let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
-         //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] accounts_adv_settings: " + JSON.stringify(accounts_adv_settings));
-         let element = null;
-         if(accounts_adv_settings.length > 0) {
-           element = accounts_adv_settings.find(account => account.id == account_id);
-         }
-         //   console.log(">>>>>>>>>>>> [getFilterDuplicatesPreference] element: " + JSON.stringify(element));
-         let filter_duplicates_defaults = await this.getDefaultAccountFilterDuplicatesOption(account_id);
-         if(!element) return filter_duplicates_defaults;
-         return element.filter_duplicates ?? filter_duplicates_defaults;
         }
+        let accounts_adv_settings = await tsPrefs.getPref("accounts_adv_settings");
+        let element = null;
+        if(accounts_adv_settings.length > 0) {
+          element = accounts_adv_settings.find(account => account.id == account_id);
+        }
+        return element?.include_archive ?? true;
      },
 
     async getFilterDuplicatesPreference(account_id) {

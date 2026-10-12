@@ -29,6 +29,7 @@ export class thunderStastsCore {
   _involved_num = 10;
   _many_days = 7;
   accounts_adv_settings = [];
+  include_archive = {};     // account_id -> include the "archives" folders (loaded by loadIncludeArchive before each scan)
 
   constructor(options = {}) {
     this.do_debug = options.hasOwnProperty('do_debug') ? options.do_debug : false;
@@ -264,15 +265,15 @@ export class thunderStastsCore {
 
     // The last RECENT_DAYS_CACHE_DAYS days before today, scanned once and shared by all the tabs
     // (Today/Yesterday baseline and previous days, Custom Query pace). The cache key includes today's
-    // date, the account and the settings that change the result; clearCoreCaches() resets it.
-    getRecentDays(account_id = 0, account_emails = [], filter_duplicates = false) {
+    // date, the account, its emails, the duplicates and archive settings; clearCoreCaches() resets it.
+    async getRecentDays(account_id = 0, account_emails = [], filter_duplicates = false) {
       let range = tsRecentDaysCache.getRange();
       let key = [
         tsUtils.dateToYYYYMMDD(range.toDate),
         account_id,
         [...account_emails].sort().join(','),
         filter_duplicates,
-        JSON.stringify(this.accounts_adv_settings),
+        await this.loadIncludeArchive(account_id),
       ].join('|');
 
       if(tsRecentDaysCache.key != key) {
@@ -328,6 +329,7 @@ export class thunderStastsCore {
         messages = this.getAccountMessages_TB115(queryInfo_ScanDays, account_id, null, false);
       }
 
+      await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
           if(this.excludeMessage(message,account_id)) continue;
           if(filter_duplicates){
@@ -531,6 +533,7 @@ export class thunderStastsCore {
         msg_weekdays[i].received_external = 0;
       }
 
+      await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
           if(this.excludeMessage(message,account_id)) continue;
           // this.tsLog.log("message: " + JSON.stringify(message));
@@ -861,6 +864,7 @@ export class thunderStastsCore {
         msg_hours[i].received = 0;
       }
 
+      await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
         //console.log(">>>>>>>>>>>>>> filter_duplicates: iterating message.headerMessageId: " + message.headerMessageId);
           if(this.excludeMessage(message,account_id)) continue;
@@ -949,6 +953,7 @@ export class thunderStastsCore {
 
       this.tsLog.log(() => "[getAggregatedStatsData] msg_days: " + JSON.stringify(msg_days));
 
+      await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
           if(this.excludeMessage(message,account_id)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
@@ -1056,7 +1061,15 @@ export class thunderStastsCore {
       return {total_sent: total_sent, max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, total_received: total_received, max_received: max_received, min_received: min_received, avg_received: avg_received};
     }
 
-    excludeMessage(message, account_id = 0){    // Returns true if the message should be excluded from the stats
+    // Reads the "include archives" preference of the account once, so excludeMessage can be synchronous
+    async loadIncludeArchive(account_id = 0) {
+      if(!(account_id in this.include_archive)) {
+        this.include_archive[account_id] = await tsCoreUtils.getIncludeArchivePreference(account_id);
+      }
+      return this.include_archive[account_id];
+    }
+
+    excludeMessage(message, account_id = 0){    // Returns true if the message should be excluded from the stats (call loadIncludeArchive first)
       if(!("specialUse" in message.folder)){
         message.folder.specialUse = [message.folder.type];
       }
@@ -1067,7 +1080,7 @@ export class thunderStastsCore {
       
       // check if we have to include this message even if it is in a "archives" folder
       if(message.folder.specialUse && message.folder.specialUse.includes('archives')){
-        return !tsCoreUtils.getIncludeArchivePreference(account_id);
+        return !(this.include_archive[account_id] ?? true);
       }
 
       return false;

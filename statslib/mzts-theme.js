@@ -27,7 +27,14 @@ const THEME_MODES = ['auto', 'light', 'dark'];
 
 export const tsTheme = {
 
-    media: window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null,
+    // the system color scheme query, read at the first use (so the module can be imported without a DOM)
+    _media: undefined,
+    get media() {
+        if(this._media === undefined) {
+            this._media = (typeof window !== 'undefined' && window.matchMedia) ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+        }
+        return this._media;
+    },
 
     async init() {
         let mode = await tsPrefs.getPref("theme_mode");

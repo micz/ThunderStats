@@ -187,9 +187,12 @@ describe('EmailMatcher', () => {
     expect(dots.matches('x@aXb')).toBe(false);
   });
 
-  it('matches patterns ignoring the case, exact addresses only as given (already lowercased)', () => {
+  it('ignores the case of the addresses and of the list', () => {
     expect(matcher.matches('ANYONE@WORK.IT')).toBe(true);
-    expect(matcher.matches('ME@example.com')).toBe(false);
+    expect(matcher.matches('ME@example.com')).toBe(true);
+    let mixed = new EmailMatcher([' Me@Work.IT ', '@Corp.ORG']);
+    expect(mixed.matches('me@work.it')).toBe(true);
+    expect(mixed.matches('boss@corp.org')).toBe(true);
   });
 });
 

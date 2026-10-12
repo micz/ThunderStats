@@ -106,7 +106,7 @@ General-purpose utility functions.
 
 Matches email addresses against a list that may contain exact addresses and wildcard patterns. Used internally by `mzts-statscore.js` to classify sent/received emails.
 
-- Constructor accepts an array of email strings (already lowercased)
+- Constructor accepts an array of email strings; entries and checked addresses are lowercased by the matcher itself, so the comparison always ignores the case
 - Entries containing `*` or starting with `@` are treated as wildcard patterns
 - `@domain.com` is shorthand for `*@domain.com`
 - `*` is converted to `.*` in a compiled regex; all other regex special chars are escaped
@@ -221,6 +221,7 @@ Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `d
 **Object:** `tsTheme`
 
 - Reads the `theme_mode` pref (`auto` | `light` | `dark`; `auto` follows `prefers-color-scheme`).
+- `media` — the `prefers-color-scheme: dark` query, read at the first use (`null` without a DOM), so the module can be imported anywhere.
 - `init()` — called by both entry points before mounting; applies the theme, follows system changes while in `auto`, and listens to `browser.storage.onChanged` so every open ThunderStats page stays in sync.
 - `apply(mode)` — sets `tsStore.theme_mode`, `tsStore.darkmode` and `data-theme="light|dark"` on the root element. All CSS dark rules are keyed on `:root[data-theme="dark"]` (no `prefers-color-scheme` media queries).
 - `setMode(mode)` — applies and saves the pref (used by the toolbar theme toggle icon).

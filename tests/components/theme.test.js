@@ -8,7 +8,7 @@ import { tsStore } from '@statslib/mzts-store';
 const root = () => document.documentElement.getAttribute('data-theme');
 
 beforeEach(() => {
-  tsTheme.media = { matches: false, addEventListener() {} };    // system in light mode
+  tsTheme._media = { matches: false, addEventListener() {} };    // system in light mode
   tsTheme.apply('light');
 });
 

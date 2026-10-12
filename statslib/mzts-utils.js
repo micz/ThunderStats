@@ -318,11 +318,13 @@ export const tsUtils = {
 }
 
 export class EmailMatcher {
+  // The comparison ignores the case, also for the exact addresses
   constructor(emails) {
     this.exactEmails = new Set();
     this.patterns = [];
 
-    for (const entry of emails) {
+    for (const raw of emails) {
+      const entry = raw.trim().toLowerCase();
       if (entry.includes('*') || entry.startsWith('@')) {
         this.patterns.push(this._patternToRegex(entry));
       } else {
@@ -342,9 +344,10 @@ export class EmailMatcher {
   }
 
   matches(email) {
-    if (this.exactEmails.has(email)) return true;
+    const e = email.toLowerCase();
+    if (this.exactEmails.has(e)) return true;
     for (const regex of this.patterns) {
-      if (regex.test(email)) return true;
+      if (regex.test(e)) return true;
     }
     return false;
   }

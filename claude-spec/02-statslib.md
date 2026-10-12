@@ -29,12 +29,13 @@ The central class that retrieves and processes email data from the Thunderbird `
 | `getToday(account_id, account_emails, internal_domains)` | Stats from midnight to now |
 | `getYesterday(account_id, account_emails, internal_domains)` | Stats for the full previous day |
 | `getManyDaysData(account_id, account_emails, internal_domains)` | Per-day stats for the last `_many_days` days plus today, not aggregated (`TAB_ManyDays.vue` aggregates) |
+| `getManyDaysPreviousPeriod(account_id, account_emails)` | Count-only stats of the `_many_days` days before the Many Days period (KPI changes against the previous period) |
 | `getToday_manyDaysData(account_id, account_emails)` | Aggregated stats for the previous `_many_days` days excluding today (Today/Yesterday summary) |
 | `getToday_YesterdayData(...)` / `getToday_SingleDayData(theDay, ...)` | Count-only data for the "yesterday at this time" / custom comparison day counter |
 | `getSingleDay(theDay, account_id, account_emails, internal_domains)` | Full stats for one day |
 | `getWeekdayBaseline(theDay, account_id, account_emails, num_weeks)` | Hourly counts (`msg_hours`) of the same weekday in the previous `num_weeks` weeks (non-business days skipped when `theDay` is a business day); the "usual day" of the Today/Yesterday dashboards |
 | `getCustomQryData(fromDate, toDate, account_id, account_emails, only_businessdays, adv_filters, internal_domains)` | Custom date range with optional filters |
-| `getFullStatsData(fromDate, toDate, account_id, account_emails, do_aggregate_stats, filter_duplicates, only_businessdays, adv_filters, internal_domains)` | Base method: retrieves and processes all messages in a date range. When `internal_domains` is provided, domain entries in the output include an `internal: true/false` flag |
+| `getFullStatsData(fromDate, toDate, account_id, account_emails, do_aggregate_stats, filter_duplicates, only_businessdays, adv_filters, internal_domains)` | Base method: retrieves and processes all messages in a date range. When `internal_domains` is provided, domain entries in the output include an `internal: true/false` flag. The output also has `msg_weekday_hours` (weekday × hour sent/received grid, used by the heatmap) |
 | `getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates)` | Aggregated (total/max/min/avg) stats |
 | `getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates)` | Lightweight count-only stats |
 | `aggregateData(dates, only_businessdays)` | Computes total/max/min/avg from per-day data, optionally business days only |
@@ -177,12 +178,19 @@ Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `d
   - `clearInDays` — current inbox / average mails per working day that left the inbox (received minus still in inbox) over the previous days.
   - `oldestDays` — age of the oldest mail in the inbox.
 - `topCorrespondents`, `endedUpFolders` (received mails by folder, inbox first), `endedUpTags`, `domainRows`.
+- `peakWindow(values, width)` (busiest consecutive hours), `orderedWeekdays(first_day_week)`, `weekdayAverages(dates, msg_weekdays, first_day_week)` (weekday totals / occurrences of that weekday), `heatGrid(msg_weekday_hours, from_hour, to_hour, first_day_week)`.
 
 ---
 
 ### `mzts-daymodel.js` — Single-Day Dashboard Model
 
 **Object:** `tsDayModel`. `build(input)` returns the props of `WidgetDayDashboard` (status strip, KPIs, chart, top correspondents, tables, domains, folders/tags) from the data loaded by a tab; every input except `kind` and `day` may be `null` while loading. `kind` is `today` (day in progress: "by now" comparisons, now line), `yesterday` or `day` (other single day, e.g. last business day). The status badge is "Inbox zero" (empty inbox), "Keeping up" (clear in ≤ 5 working days) or "Backlog growing". Dates use the Thunderbird UI language.
+
+---
+
+### `mzts-periodmodel.js` — Period Dashboard Model
+
+**Object:** `tsPeriodModel`. `build(input)` returns the props of `WidgetPeriodDashboard` from the data loaded by a tab. `days` are the days shown (chart, calendar), `stat_days` the days counted in totals and averages (Many Days: without today, reported apart as "+N today"). `kind` is `manydays` (keeping-up badge, changes against the previous period) or `custom` ("Query result" badge, no comparison, for any range length). Averages count business days only when `only_businessdays` is set. Computed notes: working days vs other days and peak day, time-of-day peaks, heatmap peak and busiest weekday, busiest vs lightest business weekday, folders footnote.
 
 ---
 

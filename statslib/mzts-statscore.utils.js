@@ -263,38 +263,6 @@ export const tsCoreUtils = {
         }
     },
 
-    getManyDaysLabel(label) {
-        const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
-
-        const year = parseInt(label.slice(0, 4));
-        const month = parseInt(label.slice(4, 6));
-        const day = parseInt(label.slice(6, 8));
-
-        const date = new Date(year, month - 1, day);
-        const dayOfWeek = browser.i18n.getMessage(daysOfWeek[date.getDay()]);
-
-        const dateFormatter = new Intl.DateTimeFormat(undefined, {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
-
-        const formattedDate = dateFormatter.format(date);
-
-        // return dayOfWeek + "\n" + formattedDate + (tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : "");
-        return [
-            dayOfWeek,
-            formattedDate,
-            (tsUtils.isToday(date) ? "\n[" + browser.i18n.getMessage("Today") + "]" : ""),
-        ];
-    },
-
-    getManyDaysBarColor(ctx, totalBars) {
-        const defaultColor = tsStore.chart_colors.many_days_default;
-        const todayColor = tsStore.darkmode ? tsStore.chart_colors.many_days_today_dark : tsStore.chart_colors.many_days_today_light;
-        return ctx.dataIndex === totalBars - 1 ? todayColor : defaultColor;
-    },
-
     getWeekDaysLabel(label) {
         const daysOfWeek = ["WeekDay0", "WeekDay1", "WeekDay2", "WeekDay3", "WeekDay4", "WeekDay5", "WeekDay6"];
         let first_day_week = tsStore.first_day_week;

@@ -30,6 +30,7 @@
       </template>
     </div>
     <div class="ts-kpi-sub" v-if="sub && !is_loading" :title="sub_title">{{ sub }}</div>
+    <div class="ts-kpi-sub ts-kpi-sub2" v-if="sub2 && !is_loading" :title="sub_title">{{ sub2 }}</div>
     <slot v-if="!is_loading"></slot>
   </div>
 </template>
@@ -42,6 +43,7 @@ defineProps({
   delta: { type: Object, default: null },     // { text, color, title }
   aside: { type: String, default: '' },       // muted text next to the value
   sub: { type: String, default: '' },
+  sub2: { type: String, default: '' },      // second, muted line (e.g. max / min / avg per day)
   sub_title: { type: String, default: '' },
   is_loading: { type: Boolean, default: false },
 });
@@ -97,5 +99,10 @@ defineProps({
 .ts-kpi-sub {
   font-size: 12px;
   color: var(--text2);
+}
+
+.ts-kpi-sub2 {
+  margin-top: -4px;
+  color: var(--text3);
 }
 </style>

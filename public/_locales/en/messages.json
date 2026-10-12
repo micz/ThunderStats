@@ -1382,5 +1382,319 @@
         "example": "7"
       }
     }
+  },
+  "QueryResult": {
+    "message": "Query result",
+    "description": "Status badge of a custom query"
+  },
+  "PeriodDaysInfo": {
+    "message": "$DAYS$ days · $WORKING$ working days",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1",
+        "example": "7"
+      },
+      "working": {
+        "content": "$2",
+        "example": "5"
+      }
+    }
+  },
+  "AddedToBacklog": {
+    "message": "added to backlog",
+    "description": "Next to the mails of the period still in the inbox"
+  },
+  "PerWorkingDay": {
+    "message": "Per working day",
+    "description": ""
+  },
+  "BusiestDay": {
+    "message": "Busiest day",
+    "description": ""
+  },
+  "BusiestDaySub": {
+    "message": "$NUM$ received",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "63"
+      }
+    }
+  },
+  "DailyStats": {
+    "message": "max $MAX$ · min $MIN$ · avg $AVG$ per day",
+    "description": "",
+    "placeholders": {
+      "max": {
+        "content": "$1",
+        "example": "63"
+      },
+      "min": {
+        "content": "$2",
+        "example": "5"
+      },
+      "avg": {
+        "content": "$3",
+        "example": "41"
+      }
+    }
+  },
+  "PlusToday": {
+    "message": "+$NUM$ today",
+    "description": "Mails of today, not counted in the period total",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
+  },
+  "VsPreviousPeriod": {
+    "message": "vs previous $DAYS$ days ($NUM$)",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1",
+        "example": "7"
+      },
+      "num": {
+        "content": "$2",
+        "example": "269"
+      }
+    }
+  },
+  "AvgPerDay": {
+    "message": "avg $NUM$ per day",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "38.5"
+      }
+    }
+  },
+  "ReplyRatio": {
+    "message": "Reply ratio",
+    "description": ""
+  },
+  "ReplyRatioSub": {
+    "message": "one mail sent for every $NUM$ received",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "3.2"
+      }
+    }
+  },
+  "ChartPeriodTitle": {
+    "message": "Last $NUM$ days, day by day",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "7"
+      }
+    }
+  },
+  "ChartPeriodTitleCustom": {
+    "message": "Day by day",
+    "description": ""
+  },
+  "PeriodNotePeak": {
+    "message": "Peak on $DAY$ with $NUM$.",
+    "description": "",
+    "placeholders": {
+      "day": {
+        "content": "$1",
+        "example": "Mon 27"
+      },
+      "num": {
+        "content": "$2",
+        "example": "63"
+      }
+    }
+  },
+  "PeriodNoteWorkingDays": {
+    "message": "Working days averaged $WORKING$ received, other days $OTHER$.",
+    "description": "",
+    "placeholders": {
+      "working": {
+        "content": "$1",
+        "example": "55"
+      },
+      "other": {
+        "content": "$2",
+        "example": "7"
+      }
+    }
+  },
+  "AvgChip": {
+    "message": "avg",
+    "description": "Label of the average line in the day-by-day chart"
+  },
+  "AvgPerWorkingDayChip": {
+    "message": "avg working day",
+    "description": "Label of the average line when only business days are counted"
+  },
+  "AvgReceivedPerDay": {
+    "message": "Avg received per day",
+    "description": ""
+  },
+  "AvgSentPerDay": {
+    "message": "Avg sent per day",
+    "description": ""
+  },
+  "TimeOfDayTitle": {
+    "message": "Time of day · average per day",
+    "description": ""
+  },
+  "TimeOfDayNote": {
+    "message": "Most mail arrives between $FROM$ and $TO$; you send most of yours between $SENTFROM$ and $SENTTO$.",
+    "description": "",
+    "placeholders": {
+      "from": {
+        "content": "$1",
+        "example": "09:00"
+      },
+      "to": {
+        "content": "$2",
+        "example": "11:00"
+      },
+      "sentfrom": {
+        "content": "$3",
+        "example": "15:00"
+      },
+      "sentto": {
+        "content": "$4",
+        "example": "17:00"
+      }
+    }
+  },
+  "TimeOfDayNoteReceived": {
+    "message": "Most mail arrives between $FROM$ and $TO$.",
+    "description": "",
+    "placeholders": {
+      "from": {
+        "content": "$1",
+        "example": "09:00"
+      },
+      "to": {
+        "content": "$2",
+        "example": "11:00"
+      }
+    }
+  },
+  "InboxZeroCalendarTitle": {
+    "message": "Inbox Zero",
+    "description": ""
+  },
+  "ClosedAtZero": {
+    "message": "Closed at zero",
+    "description": "Inbox Zero calendar legend"
+  },
+  "FewLeft": {
+    "message": "≤ 5 left",
+    "description": "Inbox Zero calendar legend"
+  },
+  "Missed": {
+    "message": "Missed",
+    "description": "Inbox Zero calendar legend"
+  },
+  "DaysAtZero": {
+    "message": "of $NUM$ days at zero",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "30"
+      }
+    }
+  },
+  "StreakAtEnd": {
+    "message": "day streak at end",
+    "description": ""
+  },
+  "HeatTitle": {
+    "message": "When mail arrives",
+    "description": ""
+  },
+  "HeatFewer": {
+    "message": "fewer",
+    "description": "Heatmap scale"
+  },
+  "HeatMore": {
+    "message": "more",
+    "description": "Heatmap scale"
+  },
+  "HeatCellTooltip": {
+    "message": "$NUM$ received",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "12"
+      }
+    }
+  },
+  "HeatNote": {
+    "message": "Most mail lands between $FROM$ and $TO$; $WEEKDAY$ is the busiest day.",
+    "description": "",
+    "placeholders": {
+      "from": {
+        "content": "$1",
+        "example": "09:00"
+      },
+      "to": {
+        "content": "$2",
+        "example": "11:00"
+      },
+      "weekday": {
+        "content": "$3",
+        "example": "Monday"
+      }
+    }
+  },
+  "WeekdayTitle": {
+    "message": "By weekday · average per day",
+    "description": ""
+  },
+  "WeekdayTooltip": {
+    "message": "$RECEIVED$ received, $SENT$ sent per day",
+    "description": "",
+    "placeholders": {
+      "received": {
+        "content": "$1",
+        "example": "41"
+      },
+      "sent": {
+        "content": "$2",
+        "example": "12"
+      }
+    }
+  },
+  "WeekdayNote": {
+    "message": "$BUSIEST$ brings the most mail; $LIGHTEST$ is about $PERCENT$% lighter.",
+    "description": "",
+    "placeholders": {
+      "busiest": {
+        "content": "$1",
+        "example": "Monday"
+      },
+      "lightest": {
+        "content": "$2",
+        "example": "Friday"
+      },
+      "percent": {
+        "content": "$3",
+        "example": "18"
+      }
+    }
+  },
+  "EndedUpPeriod": {
+    "message": "Where mails ended up",
+    "description": ""
   }
 }

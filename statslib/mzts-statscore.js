@@ -115,6 +115,20 @@ export class thunderStastsCore {
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
+    // Counts of the _many_days days before the Many Days period (which ends yesterday), for the comparison with the previous period
+    async getManyDaysPreviousPeriod(account_id = 0, account_emails = []) {
+
+      let fromDate = new Date();
+      fromDate.setDate(fromDate.getDate() - (2 * this._many_days));
+      fromDate.setHours(0, 0, 0, 0);
+      let toDate = new Date();
+      toDate.setDate(toDate.getDate() - this._many_days - 1);
+      toDate.setHours(23, 59, 59, 999);
+
+      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+
+      return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates);
+    }
     // ================ MANY DAYS TAB - END =====================
 
     // ================ CUSTOM QUERY TAB =====================
@@ -339,6 +353,15 @@ export class thunderStastsCore {
         msg_hours[i].received_external = 0;
       }
 
+      // weekday x hour grid, used by the "when mail arrives" heatmap
+      let msg_weekday_hours = {};
+      for(let d = 0; d < 7; d++) {
+        msg_weekday_hours[d] = {};
+        for(let h = 0; h < 24; h++) {
+          msg_weekday_hours[d][h] = { sent: 0, received: 0 };
+        }
+      }
+
       let msg_weekdays = {};
       for(let i = 0; i < 7; i++) {
         msg_weekdays[i] = {};
@@ -423,6 +446,7 @@ export class thunderStastsCore {
               msg_hours[hour_message].sent++;
               // group by weekday
               msg_weekdays[date_message.getDay()].sent++;
+              msg_weekday_hours[date_message.getDay()][hour_message].sent++;
               // group by domain
               let allRecipients = [...message.recipients, ...message.ccList, ...message.bccList];
               let domains_array = tsCoreUtils.extractDomains(allRecipients);
@@ -552,6 +576,7 @@ export class thunderStastsCore {
               msg_hours[hour_message].received++;
               // group by weekday
               msg_weekdays[date_message.getDay()].received++;
+              msg_weekday_hours[date_message.getDay()][hour_message].received++;
               // group by domain
               let curr_domain = tsCoreUtils.extractDomain(key_author);
               let is_received_internal = domainMatcher.matches(curr_domain);
@@ -618,7 +643,7 @@ export class thunderStastsCore {
       // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
       // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, dates_weeks: dates_weeks, dates_months: dates_months, dates_years: dates_years, msg_weekdays: msg_weekdays, domains: domains, tags: tags};
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, dates_weeks: dates_weeks, dates_months: dates_months, dates_years: dates_years, msg_weekdays: msg_weekdays, msg_weekday_hours: msg_weekday_hours, domains: domains, tags: tags};
 
       if(do_aggregate_stats) {
         output.aggregate = await this.aggregateData(dates, only_businessdays);

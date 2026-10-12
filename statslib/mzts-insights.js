@@ -242,4 +242,48 @@ export const tsInsights = {
     roundPercent(percent_string) {
         return Math.round(parseFloat(percent_string) || 0) + '%';
     },
+
+    // First hour of the window of `width` consecutive hours with the most mails (null if there are none)
+    peakWindow(values, width = 2) {
+        let best = -1, best_start = null;
+        for(let start = 0; start + width <= values.length; start++) {
+            let total = this.sum(values.slice(start, start + width));
+            if(total > best) {
+                best = total;
+                best_start = start;
+            }
+        }
+        return best > 0 ? best_start : null;
+    },
+
+    // Weekdays (0 = Sunday) ordered starting from first_day_week
+    orderedWeekdays(first_day_week) {
+        return Array.from({length: 7}, (_, i) => (i + Number(first_day_week)) % 7);
+    },
+
+    // Average received and sent per weekday: weekday totals divided by how many times
+    // that weekday occurs in the period (dates = the per-day object of getFullStatsData)
+    weekdayAverages(dates, msg_weekdays, first_day_week) {
+        let occurrences = [0, 0, 0, 0, 0, 0, 0];
+        for(let key in dates) {
+            occurrences[tsUtils.parseYYYYMMDDToDate(key).getDay()]++;
+        }
+        return this.orderedWeekdays(first_day_week).map(wd => ({
+            weekday: wd,
+            received: occurrences[wd] ? msg_weekdays[wd].received / occurrences[wd] : 0,
+            sent: occurrences[wd] ? msg_weekdays[wd].sent / occurrences[wd] : 0,
+            occurrences: occurrences[wd],
+        }));
+    },
+
+    // Received mails by hour (rows from_hour..to_hour) and weekday (columns ordered from first_day_week)
+    heatGrid(msg_weekday_hours, from_hour, to_hour, first_day_week) {
+        let weekdays = this.orderedWeekdays(first_day_week);
+        let rows = [];
+        for(let h = from_hour; h <= to_hour; h++) {
+            rows.push({ hour: h, cells: weekdays.map(wd => msg_weekday_hours[wd][h].received) });
+        }
+        let max = Math.max(1, ...rows.map(r => Math.max(...r.cells)));
+        return { weekdays, rows, max };
+    },
 };

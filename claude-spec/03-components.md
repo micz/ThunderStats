@@ -19,13 +19,7 @@ App_ThunderStats.vue
         │   └── (same as Today, without CounterYesterdayThisTime)
         ├── TAB_ManyDays.vue
         │   ├── ExportMenu.vue
-        │   ├── CounterManyDays_Row.vue
-        │   ├── ChartManyDays.vue
-        │   ├── ChartTime.vue
-        │   ├── WidgetWeekDay.vue
-        │   ├── TableInvolved.vue
-        │   ├── WidgetDomains.vue
-        │   └── WidgetFoldersTags.vue
+        │   └── WidgetPeriodDashboard.vue
         ├── TAB_CustomQry.vue
         │   ├── ExportMenu.vue
         │   ├── CounterSentReceived.vue     (single-day mode only)
@@ -42,6 +36,8 @@ App_ThunderStats.vue
 Widget / counter children:
     WidgetDayDashboard.vue  → WidgetStatusStrip, CounterKpi, ChartDayVsNormal, WidgetTopCorrespondents,
                               TableInvolved (when "See all" is open), WidgetDomainBars, WidgetEndedUp
+    WidgetPeriodDashboard.vue → WidgetStatusStrip, CounterKpi, ChartPeriodDays, ChartHourlyAverage, WidgetInboxZeroCalendar,
+                              WidgetHeatmap, WidgetWeekdayBars, WidgetDomainBars, WidgetEndedUp, TableInvolved
     WidgetInboxZero.vue     → CounterInbox, CounterInboxPercent, ChartInboxZeroDates,
                               ChartInboxZeroDatesExtended, ChartInboxZeroFolders, InfoTooltip
     WidgetDomains.vue       → ChartDomains
@@ -87,7 +83,7 @@ App_Options.vue
 |---|---|
 | `TAB_Today.vue` | Today (midnight to now): loads the day, inbox, previous days, comparison day and weekday baseline, builds the dashboard with `tsDayModel` and renders `WidgetDayDashboard`; rail adds the "yesterday at this time" comparison (with custom day picker) and the previous N days summary; bottom adds the Inbox Zero widget |
 | `TAB_Yesterday.vue` | Same dashboard for yesterday (or the last business day with `bday_use_last_business_day`), without the comparison card |
-| `TAB_ManyDays.vue` | Multi-day overview (`_many_days` pref, default 7): daily chart, total/max/min/avg, time and weekday charts, correspondents, domains, folders/tags |
+| `TAB_ManyDays.vue` | Last `_many_days` days plus today: loads the period, the inbox and the previous period, builds the dashboard with `tsPeriodModel` and renders `WidgetPeriodDashboard` |
 | `TAB_CustomQry.vue` | Advanced query with date range picker and presets, filters (read/unread, starred, subject, folders), aggregation level selector, period comparison, and CSV export. A one-day range switches to single-day mode (Today-like counters and inbox zero) |
 | `TAB_Info.vue` | About page with version and credits |
 
@@ -102,7 +98,8 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper.
 | `ChartTime.vue` | Hourly sent/received distribution (bar chart) |
 | `ChartDayVsNormal.vue` | Line chart of a single day (cumulative or hourly, per `_time_chart_progressive`): received and sent lines with an end dot, usual-range band of the same weekday, optional dashed comparison day, dashed "now" line and an HTML callout kept on its left. Colors from the CSS tokens, recomputed on theme change |
 | `ChartWeekDays.vue` | Sent/received per weekday |
-| `ChartManyDays.vue` | Daily bar chart for the Many Days tab. Supports stacked bars (used by the Received chart to show inbox messages as a red segment on top of non-inbox). Datalabels show stacked totals. |
+| `ChartPeriodDays.vue` | Day-by-day grouped bars (received, optionally with the mails still in the inbox stacked in `--warn`; sent), today lighter, non-business days with muted labels, dashed average lines with label chips (first left, second right) |
+| `ChartHourlyAverage.vue` | Average received / sent per hour of the day, lines with a light area fill |
 | `ChartCustomQry.vue` | Chart for custom query results, adapts to selected aggregation level. Accepts `is_comparing` prop to enable legend, tooltips, and suppress Period B datalabels when comparing periods. |
 | `ChartInboxZeroDates.vue` | Timeline of inbox zero achievements |
 | `ChartInboxZeroDatesExtended.vue` | Extended inbox zero history |
@@ -144,6 +141,10 @@ Composite components that combine multiple data points or sub-charts.
 | `WidgetTopCorrespondents.vue` | Rail card: top 5 merged senders/recipients with bars (`--rcvd` if mostly received, `--sent` otherwise) and a "See all" toggle |
 | `WidgetDomainBars.vue` | Domains as two horizontal bars (sent, received) with the "internal" tag; first 8 rows, expandable |
 | `WidgetEndedUp.vue` | "Where mails ended up": Folders / Tags toggle; inbox bar in `--rcvd`, filed folders in `--good`, tags in their own color; computed footnote |
+| `WidgetPeriodDashboard.vue` | Many-days layout: status strip, KPI grid, day-by-day chart, time of day + Inbox Zero calendar, heatmap + weekday bars, domains + folders/tags, Top N recipients + senders, `bottom` slot |
+| `WidgetInboxZeroCalendar.vue` | Inbox Zero calendar: one cell per day aligned on the first day of the week, states closed at zero / ≤ 5 left / missed, today outlined; days at zero and streak at end |
+| `WidgetHeatmap.vue` | "When mail arrives": received mails by hour (rows) and weekday (columns), 07–20 / 24h toggle, cell color mixes `--rcvd` with `--surface3` |
+| `WidgetWeekdayBars.vue` | Average received / sent per weekday as paired columns, average received on top, computed note |
 
 ---
 

@@ -114,7 +114,8 @@ export class thunderStastsCore {
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
-    // Counts of the _many_days days before the Many Days period (which ends yesterday), for the comparison with the previous period
+    // Counts of the _many_days days before the Many Days period (which ends yesterday), for the comparison with the previous period.
+    // Served from the recent days cache when the range is covered (_many_days up to 24), so the scan is shared with Today/Yesterday
     async getManyDaysPreviousPeriod(account_id = 0, account_emails = []) {
 
       let fromDate = new Date();
@@ -124,9 +125,7 @@ export class thunderStastsCore {
       toDate.setDate(toDate.getDate() - this._many_days - 1);
       toDate.setHours(23, 59, 59, 999);
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
-
-      return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates);
+      return this.getAggregatedRecentDays(fromDate, toDate, account_id, account_emails);
     }
     // ================ MANY DAYS TAB - END =====================
 

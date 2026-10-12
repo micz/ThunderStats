@@ -86,24 +86,22 @@ Displays add-on version, credits, and links. Opened from the toolbar Info icon.
 
 ## Options / Settings
 
-Accessible via the addon options page (opens in a Thunderbird tab).
+Accessible via the addon options page (opens in a Thunderbird tab). Sidebar with five sections (General, Advanced, Business days, Identities & domains, About), settings as cards with one setting per row (toggle switches, selects, number inputs, tag inputs). Every change is saved at once (typed numbers and text after 400 ms); there is no Save button. After a change the header shows a "Reload ThunderStats" button. The sidebar also holds a donation card and the version.
 
-### Tab: Main
+### Section: General
 Pref keys and defaults: `statslib/mzts-options-default.js`.
-- **Startup account** (`startup_account`), **Remember last account** (`remember_last_account`, overrides the startup account), **Remember last tab** (`remember_last_tab`)
-- **Data loading** — reload data on every tab switch (`always_reload_tab_data`), reload when changing account (`load_data_changing_account`)
-- **Many Days** — number of days (`_many_days`, default 7), show inbox mails in the bars (`many_days_show_inbox`)
-- **Time chart** — show yesterday (`today_time_chart_show_yesterday`), hide future hours (`today_time_chart_do_no_show_future`), progressive/cumulative lines (`_time_chart_progressive`)
-- **Folders** — open the folder clicked in "Where mails ended up" in the first mail tab (`inbox0_openFolderInFirstTab`)
-- **Custom Query** — load data when selecting a range / when opening the add-on, always open advanced filters
-- **Date picker locale** (`datepicker_locale`)
+- **Startup** — startup account (`startup_account`, disabled while the last account is remembered), remember last account (`remember_last_account`, overrides the startup account)
+- **Loading data** — reload when changing account (`load_data_changing_account`), reload on every tab switch (`always_reload_tab_data`), reopen last tab (`remember_last_tab`), Custom: load data when it is the first tab / when picking a predefined period, always expand the advanced filters
+- **Today & Yesterday chart** — show yesterday (`today_time_chart_show_yesterday`), progressive/cumulative lines (`_time_chart_progressive`), hide future hours (`today_time_chart_do_no_show_future`)
+- **Many days & Custom** — number of days (`_many_days`, default 7, 2-365), date picker locale (`datepicker_locale`)
+- **Inbox Zero** — show inbox mails in the bars (`many_days_show_inbox`), open the folder clicked in "Where mails ended up" in the first mail tab (`inbox0_openFolderInFirstTab`)
 - **Show internal mail percentage** (`show_internal_mail_percent`) — shows the Internal traffic KPI card (received internal %, and % of the sent) in every stats tab, when internal domains are configured (default: off)
-- **Color theme** (`theme_mode`) — `auto` (default, follows the system), `light` or `dark`. The toolbar theme toggle icon sets it too; changes apply live to every open ThunderStats page
+- **Appearance: color theme** (`theme_mode`) — `auto` (default, follows the system), `light` or `dark`. The toolbar theme toggle icon sets it too; changes apply live to every open ThunderStats page
 
-### Tab: Advanced
-- **Number of correspondents** (`_involved_num`, default 10)
+### Section: Advanced
+- **Number of correspondents** (`_involved_num`, default 10, 3-50)
 - **First day of the week** (`first_day_week`)
-- **Custom Query long period warning** (`customqry_warn_onlongperiod_days`, default 90)
+- **Custom Query long period warning** (`customqry_warn_onlongperiod_days`, default 90, 0 = never)
 - **Concurrent message queries** (`max_concurrent_queries`, default 2, 1-10) — how many `messages.query` run at the same time while loading; lower it if Thunderbird stutters while loading, raise it if loading is too slow
 - **Recent days cache size** (`recent_days_cache_days`, default 49, 43-365) — days before today read in one pass and shared by the tabs (baseline, previous days, previous period); raise it when the Many Days period is longer than 24 days
 - **Debug logging** (`do_debug`)
@@ -111,28 +109,27 @@ Pref keys and defaults: `statslib/mzts-options-default.js`.
 - **Include archive folders** — whether to count archived emails in statistics
 - **Per-account advanced settings** — configure archive inclusion and duplicate filtering per account
 
-### Tab: Business Days
-- Define which weekdays are business days (Mon–Fri by default)
-- Add custom holiday dates to exclude from business day count
+### Section: Business days
+- Define which weekdays are business days (Mon–Fri by default), as day buttons
+- Holidays (`bday_custom_days`): add, edit (click the row) and delete fixed holidays, every year or only one year, inline form
 - Exclude Easter Sunday and Monday (`bday_easter`, default on)
 - Use only business days by default (`bday_default_only`)
 - Use the last business day instead of yesterday (`bday_use_last_business_day`) in the Yesterday tab and the Today comparison counter
 - Business day stats are used in Many Days and Custom Query aggregations
 
-### Tab: Identities & Domains (Custom Identities + Internal Domains)
-- Define additional email addresses that belong to the user
+### Section: Identities & domains (Custom Identities + Internal Domains)
+- Per account (pill switcher): the account identities (read-only) and the custom ones, as chips
+- Define additional email addresses that belong to the user (`custom_identities`, wildcards `*@example.com` and `@example.com`)
 - These are used to correctly classify "sent" vs "received" emails when the user has addresses not registered as Thunderbird account identities
 - **Internal Domains** — define per-account domain lists that identify domains belonging to the user's organization
   - Used to distinguish internal from external email traffic in statistics (domain entries gain an `internal: true/false` flag)
   - Supports wildcard patterns (e.g., `*.example.com`)
   - Stored in the `internal_domains` preference
-  - The percentage display is toggled in the Main tab (`show_internal_mail_percent`)
+  - The percentage display is toggled in General (`show_internal_mail_percent`)
+- Entries are validated (address or pattern / hostname); invalid ones are not saved
 
-### Tab: License
-- Displays the full GNU General Public License v3 text
-
-### Tab: Info
-- Shows current add-on version and author information
+### Section: About
+- Donation banner, release notes (accordion from `CHANGELOG.md`, 1.x notes on request), GPL v3 license with the full text on request, attributions link
 
 ---
 

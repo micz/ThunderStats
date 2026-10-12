@@ -36,6 +36,9 @@
   --goodSoft: #e6f4ee;
   --warn: #d9534f;
   --newsletters: #8b6ee3;
+  --bg: #f4f5f7;
+  --switchOff: #c9cdd4;
+  --onAccent: #ffffff;
 
   --radius-card: 12px;
   --radius-input: 8px;
@@ -58,6 +61,9 @@
   --good: #3cb891;
   --goodSoft: #17332a;
   --warn: #f07a7a;
+  --bg: #15171b;
+  --switchOff: #454b55;
+  --onAccent: #0f1a2e;
 }
 
 /* Shared card language */

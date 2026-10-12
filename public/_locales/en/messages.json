@@ -1854,5 +1854,493 @@
   "PeriodBShort": {
     "message": "B",
     "description": "Short label before a Period B value, e.g. B 42"
+  },
+  "Opt_Options": {
+    "message": "Options",
+    "description": ""
+  },
+  "Opt_SavedAutomatically": {
+    "message": "Changes are saved automatically",
+    "description": ""
+  },
+  "Opt_ReloadThunderStats": {
+    "message": "Reload ThunderStats",
+    "description": ""
+  },
+  "Opt_DonateSidebar": {
+    "message": "ThunderStats is free and built in spare time. If it's part of your routine, consider supporting it.",
+    "description": ""
+  },
+  "Opt_MakeDonation": {
+    "message": "Make a donation",
+    "description": ""
+  },
+  "Opt_BusinessDays": {
+    "message": "Business days",
+    "description": ""
+  },
+  "Opt_IdentitiesDomains": {
+    "message": "Identities & domains",
+    "description": ""
+  },
+  "Opt_About": {
+    "message": "About",
+    "description": ""
+  },
+  "Opt_ByAuthor": {
+    "message": "by Mic",
+    "description": ""
+  },
+  "Opt_DonateBanner": {
+    "message": "ThunderStats is free and developed in spare time. If it's part of your everyday routine, a small donation keeps it going.",
+    "description": ""
+  },
+  "Opt_ReleaseNotes": {
+    "message": "Release notes",
+    "description": ""
+  },
+  "Opt_FullChangelog": {
+    "message": "Full changelog",
+    "description": ""
+  },
+  "Opt_OneChange": {
+    "message": "1 change",
+    "description": ""
+  },
+  "Opt_NChanges": {
+    "message": "$NUM$ changes",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "Opt_LicenseName": {
+    "message": "GNU General Public License v3 or later",
+    "description": ""
+  },
+  "Opt_HideFullText": {
+    "message": "Hide full text",
+    "description": ""
+  },
+  "Opt_ShowFullText": {
+    "message": "Show full text",
+    "description": ""
+  },
+  "Opt_LicenseSummary": {
+    "message": "Free software: you can redistribute and modify it under the GPL. It comes with no warranty.",
+    "description": ""
+  },
+  "Opt_Attributions": {
+    "message": "Attributions:",
+    "description": ""
+  },
+  "Opt_InDevelopment": {
+    "message": "In development",
+    "description": ""
+  },
+  "Opt_GeneralDesc": {
+    "message": "How ThunderStats opens, loads data and draws its charts.",
+    "description": ""
+  },
+  "Opt_Startup": {
+    "message": "Startup",
+    "description": ""
+  },
+  "Opt_StartupAccount": {
+    "message": "Startup account",
+    "description": ""
+  },
+  "Opt_StartupAccountHint": {
+    "message": "The account shown when ThunderStats opens",
+    "description": ""
+  },
+  "Opt_RememberLastAccountHint": {
+    "message": "Overrides the startup account",
+    "description": ""
+  },
+  "Opt_LoadingData": {
+    "message": "Loading data",
+    "description": ""
+  },
+  "Opt_ReloadSwitchingAccount": {
+    "message": "Reload data when switching account",
+    "description": ""
+  },
+  "Opt_ReloadSwitchingTab": {
+    "message": "Reload data when switching tab",
+    "description": ""
+  },
+  "Opt_ReopenLastTab": {
+    "message": "Reopen the last tab you used",
+    "description": ""
+  },
+  "Opt_LoadCustomFirstTab": {
+    "message": "Load data when Custom is the first tab opened",
+    "description": ""
+  },
+  "Opt_LoadCustomFirstTabHint": {
+    "message": "Otherwise Custom waits until you run a query",
+    "description": ""
+  },
+  "Opt_LoadCustomOnRange": {
+    "message": "Load data as soon as you pick a predefined period in Custom",
+    "description": ""
+  },
+  "Opt_LoadCustomOnRangeHint": {
+    "message": "Otherwise the period is only set in the date picker",
+    "description": ""
+  },
+  "Opt_ExpandAdvFilters": {
+    "message": "Always expand advanced filters in Custom",
+    "description": ""
+  },
+  "Opt_TodayYesterdayChart": {
+    "message": "Today & Yesterday chart",
+    "description": ""
+  },
+  "Opt_OverlayYesterday": {
+    "message": "Overlay yesterday on today’s chart",
+    "description": ""
+  },
+  "Opt_ShowCumulative": {
+    "message": "Show cumulative values",
+    "description": ""
+  },
+  "Opt_HideFutureHours": {
+    "message": "Hide hours that haven’t happened yet",
+    "description": ""
+  },
+  "Opt_TodayOnly": {
+    "message": "Today only",
+    "description": ""
+  },
+  "Opt_ManyDaysCustom": {
+    "message": "Many days & Custom",
+    "description": ""
+  },
+  "Opt_ManyDaysNum": {
+    "message": "Days shown in Many days",
+    "description": ""
+  },
+  "Opt_ManyDaysNumHint": {
+    "message": "For more than 24 days, raise the recent days cache in Advanced",
+    "description": ""
+  },
+  "Opt_Days": {
+    "message": "days",
+    "description": ""
+  },
+  "Opt_DatePickerLocale": {
+    "message": "Date picker language",
+    "description": ""
+  },
+  "Opt_DatePickerLocaleHint": {
+    "message": "A locale code such as en-US or it-IT, for the date format of the date pickers",
+    "description": ""
+  },
+  "Opt_UseSystem": {
+    "message": "Use Thunderbird’s",
+    "description": ""
+  },
+  "Opt_InboxZero": {
+    "message": "Inbox Zero",
+    "description": ""
+  },
+  "Opt_MarkInboxBars": {
+    "message": "Mark mail still in the inbox on chart bars",
+    "description": ""
+  },
+  "Opt_MarkInboxBarsHint": {
+    "message": "Multi-day views",
+    "description": ""
+  },
+  "Opt_OpenFolderFirstTab": {
+    "message": "Open folders in the first mail tab",
+    "description": ""
+  },
+  "Opt_OpenFolderFirstTabHint": {
+    "message": "When you click a folder in “Where mails ended up”",
+    "description": ""
+  },
+  "Opt_InternalMail": {
+    "message": "Internal mail",
+    "description": ""
+  },
+  "Opt_ShowInternalShare": {
+    "message": "Show the share of internal mail",
+    "description": ""
+  },
+  "Opt_ShowInternalShareHint": {
+    "message": "Needs internal domains —",
+    "description": ""
+  },
+  "Opt_SetInternalDomains": {
+    "message": "set them in Identities & domains",
+    "description": ""
+  },
+  "Opt_ThemeHint": {
+    "message": "Automatic follows the system; the sun/moon button in the toolbar switches it too",
+    "description": ""
+  },
+  "Opt_AdvancedDesc": {
+    "message": "Fine-tuning for how mail is counted. The defaults work for most people.",
+    "description": ""
+  },
+  "Opt_ArchiveFolders": {
+    "message": "Archive folders",
+    "description": ""
+  },
+  "Opt_ArchiveFoldersDesc": {
+    "message": "Providers like Gmail keep every message in an Archive folder as well as in its own folder, so counting archives can double your numbers. Exclude archives, or keep them and filter duplicates — slower, but more accurate.",
+    "description": ""
+  },
+  "Opt_FilterDupMulti": {
+    "message": "Filter duplicates when several accounts are selected",
+    "description": ""
+  },
+  "Opt_FilterDupHint": {
+    "message": "Slower, but avoids double counting",
+    "description": ""
+  },
+  "Opt_PerAccount": {
+    "message": "Per account",
+    "description": ""
+  },
+  "Opt_FilterDuplicates": {
+    "message": "Filter duplicates",
+    "description": ""
+  },
+  "Opt_ArchiveFoldersNote": {
+    "message": "Folder counts in “Where mails ended up” always show all mail — a message stored in two folders appears in both.",
+    "description": ""
+  },
+  "Opt_FirstDayWeek": {
+    "message": "First day of the week",
+    "description": ""
+  },
+  "Opt_TopRows": {
+    "message": "Rows in “Top” tables",
+    "description": ""
+  },
+  "Opt_TopRowsHint": {
+    "message": "Top senders and recipients",
+    "description": ""
+  },
+  "Opt_WarnLongPeriods": {
+    "message": "Warn for long periods",
+    "description": ""
+  },
+  "Opt_WarnLongPeriodsHint": {
+    "message": "Show a “this may take a while” notice in Custom for ranges longer than this (0: never)",
+    "description": ""
+  },
+  "Opt_Performance": {
+    "message": "Performance & troubleshooting",
+    "description": ""
+  },
+  "Opt_PerformanceDesc": {
+    "message": "How ThunderStats reads your mail while loading the statistics.",
+    "description": ""
+  },
+  "Opt_ConcurrentQueries": {
+    "message": "Message queries at the same time",
+    "description": ""
+  },
+  "Opt_ConcurrentQueriesHint": {
+    "message": "Lower it if Thunderbird stutters while loading, raise it if loading is too slow (1–10)",
+    "description": ""
+  },
+  "Opt_RecentDaysCache": {
+    "message": "Recent days cache",
+    "description": ""
+  },
+  "Opt_RecentDaysCacheHint": {
+    "message": "Days before today read in one pass and shared by the views (43–365). Raise it if Many days covers more than 24 days; a bigger value makes the first load slower",
+    "description": ""
+  },
+  "Opt_DebugLog": {
+    "message": "Debug logging",
+    "description": ""
+  },
+  "Opt_DebugLogHint": {
+    "message": "Writes detailed messages to the Thunderbird error console",
+    "description": ""
+  },
+  "Opt_BusinessDaysDesc": {
+    "message": "Days off are left out of averages, so a quiet Sunday doesn’t drag your baseline down.",
+    "description": ""
+  },
+  "Opt_WorkingWeek": {
+    "message": "Working week",
+    "description": ""
+  },
+  "Opt_BdayDefaultOnly": {
+    "message": "Use business days only for averages, min and max",
+    "description": ""
+  },
+  "Opt_BdayLastBusinessDay": {
+    "message": "When yesterday was a day off, show the last business day",
+    "description": ""
+  },
+  "Opt_Holidays": {
+    "message": "Holidays",
+    "description": ""
+  },
+  "Opt_HolidaysNone": {
+    "message": "No fixed holidays",
+    "description": ""
+  },
+  "Opt_HolidaysOne": {
+    "message": "1 fixed holiday",
+    "description": ""
+  },
+  "Opt_HolidaysCount": {
+    "message": "$NUM$ fixed holidays",
+    "description": "",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "Opt_PlusEaster": {
+    "message": "+ Easter",
+    "description": ""
+  },
+  "Opt_AddHoliday": {
+    "message": "Add holiday",
+    "description": ""
+  },
+  "Opt_HolidayName": {
+    "message": "Name",
+    "description": ""
+  },
+  "Opt_HolidayNamePlaceholder": {
+    "message": "e.g. Festa della Repubblica",
+    "description": ""
+  },
+  "Opt_HolidayDefaultName": {
+    "message": "Holiday",
+    "description": ""
+  },
+  "Opt_YearOnly": {
+    "message": "$YEAR$ only",
+    "description": "",
+    "placeholders": {
+      "year": {
+        "content": "$1",
+        "example": "2026"
+      }
+    }
+  },
+  "Opt_Add": {
+    "message": "Add",
+    "description": ""
+  },
+  "Opt_Easter": {
+    "message": "Easter and Easter Monday",
+    "description": ""
+  },
+  "Opt_EasterHint": {
+    "message": "Calculated every year — $EASTER$ and $MONDAY$ in $YEAR$",
+    "description": "",
+    "placeholders": {
+      "easter": {
+        "content": "$1",
+        "example": "5 April"
+      },
+      "monday": {
+        "content": "$2",
+        "example": "6 April"
+      },
+      "year": {
+        "content": "$3",
+        "example": "2026"
+      }
+    }
+  },
+  "Opt_IdentitiesDesc": {
+    "message": "Tell ThunderStats which addresses are yours and which domains are internal.",
+    "description": ""
+  },
+  "Opt_AccountIdentities": {
+    "message": "Account identities",
+    "description": ""
+  },
+  "Opt_AccountIdentitiesDesc": {
+    "message": "Read from Thunderbird’s account settings",
+    "description": ""
+  },
+  "Opt_NoIdentities": {
+    "message": "This account has no identities.",
+    "description": ""
+  },
+  "Opt_CustomIdentities": {
+    "message": "Custom identities",
+    "description": ""
+  },
+  "Opt_CustomIdentitiesDesc": {
+    "message": "Other addresses you receive mail on — typically mailing lists where your own address isn’t in To or Cc.",
+    "description": ""
+  },
+  "Opt_AddAddress": {
+    "message": "Add address and press Enter",
+    "description": ""
+  },
+  "Opt_InvalidAddress": {
+    "message": "Not a valid address or pattern: use name@example.com, *@example.com or @example.com.",
+    "description": ""
+  },
+  "Opt_CustomIdentitiesHint": {
+    "message": "Use $PATTERN1$ or $PATTERN2$ to match a whole domain.",
+    "description": "",
+    "placeholders": {
+      "pattern1": {
+        "content": "$1",
+        "example": "*@example.com"
+      },
+      "pattern2": {
+        "content": "$2",
+        "example": "@example.com"
+      }
+    }
+  },
+  "Opt_InternalDomains": {
+    "message": "Internal domains",
+    "description": ""
+  },
+  "Opt_InternalDomainsDesc": {
+    "message": "Domains that belong to your organisation. Used to split internal from external traffic in your stats.",
+    "description": ""
+  },
+  "Opt_AddDomain": {
+    "message": "Add domain and press Enter",
+    "description": ""
+  },
+  "Opt_InvalidDomain": {
+    "message": "Not a valid domain: use example.com or *.example.com.",
+    "description": ""
+  },
+  "Opt_InternalDomainsHint": {
+    "message": "Use $PATTERN$ to match all the subdomains.",
+    "description": "",
+    "placeholders": {
+      "pattern": {
+        "content": "$1",
+        "example": "*.example.com"
+      }
+    }
+  },
+  "Opt_InclArchMulti": {
+    "message": "Include archives when several accounts are selected",
+    "description": ""
+  },
+  "Remove": {
+    "message": "Remove",
+    "description": ""
   }
 }

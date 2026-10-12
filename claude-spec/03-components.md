@@ -34,15 +34,13 @@ Widget children:
                                 WidgetHeatmap, WidgetWeekdayBars, WidgetDomainBars, WidgetEndedUp, TableInvolved
 
 App_Options.vue
-└── OptionsView.vue
-    ├── OptionDonationFooter.vue
-    └── [options tab navigation]
-        ├── OPTAB_Main.vue          → SelectAccount
-        ├── OPTAB_Advanced.vue      → AdvancedAccountList
-        ├── OPTAB_BusinessDays.vue
-        ├── OPTAB_CustomIds.vue     → SelectAccount
-        ├── OPTAB_License.vue       → OptionDonationHeader
-        └── OPTAB_Info.vue          → OptionDonationHeader
+└── OptionsView.vue                 (header with ThemeToggle, sidebar nav + donation card)
+    └── [one section at a time]
+        ├── OPTAB_Main.vue          → OptRow, OptNumber
+        ├── OPTAB_Advanced.vue      → OptRow, OptSwitch, OptNumber
+        ├── OPTAB_BusinessDays.vue  → OptRow
+        ├── OPTAB_CustomIds.vue     → OptTagInput
+        └── OPTAB_About.vue
 ```
 
 The tabs load the data and build the props of the two dashboard layouts with `tsDayModel` and `tsPeriodModel` (see [02-statslib.md](02-statslib.md)); the widgets only display what they receive.
@@ -118,16 +116,21 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper. Colors come 
 
 ---
 
-## Options Tab Components (`src/components/options_tabs/`)
+## Options Page (`src/views/OptionsView.vue`, `src/components/options_tabs/`, `src/components/options/`)
+
+Sidebar + card layout on the dashboard tokens (`tokens.css`, plus `--bg`, `--switchOff`, `--onAccent`; page styles in `src/assets/options.css`). `OptionsView` loads every pref (`browser.storage.sync.get(prefs_default)`) into a reactive object and provides it as `optPrefs` = `{ values, set(key, value, debounce) }`; `set` writes to storage at once (number and text inputs debounce 400 ms) and shows the "Reload ThunderStats" header button (`reloadThunderStats` message to the background, then closes the tab). `theme_mode` goes through `tsTheme.setMode` and applies live. External storage changes (e.g. the toolbar theme toggle) update `values`. It also provides `optGoto(section)`. The section is in the URL hash (`#general`, `#advanced`, `#business`, `#identities`, `#about`). There is no Save button anywhere. Strings come from `browser.i18n.getMessage` (no `__MSG_` placeholders, so the `v-if` sections are always localized).
 
 | File | Description |
 |---|---|
-| `OPTAB_Main.vue` | General settings: startup/remembered account and tab, data reload behavior, many-days count and inbox bars, time chart options, folders (open in the first tab), custom query loading, date picker locale, internal mail %, color theme |
-| `OPTAB_Advanced.vue` | Advanced settings: number of correspondents, first day of week, long-period warning, archive inclusion and duplicate filtering (global and per account), debug |
-| `OPTAB_BusinessDays.vue` | Business weekdays, custom holidays, Easter, "business days only" default, compare with last business day |
-| `OPTAB_CustomIds.vue` | "Identities & Domains" tab: define custom email identities for sent mail detection, and configure per-account Internal Domains (domain lists that identify domains belonging to the user's organization, used to distinguish internal from external email traffic) |
-| `OPTAB_License.vue` | Displays the GPL v3 license text |
-| `OPTAB_Info.vue` | Add-on version and info |
+| `OPTAB_Main.vue` | General: Startup (startup account select, disabled while "remember the last used account" is on), Loading data, Today & Yesterday chart, Many days & Custom (`_many_days`, date picker locale with a "use Thunderbird's" button), Inbox Zero (`many_days_show_inbox`, `inbox0_openFolderInFirstTab`), Internal mail (disabled while off and no internal domain is set, link to Identities & domains), Appearance (`theme_mode`) |
+| `OPTAB_Advanced.vue` | Archive folders (global switches + per-account grid saved in `accounts_adv_settings`), Other (first day of the week saved as a number, Top rows, long period warning), Performance & troubleshooting (concurrent queries, recent days cache, debug) |
+| `OPTAB_BusinessDays.vue` | Working week day buttons (ordered by `first_day_week`, short names from `Intl`), business-days switches, Holidays card (`bday_custom_days`: sorted by month/day, inline add/edit form opened by "Add holiday" or by clicking a row, day validated against the month, empty name → "Holiday", "Every year" or "<year> only", delete with confirm), Easter row with this year's dates |
+| `OPTAB_CustomIds.vue` | Identities & domains: pill account switcher, read-only account identities, custom identities and internal domains as tag inputs (per account in `custom_identities` / `internal_domains`, saved lowercase) |
+| `OPTAB_About.vue` | Donation banner, release notes accordion parsed from `CHANGELOG.md` (+ `CHANGELOG_v1.md` on request; latest version open, empty entries skipped), license card with expandable full text and attributions link |
+| `options/OptRow.vue` | Setting row: label, optional hint (or `hint` slot), control on the right; with `pref` it renders an `OptSwitch` bound to that boolean option |
+| `options/OptSwitch.vue` | Toggle switch (`role="switch"`, `aria-checked`, animated knob) |
+| `options/OptNumber.vue` | Number input bound to a pref: valid values saved while typing (debounced), clamped to `[min, max]` on change |
+| `options/OptTagInput.vue` | Chip input: Enter, comma or blur adds; pasted text split on commas/whitespace; duplicates ignored; invalid entries stay in the field with a message; invalid stored entries get a warning border; Backspace on an empty field removes the last chip |
 
 ---
 
@@ -135,12 +138,10 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper. Colors come 
 
 | File | Description |
 |---|---|
-| `HeadingNAV.vue` | Sticky toolbar: brand, account pill (`SelectAccount`), tab segmented control (tabs list passed by `ThunderStatsView`, emits `selectTab`), last-update time, Refresh / Export / Settings / Info icon buttons (Export emits `exportData` with the button as anchor), round theme toggle icon (sun morphing into a moon, title names the theme it switches to, `tsTheme.setMode`). Applies the startup/remembered account |
+| `HeadingNAV.vue` | Sticky toolbar: brand, account pill (`SelectAccount`), tab segmented control (tabs list passed by `ThunderStatsView`, emits `selectTab`), last-update time, Refresh / Export / Settings / Info icon buttons (Export emits `exportData` with the button as anchor), `ThemeToggle`. Applies the startup/remembered account |
+| `ThemeToggle.vue` | Round theme toggle icon (sun morphing into a moon, title names the theme it switches to, `tsTheme.setMode`); in the dashboard toolbar and the options header |
 | `SelectAccount.vue` | Account dropdown (native `select`) |
 | `ExportMenu.vue` | CSV export menu, embedded in each stats tab (uses `@imengyu/vue3-context-menu`). Its own icon is hidden; each tab exposes `openExportMenu(anchor_el)`, which `ThunderStatsView` calls when the toolbar Export button is clicked |
-| `AdvancedAccountList.vue` | Per-account advanced settings list (in `OPTAB_Advanced`) |
-| `OptionDonationHeader.vue` | Donation banner (in `OPTAB_Info` and `OPTAB_License`) |
-| `OptionDonationFooter.vue` | Donation banner at the bottom of `OptionsView` |
 | `tables/TableInvolved.vue` | Ranked list of top senders or recipients: rank, name over address, bar, count. `kind` = `sent` (recipients, `--sent` bars) or `rcvd` (senders) |
 
 ---
@@ -149,8 +150,8 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper. Colors come 
 
 | Library | Usage |
 |---|---|
-| `vue3-tabs-component` | Tab panels in the main view (its tab strip is hidden; `HeadingNAV` drives `selectTab`) and tab navigation in the options view |
+| `vue3-tabs-component` | Tab panels in the main view (its tab strip is hidden; `HeadingNAV` drives `selectTab`) |
 | `@vueform/multiselect` | Folders filter of the Custom Query |
-| `@vuepic/vue-datepicker` | Date pickers of the Custom Query, of the comparison day (Today) and of the holidays (Business Days options) |
+| `@vuepic/vue-datepicker` | Date pickers of the Custom Query and of the comparison day (Today) |
 | `@imengyu/vue3-context-menu` | Export menu |
 | `vue-chartjs` + `chart.js` | All chart components |

@@ -57,7 +57,8 @@ The addon has two separate UI surfaces, each a self-contained Vue 3 application:
 │       ├── charts/               # Chart components
 │       ├── counters/             # Counter/display components
 │       ├── widgets/              # Widgets wrapping charts/counters
-│       ├── options_tabs/         # Options tab components
+│       ├── options_tabs/         # Options page sections
+│       ├── options/              # Options page controls (row, switch, number, tag input)
 │       └── tables/               # Table components
 ├── statslib/
 │   ├── mzts-statscore.js         # Main stats engine

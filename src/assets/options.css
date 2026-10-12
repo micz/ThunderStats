@@ -1,324 +1,323 @@
-body{
-    background-color: #f1f9fd;
-    font-size: 15px;
+/*
+ *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
+
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* Options page: sidebar + card layout, built on the dashboard tokens (tokens.css). */
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-div#miczDescription{
-    padding:0px 15px 0px 15px;
-    font-size: 13px;
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, -apple-system, "Segoe UI", "Noto Sans", sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
-div#miczDescription h1{
-    font-size: 15px;
+a {
+  color: var(--accent);
+  text-decoration: none;
 }
 
-div#miczDonation{
-    width: 100%;
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    background-color: #eff8ff;
-    border: 1px solid #eff8ff;
-    padding: 5px;
+a:hover {
+  text-decoration: underline;
 }
 
-.paddingbottom30{
-    padding-bottom: 30px;
+button, input, select {
+  font: inherit;
 }
 
-.marginright10{
-    margin-right: 10px;
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-.marginleft10{
-    margin-left: 10px;
-}
-
-table.miczPrefs {
-    border-spacing: 0px;
-    margin-top: 20px;
-}
-
-table.miczPrefs td{
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    vertical-align: top;
-    padding: 2px;
-}
-
-table.miczPrefs td.grouptitle, table.table_panel td.grouptitle{
-    border:0;
-    vertical-align: top;
-    padding: 2px;
-    font-weight: bold;
-}
-
-table.miczPrefs tr:first-child td {
-    border-top: none;
-}
-  
-table.miczPrefs tr:last-child td {
-    border-bottom: none;
-}
-
-div#miczDescription h1{
-    text-align: center;
-    margin-bottom: 0px;
-}
-
-div#miczDescription p{
-    text-align: justify;
-    margin-top: 0px;
-}
-
-span.dims_label{
-    display: inline-block;
-}
-
-input#_involved_num, input#_many_days, input#datepicker_local, input#customqry_warn_onlongperiod_days{
-    width: 60px;
-}
-
-.td_padding_right{
-    padding-right: 15px !important
-}
-
-div.intro_main{
-  margin-bottom: 10px;
-  margin-left: 12px;
-  font-style: italic;
-}
-
-div.intro_change_warn{
-    color: darkred;
-    background-color: rgb(255, 240, 240);
-    padding: 3px 15px;
-    border-radius: 8px;
-    width: fit-content;
-    display: inline-block;
-}
-
-div.intro_info{
-    margin: 0px auto 10px auto;
-    width: 47vw;
-    text-align: center;
-    font-style: italic;
-}
-
-div.intro_info_link{
-    margin-top:10px;
-    font-size: large;
-}
-
-div.account_emails{
-    font-style: italic;
-    font-size: small;
-    color:rgb(51, 51, 51);
-}
-
-span.dims_label{
-    cursor: pointer;
-}
-
-.weekdays {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.day-checkbox {
-    margin-right: 10px;
-}
-
-.table_panel{
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px 10px 10px 10px;
-    margin: 10px 0;
-    min-width: 37rem;
-}
-
-.p-datatable{
-    min-width: 20rem;
-}
-
-.bday_btn{
-    min-width: 5rem;
-    margin-bottom: 5px;
-}
-
-.bday_btns_new{
-    text-align: right;
-    margin-top: 10px;
-}
-
-.bday_btns_new button{
-    margin-left: 5px;
-}
-
-table.bday_table_new{
-    margin-top: 0px !important;
-}
-
-.bday_table_new td{
-    padding: 10px 5px 10px 15px !important;
-}
-table.bday_table_new td.grouptitle{
-    font-size: 20px;
-}
-
-table.bday_table {
-  border: 1px solid #7FB5DA;
-  border-spacing: 0px;
-  width: -moz-available;
-}
-table.bday_table tr.selected {
-  background-color: #b5e6ff;
-}
-table.bday_table th, table.bday_table td{
-  text-align: center;
-  padding: 5px;
-  border: 1px solid #7FB5DA;
-}
-table.bday_table th {
-  background-color: #7FB5DA;
-  color: white;
-}
-
-.modal {
+/* Section header */
+.opt-section-head {
   display: flex;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 4px;
+}
+
+.opt-section-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 680;
+  letter-spacing: -.01em;
+}
+
+.opt-section-desc {
+  font-size: 13.5px;
+  color: var(--text2);
+}
+
+/* Card */
+.opt-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.opt-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 18px 12px;
+}
+
+.opt-card-title {
+  font-size: 14px;
+  font-weight: 640;
+}
+
+.opt-card-desc {
+  max-width: 640px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text2);
+  text-wrap: pretty;
+}
+
+.opt-card-note {
+  padding: 11px 18px;
+  border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--text3);
+}
+
+/* Card with free content and no rows */
+.opt-card-padded {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 18px 16px;
+}
+
+.opt-card-padded .opt-card-head {
+  padding: 0;
+  gap: 3px;
+}
+
+/* Setting row */
+.opt-row {
+  display: flex;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--line);
 }
 
-.modal-content {
-  position: relative;
-  padding: 20px;
-  width: 80%;
-  max-width: 26rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+.opt-row-text {
+  flex: 1 1 220px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-#thstats_ver_info{
-  position: absolute;
-  right: 15px;
-  bottom: 0px;
-  font-style: italic;
-  font-size: smaller;
+.opt-row-label {
+  font-size: 14px;
 }
 
-/* Dark mode styles */
-
-:root[data-theme="dark"] body{
-  background-color: #333;
+.opt-row-hint {
+  font-size: 12.5px;
+  color: var(--text2);
 }
 
-:root[data-theme="dark"] div#miczDescription{
-  color: #ccc;
-  background-color: #333;
+.opt-row-hint button.opt-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: inherit;
 }
 
-:root[data-theme="dark"] div#miczDescription h1{
-  color: #fff;
+.opt-row-hint button.opt-link:hover {
+  text-decoration: underline;
 }
 
-:root[data-theme="dark"] div#miczDonation{
-  background-color: #444;
-  border: 1px solid #444;
-  color: #ccc;
+.opt-row > [role=switch] {
+  margin-left: auto;
 }
 
-:root[data-theme="dark"] table.miczPrefs {
-  background-color: #333;
-  color: #ccc;
+.opt-row.is-disabled .opt-row-label {
+  color: var(--text3);
 }
 
-:root[data-theme="dark"] table.miczPrefs td{
-  border-top: 1px solid #555;
-  border-bottom: 1px solid #555;
+.opt-row-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--text2);
 }
 
-:root[data-theme="dark"] table.miczPrefs td.grouptitle{
-  color: #fff;
+/* Inputs */
+.opt-input {
+  font-size: 13px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-input);
+  background: var(--surface);
+  color: var(--text);
+  max-width: 100%;
 }
 
-:root[data-theme="dark"] div#miczDescription h1{
-  color: #fff;
+.opt-input:disabled {
+  color: var(--text3);
+  cursor: default;
 }
 
-:root[data-theme="dark"] div#miczDescription p{
-  color: #ccc;
+.opt-input[type=number] {
+  width: 72px;
+  font-variant-numeric: tabular-nums;
 }
 
-:root[data-theme="dark"] span.dims_label{
-  color: #ccc;
+.opt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-:root[data-theme="dark"] input#_involved_num, :root[data-theme="dark"] input#_many_days, :root[data-theme="dark"] input#datepicker_locale, :root[data-theme="dark"] input#customqry_warn_onlongperiod_days{
-  background-color: #444;
-  color: #fff;
-  border: 1px solid #555;
+.opt-field-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text2);
 }
 
-:root[data-theme="dark"] div.intro_main{
-  color: #ccc;
+/* Buttons */
+.opt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: var(--radius-input);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-:root[data-theme="dark"] div.intro_change_warn{
-  color: #ddbebe;
-  background-color: #553333;
+.opt-btn:hover {
+  background: var(--surface2);
+  text-decoration: none;
 }
 
-:root[data-theme="dark"] div.intro_info{
-  color: #ccc;
+.opt-btn svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-:root[data-theme="dark"] div.intro_info_link{
-  color: #fff;
+.opt-btn-accent {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: var(--radius-input);
+  background: var(--accent);
+  color: var(--onAccent);
+  font-size: 13px;
+  font-weight: 640;
+  cursor: pointer;
 }
 
-:root[data-theme="dark"] div.account_emails{
-  color: #aaa;
+.opt-btn-accent:hover {
+  text-decoration: none;
+  filter: brightness(1.06);
 }
 
-:root[data-theme="dark"] a {
-  color: #79bcff;
+.opt-btn-text {
+  padding: 7px 12px;
+  border: 0;
+  border-radius: var(--radius-input);
+  background: transparent;
+  color: var(--text2);
+  font-size: 13px;
+  cursor: pointer;
 }
 
-:root[data-theme="dark"] a:visited {
-  color: #79bcff;
+.opt-btn-text:hover {
+  color: var(--text);
 }
 
-:root[data-theme="dark"] table.bday_table {
-  border: 1px solid #5A9BB5;
+/* Small segmented control inside forms */
+.opt-seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-input);
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
 
-:root[data-theme="dark"] table.bday_table tr.selected {
-  background-color: #1E292F;
+.opt-seg button {
+  border: 0;
+  cursor: pointer;
+  font-size: 12.5px;
+  padding: 5px 10px;
+  border-radius: var(--radius-segment);
+  background: transparent;
+  color: var(--text2);
 }
 
-:root[data-theme="dark"] table.bday_table th, :root[data-theme="dark"] table.bday_table td {
-  border: 1px solid #5A9BB5;
+.opt-seg button.is-active {
+  background: var(--accent);
+  color: var(--onAccent);
 }
 
-:root[data-theme="dark"] table.bday_table th {
-  background-color: #5A9BB5;
-  color: #E0E0E0;
+/* Pill segmented control (account switcher) */
+.opt-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 20px;
+  background: var(--surface3);
 }
 
-:root[data-theme="dark"] .modal-content {
-  background-color: #333;
-  color: #E0E0E0;
-  box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.3);
+.opt-pills button {
+  border: 0;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 17px;
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--text);
+}
+
+.opt-pills button.is-active {
+  background: var(--surface);
+  font-weight: 620;
 }

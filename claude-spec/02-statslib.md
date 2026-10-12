@@ -150,7 +150,7 @@ Handles generation and download of CSV files from statistics data. Most transfor
 Wraps the `storage` API for reading and writing user preferences.
 
 - Uses `browser.storage.sync`
-- `getPref(id)`, `getPrefs(ids)`, `setPref(id, value)`; `saveOptions` / `restoreOptions` bind options-page inputs by element `id`
+- `getPref(id)`, `getPrefs(ids)`, `setPref(id, value)`; `saveOptions` / `restoreOptions` bind inputs by element `id` (no longer used by the options page, which keeps its own reactive copy of the prefs, see `OptionsView.vue`)
 - Missing values fall back to `prefs_default` from `mzts-options-default.js`
 
 ---

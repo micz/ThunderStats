@@ -27,7 +27,7 @@
         "message": "Untfongen"
     },
     "DonateLink": {
-        "message": "Doch in donaasje!"
+        "message": "Doch in donaasje"
     },
     "ChooseAccount": {
         "message": "Account kieze"
@@ -51,10 +51,10 @@
         "message": "Juster"
     },
     "today_small": {
-        "message": "hjoed"
+        "message": "Hjoed"
     },
     "yesterday_small": {
-        "message": "juster"
+        "message": "Juster"
     },
     "days": {
         "message": "dagen"
@@ -69,16 +69,16 @@
         "message": "Lade"
     },
     "SentMails": {
-        "message": "Ferstjoerde e-mailberjochten"
+        "message": "Ferstjoerd"
     },
     "ReceivedMails": {
-        "message": "Untfongen e-mailberjochten"
+        "message": "Untfongen"
     },
     "InboxZeroStatus": {
         "message": "Postfek YN-nulstatus"
     },
     "TotalInbox": {
-        "message": "Totaal oantal e-mailberjochten yn Postfek YN"
+        "message": "Efterstân yn Postfek YN"
     },
     "TotalInboxUnread": {
         "message": "net-lêzen"
@@ -93,7 +93,7 @@
         "message": "ûntfongen"
     },
     "FolderLocation": {
-        "message": "E-mailmapdiagram"
+        "message": "Wêr't de e-mails telâne kommen binne"
     },
     "clickhere": {
         "message": "klik hjir"

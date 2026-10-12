@@ -31,7 +31,7 @@
         "message": "Reçu"
     },
     "DonateLink": {
-        "message": "Faire un don !"
+        "message": "Faire un don"
     },
     "ChooseAccount": {
         "message": "Choisir un compte"
@@ -55,10 +55,10 @@
         "message": "Hier"
     },
     "today_small": {
-        "message": "aujourd'hui"
+        "message": "Aujourd'hui"
     },
     "yesterday_small": {
-        "message": "hier"
+        "message": "Hier"
     },
     "days": {
         "message": "jours"
@@ -73,16 +73,16 @@
         "message": "Chargement"
     },
     "SentMails": {
-        "message": "Courriers envoyés"
+        "message": "Envoyés"
     },
     "ReceivedMails": {
-        "message": "Courriers reçus"
+        "message": "Reçus"
     },
     "InboxZeroStatus": {
         "message": "Boîte de réception vide"
     },
     "TotalInbox": {
-        "message": "Nombre total de messages dans la boîte de réception"
+        "message": "En attente dans la boîte de réception"
     },
     "TotalInboxUnread": {
         "message": "non lus"
@@ -97,7 +97,7 @@
         "message": "reçus"
     },
     "FolderLocation": {
-        "message": "Statistique de provenance des dossiers de courriels"
+        "message": "Où sont allés les e-mails"
     },
     "InboxZeroFolderLocationNote": {
         "message": "Dans ce graphique, tous les messages sont pris en compte, y compris les doublons filtrés dans les autres graphiques. Ainsi, par exemple, si vous utilisez Gmail, vous verrez les messages à la fois dans le dossier dans lequel ils se trouvent et dans le dossier «Tous les messages»."
@@ -106,7 +106,7 @@
         "message": "Aucun courrier reçu"
     },
     "InboxMailsDateSpreading": {
-        "message": "Graphique des courriers de la boîte de réception en fonction de la date"
+        "message": "Quel âge a votre boîte de réception"
     },
     "NoMailsInbox": {
         "message": "Pas de messages dans la boîte de réception !"
@@ -187,10 +187,10 @@
         "message": "Données extraites depuis"
     },
     "DateRange": {
-        "message": "Plage de dates"
+        "message": "Période"
     },
     "Bookmarks_Menu": {
-        "message": "Choisissez une période prédéfinie"
+        "message": "Périodes rapides"
     },
     "CurrentWeek": {
         "message": "La semaine en cours"
@@ -235,10 +235,10 @@
         }
     },
     "GlobalDescSettingTab": {
-        "message": "Utiliser ces options pour personnaliser votre usage de ThunderStats !"
+        "message": "Comment ThunderStats s'ouvre, charge les données et dessine ses graphiques."
     },
     "AdvancedSettingTabDesc": {
-        "message": "Ce sont des options avancées, utilisez-les si vous savez ce que vous faites."
+        "message": "Réglages fins du comptage des e-mails. Les valeurs par défaut conviennent à la plupart des utilisateurs."
     },
     "TabSettings.label": {
         "message": "Générales"
@@ -247,13 +247,13 @@
         "message": "Avancé"
     },
     "TabBusinessDays.label": {
-        "message": "Jours Ouvrés"
+        "message": "Jours ouvrés"
     },
     "TabCustomIdentities.label": {
-        "message": "Identités & Domaines"
+        "message": "Identités & domaines"
     },
     "Identities": {
-        "message": "Identités"
+        "message": "Identités du compte"
     },
     "InfoMainDesc": {
         "message": "Ce module est gratuit et développé sur mon temps libre. Si vous l'utilisez chaque jour, merci d'envisager un petit don en cliquant sur le lien ci-dessous. Merci ! !"
@@ -268,7 +268,7 @@
         "message": "Gérez ici vos identités personnalisées"
     },
     "ManageCustomIdentititesDesc_1": {
-        "message": "Une identité personnalisée est une adresse email, différente de celles enregistrées pour le compte, avec laquelle vous recevez des mails."
+        "message": "Autres adresses sur lesquelles vous recevez des e-mails — généralement des listes de diffusion où votre propre adresse n'apparaît ni dans À ni dans Cc."
     },
     "ManageCustomIdentititesDesc_2": {
         "message": "Il s'agit généralement d'adresses e-mail de listes de diffusion auxquelles vous êtes abonné, où votre adresse e-mail n'est utilisée dans aucun champ «à» ou «cc»."
@@ -277,28 +277,38 @@
         "message": "Compte"
     },
     "CustomIdentititesAccount": {
-        "message": "identités personnalisées pour le compte sélectionné"
+        "message": "Identités personnalisées"
     },
     "CustomIdentititesAccount.Info": {
-        "message": "Ajoutez une adresse e-mail par ligne ou séparez-les par una virgule. Utilisez * comme caractère générique (ex. : @example.com) ou simplement @domain.com per faire correspondre toutes les adresses d'un domaine."
+        "message": "Utilisez $PATTERN1$ ou $PATTERN2$ pour inclure tout un domaine.",
+        "placeholders": {
+            "pattern1": {
+                "content": "$1",
+                "example": "*@example.com"
+            },
+            "pattern2": {
+                "content": "$2",
+                "example": "@example.com"
+            }
+        }
     },
     "ActivateDebug": {
-        "message": "Activer le système de débogage"
+        "message": "Journalisation de débogage"
     },
     "TodayTimeChartShowYesterday": {
-        "message": "Afficher également les mails d'hier dans le chronogramme d'aujourd'hui"
+        "message": "Superposer hier sur le graphique d'aujourd'hui"
     },
     "TimeChartProgressive": {
-        "message": "Afficher les valeurs cumulées dans les graphiques temporels d'aujourd'hui et d'hier"
+        "message": "Afficher les valeurs cumulées"
     },
     "ManyDaysChart": {
         "message": "Graphique sur plusieurs jours"
     },
     "ManyDays": {
-        "message": "Nombre de jours à afficher"
+        "message": "Jours affichés dans « Derniers jours »"
     },
     "CustomQueryBookmarkImmediateUpdate": {
-        "message": "Quand une échelle de temps personnalisée est choisie, mettre à jour immédiatement les statistiques"
+        "message": "Charger les données dès que vous choisissez une période prédéfinie dans la vue personnalisée"
     },
     "EmailAddresses": {
         "message": "adresses mail"
@@ -328,7 +338,7 @@
         "message": "Samedi"
     },
     "DatePickerLocale": {
-        "message": "Paramètres régionaux pour le sélecteur de date"
+        "message": "Langue du sélecteur de date"
     },
     "ShowRelNotes1x": {
         "message": "Afficher les notes de version pour la version 1.x"
@@ -340,19 +350,19 @@
         "message": "Échelles personnalisées des statistiques"
     },
     "folderspreadchart_openinfirsttab": {
-        "message": "À partir du tableau des emplacements des dossiers de courrier, ouvrez toujours le dossier dans le premier onglet"
+        "message": "Ouvrir les dossiers cliqués dans « Où sont allés les e-mails » dans le premier onglet de courrier"
     },
     "InvolvedNum": {
-        "message": "Nombre de destinataires et expéditeurs à afficher dans les tableaux au \"Top\""
+        "message": "Lignes dans les tableaux « Top »"
     },
     "Other": {
         "message": "Autre"
     },
     "prefs_FirstDayWeek": {
-        "message": "Choisissez le premier jour de la semaine"
+        "message": "Premier jour de la semaine"
     },
     "prefs_remember_last_tab": {
-        "message": "Rappelez-vous le dernier onglet ouvert"
+        "message": "Rouvrir le dernier onglet utilisé"
     },
     "prefs_always_reload_tab_data": {
         "message": "Recharger les données lors du changement d'onglet"
@@ -361,7 +371,7 @@
         "message": "Recharger les données lors du changement de compte"
     },
     "prefs_filter_duplicates_multi_account": {
-        "message": "Filtrer les messages en double lorsque plusieurs comptes sont sélectionnés"
+        "message": "Filtrer les doublons lorsque plusieurs comptes sont sélectionnés"
     },
     "prefs_include_archive_multi_account": {
         "message": "Inclure les archives lorsque plusieurs comptes sont sélectionnés"
@@ -373,7 +383,7 @@
         "message": "Filtrer les messages en double"
     },
     "ImportantInfoText_1": {
-        "message": "Certains fournisseurs de messagerie, tels que Gmail, disposent d'un dossier «Archive» qui contient tous les messages. Cependant, les mêmes messages sont également présents dans des dossiers individuels. La prise en compte des dossiers «Archive» dans les statistiques pourrait conduire à les compter deux fois."
+        "message": "Les fournisseurs comme Gmail conservent chaque message dans un dossier Archives en plus de son propre dossier : compter les archives peut donc doubler vos chiffres. Excluez les archives, ou gardez-les et filtrez les doublons — plus lent, mais plus précis."
     },
     "ImportantInfoText_1b": {
         "message": "Sur la page des options avancées, vous pouvez choisir comment gérer ces comptes. Si un compte possède une adresse «gmail.com», il sera configuré correctement ; sinon, vous devrez le configurer manuellement."
@@ -403,7 +413,7 @@
         "message": "Inclure l'archive"
     },
     "FilterDuplicateMessages": {
-        "message": "Filtrer les messages en double"
+        "message": "Filtrer les doublons"
     },
     "AdvancedAccountList_Desc": {
         "message": "Ci-dessous, vous pouvez choisir d'ignorer les dossiers d'archives ou de filtrer les messages en double. Le filtrage des messages augmentera le temps nécessaire au calcul des statistiques, mais donnera de meilleurs résultats. Si vous n'utilisez pas la fonction d'archivage de Gmail, vous pouvez choisir de ne pas activer cette fonctionnalité et simplement exclure directement les dossiers d'archives. Le tableau des emplacements des dossiers Inbox Zero affichera toujours tous les e-mails. Par conséquent, si un e-mail est reçu et apparaît dans deux dossiers, il sera affiché dans les deux dossiers du graphique."
@@ -418,10 +428,10 @@
         "message": "Définir par défaut"
     },
     "Label_bday_use_last_business_day": {
-        "message": "Si hier n’est pas un jour ouvré, affiche le dernier jour ouvré précédent."
+        "message": "Si hier était un jour non ouvré, afficher le dernier jour ouvré"
     },
     "Label_bday_default_only": {
-        "message": "Considérer uniquement les jours ouvrés dans les statistiques agrégées (maximum, minimum, moyenne)."
+        "message": "Utiliser les jours ouvrés uniquement pour les moyennes, minimums et maximums"
     },
     "Non-BDays": {
         "message": "Jours Non-Ouvrés"
@@ -430,7 +440,7 @@
         "message": "Date"
     },
     "Description": {
-        "message": "Description"
+        "message": "Nom"
     },
     "New": {
         "message": "Nouveau"
@@ -457,7 +467,7 @@
         "message": "Êtes-vous sûr de vouloir supprimer ce jour non-ouvré ?"
     },
     "EasterNoBusinessDay": {
-        "message": "Pâques et le lundi de Pâques sont des jours non-ouvrés."
+        "message": "Pâques et lundi de Pâques"
     },
     "Year": {
         "message": "Année"
@@ -490,16 +500,16 @@
         "message": "Ces valeurs tiennent compte uniquement des jours ouvrables."
     },
     "TimeChartNoFutureHours": {
-        "message": "Ne montrez pas les heures futures dans le graphique temporel d'aujourd'hui"
+        "message": "Masquer les heures pas encore passées"
     },
     "Miscellaneous": {
         "message": "Divers"
     },
     "TimeChart": {
-        "message": "Graphique temporel"
+        "message": "Graphique Aujourd'hui & Hier"
     },
     "LastExecution": {
-        "message": "Dernière exécution"
+        "message": "Mis à jour"
     },
     "ExportData": {
         "message": "Exportation de Données"
@@ -514,7 +524,7 @@
         "message": "Moment de la journée"
     },
     "FolderLocation_percent_handled": {
-        "message": "Mails déplacés du dossier de la boîte de réception"
+        "message": "E-mails reçus pendant la période qui ne sont plus dans la boîte de réception"
     },
     "AskUserWarningTitle": {
         "message": "Avertissement"
@@ -529,16 +539,16 @@
         }
     },
     "CustmQryWarnOnLongPeriod_1": {
-        "message": "Nombre de jours après lesquels l'utilisateur est averti que les statistiques peuvent prendre beaucoup de temps."
+        "message": "Afficher un avis « cela peut prendre du temps » dans la vue personnalisée pour les périodes plus longues que cette valeur"
     },
     "CustmQryWarnOnLongPeriod_2": {
-        "message": "Ne jamais avertir"
+        "message": "jamais"
     },
     "ShowAdvFilters": {
         "message": "Afficher les filtres avancés"
     },
     "AdvFilters": {
-        "message": "Filtres avancés"
+        "message": "Filtres"
     },
     "ChooseFoldersFilter": {
         "message": "Choisir des dossiers"
@@ -553,7 +563,7 @@
         "message": "Choisissez un ou plusieurs dossiers..."
     },
     "prefs_customqry_always_open_adv_filters": {
-        "message": "Toujours ouvrir le panneau des filtres avancés en vue personnalisée"
+        "message": "Toujours déplier les filtres avancés dans la vue personnalisée"
     },
     "TimeDay": {
         "message": "Heure de la journée"
@@ -595,7 +605,7 @@
         "message": "Étiquettes"
     },
     "InboxMailsDateSpreadingExtended": {
-        "message": "Courriels reçus - Vue des détails de la date"
+        "message": "Détails par date"
     },
     "OrderBy": {
         "message": "Trier par"
@@ -616,7 +626,7 @@
         "message": "Afficher les dossiers"
     },
     "prefs_customqry_loaddata_when_opening_addon": {
-        "message": "Charger les données même si la vue personnalisée est l'onglet ouvert en premier dans ThunderStats"
+        "message": "Charger les données quand la vue personnalisée est le premier onglet ouvert"
     },
     "WeeklyMails": {
         "message": "Courriels de la semaine"
@@ -634,22 +644,28 @@
         "message": "Toutes le e-mails"
     },
     "InternalDomainsAccount": {
-        "message": "Domaines internes pour le compte sélectionné"
+        "message": "Domaines internes"
     },
     "InternalDomainsAccount.Desc": {
-        "message": "Les domaines internes sont les domaines appartenant à votre organisation. Ils permettent de distinguer le trafic e-mail interne du trafic externe dans vos statistiques."
+        "message": "Domaines appartenant à votre organisation. Ils servent à séparer le trafic interne du trafic externe dans vos statistiques."
     },
     "InternalDomainsAccount.Info": {
-        "message": "Ajoutez un domaine par ligne ou séparez-les par une virgule. Utilisez * comme caractère générique (ex. : *.example.com per inclure tous les sous-domaines)."
+        "message": "Utilisez $PATTERN$ pour inclure tous les sous-domaines.",
+        "placeholders": {
+            "pattern": {
+                "content": "$1",
+                "example": "*.example.com"
+            }
+        }
     },
     "ManyDaysShowInbox": {
-        "message": "Afficher les e-mails de la boîte de réception dans le graphique des messages reçus"
+        "message": "Marquer sur les barres du graphique les e-mails encore dans la boîte de réception"
     },
     "prefs_remember_last_account": {
         "message": "Mémoriser le dernier compte utilisé"
     },
     "FolderLocation_percent_remaining": {
-        "message": "E-mails encore dans la boîte de réception"
+        "message": "Encore dans la boîte de réception"
     },
     "ResetAdvFilters": {
         "message": "Réinitialiser les filtres"
@@ -658,7 +674,7 @@
         "message": "Afficher le pourcentage d'e-mails toujours dans la boîte de réception"
     },
     "prefs_show_internal_mail_percent": {
-        "message": "Afficher le pourcentage d'e-mails internes (nécessite la configuration des domaines internes)"
+        "message": "Afficher la part d'e-mails internes"
     },
     "InternalMailLabel": {
         "message": "Internes"

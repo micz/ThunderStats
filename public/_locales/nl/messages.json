@@ -9,7 +9,7 @@
         "message": "op dit moment"
     },
     "today_small": {
-        "message": "vandaag"
+        "message": "Vandaag"
     },
     "TimeChart.Sent": {
         "message": "Verzonden"
@@ -51,7 +51,7 @@
         "message": "Ontvangen"
     },
     "DonateLink": {
-        "message": "Doe een donatie!"
+        "message": "Doe een donatie"
     },
     "Update": {
         "message": "Bijwerken"
@@ -78,10 +78,10 @@
         "message": "Laden"
     },
     "SentMails": {
-        "message": "Verzonden e-mailberichten"
+        "message": "Verzonden"
     },
     "ReceivedMails": {
-        "message": "Ontvangen e-mailberichten"
+        "message": "Ontvangen"
     },
     "TotalInboxUnread": {
         "message": "ongelezen"
@@ -129,10 +129,10 @@
         "message": "Gegevens extraheren voor"
     },
     "DateRange": {
-        "message": "Datumbereik"
+        "message": "Periode"
     },
     "Bookmarks_Menu": {
-        "message": "Kies een voorgedefinieerde periode"
+        "message": "Snelle perioden"
     },
     "CurrentWeek": {
         "message": "Deze week"
@@ -174,10 +174,10 @@
         "message": "Werkdagen"
     },
     "TabCustomIdentities.label": {
-        "message": "Identiteiten & Domeinen"
+        "message": "Identiteiten & domeinen"
     },
     "Identities": {
-        "message": "Identiteiten"
+        "message": "Accountidentiteiten"
     },
     "Account": {
         "message": "Account"
@@ -198,7 +198,7 @@
         "message": "Zaterdag"
     },
     "TotalInbox": {
-        "message": "Totaal aantal e-mailberichten in Postvak IN"
+        "message": "Achterstand in Postvak IN"
     },
     "ChooseAccount": {
         "message": "Account kiezen"
@@ -219,7 +219,7 @@
         "message": "Beheer hier uw aangepaste identiteiten"
     },
     "yesterday_small": {
-        "message": "gisteren"
+        "message": "Gisteren"
     },
     "NoMailsReceived": {
         "message": "Geen e-mailberichten ontvangen"
@@ -255,10 +255,10 @@
         }
     },
     "FolderLocation": {
-        "message": "E-mailmapdiagram"
+        "message": "Waar de e-mails terecht zijn gekomen"
     },
     "InboxMailsDateSpreading": {
-        "message": "Diagram datumspreiding e-mailberichten Postvak IN"
+        "message": "Hoe oud is uw Postvak IN"
     },
     "AboutText_1": {
         "message": "Herinnert u zich de goede oude statistieken van Eudora? Mist u dat?"
@@ -276,40 +276,50 @@
         "message": "De statistieken zullen worden bijgewerkt zo gauw als Thunderbird de mappen van de mailserver heeft bijgewerkt."
     },
     "GlobalDescSettingTab": {
-        "message": "Gebruik deze opties om uw ThunderStats-ervaring aan te passen!"
+        "message": "Hoe ThunderStats opent, gegevens laadt en zijn diagrammen tekent."
     },
     "AdvancedSettingTabDesc": {
-        "message": "Dit zijn de geavanceerde opties, gebruik ze als u weet wat u doet."
+        "message": "Fijnafstelling van hoe e-mail wordt geteld. De standaardwaarden werken voor de meeste mensen."
     },
     "InfoMainDesc": {
         "message": "Deze add-on is gratis en ontwikkeld in mijn vrije tijd. Als u het dagelijks gebruikt, voel u vrij om te ondersteunen met een kleine donatie door op de koppeling hieronder te klikken. Bedankt!!"
     },
     "ManageCustomIdentititesDesc_1": {
-        "message": "Een aangepaste identiteit is een e-mailadres, afwijkend van die voor de account is geregistreerd, waarmee u e-mailberichten ontvangt."
+        "message": "Andere adressen waarop u e-mail ontvangt — meestal mailinglijsten waarbij uw eigen adres niet in Aan of Cc staat."
     },
     "CustomIdentititesAccount": {
-        "message": "Aangepaste identiteiten voor de geselecteerde account"
+        "message": "Aangepaste identiteiten"
     },
     "CustomIdentititesAccount.Info": {
-        "message": "Voeg per regel een e-mailadres toe, of gescheiden door een komma. Gebruik * als een wildcard, (bijv. *@example.com) of alleen @domein.nl om met alle adressen van een domein overeen te komen."
+        "message": "Gebruik $PATTERN1$ of $PATTERN2$ om met een heel domein overeen te komen.",
+        "placeholders": {
+            "pattern1": {
+                "content": "$1",
+                "example": "*@example.com"
+            },
+            "pattern2": {
+                "content": "$2",
+                "example": "@example.com"
+            }
+        }
     },
     "ActivateDebug": {
-        "message": "Het debug-systeem activeren"
+        "message": "Debuglogboek"
     },
     "TodayTimeChartShowYesterday": {
-        "message": "Ook e-mailberichten van gisteren in het tijdsdiagram van vandaag tonen"
+        "message": "Gisteren over het diagram van vandaag leggen"
     },
     "TimeChartProgressive": {
-        "message": "Cumulatieve waarden in de tijdsdiagrammen van vandaag en gisteren tonen"
+        "message": "Cumulatieve waarden tonen"
     },
     "ManyDaysChart": {
         "message": "Meerdere-dagendiagram"
     },
     "CustomQueryBookmarkImmediateUpdate": {
-        "message": "Werk de statistieken direct bij als een aangepast datumbereik wordt geselecteerd"
+        "message": "Gegevens laden zodra u een voorgedefinieerde periode kiest in Aangepast beeld"
     },
     "DatePickerLocale": {
-        "message": "Landinstelling voor de datumkiezer"
+        "message": "Taal van de datumkiezer"
     },
     "ShowRelNotes1x": {
         "message": "Uitgifteopmerkingen voor versie 1.x tonen"
@@ -327,7 +337,7 @@
         "message": "Datum"
     },
     "Description": {
-        "message": "Omschrijving"
+        "message": "Naam"
     },
     "New": {
         "message": "Nieuw"
@@ -351,7 +361,7 @@
         "message": "Weet u zeker dat u deze niet-werkdag wilt verwijderen?"
     },
     "EasterNoBusinessDay": {
-        "message": "Pasen en paasmaandag zijn geen werkdagen."
+        "message": "Pasen en paasmaandag"
     },
     "OnlyBDCustomQry": {
         "message": "Alleen werkdagen overwegen"
@@ -369,7 +379,7 @@
         "message": "De geselecteerde account heeft geen geassocieerde e-mailberichten. U moet een aangepaste identiteit in de optiespagina toevoegen."
     },
     "LastExecution": {
-        "message": "Laatst uitgevoerd"
+        "message": "Bijgewerkt"
     },
     "ExportData": {
         "message": "Gegevensexport"
@@ -378,13 +388,13 @@
         "message": "Dagelijkse e-mailberichten"
     },
     "FolderLocation_percent_handled": {
-        "message": "E-mailberichten verplaatst uit Postvak IN"
+        "message": "In de periode ontvangen e-mailberichten die niet meer in Postvak IN staan"
     },
     "AskUserWarningTitle": {
         "message": "Waarschuwing"
     },
     "CustmQryWarnOnLongPeriod_2": {
-        "message": "Nooit waarschuwen"
+        "message": "nooit"
     },
     "ShowAdvFilters": {
         "message": "Geavanceerd filters tonen"
@@ -441,7 +451,7 @@
         "message": "U moet het ThunderStats-tabblad sluiten en opnieuw openen om de wijzigingen actief te maken."
     },
     "ManyDays": {
-        "message": "Aantal dagen om te tonen"
+        "message": "Getoonde dagen in ‘Laatste dagen’"
     },
     "InboxZeroText_1": {
         "message": "Inbox Zero is a rigoureuze benadering van e-mailbeheer gericht op het leeg houden van Postvak IN — of bijna leeg — voor altijd."
@@ -468,7 +478,7 @@
         "message": "Deze dag is elk jaar een geen-werkdag."
     },
     "AdvFilters": {
-        "message": "Geavanceerd filters"
+        "message": "Filters"
     },
     "WeeklyMails": {
         "message": "Wekelijkse e-mailberichten"
@@ -492,7 +502,7 @@
         "message": "Diversen"
     },
     "TimeChart": {
-        "message": "Tijdsdiagram"
+        "message": "Diagram Vandaag & Gisteren"
     },
     "Month": {
         "message": "Maand"
@@ -516,10 +526,10 @@
         "message": "Overig"
     },
     "prefs_FirstDayWeek": {
-        "message": "Kies de eerste dag van de week"
+        "message": "Eerste dag van de week"
     },
     "prefs_remember_last_tab": {
-        "message": "Laatst geopende tabblad onthouden"
+        "message": "Het laatst gebruikte tabblad opnieuw openen"
     },
     "prefs_always_reload_tab_data": {
         "message": "Laad na wisselen van tabblad de gegevens opnieuw"
@@ -528,7 +538,7 @@
         "message": "Laad na wisselen van account de gegevens opnieuw"
     },
     "prefs_filter_duplicates_multi_account": {
-        "message": "Filter dubbele berichten wanneer meerdere accounts zijn geselecteerd"
+        "message": "Duplicaten filteren wanneer meerdere accounts zijn geselecteerd"
     },
     "prefs_include_archive_multi_account": {
         "message": "Neem archieven mee wanneer meerdere accounts zijn geselecteerd"
@@ -558,7 +568,7 @@
         "message": "Inclusief archief"
     },
     "FilterDuplicateMessages": {
-        "message": "Dubbele berichten filteren"
+        "message": "Duplicaten filteren"
     },
     "PrivacySubtitle": {
         "message": "Privacy"
@@ -567,10 +577,10 @@
         "message": "Als standaard instellen"
     },
     "Label_bday_use_last_business_day": {
-        "message": "Als gisteren geen werkdag was, toon dan in plaats daarvan de laatste werkdag."
+        "message": "Als gisteren een vrije dag was, de laatste werkdag tonen"
     },
     "Label_bday_default_only": {
-        "message": "Beschouw werkdagen alleen in geaggregeerde statistieken (max., min., gemiddeld)."
+        "message": "Werkdagen alleen gebruiken voor gemiddelden, minimum en maximum"
     },
     "InfoTotal_AllMails": {
         "message": "Deze totaalwaarde geldt zowel voor werk- als niet-werkdagen."
@@ -579,46 +589,52 @@
         "message": "Deze waarden gelden alleen voor werkdagen."
     },
     "TimeChartNoFutureHours": {
-        "message": "Geen aanstaande uren tonen in het tijdsdiagram van vandaag"
+        "message": "Uren die nog niet voorbij zijn verbergen"
     },
     "prefs_customqry_always_open_adv_filters": {
-        "message": "Altijd het paneel Geavanceerde filters openen in Aangepast beeld"
+        "message": "Geavanceerde filters altijd uitklappen in Aangepast beeld"
     },
     "InboxMailsDateSpreadingExtended": {
-        "message": "Postvak IN-e-mailbeichten – Datumdetailsbeeld"
+        "message": "Details per datum"
     },
     "AllEmails": {
         "message": "Alle e-mailberichten"
     },
     "InternalDomainsAccount": {
-        "message": "Interne domeinen voor de geselecteerde account"
+        "message": "Interne domeinen"
     },
     "InternalDomainsAccount.Desc": {
-        "message": "Interne domeinen zijn domeinen toebehorend aan uw organisatie. Ze worden gebruikt om intern van extern e-mailverkeer in uw statistieken te onderscheiden."
+        "message": "Domeinen die tot uw organisatie behoren. Ze worden gebruikt om intern van extern verkeer te scheiden in uw statistieken."
     },
     "InternalDomainsAccount.Info": {
-        "message": "Voeg per regel een domein toe, of gescheiden door een komma. Gebruik * als een wildcard, (bijv. *@example.com) om met alle subdomeinen overeen te komen."
+        "message": "Gebruik $PATTERN$ om met alle subdomeinen overeen te komen.",
+        "placeholders": {
+            "pattern": {
+                "content": "$1",
+                "example": "*.example.com"
+            }
+        }
     },
     "ManyDaysShowInbox": {
-        "message": "E-mailbericht in uw Postvak IN in de diagram Ontvangen tonen"
+        "message": "E-mail die nog in Postvak IN staat markeren op de diagrambalken"
     },
     "folderspreadchart_openinfirsttab": {
-        "message": "Open vanuit het e-mailmappendiagram de map altijd in het eerste tabblad"
+        "message": "In ‘Waar de e-mails terecht zijn gekomen’ aangeklikte mappen openen in het eerste e-mailtabblad"
     },
     "InvolvedNum": {
-        "message": "Aantal ontvangers of afzenders om in de ‘Top’-tabellen te tonen"
+        "message": "Rijen in de ‘Top’-tabellen"
     },
     "prefs_remember_last_account": {
         "message": "De laatst gebruikte account onthouden"
     },
     "ImportantInfoText_1": {
-        "message": "Sommige e-mailproviders, zoals Gmail, hebben een ‘Archief’ map die alle berichten bevatten. Echter, dezelfde berichten zijn ook aanwezig in individuele mappen. Het meenemen van de ‘Archief’ mappen in de statistieken zou kunnen leiden tot het dubbel tellen van de berichten."
+        "message": "Providers zoals Gmail bewaren elk bericht zowel in een Archief-map als in zijn eigen map, waardoor het meetellen van archieven uw aantallen kan verdubbelen. Sluit archieven uit, of neem ze mee en filter duplicaten — trager, maar nauwkeuriger."
     },
     "InboxZeroChart": {
         "message": "Diagram Postvak IN-leeg"
     },
     "FolderLocation_percent_remaining": {
-        "message": "Nog steeds in de map Postvak IN aanwezige e-mailberichten"
+        "message": "Nog in Postvak IN"
     },
     "ResetAdvFilters": {
         "message": "Filters opnieuw instellen"
@@ -627,7 +643,7 @@
         "message": "Toon het percentage van e-mailberichten dat nog steeds in Postvak IN staat"
     },
     "prefs_show_internal_mail_percent": {
-        "message": "Toon het percentage van interne e-mailberichten (vereist configuratie van interne domeinen)"
+        "message": "Aandeel interne e-mail tonen"
     },
     "InternalMailLabel": {
         "message": "Intern"
@@ -696,9 +712,9 @@
         }
     },
     "CustmQryWarnOnLongPeriod_1": {
-        "message": "Aantal dagen waarbij de gebruiker wordt gewaarschuwd dat de statistieken lang kunnen duren."
+        "message": "Een melding ‘dit kan even duren’ tonen in Aangepast beeld voor perioden langer dan deze waarde"
     },
     "prefs_customqry_loaddata_when_opening_addon": {
-        "message": "Laad gegevens zelfs wanneer Aangepast beeld het eerste tabblad is dat is geopend in ThunderStats"
+        "message": "Gegevens laden wanneer Aangepast beeld het eerste geopende tabblad is"
     }
 }

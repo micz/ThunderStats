@@ -33,9 +33,7 @@ describe('mailbox dump anonymizer', () => {
     // the first address found is still the one in the display name
     let tricky = anon.text('"anna@acme.it" <mario@acme.it>');
     expect(firstAddress(tricky)).toBe(anon.email('anna@acme.it'));
-    // extractDomains reads a broken domain from this header (from the first '@' to the next '@'): same after the anonymization
-    expect(tsCoreUtils.extractDomains(['"anna@acme.it" <mario@acme.it>'])).toEqual(['acme.it" <mario']);
-    expect(tsCoreUtils.extractDomains([tricky])).toEqual([anon.domain('acme.it') + '" <' + anon.email('mario@acme.it').split('@')[0]]);
+    expect(tsCoreUtils.extractDomains([anon.text('"anna@other.com" <mario@acme.it>')])).toEqual([anon.domain('acme.it')]);
   });
 
   it('keeps the authors without a valid address without one', () => {

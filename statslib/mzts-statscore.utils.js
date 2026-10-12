@@ -381,21 +381,28 @@ export const tsCoreUtils = {
         return null;
     },
 
+    // Lower case domains of the recipients ("Name <email@example.com>" or "email@example.com").
+    // The address in angle brackets wins over an address written in the display name
+    // ("anna@acme.it" <mario@acme.it>); an address that tsUtils.regexEmail does not accept
+    // (non-ASCII letters) still gives the text after its '@'; entries without an address are skipped.
     extractDomains(recipients) {
         const domains = [];
-      
-        recipients.forEach((recipient) => {
-          // Use regex to extract the email from a string like "Name <email@example.com>" or just "email@example.com"
-          const emailMatch = recipient.match(/<(.+?)>|(.+?@.+)/);
-          const email = emailMatch ? (emailMatch[1] || emailMatch[2]) : null;
-      
-          if (email && email.includes('@')) {
-            let domain = email.split('@')[1].trim();
-            domain = domain.replace(/>/g, '').trim();
-            domains.push(domain);
+
+        for (const recipient of recipients) {
+          if (typeof recipient !== 'string') continue;
+          const bracketed = [...recipient.matchAll(/<([^<>]*)>/g)].map(match => match[1]).filter(text => text.includes('@')).pop();
+          const source = bracketed ?? recipient;
+          let domain = null;
+          const emailMatch = source.match(tsUtils.regexEmail);
+          if (emailMatch) {
+            domain = emailMatch[0].split('@')[1];
+          } else if (source.includes('@')) {
+            const tail = source.slice(source.lastIndexOf('@') + 1).trim();
+            if (tail != '' && !/[\s<>"',;]/.test(tail)) domain = tail;
           }
-        });
-      
+          if (domain) domains.push(domain.toLowerCase());
+        }
+
         return domains;
     },
 

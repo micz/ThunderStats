@@ -1,7 +1,7 @@
 // Real data tests: thunderStastsCore and the dashboard models on the mailbox dumps found by findDumps()
 // (npm run test:real). The expected numbers come from a second implementation (reference.js) and from
 // the totals that must add up; a data quality report of each dump is printed.
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { thunderStastsCore, clearCoreCaches } from '@statslib/mzts-statscore';
 import { tsUtils } from '@statslib/mzts-utils';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
@@ -91,8 +91,8 @@ function qualityReport(dump) {
     duplicated_message_ids: [...ids.values()].filter(n => n > 1).length,
     unknown_tags: messages.filter(m => m.tags.some(t => !tag_keys.has(t))).length,
     mixed_case_domains: [...domains.values()].filter(set => set.size > 1).length,
-    // recipients from which tsCoreUtils.extractDomains reads something that is not a domain
-    broken_recipient_domains: messages.filter(m => tsCoreUtils.extractDomains([...m.recipients, ...m.ccList, ...m.bccList])
+    // recipients whose domain is not plain ASCII (still grouped, as written after the '@')
+    odd_recipient_domains: messages.filter(m => tsCoreUtils.extractDomains([...m.recipients, ...m.ccList, ...m.bccList])
       .some(d => !/^[a-z0-9.-]+$/i.test(d))).length,
     contacts: dump.contacts.length,
   };
@@ -108,12 +108,6 @@ for (let dump of dumps) {
       vi.setSystemTime(now);
       clearCoreCaches();
       installDump(dump);
-      // the core logs an error for each message with a tag no longer defined (counted in the report)
-      vi.spyOn(console, 'error').mockImplementation(() => {});
-    });
-
-    afterEach(() => {
-      vi.restoreAllMocks();
     });
 
     it('data quality report', () => {
@@ -135,8 +129,8 @@ for (let dump of dumps) {
 
         expect({ count: result.count, sent: result.sent, received: result.received, count_in_inbox: result.count_in_inbox })
           .toEqual({ count: ref.count, sent: ref.sent, received: ref.received, count_in_inbox: ref.count_in_inbox });
-        // authors without an address are counted, but neither as sent nor as received
-        expect(result.count - result.sent - result.received).toBe(ref.unmatched);
+        // authors without an address are received
+        expect(result.sent + result.received).toBe(result.count);
 
         let days = Object.fromEntries(Object.entries(result.dates)
           .filter(([key, d]) => d.count > 0 || ref.days[key])
@@ -169,8 +163,10 @@ for (let dump of dumps) {
           expect(d.received_internal + d.received_external, key).toBe(d.received);
           expect(d.inbox, key).toBeLessThanOrEqual(d.received);
         }
-        // each received mail has exactly one sender domain
-        expect(sumOf(result.domains, 'received')).toBe(result.received);
+        // each received mail has one sender domain, except the authors without an address
+        let ref = referenceStats(dump.mailbox, { from, to, account_id, emails });
+        expect(sumOf(result.domains, 'received')).toBe(result.received - ref.unmatched);
+        expect(Object.keys(result.domains).filter(d => d != d.toLowerCase())).toEqual([]);
         expect(sumOf(result.folders, 'count')).toBe(result.count);
         expect(badNumbers(result.aggregate)).toEqual([]);
       });

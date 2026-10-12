@@ -45,6 +45,21 @@ function inRange(message, fromDate, toDate) {
   return time >= fromDate.getTime() && time <= toDate.getTime();
 }
 
+// Lower case address of the author, or null when the author has no address
+function authorKey(message) {
+  const match_author = (message.author || '').match(tsUtils.regexEmail);
+  return match_author ? match_author[0].toLowerCase() : null;
+}
+
+// With the duplicates filter on, true for a message whose Message-ID was already seen (and remembers it).
+// A message without a Message-ID cannot be told apart from the others: never a duplicate
+function isDuplicate(filter_duplicates, messages_hash, message) {
+  if(!filter_duplicates || !message.headerMessageId) return false;
+  if(messages_hash.has(message.headerMessageId)) return true;
+  messages_hash.set(message.headerMessageId, true);
+  return false;
+}
+
 export class thunderStastsCore {
 
   tsLog = null;
@@ -342,24 +357,18 @@ export class thunderStastsCore {
       for await (let message of messages) {
           if(!inRange(message, fromDate, toDate)) continue;
           if(this.excludeMessage(message,account_id)) continue;
-          if(filter_duplicates){
-            if(messages_hash.has(message.headerMessageId)) continue;
-            messages_hash.set(message.headerMessageId, true);
-          }
+          if(isDuplicate(filter_duplicates, messages_hash, message)) continue;
           let date_message = new Date(message.date);
           let day = days[tsUtils.dateToYYYYMMDD(date_message)];
           if(day === undefined) continue;   // outside the range (should not happen)
           let hour_message = date_message.getHours();
-          const match_author = message.author.match(tsUtils.regexEmail);
-          if (match_author) {
-            const key_author = match_author[0].toLowerCase();
-            if(emailMatcher.matches(key_author)) {
-              day.sent++;
-              day.msg_hours[hour_message].sent++;
-            }else{
-              day.received++;
-              day.msg_hours[hour_message].received++;
-            }
+          const key_author = authorKey(message);
+          if(key_author !== null && emailMatcher.matches(key_author)) {
+            day.sent++;
+            day.msg_hours[hour_message].sent++;
+          }else{
+            day.received++;
+            day.msg_hours[hour_message].received++;
           }
       }
 
@@ -481,6 +490,7 @@ export class thunderStastsCore {
 
       let domains = {};
       let tags = await tsCoreUtils.getTagsList();
+      let unknown_tags = new Set();
       tsStore.tags_list = tags;
 
       //let messageids_sent = [];
@@ -550,27 +560,19 @@ export class thunderStastsCore {
             }
           }
 
-          const match_author = message.author.match(tsUtils.regexEmail);
+          // an author without an address (e.g. "Mail Delivery System") is never one of the account emails: received
+          const key_author = authorKey(message);
+          const is_sent = key_author !== null && emailMatcher.matches(key_author);
 
           //console.log(">>>>>>>>>>>>>>>> message.folder: " + JSON.stringify(message.folder));
-          if(filter_duplicates){
-            // console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
-            if(messages_hash.has(message.headerMessageId)){ 
-              // console.log(">>>>>>>>>>>>>> filter_duplicates: found message.headerMessageId: " + message.headerMessageId);
-              //count sent and received per folder
-              if (match_author) {
-                const key_author = match_author[0].toLowerCase();
-                if(emailMatcher.matches(key_author)) {
-                  // group by folder
-                  folders[message.folder.id].sent++;
-                }else{
-                  folders[message.folder.id].received++;
-                }
-              }
-              continue;
+          if(isDuplicate(filter_duplicates, messages_hash, message)){
+            //count sent and received per folder
+            if(is_sent) {
+              folders[message.folder.id].sent++;
+            }else{
+              folders[message.folder.id].received++;
             }
-            messages_hash.set(message.headerMessageId, true);
-            // console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
+            continue;
           }
           // inbox (after the duplicates check, like every other counter)
           if(message.folder && message.folder.specialUse && message.folder.specialUse.includes('inbox')){
@@ -586,9 +588,7 @@ export class thunderStastsCore {
           dates_months[date_month_string].count++;
           dates_years[date_year_string].count++;
           // check sender
-          if (match_author) {
-            const key_author = match_author[0].toLowerCase();
-            if(emailMatcher.matches(key_author)) {
+            if(is_sent) {
               //messageids_sent.push(message.id);
               sent++;
               // group by folder
@@ -654,7 +654,7 @@ export class thunderStastsCore {
                     tags[tag].sent_external = (tags[tag].sent_external || 0) + 1;
                   }
                 } else {
-                  this.tsLog.error("tag: " + tag + " not found!");
+                  unknown_tags.add(tag);
                 }
               }
               // group by folder - internal/external
@@ -704,12 +704,14 @@ export class thunderStastsCore {
                 }
               }
             }else{
-              if (senders[key_author]) {
-                senders[key_author].count++;
-              } else {
-                senders[key_author] = {}
-                senders[key_author].count = 1;
-                senders[key_author].name = await tsCoreUtils.getCorrespondantName(message.author);
+              if (key_author !== null) {
+                if (senders[key_author]) {
+                  senders[key_author].count++;
+                } else {
+                  senders[key_author] = {}
+                  senders[key_author].count = 1;
+                  senders[key_author].name = await tsCoreUtils.getCorrespondantName(message.author);
+                }
               }
               // console.log(">>>>>>>>>>>>>> message.headerMessageId: " + message.headerMessageId);
               // console.log(">>>>>>>> key_author: " + key_author);
@@ -735,10 +737,12 @@ export class thunderStastsCore {
               // group by weekday
               msg_weekdays[date_message.getDay()].received++;
               msg_weekday_hours[date_message.getDay()][hour_message].received++;
-              // group by domain
+              // group by domain (an author without an address has no domain: external)
               let curr_domain = tsCoreUtils.extractDomain(key_author);
-              let is_received_internal = domainMatcher.matches(curr_domain);
-              if (domains[curr_domain]) {
+              let is_received_internal = curr_domain !== null && domainMatcher.matches(curr_domain);
+              if (curr_domain === null) {
+                // nothing to group
+              } else if (domains[curr_domain]) {
                 domains[curr_domain].count++;
                 domains[curr_domain].received++;
               } else {
@@ -776,7 +780,7 @@ export class thunderStastsCore {
                     tags[tag].received_external = (tags[tag].received_external || 0) + 1;
                   }
                 } else {
-                  this.tsLog.error("tag: " + tag + " not found!");
+                  unknown_tags.add(tag);
                 }
               }
               // group by folder - internal/external
@@ -786,10 +790,14 @@ export class thunderStastsCore {
                 folders[message.folder.id].received_external = (folders[message.folder.id].received_external || 0) + 1;
               }
             }
-          }
         //check recipients - END
 
         count++;
+      }
+
+      if(unknown_tags.size > 0) {
+        // tags deleted from Thunderbird but still on some messages: not counted
+        this.tsLog.log(() => "[getFullStatsData] tags not defined, not counted: " + [...unknown_tags].join(', '));
       }
 
       senders = Object.fromEntries(Object.entries(senders).sort((a, b) => b[1].count - a[1].count));
@@ -855,15 +863,7 @@ export class thunderStastsCore {
         //console.log(">>>>>>>>>>>>>> filter_duplicates: iterating message.headerMessageId: " + message.headerMessageId);
           if(!inRange(message, fromDate, toDate)) continue;
           if(this.excludeMessage(message,account_id)) continue;
-          if(filter_duplicates){
-            //console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
-            if(messages_hash.has(message.headerMessageId)){ 
-              //console.log(">>>>>>>>>>>>>> filter_duplicates: found message.headerMessageId: " + message.headerMessageId);
-              continue;
-            }
-            messages_hash.set(message.headerMessageId, true);
-            //console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
-          }
+          if(isDuplicate(filter_duplicates, messages_hash, message)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
           let now = new Date();
           let date_message = new Date(message.date);
@@ -871,22 +871,19 @@ export class thunderStastsCore {
           date_message_normalized.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
           let hour_message = date_message.getHours();
           // check sender
-          const match_author = message.author.match(tsUtils.regexEmail);
-          if (match_author) {
-            const key_author = match_author[0].toLowerCase();
-            if(emailMatcher.matches(key_author)) {
-              if((count_data_to_current_time)&&(date_message_normalized <= now)){
-                sent++;
-              }
-              // group by hour
-              msg_hours[hour_message].sent++;
-            }else{
-              if((count_data_to_current_time)&&(date_message_normalized <= now)){
-                received++;
-              }
-              // group by hour
-              msg_hours[hour_message].received++;
+          const key_author = authorKey(message);
+          if(key_author !== null && emailMatcher.matches(key_author)) {
+            if((count_data_to_current_time)&&(date_message_normalized <= now)){
+              sent++;
             }
+            // group by hour
+            msg_hours[hour_message].sent++;
+          }else{
+            if((count_data_to_current_time)&&(date_message_normalized <= now)){
+              received++;
+            }
+            // group by hour
+            msg_hours[hour_message].received++;
           }
           if((count_data_to_current_time)&&(date_message_normalized <= now)){
             count++;

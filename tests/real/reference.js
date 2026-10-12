@@ -38,8 +38,9 @@ export function accountFolders(mailbox, account_id) {
 /*
   Counts of the messages of an account between from and to (both included):
   { count, sent, received, unmatched, count_in_inbox, days: {YYYYMMDD: {count, sent, received}}, folders: {id: count} }
-  unmatched = messages whose author has no address: counted, neither sent nor received.
-  With filter_duplicates only the first message of each headerMessageId is counted (folders not filled).
+  unmatched = received messages whose author has no address (no sender, no domain).
+  With filter_duplicates only the first message of each headerMessageId is counted (folders not filled);
+  a message without a Message-ID is never a duplicate.
 */
 export function referenceStats(mailbox, { from, to, account_id = 0, emails = [], filter_duplicates = false }) {
   let folder_ids = statsFolderIds(mailbox, account_id);
@@ -51,10 +52,11 @@ export function referenceStats(mailbox, { from, to, account_id = 0, emails = [],
     if (!message.date || !folder_ids.has(message.folder.id)) continue;
     let time = message.date.getTime();
     if (time < from.getTime() || time > to.getTime()) continue;
-    if (filter_duplicates) {
+    if (filter_duplicates && message.headerMessageId) {
       if (seen.has(message.headerMessageId)) continue;
       seen.add(message.headerMessageId);
-    } else {
+    }
+    if (!filter_duplicates) {
       output.folders[message.folder.id] = (output.folders[message.folder.id] || 0) + 1;
     }
 
@@ -65,14 +67,13 @@ export function referenceStats(mailbox, { from, to, account_id = 0, emails = [],
     if (hasUse(message.folder, 'inbox')) output.count_in_inbox++;
 
     let author = (message.author || '').match(REGEX_EMAIL);
-    if (!author) {
-      output.unmatched++;
-    } else if (own.has(author[0].toLowerCase())) {
+    if (author && own.has(author[0].toLowerCase())) {
       output.sent++;
       day.sent++;
     } else {
       output.received++;
       day.received++;
+      if (!author) output.unmatched++;
     }
   }
   return output;

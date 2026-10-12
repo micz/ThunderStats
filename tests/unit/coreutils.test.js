@@ -68,6 +68,19 @@ describe('domains', () => {
       .toEqual(['rossi.it', 'y.org']);
   });
 
+  it('extractDomains takes the address in angle brackets, not the one in the display name', () => {
+    expect(tsCoreUtils.extractDomains(['"anna@other.com" <mario@acme.it>', '"hans@firma.de" <hans@firma.de>']))
+      .toEqual(['acme.it', 'firma.de']);
+  });
+
+  it('extractDomains gives the domains in lower case', () => {
+    expect(tsCoreUtils.extractDomains(['Ordini <ordini@Cliente.COM>', 'X@ACME.IT'])).toEqual(['cliente.com', 'acme.it']);
+  });
+
+  it('extractDomains keeps the domain of an address with non-ASCII letters', () => {
+    expect(tsCoreUtils.extractDomains(['José <josé@exämple.com>', '"a@b" <>'])).toEqual(['exämple.com']);
+  });
+
   it('getInternalMailLabel computes the internal percentages', () => {
     let label = tsCoreUtils.getInternalMailLabel({
       'work.it': { sent: 3, received: 1, internal: true },

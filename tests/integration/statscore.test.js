@@ -167,6 +167,54 @@ describe('getFullStatsData', () => {
     let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
     expect(result.received).toBe(2);
   });
+
+  it('never takes the messages without a Message-ID for duplicates', async () => {
+    let messages = addMails(mailbox, 3, { key: YESTERDAY });
+    messages.forEach(m => m.headerMessageId = '');
+    await browser.storage.sync.set({ accounts_adv_settings: [{ id: 'acc1', filter_duplicates: true }] });
+    let core = new thunderStastsCore();
+    let result = await core.getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
+    expect([result.count, result.received]).toEqual([3, 3]);
+    let count = await core.getToday_SingleDayData(day(YESTERDAY), 'acc1', [ME], false);
+    expect(count.msg_hours[10].received).toBe(3);
+    let scan = await core.scanDays(day(YESTERDAY, 0), day(YESTERDAY, 23, 59), 'acc1', [ME], true);
+    expect(scan.days[YESTERDAY].received).toBe(3);
+  });
+
+  it('counts an author without an address as received, external, with no sender and no domain', async () => {
+    addMail(mailbox, { key: YESTERDAY, from: 'Mail Delivery System', tags: ['$label1'] });
+    addMail(mailbox, { key: YESTERDAY, from: 'Anna <anna@work.it>' });
+    let core = new thunderStastsCore();
+    let result = await core.getSingleDay(day(YESTERDAY), 'acc1', [ME], ['work.it']);
+    expect([result.count, result.sent, result.received]).toEqual([2, 0, 2]);
+    expect(result.dates[YESTERDAY]).toMatchObject({ received: 2, received_internal: 1, received_external: 1 });
+    expect(Object.keys(result.senders)).toEqual(['anna@work.it']);
+    expect(result.domains).toEqual({ 'work.it': { count: 1, sent: 0, received: 1, internal: true } });
+    expect(result.tags.$label1).toMatchObject({ received: 1, received_external: 1 });
+    expect(result.folders['acc1://INBOX'].received).toBe(2);
+    let count = await core.getToday_SingleDayData(day(YESTERDAY), 'acc1', [ME], false);
+    expect(count.msg_hours[10].received).toBe(2);
+    let scan = await core.scanDays(day(YESTERDAY, 0), day(YESTERDAY, 23, 59), 'acc1', [ME]);
+    expect(scan.days[YESTERDAY].received).toBe(2);
+  });
+
+  it('groups the recipient domains in lower case, by the address in angle brackets', async () => {
+    addMail(mailbox, { key: YESTERDAY, sent: true, to: ['Ordini <ordini@Client.COM>'] });
+    addMail(mailbox, { key: YESTERDAY, sent: true, to: ['"anna@work.it" <ordini@client.com>'] });
+    let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], ['work.it']);
+    expect(result.domains).toEqual({ 'client.com': { count: 2, sent: 2, received: 0, internal: false } });
+    expect(result.dates[YESTERDAY]).toMatchObject({ sent_internal: 0, sent_external: 2 });
+  });
+
+  it('skips the tags no longer defined without logging an error for each message', async () => {
+    let errors = vi.spyOn(console, 'error').mockImplementation(() => {});
+    addMails(mailbox, 3, { key: YESTERDAY, tags: ['$deleted'] });
+    let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
+    expect(result.received).toBe(3);
+    expect(result.tags).not.toHaveProperty('$deleted');
+    expect(errors).not.toHaveBeenCalled();
+    errors.mockRestore();
+  });
 });
 
 // Thunderbird does not document whether messages.query returns a message dated exactly fromDate or toDate:

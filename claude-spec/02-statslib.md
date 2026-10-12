@@ -219,7 +219,6 @@ Chart helpers. The plugins used by a single chart (the "now" line, the average l
 
 | File | Purpose |
 |---|---|
-| `plugin-barposition.js` | Adjusts bar chart positioning (not used by any chart) |
 | `chart-theme.js` | `applyChartTheme(is_dark)` sets the global `Chart.defaults` text/grid colors and redraws open charts; called by `ThunderStatsView` when `tsStore.darkmode` changes. Charts must not set `Chart.defaults` themselves. Also exports `themeColor(name)` (current value of a CSS token) and `withAlpha(hex, alpha)` |
 
 ---

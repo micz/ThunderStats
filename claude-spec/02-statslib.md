@@ -218,7 +218,7 @@ Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `d
 - Reads the `theme_mode` pref (`auto` | `light` | `dark`; `auto` follows `prefers-color-scheme`).
 - `init()` — called by both entry points before mounting; applies the theme, follows system changes while in `auto`, and listens to `browser.storage.onChanged` so every open ThunderStats page stays in sync.
 - `apply(mode)` — sets `tsStore.theme_mode`, `tsStore.darkmode` and `data-theme="light|dark"` on the root element. All CSS dark rules are keyed on `:root[data-theme="dark"]` (no `prefers-color-scheme` media queries).
-- `setMode(mode)` — applies and saves the pref (used by the toolbar Light/Dark switch).
+- `setMode(mode)` — applies and saves the pref (used by the toolbar theme toggle icon).
 
 ---
 

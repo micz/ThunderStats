@@ -2,7 +2,7 @@
 
 ## Main Statistics Window
 
-The main window opens from the Thunderbird toolbar button. Its sticky top toolbar holds the account selector, a segmented control for the four stats tabs (Today, Yesterday, Many Days, Custom Query), the last-update time, Refresh / Export / Settings / Info icon buttons and a Light/Dark theme switch. The Info tab is reached from the Info icon, not from the segmented control. Tab content is laid out as a responsive grid of cards (design tokens in `src/assets/tokens.css`).
+The main window opens from the Thunderbird toolbar button. Its sticky top toolbar holds the account selector, a segmented control for the four stats tabs (Today, Yesterday, Many Days, Custom Query), the last-update time, Refresh / Export / Settings / Info icon buttons and a round theme toggle icon (a sun that morphs into a moon in dark mode). The Info tab is reached from the Info icon, not from the segmented control. Tab content is laid out as a responsive grid of cards (design tokens in `src/assets/tokens.css`).
 
 ---
 
@@ -98,7 +98,7 @@ Pref keys and defaults: `statslib/mzts-options-default.js`.
 - **Custom Query** — load data when selecting a range / when opening the add-on, always open advanced filters
 - **Date picker locale** (`datepicker_locale`)
 - **Show internal mail percentage** (`show_internal_mail_percent`) — shows the Internal traffic KPI card (received internal %, and % of the sent) in every stats tab, when internal domains are configured (default: off)
-- **Color theme** (`theme_mode`) — `auto` (default, follows the system), `light` or `dark`. The toolbar Light/Dark switch sets it too; changes apply live to every open ThunderStats page
+- **Color theme** (`theme_mode`) — `auto` (default, follows the system), `light` or `dark`. The toolbar theme toggle icon sets it too; changes apply live to every open ThunderStats page
 
 ### Tab: Advanced
 - **Number of correspondents** (`_involved_num`, default 10)

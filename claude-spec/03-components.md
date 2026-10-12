@@ -135,7 +135,7 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper. Colors come 
 
 | File | Description |
 |---|---|
-| `HeadingNAV.vue` | Sticky toolbar: brand, account pill (`SelectAccount`), tab segmented control (tabs list passed by `ThunderStatsView`, emits `selectTab`), last-update time, Refresh / Export / Settings / Info icon buttons (Export emits `exportData` with the button as anchor), Light/Dark switch (`tsTheme.setMode`). Applies the startup/remembered account |
+| `HeadingNAV.vue` | Sticky toolbar: brand, account pill (`SelectAccount`), tab segmented control (tabs list passed by `ThunderStatsView`, emits `selectTab`), last-update time, Refresh / Export / Settings / Info icon buttons (Export emits `exportData` with the button as anchor), round theme toggle icon (sun morphing into a moon, title names the theme it switches to, `tsTheme.setMode`). Applies the startup/remembered account |
 | `SelectAccount.vue` | Account dropdown (native `select`) |
 | `ExportMenu.vue` | CSV export menu, embedded in each stats tab (uses `@imengyu/vue3-context-menu`). Its own icon is hidden; each tab exposes `openExportMenu(anchor_el)`, which `ThunderStatsView` calls when the toolbar Export button is clicked |
 | `AdvancedAccountList.vue` | Per-account advanced settings list (in `OPTAB_Advanced`) |

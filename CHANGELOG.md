@@ -3,6 +3,10 @@
 
 
 
+<h3>Version 3.0.0 - ??/??/2026</h3>
+<ul>
+      <li>...</li>
+</ul>
 <h3>Version 2.4.0 - 19/03/2026</h3>
 <ul>
       <li>Added a comparison feature between two periods in the Custom View. [<a href="https://github.com/micz/ThunderStats/issues/80">#391</a>]</li>

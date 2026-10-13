@@ -29,7 +29,12 @@
     <div class="ts-top-rows" v-else>
       <div class="ts-top-row" v-for="row in rows" :key="row.email" :title="rowTitle(row)">
         <div class="ts-top-name">{{ row.name || row.email }}</div>
-        <div class="ts-top-track"><div class="ts-top-bar" :style="{ width: barWidth(row), background: row.sent > row.received ? 'var(--sent)' : 'var(--rcvd)' }"></div></div>
+        <div class="ts-top-track">
+          <div class="ts-top-bar" :style="{ width: barWidth(row) }">
+            <div class="ts-top-seg" :style="{ width: segWidth(row, row.received), background: 'var(--rcvd)' }"></div>
+            <div class="ts-top-seg" :style="{ width: segWidth(row, row.sent), background: 'var(--sent)' }"></div>
+          </div>
+        </div>
         <div class="ts-top-count">{{ row.total }}</div>
       </div>
     </div>
@@ -59,6 +64,11 @@ let max_total = computed(() => Math.max(1, ...props.rows.map(r => r.total)));
 
 function barWidth(row) {
   return (row.total / max_total.value * 100).toFixed(1) + '%';
+}
+
+// Share of the bar for the received or sent part of the row
+function segWidth(row, count) {
+  return row.total > 0 ? (count / row.total * 100).toFixed(1) + '%' : '0%';
 }
 
 function rowTitle(row) {
@@ -95,8 +105,14 @@ function rowTitle(row) {
 }
 
 .ts-top-bar {
+  display: flex;
   height: 8px;
   border-radius: 4px;
+  overflow: hidden;
+}
+
+.ts-top-seg {
+  height: 100%;
 }
 
 .ts-top-count {

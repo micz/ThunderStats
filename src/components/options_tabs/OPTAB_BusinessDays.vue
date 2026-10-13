@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import { ref, computed, inject, nextTick } from 'vue';
+import { ref, computed, inject, nextTick, watch } from 'vue';
 import { tsUtils } from '@statslib/mzts-utils';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import OptRow from '@/components/options/OptRow.vue';
@@ -151,9 +151,14 @@ let day_input = ref(null);
 
 let draft_max_day = computed(() => {
   if (!draft.value) return 31;
-  // a yearly holiday may fall on February 29th
-  let year = draft.value.yearly ? 2024 : draft.value.year;
+  // a yearly holiday cannot fall on February 29th, so use a non-leap year
+  let year = draft.value.yearly ? 2023 : draft.value.year;
   return new Date(year, draft.value.month + 1, 0).getDate();
+});
+
+// clamp the day when the month (or the year) changes to one with fewer days
+watch(draft_max_day, (max_day) => {
+  if (draft.value && Number(draft.value.day) > max_day) draft.value.day = max_day;
 });
 
 let draft_invalid = computed(() => draft_tried.value && !isDraftDayValid());

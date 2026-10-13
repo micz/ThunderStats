@@ -717,5 +717,11 @@
     },
     "WaitForProcessing": {
         "message": "Bitte warten Sie, bis loer laufende Vorgang abgeschlossen ist"
+    },
+    "AggregationDays": {
+        "message": "Tage"
+    },
+    "InternalTag": {
+        "message": "interne"
     }
 }

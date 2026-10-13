@@ -118,7 +118,7 @@ export const tsPeriodModel = {
             if(input.inbox && input.result) {
                 let clear_in = tsInsights.clearInDays(input.inbox.total, this.daysObject(d), input.inbox.dates);
                 if(input.inbox.total == 0) {
-                    tone = 'good'; badge = msg("InboxAtZero");
+                    tone = 'good'; badge = msg("InboxZero");
                 } else if(clear_in !== null && clear_in <= CLEAR_IN_GOOD_DAYS) {
                     tone = 'good'; badge = msg("KeepingUp");
                 } else {
@@ -146,7 +146,7 @@ export const tsPeriodModel = {
             ],
             side: [
                 { label: msg("PerWorkingDay"), value: per_working_day, sub: msg("received") },
-                { label: msg("BusiestDay"), value: busiest ? this.shortDay(busiest) : '—', sub: busiest ? msg("BusiestDaySub", [d.dates[busiest].received]) : '' },
+                { label: msg("BusiestDay"), value: busiest ? this.shortDay(busiest) : '—', sub: busiest ? msg("NumReceived", [d.dates[busiest].received]) : '' },
             ],
             bar_good: pct(d.H),
             bar_left: pct(d.L),

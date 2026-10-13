@@ -56,7 +56,7 @@ describe('status badge', () => {
   const prev_days = { [YESTERDAY]: { received: 10 } };
 
   it.each([
-    ['inbox at zero', {}, 'InboxAtZero', 'good'],
+    ['inbox at zero', {}, 'InboxZero', 'good'],
     ['keeping up', { [TODAY]: 3 }, 'KeepingUp', 'good'],
     ['backlog growing', { [TODAY]: 100 }, 'BacklogGrowing', 'warn'],
   ])('%s', (_, dates, label, tone) => {

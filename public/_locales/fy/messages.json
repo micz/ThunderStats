@@ -97,5 +97,8 @@
     },
     "clickhere": {
         "message": "klik hjir"
+    },
+    "AggregationDays": {
+        "message": "Dagen"
     }
 }

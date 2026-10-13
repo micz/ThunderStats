@@ -59,7 +59,7 @@ const props = defineProps({
   is_loading: { type: Boolean, default: false },
 });
 
-const title = browser.i18n.getMessage("InboxZeroCalendarTitle");
+const title = browser.i18n.getMessage("InboxZero");
 const tooltip = browser.i18n.getMessage("InboxZeroStreakTooltip");
 const closed_label = browser.i18n.getMessage("ClosedAtZero");
 const few_label = browser.i18n.getMessage("FewLeft");

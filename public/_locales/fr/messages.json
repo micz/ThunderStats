@@ -717,5 +717,11 @@
     },
     "ComparisonNoData": {
         "message": "Aucune donnée per la période di comparaison"
+    },
+    "AggregationDays": {
+        "message": "Jours"
+    },
+    "InternalTag": {
+        "message": "internes"
     }
 }

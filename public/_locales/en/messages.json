@@ -797,9 +797,9 @@
     "message": "Sent",
     "description": "Legend label for sent mails"
   },
-  "InboxAtZero": {
-    "message": "Inbox zero",
-    "description": "Status badge when the inbox is empty"
+  "InboxZero": {
+    "message": "Inbox Zero",
+    "description": "Inbox Zero label: status badge, options card and calendar widget title"
   },
   "KeepingUp": {
     "message": "Keeping up",
@@ -1249,9 +1249,9 @@
     "message": "Busiest day",
     "description": ""
   },
-  "BusiestDaySub": {
+  "NumReceived": {
     "message": "$NUM$ received",
-    "description": "",
+    "description": "Number of received mails: busiest day sub-label and heatmap cell tooltip",
     "placeholders": {
       "num": {
         "content": "$1",
@@ -1423,10 +1423,6 @@
       }
     }
   },
-  "InboxZeroCalendarTitle": {
-    "message": "Inbox Zero",
-    "description": ""
-  },
   "ClosedAtZero": {
     "message": "Closed at zero",
     "description": "Inbox Zero calendar legend"
@@ -1464,16 +1460,6 @@
   "HeatMore": {
     "message": "more",
     "description": "Heatmap scale"
-  },
-  "HeatCellTooltip": {
-    "message": "$NUM$ received",
-    "description": "",
-    "placeholders": {
-      "num": {
-        "content": "$1",
-        "example": "12"
-      }
-    }
   },
   "HeatNote": {
     "message": "Most mail lands between $FROM$ and $TO$; $WEEKDAY$ is the busiest day.",
@@ -1799,10 +1785,6 @@
   },
   "Opt_DatePickerLocaleHint": {
     "message": "A locale code such as en-US or it-IT, for the date format of the date pickers",
-    "description": ""
-  },
-  "Opt_InboxZero": {
-    "message": "Inbox Zero",
     "description": ""
   },
   "Opt_MarkInboxBarsHint": {

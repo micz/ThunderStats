@@ -80,7 +80,7 @@ function cellColor(value) {
 }
 
 function cellTitle(hour, column, value) {
-  return props.weekday_labels[column] + ' ' + String(hour).padStart(2, '0') + ':00 — ' + browser.i18n.getMessage("HeatCellTooltip", [value]);
+  return props.weekday_labels[column] + ' ' + String(hour).padStart(2, '0') + ':00 — ' + browser.i18n.getMessage("NumReceived", [value]);
 }
 </script>
 

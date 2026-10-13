@@ -716,5 +716,11 @@
     },
     "prefs_customqry_loaddata_when_opening_addon": {
         "message": "Gegevens laden wanneer Aangepast beeld het eerste geopende tabblad is"
+    },
+    "AggregationDays": {
+        "message": "Dagen"
+    },
+    "InternalTag": {
+        "message": "intern"
     }
 }

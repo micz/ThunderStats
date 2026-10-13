@@ -132,7 +132,7 @@ describe('dashboards with the model output', () => {
     expect(chart.props('days')).toHaveLength(8);
     expect(chart.props('rcvd_inbox')).toEqual(model.chart.rcvd_inbox);
     if (loaded) {
-      expect(wrapper.text()).toContain('InboxAtZero');
+      expect(wrapper.text()).toContain('InboxZero');
       expect(wrapper.text()).toContain('VsPreviousPeriod[7|2]');
     }
   });

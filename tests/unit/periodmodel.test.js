@@ -149,7 +149,7 @@ describe('averages of a Custom Query ending today', () => {
 
 describe('status strip', () => {
   it('Many Days shows the keeping-up status, Custom Query the query result', () => {
-    expect(tsPeriodModel.build(input({ result: RESULT(), inbox: makeInbox({}) })).strip.badge_label).toBe('InboxAtZero');
+    expect(tsPeriodModel.build(input({ result: RESULT(), inbox: makeInbox({}) })).strip.badge_label).toBe('InboxZero');
     let custom = tsPeriodModel.build(input({ kind: 'custom', result: RESULT(), inbox: makeInbox({}) })).strip;
     expect([custom.badge_label, custom.badge_tone]).toEqual(['QueryResult', 'neutral']);
   });
@@ -159,7 +159,7 @@ describe('status strip', () => {
     expect(strip.flow.map(f => f.value)).toEqual([52, 42, 10]);
     expect(strip.date_line2).toBe('PeriodDaysInfo[7|5]');
     expect(strip.side[0].value).toBe(10);
-    expect(strip.side[1].sub).toBe('BusiestDaySub[10]');
+    expect(strip.side[1].sub).toBe('NumReceived[10]');
   });
 });
 

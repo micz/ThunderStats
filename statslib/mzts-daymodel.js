@@ -102,7 +102,7 @@ export const tsDayModel = {
             badge = msg("QueryResult");
         } else if(input.inbox && input.prev_days) {
             if(d.inbox_total == 0) {
-                tone = 'good'; badge = msg("InboxAtZero");
+                tone = 'good'; badge = msg("InboxZero");
             } else if(clear_in !== null && clear_in <= CLEAR_IN_GOOD_DAYS) {
                 tone = 'good'; badge = msg("KeepingUp");
             } else {

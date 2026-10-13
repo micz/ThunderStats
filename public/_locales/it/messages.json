@@ -717,5 +717,11 @@
     },
     "WaitForProcessing": {
         "message": "Attendi il completamento dell'operazione in corso"
+    },
+    "AggregationDays": {
+        "message": "Giorni"
+    },
+    "InternalTag": {
+        "message": "interne"
     }
 }

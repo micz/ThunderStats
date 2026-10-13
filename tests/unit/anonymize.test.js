@@ -38,11 +38,17 @@ describe('mailbox dump anonymizer', () => {
 
   it('keeps the authors without a valid address without one', () => {
     let anon = createAnonymizer(7);
-    for (let author of ['Mail Delivery System', 'undisclosed-recipients:;', 'José <josé@exämple.com>']) {
+    for (let author of ['Mail Delivery System', 'undisclosed-recipients:;', 'root@localhost', 'Admin <a@b>']) {
       expect(firstAddress(anon.text(author)), author).toBeNull();
     }
-    expect(tsCoreUtils.extractDomains([anon.text('José <josé@exämple.com>')])).toHaveLength(1);
     expect(anon.text('')).toBe('');
+  });
+
+  it('anonymizes the addresses with non-ASCII letters like the others', () => {
+    let anon = createAnonymizer(7);
+    let header = anon.text('José <josé@exämple.com>');
+    expect(tsUtils.extractEmail(header)).toBe(anon.email('josé@exämple.com'));
+    expect(header).not.toMatch(/josé|exämple/);
   });
 
   it('keeps the special folder names and the INBOX, and the folder ids like Thunderbird', () => {

@@ -7,10 +7,9 @@
 // Used by the dump page (dump.js) and by the tests (tests/unit/anonymize.test.js).
 
 // Same regex as tsUtils.regexEmail
-const REGEX_EMAIL = /[a-zA-Z0-9._%+-][a-zA-Z0-9._%+'-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+const REGEX_EMAIL = /[\p{L}\p{N}._%+-][\p{L}\p{N}._%+'-]*@[\p{L}\p{N}.-]+\.\p{L}{2,}/gu;
 // Words of a display name or a subject: everything but spaces, separators and quotes
 const REGEX_WORD = /[^\s<>"'(),;:[\]]+/gu;
-const REGEX_NON_ASCII = /[^\x00-\x7F]/;
 
 export const PUBLIC_DOMAINS = new Set([
   'gmail.com', 'googlemail.com', 'outlook.com', 'outlook.it', 'hotmail.com', 'hotmail.it', 'live.com', 'live.it',
@@ -70,14 +69,14 @@ export function createAnonymizer(seed = Math.floor(Math.random() * 2 ** 31)) {
     return sameCase(local, 'u' + token('local', local.toLowerCase())) + '@' + domain(value.slice(at + 1));
   }
 
-  // A word of a text that is not a valid address. A word with '@' keeps it, and both sides start with a
-  // non-ASCII letter, so it never becomes an address matched by regexEmail (extractDomains still sees it)
+  // A word of a text that is not a valid address. A word with '@' (e.g. "root@localhost") keeps it, without
+  // a dot after it, so it never becomes an address matched by regexEmail
   function word(value) {
     let at = value.indexOf('@');
     if (at >= 0) {
-      return 'ñ' + token('word', value.slice(0, at).toLowerCase(), 5) + '@ñ' + token('word', value.slice(at + 1).toLowerCase(), 5);
+      return 'n' + token('word', value.slice(0, at).toLowerCase(), 5) + '@n' + token('word', value.slice(at + 1).toLowerCase(), 5);
     }
-    return (REGEX_NON_ASCII.test(value) ? 'é' : 'w') + token('word', value.toLowerCase(), 5);
+    return 'w' + token('word', value.toLowerCase(), 5);
   }
 
   // A text with addresses inside (an address header, a display name, a subject): the addresses are

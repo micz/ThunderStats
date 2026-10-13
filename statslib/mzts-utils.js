@@ -19,8 +19,19 @@
 export const tsUtils = {
 
     // The local part may contain + (sub-addressing), % and apostrophes, but does not start with an apostrophe
-    // (so a quoted 'name@x.com' display name is not taken with its quote)
-    regexEmail: /[a-zA-Z0-9._%+-][a-zA-Z0-9._%+'-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
+    // (so a quoted 'name@x.com' display name is not taken with its quote). Letters and digits of any
+    // alphabet are accepted (internationalized addresses, e.g. josé@exämple.com)
+    regexEmail: /[\p{L}\p{N}._%+-][\p{L}\p{N}._%+'-]*@[\p{L}\p{N}.-]+\.\p{L}{2,}/u,
+
+    // Lower case address of an author or recipient ("Name <addr>" or "addr"), null when there is none.
+    // The address in angle brackets wins over an address written in the display name
+    // ("anna@x.com" <mario@y.com> -> mario@y.com)
+    extractEmail(text) {
+        if (typeof text !== 'string') return null;
+        const bracketed = [...text.matchAll(/<([^<>]*)>/g)].map(match => match[1]).filter(inner => inner.includes('@')).pop();
+        const match = (bracketed !== undefined ? bracketed.match(tsUtils.regexEmail) : null) || text.match(tsUtils.regexEmail);
+        return match ? match[0].toLowerCase() : null;
+    },
     
     dateToYYYYMMDD(originalDate) {
         // Extract the year from the date

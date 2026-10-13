@@ -98,6 +98,57 @@ function qualityReport(dump) {
   };
 }
 
+/*
+  Custom Query filter cases of a scope, built from its data: read/unread, flagged/unflagged, the most frequent
+  subject word and, for a single account, the busiest folder alone, the busiest folder with subfolders (with
+  and without them) and the busiest folder with every other filter.
+  Each case: { label, adv_filters (core format), filters (reference.js format) }
+*/
+function filterCases(dump, account_id, from, to) {
+  let cases = [
+    { label: 'read', adv_filters: { read_unread: 1 }, filters: { read: true } },
+    { label: 'unread', adv_filters: { read_unread: 2 }, filters: { read: false } },
+    { label: 'flagged', adv_filters: { flagged_unflagged: 1 }, filters: { flagged: true } },
+    { label: 'unflagged', adv_filters: { flagged_unflagged: 2 }, filters: { flagged: false } },
+  ];
+  let stats_ids = statsFolderIds(dump.mailbox, account_id);
+  let messages = dump.mailbox.messages.filter(m => m.date && m.date >= from && m.date <= to && stats_ids.has(m.folder.id));
+
+  let words = new Map();
+  for (let m of messages) {
+    for (let word of new Set((m.subject || '').split(/\s+/))) {
+      if (word.length >= 4) words.set(word, (words.get(word) || 0) + 1);
+    }
+  }
+  // the most frequent word that leaves out at least half of the messages
+  let word = [...words.entries()].filter(([, n]) => n <= messages.length / 2).sort((a, b) => b[1] - a[1])[0]?.[0];
+  if (word) cases.push({ label: 'subject', adv_filters: { filterSubject: word }, filters: { subject: word } });
+
+  if (account_id != 0) {
+    let sizes = new Map();
+    for (let m of messages) sizes.set(m.folder.id, (sizes.get(m.folder.id) || 0) + 1);
+    let size = (folder, with_subfolders) => [folder, ...(with_subfolders ? accountFolders({ accounts: [{ folders: folder.subFolders || [] }] }, 0) : [])]
+      .reduce((acc, f) => acc + (sizes.get(f.id) || 0), 0);
+    let folders = accountFolders(dump.mailbox, account_id).filter(f => stats_ids.has(f.id));
+    let busiest = [...folders].sort((a, b) => size(b, false) - size(a, false))[0];
+    let parent = folders.filter(f => (f.subFolders || []).length > 0).sort((a, b) => size(b, true) - size(a, true))[0];
+    let folderCase = (label, folder, subfolders, extra = {}, extra_filters = {}) => ({
+      label,
+      adv_filters: { folders: [folder.id], folders_do_subfolders: subfolders, ...extra },
+      filters: { folders: [folder.id], subfolders, ...extra_filters },
+    });
+    if (busiest) {
+      cases.push(folderCase('folder', busiest, false));
+      cases.push(folderCase('folder+unread+unflagged', busiest, false, { read_unread: 2, flagged_unflagged: 2 }, { read: false, flagged: false }));
+    }
+    if (parent) {
+      cases.push(folderCase('parent folder', parent, false));
+      cases.push(folderCase('parent folder+subfolders', parent, true));
+    }
+  }
+  return cases;
+}
+
 for (let dump of dumps) {
   describe(dump.name, () => {
     let now = dump.created;
@@ -204,6 +255,40 @@ for (let dump of dumps) {
         let full = await core.getFullStatsData(new Date(range_from), new Date(range_to), account_id, emails, false, filter_duplicates);
         for (let [key, d] of Object.entries(cached.days)) {
           expect([d.sent, d.received], key).toEqual([full.dates[key].sent, full.dates[key].received]);
+        }
+      });
+
+      it('applies the Custom Query filters like the reference', async () => {
+        let core = new thunderStastsCore();
+        let { emails, domains } = await scopeSettings(core, account_id);
+        let cases = filterCases(dump, account_id, from, to);
+        let all = (await core.getFullStatsData(new Date(from), new Date(to), account_id, emails, false, false, -99, null, domains)).count;
+        let totals = {};
+        for (let { label, adv_filters, filters } of cases) {
+          let result = await core.getFullStatsData(new Date(from), new Date(to), account_id, emails, false, false, -99, adv_filters, domains);
+          let ref = referenceStats(dump.mailbox, { from, to, account_id, emails, filters });
+          expect({ count: result.count, sent: result.sent, received: result.received }, label)
+            .toEqual({ count: ref.count, sent: ref.sent, received: ref.received });
+          let days = Object.fromEntries(Object.entries(result.dates).filter(([key, d]) => d.count > 0 || ref.days[key])
+            .map(([key, d]) => [key, { count: d.count, sent: d.sent, received: d.received }]));
+          expect(days, label).toEqual(ref.days);
+          totals[label] = result.count;
+        }
+        // read + unread and flagged + unflagged are all the messages
+        expect(totals.read + totals.unread).toBe(all);
+        expect(totals.flagged + totals.unflagged).toBe(all);
+        console.log(`[${dump.name}] account ${account_id} filters: ` + JSON.stringify(totals));
+      });
+
+      it('applies the Custom Query filters with the duplicates setting of the account', async () => {
+        let core = new thunderStastsCore();
+        let { emails, domains } = await scopeSettings(core, account_id);
+        let filter_duplicates = await core.getFilterDuplicates(account_id);
+        for (let { label, adv_filters, filters } of filterCases(dump, account_id, from, to)) {
+          let result = await core.getCustomQryData(new Date(from), new Date(to), account_id, emails, -99, adv_filters, domains);
+          let ref = referenceStats(dump.mailbox, { from, to, account_id, emails, filter_duplicates, filters });
+          expect([result.count, result.sent, result.received], label).toEqual([ref.count, ref.sent, ref.received]);
+          expect(badNumbers(result.aggregate), label).toEqual([]);
         }
       });
 

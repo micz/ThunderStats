@@ -83,7 +83,7 @@ Utility methods used by `thunderStastsCore` and the Vue components.
 - Account email address resolution (`getAccountEmails`, `getAccountCustomIdentities`)
 - `getFilterDuplicatesPreference(account_id)` / `getIncludeArchivePreference(account_id)` — read global or per-account prefs; the per-account ones come from `getAccountAdvSettings(account_id)`, the entry of the `accounts_adv_settings` list (default `[]`; any other stored value counts as an empty list)
 - `getAccountInternalDomains(account_id)` — returns the internal domains list for a specific account; when `account_id` is `0`, returns internal domains for all accounts
-- `extractDomains(recipients)` — lower case domains of a list of recipients: the address in angle brackets wins over an address in the display name (`"anna@x.com" <mario@y.com>` → `y.com`); an address with non-ASCII letters still gives the text after its `@`; entries without an address are skipped
+- `extractDomains(recipients)` — lower case domains of a list of recipients, from the same address as the correspondent (`tsUtils.extractEmail`); entries without an address are skipped
 - `getInternalMailLabel(domains)` — computes the internal mail percentage from a domains object. Returns `{ sentPercent, receivedPercent }` (strings like `75.00%`)
 
 ---
@@ -100,7 +100,8 @@ General-purpose utility functions.
 - `sortDays(first_day_week, days)` — weekdays (`idx` 0 = Sunday) ordered from any first day of the week
 - `formatDateStringLocale(locale)` — date-fns pattern of a locale for the date picker, built with `formatToParts` (works with non-Latin digits, literals with Latin letters quoted)
 - `daysBetween` (days of a range, both ends included, not affected by the DST changes)
-- `regexEmail` finds the address in an author or recipient string; the local part may contain `+` (sub-addressing), `%` and apostrophes (not as first character)
+- `regexEmail` finds the address in an author or recipient string; the local part may contain `+` (sub-addressing), `%` and apostrophes (not as first character); letters and digits of any alphabet are accepted (internationalized addresses, `josé@exämple.com`)
+- `extractEmail(text)` — lower case address of an author or recipient, or `null`: the address in angle brackets wins over an address written in the display name (`"anna@x.com" <mario@y.com>` → `mario@y.com`). Used for the author (sent/received), the correspondents, the address book names and the recipient domains
 - Date array generators (`getDateArray`, `getDateArrayWeeks`, `getDateArrayMonths`, `getDateArrayYears`) — each entry has fields: `{ count, sent, received, inbox }`
 
 **Class:** `EmailMatcher`

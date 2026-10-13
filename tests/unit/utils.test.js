@@ -163,6 +163,28 @@ describe('regexEmail', () => {
   it('finds nothing without an address', () => {
     expect('Mailer Daemon'.match(tsUtils.regexEmail)).toBeNull();
   });
+
+  it('finds the internationalized addresses', () => {
+    expect('José <josé@exämple.com>'.match(tsUtils.regexEmail)[0]).toBe('josé@exämple.com');
+    expect('用户@例子.广告'.match(tsUtils.regexEmail)[0]).toBe('用户@例子.广告');
+  });
+});
+
+describe('extractEmail', () => {
+  it.each([
+    ['Mario Rossi <Mario@Client.com>', 'mario@client.com'],
+    ['x@y.org', 'x@y.org'],
+    ['"anna@other.com" <mario@client.com>', 'mario@client.com'],
+    ["'mario@client.com' <mario@client.com>", 'mario@client.com'],
+    ['José <JOSÉ@exämple.com>', 'josé@exämple.com'],
+    ['"anna@other.com" <invalid@>', 'anna@other.com'],
+  ])('takes the address of %s', (text, address) => {
+    expect(tsUtils.extractEmail(text)).toBe(address);
+  });
+
+  it.each([['Mailer Daemon'], ['undisclosed-recipients:;'], ['root@localhost'], [''], [null], [undefined]])('finds nothing in %s', (text) => {
+    expect(tsUtils.extractEmail(text)).toBeNull();
+  });
 });
 
 describe('EmailMatcher', () => {

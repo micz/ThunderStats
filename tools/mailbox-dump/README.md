@@ -41,8 +41,8 @@ Messages that Thunderbird has not synchronized yet (IMAP folders never opened) a
 The replacement of a value is always the same within a dump (random seed per dump), so the stats do not change:
 
 - addresses → `u<token>@d<token>.<tld>`: subdomains and top level domain kept, webmail domains (`gmail.com`, `libero.it`, ...) kept, upper case kept;
-- the other words of headers, display names and subjects → `w<token>` (`é<token>` when the word had non-ASCII letters);
-  a word with `@` that is not a valid address stays not valid, so the authors without an address are still without one;
+- the other words of headers, display names and subjects → `w<token>`; a word with `@` that is not a valid address
+  (`root@localhost`) → `n<token>@n<token>`, still not valid, so the authors without an address are still without one;
 - folder names → `f<token>`, except the special folders and `INBOX`; folder ids are rebuilt like Thunderbird (`accountId:/path`);
 - account names → `Account N`; tag names → `Tag <token>`, custom tag keys → `t<token>` (`$label1`... kept);
 - Message-IDs → `h<token>@dump` (duplicates stay duplicates, empty stays empty);

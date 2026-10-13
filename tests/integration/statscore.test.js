@@ -206,6 +206,35 @@ describe('getFullStatsData', () => {
     expect(result.dates[YESTERDAY]).toMatchObject({ sent_internal: 0, sent_external: 2 });
   });
 
+  it('takes the correspondent from the address in angle brackets, like the domain', async () => {
+    browser.contacts = [vCard('Mario Rossi', 'mario@client.com')];
+    addMail(mailbox, { key: YESTERDAY, from: '"anna@other.com" <mario@client.com>' });
+    addMail(mailbox, { key: YESTERDAY, sent: true, to: ['"anna@other.com" <mario@client.com>'], cc: ['"x@y.com" <luca@work.it>'] });
+    addMail(mailbox, { key: YESTERDAY, from: '"me@work.it" <spoof@evil.com>' });
+    let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], ['work.it']);
+    expect([result.sent, result.received]).toEqual([1, 2]);
+    expect(result.senders).toEqual({
+      'mario@client.com': { count: 1, name: 'Mario Rossi' },
+      'spoof@evil.com': { count: 1, name: '"me@work.it"' },
+    });
+    expect(Object.keys(result.recipients)).toEqual(['mario@client.com', 'luca@work.it']);
+    expect(Object.keys(result.domains).sort()).toEqual(['client.com', 'evil.com', 'work.it']);
+  });
+
+  it('recognizes the internationalized addresses, also as an identity', async () => {
+    addMail(mailbox, { key: YESTERDAY, from: 'José <josé@exämple.com>' });
+    addMail(mailbox, { key: YESTERDAY, from: 'Me <Jörg@Wörk.de>', to: ['José <josé@exämple.com>'] });
+    let core = new thunderStastsCore();
+    let result = await core.getSingleDay(day(YESTERDAY), 'acc1', [ME, 'jörg@wörk.de'], ['wörk.de']);
+    expect([result.sent, result.received]).toEqual([1, 1]);
+    expect(Object.keys(result.senders)).toEqual(['josé@exämple.com']);
+    expect(result.domains).toEqual({
+      'exämple.com': { count: 2, sent: 1, received: 1, internal: false },
+    });
+    let count = await core.getToday_SingleDayData(day(YESTERDAY), 'acc1', [ME, 'jörg@wörk.de'], false);
+    expect(count.msg_hours[10]).toEqual({ sent: 1, received: 1 });
+  });
+
   it('skips the tags no longer defined without logging an error for each message', async () => {
     let errors = vi.spyOn(console, 'error').mockImplementation(() => {});
     addMails(mailbox, 3, { key: YESTERDAY, tags: ['$deleted'] });

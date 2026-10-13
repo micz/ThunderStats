@@ -47,8 +47,7 @@ function inRange(message, fromDate, toDate) {
 
 // Lower case address of the author, or null when the author has no address
 function authorKey(message) {
-  const match_author = (message.author || '').match(tsUtils.regexEmail);
-  return match_author ? match_author[0].toLowerCase() : null;
+  return tsUtils.extractEmail(message.author);
 }
 
 // With the duplicates filter on, true for a message whose Message-ID was already seen (and remembers it).
@@ -666,9 +665,8 @@ export class thunderStastsCore {
               // check recipients
               //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
               for (let recipient of message.recipients) {
-                const match_recipient = recipient.match(tsUtils.regexEmail);
-                if (match_recipient) {
-                  const key_recipient = match_recipient[0].toLowerCase();
+                const key_recipient = tsUtils.extractEmail(recipient);
+                if (key_recipient !== null) {
                   //if(!(account_emails.includes(key_recipient) || messageids_sent.includes(message.id))) {
                   if(!(emailMatcher.matches(key_recipient))) {
                     if (recipients[key_recipient]) {
@@ -685,9 +683,8 @@ export class thunderStastsCore {
                 }
               }
               for (let cc of message.ccList) {
-                const match_cc = cc.match(tsUtils.regexEmail);
-                if (match_cc) {
-                  const key_cc = match_cc[0].toLowerCase();
+                const key_cc = tsUtils.extractEmail(cc);
+                if (key_cc !== null) {
                   //if(!(account_emails.includes(key_cc) || messageids_sent.includes(message.id))) {
                   if(!(emailMatcher.matches(key_cc))) {
                     if (recipients[key_cc]) {

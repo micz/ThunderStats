@@ -178,10 +178,10 @@ export const tsCoreUtils = {
     },
 
     async getNameFromAddressBook(address) {
-        const match_address = address.match(tsUtils.regexEmail);
-        if (!match_address) return '';
+        const email = tsUtils.extractEmail(address);
+        if (email === null) return '';
         let names = await this.getAddressBookNames();
-        return names.get(match_address[0].toLowerCase()) || '';
+        return names.get(email) || '';
     },
 
     getNameFromAddress(address) {
@@ -381,26 +381,14 @@ export const tsCoreUtils = {
         return null;
     },
 
-    // Lower case domains of the recipients ("Name <email@example.com>" or "email@example.com").
-    // The address in angle brackets wins over an address written in the display name
-    // ("anna@acme.it" <mario@acme.it>); an address that tsUtils.regexEmail does not accept
-    // (non-ASCII letters) still gives the text after its '@'; entries without an address are skipped.
+    // Lower case domains of the recipients ("Name <email@example.com>" or "email@example.com"), from the
+    // same address as the correspondent (tsUtils.extractEmail); entries without an address are skipped
     extractDomains(recipients) {
         const domains = [];
 
         for (const recipient of recipients) {
-          if (typeof recipient !== 'string') continue;
-          const bracketed = [...recipient.matchAll(/<([^<>]*)>/g)].map(match => match[1]).filter(text => text.includes('@')).pop();
-          const source = bracketed ?? recipient;
-          let domain = null;
-          const emailMatch = source.match(tsUtils.regexEmail);
-          if (emailMatch) {
-            domain = emailMatch[0].split('@')[1];
-          } else if (source.includes('@')) {
-            const tail = source.slice(source.lastIndexOf('@') + 1).trim();
-            if (tail != '' && !/[\s<>"',;]/.test(tail)) domain = tail;
-          }
-          if (domain) domains.push(domain.toLowerCase());
+          const email = tsUtils.extractEmail(recipient);
+          if (email !== null) domains.push(this.extractDomain(email));
         }
 
         return domains;

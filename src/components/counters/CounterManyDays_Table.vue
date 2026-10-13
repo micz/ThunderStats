@@ -21,7 +21,7 @@
 <template>
 <table>
     <tr>
-        <td><span class="additional_info_text"><span class="_many_days" v-html="_many_days_text"></span> <span class="count_sent">__MSG_sent__</span>:</span></td>
+        <td><span class="additional_info_text"><span class="_many_days">{{ _many_days_text }}</span> <span class="count_sent">__MSG_sent__</span>:</span></td>
         <td><span class="additional_info_text"><span v-if="!is_loading">{{ sent_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> <span class="lowercase">__MSG_total__</span> / <span v-if="!is_loading">{{ sent_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ sent_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ sent_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__</span></td>
     </tr>
     <tr>

@@ -117,7 +117,9 @@ const returnPath = headers["return-path"]?.[0] ?? null;
 
 ### 5. Do not use async listeners for `runtime.onMessage`
 
-See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage
+See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage and https://webextension-api.thunderbird.net/en/mv3/guides/runtimeMessaging.html
+
+An async listener always returns a Promise, so it claims the response of every message, including the ones it does not handle. The listener in `public/background.js` is a plain function: it returns a Promise only for the commands it handles (`reloadThunderStats`) and `undefined` for any other message.
 
 ### 6. Set correct `strict_min_version`
 
@@ -134,6 +136,15 @@ const emails = parsed.map(p => p.email);
 ```
 
 Documentation: https://webextension-api.thunderbird.net/en/mv3/messengerUtilities.html
+
+### 8. Do not insert markup (`innerHTML`, `v-html`)
+
+Inserting markup through `innerHTML` (and similar properties/methods) will soon no longer be permitted; the only supported way is the Sanitizer API (`Element.setHTML()`, Thunderbird 148+), which is above our `strict_min_version`. The ATN source code analysis flags every `.innerHTML`, including the ones Vue generates for `v-html`, so **never use `v-html`** in our components.
+
+- Plain text (e.g. i18n messages) goes through text interpolation (`{{ }}`) or `textContent`.
+- HTML coming from our own files (the changelog entries in `OPTAB_About.vue`) is parsed in an inert document with `DOMParser`, reduced to a whitelist (text, `<a href="http(s)://…">`, `<b>`, `<i>`, `<strong>`, `<em>`) and rendered as Vue nodes with `h()`.
+
+Documentation: https://webextension-api.thunderbird.net/en/mv3/guides/innerHTML.html
 
 ---
 

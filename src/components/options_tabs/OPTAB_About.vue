@@ -43,7 +43,7 @@
         <svg viewBox="0 0 24 24" class="opt-note-chevron" :class="{ 'is-open': isOpen(note) }"><path d="m6 9 6 6 6-6"></path></svg>
       </button>
       <ul class="opt-note-items" v-if="isOpen(note)">
-        <li v-for="(item, idx) in note.items" :key="idx" v-html="item"></li>
+        <li v-for="(item, idx) in note.items" :key="idx"><NoteItem :nodes="item" /></li>
       </ul>
     </div>
     <div class="opt-card-note" v-if="!show_v1">
@@ -75,7 +75,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, h } from 'vue'
 import changelogV2Raw from '../../../CHANGELOG.md?raw'
 import changelogV1Raw from '../../../CHANGELOG_v1.md?raw'
 
@@ -103,12 +103,50 @@ function parseChangelog(raw) {
   let re = /<h3>\s*Version\s+([^\s<]+)\s*-\s*([^<]*)<\/h3>\s*<ul>([\s\S]*?)<\/ul>/g;
   let match;
   while ((match = re.exec(raw)) !== null) {
-    let items = [...match[3].matchAll(/<li>([\s\S]*?)<\/li>/g)].map(m => m[1].trim()).filter(item => item !== '' && item !== '...');
+    let items = [...match[3].matchAll(/<li>([\s\S]*?)<\/li>/g)].map(m => m[1].trim()).filter(item => item !== '' && item !== '...').map(parseItem);
     // skip the placeholder entry of a version still in development
     if (items.length > 0) notes.push({ version: match[1], date: formatDate(match[2].trim()), items: items });
   }
   return notes;
 }
+
+// A changelog entry is HTML: parse it in an inert document and keep only text, links and bold/italic,
+// so it can be rendered with Vue nodes instead of injecting markup
+const ALLOWED_TAGS = ['a', 'b', 'i', 'strong', 'em'];
+
+function parseItem(html) {
+  let doc = new DOMParser().parseFromString(html, 'text/html');
+  return toNodes(doc.body.childNodes);
+}
+
+function toNodes(dom_nodes) {
+  let nodes = [];
+  for (let node of dom_nodes) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      nodes.push(node.textContent);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      let tag = node.localName;
+      let children = toNodes(node.childNodes);
+      if (!ALLOWED_TAGS.includes(tag)) {
+        nodes.push(...children);
+      } else if (tag === 'a') {
+        let href = node.getAttribute('href') || '';
+        if (/^https?:\/\//i.test(href)) nodes.push({ tag: 'a', href: href, children: children });
+        else nodes.push(...children);
+      } else {
+        nodes.push({ tag: tag, children: children });
+      }
+    }
+  }
+  return nodes;
+}
+
+function renderNodes(nodes) {
+  return nodes.map(node => typeof node === 'string' ? node : h(node.tag, node.tag === 'a' ? { href: node.href } : null, renderNodes(node.children)));
+}
+
+const NoteItem = (props) => renderNodes(props.nodes);
+NoteItem.props = ['nodes'];
 
 function formatDate(text) {
   let parts = text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);

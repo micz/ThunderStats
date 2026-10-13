@@ -38,20 +38,22 @@ browser.browserAction.onClicked.addListener(() => {
  }
 
 
-messenger.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+// The listener is synchronous on purpose: it returns a Promise only for the
+// messages it handles, and undefined for the others, so it does not claim
+// the response of messages meant for other listeners.
+messenger.runtime.onMessage.addListener((message, sender) => {
   // Check what type of message we have received and invoke the appropriate
   // handler function.
   if (message && message.hasOwnProperty("command")){
       switch (message.command) {
           case 'reloadThunderStats':
-                  await reloadThunderStats();
-                  return true;
+                  return reloadThunderStats().then(() => true);
           default:
               break;
       }
   }
-  // Return false if the message was not handled by this listener.
-  return false;
+  // Return undefined if the message was not handled by this listener.
+  return undefined;
 });
 
 async function reloadThunderStats() {

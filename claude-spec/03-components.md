@@ -138,7 +138,7 @@ Sidebar + card layout on the dashboard tokens (`tokens.css`, plus `--bg`, `--swi
 
 | File | Description |
 |---|---|
-| `HeadingNAV.vue` | Sticky toolbar: brand, account pill (`SelectAccount`), tab segmented control (tabs list passed by `ThunderStatsView`, emits `selectTab`), last-update time, Refresh / Export / Settings / Info icon buttons (Export emits `exportData` with the button as anchor), `ThemeToggle`. Applies the startup/remembered account |
+| `HeadingNAV.vue` | Sticky toolbar on a three-column grid (left and right sides of equal width, so the centered tabs and the right-aligned icons never move when the side contents change; falls back to wrapping flex below 900px). Left: brand, account pill (`SelectAccount`), business-days-only icon. Center: tab segmented control (tabs list passed by `ThunderStatsView`, emits `selectTab`). Right: warning message, last-update time, Refresh / Export / Settings / Info icon buttons (Export emits `exportData` with the button as anchor), `ThemeToggle`. Applies the startup/remembered account |
 | `ThemeToggle.vue` | Round theme toggle icon (sun morphing into a moon, title names the theme it switches to, `tsTheme.setMode`); in the dashboard toolbar and the options header |
 | `SelectAccount.vue` | Account dropdown (native `select`) |
 | `ExportMenu.vue` | CSV export menu, embedded in each stats tab (uses `@imengyu/vue3-context-menu`). Its own icon is hidden; each tab exposes `openExportMenu(anchor_el)`, which `ThunderStatsView` calls when the toolbar Export button is clicked |

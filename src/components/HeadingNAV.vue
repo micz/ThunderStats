@@ -20,45 +20,45 @@
 
 <template>
   <header id="heading_wrapper">
-    <div class="ts-brand"><span class="ts-brand-mark"></span>ThunderStats</div>
+    <div class="ts-head-left">
+      <div class="ts-brand"><span class="ts-brand-mark"></span>ThunderStats</div>
 
-    <div class="ts-account-pill" :title="choose_account_label">
-      <SelectAccount id="account_selector" @change="accountSelected()" v-model="current_account" ref="SelectAccount_ref"/>
+      <div class="ts-account-pill" :title="choose_account_label">
+        <SelectAccount id="account_selector" @change="accountSelected()" v-model="current_account" ref="SelectAccount_ref"/>
+      </div>
+
+      <span class="bday_icon" v-if="businessdays_only"><img src="@/assets/images/mzts-businessdays.png" alt="__MSG_BusinessDayOnlyWarning__" title="__MSG_BusinessDayOnlyWarning__"/></span>
     </div>
-
-    <div class="ts-spacer"></div>
 
     <nav class="ts-segmented" role="tablist">
       <button type="button" role="tab" v-for="tab in tabs" :key="tab.id" :class="{ 'is-active': tab.id == currentTab }" :aria-selected="tab.id == currentTab" @click="emit('selectTab', tab.id)">{{ tab.label }}</button>
     </nav>
 
-    <div class="ts-spacer"></div>
+    <div class="ts-head-right">
+      <div id="mzts-warn-msg" v-if="warn_message != ''">{{ warn_message }}</div>
 
-    <div id="mzts-warn-msg" v-if="warn_message != ''">{{ warn_message }}</div>
+      <div class="ts-status" v-if="currentTab != 'tab-info'" :title="status_title">
+        <template v-if="is_loading && elapsed_time == 0"><img src="@/assets/images/mzts-wait_line.svg" class="ts-status-spinner" alt=""/>{{ loading_label }}…</template>
+        <template v-else-if="last_exec_datetime != ''">{{ updated_label }} {{ last_exec_datetime }}</template>
+      </div>
 
-    <span class="bday_icon" v-if="businessdays_only"><img src="@/assets/images/mzts-businessdays.png" alt="__MSG_BusinessDayOnlyWarning__" title="__MSG_BusinessDayOnlyWarning__"/></span>
+      <div class="ts-icon-group">
+        <button type="button" class="ts-icon-btn" :title="refresh_label" :disabled="currentTab == 'tab-info'" @click="update()">
+          <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg>
+        </button>
+        <button type="button" class="ts-icon-btn" :title="export_label" :disabled="currentTab == 'tab-info'" @click="emit('exportData', $event.currentTarget)">
+          <svg viewBox="0 0 24 24"><path d="M12 4v11"></path><path d="M7.5 10.5 12 15l4.5-4.5"></path><path d="M5 19h14"></path></svg>
+        </button>
+        <button type="button" class="ts-icon-btn" :title="settings_label" @click="openOptions()">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>
+        </button>
+        <button type="button" class="ts-icon-btn" :class="{ 'is-active': currentTab == 'tab-info' }" :title="info_label" @click="emit('selectTab', 'tab-info')">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 7.5v.01"></path></svg>
+        </button>
+      </div>
 
-    <div class="ts-status" v-if="currentTab != 'tab-info'" :title="status_title">
-      <template v-if="is_loading && elapsed_time == 0"><img src="@/assets/images/mzts-wait_line.svg" class="ts-status-spinner" alt=""/>{{ loading_label }}…</template>
-      <template v-else-if="last_exec_datetime != ''">{{ updated_label }} {{ last_exec_datetime }}</template>
+      <ThemeToggle/>
     </div>
-
-    <div class="ts-icon-group">
-      <button type="button" class="ts-icon-btn" :title="refresh_label" :disabled="currentTab == 'tab-info'" @click="update()">
-        <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg>
-      </button>
-      <button type="button" class="ts-icon-btn" :title="export_label" :disabled="currentTab == 'tab-info'" @click="emit('exportData', $event.currentTarget)">
-        <svg viewBox="0 0 24 24"><path d="M12 4v11"></path><path d="M7.5 10.5 12 15l4.5-4.5"></path><path d="M5 19h14"></path></svg>
-      </button>
-      <button type="button" class="ts-icon-btn" :title="settings_label" @click="openOptions()">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>
-      </button>
-      <button type="button" class="ts-icon-btn" :class="{ 'is-active': currentTab == 'tab-info' }" :title="info_label" @click="emit('selectTab', 'tab-info')">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 7.5v.01"></path></svg>
-      </button>
-    </div>
-
-    <ThemeToggle/>
   </header>
 </template>
 
@@ -197,9 +197,9 @@ defineExpose({ getCurrentIdn });
   position: sticky;
   top: 0;
   z-index: 1000;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  flex-wrap: wrap;
   gap: 10px 14px;
   padding: 10px 18px;
   border-bottom: 1px solid var(--line);
@@ -254,8 +254,27 @@ defineExpose({ getCurrentIdn });
   text-overflow: ellipsis;
 }
 
-.ts-spacer {
-  flex: 1;
+.ts-head-left,
+.ts-head-right {
+  display: flex;
+  align-items: center;
+  gap: 10px 14px;
+  min-width: 0;
+}
+
+.ts-head-right {
+  justify-content: flex-end;
+}
+
+@media (max-width: 900px) {
+  #heading_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .ts-head-right {
+    margin-left: auto;
+  }
 }
 
 .ts-status {

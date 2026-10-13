@@ -1886,8 +1886,8 @@
     "description": ""
   },
   "Opt_HolidayNamePlaceholder": {
-    "message": "e.g. Festa della Repubblica",
-    "description": ""
+    "message": "e.g. Independence Day",
+    "description": "Placeholder of the holiday name field. Replace the example with the name of a national holiday of a country where your language is spoken."
   },
   "Opt_YearOnly": {
     "message": "$YEAR$ only",

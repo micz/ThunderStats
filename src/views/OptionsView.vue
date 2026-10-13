@@ -193,6 +193,9 @@ async function reloadThunderStats() {
   padding: 10px 18px;
   border-bottom: 1px solid var(--line);
   background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .opt-brand {
@@ -261,7 +264,7 @@ async function reloadThunderStats() {
   flex-direction: column;
   gap: 20px;
   position: sticky;
-  top: 20px;
+  top: 72px;
 }
 
 .opt-nav {

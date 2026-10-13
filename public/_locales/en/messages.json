@@ -167,6 +167,10 @@
     "message": "Donations",
     "description": ""
   },
+  "Total": {
+    "message": "Total",
+    "description": ""
+  },
   "max": {
     "message": "max",
     "description": ""

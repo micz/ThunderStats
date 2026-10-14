@@ -97,6 +97,7 @@ Pref keys and defaults: `statslib/mzts-options-default.js`.
 - **Inbox Zero** — show inbox mails in the bars (`many_days_show_inbox`), open the folder clicked in "Where mails ended up" in the first mail tab (`inbox0_openFolderInFirstTab`)
 - **Show internal mail percentage** (`show_internal_mail_percent`) — shows the Internal traffic KPI card (received internal %, and % of the sent) in every stats tab, when internal domains are configured (default: off)
 - **Appearance: color theme** (`theme_mode`) — `auto` (default, follows the system), `light` or `dark`. The toolbar theme toggle icon sets it too; changes apply live to every open ThunderStats page
+- **Appearance: time format** (`time_format`) — `auto` (default, clock of the Thunderbird UI language), `24` or `12`. Applies to every clock time shown, chart axes and heatmap hours included; read when the stats page opens (a WebExtension cannot read the Thunderbird date/time settings)
 
 ### Section: Advanced
 - **Number of correspondents** (`_involved_num`, default 10, 3-50)

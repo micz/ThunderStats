@@ -24,7 +24,7 @@
     <div class="ts-bars-head">
       <div class="ts-card-title">{{ title }}</div>
       <div class="ts-mini-segmented">
-        <button type="button" :class="{ 'is-active': !full_day }" @click="full_day = false">07&ndash;20</button>
+        <button type="button" :class="{ 'is-active': !full_day }" @click="full_day = false">{{ tsUtils.formatHourShort(7) }}&ndash;{{ tsUtils.formatHourShort(20) }}</button>
         <button type="button" :class="{ 'is-active': full_day }" @click="full_day = true">24h</button>
       </div>
     </div>
@@ -49,6 +49,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { tsInsights } from '@statslib/mzts-insights';
+import { tsUtils } from '@statslib/mzts-utils';
 
 const props = defineProps({
   msg_weekday_hours: { type: Object, default: null },    // getFullStatsData().msg_weekday_hours
@@ -71,7 +72,7 @@ let grid = computed(() => full_day.value
 function hourLabel(hour) {
   // every 3 hours on the 24h view
   if(full_day.value && hour % 3 != 0) return '';
-  return String(hour).padStart(2, '0');
+  return tsUtils.formatHourShort(hour);
 }
 
 function cellColor(value) {
@@ -80,7 +81,7 @@ function cellColor(value) {
 }
 
 function cellTitle(hour, column, value) {
-  return props.weekday_labels[column] + ' ' + String(hour).padStart(2, '0') + ':00 — ' + browser.i18n.getMessage("NumReceived", [value]);
+  return props.weekday_labels[column] + ' ' + tsUtils.formatHour(hour) + ' — ' + browser.i18n.getMessage("NumReceived", [value]);
 }
 </script>
 
@@ -94,7 +95,7 @@ function cellTitle(hour, column, value) {
 
 .ts-heat-grid {
   display: grid;
-  grid-template-columns: 30px repeat(7, minmax(0, 1fr));
+  grid-template-columns: minmax(30px, max-content) repeat(7, minmax(0, 1fr));
   gap: 3px;
   align-items: center;
 }
@@ -102,6 +103,7 @@ function cellTitle(hour, column, value) {
 .ts-heat-hour {
   font-size: 11px;
   line-height: 1;
+  white-space: nowrap;
   color: var(--text3);
   font-variant-numeric: tabular-nums;
 }

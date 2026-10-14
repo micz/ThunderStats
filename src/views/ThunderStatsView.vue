@@ -57,6 +57,7 @@ import { tsPrefs } from '@statslib/mzts-options.js';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsUtils } from '@statslib/mzts-utils';
 import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
 
   let statsTabs_ref = ref(null);
@@ -121,6 +122,7 @@ import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
       "bday_weekdays_4",
       "bday_weekdays_5",
       "bday_weekdays_6",
+      "time_format",
     ]);
     remember_last_tab = prefs.remember_last_tab;
     always_reload_tab_data = prefs.always_reload_tab_data;
@@ -134,6 +136,7 @@ import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
     tsStore.bday_weekdays_4 = prefs.bday_weekdays_4;
     tsStore.bday_weekdays_5 = prefs.bday_weekdays_5;
     tsStore.bday_weekdays_6 = prefs.bday_weekdays_6;
+    tsStore.time_format = prefs.time_format;
     if(remember_last_tab) {
       cache_lifetime.value = 120000;
     } else {
@@ -261,7 +264,7 @@ import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
     // console.log(">>>>>>>>>>>>> updateElapsed elapsed_time.value: " + elapsed_time.value);
     //if(elapsed_time.value < elapsed) elapsed_time.value = elapsed;
     elapsed_time.value = elapsed;
-    if(elapsed > 0) last_exec_datetime.value[currentTab.value] = (new Date()).toLocaleTimeString();
+    if(elapsed > 0) last_exec_datetime.value[currentTab.value] = tsUtils.formatTime(new Date());
   }
 
   function customQryUserCancelled() {

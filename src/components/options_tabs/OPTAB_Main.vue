@@ -85,6 +85,13 @@
         <option value="dark">{{ t('ThemeDark') }}</option>
       </select>
     </OptRow>
+    <OptRow :label="t('prefs_time_format')" :hint="t('Opt_TimeFormatHint')">
+      <select class="opt-input" :value="prefs.values.time_format" :aria-label="t('prefs_time_format')" @change="prefs.set('time_format', $event.target.value)">
+        <option value="auto">{{ t('TimeFormatAuto') }}</option>
+        <option value="24">{{ t('TimeFormat24') }}</option>
+        <option value="12">{{ t('TimeFormat12') }}</option>
+      </select>
+    </OptRow>
   </section>
 </template>
 

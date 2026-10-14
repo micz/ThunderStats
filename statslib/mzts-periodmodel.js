@@ -39,7 +39,7 @@ function toDate(key) {
 }
 
 function hourText(hour) {
-    return String(hour % 24).padStart(2, '0') + ':00';
+    return tsUtils.formatHour(hour);
 }
 
 function round1(value) {

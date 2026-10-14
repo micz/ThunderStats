@@ -785,6 +785,26 @@
     "message": "Dark",
     "description": "Dark color theme"
   },
+  "prefs_time_format": {
+    "message": "Time format",
+    "description": ""
+  },
+  "TimeFormatAuto": {
+    "message": "Automatic (Thunderbird language)",
+    "description": "Time format that follows the Thunderbird UI language"
+  },
+  "TimeFormat24": {
+    "message": "24-hour (14:30)",
+    "description": ""
+  },
+  "TimeFormat12": {
+    "message": "12-hour (2:30 PM)",
+    "description": ""
+  },
+  "Opt_TimeFormatHint": {
+    "message": "Automatic uses the clock of the Thunderbird language; choose 24-hour or 12-hour if it differs from your Thunderbird date and time settings",
+    "description": ""
+  },
   "LastExecution": {
     "message": "Updated",
     "description": "Shown in the toolbar before the time of the last data update, e.g. Updated 18:04"
@@ -810,8 +830,18 @@
     "description": "Status badge"
   },
   "FullDayRange": {
-    "message": "Full day · 00:00 → 23:59",
-    "description": ""
+    "message": "Full day · $START$ → $END$",
+    "description": "Time range of a whole day",
+    "placeholders": {
+      "start": {
+        "content": "$1",
+        "example": "00:00"
+      },
+      "end": {
+        "content": "$2",
+        "example": "23:59"
+      }
+    }
   },
   "Arrived": {
     "message": "Arrived",

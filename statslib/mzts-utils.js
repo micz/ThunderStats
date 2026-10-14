@@ -16,6 +16,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { tsStore } from "./mzts-store.js";
+
 export const tsUtils = {
 
     // The local part may contain + (sub-addressing), % and apostrophes, but does not start with an apostrophe
@@ -280,6 +282,33 @@ export const tsUtils = {
             if (/[a-zA-Z]/.test(part.value)) return "'" + part.value.replace(/'/g, "''") + "'";
             return part.value;
         }).join('');
+    },
+
+    // Clock time (hours and minutes) following the 'time_format' pref (kept in tsStore):
+    // 'auto' uses the convention of the Thunderbird UI language, '24' and '12' force the 24-hour or 12-hour clock.
+    // No WebExtension API exposes the date and time format chosen in the Thunderbird settings.
+    formatTime(date, time_format = tsStore.time_format) {
+        const options = { hour: '2-digit', minute: '2-digit' };
+        if (time_format == '24') options.hourCycle = 'h23';
+        else if (time_format == '12') options.hourCycle = 'h12';
+        return date.toLocaleTimeString(browser.i18n.getUILanguage(), options);
+    },
+
+    // Start of an hour of the day (0-23, wrapped), e.g. '09:00' or '09:00 AM'
+    formatHour(hour, time_format = tsStore.time_format) {
+        return this.formatTime(new Date(2000, 0, 1, ((hour % 24) + 24) % 24, 0), time_format);
+    },
+
+    // Compact hour for chart axes and the heatmap rows, without minutes: '09' on the 24-hour clock, '9 AM' on the 12-hour one
+    formatHourShort(hour, time_format = tsStore.time_format) {
+        const options = { hour: 'numeric' };
+        if (time_format == '24') options.hourCycle = 'h23';
+        else if (time_format == '12') options.hourCycle = 'h12';
+        const date = new Date(2000, 0, 1, ((hour % 24) + 24) % 24, 0);
+        if (new Intl.DateTimeFormat(browser.i18n.getUILanguage(), options).resolvedOptions().hour12) {
+            return date.toLocaleTimeString(browser.i18n.getUILanguage(), options);
+        }
+        return date.toLocaleTimeString(browser.i18n.getUILanguage(), { hour: '2-digit', hourCycle: 'h23' });
     },
 
     // convertToMilliseconds(timeStr) {

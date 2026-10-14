@@ -22,6 +22,7 @@ export const tsStore = reactive({
     'do_debug': false,
     'darkmode': false,
     'theme_mode': 'auto',
+    'time_format': 'auto',
     'businessdays_only': false,
     'bday_easter': false,
     'first_day_week': 0,

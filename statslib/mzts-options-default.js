@@ -57,4 +57,5 @@ export const prefs_default = {
     'customqry_always_open_adv_filters': false,
     'show_internal_mail_percent': false,
     'theme_mode': 'auto',    // 'auto' follows the system color scheme, 'light' or 'dark' force it
+    'time_format': 'auto',   // 'auto' follows the Thunderbird UI language, '24' or '12' force the clock
 }

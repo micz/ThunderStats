@@ -99,6 +99,9 @@ General-purpose utility functions.
 - Preset period helpers (`getLastMonday`, `getFirstDayOfLastMonth`, ...)
 - `sortDays(first_day_week, days)` — weekdays (`idx` 0 = Sunday) ordered from any first day of the week
 - `formatDateStringLocale(locale)` — date-fns pattern of a locale for the date picker, built with `formatToParts` (works with non-Latin digits, literals with Latin letters quoted)
+- `formatTime(date, time_format = tsStore.time_format)` — hours and minutes in the UI language; `time_format` `'24'` / `'12'` forces the clock (`hourCycle` `h23` / `h12`), `'auto'` keeps the language convention. Every clock time shown (day strip range, chart callout, period notes, chart and heatmap tooltips, "updated at" time) goes through it. No WebExtension API exposes the Thunderbird date/time format settings, hence the pref
+- `formatHour(hour, time_format)` — `formatTime` of the start of an hour (wrapped to 0-23)
+- `formatHourShort(hour, time_format)` — compact hour without minutes for the chart x axes (`ChartDayVsNormal`, `ChartHourlyAverage`), the heatmap rows and its range button: `'09'` when the resolved clock is 24-hour, `'9 AM'` when it is 12-hour
 - `daysBetween` (days of a range, both ends included, not affected by the DST changes)
 - `regexEmail` finds the address in an author or recipient string; the local part may contain `+` (sub-addressing), `%` and apostrophes (not as first character); letters and digits of any alphabet are accepted (internationalized addresses, `josé@exämple.com`)
 - `extractEmail(text)` — lower case address of an author or recipient, or `null`: the address in angle brackets wins over an address written in the display name (`"anna@x.com" <mario@y.com>` → `mario@y.com`). Used for the author (sent/received), the correspondents, the address book names and the recipient domains
@@ -234,7 +237,7 @@ Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `d
 
 **Object:** `tsStore`
 
-A Vue `reactive()` object (not Vuex/Pinia) holding shared app state: debug flag, dark mode, current account, current tab, business day settings, first day of week, tags list. Imported by both components and statslib modules. `darkmode` (effective theme) and `theme_mode` (pref value) are written only by `tsTheme`.
+A Vue `reactive()` object (not Vuex/Pinia) holding shared app state: debug flag, dark mode, current account, current tab, business day settings, first day of week, time format (`time_format` pref, loaded by `ThunderStatsView`), tags list. Imported by both components and statslib modules. `darkmode` (effective theme) and `theme_mode` (pref value) are written only by `tsTheme`.
 
 ---
 

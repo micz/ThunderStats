@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { tsPeriodModel } from '@statslib/mzts-periodmodel';
 import { makeResult, makeInbox, mails, dayKeys } from '../fixtures/result.js';
 import { day } from '../helpers.js';
+import { tsStore } from '@statslib/mzts-store';
 
 const TODAY = '20261013';                          // Tuesday
 const DAYS = dayKeys('20261006', TODAY);           // Many Days: 7 days + today
@@ -236,6 +237,7 @@ describe('Inbox Zero calendar', () => {
 
 describe('notes of the other widgets', () => {
   it('time of day peaks', () => {
+    tsStore.time_format = '24';
     let tod = tsPeriodModel.build(input({ result: RESULT() })).tod;
     expect(tod.note).toBe('TimeOfDayNote[08:00|10:00|14:00|16:00]');
     expect(tod.rcvd[9]).toBe(50 / STAT_DAYS.length);    // today left out
@@ -243,6 +245,8 @@ describe('notes of the other widgets', () => {
   });
 
   it('heatmap peak and busiest weekday', () => {
+    expect(tsPeriodModel.build(input({ result: RESULT() })).heat.note).toBe('HeatNote[08:00 AM|10:00 AM|Tuesday]');
+    tsStore.time_format = '24';
     expect(tsPeriodModel.build(input({ result: RESULT() })).heat.note).toBe('HeatNote[08:00|10:00|Tuesday]');
   });
 

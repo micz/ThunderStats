@@ -112,8 +112,8 @@ export const tsDayModel = {
 
         let date_line1 = input.day.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
         let date_line2 = d.in_progress
-            ? '00:00 → ' + d.now.toLocaleTimeString(locale(), { hour: '2-digit', minute: '2-digit' })
-            : msg("FullDayRange");
+            ? tsUtils.formatHour(0) + ' → ' + tsUtils.formatTime(d.now)
+            : msg("FullDayRange", [tsUtils.formatHour(0), tsUtils.formatTime(new Date(2000, 0, 1, 23, 59))]);
         let pct = (v) => d.R > 0 ? (v / d.R * 100).toFixed(1) + '%' : '0%';
         let weekstart_name = first_day.toLocaleDateString(locale(), { weekday: 'short' });
 
@@ -235,7 +235,7 @@ export const tsDayModel = {
         }
 
         // received so far against the usual cumulative range at the same hour
-        let time_text = d.in_progress ? d.now.toLocaleTimeString(locale(), { hour: '2-digit', minute: '2-digit' }) : '23:59';
+        let time_text = tsUtils.formatTime(d.in_progress ? d.now : new Date(2000, 0, 1, 23, 59));
         chart.callout = { title: msg("CalloutReceived", [time_text, d.R]), sub: '' };
         if(d.baseline) {
             let low = Math.round(d.baseline.rcvd_cum_low[d.ref_hour]);

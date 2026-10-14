@@ -34,6 +34,7 @@ import { ref, computed } from 'vue';
 import { Line } from 'vue-chartjs';
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip } from 'chart.js';
 import { tsStore } from '@statslib/mzts-store';
+import { tsUtils } from '@statslib/mzts-utils';
 import { themeColor, withAlpha } from '@statslib/chartjs-lib/chart-theme.js';
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
@@ -51,7 +52,8 @@ const props = defineProps({
   is_loading: { type: Boolean, default: true },
 });
 
-const labels = Array.from({length: 24}, (_, i) => String(i).padStart(2, '0'));
+// hour labels on the time format of the pref
+let labels = computed(() => Array.from({length: 24}, (_, i) => tsUtils.formatHourShort(i)));
 const shown_ticks = [0, 6, 12, 18, 23];
 
 const label_received = browser.i18n.getMessage("ReceivedMails");
@@ -110,7 +112,7 @@ let chartData = computed(() => {
     pointRadius: (ctx) => ctx.dataIndex == last_sent ? 4.5 : 0,
   });
 
-  return { labels, datasets };
+  return { labels: labels.value, datasets };
 });
 
 let chartOptions = computed(() => {
@@ -129,7 +131,7 @@ let chartOptions = computed(() => {
       tooltip: {
         filter: (item) => !item.dataset.ts_band,
         callbacks: {
-          title: (items) => items.length ? items[0].label + ':00' : '',
+          title: (items) => items.length ? tsUtils.formatHour(items[0].dataIndex) : '',
         },
       },
     },
@@ -139,7 +141,7 @@ let chartOptions = computed(() => {
         border: { color: line_color },
         ticks: {
           color: text3, font: { size: 11 }, autoSkip: false, maxRotation: 0,
-          callback: (value, index) => shown_ticks.includes(index) ? labels[index] : '',
+          callback: (value, index) => shown_ticks.includes(index) ? labels.value[index] : '',
         },
       },
       y: {

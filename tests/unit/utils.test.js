@@ -129,6 +129,28 @@ describe('formatting', () => {
   });
 
   it.each([
+    ['auto', '02:30 PM'],
+    ['24', '14:30'],
+    ['12', '02:30 PM'],
+  ])('formatTime with time format "%s" is "%s"', (time_format, text) => {
+    expect(tsUtils.formatTime(new Date(2026, 9, 14, 14, 30), time_format).replace(/\s/g, ' ')).toBe(text);
+  });
+
+  it.each([
+    ['auto', 9, '9 AM'],
+    ['24', 9, '09'],
+    ['12', 21, '9 PM'],
+    ['24', 21, '21'],
+  ])('formatHourShort with time format "%s" of %i is "%s"', (time_format, hour, text) => {
+    expect(tsUtils.formatHourShort(hour, time_format).replace(/\s/g, ' ')).toBe(text);
+  });
+
+  it('formatHour wraps the hour and follows the time format of tsStore', () => {
+    expect(tsUtils.formatHour(25, '24')).toBe('01:00');
+    expect(tsUtils.formatHour(0, '12').replace(/\s/g, ' ')).toBe('12:00 AM');
+  });
+
+  it.each([
     [0, ''],
     [999, '999ms'],
     [61000, '1m 1s'],

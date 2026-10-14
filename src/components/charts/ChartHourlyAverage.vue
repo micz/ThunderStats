@@ -31,6 +31,7 @@ import { computed } from 'vue';
 import { Line } from 'vue-chartjs';
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip } from 'chart.js';
 import { tsStore } from '@statslib/mzts-store';
+import { tsUtils } from '@statslib/mzts-utils';
 import { themeColor, withAlpha } from '@statslib/chartjs-lib/chart-theme.js';
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
@@ -44,7 +45,8 @@ const props = defineProps({
   is_loading: { type: Boolean, default: true },
 });
 
-const labels = Array.from({length: 24}, (_, i) => String(i).padStart(2, '0'));
+// hour labels on the time format of the pref
+let labels = computed(() => Array.from({length: 24}, (_, i) => tsUtils.formatHourShort(i)));
 const label_received = browser.i18n.getMessage("ReceivedMails");
 const label_sent = browser.i18n.getMessage("SentMails");
 
@@ -66,7 +68,7 @@ let chartData = computed(() => {
     datasets.push(Object.assign({ label: props.cmp_label + ' · ' + label_received, data: props.cmp_rcvd, borderColor: rcvd_color }, dashed));
     datasets.push(Object.assign({ label: props.cmp_label + ' · ' + label_sent, data: props.cmp_sent, borderColor: sent_color }, dashed));
   }
-  return { labels, datasets };
+  return { labels: labels.value, datasets };
 });
 
 let chartOptions = computed(() => {
@@ -81,7 +83,7 @@ let chartOptions = computed(() => {
       title: { display: false },
       tooltip: {
         callbacks: {
-          title: (items) => items.length ? items[0].label + ':00' : '',
+          title: (items) => items.length ? tsUtils.formatHour(items[0].dataIndex) : '',
           label: (item) => item.dataset.label + ': ' + oneDecimal(item.parsed.y),
         },
       },
@@ -92,7 +94,7 @@ let chartOptions = computed(() => {
         border: { color: themeColor('line') },
         ticks: {
           color: themeColor('text3'), font: { size: 11 }, autoSkip: false, maxRotation: 0,
-          callback: (value, index) => (index % 3 == 0 || index == 23) ? labels[index] : '',
+          callback: (value, index) => (index % 3 == 0 || index == 23) ? labels.value[index] : '',
         },
       },
       y: {

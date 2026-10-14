@@ -3,6 +3,7 @@ import { tsDayModel } from '@statslib/mzts-daymodel';
 import { STREAK_STRIP_DAYS } from '@statslib/mzts-insights';
 import { makeResult, makeInbox, mails } from '../fixtures/result.js';
 import { day } from '../helpers.js';
+import { tsStore } from '@statslib/mzts-store';
 
 const TODAY = '20261013';        // Tuesday
 const YESTERDAY = '20261012';    // Monday
@@ -94,8 +95,14 @@ describe('strip flow', () => {
   });
 
   it('shows the time range of today and the full day of the other days', () => {
-    expect(tsDayModel.build(input({})).strip.date_line2).toBe('00:00 → 10:30 AM');
-    expect(tsDayModel.build(input({ kind: 'yesterday', day: day(YESTERDAY) })).strip.date_line2).toBe('FullDayRange');
+    expect(tsDayModel.build(input({})).strip.date_line2).toBe('12:00 AM → 10:30 AM');
+    expect(tsDayModel.build(input({ kind: 'yesterday', day: day(YESTERDAY) })).strip.date_line2).toBe('FullDayRange[12:00 AM|11:59 PM]');
+  });
+
+  it('formats the time range with the time format pref', () => {
+    tsStore.time_format = '24';
+    expect(tsDayModel.build(input({})).strip.date_line2).toBe('00:00 → 10:30');
+    expect(tsDayModel.build(input({ kind: 'yesterday', day: day(YESTERDAY) })).strip.date_line2).toBe('FullDayRange[00:00|23:59]');
   });
 });
 
@@ -159,7 +166,9 @@ describe('chart', () => {
     let chart = tsDayModel.build(input({ kind: 'yesterday', day: day(YESTERDAY), result, hide_future: true })).chart;
     expect(chart.rcvd[22]).toBe(2);
     expect(chart.now_position).toBeNull();
-    expect(chart.callout.title).toBe('CalloutReceived[23:59|2]');
+    expect(chart.callout.title).toBe('CalloutReceived[11:59 PM|2]');
+    tsStore.time_format = '24';
+    expect(tsDayModel.build(input({ kind: 'yesterday', day: day(YESTERDAY), result })).chart.callout.title).toBe('CalloutReceived[23:59|2]');
   });
 
   it.each([

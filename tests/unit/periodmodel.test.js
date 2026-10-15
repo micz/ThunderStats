@@ -269,6 +269,7 @@ describe('Inbox Zero calendar', () => {
     expect(iz.streak).toBe(5);    // 9 - 13
     expect(iz.big).toBe(true);
     expect(iz.weekday_labels[0]).toBe('Mon');
+    expect(iz.range_label).not.toBe('');
   });
 
   it('shows at most the last 6 weeks', () => {
@@ -277,6 +278,8 @@ describe('Inbox Zero calendar', () => {
     expect(iz.total).toBe(42);
     expect(iz.cells.filter(c => !c.pad)[0].key).toBe('20260902');
     expect(iz.big).toBe(false);
+    // the month is on the first cell and where a new month starts
+    expect(iz.cells.filter(c => c.month).map(c => c.key)).toEqual(['20260902', '20261001']);
   });
 });
 

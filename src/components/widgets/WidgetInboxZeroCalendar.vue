@@ -22,7 +22,10 @@
 <template>
   <div class="ts-card ts-iz-card">
     <div class="ts-bars-head">
-      <div class="ts-card-title" :title="tooltip">{{ title }}</div>
+      <div>
+        <div class="ts-card-title" :title="tooltip">{{ title }}</div>
+        <div class="ts-iz-range" v-if="range_label">{{ range_label }}</div>
+      </div>
       <div class="ts-legend">
         <div class="ts-legend-item"><span class="ts-iz-swatch state-zero"></span>{{ closed_label }}</div>
         <div class="ts-legend-item"><span class="ts-iz-swatch state-few"></span>{{ few_label }}</div>
@@ -40,7 +43,7 @@
         <div class="ts-iz-head" v-for="label in weekday_labels" :key="'h' + label">{{ label }}</div>
         <template v-for="cell in cells" :key="cell.key">
           <div class="ts-iz-cell ts-iz-pad" v-if="cell.pad" :style="{ height: cell_height }"></div>
-          <div class="ts-iz-cell" v-else :class="['state-' + cell.state, { 'is-today': cell.is_today }]" :style="{ height: cell_height }" :title="cell.title">{{ cell.n }}</div>
+          <div class="ts-iz-cell" v-else :class="'state-' + cell.state" :style="{ height: cell_height }" :title="cell.title"><span class="ts-iz-day">{{ cell.n }}</span><span class="ts-iz-month" v-if="cell.month">{{ cell.month }}</span></div>
         </template>
       </div>
     </template>
@@ -51,8 +54,9 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-  cells: { type: Array, default: () => [] },            // [{ key, pad } | { key, n, state: zero|few|missed, is_today, title }]
+  cells: { type: Array, default: () => [] },            // [{ key, pad } | { key, n, month, state: zero|few|missed, title }]
   weekday_labels: { type: Array, default: () => [] },
+  range_label: { type: String, default: '' },          // shown period, e.g. "9 – 16 Oct 2026"
   zero: { type: Number, default: 0 },
   total: { type: Number, default: 0 },
   streak: { type: Number, default: 0 },
@@ -118,14 +122,29 @@ let cell_height = computed(() => props.big ? '44px' : '28px');
   text-align: center;
 }
 
+.ts-iz-range {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text2);
+}
+
+/* calendar-like cell: the date sits in the top-left corner, so it does not read as a count */
 .ts-iz-cell {
   border-radius: 5px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 600;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 3px 5px;
+  box-sizing: border-box;
+  font-size: 10px;
+  line-height: 1.2;
   font-variant-numeric: tabular-nums;
+  overflow: hidden;
+}
+
+.ts-iz-month {
+  opacity: .8;
+  white-space: nowrap;
 }
 
 .ts-iz-pad {
@@ -135,10 +154,6 @@ let cell_height = computed(() => props.big ? '44px' : '28px');
 .state-zero { background: var(--good); color: #ffffff; }
 .state-few { background: color-mix(in oklab, var(--good) 35%, var(--surface3)); color: var(--text); }
 .state-missed { background: var(--surface3); color: var(--text3); }
-
-.ts-iz-cell.is-today {
-  box-shadow: inset 0 0 0 2px var(--accent);
-}
 
 .ts-iz-swatch {
   display: block;

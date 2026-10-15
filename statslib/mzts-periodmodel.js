@@ -473,21 +473,23 @@ export const tsPeriodModel = {
 
     inboxZero(input) {
         let shown = input.days.slice(-INBOX_CALENDAR_MAX_DAYS);
-        let output = { cells: [], weekday_labels: [], zero: 0, total: shown.length, streak: 0, big: shown.length <= 8, is_loading: !input.inbox };
+        let output = { cells: [], weekday_labels: [], range_label: '', zero: 0, total: shown.length, streak: 0, big: shown.length <= 8, is_loading: !input.inbox };
         output.weekday_labels = tsInsights.orderedWeekdays(input.first_day_week).map(wd => this.weekdayName(wd, 'short'));
+        if(shown.length) output.range_label = this.zoomText(shown);
         if(!input.inbox || shown.length == 0) return output;
 
         let last = toDate(shown[shown.length - 1]);
         let days = tsInsights.inboxZeroDays(input.inbox.dates, last, shown.length);
         let pad = (toDate(shown[0]).getDay() - Number(input.first_day_week) + 7) % 7;
         for(let i = 0; i < pad; i++) output.cells.push({ key: 'pad' + i, pad: true });
-        for(let day of days) {
-            let key = tsUtils.dateToYYYYMMDD(day.date);
+        days.forEach((day, i) => {
+            // the month is shown on the first cell and where a new month starts
+            let month = (i == 0 || day.date.getDate() == 1) ? day.date.toLocaleDateString(locale(), { month: 'short' }) : '';
             output.cells.push({
-                key, n: day.date.getDate(), state: day.state, is_today: key == input.today_key,
-                title: msg("InboxZeroDayLeft", [day.date.toLocaleDateString(locale(), { weekday: 'short', day: 'numeric', month: 'short' }), day.left]),
+                key: tsUtils.dateToYYYYMMDD(day.date), n: day.date.getDate(), month, state: day.state,
+                title: msg("InboxZeroDayLeft", [day.date.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }), day.left]),
             });
-        }
+        });
         output.zero = days.filter(day => day.state == 'zero').length;
         output.streak = tsInsights.inboxZeroStreak(input.inbox.dates, last, last.toDateString() == new Date().toDateString()).current;
         // Period B (Custom Query comparison): days at zero over the same number of days, at the end of Period B

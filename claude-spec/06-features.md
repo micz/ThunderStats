@@ -36,7 +36,7 @@ Shows statistics for the last N days (default: 7, configurable in options), endi
 - **KPI cards** — Received and Sent with the change against the previous N days and "+N today", plus max / min / average per day (business days only with `bday_default_only`, explained in the tooltip); Internal traffic (with `show_internal_mail_percent` and internal domains); Reply ratio (1 : received/sent)
 - **Day by day** — grouped bars per day (received, sent); with `many_days_show_inbox` the received mails still in the inbox are stacked on top in the warning color; today's bars are lighter; non-business days have muted labels; dashed lines for the average received and sent per day (per working day with `bday_default_only`); computed note (working days vs other days, peak day)
 - **Time of day · average per day** — average received / sent per hour (today left out, like every average of the tab), with a note on the peak hours
-- **Inbox Zero** — calendar of the period with closed at zero / ≤ 5 left / missed days, days at zero, streak at end (same approximation as Today)
+- **Inbox Zero** — calendar of the period with closed at zero / ≤ 5 left / missed days (shown range under the title, day number in the cell corner with the month where it starts, full date in the tooltip), days at zero, streak at end (same approximation as Today)
 - **When mail arrives** — heatmap of received mails by hour and weekday, 07–20 or 24h
 - **By weekday · average per day** — received / sent averages per weekday (today left out), with a note on the busiest and lightest business weekday
 - **Domains, Where mails ended up, Top N Recipients / Top N Senders**

@@ -68,10 +68,12 @@ describe('WidgetInboxZeroCalendar', () => {
     expect(wrapper.findAll('.ts-iz-head').map(h => h.text())).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
     expect(wrapper.findAll('.ts-iz-pad')).toHaveLength(1);
     let cells = wrapper.findAll('.ts-iz-cell:not(.ts-iz-pad)');
-    expect(cells.map(c => c.text())).toEqual(['6', '7', '8', '9', '10', '11', '12', '13']);
+    expect(cells.map(c => c.get('.ts-iz-day').text())).toEqual(['6', '7', '8', '9', '10', '11', '12', '13']);
+    expect(wrapper.findAll('.ts-iz-month')).toHaveLength(1);
+    expect(wrapper.find('.ts-iz-range').exists()).toBe(true);
     expect(cells[2].classes()).toContain('state-missed');
     expect(cells[3].classes()).toContain('state-few');
-    expect(cells[7].classes()).toEqual(expect.arrayContaining(['state-zero', 'is-today']));
+    expect(cells[7].classes()).toContain('state-zero');
     expect(cells[0].attributes('style')).toContain('height: 44px');
     expect(wrapper.findAll('.ts-iz-num').map(n => n.text())).toEqual(['6', '4']);
     expect(wrapper.get('.ts-iz-lbl').text()).toBe('DaysAtZero[8]');

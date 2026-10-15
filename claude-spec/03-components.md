@@ -96,7 +96,7 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper. Colors come 
 |---|---|
 | `CounterKpi.vue` | KPI card: uppercase label, big value, delta, aside text, sub line, optional second sub line, default slot (Inbox Zero strip). With `expandable` a toggle button (chevron, `expanded` state) sits next to the label and emits `toggle`; `link` adds a text button under the sub lines that emits `expand` |
 | `CounterYesterdayThisTime.vue` | Compares current count to yesterday (or last business day, or user-chosen day) at the same time. The day label is clickable and opens an inline date picker to select a custom comparison day. Emits `customDaySelected` event. |
-| `CounterManyDays_Table.vue` | Total/max/min/avg sent and received over the previous `_many_days` days (excluding today); used in Today and Yesterday |
+| `CounterManyDays_Table.vue` | Total/max/min/avg sent and received over the previous `_many_days` days (excluding today), as a compact grid (columns Total / Average / Max / Min, one row each for sent and received with a colored marker and the total emphasized in the sent/received color; the period is in the rail card title); used in Today and Yesterday |
 
 ---
 

@@ -19,21 +19,29 @@
 -->
 
 <template>
-<table>
-    <tr>
-        <td><span class="additional_info_text"><span class="_many_days">{{ _many_days_text }}</span> <span class="count_sent">__MSG_sent__</span>:</span></td>
-        <td><span class="additional_info_text"><span v-if="!is_loading">{{ sent_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> <span class="lowercase">__MSG_total__</span> / <span v-if="!is_loading">{{ sent_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ sent_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ sent_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__</span></td>
-    </tr>
-    <tr>
-        <td class="align_end"><span class="additional_info_text"><span class="invisible_text"></span><span class="count_rcvd">__MSG_received__</span>:</span></td>
-        <td><span class="additional_info_text"><span v-if="!is_loading">{{ rcvd_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> <span class="lowercase">__MSG_total__</span> / <span v-if="!is_loading">{{ rcvd_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_max__ / <span v-if="!is_loading">{{ rcvd_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_min__ / <span v-if="!is_loading">{{ rcvd_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading"/> __MSG_average__</span></td>
-    </tr>
-</table>
+<div class="md_grid">
+    <span></span>
+    <span class="md_head">__MSG_Total__</span>
+    <span class="md_head">__MSG_average__</span>
+    <span class="md_head">__MSG_max__</span>
+    <span class="md_head">__MSG_min__</span>
+
+    <span class="md_label"><span class="md_dot md_dot_sent"></span>__MSG_sent__</span>
+    <span class="md_total md_total_sent"><span v-if="!is_loading">{{ sent_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-else/></span>
+    <span class="md_value"><span v-if="!is_loading">{{ sent_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-else/></span>
+    <span class="md_value"><span v-if="!is_loading">{{ sent_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-else/></span>
+    <span class="md_value"><span v-if="!is_loading">{{ sent_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-else/></span>
+
+    <span class="md_label"><span class="md_dot md_dot_rcvd"></span>__MSG_received__</span>
+    <span class="md_total md_total_rcvd"><span v-if="!is_loading">{{ rcvd_total }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-else/></span>
+    <span class="md_value"><span v-if="!is_loading">{{ rcvd_avg }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-else/></span>
+    <span class="md_value"><span v-if="!is_loading">{{ rcvd_max }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-else/></span>
+    <span class="md_value"><span v-if="!is_loading">{{ rcvd_min }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-else/></span>
+</div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { tsPrefs } from '@statslib/mzts-options';
+import { computed } from 'vue';
 
 let props = defineProps({
     sent_total: {
@@ -102,17 +110,61 @@ let is_loading = computed(() => {
     return props.is_loading
 })
 
-let _many_days_text = ref("");
-
-onMounted(async () => {
-    let _many_days = await tsPrefs.getPref("_many_days");
-    _many_days_text.value = browser.i18n.getMessage("InTheLastNumDays", _many_days);
-})
-
 </script>
 
 <style scoped>
-.lowercase {
-    text-transform: lowercase;
+.md_grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) repeat(4, auto);
+    align-items: baseline;
+    column-gap: 14px;
+    row-gap: 8px;
+    font-variant-numeric: tabular-nums;
+}
+.md_head {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--text3);
+    text-align: end;
+}
+.md_label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+    font-size: 13px;
+    color: var(--text2);
+    text-transform: capitalize;
+}
+.md_dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+}
+.md_dot_sent {
+    background: var(--sent);
+}
+.md_dot_rcvd {
+    background: var(--rcvd);
+}
+.md_total {
+    font-size: 20px;
+    font-weight: 660;
+    text-align: end;
+}
+.md_total_sent {
+    color: var(--sent);
+}
+.md_total_rcvd {
+    color: var(--rcvd);
+}
+.md_value {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    text-align: end;
 }
 </style>

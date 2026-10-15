@@ -51,12 +51,13 @@
       </div>
 
       <div class="ts-rail">
-        <WidgetTopCorrespondents :title="top.title" :rows="top.rows" :total_count="top.count" :expanded="show_all_involved" :empty_text="top.empty_text" :is_loading="loading.involved" @toggleAll="show_all_involved = !show_all_involved" />
         <slot name="rail"></slot>
+        <!-- last in the rail, so it sits right above the full lists it opens -->
+        <WidgetTopCorrespondents :title="top.title" :rows="top.rows" :total_count="top.count" :expanded="show_all_involved" :empty_text="top.empty_text" :is_loading="loading.involved" @toggleAll="toggleAllInvolved" @reveal="revealInvolved" />
       </div>
     </div>
 
-    <div class="ts-two-col" v-if="show_all_involved">
+    <div class="ts-two-col ts-involved-lists" :class="{ 'ts-flash': flash_involved }" ref="involved_lists" v-if="show_all_involved" @animationend="flash_involved = false">
       <div class="ts-card">
         <div class="ts-card-head"><div class="ts-card-title">{{ involved.recipients_title }}</div></div>
         <TableInvolved :tableData="involved.recipients" kind="sent" :is_loading="loading.involved" v-if="has_recipients" />
@@ -77,7 +78,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue';
 import { tsPrefs } from '@statslib/mzts-options';
 import WidgetStatusStrip from './WidgetStatusStrip.vue';
 import WidgetInboxAge from './WidgetInboxAge.vue';
@@ -110,6 +111,28 @@ const domains_title = browser.i18n.getMessage("Domains");
 const inbox_age_title = browser.i18n.getMessage("InboxAgeToggle");
 
 let show_all_involved = ref(false);
+let flash_involved = ref(false);
+const involved_lists = ref(null);
+
+// the full senders/recipients lists open under the main grid, out of sight: bring them into view and highlight them
+function toggleAllInvolved() {
+  show_all_involved.value = !show_all_involved.value;
+  if(show_all_involved.value) revealInvolved();
+}
+
+async function revealInvolved() {
+  await nextTick();
+  if(!involved_lists.value) return;
+  const reduce_motion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // stop with the top of the lists just under the sticky heading
+  const heading = document.getElementById('heading_wrapper');
+  const heading_bottom = heading ? Math.max(0, heading.getBoundingClientRect().bottom) : 0;
+  const top = window.scrollY + involved_lists.value.getBoundingClientRect().top - heading_bottom - 12;
+  window.scrollTo?.({ top: Math.max(0, top), behavior: reduce_motion ? 'auto' : 'smooth' });
+  flash_involved.value = false;
+  await nextTick();
+  flash_involved.value = true;
+}
 
 // the "How old is your inbox" strip under the KPI row, opened from the Inbox backlog KPI; the state is the inbox_age_expanded pref
 let show_inbox_age = ref(false);
@@ -198,5 +221,21 @@ let has_senders = computed(() => props.loading.involved || Object.keys(props.inv
 
 .ts-two-col:empty {
   display: none;
+}
+
+/* short accent glow on the full lists when they are opened from the top correspondents card */
+.ts-flash > .ts-card {
+  animation: ts-involved-flash 1.6s ease-out;
+}
+
+@keyframes ts-involved-flash {
+  0%, 35% { box-shadow: 0 0 0 2px var(--accent); }
+  100% { box-shadow: 0 0 0 2px transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ts-flash > .ts-card {
+    animation-duration: 0.01s;
+  }
 }
 </style>

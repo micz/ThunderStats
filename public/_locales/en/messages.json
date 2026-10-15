@@ -1217,6 +1217,10 @@
       }
     }
   },
+  "CorrespondentsListsBelow": {
+    "message": "Full sender and recipient lists shown below ↓",
+    "description": "Link in the top correspondents card, shown when the full lists are open; it scrolls to them"
+  },
   "InternalTag": {
     "message": "internal",
     "description": "Tag next to an internal domain"

@@ -38,6 +38,7 @@
         <div class="ts-top-count">{{ row.total }}</div>
       </div>
     </div>
+    <button type="button" class="ts-link-btn ts-top-below" v-if="expanded && !is_loading && total_count > 0" @click="emit('reveal')">{{ lists_below_label }}</button>
   </div>
 </template>
 
@@ -53,11 +54,13 @@ const props = defineProps({
   is_loading: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(['toggleAll']);
+// reveal: scroll back to the full senders/recipients lists shown under the dashboard grid
+const emit = defineEmits(['toggleAll', 'reveal']);
 
 const received_small = browser.i18n.getMessage("received");
 const sent_small = browser.i18n.getMessage("sent");
 const show_less_label = browser.i18n.getMessage("ShowLess");
+const lists_below_label = browser.i18n.getMessage("CorrespondentsListsBelow");
 let see_all_label = computed(() => browser.i18n.getMessage("SeeAllCorrespondents", [props.total_count]));
 
 let max_total = computed(() => Math.max(1, ...props.rows.map(r => r.total)));
@@ -113,6 +116,10 @@ function rowTitle(row) {
 
 .ts-top-seg {
   height: 100%;
+}
+
+.ts-top-below {
+  align-self: flex-start;
 }
 
 .ts-top-count {

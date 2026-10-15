@@ -84,7 +84,7 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper. Colors come 
 | File | Description |
 |---|---|
 | `ChartDayVsNormal.vue` | Line chart of a single day (cumulative or hourly, per `_time_chart_progressive`): received and sent lines with an end dot, usual-range band of the same weekday, optional dashed comparison day, dashed "now" line and an HTML callout kept on its left |
-| `ChartPeriodDays.vue` | Grouped bars per day, week, month or year (received, optionally with the mails still in the inbox stacked in `--warn`; sent), today lighter, non-business days with muted labels, dashed average lines with label chips (first left, second right); optional Period B as dotted lines; with `selectable`, dragging selects a range of at least 2 bars (`chart-range-select.js`) and emits `zoom(from_index, to_index)` |
+| `ChartPeriodDays.vue` | Grouped bars per day, week, month or year (received, optionally with the mails still in the inbox stacked in `--warn`; sent), today lighter, non-business days with muted labels, dashed average lines with label chips (first left, second right); optional Period B as dotted lines; with `selectable`, dragging selects a range of bars, even a single one (`chart-range-select.js`; a plain click selects nothing) and emits `zoom(from_index, to_index)` |
 | `ChartHourlyAverage.vue` | Average received / sent per hour of the day, lines with a light area fill; optional Period B as dashed lines |
 
 ---

@@ -250,7 +250,7 @@ Chart helpers. The plugins used by a single chart (the "now" line, the average l
 | File | Purpose |
 |---|---|
 | `chart-theme.js` | `applyChartTheme(is_dark)` sets the global `Chart.defaults` text/grid colors and redraws open charts; called by `ThunderStatsView` when `tsStore.darkmode` changes. Charts must not set `Chart.defaults` themselves. Also exports `themeColor(name)` (current value of a CSS token) and `withAlpha(hex, alpha)` |
-| `chart-range-select.js` | `createRangeSelectPlugin({ enabled, min_items, color, onSelect })`: dragging on a category x axis highlights the whole band of the bars covered (full chart height, no tooltip while dragging) and on release calls `onSelect(from_index, to_index)` when at least `min_items` bars are covered. The chart must list `mousedown` and `mouseup` in `options.events`. Also exports `indexAtPixel` and `bandEdges` |
+| `chart-range-select.js` | `createRangeSelectPlugin({ enabled, color, onSelect })`: dragging on a category x axis highlights the whole band of the bars covered (full chart height, no tooltip while dragging) and on release calls `onSelect(from_index, to_index)`, also for a single bar; a plain click (less than 4px of movement) selects nothing. The chart must list `mousedown` and `mouseup` in `options.events`. Also exports `indexAtPixel` and `bandEdges` |
 
 ---
 

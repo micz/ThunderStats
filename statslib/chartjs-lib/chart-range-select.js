@@ -18,8 +18,11 @@
 
 // Range selection on a category x axis: dragging highlights the whole band of the
 // categories covered (full chart height) and, on release, calls
-// onSelect(from_index, to_index) when the band covers at least min_items categories.
+// onSelect(from_index, to_index), even for a single category. A plain click
+// (the mouse moved less than MIN_DRAG_PX) selects nothing.
 // While dragging the tooltip is hidden.
+
+const MIN_DRAG_PX = 4;
 
 // Category index under a pixel, clamped to the axis
 export function indexAtPixel(scale, x, count) {
@@ -36,11 +39,11 @@ export function bandEdges(scale, area, from, to, count) {
     return { left, right };
 }
 
-export function createRangeSelectPlugin({ enabled, min_items, color, onSelect }) {
-    let state = { dragging: false, start: -1, end: -1 };
+export function createRangeSelectPlugin({ enabled, color, onSelect }) {
+    let state = { dragging: false, start: -1, end: -1, start_x: 0, moved: false };
 
     let count = (chart) => chart.data.labels ? chart.data.labels.length : 0;
-    let reset = () => { state.dragging = false; state.start = -1; state.end = -1; };
+    let reset = () => { state.dragging = false; state.start = -1; state.end = -1; state.moved = false; };
 
     return {
         id: 'tsRangeSelect',
@@ -57,9 +60,15 @@ export function createRangeSelectPlugin({ enabled, min_items, color, onSelect })
                 if(event.x < area.left || event.x > area.right || event.y < area.top || event.y > area.bottom) return;
                 state.dragging = true;
                 state.start = state.end = indexAtPixel(scale, event.x, n);
+                state.start_x = event.x;
+                state.moved = false;
                 chart.tooltip.setActiveElements([], { x: 0, y: 0 });
                 args.changed = true;
             } else if(event.type == 'mousemove' && state.dragging) {
+                if(!state.moved && Math.abs(event.x - state.start_x) >= MIN_DRAG_PX) {
+                    state.moved = true;
+                    args.changed = true;
+                }
                 let index = indexAtPixel(scale, event.x, n);
                 if(index != state.end) {
                     state.end = index;
@@ -69,9 +78,10 @@ export function createRangeSelectPlugin({ enabled, min_items, color, onSelect })
             } else if(event.type == 'mouseup' && state.dragging) {
                 let from = Math.min(state.start, state.end);
                 let to = Math.max(state.start, state.end);
+                let moved = state.moved;
                 reset();
                 args.changed = true;
-                if(to - from + 1 >= min_items) onSelect(from, to);
+                if(moved) onSelect(from, to);
             } else if(event.type == 'mouseout' && state.dragging) {
                 reset();
                 args.changed = true;
@@ -84,7 +94,7 @@ export function createRangeSelectPlugin({ enabled, min_items, color, onSelect })
         },
 
         afterDatasetsDraw(chart) {
-            if(!state.dragging) return;
+            if(!state.dragging || !state.moved) return;
             let n = count(chart);
             let from = Math.min(state.start, state.end);
             let to = Math.max(state.start, state.end);

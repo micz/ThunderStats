@@ -48,7 +48,7 @@ const props = defineProps({
   cmp_sent: { type: Array, default: null },
   cmp_label: { type: String, default: '' },
   is_loading: { type: Boolean, default: true },
-  selectable: { type: Boolean, default: false },  // drag to select a range of at least 2 bars (Custom Query zoom)
+  selectable: { type: Boolean, default: false },  // drag to select a range of bars, even a single one (Custom Query zoom)
 });
 
 const emit = defineEmits(['zoom']);   // (from_index, to_index) of the selected bars
@@ -87,7 +87,6 @@ let chartData = computed(() => {
 
 const rangeSelectPlugin = createRangeSelectPlugin({
   enabled: () => props.selectable,
-  min_items: 2,
   color: () => withAlpha(themeColor('accent'), 0.14),
   onSelect: (from, to) => emit('zoom', from, to),
 });
@@ -202,7 +201,6 @@ const averageLinesPlugin = {
 }
 
 .ts-periodchart.is-selectable {
-  cursor: crosshair;
   user-select: none;
 }
 </style>

@@ -28,7 +28,8 @@
         <button type="button" class="ts-link-btn" v-if="!is_loading && total > 0" @click="show_details = !show_details">{{ show_details ? by_age_label : details_label }}</button>
       </div>
       <div class="ts-age-actions">
-        <div class="ts-mini-segmented" v-if="show_details && !is_loading">
+        <!-- kept in the layout (hidden) in the ages view, so the header has the same height and the title does not move -->
+        <div class="ts-mini-segmented" :class="{ 'is-hidden': !show_details }" :aria-hidden="!show_details" v-if="!is_loading && total > 0">
           <button type="button" :class="{ 'is-active': order == 'date' }" @click="order = 'date'">{{ by_date_label }}</button>
           <button type="button" :class="{ 'is-active': order == 'mails' }" @click="order = 'mails'">{{ by_mails_label }}</button>
         </div>
@@ -147,6 +148,10 @@ function barWidth(value, max) {
   display: flex;
   align-items: center;
   gap: 14px;
+}
+
+.ts-mini-segmented.is-hidden {
+  visibility: hidden;
 }
 
 .ts-age-hide {

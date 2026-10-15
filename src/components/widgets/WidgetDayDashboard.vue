@@ -25,7 +25,7 @@
 
     <div class="ts-kpi-row">
       <CounterKpi v-for="kpi in kpis" :key="kpi.id" :label="kpi.label" :value="kpi.value" :color="kpi.color" :delta="kpi.delta" :aside="kpi.aside" :sub="kpi.sub" :sub_title="kpi.sub_title" :is_loading="kpi.is_loading"
-          :expandable="kpi.expandable" :expanded="kpi.expandable && show_inbox_age" :toggle_title="inbox_age_title" :link="kpi.link" :class="{ 'is-expanded': kpi.expandable && show_inbox_age }"
+          :expandable="kpi.expandable" :expanded="kpi.expandable && show_inbox_age" :toggle_title="inbox_age_title" :link="kpi.link"
           @toggle="setInboxAge(!show_inbox_age)" @expand="setInboxAge(true)">
         <div class="ts-streak-strip" v-if="kpi.squares">
           <div v-for="square in kpi.squares" :key="square.key" class="ts-streak-square" :title="square.title" :style="{ background: square.bg, opacity: square.opacity }"></div>
@@ -198,9 +198,5 @@ let has_senders = computed(() => props.loading.involved || Object.keys(props.inv
 
 .ts-two-col:empty {
   display: none;
-}
-
-.ts-kpi.is-expanded {
-  border-color: var(--accent);
 }
 </style>

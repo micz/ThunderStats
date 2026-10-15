@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "ThunderStats",
-    "description": "Do you remember the old good Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
+    "description": "Do you remember the good old Eudora statistics? Do you miss them? Using this addon you can finally keep an eye on how you use your beloved Thunderbird!",
     "version": "3.0.0",
     "author": "Mic (m@micz.it)",
     "homepage_url": "http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/",

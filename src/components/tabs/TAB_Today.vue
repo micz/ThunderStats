@@ -20,7 +20,7 @@
 
 <template>
     <ExportMenu ref="ExportMenu_ref" :export_data="_export_data" currentTab="tab-today" :showInternalExternal="show_internal_mail_percent" v-if="job_done" />
-    <WidgetDayDashboard v-bind="day_model" :loading="dashboard_loading">
+    <WidgetDayDashboard v-bind="day_model" :loading="dashboard_loading" :inbox_dates="result_inbox ? result_inbox.dates : {}" :inbox_loading="is_loading_counter_inbox">
         <template #rail>
             <div class="ts-card ts-rail-card" v-if="today_time_chart_show_yesterday">
                 <div class="ts-rail-title">{{ comparison_card_title }}</div>
@@ -30,9 +30,6 @@
                 <div class="ts-rail-title" v-text="previous_days_title"></div>
                 <CounterManyDays_Table :is_loading="is_loading_counter_many_days" :sent_total="counter_many_days_sent_total" :sent_max="counter_many_days_sent_max" :sent_min="counter_many_days_sent_min" :sent_avg="counter_many_days_sent_avg" :rcvd_total="counter_many_days_rcvd_total" :rcvd_max="counter_many_days_rcvd_max" :rcvd_min="counter_many_days_rcvd_min" :rcvd_avg="counter_many_days_rcvd_avg" />
             </div>
-        </template>
-        <template #bottom>
-            <WidgetInboxAge :inbox_dates="result_inbox ? result_inbox.dates : {}" :is_loading="is_loading_counter_inbox" />
         </template>
     </WidgetDayDashboard>
 </template>
@@ -53,7 +50,6 @@ import { tsUtils } from '@statslib/mzts-utils';
 import { tsExport } from '@statslib/mzts-export';
 import { tsDayModel } from '@statslib/mzts-daymodel';
 import { BASELINE_WEEKS } from '@statslib/mzts-insights';
-import WidgetInboxAge from '../widgets/WidgetInboxAge.vue';
 import WidgetDayDashboard from '../widgets/WidgetDayDashboard.vue';
 
 

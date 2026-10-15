@@ -157,11 +157,14 @@ export const tsDayModel = {
         kpis.push({ id: 'rcvd', label: msg(d.labels.received), value: d.R, color: 'var(--rcvd)', delta: rcvd_cmp.delta, sub: rcvd_cmp.sub, sub_title: baseline_title, is_loading: !input.result });
         kpis.push({ id: 'sent', label: msg(d.labels.sent), value: d.S, color: 'var(--sent)', delta: sent_cmp.delta, sub: sent_cmp.sub, sub_title: baseline_title, is_loading: !input.result });
 
-        // inbox backlog
+        // inbox backlog, expandable into the "How old is your inbox" strip
+        let over_month = tsInsights.inboxAgeBuckets(d.inbox_dates).filter(b => b.max_days > 30).reduce((acc, b) => acc + b.n, 0);
         kpis.push({
             id: 'inbox', label: msg("TotalInbox"), value: d.inbox_total,
             delta: (input.result && d.L > 0) ? { text: '+' + d.L, color: 'var(--warn)', title: msg("InboxBacklogDeltaTooltip") } : null,
             sub: input.inbox ? msg("InboxBacklogSub", [input.inbox.unread, tsInsights.oldestDays(d.inbox_dates)]) : '',
+            expandable: true,
+            link: d.inbox_total > 0 ? (over_month > 0 ? msg("InboxAgeKpiLink", [over_month]) : msg("InboxAgeKpiLinkFresh")) : '',
             is_loading: !input.inbox || !input.result,
         });
 

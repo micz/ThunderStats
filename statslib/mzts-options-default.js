@@ -25,6 +25,7 @@ export const prefs_default = {
     'today_time_chart_do_no_show_future': true,
     '_time_chart_progressive': false,
     'inbox0_openFolderInFirstTab': false,
+    'inbox_age_expanded': false,      // "How old is your inbox" strip open under the Inbox backlog KPI (single-day views)
     'startup_account': 0,
     'remember_last_tab': false,
     'remember_last_account': false,

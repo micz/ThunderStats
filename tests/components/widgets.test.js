@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { mount, flushPromises } from '@vue/test-utils';
 import WidgetStatusStrip from '@/components/widgets/WidgetStatusStrip.vue';
 import WidgetInboxZeroCalendar from '@/components/widgets/WidgetInboxZeroCalendar.vue';
 import WidgetDayDashboard from '@/components/widgets/WidgetDayDashboard.vue';
@@ -122,6 +122,35 @@ describe('dashboards with the model output', () => {
       expect(wrapper.text()).toContain('KeepingUp');
       expect(wrapper.findAll('.ts-streak-square')).toHaveLength(14);
     }
+  });
+
+  it('day dashboard opens the inbox age strip from the Inbox backlog KPI and remembers it', async () => {
+    let inbox_dates = { [TODAY]: 1, '20260601': 2 };
+    let model = tsDayModel.build({
+      kind: 'today', day: day(TODAY),
+      result: makeResult(mails(3, { key: TODAY, hour: 9, correspondent: 'a@x.it' }), { from: TODAY, to: TODAY }),
+      inbox: makeInbox(inbox_dates), baseline_days: null, prev_days: { '20261012': { received: 4 } }, prev_days_num: 7,
+      progressive: false, hide_future: true, cmp: null, internal: null, involved_num: 10, first_day_week: 1,
+    });
+    let wrapper = mount(WidgetDayDashboard, options({ props: { ...model, loading: LOADED, inbox_dates, inbox_loading: false } }));
+    await flushPromises();
+    expect(warnings).toEqual([]);
+    expect(wrapper.find('.ts-age-stack').exists()).toBe(false);
+
+    await wrapper.find('.ts-kpi-link').trigger('click');
+    expect(wrapper.text()).toContain('InboxAgeKpiLink[2]');
+    expect(wrapper.findAll('.ts-age-segment')).toHaveLength(2);
+    expect(wrapper.find('.ts-kpi-toggle').attributes('aria-expanded')).toBe('true');
+    expect((await browser.storage.sync.get('inbox_age_expanded')).inbox_age_expanded).toBe(true);
+
+    await wrapper.find('.ts-kpi-toggle').trigger('click');
+    expect(wrapper.find('.ts-age-stack').exists()).toBe(false);
+    expect((await browser.storage.sync.get('inbox_age_expanded')).inbox_age_expanded).toBe(false);
+
+    await browser.storage.sync.set({ inbox_age_expanded: true });
+    let reopened = mount(WidgetDayDashboard, options({ props: { ...model, loading: LOADED, inbox_dates, inbox_loading: false } }));
+    await flushPromises();
+    expect(reopened.find('.ts-age-stack').exists()).toBe(true);
   });
 
   it.each([['loading', false, LOADING], ['loaded', true, LOADED]])('period dashboard, %s', (_, loaded, loading) => {

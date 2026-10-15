@@ -1603,6 +1603,46 @@
     "message": "Nothing in the inbox is older than a month.",
     "description": ""
   },
+  "InboxAgeKpiLink": {
+    "message": "$NUM$ waiting over a month ›",
+    "description": "Link in the Inbox backlog KPI that opens the How old is your inbox strip",
+    "placeholders": {
+      "num": {
+        "content": "$1"
+      }
+    }
+  },
+  "InboxAgeKpiLinkFresh": {
+    "message": "How old is your inbox ›",
+    "description": "Link in the Inbox backlog KPI that opens the How old is your inbox strip, when nothing is older than a month"
+  },
+  "InboxAgeToggle": {
+    "message": "Show or hide how old your inbox is",
+    "description": "Tooltip of the toggle button in the Inbox backlog KPI"
+  },
+  "InboxAgeHide": {
+    "message": "Hide",
+    "description": "Closes the How old is your inbox strip"
+  },
+  "InboxAgeSegmentTooltip": {
+    "message": "$NAME$: $NUM$ mails ($PERCENT$%)",
+    "description": "Tooltip of a segment of the inbox age bar",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      },
+      "num": {
+        "content": "$2"
+      },
+      "percent": {
+        "content": "$3"
+      }
+    }
+  },
+  "prefs_inbox_age_expanded": {
+    "message": "Show how old the inbox is under the Inbox backlog counter",
+    "description": "Option: keeps the How old is your inbox strip open in the single-day views"
+  },
   "DateRange": {
     "message": "Period",
     "description": "Custom query panel field"
@@ -1819,6 +1859,10 @@
   },
   "Opt_MarkInboxBarsHint": {
     "message": "Multi-day views",
+    "description": ""
+  },
+  "Opt_InboxAgeHint": {
+    "message": "Single-day views: Today, Yesterday and the custom query of one day. The arrow on the counter opens and closes it too",
     "description": ""
   },
   "Opt_InternalMail": {

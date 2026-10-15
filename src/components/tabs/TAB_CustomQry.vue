@@ -110,11 +110,7 @@
 
         <!-- results -->
         <template v-if="do_run">
-            <WidgetDayDashboard v-if="do_single_day" v-bind="day_model" :loading="day_loading">
-                <template #bottom>
-                    <WidgetInboxAge :inbox_dates="result_inbox ? result_inbox.dates : {}" :is_loading="is_loading_inbox" />
-                </template>
-            </WidgetDayDashboard>
+            <WidgetDayDashboard v-if="do_single_day" v-bind="day_model" :loading="day_loading" :inbox_dates="result_inbox ? result_inbox.dates : {}" :inbox_loading="is_loading_inbox" />
             <WidgetPeriodDashboard v-else v-bind="period_model" :loading="period_loading" :aggregations="aggregation_choices" :aggregation="aggregation" @aggregation="aggregation = $event" />
         </template>
         <div class="ts-card ts-query-empty" v-else>{{ labels.choose_period }}</div>
@@ -142,7 +138,6 @@ import Multiselect from '@vueform/multiselect';
 import '@vueform/multiselect/themes/default.css';
 import WidgetDayDashboard from '../widgets/WidgetDayDashboard.vue';
 import WidgetPeriodDashboard from '../widgets/WidgetPeriodDashboard.vue';
-import WidgetInboxAge from '../widgets/WidgetInboxAge.vue';
 
 
 const emit = defineEmits(['updateCustomQry', 'updateElapsed', 'customQryUserCancelled']);

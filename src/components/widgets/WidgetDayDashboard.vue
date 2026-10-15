@@ -24,12 +24,16 @@
     <WidgetStatusStrip v-bind="strip" :is_loading="loading.strip" />
 
     <div class="ts-kpi-row">
-      <CounterKpi v-for="kpi in kpis" :key="kpi.id" :label="kpi.label" :value="kpi.value" :color="kpi.color" :delta="kpi.delta" :aside="kpi.aside" :sub="kpi.sub" :sub_title="kpi.sub_title" :is_loading="kpi.is_loading">
+      <CounterKpi v-for="kpi in kpis" :key="kpi.id" :label="kpi.label" :value="kpi.value" :color="kpi.color" :delta="kpi.delta" :aside="kpi.aside" :sub="kpi.sub" :sub_title="kpi.sub_title" :is_loading="kpi.is_loading"
+          :expandable="kpi.expandable" :expanded="kpi.expandable && show_inbox_age" :toggle_title="inbox_age_title" :link="kpi.link" :class="{ 'is-expanded': kpi.expandable && show_inbox_age }"
+          @toggle="setInboxAge(!show_inbox_age)" @expand="setInboxAge(true)">
         <div class="ts-streak-strip" v-if="kpi.squares">
           <div v-for="square in kpi.squares" :key="square.key" class="ts-streak-square" :title="square.title" :style="{ background: square.bg, opacity: square.opacity }"></div>
         </div>
       </CounterKpi>
     </div>
+
+    <WidgetInboxAge v-if="show_inbox_age" :inbox_dates="inbox_dates" :is_loading="inbox_loading" @close="setInboxAge(false)" />
 
     <div class="ts-main-grid">
       <div class="ts-card ts-chart-card">
@@ -69,16 +73,14 @@
       <WidgetDomainBars :title="domains_title" :rows="domains" :empty_text="empty_text" :is_loading="loading.domains" />
       <WidgetEndedUp :title="ended.title" :folder_rows="ended.folders" :tag_rows="ended.tags" :note="ended.note" :info="ended.info" :open_in_first_tab="ended.open_in_first_tab" :empty_text="empty_text" :is_loading="loading.folders" />
     </div>
-
-    <div class="ts-two-col-fill">
-      <slot name="bottom"></slot>
-    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { tsPrefs } from '@statslib/mzts-options';
 import WidgetStatusStrip from './WidgetStatusStrip.vue';
+import WidgetInboxAge from './WidgetInboxAge.vue';
 import WidgetTopCorrespondents from './WidgetTopCorrespondents.vue';
 import WidgetDomainBars from './WidgetDomainBars.vue';
 import WidgetEndedUp from './WidgetEndedUp.vue';
@@ -88,7 +90,7 @@ import TableInvolved from '../tables/TableInvolved.vue';
 
 const props = defineProps({
   strip: { type: Object, default: () => ({}) },       // WidgetStatusStrip props
-  kpis: { type: Array, default: () => [] },           // [{ id, label, value, color, delta, aside, sub, sub_title, squares, is_loading }]
+  kpis: { type: Array, default: () => [] },           // [{ id, label, value, color, delta, aside, sub, sub_title, squares, expandable, link, is_loading }]
   chart: { type: Object, default: () => ({}) },       // ChartDayVsNormal props + title, note
   top: { type: Object, default: () => ({}) },         // { title, rows, count, empty_text }
   involved: { type: Object, default: () => ({}) },    // { recipients, senders, recipients_title, senders_title, no_recipients_text, no_senders_text }
@@ -96,6 +98,8 @@ const props = defineProps({
   ended: { type: Object, default: () => ({}) },       // { title, folders, tags, note }
   empty_text: { type: String, default: '' },
   loading: { type: Object, default: () => ({}) },     // { strip, chart, involved, domains, folders }
+  inbox_dates: { type: Object, default: () => ({}) }, // getInboxZeroDates().dates, for the "How old is your inbox" strip
+  inbox_loading: { type: Boolean, default: false },
 });
 
 const received_label = browser.i18n.getMessage("ReceivedMails");
@@ -103,7 +107,31 @@ const sent_label = browser.i18n.getMessage("SentMails");
 const usual_label = browser.i18n.getMessage("UsualRange");
 const domains_title = browser.i18n.getMessage("Domains");
 
+const inbox_age_title = browser.i18n.getMessage("InboxAgeToggle");
+
 let show_all_involved = ref(false);
+
+// the "How old is your inbox" strip under the KPI row, opened from the Inbox backlog KPI; the state is the inbox_age_expanded pref
+let show_inbox_age = ref(false);
+
+onMounted(async () => {
+  browser.storage.onChanged.addListener(onStorageChanged);
+  show_inbox_age.value = await tsPrefs.getPref("inbox_age_expanded");
+});
+
+onUnmounted(() => {
+  browser.storage.onChanged.removeListener(onStorageChanged);
+});
+
+// keeps the other single-day tabs and the options page in sync
+function onStorageChanged(changes, area) {
+  if((area === 'sync') && changes.inbox_age_expanded) show_inbox_age.value = !!changes.inbox_age_expanded.newValue;
+}
+
+function setInboxAge(open) {
+  show_inbox_age.value = open;
+  tsPrefs.setPref("inbox_age_expanded", open);
+}
 
 let has_recipients = computed(() => props.loading.involved || Object.keys(props.involved.recipients || {}).length > 0);
 let has_senders = computed(() => props.loading.involved || Object.keys(props.involved.senders || {}).length > 0);
@@ -168,8 +196,11 @@ let has_senders = computed(() => props.loading.involved || Object.keys(props.inv
   min-width: 0;
 }
 
-.ts-two-col:empty,
-.ts-two-col-fill:empty {
+.ts-two-col:empty {
   display: none;
+}
+
+.ts-kpi.is-expanded {
+  border-color: var(--accent);
 }
 </style>

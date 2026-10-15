@@ -213,7 +213,7 @@ Constructor: `new tsLogger(prefix, do_debug)`. Methods: `log(msg)` (only when `d
 
 ### `mzts-daymodel.js` — Single-Day Dashboard Model
 
-**Object:** `tsDayModel`. `build(input)` returns the props of `WidgetDayDashboard` (status strip, KPIs, chart, top correspondents, tables, domains, folders/tags) from the data loaded by a tab; every input except `kind` and `day` may be `null` while loading. `kind` is `today` (day in progress: "by now" comparisons, now line), `yesterday` or `day` (other single day, e.g. last business day). The status badge is "Inbox zero" (empty inbox), "Keeping up" (clear in ≤ 5 working days) or "Backlog growing". Dates use the Thunderbird UI language. `neutral_badge` (Custom Query single day) shows "Query result" instead of the keeping-up status.
+**Object:** `tsDayModel`. `build(input)` returns the props of `WidgetDayDashboard` (status strip, KPIs, chart, top correspondents, tables, domains, folders/tags) from the data loaded by a tab; every input except `kind` and `day` may be `null` while loading. `kind` is `today` (day in progress: "by now" comparisons, now line), `yesterday` or `day` (other single day, e.g. last business day). The status badge is "Inbox zero" (empty inbox), "Keeping up" (clear in ≤ 5 working days) or "Backlog growing". Dates use the Thunderbird UI language. `neutral_badge` (Custom Query single day) shows "Query result" instead of the keeping-up status. The Inbox backlog KPI has `expandable: true` and a `link` ("N waiting over a month ›", or "How old is your inbox ›" when nothing is older than a month; empty with an empty inbox) that open the inbox age strip.
 
 ---
 

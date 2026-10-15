@@ -18,35 +18,43 @@
  */
 -->
 
-<!-- "How old is your inbox": mails still in the inbox by age, with the per-date details list -->
+<!-- "How old is your inbox": mails still in the inbox by age as one stacked bar, with the per-date details list.
+     Opened from the Inbox backlog KPI of the single-day dashboard; emits 'close' from the Hide button -->
 <template>
-  <div class="ts-card ts-bars-card">
+  <div class="ts-card ts-bars-card ts-age-card">
     <div class="ts-bars-head">
-      <div class="ts-card-title">{{ title }}</div>
-      <div class="ts-mini-segmented" v-if="show_details && !is_loading">
-        <button type="button" :class="{ 'is-active': order == 'date' }" @click="order = 'date'">{{ by_date_label }}</button>
-        <button type="button" :class="{ 'is-active': order == 'mails' }" @click="order = 'mails'">{{ by_mails_label }}</button>
+      <div class="ts-age-title">
+        <div class="ts-card-title">{{ title }}</div>
+        <button type="button" class="ts-link-btn" v-if="!is_loading && total > 0" @click="show_details = !show_details">{{ show_details ? by_age_label : details_label }}</button>
+      </div>
+      <div class="ts-age-actions">
+        <div class="ts-mini-segmented" v-if="show_details && !is_loading">
+          <button type="button" :class="{ 'is-active': order == 'date' }" @click="order = 'date'">{{ by_date_label }}</button>
+          <button type="button" :class="{ 'is-active': order == 'mails' }" @click="order = 'mails'">{{ by_mails_label }}</button>
+        </div>
+        <button type="button" class="ts-link-btn ts-age-hide" @click="emit('close')">{{ hide_label }}</button>
       </div>
     </div>
     <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="" /></div>
     <div class="ts-bars-empty" v-else-if="total == 0">{{ empty_label }}</div>
     <template v-else>
-      <div class="ts-bars-rows" v-if="!show_details">
-        <div class="ts-age-row" v-for="bucket in buckets" :key="bucket.id">
-          <div class="ts-age-name">{{ bucket.label }}</div>
-          <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(bucket.n, buckets_max), background: bucket.stale ? 'var(--warn)' : 'var(--rcvd)' }"></div><span class="ts-bar-count">{{ bucket.n }}</span></div>
+      <template v-if="!show_details">
+        <div class="ts-age-stack">
+          <div class="ts-age-segment" v-for="bucket in buckets.filter(b => b.n > 0)" :key="bucket.id" :title="bucket.title" :style="{ flexGrow: bucket.n, background: bucket.color }"></div>
         </div>
-      </div>
+        <div class="ts-age-legend">
+          <div class="ts-age-legend-item" v-for="bucket in buckets" :key="bucket.id" :title="bucket.title">
+            <span class="ts-age-swatch" :style="{ background: bucket.color }"></span>{{ bucket.label }} <span class="ts-bar-count">{{ bucket.n }}</span>
+          </div>
+        </div>
+      </template>
       <div class="ts-bars-rows ts-age-details" v-else>
         <div class="ts-age-row" v-for="row in date_rows" :key="row.key">
           <div class="ts-age-name">{{ row.label }}</div>
           <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(row.n, dates_max), background: 'var(--rcvd)' }"></div><span class="ts-bar-count">{{ row.n }}</span></div>
         </div>
       </div>
-      <div class="ts-age-foot">
-        <div class="ts-bars-note">{{ note }}</div>
-        <button type="button" class="ts-link-btn" @click="show_details = !show_details">{{ show_details ? by_age_label : details_label }}</button>
-      </div>
+      <div class="ts-bars-note">{{ note }}</div>
     </template>
   </div>
 </template>
@@ -55,6 +63,8 @@
 import { ref, computed, watch } from 'vue';
 import { tsInsights } from '@statslib/mzts-insights';
 import { tsUtils } from '@statslib/mzts-utils';
+
+const emit = defineEmits(['close']);
 
 const props = defineProps({
   inbox_dates: { type: Object, default: () => ({}) },   // getInboxZeroDates().dates: {YYYYMMDD: mails still in the inbox}
@@ -66,12 +76,23 @@ const BUCKET_LABELS = {
   month: "InboxAgeMonth", quarter: "InboxAgeQuarter", older: "InboxAgeOlder",
 };
 
+// from fresh to stale: the received color gets stronger up to a month, then the warning color
+const BUCKET_COLORS = {
+  today: 'color-mix(in srgb, var(--rcvd) 35%, var(--surface2))',
+  yesterday: 'color-mix(in srgb, var(--rcvd) 55%, var(--surface2))',
+  week: 'color-mix(in srgb, var(--rcvd) 78%, var(--surface2))',
+  month: 'var(--rcvd)',
+  quarter: 'color-mix(in srgb, var(--warn) 60%, var(--surface2))',
+  older: 'var(--warn)',
+};
+
 const title = browser.i18n.getMessage("InboxMailsDateSpreading");
 const empty_label = browser.i18n.getMessage("NoMailsInbox");
 const details_label = browser.i18n.getMessage("InboxMailsDateSpreadingExtended");
 const by_age_label = browser.i18n.getMessage("InboxAgeByAge");
 const by_date_label = browser.i18n.getMessage("Date");
 const by_mails_label = browser.i18n.getMessage("Mails");
+const hide_label = browser.i18n.getMessage("InboxAgeHide");
 
 let show_details = ref(false);
 let order = ref('date');
@@ -81,13 +102,17 @@ watch(() => props.is_loading, (loading) => { if(loading) show_details.value = fa
 
 let total = computed(() => tsInsights.sum(Object.values(props.inbox_dates)));
 
-let buckets = computed(() => tsInsights.inboxAgeBuckets(props.inbox_dates).map(b => ({
-  id: b.id,
-  n: b.n,
-  label: browser.i18n.getMessage(BUCKET_LABELS[b.id]),
-  stale: b.max_days > 30,
-})));
-let buckets_max = computed(() => Math.max(1, ...buckets.value.map(b => b.n)));
+let buckets = computed(() => tsInsights.inboxAgeBuckets(props.inbox_dates).map(b => {
+  let label = browser.i18n.getMessage(BUCKET_LABELS[b.id]);
+  return {
+    id: b.id,
+    n: b.n,
+    label,
+    color: BUCKET_COLORS[b.id],
+    stale: b.max_days > 30,
+    title: browser.i18n.getMessage("InboxAgeSegmentTooltip", [label, b.n, total.value > 0 ? Math.round(b.n / total.value * 100) : 0]),
+  };
+}));
 
 let note = computed(() => {
   let over_month = buckets.value.filter(b => b.stale).reduce((acc, b) => acc + b.n, 0);
@@ -114,6 +139,59 @@ function barWidth(value, max) {
 </script>
 
 <style scoped>
+.ts-age-card {
+  gap: 14px;
+}
+
+.ts-age-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ts-age-hide {
+  color: var(--text2);
+}
+
+.ts-age-stack {
+  display: flex;
+  gap: 2px;
+  height: 22px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.ts-age-segment {
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-width: 6px;
+}
+
+.ts-age-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+}
+
+.ts-age-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.ts-age-legend-item .ts-bar-count {
+  color: var(--text);
+}
+
+.ts-age-swatch {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
 .ts-age-row {
   display: grid;
   grid-template-columns: minmax(90px, 150px) minmax(0, 1fr);
@@ -129,10 +207,6 @@ function barWidth(value, max) {
   white-space: nowrap;
 }
 
-.ts-age-row .ts-bar {
-  height: 15px;
-}
-
 .ts-age-details {
   max-height: 320px;
   overflow-y: auto;
@@ -143,11 +217,10 @@ function barWidth(value, max) {
   height: 11px;
 }
 
-.ts-age-foot {
+.ts-age-title {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 8px 16px;
   flex-wrap: wrap;
+  gap: 4px 16px;
 }
 </style>

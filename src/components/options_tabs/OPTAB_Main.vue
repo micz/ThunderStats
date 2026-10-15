@@ -67,6 +67,7 @@
     <div class="opt-card-head"><div class="opt-card-title">{{ t('InboxZero') }}</div></div>
     <OptRow pref="many_days_show_inbox" :label="t('ManyDaysShowInbox')" :hint="t('Opt_MarkInboxBarsHint')"/>
     <OptRow pref="inbox0_openFolderInFirstTab" :label="t('folderspreadchart_openinfirsttab')"/>
+    <OptRow pref="inbox_age_expanded" :label="t('prefs_inbox_age_expanded')" :hint="t('Opt_InboxAgeHint')"/>
   </section>
 
   <section class="opt-card">

@@ -111,7 +111,7 @@
         <!-- results -->
         <template v-if="do_run">
             <WidgetDayDashboard v-if="do_single_day" v-bind="day_model" :loading="day_loading" :inbox_dates="result_inbox ? result_inbox.dates : {}" :inbox_loading="is_loading_inbox" />
-            <WidgetPeriodDashboard v-else v-bind="period_model" :loading="period_loading" :aggregations="aggregation_choices" :aggregation="aggregation" @aggregation="aggregation = $event" />
+            <WidgetPeriodDashboard v-else v-bind="period_model" :loading="period_loading" :aggregations="aggregation_choices" :aggregation="aggregation" @aggregation="aggregation = $event" :zoomable="true" @zoom="zoomChart" @zoom_reset="resetZoom" @zoom_query="runZoomQuery" />
         </template>
         <div class="ts-card ts-query-empty" v-else>{{ labels.choose_period }}</div>
     </div>
@@ -262,6 +262,8 @@ let result_inbox = ref(null);
 let baseline_days = ref(null);
 let result_prev_days = ref(null);
 let query_days = ref([]);
+let zoom_days = ref(null);          // days shown in the main chart when zoomed, a slice of query_days
+let query_b_start = null;           // Period B start of the last query, or null without comparison
 let query_filtered = ref(false);
 
 let is_loading_data = ref(true);
@@ -369,6 +371,7 @@ let period_model = computed(() => tsPeriodModel.build({
     duplicates_note: filter_duplicates.value,
     open_folder_in_first_tab: inbox0_openFolderInFirstTab.value,
     aggregation: aggregation.value,
+    zoom_days: zoom_days.value,
     cmp_result: result_B.value,
 }));
 
@@ -505,6 +508,35 @@ function defaultAggregation(num_days) {
   return 'year';
 }
 
+// Zoom on the bars from..to of the main chart: the days they cover, grouped for their length
+function zoomChart(from, to) {
+  let bars = period_model.value.chart.days;
+  if(!bars[from] || !bars[to]) return;
+  let first = bars[from].first, last = bars[to].last;
+  let shown = zoom_days.value || query_days.value;
+  zoom_days.value = shown.filter(k => k >= first && k <= last);
+  aggregation.value = defaultAggregation(zoom_days.value.length);
+}
+
+function resetZoom() {
+  zoom_days.value = null;
+  aggregation.value = defaultAggregation(query_days.value.length);
+}
+
+// New query on the zoomed days with the same filters; Period B moves by the same offset
+function runZoomQuery() {
+  if(!zoom_days.value || zoom_days.value.length == 0) return;
+  let offset = query_days.value.indexOf(zoom_days.value[0]);
+  if(query_b_start && offset >= 0) {
+    let start_b = new Date(query_b_start);
+    start_b.setDate(start_b.getDate() + offset);
+    dateQryB_start.value = start_b;
+  }
+  dateQry.value = [tsUtils.parseYYYYMMDDToDate(zoom_days.value[0]), tsUtils.parseYYYYMMDDToDate(zoom_days.value[zoom_days.value.length - 1])];
+  active_preset.value = "";
+  update();
+}
+
 function dayKeys(from_date, to_date) {
   let keys = [];
   let day = new Date(from_date);
@@ -536,6 +568,7 @@ async function doQry(){
   loadingDo();
   do_single_day.value = (customqry_totaldays_num.value == 1);
   aggregation.value = defaultAggregation(customqry_totaldays_num.value);
+  zoom_days.value = null;
   query_days.value = dayKeys(dateQry.value[0], dateQry.value[1]);
   query_filtered.value = advanced_filters_set.value;
   tabId.value = "tab-customqry";
@@ -632,7 +665,9 @@ async function updateData() {
               _export_data.value['compare_' + tsExport.export.folders.type] = result_period_b.folders;
               _export_data.value['compare_' + tsExport.export.domains.type] = result_period_b.domains;
               result_B.value = result_period_b;
+              query_b_start = fromDateB;
             } else {
+              query_b_start = null;
               for(let key of Object.keys(_export_data.value)) {
                 if(key.startsWith('compare_')) delete _export_data.value[key];
               }

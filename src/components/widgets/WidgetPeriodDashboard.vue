@@ -34,6 +34,11 @@
           <div class="ts-mini-segmented" v-if="aggregations.length">
             <button type="button" v-for="item in aggregations" :key="item.id" :class="{ 'is-active': item.id == aggregation }" @click="emit('aggregation', item.id)">{{ item.label }}</button>
           </div>
+          <template v-if="zoomable && !loading.chart">
+            <span class="ts-zoom-chip" v-if="chart.zoom_text">{{ chart.zoom_text }}<button type="button" class="ts-zoom-reset" :title="zoom_reset_label" @click="emit('zoom_reset')">&times;</button></span>
+            <button type="button" class="ts-link-btn" v-if="chart.zoom_text" @click="emit('zoom_query')">{{ zoom_query_label }}</button>
+            <span class="ts-zoom-hint" v-else>{{ zoom_hint_label }}</span>
+          </template>
         </div>
         <div class="ts-legend">
           <div class="ts-legend-item"><span class="ts-legend-square" style="background: var(--rcvd)"></span>{{ received_label }}</div>
@@ -44,7 +49,7 @@
           <div class="ts-legend-item" v-if="chart.cmp_rcvd"><span class="ts-legend-dots"></span>{{ chart.cmp_label }}</div>
         </div>
       </div>
-      <ChartPeriodDays :days="chart.days" :rcvd="chart.rcvd" :rcvd_inbox="chart.rcvd_inbox" :sent="chart.sent" :avg_rcvd="chart.avg_rcvd" :avg_sent="chart.avg_sent" :avg_label="chart.avg_label" :cmp_rcvd="chart.cmp_rcvd" :cmp_sent="chart.cmp_sent" :cmp_label="chart.cmp_label" :is_loading="loading.chart" />
+      <ChartPeriodDays :days="chart.days" :rcvd="chart.rcvd" :rcvd_inbox="chart.rcvd_inbox" :sent="chart.sent" :avg_rcvd="chart.avg_rcvd" :avg_sent="chart.avg_sent" :avg_label="chart.avg_label" :cmp_rcvd="chart.cmp_rcvd" :cmp_sent="chart.cmp_sent" :cmp_label="chart.cmp_label" :is_loading="loading.chart" :selectable="zoomable" @zoom="(from, to) => emit('zoom', from, to)" />
       <div class="ts-card-note" v-if="chart.note && !loading.chart">{{ chart.note }}</div>
     </div>
 
@@ -121,9 +126,11 @@ const props = defineProps({
   loading: { type: Object, default: () => ({}) },     // { strip, chart, involved, domains, folders }
   aggregations: { type: Array, default: () => [] },   // [{ id, label }] grouping choices of the main chart (Custom Query)
   aggregation: { type: String, default: 'day' },
+  zoomable: { type: Boolean, default: false },        // the main chart can be zoomed by dragging (Custom Query)
 });
 
-const emit = defineEmits(['aggregation']);
+// zoom: (from_index, to_index) of the bars selected on the main chart
+const emit = defineEmits(['aggregation', 'zoom', 'zoom_reset', 'zoom_query']);
 
 const received_label = browser.i18n.getMessage("ReceivedMails");
 const sent_label = browser.i18n.getMessage("SentMails");
@@ -133,6 +140,9 @@ const avg_sent_label = browser.i18n.getMessage("AvgSentPerDay");
 const tod_title = browser.i18n.getMessage("TimeOfDayTitle");
 const period_b_label = browser.i18n.getMessage("PeriodB");
 const domains_title = browser.i18n.getMessage("Domains");
+const zoom_hint_label = browser.i18n.getMessage("ChartZoomHint");
+const zoom_reset_label = browser.i18n.getMessage("ChartZoomReset");
+const zoom_query_label = browser.i18n.getMessage("ChartZoomRunQuery");
 
 let has_recipients = computed(() => props.loading.involved || Object.keys(props.involved.recipients || {}).length > 0);
 let has_senders = computed(() => props.loading.involved || Object.keys(props.involved.senders || {}).length > 0);
@@ -176,6 +186,38 @@ let has_senders = computed(() => props.loading.involved || Object.keys(props.inv
   align-items: center;
   flex-wrap: wrap;
   gap: 8px 14px;
+}
+
+.ts-zoom-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 6px 3px 11px;
+  border-radius: 14px;
+  background: var(--accentSoft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ts-zoom-reset {
+  border: 0;
+  padding: 0 2px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ts-zoom-reset:hover {
+  color: var(--warn);
+}
+
+.ts-zoom-hint {
+  font-size: 12px;
+  color: var(--text3);
 }
 
 .ts-legend-dots {

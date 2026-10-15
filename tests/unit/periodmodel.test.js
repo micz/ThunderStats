@@ -215,6 +215,51 @@ describe('main chart', () => {
   });
 });
 
+describe('main chart zoom (Custom Query)', () => {
+  const ZOOM_DAYS = dayKeys('20260928', '20261011');     // two ISO weeks, Monday to Sunday
+  const zoomResult = () => makeResult([
+    ...mails(4, { key: '20260929' }),
+    ...mails(6, { key: '20261002' }),
+    ...mails(5, { key: '20261006' }),
+  ], { from: ZOOM_DAYS[0], to: ZOOM_DAYS.at(-1) });
+  const custom = (overrides) => input({ kind: 'custom', days: ZOOM_DAYS, stat_days: ZOOM_DAYS, today_key: null, result: zoomResult(), ...overrides });
+
+  it('shows only the zoomed days and keeps the averages of the whole period', () => {
+    let whole = tsPeriodModel.build(custom({})).chart;
+    let zoomed = tsPeriodModel.build(custom({ zoom_days: ZOOM_DAYS.slice(1, 5) })).chart;
+    expect(whole.zoom_text).toBe('');
+    expect(zoomed.zoom_text).not.toBe('');
+    expect(zoomed.days.map(d => d.key)).toEqual(['20260929', '20260930', '20261001', '20261002']);
+    expect(zoomed.days[0]).toMatchObject({ first: '20260929', last: '20260929' });
+    expect(zoomed.rcvd).toEqual([4, 0, 0, 6]);
+    expect(zoomed.avg_rcvd).toBeCloseTo(whole.avg_rcvd);
+    expect(zoomed.note).toMatch(/\|6\]$/);
+  });
+
+  it('groups only the zoomed days, with the per-bucket averages of the whole period', () => {
+    let zoomed = tsPeriodModel.build(custom({ zoom_days: dayKeys('20261001', '20261006'), aggregation: 'week' })).chart;
+    expect(zoomed.rcvd).toEqual([6, 5]);     // the mails of 29 September are out of the zoom
+    expect(zoomed.days.map(d => [d.first, d.last])).toEqual([['20261001', '20261004'], ['20261005', '20261006']]);
+    expect(zoomed.avg_rcvd).toBe(7.5);       // (10 + 5) / 2 weeks
+  });
+
+  it('gives the first and last day of each bucket without zoom', () => {
+    let chart = tsPeriodModel.build(custom({ aggregation: 'month' })).chart;
+    expect(chart.days.map(d => [d.key, d.first, d.last])).toEqual([['202609', '20260928', '20260930'], ['202610', '20261001', '20261011']]);
+    expect(chart.rcvd).toEqual([4, 11]);
+  });
+
+  it('cuts Period B with the same offset', () => {
+    let days = dayKeys('20261005', '20261007');
+    let result = makeResult([], { from: days[0], to: days.at(-1) });
+    let cmp_result = makeResult([
+      ...mails(1, { key: '20260901' }), ...mails(2, { key: '20260902' }), ...mails(3, { key: '20260903' }),
+    ], { from: '20260901', to: '20260903' });
+    let chart = tsPeriodModel.build(input({ kind: 'custom', days, stat_days: days, today_key: null, result, cmp_result, zoom_days: days.slice(1) })).chart;
+    expect(chart.cmp_rcvd).toEqual([2, 3]);
+  });
+});
+
 describe('Inbox Zero calendar', () => {
   it('pads to the first day of the week and counts the zero days', () => {
     let iz = tsPeriodModel.build(input({ inbox: makeInbox({ '20261008': 9 }) })).iz;

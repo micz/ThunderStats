@@ -18,10 +18,10 @@
  */
 -->
 
-<!-- Day-by-day grouped bars (received / sent) with the dashed average lines -->
+<!-- Day-by-day grouped bars (received / sent) with the dashed average lines; with selectable, dragging selects a range to zoom -->
 <template>
-  <div class="ts-periodchart">
-    <Bar :data="chartData" :options="chartOptions" :plugins="[averageLinesPlugin]" v-if="!is_loading" />
+  <div class="ts-periodchart" :class="{ 'is-selectable': selectable }">
+    <Bar :data="chartData" :options="chartOptions" :plugins="[averageLinesPlugin, rangeSelectPlugin]" v-if="!is_loading" />
     <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="" /></div>
   </div>
 </template>
@@ -32,6 +32,7 @@ import { Bar } from 'vue-chartjs';
 import { Chart, BarController, BarElement, LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip } from 'chart.js';
 import { tsStore } from '@statslib/mzts-store';
 import { themeColor, withAlpha } from '@statslib/chartjs-lib/chart-theme.js';
+import { createRangeSelectPlugin } from '@statslib/chartjs-lib/chart-range-select.js';
 
 Chart.register(BarController, BarElement, LineController, LineElement, PointElement, CategoryScale, LinearScale, Tooltip);
 
@@ -47,7 +48,10 @@ const props = defineProps({
   cmp_sent: { type: Array, default: null },
   cmp_label: { type: String, default: '' },
   is_loading: { type: Boolean, default: true },
+  selectable: { type: Boolean, default: false },  // drag to select a range of at least 2 bars (Custom Query zoom)
 });
+
+const emit = defineEmits(['zoom']);   // (from_index, to_index) of the selected bars
 
 const label_received = browser.i18n.getMessage("ReceivedMails");
 const label_inbox = browser.i18n.getMessage("FolderLocation_percent_remaining");
@@ -81,11 +85,20 @@ let chartData = computed(() => {
   return { labels: props.days.map(d => d.label), datasets };
 });
 
+const rangeSelectPlugin = createRangeSelectPlugin({
+  enabled: () => props.selectable,
+  min_items: 2,
+  color: () => withAlpha(themeColor('accent'), 0.14),
+  onSelect: (from, to) => emit('zoom', from, to),
+});
+
 let chartOptions = computed(() => {
   tsStore.darkmode;
   let wide_gaps = props.days.length <= 14;
   return {
     responsive: true,
+    // mousedown and mouseup are not among the default events
+    ...(props.selectable ? { events: ['mousedown', 'mousemove', 'mouseup', 'mouseout', 'click', 'touchstart', 'touchmove'] } : {}),
     maintainAspectRatio: false,
     animation: false,
     datasets: { bar: { categoryPercentage: wide_gaps ? 0.7 : 0.9, barPercentage: 0.84 } },
@@ -120,7 +133,7 @@ let chartOptions = computed(() => {
         beginAtZero: true,
         border: { display: false },
         grid: { color: themeColor('line'), borderDash: [3, 3], tickBorderDash: [3, 3] },
-        ticks: { color: themeColor('text3'), font: { size: 11 }, maxTicksLimit: 3, precision: 0 },
+        ticks: { color: themeColor('text3'), font: { size: 11 }, maxTicksLimit: 5, precision: 0 },
       },
     },
   };
@@ -186,5 +199,10 @@ const averageLinesPlugin = {
 .ts-periodchart {
   position: relative;
   height: 240px;
+}
+
+.ts-periodchart.is-selectable {
+  cursor: crosshair;
+  user-select: none;
 }
 </style>

@@ -1369,6 +1369,18 @@
     "message": "Day by day",
     "description": ""
   },
+  "ChartZoomHint": {
+    "message": "Drag on the chart to zoom",
+    "description": "Hint next to the main chart of the custom query: dragging selects a range to zoom on."
+  },
+  "ChartZoomReset": {
+    "message": "Show the whole period",
+    "description": "Tooltip of the x on the zoom chip of the main chart."
+  },
+  "ChartZoomRunQuery": {
+    "message": "Run the query on this period",
+    "description": "Link next to the zoom chip: runs a new custom query on the zoomed period with the same filters."
+  },
   "PeriodNotePeak": {
     "message": "Peak on $DAY$ with $NUM$.",
     "description": "",

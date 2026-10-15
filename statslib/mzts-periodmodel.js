@@ -66,6 +66,7 @@ export const tsPeriodModel = {
         duplicates_note: boolean,          // folder counts include duplicates (filter_duplicates on): explain it
         open_folder_in_first_tab: boolean, // inbox0_openFolderInFirstTab pref
         aggregation: 'day' | 'week' | 'month' | 'year',   // grouping of the main chart (Custom Query)
+        zoom_days: [YYYYMMDD],       // days shown in the main chart when zoomed (Custom Query), a slice of days, or null
         cmp_result: object,          // Period B getFullStatsData output (Custom Query comparison), or null
       }
     */
@@ -250,36 +251,43 @@ export const tsPeriodModel = {
 
     chart(input, d) {
         let title = input.kind == 'manydays' ? msg("ChartPeriodTitle", [d.stat.length]) : msg("ChartPeriodTitleCustom");
-        let step = input.days.length <= 14 ? 1 : Math.ceil(input.days.length / 7);
-        let days = input.days.map((key, i) => {
+        // zoom (Custom Query): the chart shows only these days, the averages stay those of the whole period
+        let zoomed = !!(input.zoom_days && input.zoom_days.length);
+        let shown = zoomed ? input.zoom_days : input.days;
+        let shown_set = new Set(shown);
+        let step = shown.length <= 14 ? 1 : Math.ceil(shown.length / 7);
+        let days = shown.map((key, i) => {
             let date = toDate(key);
             let label = '';
             if(step == 1) label = this.shortDay(key);
             else if(i % step == 0) label = date.toLocaleDateString(locale(), { day: 'numeric', month: 'short' });
             return {
-                key, label,
+                key, label, first: key, last: key,
                 is_today: key == input.today_key,
                 is_business: tsCoreUtils.checkBusinessDay(key),
                 date_label: date.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' }),
             };
         });
-        let field = (name) => input.days.map(k => d.dates[k] ? d.dates[k][name] : 0);
+        let field = (name) => shown.map(k => d.dates[k] ? d.dates[k][name] : 0);
         let rcvd = field('received'), inbox = field('inbox'), sent = field('sent');
 
         let avg_rcvd = d.avg_keys.length ? this.sumKeys(d, d.avg_keys, 'received') / d.avg_keys.length : 0;
         let avg_sent = d.avg_keys.length ? this.sumKeys(d, d.avg_keys, 'sent') / d.avg_keys.length : 0;
 
-        // note: working days against the other days, and the peak day
+        // note: working days against the other days, and the peak day, on the days shown
         let note = '';
-        let other_days = d.avg_days.filter(k => !tsCoreUtils.checkBusinessDay(k));
+        let avg_days = d.avg_days.filter(k => shown_set.has(k));
+        let avg_business_days = d.avg_business_days.filter(k => shown_set.has(k));
+        let other_days = avg_days.filter(k => !tsCoreUtils.checkBusinessDay(k));
         let busiest = null;
         for(let key of d.stat) {
+            if(!shown_set.has(key)) continue;
             if(d.dates[key] && (!busiest || d.dates[key].received > d.dates[busiest].received)) busiest = key;
         }
         if(input.result && busiest && d.dates[busiest].received > 0) {
             let peak = msg("PeriodNotePeak", [this.shortDay(busiest), d.dates[busiest].received]);
-            if(d.avg_business_days.length && other_days.length) {
-                let bd_avg = Math.round(this.sumKeys(d, d.avg_business_days, 'received') / d.avg_business_days.length);
+            if(avg_business_days.length && other_days.length) {
+                let bd_avg = Math.round(this.sumKeys(d, avg_business_days, 'received') / avg_business_days.length);
                 let other_avg = Math.round(this.sumKeys(d, other_days, 'received') / other_days.length);
                 note = msg("PeriodNoteWorkingDays", [bd_avg, other_avg]) + ' ' + peak;
             } else {
@@ -295,35 +303,76 @@ export const tsPeriodModel = {
             avg_rcvd, avg_sent,
             avg_label: input.only_businessdays ? msg("AvgPerWorkingDayChip") : msg("AvgChip"),
             note,
+            zoom_text: zoomed ? this.zoomText(shown) : '',
         };
-        if(input.aggregation && input.aggregation != 'day') chart = this.bucketChart(input, chart);
-        return this.addComparison(input, chart);
+        if(input.aggregation && input.aggregation != 'day') chart = this.bucketChart(input, chart, d, shown);
+        return this.addComparison(input, chart, shown);
     },
 
-    // Main chart grouped by week, month or year (Custom Query)
-    bucketChart(input, chart) {
-        let source = { week: 'dates_weeks', month: 'dates_months', year: 'dates_years' }[input.aggregation];
-        let buckets = input.result ? input.result[source] : {};
-        let keys = Object.keys(buckets).sort();
-        let value = (k, field) => buckets[k][field] || 0;
-        let rcvd = keys.map(k => value(k, 'received'));
-        let inbox = keys.map(k => value(k, 'inbox'));
-        let sent = keys.map(k => value(k, 'sent'));
-        let step = keys.length <= 14 ? 1 : Math.ceil(keys.length / 7);
-        let days = keys.map((key, i) => {
-            let label = this.bucketLabel(key, input.aggregation);
-            return { key, label: i % step == 0 ? label : '', date_label: label, is_today: false, is_business: true };
+    // Short range of the zoomed days, e.g. "12 Mar – 30 Apr 2025"
+    zoomText(keys) {
+        let first = toDate(keys[0]), last = toDate(keys[keys.length - 1]);
+        let format = new Intl.DateTimeFormat(locale(), { day: 'numeric', month: 'short', year: 'numeric' });
+        return format.formatRange ? format.formatRange(first, last) : format.format(first) + ' – ' + format.format(last);
+    },
+
+    // Week (ISO, as in getFullStatsData), month or year key of a day
+    bucketKey(day_key, aggregation) {
+        switch(aggregation) {
+            case 'week': return tsUtils.dateToYYYYWW(toDate(day_key));
+            case 'month': return day_key.slice(0, 6);
+            case 'year': return day_key.slice(0, 4);
+            default: return day_key;
+        }
+    },
+
+    // Groups the given days of a dates object by week, month or year:
+    // [{ key, received, sent, inbox, first, last }] in the order of the days,
+    // first and last being the first and last of the given days in the bucket
+    bucketize(dates, day_keys, aggregation) {
+        let output = [];
+        let by_key = {};
+        for(let day_key of day_keys) {
+            let key = this.bucketKey(day_key, aggregation);
+            let bucket = by_key[key];
+            if(!bucket) {
+                bucket = by_key[key] = { key, received: 0, sent: 0, inbox: 0, first: day_key, last: day_key };
+                output.push(bucket);
+            }
+            let day = dates[day_key];
+            if(day) {
+                bucket.received += day.received || 0;
+                bucket.sent += day.sent || 0;
+                bucket.inbox += day.inbox || 0;
+            }
+            bucket.last = day_key;
+        }
+        return output;
+    },
+
+    // Main chart grouped by week, month or year (Custom Query), on the days shown;
+    // the averages are per bucket of the whole period
+    bucketChart(input, chart, d, shown) {
+        let buckets = this.bucketize(d.dates, shown, input.aggregation);
+        let all = shown === input.days ? buckets : this.bucketize(d.dates, input.days, input.aggregation);
+        let rcvd = buckets.map(b => b.received);
+        let inbox = buckets.map(b => b.inbox);
+        let sent = buckets.map(b => b.sent);
+        let step = buckets.length <= 14 ? 1 : Math.ceil(buckets.length / 7);
+        let days = buckets.map((b, i) => {
+            let label = this.bucketLabel(b.key, input.aggregation);
+            return { key: b.key, label: i % step == 0 ? label : '', date_label: label, first: b.first, last: b.last, is_today: false, is_business: true };
         });
-        let peak = keys.length ? keys.reduce((a, b) => value(b, 'received') > value(a, 'received') ? b : a) : null;
+        let peak = buckets.length ? buckets.reduce((a, b) => b.received > a.received ? b : a) : null;
         return Object.assign(chart, {
             days,
             rcvd: input.show_inbox ? rcvd.map((v, i) => Math.max(0, v - inbox[i])) : rcvd,
             rcvd_inbox: input.show_inbox ? inbox : null,
             sent,
-            avg_rcvd: keys.length ? tsInsights.sum(rcvd) / keys.length : 0,
-            avg_sent: keys.length ? tsInsights.sum(sent) / keys.length : 0,
+            avg_rcvd: all.length ? tsInsights.sum(all.map(b => b.received)) / all.length : 0,
+            avg_sent: all.length ? tsInsights.sum(all.map(b => b.sent)) / all.length : 0,
             avg_label: msg("AvgChip"),
-            note: (peak && value(peak, 'received') > 0) ? msg("PeriodNotePeak", [this.bucketLabel(peak, input.aggregation), value(peak, 'received')]) : '',
+            note: (input.result && peak && peak.received > 0) ? msg("PeriodNotePeak", [this.bucketLabel(peak.key, input.aggregation), peak.received]) : '',
         });
     },
 
@@ -338,15 +387,20 @@ export const tsPeriodModel = {
         }
     },
 
-    // Period B (Custom Query comparison) on the main chart, aligned by position with Period A
-    addComparison(input, chart) {
+    // Period B (Custom Query comparison) on the main chart, aligned by position with Period A;
+    // when zoomed, Period B is cut with the same offset in days
+    addComparison(input, chart, shown) {
         if(!input.cmp_result) return chart;
         let aggregation = input.aggregation || 'day';
-        let source = { day: 'dates', week: 'dates_weeks', month: 'dates_months', year: 'dates_years' }[aggregation];
-        let buckets = input.cmp_result[source];
-        let keys = Object.keys(buckets).sort().slice(0, chart.days.length);
-        chart.cmp_rcvd = keys.map(k => buckets[k].received || 0);
-        chart.cmp_sent = keys.map(k => buckets[k].sent || 0);
+        let dates = input.cmp_result.dates;
+        let offset = Math.max(0, input.days.indexOf(shown[0]));
+        let keys = Object.keys(dates).sort().slice(offset, offset + shown.length);
+        let values = aggregation == 'day'
+            ? keys.map(k => ({ received: dates[k].received || 0, sent: dates[k].sent || 0 }))
+            : this.bucketize(dates, keys, aggregation);
+        values = values.slice(0, chart.days.length);
+        chart.cmp_rcvd = values.map(v => v.received);
+        chart.cmp_sent = values.map(v => v.sent);
         chart.cmp_label = msg("PeriodB");
         return chart;
     },

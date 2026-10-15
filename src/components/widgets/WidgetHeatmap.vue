@@ -63,7 +63,7 @@ const props = defineProps({
 const title = browser.i18n.getMessage("HeatTitle");
 const fewer_label = browser.i18n.getMessage("HeatFewer");
 const more_label = browser.i18n.getMessage("HeatMore");
-const period_b_short = browser.i18n.getMessage("PeriodBShort");
+const period_b_label = browser.i18n.getMessage("PeriodB");
 
 let full_day = ref(false);
 
@@ -93,7 +93,7 @@ function cellTitle(hour, column, value) {
   let title = props.weekday_labels[column] + ' ' + tsUtils.formatHour(hour) + ' — ' + browser.i18n.getMessage("NumReceived", [value]);
   if(cmp_grid.value) {
     let row = cmp_grid.value.rows.find(r => r.hour == hour);
-    title += ' · ' + period_b_short + ' ' + browser.i18n.getMessage("NumReceived", [row ? row.cells[column] : 0]);
+    title += '\n' + period_b_label + ': ' + browser.i18n.getMessage("NumReceived", [row ? row.cells[column] : 0]);
   }
   return title;
 }

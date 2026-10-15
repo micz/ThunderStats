@@ -22,9 +22,12 @@
   <div class="ts-card ts-bars-card">
     <div class="ts-bars-head">
       <div class="ts-card-title">{{ title }}<span class="ts-info-icon" v-if="info" :title="info">i</span></div>
-      <div class="ts-mini-segmented">
-        <button type="button" :class="{ 'is-active': view == 'folders' }" @click="view = 'folders'">{{ folders_label }}</button>
-        <button type="button" :class="{ 'is-active': view == 'tags' }" @click="view = 'tags'">{{ tags_label }}</button>
+      <div class="ts-bars-tools">
+        <div class="ts-mini-segmented">
+          <button type="button" :class="{ 'is-active': view == 'folders' }" @click="view = 'folders'">{{ folders_label }}</button>
+          <button type="button" :class="{ 'is-active': view == 'tags' }" @click="view = 'tags'">{{ tags_label }}</button>
+        </div>
+        <PeriodSwitch v-model="period" v-if="has_b" />
       </div>
     </div>
     <div class="circle_wait" v-if="is_loading"><img src="@/assets/images/mzts-wait_circle.svg" alt="" /></div>
@@ -33,11 +36,11 @@
       <div class="ts-bars-rows" v-else>
         <div class="ts-ended-row" v-for="row in shown_rows" :key="row.id" :class="{ 'is-clickable': isClickable(row) }" :title="isClickable(row) ? open_folder_label : ''" @click="openRow(row)">
           <div class="ts-ended-name" :title="row.name">{{ row.name }}</div>
-          <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(row.n), background: rowColor(row) }"></div><span class="ts-bar-count">{{ row.n }}</span><span class="ts-cmp-value" v-if="row.cmp_n !== undefined">{{ period_b_short }} {{ row.cmp_n }}</span></div>
+          <div class="ts-bar-line"><div class="ts-bar" :style="{ width: barWidth(row.n), background: rowColor(row) }"></div><span class="ts-bar-count">{{ row.n }}</span><span class="ts-cmp-value" v-if="row.cmp_n !== undefined">{{ other_short }} {{ row.cmp_n }}</span></div>
         </div>
         <button type="button" class="ts-link-btn ts-bars-more" v-if="current_rows.length > max_rows" @click="show_all = !show_all">{{ show_all ? show_less_label : more_label }}</button>
       </div>
-      <div class="ts-bars-note" v-if="view == 'folders' && note">{{ note }}</div>
+      <div class="ts-bars-note" v-if="view == 'folders' && note && !show_b">{{ note }}</div>
     </template>
   </div>
 </template>
@@ -46,11 +49,14 @@
 import { ref, computed } from 'vue';
 import { tsStore } from '@statslib/mzts-store';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import PeriodSwitch from './PeriodSwitch.vue';
 
 const props = defineProps({
   title: { type: String, default: '' },
   folder_rows: { type: Array, default: () => [] },  // [{ id, name, n, kind: inbox|filed }]
-  tag_rows: { type: Array, default: () => [] },     // [{ id, name, n, color }]
+  tag_rows: { type: Array, default: () => [] },     // [{ id, name, n, color }]; cmp_n: count of the other period
+  folder_rows_b: { type: Array, default: null },    // Period B rows (Custom Query comparison): an A / B switch picks the lists shown
+  tag_rows_b: { type: Array, default: null },
   note: { type: String, default: '' },
   info: { type: String, default: '' },              // explanation shown by the info icon next to the title
   open_in_first_tab: { type: Boolean, default: false }, // inbox0_openFolderInFirstTab pref
@@ -64,12 +70,21 @@ const tags_label = browser.i18n.getMessage("Tags");
 const no_tags_text = browser.i18n.getMessage("NoTaggedMails");
 const show_less_label = browser.i18n.getMessage("ShowLess");
 const open_folder_label = browser.i18n.getMessage("OpenFolder");
+const period_a_short = browser.i18n.getMessage("PeriodAShort");
 const period_b_short = browser.i18n.getMessage("PeriodBShort");
 
 let view = ref('folders');
 let show_all = ref(false);
+let period = ref('a');
 
-let current_rows = computed(() => view.value == 'folders' ? props.folder_rows : props.tag_rows);
+let has_b = computed(() => !!(props.folder_rows_b && props.tag_rows_b));
+let show_b = computed(() => period.value == 'b' && has_b.value);
+// label of the comparison values: the period not shown
+let other_short = computed(() => show_b.value ? period_a_short : period_b_short);
+let current_rows = computed(() => {
+  if(view.value == 'folders') return show_b.value ? props.folder_rows_b : props.folder_rows;
+  return show_b.value ? props.tag_rows_b : props.tag_rows;
+});
 let shown_rows = computed(() => show_all.value ? current_rows.value : current_rows.value.slice(0, props.max_rows));
 let more_label = computed(() => browser.i18n.getMessage("ShowMoreRows", [current_rows.value.length - props.max_rows]));
 let max_value = computed(() => Math.max(1, ...current_rows.value.map(r => r.n)));
@@ -98,6 +113,13 @@ function rowColor(row) {
 </script>
 
 <style scoped>
+.ts-bars-tools {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .ts-ended-row {
   display: grid;
   grid-template-columns: minmax(90px, 150px) minmax(0, 1fr);

@@ -326,6 +326,40 @@ describe('notes of the other widgets', () => {
     expect(model.ended.folders.map(f => [f.id, f.cmp_n])).toEqual([['inbox', 0], ['work', 1]]);
   });
 
+  it('every card gets Period B in a Custom Query comparison', () => {
+    // Period B: Tue 15 - Mon 21 Sep, 6 received on Tuesday at 9:00 (2 left in the inbox), 2 sent on Wednesday
+    let cmp_result = makeResult([
+      ...mails(4, { key: '20260915', hour: 9, folder: 'work', domain: 'b.com', correspondent: 'x@b.com' }),
+      ...mails(2, { key: '20260915', hour: 9, inbox: true, folder: 'inbox', domain: 'b.com' }),
+      ...mails(2, { key: '20260916', hour: 15, sent: true, domain: 'b.com', correspondent: 'y@b.com' }),
+    ], { from: '20260915', to: '20260921', folders: FOLDERS });
+    let model = tsPeriodModel.build(input({
+      kind: 'custom', result: RESULT(), cmp_result, inbox: makeInbox({ '20260915': 3 }),
+      internal: { enabled: true, sent_percent: '50.00%', rcvd_percent: '80.00%' },
+    }));
+    expect(model.strip.flow.map(f => f.cmp)).toEqual(['PeriodBShort 6', 'PeriodBShort 4', 'PeriodBShort 2']);
+    expect(model.strip.side[0].cmp).toBe('PeriodBShort 1');    // 6 received in 5 business days
+    expect(model.kpis.find(k => k.id == 'internal').sub2).toBe('VsPeriodB[0%]');
+    expect(model.kpis.find(k => k.id == 'ratio').sub2).toBe('VsPeriodB[1 : 3.0]');
+    expect([model.iz.cmp_zero, model.iz.cmp_total]).toEqual([6, 7]);
+    expect(model.heat.cmp_msg_weekday_hours[2][9].received).toBe(6);
+    expect(model.weekday.rows[1]).toMatchObject({ cmp_received: 6, cmp_sent: 0 });
+    expect(model.weekday.rows[2]).toMatchObject({ cmp_received: 0, cmp_sent: 2 });
+    expect(model.domains_b).toEqual([expect.objectContaining({ name: 'b.com', sent: 2, received: 6, cmp_sent: 0, cmp_received: 0 })]);
+    expect(model.ended.folders_b.find(f => f.id == 'work')).toMatchObject({ n: 4, cmp_n: 40 });
+    expect(model.ended.folders.find(f => f.id == 'work')).toMatchObject({ n: 40, cmp_n: 4 });
+    expect(Object.keys(model.involved.senders_b)).toEqual(['x@b.com']);
+    expect(Object.keys(model.involved.recipients_b)).toEqual(['y@b.com']);
+  });
+
+  it('no Period B lists without a comparison', () => {
+    let model = tsPeriodModel.build(input({ kind: 'custom', result: RESULT() }));
+    expect(model.domains_b).toBeNull();
+    expect([model.ended.folders_b, model.ended.tags_b]).toEqual([null, null]);
+    expect([model.involved.recipients_b, model.involved.senders_b]).toEqual([null, null]);
+    expect(model.strip.flow.every(f => f.cmp === undefined)).toBe(true);
+  });
+
   it('folders footnote counts the same days as the KPIs and the strip', () => {
     let model = tsPeriodModel.build(input({ result: RESULT() }));
     expect(model.ended.note).toBe('EndedUpNote[42|52|Work]');

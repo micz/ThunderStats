@@ -70,24 +70,24 @@
     </div>
 
     <div class="ts-two-col">
-      <WidgetHeatmap :msg_weekday_hours="heat.msg_weekday_hours" :first_day_week="heat.first_day_week" :weekday_labels="heat.weekday_labels" :note="heat.note" :is_loading="loading.chart" />
+      <WidgetHeatmap :msg_weekday_hours="heat.msg_weekday_hours" :first_day_week="heat.first_day_week" :weekday_labels="heat.weekday_labels" :note="heat.note" :cmp_msg_weekday_hours="heat.cmp_msg_weekday_hours" :is_loading="loading.chart" />
       <WidgetWeekdayBars :rows="weekday.rows" :note="weekday.note" :is_loading="loading.chart" />
     </div>
 
     <div class="ts-two-col">
-      <WidgetDomainBars :title="domains_title" :rows="domains" :empty_text="empty_text" :is_loading="loading.domains" />
-      <WidgetEndedUp :title="ended.title" :folder_rows="ended.folders" :tag_rows="ended.tags" :note="ended.note" :info="ended.info" :open_in_first_tab="ended.open_in_first_tab" :empty_text="empty_text" :is_loading="loading.folders" />
+      <WidgetDomainBars :title="domains_title" :rows="domains" :rows_b="domains_b" :empty_text="empty_text" :is_loading="loading.domains" />
+      <WidgetEndedUp :title="ended.title" :folder_rows="ended.folders" :tag_rows="ended.tags" :folder_rows_b="ended.folders_b" :tag_rows_b="ended.tags_b" :note="ended.note" :info="ended.info" :open_in_first_tab="ended.open_in_first_tab" :empty_text="empty_text" :is_loading="loading.folders" />
     </div>
 
     <div class="ts-two-col">
       <div class="ts-card">
-        <div class="ts-card-head"><div class="ts-card-title">{{ involved.recipients_title }}</div></div>
-        <TableInvolved :tableData="involved.recipients" kind="sent" :is_loading="loading.involved" v-if="has_recipients" />
+        <div class="ts-card-head ts-involved-head"><div class="ts-card-title">{{ involved.recipients_title }}</div><PeriodSwitch v-model="recipients_period" v-if="involved.recipients_b" /></div>
+        <TableInvolved :tableData="recipients" kind="sent" :is_loading="loading.involved" v-if="has_recipients" />
         <div class="ts-bars-empty" v-else>{{ involved.no_recipients_text }}</div>
       </div>
       <div class="ts-card">
-        <div class="ts-card-head"><div class="ts-card-title">{{ involved.senders_title }}</div></div>
-        <TableInvolved :tableData="involved.senders" kind="rcvd" :is_loading="loading.involved" v-if="has_senders" />
+        <div class="ts-card-head ts-involved-head"><div class="ts-card-title">{{ involved.senders_title }}</div><PeriodSwitch v-model="senders_period" v-if="involved.senders_b" /></div>
+        <TableInvolved :tableData="senders" kind="rcvd" :is_loading="loading.involved" v-if="has_senders" />
         <div class="ts-bars-empty" v-else>{{ involved.no_senders_text }}</div>
       </div>
     </div>
@@ -99,13 +99,14 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import WidgetStatusStrip from './WidgetStatusStrip.vue';
 import WidgetDomainBars from './WidgetDomainBars.vue';
 import WidgetEndedUp from './WidgetEndedUp.vue';
 import WidgetInboxZeroCalendar from './WidgetInboxZeroCalendar.vue';
 import WidgetHeatmap from './WidgetHeatmap.vue';
 import WidgetWeekdayBars from './WidgetWeekdayBars.vue';
+import PeriodSwitch from './PeriodSwitch.vue';
 import CounterKpi from '../counters/CounterKpi.vue';
 import ChartPeriodDays from '../charts/ChartPeriodDays.vue';
 import ChartHourlyAverage from '../charts/ChartHourlyAverage.vue';
@@ -119,9 +120,10 @@ const props = defineProps({
   iz: { type: Object, default: () => ({}) },          // WidgetInboxZeroCalendar props
   heat: { type: Object, default: () => ({}) },        // WidgetHeatmap props
   weekday: { type: Object, default: () => ({}) },     // { rows, note }
-  involved: { type: Object, default: () => ({}) },    // { recipients, senders, recipients_title, senders_title, no_recipients_text, no_senders_text }
+  involved: { type: Object, default: () => ({}) },    // { recipients, senders, recipients_b, senders_b, recipients_title, senders_title, no_recipients_text, no_senders_text }
   domains: { type: Array, default: () => [] },
-  ended: { type: Object, default: () => ({}) },       // { title, folders, tags, note }
+  domains_b: { type: Array, default: null },          // Period B domains (Custom Query comparison), or null
+  ended: { type: Object, default: () => ({}) },       // { title, folders, tags, folders_b, tags_b, note }
   empty_text: { type: String, default: '' },
   loading: { type: Object, default: () => ({}) },     // { strip, chart, involved, domains, folders }
   aggregations: { type: Array, default: () => [] },   // [{ id, label }] grouping choices of the main chart (Custom Query)
@@ -144,8 +146,14 @@ const zoom_hint_label = browser.i18n.getMessage("ChartZoomHint");
 const zoom_reset_label = browser.i18n.getMessage("ChartZoomReset");
 const zoom_query_label = browser.i18n.getMessage("ChartZoomRunQuery");
 
-let has_recipients = computed(() => props.loading.involved || Object.keys(props.involved.recipients || {}).length > 0);
-let has_senders = computed(() => props.loading.involved || Object.keys(props.involved.senders || {}).length > 0);
+// Period A or Period B list of the correspondents (Custom Query comparison)
+let recipients_period = ref('a');
+let senders_period = ref('a');
+let recipients = computed(() => (recipients_period.value == 'b' && props.involved.recipients_b) ? props.involved.recipients_b : props.involved.recipients);
+let senders = computed(() => (senders_period.value == 'b' && props.involved.senders_b) ? props.involved.senders_b : props.involved.senders);
+
+let has_recipients = computed(() => props.loading.involved || Object.keys(recipients.value || {}).length > 0);
+let has_senders = computed(() => props.loading.involved || Object.keys(senders.value || {}).length > 0);
 </script>
 
 <style scoped>
@@ -174,6 +182,10 @@ let has_senders = computed(() => props.loading.involved || Object.keys(props.inv
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px 16px;
+}
+
+.ts-involved-head {
+  align-items: center;
 }
 
 .ts-two-col:empty,

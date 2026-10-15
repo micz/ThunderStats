@@ -71,7 +71,10 @@ Analysis of an arbitrary date range. The query panel is a card at the top of the
 #### Compare Periods
 - KPI cards show the change of Period A against Period B
 - Period B is drawn as dotted lines on the main chart (in the chosen grouping, aligned by position; when zoomed, cut with the same offset) and as dashed lines on the time-of-day chart
-- Weekdays, domains, folders and tags show the Period B value next to each Period A value ("B 42")
+- The status strip shows the Period B value under each value ("B 42"); the internal traffic and reply ratio KPIs show the Period B value ("vs Period B")
+- The Inbox Zero calendar adds the Period B days at zero (same number of days, at the end of Period B); the heatmap shows the Period B count only in the cell tooltips
+- Weekdays show the Period B averages of received and sent under each column ("B 42 · 7")
+- Domains, folders/tags, top recipients and top senders have an A / B switch that shows the Period A or the Period B list; domain, folder and tag rows show the count of the other period ("B 42" / "A 42")
 
 #### Export
 - CSV export of query results (multiple data types available)

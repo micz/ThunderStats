@@ -34,6 +34,7 @@
       <div class="ts-iz-stats">
         <div class="ts-iz-stat"><span class="ts-iz-num" style="color: var(--good)">{{ zero }}</span><span class="ts-iz-lbl">{{ days_at_zero_label }}</span></div>
         <div class="ts-iz-stat"><span class="ts-iz-num">{{ streak }}</span><span class="ts-iz-lbl">{{ streak_label }}</span></div>
+        <div class="ts-iz-stat" v-if="cmp_zero !== null"><span class="ts-iz-num">{{ cmp_zero }}</span><span class="ts-iz-lbl">{{ cmp_days_at_zero_label }}</span></div>
       </div>
       <div class="ts-iz-grid">
         <div class="ts-iz-head" v-for="label in weekday_labels" :key="'h' + label">{{ label }}</div>
@@ -56,6 +57,8 @@ const props = defineProps({
   total: { type: Number, default: 0 },
   streak: { type: Number, default: 0 },
   big: { type: Boolean, default: false },              // taller cells for short periods
+  cmp_zero: { type: Number, default: null },           // Period B days at zero (Custom Query comparison), or null
+  cmp_total: { type: Number, default: 0 },
   is_loading: { type: Boolean, default: false },
 });
 
@@ -67,6 +70,7 @@ const missed_label = browser.i18n.getMessage("Missed");
 const streak_label = browser.i18n.getMessage("StreakAtEnd");
 
 let days_at_zero_label = computed(() => browser.i18n.getMessage("DaysAtZero", [props.total]));
+let cmp_days_at_zero_label = computed(() => browser.i18n.getMessage("DaysAtZeroPeriodB", [props.cmp_total]));
 let cell_height = computed(() => props.big ? '44px' : '28px');
 </script>
 

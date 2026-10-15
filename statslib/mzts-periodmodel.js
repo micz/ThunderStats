@@ -69,6 +69,10 @@ export const tsPeriodModel = {
         zoom_days: [YYYYMMDD],       // days shown in the main chart when zoomed (Custom Query), a slice of days, or null
         cmp_result: object,          // Period B getFullStatsData output (Custom Query comparison), or null
       }
+      With cmp_result, the strip items get a "B n" cmp text, the internal traffic and reply ratio KPIs a "vs Period B" sub2,
+      the calendar cmp_zero / cmp_total, the heatmap the Period B grid for its tooltips, the weekdays cmp_received / cmp_sent,
+      and domains (domains_b), folders, tags (ended.folders_b, ended.tags_b) and correspondents (involved.recipients_b,
+      involved.senders_b) a Period B list; the domain, folder and tag rows carry the count of the other period.
     */
     build(input) {
         let dates = input.result ? input.result.dates : {};
@@ -96,6 +100,7 @@ export const tsPeriodModel = {
             weekday: this.weekday(input, d),
             involved: this.involved(input),
             domains: this.domains(input),
+            domains_b: this.domainsB(input),
             ended: this.ended(input, d),
             empty_text: msg("NoMailsReceived"),
         };
@@ -129,10 +134,27 @@ export const tsPeriodModel = {
         }
 
         let pct = (v) => d.R > 0 ? (v / d.R * 100).toFixed(1) + '%' : '0%';
-        let per_working_day = d.avg_business_days.length ? Math.round(this.sumKeys(d, d.avg_business_days, 'received') / d.avg_business_days.length) : 0;
-        let busiest = null;
-        for(let key of d.stat) {
-            if(d.dates[key] && (!busiest || d.dates[key].received > d.dates[busiest].received)) busiest = key;
+        let a = this.stripFigures(d.dates, d.stat, d.current_key);
+
+        let flow = [
+            { label: msg("Arrived"), value: a.R, sub: '' },
+            { label: msg("FiledOrAnswered"), value: a.H, sub: pct(a.H), color: 'var(--good)', title: msg("FolderLocation_percent_handled") },
+            { label: msg("FolderLocation_percent_remaining"), value: a.L, sub: msg("AddedToBacklog"), color: 'var(--rcvd)' },
+        ];
+        let side = [
+            { label: msg("PerWorkingDay"), value: a.per_working_day, sub: msg("received") },
+            { label: msg("BusiestDay"), value: a.busiest ? this.shortDay(a.busiest) : '—', sub: a.busiest ? msg("NumReceived", [d.dates[a.busiest].received]) : '' },
+        ];
+        // Period B (Custom Query comparison) under each value
+        if(input.cmp_result) {
+            let b_dates = input.cmp_result.dates;
+            let b = this.stripFigures(b_dates, Object.keys(b_dates).sort(), d.current_key);
+            let b_text = (value) => msg("PeriodBShort") + ' ' + value;
+            flow[0].cmp = b_text(b.R);
+            flow[1].cmp = b_text(b.H);
+            flow[2].cmp = b_text(b.L);
+            side[0].cmp = b_text(b.per_working_day);
+            side[1].cmp = b_text(b.busiest ? this.shortDay(b.busiest) + ' (' + b_dates[b.busiest].received + ')' : '—');
         }
 
         return {
@@ -140,17 +162,28 @@ export const tsPeriodModel = {
             badge_tone: tone,
             date_line1: this.rangeText(d.stat),
             date_line2: msg("PeriodDaysInfo", [d.stat.length, d.business_days.length]),
-            flow: [
-                { label: msg("Arrived"), value: d.R, sub: '' },
-                { label: msg("FiledOrAnswered"), value: d.H, sub: pct(d.H), color: 'var(--good)', title: msg("FolderLocation_percent_handled") },
-                { label: msg("FolderLocation_percent_remaining"), value: d.L, sub: msg("AddedToBacklog"), color: 'var(--rcvd)' },
-            ],
-            side: [
-                { label: msg("PerWorkingDay"), value: per_working_day, sub: msg("received") },
-                { label: msg("BusiestDay"), value: busiest ? this.shortDay(busiest) : '—', sub: busiest ? msg("NumReceived", [d.dates[busiest].received]) : '' },
-            ],
+            flow,
+            side,
             bar_good: pct(d.H),
             bar_left: pct(d.L),
+        };
+    },
+
+    // Figures of the status strip for the given days of a dates object: arrived, handled, left in the inbox,
+    // received per working day (without the day in progress) and the busiest day
+    stripFigures(dates, keys, current_key) {
+        let sum = (list, field) => list.reduce((acc, k) => acc + (dates[k] ? dates[k][field] : 0), 0);
+        let R = sum(keys, 'received');
+        let L = sum(keys, 'inbox');
+        let business = keys.filter(k => k != current_key && tsCoreUtils.checkBusinessDay(k));
+        let busiest = null;
+        for(let key of keys) {
+            if(dates[key] && (!busiest || dates[key].received > dates[busiest].received)) busiest = key;
+        }
+        return {
+            R, L, H: Math.max(0, R - L),
+            per_working_day: business.length ? Math.round(sum(business, 'received') / business.length) : 0,
+            busiest,
         };
     },
 
@@ -236,14 +269,20 @@ export const tsPeriodModel = {
             kpis.push({
                 id: 'internal', label: msg("InternalTraffic"), value: tsInsights.roundPercent(input.internal.rcvd_percent),
                 sub: msg("InternalTrafficSub", [tsInsights.roundPercent(input.internal.sent_percent)]),
+                sub2: input.cmp_result ? msg("VsPeriodB", [tsInsights.roundPercent(tsCoreUtils.getInternalMailLabel(input.cmp_result.domains).receivedPercent)]) : '',
                 is_loading: !input.result,
             });
         }
 
         let ratio = d.S > 0 ? (d.R / d.S).toFixed(1) : null;
+        let ratio_b = null;
+        if(input.cmp_result) {
+            ratio_b = input.cmp_result.sent > 0 ? '1 : ' + (input.cmp_result.received / input.cmp_result.sent).toFixed(1) : '—';
+        }
         kpis.push({
             id: 'ratio', label: msg("ReplyRatio"), value: ratio ? '1 : ' + ratio : '—',
             sub: ratio ? msg("ReplyRatioSub", [ratio]) : msg("NoMailsSent"),
+            sub2: ratio_b ? msg("VsPeriodB", [ratio_b]) : '',
             is_loading: !input.result,
         });
         return kpis;
@@ -451,6 +490,15 @@ export const tsPeriodModel = {
         }
         output.zero = days.filter(day => day.state == 'zero').length;
         output.streak = tsInsights.inboxZeroStreak(input.inbox.dates, last, last.toDateString() == new Date().toDateString()).current;
+        // Period B (Custom Query comparison): days at zero over the same number of days, at the end of Period B
+        if(input.cmp_result) {
+            let b_keys = Object.keys(input.cmp_result.dates).sort();
+            if(b_keys.length) {
+                let b_days = tsInsights.inboxZeroDays(input.inbox.dates, toDate(b_keys[b_keys.length - 1]), Math.min(shown.length, b_keys.length));
+                output.cmp_zero = b_days.filter(day => day.state == 'zero').length;
+                output.cmp_total = b_days.length;
+            }
+        }
         return output;
     },
 
@@ -466,7 +514,10 @@ export const tsPeriodModel = {
             let top_col = by_weekday.indexOf(Math.max(...by_weekday));
             note = msg("HeatNote", [hourText(peak), hourText(peak + 2), this.weekdayName(grid.weekdays[top_col], 'long')]);
         }
-        return { msg_weekday_hours: input.result.msg_weekday_hours, first_day_week: input.first_day_week, weekday_labels, note };
+        return {
+            msg_weekday_hours: input.result.msg_weekday_hours, first_day_week: input.first_day_week, weekday_labels, note,
+            cmp_msg_weekday_hours: input.cmp_result ? input.cmp_result.msg_weekday_hours : null,   // Period B, shown in the cell tooltips
+        };
     },
 
     weekday(input, d) {
@@ -482,6 +533,7 @@ export const tsPeriodModel = {
             label: this.weekdayName(a.weekday, 'short'),
             received: a.received, sent: a.sent,
             cmp_received: cmp ? cmp[i].received : null,
+            cmp_sent: cmp ? cmp[i].sent : null,
             title: this.weekdayName(a.weekday, 'long') + ': ' + msg("WeekdayTooltip", [round1(a.received), round1(a.sent)]),
         }));
         // busiest weekday against the lightest business weekday
@@ -505,23 +557,36 @@ export const tsPeriodModel = {
         return tsUtils.dateToYYYYMMDD(date);
     },
 
-    domains(input) {
-        if(!input.result) return [];
-        let rows = tsInsights.domainRows(input.result.domains);
-        if(input.cmp_result) {
-            let cmp = input.cmp_result.domains;
+    // Domain rows of a result, with the counts of the other period (Custom Query comparison) as cmp_sent / cmp_received
+    domainRowsWith(domains, other_domains) {
+        let rows = tsInsights.domainRows(domains);
+        if(other_domains) {
             rows.forEach(row => {
-                row.cmp_sent = cmp[row.name] ? cmp[row.name].sent : 0;
-                row.cmp_received = cmp[row.name] ? cmp[row.name].received : 0;
+                row.cmp_sent = other_domains[row.name] ? other_domains[row.name].sent : 0;
+                row.cmp_received = other_domains[row.name] ? other_domains[row.name].received : 0;
             });
         }
         return rows;
+    },
+
+    domains(input) {
+        if(!input.result) return [];
+        return this.domainRowsWith(input.result.domains, input.cmp_result ? input.cmp_result.domains : null);
+    },
+
+    // Period B domains (Custom Query comparison), with the Period A counts, or null
+    domainsB(input) {
+        if(!input.result || !input.cmp_result) return null;
+        return this.domainRowsWith(input.cmp_result.domains, input.result.domains);
     },
 
     involved(input) {
         return {
             recipients: input.result ? input.result.recipients : {},
             senders: input.result ? input.result.senders : {},
+            // Period B lists (Custom Query comparison), or null
+            recipients_b: input.cmp_result ? input.cmp_result.recipients : null,
+            senders_b: input.cmp_result ? input.cmp_result.senders : null,
             recipients_title: msg("TopRecipients", [input.involved_num]),
             senders_title: msg("TopSenders", [input.involved_num]),
             no_recipients_text: msg("NoMailsSent"),
@@ -534,12 +599,21 @@ export const tsPeriodModel = {
         if(!input.result) return output;
         output.folders = tsInsights.endedUpFolders(input.result.folders);
         output.tags = tsInsights.endedUpTags(input.result.tags);
+        // Period B (Custom Query comparison): each list gets the count of the other period as cmp_n
+        output.folders_b = null;
+        output.tags_b = null;
         if(input.cmp_result) {
-            let cmp_folders = {}, cmp_tags = {};
-            for(let row of tsInsights.endedUpFolders(input.cmp_result.folders)) cmp_folders[row.id] = row.n;
-            for(let row of tsInsights.endedUpTags(input.cmp_result.tags)) cmp_tags[row.id] = row.n;
-            output.folders.forEach(row => row.cmp_n = cmp_folders[row.id] || 0);
-            output.tags.forEach(row => row.cmp_n = cmp_tags[row.id] || 0);
+            output.folders_b = tsInsights.endedUpFolders(input.cmp_result.folders);
+            output.tags_b = tsInsights.endedUpTags(input.cmp_result.tags);
+            let withOther = (rows, other_rows) => {
+                let counts = {};
+                for(let row of other_rows) counts[row.id] = row.n;
+                rows.forEach(row => row.cmp_n = counts[row.id] || 0);
+            };
+            withOther(output.folders, output.folders_b);
+            withOther(output.tags, output.tags_b);
+            withOther(output.folders_b, output.folders);
+            withOther(output.tags_b, output.tags);
         }
         // same days as the KPIs and the status strip: received in the counted days and no longer in the inbox
         let total = d.R;

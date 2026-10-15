@@ -1751,6 +1751,24 @@
     "message": "B",
     "description": "Short label before a Period B value, e.g. B 42"
   },
+  "PeriodA": {
+    "message": "Period A",
+    "description": "Tooltip of the A button of the Period A / Period B switch (Custom Query comparison)"
+  },
+  "PeriodAShort": {
+    "message": "A",
+    "description": "Short label before a Period A value, e.g. A 42, and A button of the Period A / Period B switch"
+  },
+  "DaysAtZeroPeriodB": {
+    "message": "of $NUM$ days at zero in Period B",
+    "description": "Inbox Zero calendar, Custom Query comparison",
+    "placeholders": {
+      "num": {
+        "content": "$1",
+        "example": "14"
+      }
+    }
+  },
   "Opt_Options": {
     "message": "Options",
     "description": ""

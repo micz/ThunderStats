@@ -31,7 +31,8 @@ Widget children:
                                 ChartDayVsNormal, WidgetTopCorrespondents, TableInvolved (when "See all" is open),
                                 WidgetDomainBars, WidgetEndedUp
     WidgetPeriodDashboard.vue → WidgetStatusStrip, CounterKpi, ChartPeriodDays, ChartHourlyAverage, WidgetInboxZeroCalendar,
-                                WidgetHeatmap, WidgetWeekdayBars, WidgetDomainBars, WidgetEndedUp, TableInvolved
+                                WidgetHeatmap, WidgetWeekdayBars, WidgetDomainBars, WidgetEndedUp, TableInvolved,
+                                PeriodSwitch (A / B list of domains, folders/tags, recipients, senders)
 
 App_Options.vue
 └── OptionsView.vue                 (header with ThemeToggle, sidebar nav + donation card)
@@ -105,14 +106,15 @@ All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper. Colors come 
 |---|---|
 | `WidgetDayDashboard.vue` | Single-day layout: status strip, KPI row, chart card + right rail (top correspondents + `rail` slot), full recipients/senders tables when "See all" is open, domains + folders/tags row. The KPI with `expandable` (Inbox backlog) opens `WidgetInboxAge` as a full-width strip right under the KPI row, from its toggle or its link (`inbox_dates`, `inbox_loading` props); the open state is the `inbox_age_expanded` pref, saved on every toggle and kept in sync through `storage.onChanged` across the single-day tabs and the options page |
 | `WidgetPeriodDashboard.vue` | Many-days layout: status strip, KPI grid, main chart (optional grouping toggle, emits `aggregation`; with `zoomable`, a "Drag on the chart to zoom" hint, or the zoomed range chip with its reset and the "Run the query on this period" link, emits `zoom`, `zoom_reset`, `zoom_query`), time of day + Inbox Zero calendar, heatmap + weekday bars, domains + folders/tags, Top N recipients + senders, `bottom` slot |
-| `WidgetStatusStrip.vue` | Status badge (good / warn / neutral), date lines, flow values (Arrived → Filed or answered → Still in inbox), side values and the proportional bar |
+| `WidgetStatusStrip.vue` | Status badge (good / warn / neutral), date lines, flow values (Arrived → Filed or answered → Still in inbox), side values and the proportional bar; optional Period B text (`cmp`) under each value |
 | `WidgetTopCorrespondents.vue` | Rail card: top 5 merged senders/recipients with stacked bars (received part in `--rcvd`, sent part in `--sent`) and a "See all" toggle |
-| `WidgetDomainBars.vue` | Domains as two horizontal bars (sent, received) with the "internal" tag on its own line under the domain name and optional Period B values; first 8 rows, expandable |
-| `WidgetEndedUp.vue` | "Where mails ended up": Folders / Tags toggle; inbox bar in `--rcvd`, filed folders in `--good`, tags in their own color; optional Period B values; computed footnote. Folder rows open the folder in Thunderbird (`tsCoreUtils.openFolder`, first mail tab with `inbox0_openFolderInFirstTab`); an info icon explains that folder counts include duplicates when `filter_duplicates` is on |
+| `WidgetDomainBars.vue` | Domains as two horizontal bars (sent, received) with the "internal" tag on its own line under the domain name; with `rows_b` (Period B) an A / B switch (`PeriodSwitch`) picks the list shown, each row showing the count of the other period ("B n" / "A n"); first 8 rows, expandable |
+| `WidgetEndedUp.vue` | "Where mails ended up": Folders / Tags toggle; inbox bar in `--rcvd`, filed folders in `--good`, tags in their own color; with `folder_rows_b` / `tag_rows_b` (Period B) an A / B switch (`PeriodSwitch`) picks the lists shown, each row showing the count of the other period; computed footnote (Period A only). Folder rows open the folder in Thunderbird (`tsCoreUtils.openFolder`, first mail tab with `inbox0_openFolderInFirstTab`); an info icon explains that folder counts include duplicates when `filter_duplicates` is on |
 | `WidgetInboxAge.vue` | "How old is your inbox" strip: mails still in the inbox by age (today, yesterday, 2–7 days, 8–30 days, 1–3 months, older) as one stacked horizontal bar (segments sized by count, from a light `--rcvd` for the freshest to `--warn` for older than a month, tooltip with count and share) and a legend with the counts, plus a note; "Details by date", next to the title, shows one row per arrival date, sortable by date or by mails; the Hide button emits `close` |
-| `WidgetInboxZeroCalendar.vue` | Inbox Zero calendar: one cell per day aligned on the first day of the week (at most the last 6 weeks), states closed at zero / ≤ 5 left / missed, today outlined; days at zero and streak at end |
-| `WidgetHeatmap.vue` | "When mail arrives": received mails by hour (rows) and weekday (columns), 07–20 / 24h toggle, cell color mixes `--rcvd` with `--surface3` |
-| `WidgetWeekdayBars.vue` | Average received / sent per weekday as paired columns, average received on top, optional Period B average, computed note |
+| `WidgetInboxZeroCalendar.vue` | Inbox Zero calendar: one cell per day aligned on the first day of the week (at most the last 6 weeks), states closed at zero / ≤ 5 left / missed, today outlined; days at zero and streak at end, optional Period B days at zero (`cmp_zero` of `cmp_total`) |
+| `WidgetHeatmap.vue` | "When mail arrives": received mails by hour (rows) and weekday (columns), 07–20 / 24h toggle, cell color mixes `--rcvd` with `--surface3`; optional Period B grid (`cmp_msg_weekday_hours`) shown only in the cell tooltips |
+| `WidgetWeekdayBars.vue` | Average received / sent per weekday as paired columns, both averages on top in the bar colors, optional Period B averages ("B received · sent"), computed note |
+| `PeriodSwitch.vue` | A / B toggle (`v-model`: `'a'` or `'b'`) of the cards that list Period A or Period B in a Custom Query comparison (domains, folders/tags, top recipients, top senders) |
 
 ---
 

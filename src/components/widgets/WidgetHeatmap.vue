@@ -56,18 +56,27 @@ const props = defineProps({
   first_day_week: { type: Number, default: 1 },
   weekday_labels: { type: Array, default: () => [] },
   note: { type: String, default: '' },
+  cmp_msg_weekday_hours: { type: Object, default: null }, // Period B (Custom Query comparison), shown only in the cell tooltips
   is_loading: { type: Boolean, default: false },
 });
 
 const title = browser.i18n.getMessage("HeatTitle");
 const fewer_label = browser.i18n.getMessage("HeatFewer");
 const more_label = browser.i18n.getMessage("HeatMore");
+const period_b_short = browser.i18n.getMessage("PeriodBShort");
 
 let full_day = ref(false);
 
 let grid = computed(() => full_day.value
   ? tsInsights.heatGrid(props.msg_weekday_hours, 0, 23, props.first_day_week)
   : tsInsights.heatGrid(props.msg_weekday_hours, 7, 20, props.first_day_week));
+
+let cmp_grid = computed(() => {
+  if(!props.cmp_msg_weekday_hours) return null;
+  return full_day.value
+    ? tsInsights.heatGrid(props.cmp_msg_weekday_hours, 0, 23, props.first_day_week)
+    : tsInsights.heatGrid(props.cmp_msg_weekday_hours, 7, 20, props.first_day_week);
+});
 
 function hourLabel(hour) {
   // every 3 hours on the 24h view
@@ -81,7 +90,12 @@ function cellColor(value) {
 }
 
 function cellTitle(hour, column, value) {
-  return props.weekday_labels[column] + ' ' + tsUtils.formatHour(hour) + ' — ' + browser.i18n.getMessage("NumReceived", [value]);
+  let title = props.weekday_labels[column] + ' ' + tsUtils.formatHour(hour) + ' — ' + browser.i18n.getMessage("NumReceived", [value]);
+  if(cmp_grid.value) {
+    let row = cmp_grid.value.rows.find(r => r.hour == hour);
+    title += ' · ' + period_b_short + ' ' + browser.i18n.getMessage("NumReceived", [row ? row.cells[column] : 0]);
+  }
+  return title;
 }
 </script>
 

@@ -18,7 +18,7 @@
  */
 -->
 
-<!-- Average received and sent mails per weekday: one column per weekday, received value on top -->
+<!-- Average received and sent mails per weekday: one column per weekday, received and sent values on top -->
 <template>
   <div class="ts-card ts-wd-card">
     <div class="ts-bars-head">
@@ -32,13 +32,13 @@
     <template v-else>
       <div class="ts-wd-cols">
         <div class="ts-wd-col" v-for="row in rows" :key="row.label" :title="row.title">
-          <div class="ts-wd-value">{{ Math.round(row.received) }}</div>
+          <div class="ts-wd-value"><span style="color: var(--rcvd)">{{ Math.round(row.received) }}</span><span style="color: var(--sent)">{{ Math.round(row.sent) }}</span></div>
           <div class="ts-wd-bars">
             <div class="ts-wd-bar" :style="{ height: barHeight(row.received), background: 'var(--rcvd)' }"></div>
             <div class="ts-wd-bar" :style="{ height: barHeight(row.sent), background: 'var(--sent)' }"></div>
           </div>
           <div class="ts-wd-label">{{ row.label }}</div>
-          <div class="ts-cmp-value" v-if="row.cmp_received !== null && row.cmp_received !== undefined">{{ period_b_short }} {{ Math.round(row.cmp_received) }}</div>
+          <div class="ts-cmp-value" v-if="row.cmp_received !== null && row.cmp_received !== undefined">{{ period_b_short }} {{ Math.round(row.cmp_received) }} · {{ Math.round(row.cmp_sent) }}</div>
         </div>
       </div>
       <div class="ts-card-note" v-if="note">{{ note }}</div>
@@ -50,7 +50,7 @@
 import { computed } from 'vue';
 
 const props = defineProps({
-  rows: { type: Array, default: () => [] },     // [{ label, received, sent, title, cmp_received }] ordered from the first day of the week
+  rows: { type: Array, default: () => [] },     // [{ label, received, sent, title, cmp_received, cmp_sent }] ordered from the first day of the week
   note: { type: String, default: '' },
   is_loading: { type: Boolean, default: false },
 });
@@ -94,6 +94,10 @@ function barHeight(value) {
 }
 
 .ts-wd-value {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 5px;
   font-size: 12px;
   font-weight: 640;
   font-variant-numeric: tabular-nums;

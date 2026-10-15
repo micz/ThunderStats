@@ -37,6 +37,7 @@
               <img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="" v-if="is_loading"/>
               <template v-else><span class="ts-strip-value" :style="{ color: item.color || 'var(--text)' }">{{ item.value }}</span><span class="ts-strip-sub">{{ item.sub }}</span></template>
             </div>
+            <div class="ts-cmp-value" v-if="item.cmp && !is_loading">{{ item.cmp }}</div>
           </div>
         </template>
         <div class="ts-strip-spacer"></div>
@@ -46,6 +47,7 @@
             <img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="" v-if="is_loading"/>
             <template v-else><span class="ts-strip-value">{{ item.value }}</span><span class="ts-strip-sub">{{ item.sub }}</span></template>
           </div>
+          <div class="ts-cmp-value" v-if="item.cmp && !is_loading">{{ item.cmp }}</div>
         </div>
       </div>
       <div class="ts-strip-bar">
@@ -62,8 +64,8 @@ defineProps({
   badge_tone: { type: String, default: 'neutral' },   // good | warn | neutral
   date_line1: { type: String, default: '' },
   date_line2: { type: String, default: '' },
-  flow: { type: Array, default: () => [] },            // [{ label, value, sub, color, title }]
-  side: { type: Array, default: () => [] },            // [{ label, value, sub, title }]
+  flow: { type: Array, default: () => [] },            // [{ label, value, sub, color, title, cmp }], cmp: Period B text
+  side: { type: Array, default: () => [] },            // [{ label, value, sub, title, cmp }]
   bar_good: { type: String, default: '0%' },
   bar_left: { type: String, default: '0%' },
   is_loading: { type: Boolean, default: false },

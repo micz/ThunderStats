@@ -193,7 +193,8 @@ async function updateData() {
     filter_duplicates.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id);
     tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, _many_days: _many_days, accounts_adv_settings: prefs.accounts_adv_settings});
     tsLog.log(() => "props.accountEmails: " + JSON.stringify(props.accountEmails));
-    // main data first, then the secondary queries: every query runs on Thunderbird's main thread
+    // main data first, then the secondary queries: every query runs on Thunderbird's main thread.
+    // Today, yesterday, the previous days and the baseline all come from the one scan of the recent days cache
     await Promise.all([getTodayData(), getYesterdayData()]);
     getManyDaysData();
     getInboxZeroData();

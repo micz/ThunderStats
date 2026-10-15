@@ -183,7 +183,8 @@ async function updateData() {
     }
     shown_day.value = day;
 
-    // main data first, then the secondary queries: every query runs on Thunderbird's main thread
+    // main data first, then the secondary queries: every query runs on Thunderbird's main thread.
+    // Yesterday, the previous days and the baseline all come from the one scan of the recent days cache
     await getDayData(day);
     getManyDaysData();
     getInboxZeroData();

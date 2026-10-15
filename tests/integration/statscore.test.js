@@ -462,7 +462,7 @@ describe('recent days cache', () => {
 
     expect(browser.calls.query).toHaveLength(1);
     let query = browser.calls.query[0];
-    expect(queryRange(query)).toEqual(['20260825', YESTERDAY]);
+    expect(queryRange(query)).toEqual(['20260825', TODAY]);
 
     expect(baseline.days).toHaveLength(6);
     expect(baseline.days.map(d => d[9].received)).toEqual([0, 0, 3, 0, 0, 2]);
@@ -470,6 +470,39 @@ describe('recent days cache', () => {
     expect(Object.keys(prev_days.msg_days)).toEqual(['20261006', '20261007', '20261008', '20261009', '20261010', '20261011', YESTERDAY]);
     expect(before.received).toBe(1);
     expect(previous_period.received).toBe(1);
+  });
+
+  it('serves today, yesterday and the comparison counter from the same scan', async () => {
+    addMails(mailbox, 2, { key: TODAY, hour: 9 });
+    addMail(mailbox, { key: TODAY, hour: 9, sent: true, to: ['anna@work.it'] });
+    addMail(mailbox, { key: TODAY, hour: 9, folder: 'acc1://Trash' });
+    addMail(mailbox, { key: TODAY, hour: 14 });     // after the current time (10:30)
+    addMails(mailbox, 3, { key: YESTERDAY, hour: 9 });
+    addMail(mailbox, { key: YESTERDAY, hour: 11 });
+    let core = new thunderStastsCore({ _many_days: 7 });
+    let today = await core.getToday('acc1', [ME], ['work.it']);
+    let yesterday = await core.getToday_YesterdayData('acc1', [ME], true);
+    let single = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
+    let prev_days = await core.getToday_manyDaysData('acc1', [ME]);
+    expect(browser.calls.query).toHaveLength(1);
+    expect([today.received, today.sent, today.domains['work.it'].sent]).toEqual([2, 1, 1]);
+    expect([yesterday.received, yesterday.msg_hours[11].received]).toEqual([3, 1]);
+    expect([single.received, single.msg_hours[9].received]).toEqual([4, 3]);
+    expect(prev_days.received).toBe(6);
+  });
+
+  it('queries a day the cache keeps no messages of and the days with advanced filters', async () => {
+    addMails(mailbox, 2, { key: '20261011', hour: 9 });
+    addMail(mailbox, { key: TODAY, subject: 'Invoice 1' });
+    let core = new thunderStastsCore();
+    let before = await core.getSingleDay(day('20261011'), 'acc1', [ME], []);
+    expect(before.received).toBe(2);
+    expect(browser.calls.query).toHaveLength(1);
+    let filtered = await core.getCustomQryData(day(TODAY), day(TODAY), 'acc1', [ME], false, { filterSubject: 'Invoice' }, []);
+    expect(filtered.received).toBe(1);
+    expect(browser.calls.query).toHaveLength(2);
+    await core.getToday('acc1', [ME], []);
+    expect(browser.calls.query).toHaveLength(3);
   });
 
   it('skips the past holidays in the baseline of a business day', async () => {

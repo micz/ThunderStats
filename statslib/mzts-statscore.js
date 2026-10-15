@@ -25,6 +25,9 @@ import { prefs_default } from "./mzts-options-default";
 
 // Messages per page of a messages.query: bigger pages mean fewer round trips to Thunderbird for the same messages
 export const MESSAGES_PER_PAGE = 500;
+// Days ending today (today and yesterday) whose message headers the recent days cache keeps, so the
+// Today and Yesterday tabs are built from the cache scan instead of running a full scan each
+export const RECENT_MESSAGES_DAYS = 2;
 // Folders never counted in the stats (with their subfolders)
 const EXCLUDED_FOLDERS_SPECIAL_USE = ['drafts', 'trash', 'junk', 'templates', 'outbox'];
 
@@ -312,7 +315,7 @@ export class thunderStastsCore {
       if(tsRecentDaysCache.key != key) {
         this.tsLog.log("[getRecentDays] scanning, cache key: " + key);
         tsRecentDaysCache.key = key;
-        tsRecentDaysCache.promise = this.scanDays(range.fromDate, range.toDate, account_id, account_emails, filter_duplicates)
+        tsRecentDaysCache.promise = this.scanDays(range.fromDate, range.toDate, account_id, account_emails, filter_duplicates, tsRecentDaysCache.getMessagesFromDate())
           .catch((error) => {
             if(tsRecentDaysCache.key == key) clearCoreCaches();
             throw error;
@@ -324,18 +327,24 @@ export class thunderStastsCore {
       return tsRecentDaysCache.promise;
     }
 
-    // One scan of a date range, grouped by day and hour. Output: {days: {YYYYMMDD: {sent, received, msg_hours}}, elapsed}
-    async scanDays(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicates = false) {
+    // One scan of a date range, grouped by day and hour. Output: {days: {YYYYMMDD: {sent, received, msg_hours}}, messages, elapsed}
+    // With keep_messages_from, the headers of the messages dated from that day on are kept as they come from
+    // the query (no exclusion, no duplicates filter) in messages: {YYYYMMDD: [MessageHeader]}, so the
+    // callers that need the whole message can build their stats without a query of their own
+    async scanDays(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicates = false, keep_messages_from = null) {
 
       let start_time = performance.now();
 
       let days = {};
+      let kept_messages = {};
+      let keep_messages_from_key = keep_messages_from === null ? null : tsUtils.dateToYYYYMMDD(keep_messages_from);
       for(let key of Object.keys(tsUtils.getDateArray(fromDate, toDate))) {
         let msg_hours = {};
         for(let i = 0; i < 24; i++) {
           msg_hours[i] = {sent: 0, received: 0};
         }
         days[key] = {sent: 0, received: 0, msg_hours: msg_hours};
+        if(keep_messages_from_key !== null && key >= keep_messages_from_key) kept_messages[key] = [];
       }
 
       const emailMatcher = new EmailMatcher(account_emails);
@@ -355,10 +364,12 @@ export class thunderStastsCore {
       await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
           if(!inRange(message, fromDate, toDate)) continue;
+          let date_message = new Date(message.date);
+          let day_key = tsUtils.dateToYYYYMMDD(date_message);
+          if(kept_messages[day_key] !== undefined) kept_messages[day_key].push(message);
           if(this.excludeMessage(message,account_id)) continue;
           if(isDuplicate(filter_duplicates, messages_hash, message)) continue;
-          let date_message = new Date(message.date);
-          let day = days[tsUtils.dateToYYYYMMDD(date_message)];
+          let day = days[day_key];
           if(day === undefined) continue;   // outside the range (should not happen)
           let hour_message = date_message.getHours();
           const key_author = authorKey(message);
@@ -373,7 +384,25 @@ export class thunderStastsCore {
 
       let stop_time = performance.now();
 
-      return {days: days, elapsed: stop_time - start_time};
+      return {days: days, messages: kept_messages, elapsed: stop_time - start_time};
+    }
+
+    // The messages of a date range, to iterate with for await: the headers kept by the recent days cache when
+    // the range lies within the days it keeps (see RECENT_MESSAGES_DAYS), so Today and Yesterday share the
+    // cache scan instead of each running a full scan, otherwise the pages of the query started by queryFn.
+    // The callers apply the range, the exclusions and the duplicates filter themselves in both cases.
+    async getRangeMessages(fromDate, toDate, account_id, account_emails, filter_duplicates, queryFn) {
+      let range = tsRecentDaysCache.getRange();
+      if(fromDate >= tsRecentDaysCache.getMessagesFromDate() && toDate <= range.toDate) {
+        this.tsLog.log("[getRangeMessages] using the messages of the recent days cache");
+        let recent = await this.getRecentDays(account_id, account_emails, filter_duplicates);
+        let output = [];
+        for(let key of Object.keys(tsUtils.getDateArray(fromDate, toDate))) {
+          output.push(...(recent.messages[key] ?? []));
+        }
+        return output;
+      }
+      return this.getMessages(queryFn);
     }
     // ================ RECENT DAYS CACHE - END =====================
     // ================ SINGLE DAY METHODS - END =====================
@@ -494,7 +523,10 @@ export class thunderStastsCore {
 
       //let messageids_sent = [];
 
-      let messages = this.getMessages(() => browser.messages.query(queryInfo_FullStatsData));
+      // the advanced filters are part of the query: with them the cached messages cannot be used
+      let messages = adv_filters == null
+        ? await this.getRangeMessages(fromDate, toDate, account_id, account_emails, filter_duplicates, () => browser.messages.query(queryInfo_FullStatsData))
+        : this.getMessages(() => browser.messages.query(queryInfo_FullStatsData));
 
       let msg_hours = {};
       for(let i = 0; i < 24; i++) {
@@ -846,7 +878,7 @@ export class thunderStastsCore {
       let sent = 0;
       let received = 0;
 
-      let messages = this.getMessages(() => browser.messages.query(queryInfo_CountStatsData));
+      let messages = await this.getRangeMessages(fromDate, toDate, account_id, account_emails, filter_duplicates, () => browser.messages.query(queryInfo_CountStatsData));
 
       let msg_hours = {};
       for(let i = 0; i < 24; i++) {
@@ -1179,10 +1211,11 @@ export function setMaxConcurrentQueries(value) {
   tsQueryQueue.setMaxConcurrent(max_concurrent);
 }
 
-// Recent days cache: the last recent_days_cache_days days before today (default 7 weeks, so the baseline
-// of yesterday always has 6 full weeks), shared by all core instances. See getRecentDays().
+// Recent days cache: the last recent_days_cache_days days before today plus today (default 7 weeks, so the
+// baseline of yesterday always has 6 full weeks), shared by all core instances. See getRecentDays().
 // The size comes from the recent_days_cache_days preference, applied with setRecentDaysCacheDays():
 // at least MIN_RECENT_DAYS_CACHE_DAYS (6 full weeks before yesterday, needed by the weekday baseline).
+// The scan also keeps the message headers of the last RECENT_MESSAGES_DAYS days (see getRangeMessages).
 export const MIN_RECENT_DAYS_CACHE_DAYS = 43;
 export const MAX_RECENT_DAYS_CACHE_DAYS = 365;
 
@@ -1190,14 +1223,21 @@ const tsRecentDaysCache = {
   key: null,
   promise: null,
   days: prefs_default.recent_days_cache_days,
+  // From `days` days before today to the end of today
   getRange() {
     let fromDate = new Date();
     fromDate.setDate(fromDate.getDate() - this.days);
     fromDate.setHours(0, 0, 0, 0);
     let toDate = new Date();
-    toDate.setDate(toDate.getDate() - 1);
     toDate.setHours(23, 59, 59, 999);
     return {fromDate: fromDate, toDate: toDate};
+  },
+  // The first day whose message headers the scan keeps
+  getMessagesFromDate() {
+    let fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - (RECENT_MESSAGES_DAYS - 1));
+    fromDate.setHours(0, 0, 0, 0);
+    return fromDate;
   },
 };
 

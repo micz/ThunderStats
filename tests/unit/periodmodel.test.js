@@ -337,8 +337,8 @@ describe('notes of the other widgets', () => {
       kind: 'custom', result: RESULT(), cmp_result, inbox: makeInbox({ '20260915': 3 }),
       internal: { enabled: true, sent_percent: '50.00%', rcvd_percent: '80.00%' },
     }));
-    expect(model.strip.flow.map(f => f.cmp)).toEqual(['PeriodBShort 6', 'PeriodBShort 4', 'PeriodBShort 2']);
-    expect(model.strip.side[0].cmp).toBe('PeriodBShort 1');    // 6 received in 5 business days
+    expect(model.strip.flow.map(f => f.cmp)).toEqual(['PeriodB: 6', 'PeriodB: 4', 'PeriodB: 2']);
+    expect(model.strip.side[0].cmp).toBe('PeriodB: 1');    // 6 received in 5 business days
     expect(model.kpis.find(k => k.id == 'internal').sub2).toBe('VsPeriodB[0%]');
     expect(model.kpis.find(k => k.id == 'ratio').sub2).toBe('VsPeriodB[1 : 3.0]');
     expect([model.iz.cmp_zero, model.iz.cmp_total]).toEqual([6, 7]);

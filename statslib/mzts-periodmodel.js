@@ -149,7 +149,7 @@ export const tsPeriodModel = {
         if(input.cmp_result) {
             let b_dates = input.cmp_result.dates;
             let b = this.stripFigures(b_dates, Object.keys(b_dates).sort(), d.current_key);
-            let b_text = (value) => msg("PeriodBShort") + ' ' + value;
+            let b_text = (value) => msg("PeriodB") + ': ' + value;
             flow[0].cmp = b_text(b.R);
             flow[1].cmp = b_text(b.H);
             flow[2].cmp = b_text(b.L);

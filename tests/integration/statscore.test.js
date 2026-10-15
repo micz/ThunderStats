@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   thunderStastsCore, clearCoreCaches, setMaxConcurrentQueries, setRecentDaysCacheDays, MESSAGES_PER_PAGE,
 } from '@statslib/mzts-statscore';
-import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsCoreUtils, clearContactsNamesCache } from '@statslib/mzts-statscore.utils';
 import { tsUtils } from '@statslib/mzts-utils';
 import { tsStore } from '@statslib/mzts-store';
 import { createMailbox, addMail, addMails, vCard, ME, ME_GMAIL } from '../fixtures/mailbox.js';
@@ -10,6 +10,10 @@ import { day } from '../helpers.js';
 
 const TODAY = '20261013';        // Tuesday
 const YESTERDAY = '20261012';    // Monday
+// Every scan queries its folders one at a time: the folders of acc1 counted in the stats (archives included)
+// and the ones of acc2, so a scan of acc1 is ACC1_FOLDERS calls of messages.query
+const ACC1_FOLDERS = 6;
+const ACC2_FOLDERS = 2;
 
 let mailbox;
 
@@ -17,6 +21,7 @@ beforeEach(() => {
   vi.useFakeTimers({ toFake: ['Date'] });
   vi.setSystemTime(day(TODAY, 10, 30));
   clearCoreCaches();
+  clearContactsNamesCache();
   setRecentDaysCacheDays(49);
   setMaxConcurrentQueries(2);
   mailbox = createMailbox();
@@ -82,9 +87,32 @@ describe('getFullStatsData', () => {
     expect(result.folders['acc1://INBOX'].folder_data.specialUse).toEqual(['inbox']);
   });
 
+  it('looks up in the address book only the correspondents left after the cut, once per address', async () => {
+    for (let i = 1; i <= 4; i++) addMails(mailbox, i, { key: YESTERDAY, from: `p${i}@x.com` });
+    addMail(mailbox, { key: YESTERDAY, sent: true, to: ['anna@work.it'], cc: ['anna@work.it'] });
+    let result = await new thunderStastsCore({ _involved_num: 2 }).getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
+    expect(Object.keys(result.senders)).toEqual(['p4@x.com', 'p3@x.com']);
+    expect(browser.calls.quickSearch.map(q => q.searchString).sort()).toEqual(['anna@work.it', 'p3@x.com', 'p4@x.com']);
+    expect(result.senders['p4@x.com']).toEqual({ count: 4, name: '' });
+    await new thunderStastsCore({ _involved_num: 2 }).getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
+    expect(browser.calls.quickSearch).toHaveLength(3);    // cached
+  });
+
+  it('keeps the address book names across the data refreshes, until the address books change', async () => {
+    fillDay();
+    browser.contactCards = [vCard('Anna Bianchi', 'anna@work.it')];
+    const annaName = async () => (await new thunderStastsCore({ _involved_num: 10 }).getSingleDay(day(YESTERDAY), 'acc1', [ME], [])).senders['anna@work.it'].name;
+    expect(await annaName()).toBe('Anna Bianchi');
+    browser.contactCards = [vCard('Anna Verdi', 'anna@work.it')];
+    clearCoreCaches();
+    expect(await annaName()).toBe('Anna Bianchi');
+    browser.fire('addressBooks.onUpdated');
+    expect(await annaName()).toBe('Anna Verdi');
+  });
+
   it('lists the correspondents with the address book names first', async () => {
     fillDay();
-    browser.contacts = [vCard('Anna Bianchi', 'ANNA@work.it')];
+    browser.contactCards = [vCard('Anna Bianchi', 'ANNA@work.it')];
     let result = await new thunderStastsCore({ _involved_num: 10 }).getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
     expect(result.senders).toEqual({
       'mario@client.com': { count: 4, name: 'Mario Rossi' },
@@ -103,20 +131,21 @@ describe('getFullStatsData', () => {
     expect(Object.keys(result.senders)).toEqual(['p4@x.com', 'p3@x.com']);
   });
 
-  it('queries only the useful folders of the account, in big pages', async () => {
+  it('queries only the useful folders of the account, one at a time, in big pages without auto-pagination', async () => {
     let core = new thunderStastsCore();
     await core.getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
-    let query = browser.calls.query[0];
-    expect(query.folderId).toEqual(['acc1://INBOX', 'acc1://INBOX/Projects', 'acc1://Sent', 'acc1://Clients', 'acc1://Archives', 'acc1://Archives/2025']);
-    expect(query.includeSubFolders).toBe(false);
-    expect(query.messagesPerPage).toBe(MESSAGES_PER_PAGE);
+    expect(browser.calls.query.map(q => q.folderId)).toEqual(['acc1://INBOX', 'acc1://INBOX/Projects', 'acc1://Sent', 'acc1://Clients', 'acc1://Archives', 'acc1://Archives/2025']);
+    for (let query of browser.calls.query) {
+      expect(query).toMatchObject({ includeSubFolders: false, messagesPerPage: MESSAGES_PER_PAGE, autoPaginationTimeout: 0 });
+    }
   });
 
   it('skips the archives when the account setting excludes them', async () => {
     fillDay();
     await browser.storage.sync.set({ accounts_adv_settings: [{ id: 'acc1', include_archive: false }] });
     let result = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
-    expect(browser.calls.query[0].folderId).not.toContain('acc1://Archives');
+    expect(browser.calls.query.map(q => q.folderId)).not.toContain('acc1://Archives');
+    expect(browser.calls.query).toHaveLength(ACC1_FOLDERS - 2);
     expect(result.received).toBe(4);
   });
 
@@ -207,7 +236,7 @@ describe('getFullStatsData', () => {
   });
 
   it('takes the correspondent from the address in angle brackets, like the domain', async () => {
-    browser.contacts = [vCard('Mario Rossi', 'mario@client.com')];
+    browser.contactCards = [vCard('Mario Rossi', 'mario@client.com')];
     addMail(mailbox, { key: YESTERDAY, from: '"anna@other.com" <mario@client.com>' });
     addMail(mailbox, { key: YESTERDAY, sent: true, to: ['"anna@other.com" <mario@client.com>'], cc: ['"x@y.com" <luca@work.it>'] });
     addMail(mailbox, { key: YESTERDAY, from: '"me@work.it" <spoof@evil.com>' });
@@ -288,15 +317,17 @@ describe('Custom Query advanced filters', () => {
     addMail(mailbox, { key: YESTERDAY, subject: 'Invoice 43', read: true, flagged: true });
     addMail(mailbox, { key: YESTERDAY, folder: 'acc1://Clients', subject: 'Invoice 44', read: false, flagged: true });
     let result = await new thunderStastsCore().getCustomQryData(day(YESTERDAY), day(YESTERDAY), 'acc1', [ME], false, FILTERS, []);
+    expect(browser.calls.query).toHaveLength(1);
     expect(browser.calls.query[0]).toMatchObject({
-      folderId: ['acc1://INBOX'], includeSubFolders: true, subject: 'Invoice', unread: true, flagged: true,
+      folderId: 'acc1://INBOX', includeSubFolders: true, subject: 'Invoice', unread: true, flagged: true,
     });
     expect(result.received).toBe(1);
   });
 
   it('ignore the folders for all the accounts', async () => {
     await new thunderStastsCore().getCustomQryData(day(YESTERDAY), day(YESTERDAY), 0, [ME], false, FILTERS, []);
-    expect(browser.calls.query[0].folderId).toContain('acc2://INBOX');
+    expect(browser.calls.query).toHaveLength(ACC1_FOLDERS + ACC2_FOLDERS);
+    expect(browser.calls.query.map(q => q.folderId)).toContain('acc2://INBOX');
     expect(browser.calls.query[0].includeSubFolders).toBe(false);
   });
 
@@ -305,8 +336,8 @@ describe('Custom Query advanced filters', () => {
     await core.getCustomQryData(day(YESTERDAY), day(YESTERDAY), 'acc1', [ME], false, { read_unread: '1', flagged_unflagged: '2' }, []);
     await core.getCustomQryData(day(YESTERDAY), day(YESTERDAY), 'acc1', [ME], false, { read_unread: 0, flagged_unflagged: 0 }, []);
     expect(browser.calls.query[0]).toMatchObject({ unread: false, flagged: false });
-    expect(browser.calls.query[1]).not.toHaveProperty('unread');
-    expect(browser.calls.query[1]).not.toHaveProperty('flagged');
+    expect(browser.calls.query.at(-1)).not.toHaveProperty('unread');
+    expect(browser.calls.query.at(-1)).not.toHaveProperty('flagged');
   });
 
   it('still skip trash and drafts when the user picks them', async () => {
@@ -460,7 +491,7 @@ describe('recent days cache', () => {
     let before = await new thunderStastsCore().getDaysBefore(day('20261005'), 7, 'acc1', [ME]);
     let previous_period = await core.getManyDaysPreviousPeriod('acc1', [ME]);
 
-    expect(browser.calls.query).toHaveLength(1);
+    expect(browser.calls.query).toHaveLength(ACC1_FOLDERS);
     let query = browser.calls.query[0];
     expect(queryRange(query)).toEqual(['20260825', TODAY]);
 
@@ -484,7 +515,7 @@ describe('recent days cache', () => {
     let yesterday = await core.getToday_YesterdayData('acc1', [ME], true);
     let single = await new thunderStastsCore().getSingleDay(day(YESTERDAY), 'acc1', [ME], []);
     let prev_days = await core.getToday_manyDaysData('acc1', [ME]);
-    expect(browser.calls.query).toHaveLength(1);
+    expect(browser.calls.query).toHaveLength(ACC1_FOLDERS);
     expect([today.received, today.sent, today.domains['work.it'].sent]).toEqual([2, 1, 1]);
     expect([yesterday.received, yesterday.msg_hours[11].received]).toEqual([3, 1]);
     expect([single.received, single.msg_hours[9].received]).toEqual([4, 3]);
@@ -497,12 +528,12 @@ describe('recent days cache', () => {
     let core = new thunderStastsCore();
     let before = await core.getSingleDay(day('20261011'), 'acc1', [ME], []);
     expect(before.received).toBe(2);
-    expect(browser.calls.query).toHaveLength(1);
+    expect(browser.calls.query).toHaveLength(ACC1_FOLDERS);
     let filtered = await core.getCustomQryData(day(TODAY), day(TODAY), 'acc1', [ME], false, { filterSubject: 'Invoice' }, []);
     expect(filtered.received).toBe(1);
-    expect(browser.calls.query).toHaveLength(2);
+    expect(browser.calls.query).toHaveLength(2 * ACC1_FOLDERS);
     await core.getToday('acc1', [ME], []);
-    expect(browser.calls.query).toHaveLength(3);
+    expect(browser.calls.query).toHaveLength(3 * ACC1_FOLDERS);
   });
 
   it('skips the past holidays in the baseline of a business day', async () => {
@@ -515,7 +546,7 @@ describe('recent days cache', () => {
     addMails(mailbox, 4, { key: '20260601' });
     let before = await new thunderStastsCore().getDaysBefore(day('20260602'), 3, 'acc1', [ME]);
     expect(before.received).toBe(4);
-    expect(browser.calls.query).toHaveLength(1);
+    expect(browser.calls.query).toHaveLength(ACC1_FOLDERS);
     expect(queryRange(browser.calls.query[0])[0]).toBe('20260530');
   });
 
@@ -523,7 +554,7 @@ describe('recent days cache', () => {
     await new thunderStastsCore().getToday_manyDaysData('acc1', [ME]);
     await new thunderStastsCore().getToday_manyDaysData('acc2', [ME_GMAIL]);
     await new thunderStastsCore().getToday_manyDaysData('acc1', [ME]);
-    expect(browser.calls.query).toHaveLength(3);
+    expect(browser.calls.query).toHaveLength(2 * ACC1_FOLDERS + ACC2_FOLDERS);
   });
 
   it('is scanned again after a failure', async () => {

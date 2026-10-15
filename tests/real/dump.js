@@ -57,5 +57,5 @@ export function loadDump(file) {
 export function installDump(dump) {
   browser.mailbox = dump.mailbox;
   browser.tags = dump.tags;
-  browser.contacts = dump.contacts;
+  browser.contactCards = dump.contacts;
 }

@@ -2,10 +2,11 @@
 // Only the parts used by statslib are implemented; tests fill the data through the returned object:
 //   mock.mailbox  = { accounts: [{id, name, identities, folders}], messages: [] }  (see tests/fixtures/mailbox.js)
 //   mock.tags     = [{key, tag, color, ordinal}]
-//   mock.contacts = [vCard strings]
+//   mock.contactCards = [vCard strings]  the contacts of the address books
 //   mock.onQuery  = async (queryInfo) => {}  awaited before a messages.query resolves (to hold queries open)
 //   mock.dateBounds = 'exclusive' | 'inclusive'  messages dated exactly fromDate / toDate (not documented by Thunderbird)
-//   mock.calls    = { query: [queryInfo], continueList: [id], accountsList: n }
+//   mock.calls    = { query: [queryInfo], continueList: [id], quickSearch: [queryInfo], accountsList: n }
+//   mock.fire('addressBooks.onUpdated', ...args)  calls the listeners added to that event
 
 // MailFolder as found in message.folder: no subFolders
 function folderInfo(folder) {
@@ -24,15 +25,16 @@ function flatten(folders, output = []) {
 export function createBrowserMock() {
   const storage = {};
   const lists = new Map();
+  const listeners = {};
   let next_list = 1;
 
   const mock = {
     mailbox: { accounts: [], messages: [] },
     tags: [],
-    contacts: [],
+    contactCards: [],
     onQuery: null,
     dateBounds: 'exclusive',    // whether messages.query returns the messages dated exactly fromDate / toDate: 'exclusive' | 'inclusive'
-    calls: { query: [], continueList: [], accountsList: 0 },
+    calls: { query: [], continueList: [], quickSearch: [], accountsList: 0 },
 
     storage: {
       sync: {
@@ -132,12 +134,42 @@ export function createBrowserMock() {
       },
     },
 
+    contacts: {
+      // The contacts whose vCard contains the search string (case-insensitive), like a quick search on every field
+      async quickSearch(parentId, queryInfo) {
+        if (queryInfo === undefined) queryInfo = parentId;
+        mock.calls.quickSearch.push(queryInfo);
+        let search = (typeof queryInfo === 'string' ? queryInfo : queryInfo.searchString || '').toLowerCase();
+        return mock.contactCards
+          .map((vCard, i) => ({ id: 'c' + i, parentId: 'book1', properties: { vCard } }))
+          .filter(contact => contact.properties.vCard.toLowerCase().includes(search));
+      },
+      onCreated: event('contacts.onCreated'),
+      onUpdated: event('contacts.onUpdated'),
+      onDeleted: event('contacts.onDeleted'),
+    },
+
     addressBooks: {
       async list() {
-        return [{ id: 'book1', contacts: mock.contacts.map((vCard, i) => ({ id: 'c' + i, properties: { vCard } })) }];
+        return [{ id: 'book1', contacts: mock.contactCards.map((vCard, i) => ({ id: 'c' + i, properties: { vCard } })) }];
       },
+      onCreated: event('addressBooks.onCreated'),
+      onUpdated: event('addressBooks.onUpdated'),
+      onDeleted: event('addressBooks.onDeleted'),
+    },
+
+    // Calls the listeners added to an event, e.g. browser.fire('addressBooks.onUpdated')
+    fire(name, ...args) {
+      for (let listener of (listeners[name] || [])) listener(...args);
     },
   };
+
+  function event(name) {
+    return {
+      addListener(fn) { (listeners[name] ??= []).push(fn); },
+      removeListener(fn) { listeners[name] = (listeners[name] || []).filter(l => l !== fn); },
+    };
+  }
 
   function page(messages, per_page) {
     let output = { id: null, messages: messages.slice(0, per_page).map(m => ({ ...m, folder: folderInfo(m.folder) })) };

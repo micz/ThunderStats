@@ -170,7 +170,8 @@ describe('export of real stats', () => {
     ]);
 
     expect(tsExport.arrayToCsv(tsExport.transformTagsJsonToArray(result.tags))).toBe('Tags,TimeChart.Sent,TimeChart.Rcvd\nImportant,0,2');
+    // the folders come in the order they are queried (one query per folder), not in the order of the mails
     expect(tsExport.arrayToCsv(tsExport.transformFoldersJsonToArray(result.folders)).split('\n').slice(1))
-      .toEqual(['INBOX,0,2', 'Clients,0,1', 'Sent,1,0']);
+      .toEqual(['INBOX,0,2', 'Sent,1,0', 'Clients,0,1']);
   });
 });

@@ -104,8 +104,7 @@ const returnPath = headers["return-path"]?.[0] ?? null;
 |---|---|---|
 | `tabs.query()` | `array of Tab` | `result[0]` |
 | `mailTabs.query()` | `array of MailTab` | `result[0]` |
-| `addressBooks.list()` | `array of AddressBookNode` | `result[0]` |
-| `contacts.list()` | `array of ContactNode` | `result[0]` |
+| `contacts.quickSearch()` | `array of ContactNode` | `result[0]` |
 | `folders.query()` | `array of MailFolder` | `result[0]` |
 
 **MV2 → MV3 API changes (relevant if ThunderStats ever migrates):**

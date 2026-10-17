@@ -47,8 +47,8 @@
 						<h2 class="list_heading cropped">__MSG_DonationsTitle__</h2>
 					  </div>
 					  <p>__MSG_InfoMainDesc__</p>
-					  <p><i><a class="outlink" href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_DonateLink__</a></i></p></div>
-					  <div id="thstats_ver_info">__MSG_Version__: {{ thstats_version }}</div>
+					  <p><i><a class="outlink" href="http://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/donate/">__MSG_DonateLink__</a></i></p>
+					  <div id="thstats_ver_info">__MSG_Version__: {{ thstats_version }}</div></div>
   </div>
 </template>
 

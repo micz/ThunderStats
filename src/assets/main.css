@@ -63,8 +63,8 @@ td.align_end {
 
 #thstats_ver_info{
   position: absolute;
-  right: 5px;
-  bottom: 2px;
+  right: 20px;
+  bottom: 12px;
   font-style: italic;
   font-size: smaller;
 }

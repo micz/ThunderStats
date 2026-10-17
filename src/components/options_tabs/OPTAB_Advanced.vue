@@ -19,138 +19,133 @@
 -->
 
 <template>
-  <div class="intro_main">
-    __MSG_AdvancedSettingTabDesc__
+  <div class="opt-section-head">
+    <h1 class="opt-section-title">{{ t('TabAdvanced.label') }}</h1>
+    <div class="opt-section-desc">{{ t('AdvancedSettingTabDesc') }}</div>
   </div>
-    <table class="miczPrefs">
-    <tr>
-      <td colspan="2" class="grouptitle">__MSG_AdvancedAccountList__
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">__MSG_ImportantInfoText_1__ __MSG_AdvancedAccountList_Desc__
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="include_archive_multi_account" name="include_archive_multi_account" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_include_archive_multi_account__</span></label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="filter_duplicates_multi_account" name="filter_duplicates_multi_account" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_filter_duplicates_multi_account__</span></label>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <AdvancedAccountList :accounts="accounts_adv_settings" ref="AccountList_ref" @updateAccounts="accountListChanged"/>
-      </td>
-    </tr>
-    </table>
-    <table class="miczPrefs" style="margin-top: 50px;">
-    <tr>
-      <td colspan="2" class="grouptitle">__MSG_Other__</td>
-    </tr>
-    <tr>
-      <td class="td_padding_right">
-        <label>
-        <select id="first_day_week" name="first_day_week" class="option-input">
-          <option value="0">__MSG_WeekDay0__</option>
-          <option value="1">__MSG_WeekDay1__</option>
-          <option value="6">__MSG_WeekDay6__</option>
-        </select>
-        </label>
-      </td>
-      <td>
-        <span class="dims_label">__MSG_prefs_FirstDayWeek__</span>
-      </td>
-    </tr>
-    <tr>
-      <td class="td_padding_right">
-        <label><input type="number" id="_involved_num" name="_involved_num" class="option-input" /></label>
-      </td>
-      <td>
-        <span class="dims_label">__MSG_InvolvedNum__</span>
-      </td>
-    </tr>
-    <tr>
-      <td class="td_padding_right">
-        <label><input type="number" id="customqry_warn_onlongperiod_days" name="customqry_warn_onlongperiod_days" class="option-input" /></label>
-      </td>
-      <td>
-        <span class="dims_label">__MSG_CustmQryWarnOnLongPeriod_1__<br>[0: __MSG_CustmQryWarnOnLongPeriod_2__]</span>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="do_debug" name="do_debug" class="option-input" /></label>
-      </td>
-      <td>
-        <span class="dims_label" @click="toggle_options">__MSG_ActivateDebug__</span>
-      </td>
-    </tr>
-  </table>
+
+  <section class="opt-card">
+    <div class="opt-card-head">
+      <div class="opt-card-title">{{ t('Opt_ArchiveFolders') }}</div>
+      <div class="opt-card-desc">{{ t('ImportantInfoText_1') }}</div>
+    </div>
+    <OptRow pref="include_archive_multi_account" :label="t('prefs_include_archive_multi_account')"/>
+    <OptRow pref="filter_duplicates_multi_account" :label="t('prefs_filter_duplicates_multi_account')" :hint="t('Opt_FilterDupHint')"/>
+    <div class="opt-acct-grid opt-acct-head">
+      <div>{{ t('Opt_PerAccount') }}</div><div>{{ t('IncludeArchive') }}</div><div>{{ t('FilterDuplicateMessages') }}</div>
+    </div>
+    <div class="opt-acct-grid opt-acct-row" v-for="account in accounts" :key="account.id">
+      <div class="opt-acct-name" :title="account.name">{{ account.name }}</div>
+      <div><OptSwitch :modelValue="account.include_archive" :label="account.name + ' — ' + t('IncludeArchive')" @update:modelValue="updateAccount(account, 'include_archive', $event)"/></div>
+      <div><OptSwitch :modelValue="account.filter_duplicates" :label="account.name + ' — ' + t('FilterDuplicateMessages')" @update:modelValue="updateAccount(account, 'filter_duplicates', $event)"/></div>
+    </div>
+    <div class="opt-card-note">{{ t('Opt_ArchiveFoldersNote') }}</div>
+  </section>
+
+  <section class="opt-card">
+    <div class="opt-card-head"><div class="opt-card-title">{{ t('Other') }}</div></div>
+    <OptRow :label="t('prefs_FirstDayWeek')">
+      <select class="opt-input" :value="Number(prefs.values.first_day_week)" :aria-label="t('prefs_FirstDayWeek')" @change="prefs.set('first_day_week', Number($event.target.value))">
+        <option :value="1">{{ t('WeekDay1') }}</option>
+        <option :value="0">{{ t('WeekDay0') }}</option>
+        <option :value="6">{{ t('WeekDay6') }}</option>
+      </select>
+    </OptRow>
+    <OptRow :label="t('InvolvedNum')" :hint="t('Opt_TopRowsHint')">
+      <OptNumber pref="_involved_num" :min="3" :max="50" :label="t('InvolvedNum')"/>
+    </OptRow>
+    <OptRow :label="t('Opt_WarnLongPeriods')" :hint="t('CustmQryWarnOnLongPeriod_1') + ' (0: ' + t('CustmQryWarnOnLongPeriod_2') + ')'">
+      <OptNumber pref="customqry_warn_onlongperiod_days" :min="0" :max="3650" :label="t('Opt_WarnLongPeriods')"/>
+      {{ t('days') }}
+    </OptRow>
+  </section>
+
+  <section class="opt-card">
+    <div class="opt-card-head">
+      <div class="opt-card-title">{{ t('Opt_Performance') }}</div>
+      <div class="opt-card-desc">{{ t('Opt_PerformanceDesc') }}</div>
+    </div>
+    <OptRow :label="t('Opt_ConcurrentQueries')" :hint="t('MaxConcurrentQueries')">
+      <OptNumber pref="max_concurrent_queries" :min="1" :max="10" :label="t('Opt_ConcurrentQueries')"/>
+    </OptRow>
+    <OptRow :label="t('Opt_RecentDaysCache')" :hint="t('RecentDaysCacheDays_1') + ' ' + t('RecentDaysCacheDays_2')">
+      <OptNumber pref="recent_days_cache_days" :min="43" :max="365" :label="t('Opt_RecentDaysCache')"/>
+      {{ t('days') }}
+    </OptRow>
+    <OptRow pref="do_debug" :label="t('ActivateDebug')" :hint="t('Opt_DebugLogHint')"/>
+  </section>
 </template>
 
 
 <script setup>
-  import { onMounted, onUnmounted, ref } from 'vue'
-  import { tsLogger } from '@statslib/mzts-logger';
-  import { tsStore } from '@statslib/mzts-store';
-  import { tsPrefs } from "@statslib/mzts-options";
-  import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
-  import AdvancedAccountList from '../AdvancedAccountList.vue';
+import { inject, onMounted, ref } from 'vue'
+import { tsLogger } from '@statslib/mzts-logger';
+import { tsStore } from '@statslib/mzts-store';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import OptRow from '@/components/options/OptRow.vue';
+import OptSwitch from '@/components/options/OptSwitch.vue';
+import OptNumber from '@/components/options/OptNumber.vue';
 
-  const emit = defineEmits(['new_changes']);
+const t = (key, subs) => browser.i18n.getMessage(key, subs);
 
-  let tsLog = null;
-  let new_changes = ref(false);
-  let accounts_adv_settings = ref([]);
+const prefs = inject('optPrefs');
 
-  onMounted(async () => {
-    tsLog = new tsLogger("OPTAB_Advanced", tsStore.do_debug);
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-      input.addEventListener('change', somethingChanged);
-    });
-    document.getElementById('first_day_week').addEventListener('change', somethingChanged);
-    let archive_accounts = await tsPrefs.getPref("accounts_adv_settings");
-    let all_accounts = await tsCoreUtils.getAccountsList();
-    accounts_adv_settings.value = await tsCoreUtils.mergeAccountsAdvSettings(all_accounts, archive_accounts);
-    tsLog.log("accounts_adv_settings: " + JSON.stringify(accounts_adv_settings.value));
-    tsLog.log("onMounted");
-  });
-  
-  onUnmounted(() => {
-    tsLog.log("onUnmounted");
-  });
+let accounts = ref([]);
+let tsLog = null;
 
-  async function somethingChanged() {
-    new_changes.value = true;
-    emit('new_changes', new_changes.value);
-  }
+onMounted(async () => {
+  tsLog = new tsLogger("OPTAB_Advanced", tsStore.do_debug);
+  let all_accounts = await tsCoreUtils.getAccountsList();
+  accounts.value = await tsCoreUtils.mergeAccountsAdvSettings(all_accounts, prefs.values.accounts_adv_settings);
+  tsLog.log(() => "accounts_adv_settings: " + JSON.stringify(accounts.value));
+  tsLog.log("onMounted");
+});
 
-  function toggle_options(e) {
-    let row = e.target.closest('tr');
-    let checkbox = row.querySelector('input[type="checkbox"]');
-    checkbox.checked = !checkbox.checked;
-    checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
-  }
-
-  function accountListChanged(accountsList) {
-    tsPrefs.setPref("accounts_adv_settings", accountsList);
-    somethingChanged();
-  }
-  
+function updateAccount(account, key, value) {
+  account[key] = value;
+  prefs.set("accounts_adv_settings", accounts.value);
+}
 </script>
-      
+
 
 <style scoped>
+.opt-acct-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 140px 140px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+}
 
+.opt-acct-grid > div:not(:first-child) {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.opt-acct-head {
+  padding: 10px 18px 8px;
+  background: var(--surface2);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.opt-acct-row {
+  padding: 11px 18px;
+}
+
+.opt-acct-name {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .opt-acct-grid {
+    grid-template-columns: minmax(0, 1fr) 96px 96px;
+  }
+}
 </style>

@@ -362,11 +362,19 @@ let export_menu = {
 };
 
 
-function openExportMenu(e){
-    e.preventDefault();
-    let menu_icon = document.getElementById(exportdata_menu_dom_id.value).getBoundingClientRect();
-    let x = menu_icon.x + menu_icon.width/2;
-    let y = menu_icon.y + menu_icon.height/2;
+function openExportMenu(e, anchor_el = null){
+    if(e) e.preventDefault();
+    let x, y;
+    if(anchor_el) {
+      // Opened from an external button (the toolbar): show the menu below it
+      let anchor = anchor_el.getBoundingClientRect();
+      x = anchor.x;
+      y = anchor.bottom + 4;
+    } else {
+      let menu_icon = document.getElementById(exportdata_menu_dom_id.value).getBoundingClientRect();
+      x = menu_icon.x + menu_icon.width/2;
+      y = menu_icon.y + menu_icon.height/2;
+    }
     ContextMenu.showContextMenu({
       theme: tsStore.darkmode ? "mac dark" : "mac",
       x: x,
@@ -430,6 +438,8 @@ function exportData(data, export_type, export_name) {
           break;
     }
 }
+
+defineExpose({ openExportMenu });
 
 </script>
 

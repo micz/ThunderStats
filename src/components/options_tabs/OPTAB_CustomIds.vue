@@ -19,177 +19,154 @@
 -->
 
 <template>
-<div class="intro_main">
-    <b>__MSG_ManageCustomIdentitites__</b><br>
-    __MSG_ManageCustomIdentititesDesc_1__<br>
-    __MSG_ManageCustomIdentititesDesc_2__
-</div>
-<table>
-    <tr>
-        <td>
-            <b>__MSG_Account__:</b>
-            <SelectAccount id="account_selector" v-model="current_account" :hide_AllAccount_option="true" ref="SelectAccount_ref" class="marginleft10" @change="accountChanged"/>
-            <br>
-            <div class="account_emails" v-text="account_emails"></div>
-        </td>
-    </tr>
-    <tr><td>&nbsp;</td></tr>
-    <tr>
-        <td>
-            <b>__MSG_CustomIdentititesAccount__</b>
-            <div class="custom-ids-container">
-                <textarea rows="6" cols="50" v-model="account_custom_ids" id="account_custom_ids" :disabled="current_account == 0" :class="{'has-changes': new_custom_ids_changes}" @input="customIdsChanged"></textarea>
-                <button v-on:click="updateCustomIds" class="save-btn" :disabled="!new_custom_ids_changes">__MSG_Save__</button>
-            </div>
-            <div style="font-size: small;">
-                __MSG_CustomIdentititesAccount.Info__
-            </div>
-        </td>
-    </tr>
-    <tr><td><hr class="hr_light"></td></tr>
-    <tr>
-        <td>
-            <b>__MSG_InternalDomainsAccount__</b>
-            <div style="font-size: small; margin-bottom: 5px;">
-                __MSG_InternalDomainsAccount.Desc__
-            </div>
-            <div class="custom-ids-container">
-                <textarea rows="6" cols="50" v-model="account_internal_domains" id="account_internal_domains" :disabled="current_account == 0" :class="{'has-changes': new_internal_domains_changes}" @input="internalDomainsChanged"></textarea>
-                <button v-on:click="updateInternalDomains" class="save-btn" :disabled="!new_internal_domains_changes">__MSG_Save__</button>
-            </div>
-            <div style="font-size: small;">
-                __MSG_InternalDomainsAccount.Info__
-            </div>
-        </td>
-    </tr>
-</table>
+  <div class="opt-section-head">
+    <h1 class="opt-section-title">{{ t('TabCustomIdentities.label') }}</h1>
+    <div class="opt-section-desc">{{ t('Opt_IdentitiesDesc') }}</div>
+  </div>
+
+  <div class="opt-acct-switch" v-if="accounts.length > 0">
+    <span class="opt-acct-label">{{ t('Account') }}</span>
+    <div class="opt-pills" role="group" :aria-label="t('Account')">
+      <button type="button" v-for="account in accounts" :key="account.id" :class="{ 'is-active': account.id == current_account }" :aria-pressed="account.id == current_account ? 'true' : 'false'" @click="selectAccount(account.id)">{{ account.name }}</button>
+    </div>
+  </div>
+
+  <section class="opt-card opt-card-padded">
+    <div class="opt-card-head">
+      <div class="opt-card-title">{{ t('Identities') }}</div>
+      <div class="opt-card-desc">{{ t('Opt_AccountIdentitiesDesc') }}</div>
+    </div>
+    <div class="opt-id-list" v-if="account_emails.length > 0">
+      <span class="opt-id-chip" v-for="email in account_emails" :key="email">{{ email }}</span>
+    </div>
+    <div class="opt-id-empty" v-else>{{ t('Opt_NoIdentities') }}</div>
+  </section>
+
+  <section class="opt-card opt-card-padded">
+    <div class="opt-card-head">
+      <div class="opt-card-title">{{ t('CustomIdentititesAccount') }}</div>
+      <div class="opt-card-desc">{{ t('ManageCustomIdentititesDesc_1') }}</div>
+    </div>
+    <OptTagInput :key="'ids-' + current_account" :modelValue="custom_ids" variant="accent" :placeholder="t('Opt_AddAddress')" :validate="isValidIdentity" :invalidMessage="t('Opt_InvalidAddress')" :disabled="!current_account" @update:modelValue="saveList('custom_identities', $event)"/>
+    <div class="opt-id-hint"><template v-for="(part, idx) in withCode('CustomIdentititesAccount.Info', ['*@example.com', '@example.com'])" :key="idx"><code v-if="part.code">{{ part.text }}</code><template v-else>{{ part.text }}</template></template></div>
+  </section>
+
+  <section class="opt-card opt-card-padded">
+    <div class="opt-card-head">
+      <div class="opt-card-title">{{ t('InternalDomainsAccount') }}</div>
+      <div class="opt-card-desc">{{ t('InternalDomainsAccount.Desc') }}</div>
+    </div>
+    <OptTagInput :key="'dom-' + current_account" :modelValue="internal_domains" variant="good" :placeholder="t('Opt_AddDomain')" :validate="isValidDomain" :invalidMessage="t('Opt_InvalidDomain')" :disabled="!current_account" @update:modelValue="saveList('internal_domains', $event)"/>
+    <div class="opt-id-hint"><template v-for="(part, idx) in withCode('InternalDomainsAccount.Info', ['*.example.com'])" :key="idx"><code v-if="part.code">{{ part.text }}</code><template v-else>{{ part.text }}</template></template></div>
+  </section>
 </template>
-  
-  
-  
+
+
+
 <script setup>
-import { ref, onMounted } from 'vue'
-import SelectAccount from '../SelectAccount.vue';
-import { tsPrefs } from '@statslib/mzts-options';
+import { ref, computed, inject, onMounted } from 'vue'
 import { tsLogger } from '@statslib/mzts-logger';
 import { tsStore } from '@statslib/mzts-store';
-import { thunderStastsCore } from "@statslib/mzts-statscore.js";
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import OptTagInput from '@/components/options/OptTagInput.vue';
 
-const emit = defineEmits(['new_changes']);
+const t = (key, subs) => browser.i18n.getMessage(key, subs);
+
+const prefs = inject('optPrefs');
 
 let tsLog = null;
-let tsCore = null;
-let current_account = ref(0);
-let SelectAccount_ref = ref(null);
-let account_custom_ids = ref("");
-let account_internal_domains = ref("");
-let new_changes = ref(false);
-let new_custom_ids_changes = ref(false);
-let new_internal_domains_changes = ref(false);
-let account_emails = ref(browser.i18n.getMessage("Identities") + ": -");
+let accounts = ref([]);
+let current_account = ref(null);
+let account_emails = ref([]);
 
-let prefCustomIds = {};
-let prefInternalDomains = {};
+let custom_ids = computed(() => listOf('custom_identities'));
+let internal_domains = computed(() => listOf('internal_domains'));
 
 onMounted(async () => {
-    tsLog = new tsLogger("OPTAB_CustomIds", tsStore.do_debug);
-    tsPrefs.logger = tsLog;
-    tsCore = new thunderStastsCore({do_debug: tsStore.do_debug});
-    prefCustomIds = await tsPrefs.getPref("custom_identities");
-    prefInternalDomains = await tsPrefs.getPref("internal_domains");
-    tsLog.log("prefCustomIds = " + JSON.stringify(prefCustomIds));
-    tsLog.log("prefInternalDomains = " + JSON.stringify(prefInternalDomains));
-    tsLog.log("onMounted");
-  });
+  tsLog = new tsLogger("OPTAB_CustomIds", tsStore.do_debug);
+  accounts.value = await tsCoreUtils.getAccountsList(true);
+  if (accounts.value.length > 0) selectAccount(accounts.value[0].id);
+  tsLog.log("onMounted");
+});
 
-function accountChanged(){
-    tsLog.log("accountChanged: " + current_account.value);
-    loadAccountEmails();
-    loadCustomIds();
-    loadInternalDomains();
+async function selectAccount(account_id) {
+  current_account.value = account_id;
+  account_emails.value = [];
+  let emails = await tsCoreUtils.getAccountEmails(account_id, true);
+  if (current_account.value === account_id) account_emails.value = emails;
 }
 
-async function loadAccountEmails(){
-    account_emails.value = browser.i18n.getMessage("Identities") + ": " + (await tsCore.getAccountEmails(current_account.value,true)).join(", ");
-    tsLog.log("loadAccountEmails => account_emails.value: " + account_emails.value);
+function listOf(pref) {
+  let lists = prefs.values[pref] || {};
+  return Array.isArray(lists[current_account.value]) ? lists[current_account.value] : [];
 }
 
-function loadCustomIds(){
-    // console.log(">>>>>>>>>>> current_account: " + current_account.value);
-    // console.log(">>>>>>>>>>> prefCustomIds: " + JSON.stringify(prefCustomIds));
-    if(prefCustomIds.hasOwnProperty(current_account.value)){
-        account_custom_ids.value = prefCustomIds[current_account.value].join("\n");
-        tsLog.log("loadCustomIds => account_custom_ids.value: " + account_custom_ids.value);
-    } else {
-        account_custom_ids.value = "";
-    }
-    tsLog.log("loadCustomIds done!");
+function saveList(pref, list) {
+  let lists = { ...(prefs.values[pref] || {}) };
+  lists[current_account.value] = list.map(v => v.toLowerCase());
+  tsLog.log(() => pref + ": " + JSON.stringify(lists));
+  prefs.set(pref, lists);
 }
 
-function updateCustomIds(){
-    let current_custom_ids = account_custom_ids.value.split(/[\n,]+/).filter(id => id.trim() !== '');;
-    current_custom_ids = current_custom_ids.map(part => part.trim());
-    tsLog.log("current_custom_ids: " + JSON.stringify(current_custom_ids));
-    account_custom_ids.value = current_custom_ids.join("\n");
-    prefCustomIds[current_account.value] = current_custom_ids;
-    tsPrefs.setPref("custom_identities", prefCustomIds);
-    new_custom_ids_changes.value = false;
-    somethingChanged();
+// Splits a message whose $1, $2... are code samples into text and code parts
+function withCode(key, codes) {
+  let message = t(key, codes.map((_, idx) => '\u0001' + idx + '\u0001'));
+  return message.split('\u0001').map((text, idx) => (idx % 2 == 1) ? { code: true, text: codes[Number(text)] } : { code: false, text: text }).filter(part => part.text !== '');
 }
 
-function customIdsChanged(){
-    new_custom_ids_changes.value = true;
+// an address, a pattern with * or a whole domain (@example.com)
+function isValidIdentity(value) {
+  return /^[^\s@]*@[^\s@]+$/.test(value);
 }
 
-function loadInternalDomains(){
-    if(prefInternalDomains.hasOwnProperty(current_account.value)){
-        account_internal_domains.value = prefInternalDomains[current_account.value].join("\n");
-        tsLog.log("loadInternalDomains => account_internal_domains.value: " + account_internal_domains.value);
-    } else {
-        account_internal_domains.value = "";
-    }
-    tsLog.log("loadInternalDomains done!");
+// a hostname, optionally with * wildcards (*.example.com)
+function isValidDomain(value) {
+  return /^[a-z0-9*]([a-z0-9*.-]*[a-z0-9*])?$/i.test(value) && /[.*]/.test(value);
 }
-
-function updateInternalDomains(){
-    let current_internal_domains = account_internal_domains.value.split(/[\n,]+/).filter(d => d.trim() !== '');
-    current_internal_domains = current_internal_domains.map(part => part.trim());
-    tsLog.log("current_internal_domains: " + JSON.stringify(current_internal_domains));
-    account_internal_domains.value = current_internal_domains.join("\n");
-    prefInternalDomains[current_account.value] = current_internal_domains;
-    tsPrefs.setPref("internal_domains", prefInternalDomains);
-    new_internal_domains_changes.value = false;
-    somethingChanged();
-}
-
-function internalDomainsChanged(){
-    new_internal_domains_changes.value = true;
-}
-
-async function somethingChanged() {
-    new_changes.value = true;
-    emit('new_changes', new_changes.value);
-}
-
 </script>
 
 
 <style scoped>
-.has-changes {
-    border: 1px solid blue;
-}
-.custom-ids-container {
-    display: flex;
-    align-items: flex-end;
-    gap: 5px;
-}
-.save-btn {
-    flex-shrink: 0;
+.opt-acct-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 
-hr.hr_light{
-  color: #fff;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+.opt-acct-label {
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.opt-id-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.opt-id-chip {
+  padding: 5px 11px;
+  border-radius: 14px;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.opt-id-empty {
+  font-size: 13px;
+  color: var(--text3);
+}
+
+.opt-id-hint {
+  font-size: 12.5px;
+  color: var(--text3);
+}
+
+.opt-id-hint code {
+  font-family: ui-monospace, "Cascadia Mono", monospace;
+  font-size: .95em;
+  color: var(--text2);
 }
 </style>

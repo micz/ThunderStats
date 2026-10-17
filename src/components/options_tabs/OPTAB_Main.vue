@@ -19,251 +19,122 @@
 -->
 
 <template>
-    <div class="intro_main">__MSG_GlobalDescSettingTab__</div>
-  <table class="miczPrefs">
-    <tr>
-      <td style="padding-right: 10px;">
-        <label>__MSG_StartupAccount__:</label>
-      </td>
-      <td>
-        <label><SelectAccount v-model="current_account" id="startup_account" name="startup_account" class="option-input"/></label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label>&nbsp;</label>
-      </td>
-      <td>
-     <label><input type="checkbox" id="remember_last_account" name="remember_last_account" class="option-input" @change="onRememberLastAccountChange" />
-      <span class="dims_label" @click="toggle_options_remember_last_account">__MSG_prefs_remember_last_account__</span></label>
-      </td>
-    </tr>
-  </table>
-  <table class="miczPrefs">
-      <tr>
-      <td colspan="2" class="grouptitle">__MSG_Miscellaneous__</td>
-    </tr>
-    <tr>
-     <td>
-        <label><input type="checkbox" id="load_data_changing_account" name="load_data_changing_account" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_load_data_changing_account__</span></label>
-      </td>
-    </tr>
-    <tr>
-     <td>
-        <label><input type="checkbox" id="always_reload_tab_data" name="always_reload_tab_data" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_always_reload_tab_data__</span></label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="remember_last_tab" name="remember_last_tab" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_remember_last_tab__</span></label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="customqry_always_open_adv_filters" name="customqry_always_open_adv_filters" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_customqry_always_open_adv_filters__</span></label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="customqry_loaddata_when_opening_addon" name="customqry_loaddata_when_opening_addon" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_prefs_customqry_loaddata_when_opening_addon__</span></label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="show_internal_mail_percent" name="show_internal_mail_percent" class="option-input" /></label>
-      </td>
-      <td>
-        <label><span class="dims_label" @click="toggle_options">__MSG_prefs_show_internal_mail_percent__</span></label>
-      </td>
-    </tr>
-  </table>
-    <table class="miczPrefs" style="margin-top: 10px;">
-      <tr>
-      <td colspan="2" class="grouptitle">__MSG_TimeChart__</td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="today_time_chart_show_yesterday" name="today_time_chart_show_yesterday" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_TodayTimeChartShowYesterday__</span></label>
-      </td>
-    </tr>
-      <tr>
-      <td>
-        <label><input type="checkbox" id="_time_chart_progressive" name="_time_chart_progressive" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_TimeChartProgressive__</span></label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="today_time_chart_do_no_show_future" name="today_time_chart_do_no_show_future" class="option-input" /></label> 
-      </td>
-      <td>
-        <label><span class="dims_label" @click="toggle_options">__MSG_TimeChartNoFutureHours__</span></label>
-      </td>
-    </tr>
-    </table>
-    <table class="miczPrefs" v-if="tsStore.isTB128plus">
-    <tr>
-      <td colspan="2" class="grouptitle">__MSG_InboxZeroChart__</td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="inbox0_openFolderInFirstTab" name="inbox0_openFolderInFirstTab" class="option-input" /></label>
-      </td>
-      <td>
-     <label><span class="dims_label" @click="toggle_options">__MSG_folderspreadchart_openinfirsttab__</span></label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="inbox_percent_remaining" name="inbox_percent_remaining" class="option-input" /></label>
-      </td>
-      <td>
-        <label><span class="dims_label" @click="toggle_options">__MSG_prefs_inbox_percent_remaining__</span></label>
-      </td>
-    </tr>
-    </table>
-    <table class="miczPrefs">
-    <tr>
-      <td colspan="2" class="grouptitle">__MSG_ManyDaysChart__</td>
-    </tr>
-    <tr>
-      <td class="td_padding_right">
-        <label><input type="number" id="_many_days" name="_many_days" class="option-input" /></label>
-      </td>
-      <td>
-        <span class="dims_label">__MSG_ManyDays__</span>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="many_days_show_inbox" name="many_days_show_inbox" class="option-input" /></label>
-      </td>
-      <td>
-        <label><span class="dims_label" @click="toggle_options">__MSG_ManyDaysShowInbox__</span></label>
-      </td>
-    </tr>
-    </table>
-    <table class="miczPrefs">
-    <tr>
-      <td colspan="2" class="grouptitle">__MSG_CustomQryTabGroupbox__</td>
-    </tr>
-    <tr>
-      <td>
-        <label><input type="checkbox" id="customqry_loaddata_when_selectingrange" name="customqry_loaddata_when_selectingrange" class="option-input" /></label>
-      </td>
-      <td>
-        <span class="dims_label" @click="toggle_options">__MSG_CustomQueryBookmarkImmediateUpdate__</span>
-      </td>
-    </tr>
-    <tr>
-      <td class="td_padding_right">
-        <label><input type="text" id="datepicker_locale" name="datepicker_locale" class="option-input" /></label>
-      </td>
-      <td>
-        <button type="button" @click="setDefaultDatePickerLocale" class="marginright10">__MSG_SetDefault__</button>
-        <span class="dims_label">__MSG_DatePickerLocale__</span>
-      </td>
-    </tr>
-    </table>
+  <div class="opt-section-head">
+    <h1 class="opt-section-title">{{ t('TabSettings.label') }}</h1>
+    <div class="opt-section-desc">{{ t('GlobalDescSettingTab') }}</div>
+  </div>
+
+  <section class="opt-card">
+    <div class="opt-card-head"><div class="opt-card-title">{{ t('Opt_Startup') }}</div></div>
+    <OptRow :label="t('StartupAccount')" :hint="t('Opt_StartupAccountHint')" :disabled="!!prefs.values.remember_last_account">
+      <select class="opt-input" :value="String(prefs.values.startup_account)" :disabled="!!prefs.values.remember_last_account" :aria-label="t('StartupAccount')" @change="prefs.set('startup_account', $event.target.value)">
+        <option v-for="account in accounts" :key="account.id" :value="String(account.id)">{{ account.name }}</option>
+      </select>
+    </OptRow>
+    <OptRow pref="remember_last_account" :label="t('prefs_remember_last_account')" :hint="t('Opt_RememberLastAccountHint')" @change="onRememberLastAccountChange"/>
+  </section>
+
+  <section class="opt-card">
+    <div class="opt-card-head"><div class="opt-card-title">{{ t('Opt_LoadingData') }}</div></div>
+    <OptRow pref="load_data_changing_account" :label="t('prefs_load_data_changing_account')"/>
+    <OptRow pref="always_reload_tab_data" :label="t('prefs_always_reload_tab_data')"/>
+    <OptRow pref="remember_last_tab" :label="t('prefs_remember_last_tab')"/>
+    <OptRow pref="customqry_loaddata_when_opening_addon" :label="t('prefs_customqry_loaddata_when_opening_addon')" :hint="t('Opt_LoadCustomFirstTabHint')"/>
+    <OptRow pref="customqry_loaddata_when_selectingrange" :label="t('CustomQueryBookmarkImmediateUpdate')" :hint="t('Opt_LoadCustomOnRangeHint')"/>
+    <OptRow pref="customqry_always_open_adv_filters" :label="t('prefs_customqry_always_open_adv_filters')"/>
+  </section>
+
+  <section class="opt-card">
+    <div class="opt-card-head"><div class="opt-card-title">{{ t('TimeChart') }}</div></div>
+    <OptRow pref="today_time_chart_show_yesterday" :label="t('TodayTimeChartShowYesterday')"/>
+    <OptRow pref="_time_chart_progressive" :label="t('TimeChartProgressive')"/>
+    <OptRow pref="today_time_chart_do_no_show_future" :label="t('TimeChartNoFutureHours')" :hint="t('Opt_TodayOnly')"/>
+  </section>
+
+  <section class="opt-card">
+    <div class="opt-card-head"><div class="opt-card-title">{{ t('Opt_ManyDaysCustom') }}</div></div>
+    <OptRow :label="t('ManyDays')" :hint="t('Opt_ManyDaysNumHint')">
+      <OptNumber pref="_many_days" :min="2" :max="365" :label="t('ManyDays')"/>
+      {{ t('days') }}
+    </OptRow>
+    <OptRow :label="t('DatePickerLocale')" :hint="t('Opt_DatePickerLocaleHint')">
+      <input type="text" class="opt-input opt-locale" :value="prefs.values.datepicker_locale" :aria-label="t('DatePickerLocale')" @input="prefs.set('datepicker_locale', $event.target.value.trim(), true)"/>
+      <button type="button" class="opt-btn" @click="prefs.set('datepicker_locale', ui_language)">{{ t('SetDefault') }}</button>
+    </OptRow>
+  </section>
+
+  <section class="opt-card">
+    <div class="opt-card-head"><div class="opt-card-title">{{ t('InboxZero') }}</div></div>
+    <OptRow pref="many_days_show_inbox" :label="t('ManyDaysShowInbox')" :hint="t('Opt_MarkInboxBarsHint')"/>
+    <OptRow pref="inbox0_openFolderInFirstTab" :label="t('folderspreadchart_openinfirsttab')"/>
+    <OptRow pref="inbox_age_expanded" :label="t('prefs_inbox_age_expanded')" :hint="t('Opt_InboxAgeHint')"/>
+  </section>
+
+  <section class="opt-card">
+    <div class="opt-card-head"><div class="opt-card-title">{{ t('Opt_InternalMail') }}</div></div>
+    <OptRow pref="show_internal_mail_percent" :label="t('prefs_show_internal_mail_percent')" :disabled="!has_internal_domains && !prefs.values.show_internal_mail_percent">
+      <template #hint>{{ t('Opt_ShowInternalShareHint') }} <button type="button" class="opt-link" @click="goto('identities')">{{ t('Opt_SetInternalDomains') }}</button></template>
+    </OptRow>
+  </section>
+
+  <section class="opt-card">
+    <div class="opt-card-head"><div class="opt-card-title">{{ t('Appearance') }}</div></div>
+    <OptRow :label="t('prefs_theme_mode')" :hint="t('Opt_ThemeHint')">
+      <select class="opt-input" :value="prefs.values.theme_mode" :aria-label="t('prefs_theme_mode')" @change="prefs.set('theme_mode', $event.target.value)">
+        <option value="auto">{{ t('ThemeAuto') }}</option>
+        <option value="light">{{ t('ThemeLight') }}</option>
+        <option value="dark">{{ t('ThemeDark') }}</option>
+      </select>
+    </OptRow>
+    <OptRow :label="t('prefs_time_format')" :hint="t('Opt_TimeFormatHint')">
+      <select class="opt-input" :value="prefs.values.time_format" :aria-label="t('prefs_time_format')" @change="prefs.set('time_format', $event.target.value)">
+        <option value="auto">{{ t('TimeFormatAuto') }}</option>
+        <option value="24">{{ t('TimeFormat24') }}</option>
+        <option value="12">{{ t('TimeFormat12') }}</option>
+      </select>
+    </OptRow>
+  </section>
 </template>
 
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
-import SelectAccount from '@/components/SelectAccount.vue';
+import { computed, inject, onMounted, ref } from 'vue'
 import { tsLogger } from '@statslib/mzts-logger';
-import { tsPrefs } from '@statslib/mzts-options';
 import { tsStore } from '@statslib/mzts-store';
+import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import OptRow from '@/components/options/OptRow.vue';
+import OptNumber from '@/components/options/OptNumber.vue';
 
-  const emit = defineEmits(['new_changes']);
+const t = (key, subs) => browser.i18n.getMessage(key, subs);
 
-  let current_account = ref(0);
-  let tsLog = null;
-  let new_changes = ref(false);
+const prefs = inject('optPrefs');
+const goto = inject('optGoto');
+const ui_language = browser.i18n.getUILanguage();
 
-  onMounted(async () => {
-    tsLog = new tsLogger("OPTAB_Main", tsStore.do_debug);
-    let remember = await tsPrefs.getPref("remember_last_account");
-    updateStartupAccountDisabled(remember);
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-      input.addEventListener('change', somethingChanged);
-    });
-    tsLog.log("onMounted");
-  });
+let accounts = ref([]);
+let tsLog = null;
 
-  onUnmounted(() => {
-    tsLog.log("onUnmounted");
-  });
+// the internal mail share needs at least one internal domain in some account
+let has_internal_domains = computed(() => {
+  let domains = prefs.values.internal_domains || {};
+  return Object.values(domains).some(list => Array.isArray(list) && list.length > 0);
+});
 
-  async function somethingChanged() {
-    new_changes.value = true;
-    emit('new_changes', new_changes.value);
-  }
+onMounted(async () => {
+  tsLog = new tsLogger("OPTAB_Main", tsStore.do_debug);
+  accounts.value = await tsCoreUtils.getAccountsList(false);
+  tsLog.log("onMounted");
+});
 
-  function setDefaultDatePickerLocale() {
-    const datepicker = document.getElementById('datepicker_locale');
-    datepicker.value = navigator.language;
-    datepicker.dispatchEvent(new Event('change', { 'bubbles': true }));
-  }
-
-  function toggle_options(e) {
-    let row = e.target.closest('tr');
-    let checkbox = row.querySelector('input[type="checkbox"]');
-    checkbox.checked = !checkbox.checked;
-    checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
-  }
-
-  function updateStartupAccountDisabled(disabled) {
-    let select = document.getElementById('startup_account');
-    if (select) {
-      select.disabled = disabled;
-    }
-  }
-
-  function toggle_options_remember_last_account() {
-    let checkbox = document.getElementById('remember_last_account');
-    checkbox.checked = !checkbox.checked;
-    checkbox.dispatchEvent(new Event('change', { 'bubbles': true }));
-  }
-
-  async function onRememberLastAccountChange() {
-    let checkbox = document.getElementById('remember_last_account');
-    updateStartupAccountDisabled(checkbox.checked);
-    if (checkbox.checked) {
-      let startup_account = await tsPrefs.getPref("startup_account");
-      await tsPrefs.setPref("_last_account_id", startup_account);
-    }
-  }
+function onRememberLastAccountChange(remember) {
+  // start remembering from the current startup account
+  if(remember) prefs.set("_last_account_id", prefs.values.startup_account);
+}
 </script>
 
 
 <style scoped>
-#datepicker_locale{
-  width: 2rem;
-}
-.warning-no-domains {
-  color: red;
-  font-size: small;
+.opt-locale {
+  width: 96px;
 }
 </style>

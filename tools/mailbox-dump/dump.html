@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ThunderStats Mailbox Dump</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2em; max-width: 46em; }
+    label { display: block; margin: .6em 0; }
+    #log { white-space: pre-wrap; font-family: monospace; background: #f3f3f3; padding: 1em; min-height: 6em; }
+    button { margin: 1em .5em 1em 0; padding: .4em 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>ThunderStats Mailbox Dump</h1>
+  <p>Exports accounts, folders, tags, contacts and the headers of the messages (no bodies) as a JSON file
+     for the real data tests (<code>npm run test:real</code>). Copy the file into <code>tests/real/data/</code>.</p>
+  <label>Months of messages (0 = all): <input id="months" type="number" min="0" value="24"></label>
+  <label><input id="anonymize" type="checkbox" checked> Anonymize addresses, names, subjects, folder and tag names</label>
+  <button id="start">Create the dump</button>
+  <a id="download" hidden>Download the dump</a>
+  <div id="log"></div>
+  <script type="module" src="dump.js"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+/*
+ *  ThunderStats [https://micz.it/thunderbird-addon-thunderstats-your-thunderbird-statistics/]
+ *  Copyright (C) 2024 - 2026 Mic (m@micz.it)
+
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* Building blocks shared by the dashboard widgets (design direction 1b) */
+
+.ts-two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+  gap: 18px;
+}
+
+.ts-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.ts-card-note {
+  font-size: 13px;
+  color: var(--text2);
+  text-wrap: pretty;
+}
+
+/* Legends */
+.ts-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 12px;
+  color: var(--text2);
+}
+
+.ts-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ts-legend-line {
+  display: block;
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.ts-legend-square {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.ts-legend-band {
+  display: block;
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--rcvd);
+  opacity: .16;
+}
+
+.ts-legend-dashed {
+  display: block;
+  width: 14px;
+  border-top: 2px dashed var(--text3);
+}
+
+/* Text button, e.g. "See all 10 →" */
+.ts-link-btn {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.ts-link-btn:hover {
+  text-decoration: underline;
+}
+
+/* Right rail cards */
+.ts-rail-card {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.ts-rail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ts-rail-title {
+  font-size: 14px;
+  font-weight: 660;
+  color: var(--text);
+}
+
+.ts-rail-empty {
+  font-size: 13px;
+  color: var(--text2);
+}
+
+/* Horizontal bar lists (domains, folders, tags) */
+.ts-bars-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.ts-bars-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.ts-bars-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.ts-bars-empty {
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.ts-bars-note {
+  font-size: 12px;
+  color: var(--text2);
+  text-wrap: pretty;
+}
+
+.ts-bars-more {
+  align-self: flex-start;
+}
+
+.ts-bar-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ts-bar {
+  flex: none;
+  min-width: 2px;
+  border-radius: 3px;
+}
+
+.ts-bar-count {
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Small segmented control inside cards (Folders / Tags, 07–20 / 24h) */
+.ts-mini-segmented {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-input);
+  background: var(--surface3);
+}
+
+.ts-mini-segmented button {
+  border: 0;
+  padding: 5px 12px;
+  border-radius: var(--radius-segment);
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text2);
+  cursor: pointer;
+}
+
+.ts-mini-segmented button.is-active {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 620;
+}
+
+/* Loading indicator of a whole card (the dots spinner is only for single numbers) */
+.ts-card .circle_wait,
+.ts-dashboard .circle_wait {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
+}
+
+/* Small "i" next to a card title, the explanation is in its tooltip */
+.ts-info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  margin-left: 7px;
+  border-radius: 8px;
+  background: var(--surface3);
+  color: var(--text2);
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
+  vertical-align: 2px;
+  cursor: help;
+}
+
+/* Grid where a single card keeps the width of one column */
+.ts-two-col-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(380px, 100%), 1fr));
+  gap: 18px;
+}
+
+/* Period B value next to a Period A value (Custom Query comparison) */
+.ts-cmp-value {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

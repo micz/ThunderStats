@@ -21,6 +21,55 @@ import { tsCoreUtils } from "./mzts-statscore.utils";
 import { tsUtils, EmailMatcher, DomainMatcher } from "./mzts-utils";
 import { tsPrefs } from "./mzts-options";
 import { tsStore } from "./mzts-store";
+import { prefs_default } from "./mzts-options-default";
+
+// Messages per page of a messages.query: bigger pages mean fewer round trips to Thunderbird for the same messages
+export const MESSAGES_PER_PAGE = 500;
+// Paging of every messages.query. autoPaginationTimeout 0 turns the automatic pagination off: with it on,
+// Thunderbird sets and clears a timer for every single header it examines, which was a quarter of the time
+// of a scan; the pages then come every MESSAGES_PER_PAGE messages or at the end of the query
+export const QUERY_PAGING = { messagesPerPage: MESSAGES_PER_PAGE, autoPaginationTimeout: 0 };
+// A scan queries its folders one at a time (see getFoldersMessages): after FOLDER_SCAN_SLICE_MS of
+// queries it pauses for FOLDER_SCAN_PAUSE_MS (one frame), so Thunderbird can paint and handle the input
+// meanwhile. The pauses cost about 5% of the scan time
+export const FOLDER_SCAN_SLICE_MS = 300;
+export const FOLDER_SCAN_PAUSE_MS = 16;
+// Days ending today (today and yesterday) whose message headers the recent days cache keeps, so the
+// Today and Yesterday tabs are built from the cache scan instead of running a full scan each
+export const RECENT_MESSAGES_DAYS = 2;
+// Folders never counted in the stats (with their subfolders)
+const EXCLUDED_FOLDERS_SPECIAL_USE = ['drafts', 'trash', 'junk', 'templates', 'outbox'];
+
+// messages.query does not document whether a message dated exactly fromDate or toDate is returned:
+// every query asks for one more second on both sides and inRange() checks the range, both ends included.
+// The ranges of a day end at 23:59:59.999, so a mail at midnight always belongs to exactly one day.
+const QUERY_DATE_MARGIN_MS = 1000;
+
+function queryDates(fromDate, toDate) {
+  return {
+    fromDate: new Date(fromDate.getTime() - QUERY_DATE_MARGIN_MS),
+    toDate: new Date(toDate.getTime() + QUERY_DATE_MARGIN_MS),
+  };
+}
+
+function inRange(message, fromDate, toDate) {
+  let time = new Date(message.date).getTime();
+  return time >= fromDate.getTime() && time <= toDate.getTime();
+}
+
+// Lower case address of the author, or null when the author has no address
+function authorKey(message) {
+  return tsUtils.extractEmail(message.author);
+}
+
+// With the duplicates filter on, true for a message whose Message-ID was already seen (and remembers it).
+// A message without a Message-ID cannot be told apart from the others: never a duplicate
+function isDuplicate(filter_duplicates, messages_hash, message) {
+  if(!filter_duplicates || !message.headerMessageId) return false;
+  if(messages_hash.has(message.headerMessageId)) return true;
+  messages_hash.set(message.headerMessageId, true);
+  return false;
+}
 
 export class thunderStastsCore {
 
@@ -29,6 +78,9 @@ export class thunderStastsCore {
   _involved_num = 10;
   _many_days = 7;
   accounts_adv_settings = [];
+  include_archive = {};     // account_id -> include the "archives" folders (loaded by loadIncludeArchive before each scan)
+  filter_duplicates = {};   // account_id -> filter duplicates setting (see getFilterDuplicates)
+  folders_ids = {};         // account_id -> ids of the folders to query (see getStatsFoldersIds)
 
   constructor(options = {}) {
     this.do_debug = options.hasOwnProperty('do_debug') ? options.do_debug : false;
@@ -42,7 +94,7 @@ export class thunderStastsCore {
     async getAccountEmails(account_id = 0, no_custom_identities = false) {
       let account_emails = tsCoreUtils.getAccountEmails(account_id, no_custom_identities);
       
-      this.tsLog.log("getAccountEmails => account_emails: " + JSON.stringify(account_emails));
+      this.tsLog.log(() => "getAccountEmails => account_emails: " + JSON.stringify(account_emails));
       return account_emails;
     }
 
@@ -53,7 +105,7 @@ export class thunderStastsCore {
       lastMidnight.setHours(0, 0, 0, 0);
       //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
       // console.log(">>>>>>>> [getToday] filter_duplicates: " + filter_duplicates);
 
@@ -82,9 +134,7 @@ export class thunderStastsCore {
 
       this.tsLog.log("[getToday_manyDaysData] fromDate: " + fromDate + " - toDate: " + toDate);
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
-
-      return this.getAggregatedStatsData(fromDate, toDate, account_id, account_emails, filter_duplicates);
+      return this.getAggregatedRecentDays(fromDate, toDate, account_id, account_emails);
      }
     // ================ TODAY TAB - END =====================
 
@@ -111,9 +161,22 @@ export class thunderStastsCore {
       toDate.setDate(stop_date);
       toDate.setHours(23, 59, 59, 999);
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);  // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+    }
+    // Counts of the _many_days days before the Many Days period (which ends yesterday), for the comparison with the previous period.
+    // Served from the recent days cache when the range is covered (2 * _many_days within the cache size), so the scan is shared with Today/Yesterday
+    async getManyDaysPreviousPeriod(account_id = 0, account_emails = []) {
+
+      let fromDate = new Date();
+      fromDate.setDate(fromDate.getDate() - (2 * this._many_days));
+      fromDate.setHours(0, 0, 0, 0);
+      let toDate = new Date();
+      toDate.setDate(toDate.getDate() - this._many_days - 1);
+      toDate.setHours(23, 59, 59, 999);
+
+      return this.getAggregatedRecentDays(fromDate, toDate, account_id, account_emails);
     }
     // ================ MANY DAYS TAB - END =====================
 
@@ -123,9 +186,21 @@ export class thunderStastsCore {
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
       return this.getFullStatsData(fromDate, toDate, account_id, account_emails, true, filter_duplicates, only_businessdays, adv_filters, internal_domains);   // the "true" is to aggregate
+    }
+    // Count-only stats of the num_days days before theDay (theDay excluded), for the pace of a single-day query
+    async getDaysBefore(theDay, num_days, account_id = 0, account_emails = []) {
+
+      let fromDate = new Date(theDay);
+      fromDate.setDate(fromDate.getDate() - num_days);
+      fromDate.setHours(0, 0, 0, 0);
+      let toDate = new Date(theDay);
+      toDate.setDate(toDate.getDate() - 1);
+      toDate.setHours(23, 59, 59, 999);
+
+      return this.getAggregatedRecentDays(fromDate, toDate, account_id, account_emails);
     }
     // ================ CUSTOM QUERY TAB - END =====================
 
@@ -134,35 +209,211 @@ export class thunderStastsCore {
     async getSingleDay(theDay, account_id = 0, account_emails = [], internal_domains = []) {
 
       theDay.setHours(0, 0, 0, 0);
-      let theMidnightAfter = new Date(theDay);
-      theMidnightAfter.setDate(theMidnightAfter.getDate() + 1);
-      theMidnightAfter.setHours(0, 0, 0, 0);
-      //let lastMidnight = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
+      // the end of the day, not the next midnight: the date arrays of the output must not get the next day
+      let theDayEnd = new Date(theDay);
+      theDayEnd.setHours(23, 59, 59, 999);
 
-      // console.log(">>>>>>>>>>>>>> getYesterday yesterdayMidnight: " + JSON.stringify(yesterdayMidnight));
-      // console.log(">>>>>>>>>>>>>> getYesterday lastMidnight: " + JSON.stringify(lastMidnight));
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
-
-      return this.getFullStatsData(theDay, theMidnightAfter, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
+      return this.getFullStatsData(theDay, theDayEnd, account_id, account_emails, false, filter_duplicates, -99, null, internal_domains);   // the "false" is to not aggregate, we will aggregate in the TAB_ManyDays.vue to exclude today
     }
 
     async getToday_SingleDayData(theDay, account_id = 0, account_emails = [], count_data_to_current_time = true) {
 
       theDay.setHours(0, 0, 0, 0);
-      let theMidnightAfter = new Date(theDay);
-      theMidnightAfter.setDate(theMidnightAfter.getDate() + 1);
-      theMidnightAfter.setHours(0, 0, 0, 0);
 
+      // the whole day, up to its last millisecond (a mail at the next midnight belongs to the next day)
       let fromDate = new Date(theDay);
-      let toDate = new Date(theMidnightAfter);
-      // let fromDate = new Date(Date.now() - 56 * (24 * 60 * 60 * 1000));   // FOR TESTING ONLY
-      // let toDate = new Date(Date.now() - (24 * 60 * 60 * 1000))           // FOR TESTING ONLY
+      let toDate = new Date(theDay);
+      toDate.setHours(23, 59, 59, 999);
 
-      let filter_duplicates = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
 
       return this.getCountStatsData(fromDate, toDate, account_id, account_emails, count_data_to_current_time, filter_duplicates);
     }
+    // Hourly counts of the same weekday in the previous num_weeks weeks, used as the "usual day" baseline.
+    // When theDay is a business day, past non-business days (holidays) are skipped.
+    // The days come from the recent days cache when the range is covered, otherwise from a single scan.
+    async getWeekdayBaseline(theDay, account_id = 0, account_emails = [], num_weeks = 6) {
+
+      let start_time = performance.now();
+      let only_business_days = tsCoreUtils.checkBusinessDay(tsUtils.dateToYYYYMMDD(theDay));
+
+      let days_keys = [];
+      for(let week = num_weeks; week >= 1; week--) {
+        let pastDay = new Date(theDay);
+        pastDay.setDate(pastDay.getDate() - (7 * week));
+        pastDay.setHours(0, 0, 0, 0);
+        let key = tsUtils.dateToYYYYMMDD(pastDay);
+        if(only_business_days && !tsCoreUtils.checkBusinessDay(key)) continue;
+        days_keys.push(key);
+      }
+
+      if(days_keys.length == 0) {
+        return {days: [], elapsed: performance.now() - start_time};
+      }
+
+      let fromDate = new Date(theDay);
+      fromDate.setDate(fromDate.getDate() - (7 * num_weeks));
+      fromDate.setHours(0, 0, 0, 0);
+      let toDate = new Date(theDay);
+      toDate.setDate(toDate.getDate() - 1);
+      toDate.setHours(23, 59, 59, 999);
+
+      let scan = await this.getDays(fromDate, toDate, account_id, account_emails);
+      let stop_time = performance.now();
+
+      return {days: days_keys.map(key => scan.days[key].msg_hours), elapsed: stop_time - start_time};
+    }
+
+    // ================ RECENT DAYS CACHE =====================
+    // Per-day sent/received counts and hourly grid of a date range, from the recent days cache when
+    // the range is covered by it, otherwise from a direct scan. Output: {days: {YYYYMMDD: {sent, received, msg_hours}}, elapsed}
+    async getDays(fromDate, toDate, account_id = 0, account_emails = []) {
+      let filter_duplicates = await this.getFilterDuplicates(account_id);
+
+      let range = tsRecentDaysCache.getRange();
+      if(fromDate >= range.fromDate && toDate <= range.toDate) {
+        let recent = await this.getRecentDays(account_id, account_emails, filter_duplicates);
+        let days = {};
+        for(let key of Object.keys(tsUtils.getDateArray(fromDate, toDate))) {
+          days[key] = recent.days[key];
+        }
+        return {days: days, elapsed: recent.elapsed, from_cache: true};
+      }
+
+      return this.scanDays(fromDate, toDate, account_id, account_emails, filter_duplicates);
+    }
+
+    // Per-day sent/received counts of a range with their total/max/min/avg ({sent, received, count, msg_days, aggregate, elapsed}),
+    // built from getDays (so from the cache when possible)
+    async getAggregatedRecentDays(fromDate, toDate, account_id = 0, account_emails = []) {
+      let start_time = performance.now();
+      let scan = await this.getDays(fromDate, toDate, account_id, account_emails);
+
+      let sent = 0;
+      let received = 0;
+      let msg_days = tsUtils.getDateArray(fromDate, toDate);
+      for(let key in msg_days) {
+        msg_days[key].sent = scan.days[key].sent;
+        msg_days[key].received = scan.days[key].received;
+        sent += scan.days[key].sent;
+        received += scan.days[key].received;
+      }
+
+      let output = {sent: sent, received: received, count: sent + received, msg_days: msg_days};
+      output.aggregate = await this.aggregateData(msg_days);
+      output.elapsed = scan.from_cache ? performance.now() - start_time : scan.elapsed;
+      return output;
+    }
+
+    // The last recent_days_cache_days days before today, scanned once and shared by all the tabs
+    // (Today/Yesterday baseline and previous days, Custom Query pace). The cache key includes today's
+    // date, the account, its emails, the duplicates and archive settings; clearCoreCaches() resets it.
+    async getRecentDays(account_id = 0, account_emails = [], filter_duplicates = false) {
+      let range = tsRecentDaysCache.getRange();
+      let key = [
+        tsUtils.dateToYYYYMMDD(range.toDate),
+        tsRecentDaysCache.days,
+        account_id,
+        [...account_emails].sort().join(','),
+        filter_duplicates,
+        await this.loadIncludeArchive(account_id),
+      ].join('|');
+
+      if(tsRecentDaysCache.key != key) {
+        this.tsLog.log("[getRecentDays] scanning, cache key: " + key);
+        tsRecentDaysCache.key = key;
+        tsRecentDaysCache.promise = this.scanDays(range.fromDate, range.toDate, account_id, account_emails, filter_duplicates, tsRecentDaysCache.getMessagesFromDate())
+          .catch((error) => {
+            if(tsRecentDaysCache.key == key) clearCoreCaches();
+            throw error;
+          });
+      } else {
+        this.tsLog.log("[getRecentDays] using the cache");
+      }
+
+      return tsRecentDaysCache.promise;
+    }
+
+    // One scan of a date range, grouped by day and hour. Output: {days: {YYYYMMDD: {sent, received, msg_hours}}, messages, elapsed}
+    // With keep_messages_from, the headers of the messages dated from that day on are kept as they come from
+    // the query (no exclusion, no duplicates filter) in messages: {YYYYMMDD: [MessageHeader]}, so the
+    // callers that need the whole message can build their stats without a query of their own
+    async scanDays(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicates = false, keep_messages_from = null) {
+
+      let start_time = performance.now();
+
+      let days = {};
+      let kept_messages = {};
+      let keep_messages_from_key = keep_messages_from === null ? null : tsUtils.dateToYYYYMMDD(keep_messages_from);
+      for(let key of Object.keys(tsUtils.getDateArray(fromDate, toDate))) {
+        let msg_hours = {};
+        for(let i = 0; i < 24; i++) {
+          msg_hours[i] = {sent: 0, received: 0};
+        }
+        days[key] = {sent: 0, received: 0, msg_hours: msg_hours};
+        if(keep_messages_from_key !== null && key >= keep_messages_from_key) kept_messages[key] = [];
+      }
+
+      const emailMatcher = new EmailMatcher(account_emails);
+      let messages_hash = new Map();
+
+      let queryInfo_ScanDays = {
+        ...queryDates(fromDate, toDate),
+        folderId: await this.getStatsFoldersIds(account_id),
+        includeSubFolders: false,
+        ...QUERY_PAGING,
+      }
+
+      this.tsLog.log(() => "queryInfo_ScanDays: " + JSON.stringify(queryInfo_ScanDays));
+
+      let messages = this.getFoldersMessages(queryInfo_ScanDays);
+
+      await this.loadIncludeArchive(account_id);
+      for await (let message of messages) {
+          if(!inRange(message, fromDate, toDate)) continue;
+          let date_message = new Date(message.date);
+          let day_key = tsUtils.dateToYYYYMMDD(date_message);
+          if(kept_messages[day_key] !== undefined) kept_messages[day_key].push(message);
+          if(this.excludeMessage(message,account_id)) continue;
+          if(isDuplicate(filter_duplicates, messages_hash, message)) continue;
+          let day = days[day_key];
+          if(day === undefined) continue;   // outside the range (should not happen)
+          let hour_message = date_message.getHours();
+          const key_author = authorKey(message);
+          if(key_author !== null && emailMatcher.matches(key_author)) {
+            day.sent++;
+            day.msg_hours[hour_message].sent++;
+          }else{
+            day.received++;
+            day.msg_hours[hour_message].received++;
+          }
+      }
+
+      let stop_time = performance.now();
+
+      return {days: days, messages: kept_messages, elapsed: stop_time - start_time};
+    }
+
+    // The messages of a date range, to iterate with for await: the headers kept by the recent days cache when
+    // the range lies within the days it keeps (see RECENT_MESSAGES_DAYS), so Today and Yesterday share the
+    // cache scan instead of each running a full scan, otherwise the messages of the queryInfo query (see getFoldersMessages).
+    // The callers apply the range, the exclusions and the duplicates filter themselves in both cases.
+    async getRangeMessages(fromDate, toDate, account_id, account_emails, filter_duplicates, queryInfo) {
+      let range = tsRecentDaysCache.getRange();
+      if(fromDate >= tsRecentDaysCache.getMessagesFromDate() && toDate <= range.toDate) {
+        this.tsLog.log("[getRangeMessages] using the messages of the recent days cache");
+        let recent = await this.getRecentDays(account_id, account_emails, filter_duplicates);
+        let output = [];
+        for(let key of Object.keys(tsUtils.getDateArray(fromDate, toDate))) {
+          output.push(...(recent.messages[key] ?? []));
+        }
+        return output;
+      }
+      return this.getFoldersMessages(queryInfo);
+    }
+    // ================ RECENT DAYS CACHE - END =====================
     // ================ SINGLE DAY METHODS - END =====================
 
     // ================ BASE METHODS ========================
@@ -172,15 +423,14 @@ export class thunderStastsCore {
       // console.log(">>>>>>>>>>>> [getFullStatsData] filter_duplicates: " + filter_duplicates);
       let messages_hash = new Map();
 
-      this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
+      this.tsLog.log(() => "account_emails: " + JSON.stringify(account_emails));
 
       const emailMatcher = new EmailMatcher(account_emails);
       const domainMatcher = new DomainMatcher(internal_domains);
 
       let queryInfo_FullStatsData = {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
-        fromDate: fromDate,
-        toDate: toDate,
+        ...queryDates(fromDate, toDate),
       }
 
       // ====================== Advanced Filters ======================
@@ -204,7 +454,7 @@ export class thunderStastsCore {
 
       let filter_folders = null;
 
-      this.tsLog.log("adv_filters: " + JSON.stringify(adv_filters));
+      this.tsLog.log(() => "adv_filters: " + JSON.stringify(adv_filters));
 
       if(adv_filters != null){
         //Folders
@@ -248,30 +498,18 @@ export class thunderStastsCore {
         }
       }
 
-      let filter_folders_115 = null;
-
-      if(account_id != 0){
-        if(filter_folders != null){
-          this.tsLog.log("filter_folders: " + JSON.stringify(filter_folders));
-          if(tsStore.isTB128plus){
-            queryInfo_FullStatsData.folderId = filter_folders;
-            queryInfo_FullStatsData.includeSubFolders = adv_filters.folders_do_subfolders;
-          }else{
-            filter_folders_115 = filter_folders;
-            queryInfo_FullStatsData.includeSubFolders = adv_filters.folders_do_subfolders;
-          }
-        }else{
-          if(tsStore.isTB128plus){
-            queryInfo_FullStatsData.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
-            queryInfo_FullStatsData.includeSubFolders = true;
-          }else{
-            filter_folders_115 = null;
-            queryInfo_FullStatsData.includeSubFolders = true;
-          }
-        }
+      if(filter_folders != null){
+        // folders chosen by the user in the Custom Query advanced filters
+        this.tsLog.log(() => "filter_folders: " + JSON.stringify(filter_folders));
+        queryInfo_FullStatsData.folderId = filter_folders;
+        queryInfo_FullStatsData.includeSubFolders = adv_filters.folders_do_subfolders;
+      }else{
+        queryInfo_FullStatsData.folderId = await this.getStatsFoldersIds(account_id);
+        queryInfo_FullStatsData.includeSubFolders = false;
       }
+      Object.assign(queryInfo_FullStatsData, QUERY_PAGING);
       
-      this.tsLog.log("queryInfo_FullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
+      this.tsLog.log(() => "queryInfo_FullStatsData: " + JSON.stringify(queryInfo_FullStatsData));
       
       let count = 0;
       let sent = 0;
@@ -289,23 +527,15 @@ export class thunderStastsCore {
 
       let domains = {};
       let tags = await tsCoreUtils.getTagsList();
+      let unknown_tags = new Set();
       tsStore.tags_list = tags;
 
       //let messageids_sent = [];
 
-      let messages = null;
-      
-      if(tsStore.isTB128plus){
-        messages = this.getMessages(browser.messages.query(queryInfo_FullStatsData));
-      }else{
-        if(filter_folders_115 == null){
-          // get all messages for the account
-          messages = this.getAccountMessages_TB115(queryInfo_FullStatsData, account_id, null, false);
-        }else{
-          //filter messages
-          messages = this.getAccountMessages_TB115(queryInfo_FullStatsData, account_id, filter_folders_115, false);
-        }
-      }
+      // the advanced filters are part of the query: with them the cached messages cannot be used
+      let messages = adv_filters == null
+        ? await this.getRangeMessages(fromDate, toDate, account_id, account_emails, filter_duplicates, queryInfo_FullStatsData)
+        : this.getFoldersMessages(queryInfo_FullStatsData);
 
       let msg_hours = {};
       for(let i = 0; i < 24; i++) {
@@ -316,6 +546,27 @@ export class thunderStastsCore {
         msg_hours[i].sent_external = 0;
         msg_hours[i].received_internal = 0;
         msg_hours[i].received_external = 0;
+      }
+
+      // day x hour sent/received counts (only the days with mails), so the averages can leave out the day in progress
+      let msg_hours_days = {};
+      const dayHours = (day_string) => {
+        if(!msg_hours_days[day_string]) {
+          msg_hours_days[day_string] = {};
+          for(let h = 0; h < 24; h++) {
+            msg_hours_days[day_string][h] = { sent: 0, received: 0 };
+          }
+        }
+        return msg_hours_days[day_string];
+      };
+
+      // weekday x hour grid, used by the "when mail arrives" heatmap
+      let msg_weekday_hours = {};
+      for(let d = 0; d < 7; d++) {
+        msg_weekday_hours[d] = {};
+        for(let h = 0; h < 24; h++) {
+          msg_weekday_hours[d][h] = { sent: 0, received: 0 };
+        }
       }
 
       let msg_weekdays = {};
@@ -329,17 +580,15 @@ export class thunderStastsCore {
         msg_weekdays[i].received_external = 0;
       }
 
+      await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
+          if(!inRange(message, fromDate, toDate)) continue;
           if(this.excludeMessage(message,account_id)) continue;
           // this.tsLog.log("message: " + JSON.stringify(message));
           let date_message = new Date(message.date);
           let hour_message = date_message.getHours();
           // folder
           if(message.folder){
-          	if(!("id" in message.folder)){
-          		message.folder.id = tsCoreUtils.getFolderId(message.folder);
-              message.folder.specialUse = [message.folder.type];
-          	}
             if (folders[message.folder.id]) {
               folders[message.folder.id].count ++;
             } else {
@@ -349,32 +598,25 @@ export class thunderStastsCore {
               folders[message.folder.id].received = 0;
               folders[message.folder.id].folder_data = message.folder;
             }
-            if(message.folder.specialUse && message.folder.specialUse.includes('inbox')){
-              count_in_inbox++;
-            }
           }
 
-          const match_author = message.author.match(tsUtils.regexEmail);
+          // an author without an address (e.g. "Mail Delivery System") is never one of the account emails: received
+          const key_author = authorKey(message);
+          const is_sent = key_author !== null && emailMatcher.matches(key_author);
 
           //console.log(">>>>>>>>>>>>>>>> message.folder: " + JSON.stringify(message.folder));
-          if(filter_duplicates){
-            // console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
-            if(messages_hash.has(message.headerMessageId)){ 
-              // console.log(">>>>>>>>>>>>>> filter_duplicates: found message.headerMessageId: " + message.headerMessageId);
-              //count sent and received per folder
-              if (match_author) {
-                const key_author = match_author[0].toLowerCase();
-                if(emailMatcher.matches(key_author)) {
-                  // group by folder
-                  folders[message.folder.id].sent++;
-                }else{
-                  folders[message.folder.id].received++;
-                }
-                  continue;
-                }
-              }
-              messages_hash.set(message.headerMessageId, true);
-            // console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
+          if(isDuplicate(filter_duplicates, messages_hash, message)){
+            //count sent and received per folder
+            if(is_sent) {
+              folders[message.folder.id].sent++;
+            }else{
+              folders[message.folder.id].received++;
+            }
+            continue;
+          }
+          // inbox (after the duplicates check, like every other counter)
+          if(message.folder && message.folder.specialUse && message.folder.specialUse.includes('inbox')){
+            count_in_inbox++;
           }
           // dates
           let date_message_string = tsUtils.dateToYYYYMMDD(message.date);
@@ -386,9 +628,7 @@ export class thunderStastsCore {
           dates_months[date_month_string].count++;
           dates_years[date_year_string].count++;
           // check sender
-          if (match_author) {
-            const key_author = match_author[0].toLowerCase();
-            if(emailMatcher.matches(key_author)) {
+            if(is_sent) {
               //messageids_sent.push(message.id);
               sent++;
               // group by folder
@@ -400,8 +640,10 @@ export class thunderStastsCore {
               dates_years[date_year_string].sent++;
               // group by hour
               msg_hours[hour_message].sent++;
+              dayHours(date_message_string)[hour_message].sent++;
               // group by weekday
               msg_weekdays[date_message.getDay()].sent++;
+              msg_weekday_hours[date_message.getDay()][hour_message].sent++;
               // group by domain
               let allRecipients = [...message.recipients, ...message.ccList, ...message.bccList];
               let domains_array = tsCoreUtils.extractDomains(allRecipients);
@@ -452,7 +694,7 @@ export class thunderStastsCore {
                     tags[tag].sent_external = (tags[tag].sent_external || 0) + 1;
                   }
                 } else {
-                  this.tsLog.error("tag: " + tag + " not found!");
+                  unknown_tags.add(tag);
                 }
               }
               // group by folder - internal/external
@@ -464,9 +706,8 @@ export class thunderStastsCore {
               // check recipients
               //console.log(">>>>>>>>>>>>> recipients: " + JSON.stringify(message.recipients));
               for (let recipient of message.recipients) {
-                const match_recipient = recipient.match(tsUtils.regexEmail);
-                if (match_recipient) {
-                  const key_recipient = match_recipient[0].toLowerCase();
+                const key_recipient = tsUtils.extractEmail(recipient);
+                if (key_recipient !== null) {
                   //if(!(account_emails.includes(key_recipient) || messageids_sent.includes(message.id))) {
                   if(!(emailMatcher.matches(key_recipient))) {
                     if (recipients[key_recipient]) {
@@ -474,7 +715,7 @@ export class thunderStastsCore {
                     } else {
                       recipients[key_recipient] = {}
                       recipients[key_recipient].count = 1;
-                      recipients[key_recipient].name = await tsCoreUtils.getCorrespondantName(recipient);
+                      recipients[key_recipient].address = recipient;    // the name is resolved after the cut (resolveCorrespondentNames)
                     }
                     // console.log(">>>>>>>>>>>>>> message.headerMessageId: " + message.headerMessageId);
                     // console.log(">>>>>>>> key_recipient: " + key_recipient);
@@ -483,9 +724,8 @@ export class thunderStastsCore {
                 }
               }
               for (let cc of message.ccList) {
-                const match_cc = cc.match(tsUtils.regexEmail);
-                if (match_cc) {
-                  const key_cc = match_cc[0].toLowerCase();
+                const key_cc = tsUtils.extractEmail(cc);
+                if (key_cc !== null) {
                   //if(!(account_emails.includes(key_cc) || messageids_sent.includes(message.id))) {
                   if(!(emailMatcher.matches(key_cc))) {
                     if (recipients[key_cc]) {
@@ -493,7 +733,7 @@ export class thunderStastsCore {
                     } else {
                       recipients[key_cc] = {}
                       recipients[key_cc].count = 1;
-                      recipients[key_cc].name = await tsCoreUtils.getCorrespondantName(cc);
+                      recipients[key_cc].address = cc;
                     }
                     // console.log(">>>>>>>>>>>>>> message.headerMessageId: " + message.headerMessageId);
                     // console.log(">>>>>>>> key_cc: " + key_cc);
@@ -502,12 +742,14 @@ export class thunderStastsCore {
                 }
               }
             }else{
-              if (senders[key_author]) {
-                senders[key_author].count++;
-              } else {
-                senders[key_author] = {}
-                senders[key_author].count = 1;
-                senders[key_author].name = await tsCoreUtils.getCorrespondantName(message.author);
+              if (key_author !== null) {
+                if (senders[key_author]) {
+                  senders[key_author].count++;
+                } else {
+                  senders[key_author] = {}
+                  senders[key_author].count = 1;
+                  senders[key_author].address = message.author;
+                }
               }
               // console.log(">>>>>>>>>>>>>> message.headerMessageId: " + message.headerMessageId);
               // console.log(">>>>>>>> key_author: " + key_author);
@@ -529,12 +771,16 @@ export class thunderStastsCore {
               }
               // group by hour
               msg_hours[hour_message].received++;
+              dayHours(date_message_string)[hour_message].received++;
               // group by weekday
               msg_weekdays[date_message.getDay()].received++;
-              // group by domain
+              msg_weekday_hours[date_message.getDay()][hour_message].received++;
+              // group by domain (an author without an address has no domain: external)
               let curr_domain = tsCoreUtils.extractDomain(key_author);
-              let is_received_internal = domainMatcher.matches(curr_domain);
-              if (domains[curr_domain]) {
+              let is_received_internal = curr_domain !== null && domainMatcher.matches(curr_domain);
+              if (curr_domain === null) {
+                // nothing to group
+              } else if (domains[curr_domain]) {
                 domains[curr_domain].count++;
                 domains[curr_domain].received++;
               } else {
@@ -572,7 +818,7 @@ export class thunderStastsCore {
                     tags[tag].received_external = (tags[tag].received_external || 0) + 1;
                   }
                 } else {
-                  this.logger.error("tag: " + tag + " not found!");
+                  unknown_tags.add(tag);
                 }
               }
               // group by folder - internal/external
@@ -582,10 +828,14 @@ export class thunderStastsCore {
                 folders[message.folder.id].received_external = (folders[message.folder.id].received_external || 0) + 1;
               }
             }
-          }
         //check recipients - END
 
         count++;
+      }
+
+      if(unknown_tags.size > 0) {
+        // tags deleted from Thunderbird but still on some messages: not counted
+        this.tsLog.log(() => "[getFullStatsData] tags not defined, not counted: " + [...unknown_tags].join(', '));
       }
 
       senders = Object.fromEntries(Object.entries(senders).sort((a, b) => b[1].count - a[1].count));
@@ -594,10 +844,14 @@ export class thunderStastsCore {
       recipients = Object.fromEntries(Object.entries(recipients).sort((a, b) => b[1].count - a[1].count));
       recipients = Object.fromEntries(Object.entries(recipients).slice(0,this._involved_num));
 
+      // the names only for the correspondents left after the cut: every address book lookup is a Thunderbird call
+      await this.resolveCorrespondentNames(senders);
+      await this.resolveCorrespondentNames(recipients);
+
       // console.log(">>>>>>>> final senders: " + JSON.stringify(senders));
       // console.log(">>>>>>>> final recipients: " + JSON.stringify(recipients));
 
-      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, folders: folders, dates: dates, dates_weeks: dates_weeks, dates_months: dates_months, dates_years: dates_years, msg_weekdays: msg_weekdays, domains: domains, tags: tags};
+      let output = {senders: senders, recipients: recipients, sent: sent, received: received, count: count, count_in_inbox: count_in_inbox, msg_hours: msg_hours, msg_hours_days: msg_hours_days, folders: folders, dates: dates, dates_weeks: dates_weeks, dates_months: dates_months, dates_years: dates_years, msg_weekdays: msg_weekdays, msg_weekday_hours: msg_weekday_hours, domains: domains, tags: tags};
 
       if(do_aggregate_stats) {
         output.aggregate = await this.aggregateData(dates, only_businessdays);
@@ -621,34 +875,23 @@ export class thunderStastsCore {
 
       let messages_hash = new Map();
 
-      this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
+      this.tsLog.log(() => "account_emails: " + JSON.stringify(account_emails));
 
       let queryInfo_CountStatsData = {
         //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
-        fromDate: fromDate,
-        toDate: toDate,
-        includeSubFolders: true,
+        ...queryDates(fromDate, toDate),
+        folderId: await this.getStatsFoldersIds(account_id),
+        includeSubFolders: false,
+        ...QUERY_PAGING,
       }
 
-      if(account_id != 0){
-        if(tsStore.isTB128plus){
-          queryInfo_CountStatsData.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
-        }
-      }
-
-      this.tsLog.log("queryInfo_CountStatsData: " + JSON.stringify(queryInfo_CountStatsData));
+      this.tsLog.log(() => "queryInfo_CountStatsData: " + JSON.stringify(queryInfo_CountStatsData));
 
       let count = 0;
       let sent = 0;
       let received = 0;
 
-      let messages = null;
-      
-      if(tsStore.isTB128plus){
-        messages = this.getMessages(browser.messages.query(queryInfo_CountStatsData));
-      }else{
-        messages = this.getAccountMessages_TB115(queryInfo_CountStatsData, account_id, null, false);
-      }
+      let messages = await this.getRangeMessages(fromDate, toDate, account_id, account_emails, filter_duplicates, queryInfo_CountStatsData);
 
       let msg_hours = {};
       for(let i = 0; i < 24; i++) {
@@ -657,18 +900,12 @@ export class thunderStastsCore {
         msg_hours[i].received = 0;
       }
 
+      await this.loadIncludeArchive(account_id);
       for await (let message of messages) {
         //console.log(">>>>>>>>>>>>>> filter_duplicates: iterating message.headerMessageId: " + message.headerMessageId);
+          if(!inRange(message, fromDate, toDate)) continue;
           if(this.excludeMessage(message,account_id)) continue;
-          if(filter_duplicates){
-            //console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
-            if(messages_hash.has(message.headerMessageId)){ 
-              //console.log(">>>>>>>>>>>>>> filter_duplicates: found message.headerMessageId: " + message.headerMessageId);
-              continue;
-            }
-            messages_hash.set(message.headerMessageId, true);
-            //console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
-          }
+          if(isDuplicate(filter_duplicates, messages_hash, message)) continue;
           //this.tsLog.log("message: " + JSON.stringify(message));
           let now = new Date();
           let date_message = new Date(message.date);
@@ -676,22 +913,19 @@ export class thunderStastsCore {
           date_message_normalized.setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
           let hour_message = date_message.getHours();
           // check sender
-          const match_author = message.author.match(tsUtils.regexEmail);
-          if (match_author) {
-            const key_author = match_author[0].toLowerCase();
-            if(emailMatcher.matches(key_author)) {
-              if((count_data_to_current_time)&&(date_message_normalized <= now)){
-                sent++;
-              }
-              // group by hour
-              msg_hours[hour_message].sent++;
-            }else{
-              if((count_data_to_current_time)&&(date_message_normalized <= now)){
-                received++;
-              }
-              // group by hour
-              msg_hours[hour_message].received++;
+          const key_author = authorKey(message);
+          if(key_author !== null && emailMatcher.matches(key_author)) {
+            if((count_data_to_current_time)&&(date_message_normalized <= now)){
+              sent++;
             }
+            // group by hour
+            msg_hours[hour_message].sent++;
+          }else{
+            if((count_data_to_current_time)&&(date_message_normalized <= now)){
+              received++;
+            }
+            // group by hour
+            msg_hours[hour_message].received++;
           }
           if((count_data_to_current_time)&&(date_message_normalized <= now)){
             count++;
@@ -702,91 +936,13 @@ export class thunderStastsCore {
       return {sent: sent, received: received, count: count, msg_hours: msg_hours, elapsed: stop_time - start_time};
     }
 
-     async getAggregatedStatsData(fromDate, toDate, account_id = 0, account_emails = [], filter_duplicates = false) {
-
-      //filter_duplicates = true; // to test
-
-      let start_time = performance.now();
-
-      let messages_hash = new Map();
-
-      this.tsLog.log("account_emails: " + JSON.stringify(account_emails));
-
-      const emailMatcher = new EmailMatcher(account_emails);
-
-      let queryInfo_getAggregatedStatsData = {
-        //accountId: account_id == 0?'':account_id,     // we are directly filtering using the folders if an account has been chosen
-        fromDate: fromDate,
-        toDate: toDate,
-        includeSubFolders: true,
-      }
-
-      if(account_id != 0){
-        if(tsStore.isTB128plus){
-          queryInfo_getAggregatedStatsData.folderId = await tsCoreUtils.getAccountFoldersIds_TB128plus(account_id);
-        }
-      }
-
-      this.tsLog.log("queryInfo_getAggregatedStatsData: " + JSON.stringify(queryInfo_getAggregatedStatsData));
-      
-      let count = 0;
-      let sent = 0;
-      let received = 0;
-
-      let messages = null;
-      
-      if(tsStore.isTB128plus){
-        messages = this.getMessages(browser.messages.query(queryInfo_getAggregatedStatsData));
-      }else{
-        messages = this.getAccountMessages_TB115(queryInfo_getAggregatedStatsData, account_id, null, false);
-      }
-
-      let msg_days = tsUtils.getDateArray(fromDate,toDate);
-
-      this.tsLog.log("[getAggregatedStatsData] msg_days: " + JSON.stringify(msg_days));
-
-      for await (let message of messages) {
-          if(this.excludeMessage(message,account_id)) continue;
-          //this.tsLog.log("message: " + JSON.stringify(message));
-          if(filter_duplicates){
-            // console.log(">>>>>>>>>>>>>> filter_duplicates: message.headerMessageId: " + message.headerMessageId);
-            if(messages_hash.has(message.headerMessageId)){ 
-              // console.log(">>>>>>>>>>>>>> filter_duplicates: found message.headerMessageId: " + message.headerMessageId);
-              continue;
-            }
-            messages_hash.set(message.headerMessageId, true);
-            // console.log(">>>>>>>>>>>>>> filter_duplicates: size: " + messages_hash.size);
-          }
-          let date_message = new Date(message.date);
-          let day_message = tsUtils.dateToYYYYMMDD(date_message);
-          msg_days[day_message] = msg_days[day_message] || {}; //ensure the object for that day exists
-          // check sender
-          const match_author = message.author.match(tsUtils.regexEmail);
-          if (match_author) {
-            const key_author = match_author[0].toLowerCase();
-            if(emailMatcher.matches(key_author)) {
-              sent++;
-              // group by hour
-              msg_days[day_message].sent++;
-            }else{
-              received++;
-              // group by hour
-              msg_days[day_message].received++;
-            }
-          }
-        
-        count++;
-      }
-
-      let output = {sent: sent, received: received, count: count, msg_days: msg_days};
-
-      output.aggregate = await this.aggregateData(msg_days);
-
-      let stop_time = performance.now();
-
-      output.elapsed = stop_time - start_time;
-
-      return output;
+    // Replaces the address kept while counting ({count, address}) with the display name of the correspondent
+    // ({count, name}): the address book name first, then the name in the address (see getCorrespondantName)
+    async resolveCorrespondentNames(correspondents) {
+      await Promise.all(Object.values(correspondents).map(async (entry) => {
+        entry.name = await tsCoreUtils.getCorrespondantName(entry.address);
+        delete entry.address;
+      }));
     }
 
     async aggregateData(dates, only_businessdays = -99) {
@@ -795,7 +951,7 @@ export class thunderStastsCore {
       let prefs_bday_default_only = false;
 
       if(only_businessdays == -99) {
-        prefs_bday_default_only = await tsPrefs.getPref(['bday_default_only']);
+        prefs_bday_default_only = await tsPrefs.getPref('bday_default_only');
       } else {
         prefs_bday_default_only = only_businessdays;
       }
@@ -845,6 +1001,11 @@ export class thunderStastsCore {
         num_days++;
       }
 
+      // no days left (e.g. business days only on a weekend range): zeros instead of NaN and Infinity
+      if(num_days == 0) {
+        return {total_sent: 0, max_sent: 0, min_sent: 0, avg_sent: 0, total_received: 0, max_received: 0, min_received: 0, avg_received: 0};
+      }
+
       // filtered_dates must be popolated with all the days, even with 0 values
       let avg_sent = parseFloat((total_sent / num_days).toFixed(2));
       let avg_received = parseFloat((total_received / num_days).toFixed(2));
@@ -852,34 +1013,98 @@ export class thunderStastsCore {
       return {total_sent: total_sent, max_sent: max_sent, min_sent: min_sent, avg_sent: avg_sent, total_received: total_received, max_received: max_received, min_received: min_received, avg_received: avg_received};
     }
 
-    excludeMessage(message, account_id = 0){    // Returns true if the message should be excluded from the stats
-      if(!("specialUse" in message.folder)){
-        message.folder.specialUse = [message.folder.type];
+    // Per-instance memo of the settings and folder ids every query needs: the core of a tab is created
+    // at each data load, so they are read once per load instead of once per query
+
+    async getFilterDuplicates(account_id = 0) {
+      if(!(account_id in this.filter_duplicates)) {
+        this.filter_duplicates[account_id] = await tsCoreUtils.getFilterDuplicatesPreference(account_id);
       }
-      // do not include messages from drafts, trash, junk folders
-      if(message.folder.specialUse && ['drafts', 'trash', 'junk'].some(specialUse => message.folder.specialUse.includes(specialUse))){
+      return this.filter_duplicates[account_id];
+    }
+
+    // The ids of the folders to query for the stats of an account (0 = all the accounts): every folder except
+    // drafts, trash, junk, templates and outbox with their subfolders and, when the account setting excludes
+    // them, the archives. Filtering at the folder level saves Thunderbird from converting the skipped messages at all.
+    async getStatsFoldersIds(account_id = 0) {
+      if(account_id in this.folders_ids) return this.folders_ids[account_id];
+
+      let include_archive = await this.loadIncludeArchive(account_id);
+      let account_ids = [];
+      if(account_id != 0) {
+        account_ids = [account_id];
+      } else {
+        account_ids = (await browser.accounts.list(false)).map(account => account.id);
+      }
+
+      let output = [];
+      const explore = (folders) => {
+        for(let folder of folders) {
+          let specialUse = folder.specialUse || [];
+          if(EXCLUDED_FOLDERS_SPECIAL_USE.some(use => specialUse.includes(use))) continue;
+          if(!include_archive && specialUse.includes('archives')) continue;
+          output.push(folder.id);
+          if(folder.subFolders && folder.subFolders.length > 0) explore(folder.subFolders);
+        }
+      };
+      for(let id of account_ids) {
+        explore(await browser.folders.getSubFolders(id, true));
+      }
+
+      this.tsLog.log(() => "[getStatsFoldersIds] account " + account_id + ": " + output.length + " folders");
+      this.folders_ids[account_id] = output;
+      return output;
+    }
+
+    // Reads the "include archives" preference of the account once, so excludeMessage can be synchronous
+    async loadIncludeArchive(account_id = 0) {
+      if(!(account_id in this.include_archive)) {
+        this.include_archive[account_id] = await tsCoreUtils.getIncludeArchivePreference(account_id);
+      }
+      return this.include_archive[account_id];
+    }
+
+    // Returns true if the message should be excluded from the stats (call loadIncludeArchive first).
+    // The queries already skip these folders (see getStatsFoldersIds); this is the safety net for the
+    // folders chosen by the user in the Custom Query filters
+    excludeMessage(message, account_id = 0){
+      if(message.folder.specialUse && EXCLUDED_FOLDERS_SPECIAL_USE.some(specialUse => message.folder.specialUse.includes(specialUse))){
         return true;
       }
       
       // check if we have to include this message even if it is in a "archives" folder
       if(message.folder.specialUse && message.folder.specialUse.includes('archives')){
-        return !tsCoreUtils.getIncludeArchivePreference(account_id);
+        return !(this.include_archive[account_id] ?? true);
       }
 
       return false;
     }
 
-    async getInboxZeroDates(account_id = 0) {
+    // Inbox Zero data (total, unread, mails per date of the inbox folders), scanned once per account and
+    // shared by all the tabs; the promise is shared by concurrent callers. clearCoreCaches() resets it.
+    getInboxZeroDates(account_id = 0) {
+      let key = tsUtils.dateToYYYYMMDD(new Date()) + '|' + account_id;
+
+      if(tsInboxZeroCache.key != key) {
+        this.tsLog.log("[getInboxZeroDates] scanning, cache key: " + key);
+        tsInboxZeroCache.key = key;
+        tsInboxZeroCache.promise = this.scanInboxZeroDates(account_id)
+          .catch((error) => {
+            if(tsInboxZeroCache.key == key) clearCoreCaches();
+            throw error;
+          });
+      } else {
+        this.tsLog.log("[getInboxZeroDates] using the cache");
+      }
+
+      return tsInboxZeroCache.promise;
+    }
+
+    async scanInboxZeroDates(account_id = 0) {
 
       let start_time = performance.now();
 
-      let inboxFolders = null;
-      
-      if(tsStore.isTB128plus){
-        inboxFolders = await this.getInboxFolders(account_id);
-      }else{
-        inboxFolders = await this.getInboxFolders_TB115(account_id);
-      }
+      let inboxFolders = await this.getInboxFolders(account_id);
 
       //total and unread mails in inbox
       let total = 0;
@@ -887,36 +1112,29 @@ export class thunderStastsCore {
       //dates spread
       let dates = {};
 
-      for(let folder of inboxFolders) {
-          let queryInfo_InboxZeroData = {
-            //accountId: account_id == 0?'':account_id,
-          }
+      let queryInfo_InboxZeroData = {
+        folderId: inboxFolders.map(folder => folder.id),
+        ...QUERY_PAGING,
+      }
 
-          if(tsStore.isTB128plus){
-            queryInfo_InboxZeroData.folderId = folder.id;
-          }else{
-            queryInfo_InboxZeroData.folder = folder;
-          }
+      this.tsLog.log(() => "queryInfo_InboxZeroData: " + JSON.stringify(queryInfo_InboxZeroData));
 
-          this.tsLog.log("queryInfo_InboxZeroData: " + JSON.stringify(queryInfo_InboxZeroData));
-          
-          let messages = this.getMessages(browser.messages.query(queryInfo_InboxZeroData));
+      let messages = this.getFoldersMessages(queryInfo_InboxZeroData);
 
-          for await (let message of messages) {
-            total++;
-            if (!message.read) {
-              unread++;
-            }
-            // dates
-            if(message.date){
-              let date_message = tsUtils.dateToYYYYMMDD(message.date);
-              if (dates[date_message]) {
-                dates[date_message]++;
-              } else {
-                dates[date_message] = 1;
-              }
-            }
+      for await (let message of messages) {
+        total++;
+        if (!message.read) {
+          unread++;
+        }
+        // dates
+        if(message.date){
+          let date_message = tsUtils.dateToYYYYMMDD(message.date);
+          if (dates[date_message]) {
+            dates[date_message]++;
+          } else {
+            dates[date_message] = 1;
           }
+        }
       }
 
       let stop_time = performance.now();
@@ -932,91 +1150,156 @@ export class thunderStastsCore {
       }
 
       let folders = await browser.folders.query(queryInfo_InboxFolders);
-      this.tsLog.log("folders: " + JSON.stringify(folders));
+      this.tsLog.log(() => "folders: " + JSON.stringify(folders));
       return folders;
     }
 
-    async getInboxFolders_TB115(account_id = 0){
-      // let queryInfo_InboxFolders = {
-      //   accountId: account_id == 0?'':account_id,
-      //   specialUse: ['inbox']
-      // }
-
-      // let folders = await browser.folders.query(queryInfo_InboxFolders);
-
-      let account = null;
-      let folders = null;
-
-      if(account_id == 0) {
-        account = await browser.accounts.list(true);
-        folders = account.flatMap(acc => acc.folders.filter(folder => folder.type === 'inbox'));
-      } else {
-        account = await browser.accounts.get(account_id, true);
-        folders = account.folders.filter(folder => folder.type == 'inbox');
-      }
-
-      //test code to print the account_folders
-      // let account_folders = await browser.folders.getSubFolders(await browser.accounts.get(account_id));
-      // console.log(">>>>>>>>>>>>>>> account_folders: " + JSON.stringify(account_folders));
-
-      this.tsLog.log("folders: " + JSON.stringify(folders));
-      return folders;
-    }
-
-    async *getAccountMessages_TB115(queryInfo, account_id = 0, filter_folders_115 = null, do_subfolders = true) {
-      this.tsLog.log("getAccountMessages_TB115 queryInfo: " + JSON.stringify(queryInfo));
-      if(account_id == 0) {
-        yield* this.getMessages(browser.messages.query(queryInfo));
+    // The messages of a messages.query over a list of folders (queryInfo.folderId), one folder at a time:
+    // every folder is a query of its own, so Thunderbird's main thread is blocked for the scan of one folder
+    // instead of the whole mailbox (a query is never interrupted: every header of its folders is examined in
+    // one go). After FOLDER_SCAN_SLICE_MS of queries the scan pauses for FOLDER_SCAN_PAUSE_MS, so
+    // Thunderbird can paint and handle the input in between. Without folderId the query runs as it is.
+    async *getFoldersMessages(queryInfo) {
+      if(queryInfo.folderId === undefined) {
+        yield* this.getMessages(() => browser.messages.query(queryInfo));
         return;
       }
-
-      let account = await browser.accounts.get(account_id, true);
-      let folders = null;
-      
-      if(filter_folders_115 == null) {
-        folders = await browser.folders.getSubFolders(account, do_subfolders);
-      } else {
-        this.tsLog.log("filter_folders_115: " + JSON.stringify(filter_folders_115));
-        folders = await tsCoreUtils.getFoldersArrayFromIds(filter_folders_115, account_id);
-      }
-
-      this.tsLog.log("getAccountMessages_TB115 folders: " + JSON.stringify(folders));
-
-      for (let folder of folders) {
-        this.tsLog.log("processFolderAndSubfolders_TB115 on folder: " + JSON.stringify(folder));
-        yield* this.processFolderAndSubfolders_TB115(folder, queryInfo, account_id, do_subfolders);
-      }
-    }
-
-    async *processFolderAndSubfolders_TB115(folder, queryInfo, account_id, do_subfolders = true) {
-      //if (this.excludeFolder(folder, account_id)) return;
-      queryInfo = { ...queryInfo };
-      this.tsLog.log("processFolderAndSubfolders_TB115 queryInfo: " + JSON.stringify(queryInfo));
-      this.tsLog.log(` processFolderAndSubfolders Listing messages for folder: ${folder.name}, path: ${folder.path}`);
-      queryInfo.folder = folder;
-      this.tsLog.log("processFolderAndSubfolders queryInfo: " + JSON.stringify(queryInfo));
-      yield* this.getMessages(browser.messages.query(queryInfo));
-  
-      if(do_subfolders){
-        let subfolders = await browser.folders.getSubFolders(folder);
-        for (let subfolder of subfolders) {
-          this.tsLog.log("processFolderAndSubfolders_TB115 on subfolder: " + JSON.stringify(subfolder));
-            yield* this.processFolderAndSubfolders_TB115(subfolder, queryInfo, account_id);
+      let folders = [].concat(queryInfo.folderId);
+      let slice_start = performance.now();
+      for(let folderId of folders) {
+        yield* this.getMessages(() => browser.messages.query({...queryInfo, folderId: folderId}));
+        if(performance.now() - slice_start >= FOLDER_SCAN_SLICE_MS) {
+          await new Promise(resolve => setTimeout(resolve, FOLDER_SCAN_PAUSE_MS));
+          slice_start = performance.now();
         }
       }
     }
 
-    async *getMessages(list) {
-      let page = await list;
-      for (let message of page.messages) {
-        yield message;
-      }
-    
-      while (page.id) {
-        page = await messenger.messages.continueList(page.id);
+    // Pages of a message list, one message at a time.
+    // queryFn starts the query (browser.messages.query) and is called only when a slot
+    // of the query queue is free: every query runs on Thunderbird's main thread, so
+    // too many at once make the Thunderbird UI unresponsive.
+    async *getMessages(queryFn) {
+      const release = await tsQueryQueue.acquire();
+      try {
+        let page = await queryFn();
         for (let message of page.messages) {
           yield message;
         }
+
+        while (page.id) {
+          page = await browser.messages.continueList(page.id);
+          for (let message of page.messages) {
+            yield message;
+          }
+        }
+      } finally {
+        release();
       }
     }
+}
+
+// Limits the number of message queries running at the same time (shared by all core instances).
+// The limit is the max_concurrent_queries preference, applied with setMaxConcurrentQueries().
+export const MIN_CONCURRENT_QUERIES = 1;
+export const MAX_CONCURRENT_QUERIES = 10;
+
+class QueryQueue {
+  running = 0;
+  waiting = [];
+
+  constructor(max_concurrent) {
+    this.max_concurrent = max_concurrent;
+  }
+
+  setMaxConcurrent(max_concurrent) {
+    this.max_concurrent = max_concurrent;
+    while(this.running < this.max_concurrent && this.waiting.length > 0) {
+      this.waiting.shift()();
+    }
+  }
+
+  // Resolves with a release function when a slot is free; the caller must always call it (use finally).
+  acquire() {
+    return new Promise((resolve) => {
+      const start = () => {
+        this.running++;
+        let released = false;
+        resolve(() => {
+          if(released) return;
+          released = true;
+          this.running--;
+          const next = this.waiting.shift();
+          if(next) next();
+        });
+      };
+      if(this.running < this.max_concurrent) {
+        start();
+      } else {
+        this.waiting.push(start);
+      }
+    });
+  }
+}
+
+const tsQueryQueue = new QueryQueue(prefs_default.max_concurrent_queries);
+
+// Applies the max_concurrent_queries preference (clamped to MIN/MAX_CONCURRENT_QUERIES)
+export function setMaxConcurrentQueries(value) {
+  let max_concurrent = Number(value);
+  if(!Number.isFinite(max_concurrent)) max_concurrent = prefs_default.max_concurrent_queries;
+  max_concurrent = Math.min(MAX_CONCURRENT_QUERIES, Math.max(MIN_CONCURRENT_QUERIES, Math.round(max_concurrent)));
+  tsQueryQueue.setMaxConcurrent(max_concurrent);
+}
+
+// Recent days cache: the last recent_days_cache_days days before today plus today (default 7 weeks, so the
+// baseline of yesterday always has 6 full weeks), shared by all core instances. See getRecentDays().
+// The size comes from the recent_days_cache_days preference, applied with setRecentDaysCacheDays():
+// at least MIN_RECENT_DAYS_CACHE_DAYS (6 full weeks before yesterday, needed by the weekday baseline).
+// The scan also keeps the message headers of the last RECENT_MESSAGES_DAYS days (see getRangeMessages).
+export const MIN_RECENT_DAYS_CACHE_DAYS = 43;
+export const MAX_RECENT_DAYS_CACHE_DAYS = 365;
+
+const tsRecentDaysCache = {
+  key: null,
+  promise: null,
+  days: prefs_default.recent_days_cache_days,
+  // From `days` days before today to the end of today
+  getRange() {
+    let fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - this.days);
+    fromDate.setHours(0, 0, 0, 0);
+    let toDate = new Date();
+    toDate.setHours(23, 59, 59, 999);
+    return {fromDate: fromDate, toDate: toDate};
+  },
+  // The first day whose message headers the scan keeps
+  getMessagesFromDate() {
+    let fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - (RECENT_MESSAGES_DAYS - 1));
+    fromDate.setHours(0, 0, 0, 0);
+    return fromDate;
+  },
+};
+
+// Inbox Zero cache: the inbox folders scan of an account, shared by all core instances. See getInboxZeroDates().
+const tsInboxZeroCache = {
+  key: null,
+  promise: null,
+};
+
+// Applies the recent_days_cache_days preference (clamped to MIN/MAX_RECENT_DAYS_CACHE_DAYS); a new size invalidates the cache through its key
+export function setRecentDaysCacheDays(value) {
+  let days = Number(value);
+  if(!Number.isFinite(days)) days = prefs_default.recent_days_cache_days;
+  tsRecentDaysCache.days = Math.min(MAX_RECENT_DAYS_CACHE_DAYS, Math.max(MIN_RECENT_DAYS_CACHE_DAYS, Math.round(days)));
+}
+
+// Forget all the cached scans, so the next requests read the messages again (data refresh, account change).
+// The address book names cache is not among them: it follows the address book events (see mzts-statscore.utils)
+export function clearCoreCaches() {
+  tsRecentDaysCache.key = null;
+  tsRecentDaysCache.promise = null;
+  tsInboxZeroCache.key = null;
+  tsInboxZeroCache.promise = null;
 }

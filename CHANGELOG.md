@@ -3,6 +3,21 @@
 
 
 
+<h3>Version 3.0.0 - ??/??/2026</h3>
+<ul>
+      <li>Complete graphic redesign, with a new light/dark theme that can be switched on the fly.</li>
+      <li>New Today/Yesterday dashboard: comparison with the usual weekday and inbox insights.</li>
+      <li>New Many Days dashboard: day-by-day chart, averages, Inbox Zero calendar, heatmap, weekday chart and comparison with the previous period.</li>
+      <li>New "How old is your inbox" card and folder details in "Where mails ended up".</li>
+      <li>Custom View redesigned, with quick date ranges and filter chips.</li>
+      <li>Options page redesigned, with automatic saving.</li>
+      <li>Much faster statistics, thanks to caching and optimized folder scanning.</li>
+      <li>New advanced options for the concurrent queries limit and the recent days cache size.</li>
+      <li>Minimum Thunderbird version is now 140.</li>
+      <li>Fix: Many statistics fixes (day boundaries, DST, ISO weeks, duplicates, identities, domains, CSV export).</li>
+      <li>Libraries updated.</li>
+      <li>Various fixes.</li>
+</ul>
 <h3>Version 2.4.0 - 19/03/2026</h3>
 <ul>
       <li>Added a comparison feature between two periods in the Custom View. [<a href="https://github.com/micz/ThunderStats/issues/80">#391</a>]</li>

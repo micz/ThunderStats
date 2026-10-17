@@ -11,7 +11,7 @@ ThunderStats intentionally deviates from some general Thunderbird WebExtension r
 | Deviation | General guideline | ThunderStats choice | Reason |
 |---|---|---|---|
 | Manifest version | Use MV3 for new extensions | **Manifest V2** | Thunderbird compatibility requirement |
-| Build tools | Avoid build tools for beginners | **Vite 6.4** | Vue 3 SFC components require a bundler |
+| Build tools | Avoid build tools for beginners | **Vite** | Vue 3 SFC components require a bundler |
 | Background page | Use `"type": "module"` in background scripts array | **`background.html`** (page-based) | MV2 pattern |
 | Dependencies | Use VENDOR.md + direct file inclusion | **npm + package.json** | Build pipeline manages dependencies |
 | UI framework | Plain JavaScript | **Vue 3 Composition API** | Full rewrite architectural decision |
@@ -29,7 +29,7 @@ The `applications` manifest entry is deprecated. Always use `browser_specific_se
     "browser_specific_settings": {
         "gecko": {
             "id": "thunderstats@micz.it",
-            "strict_min_version": "115.0"
+            "strict_min_version": "140.0"
         }
     }
 }
@@ -104,8 +104,7 @@ const returnPath = headers["return-path"]?.[0] ?? null;
 |---|---|---|
 | `tabs.query()` | `array of Tab` | `result[0]` |
 | `mailTabs.query()` | `array of MailTab` | `result[0]` |
-| `addressBooks.list()` | `array of AddressBookNode` | `result[0]` |
-| `contacts.list()` | `array of ContactNode` | `result[0]` |
+| `contacts.quickSearch()` | `array of ContactNode` | `result[0]` |
 | `folders.query()` | `array of MailFolder` | `result[0]` |
 
 **MV2 → MV3 API changes (relevant if ThunderStats ever migrates):**
@@ -117,11 +116,13 @@ const returnPath = headers["return-path"]?.[0] ?? null;
 
 ### 5. Do not use async listeners for `runtime.onMessage`
 
-See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage
+See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage and https://webextension-api.thunderbird.net/en/mv3/guides/runtimeMessaging.html
+
+An async listener always returns a Promise, so it claims the response of every message, including the ones it does not handle. The listener in `public/background.js` is a plain function: it returns a Promise only for the commands it handles (`reloadThunderStats`) and `undefined` for any other message.
 
 ### 6. Set correct `strict_min_version`
 
-Ensure `manifest.json` has a `strict_min_version` matching the minimum Thunderbird version that supports all used APIs. ThunderStats currently targets `115.0`.
+Ensure `manifest.json` has a `strict_min_version` matching the minimum Thunderbird version that supports all used APIs. ThunderStats currently targets `140.0`; the code has no Thunderbird version checks and no fallbacks for older versions.
 
 ### 7. Parse Mailbox Strings using `messengerUtilities`
 
@@ -134,6 +135,15 @@ const emails = parsed.map(p => p.email);
 ```
 
 Documentation: https://webextension-api.thunderbird.net/en/mv3/messengerUtilities.html
+
+### 8. Do not insert markup (`innerHTML`, `v-html`)
+
+Inserting markup through `innerHTML` (and similar properties/methods) will soon no longer be permitted; the only supported way is the Sanitizer API (`Element.setHTML()`, Thunderbird 148+), which is above our `strict_min_version`. The ATN source code analysis flags every `.innerHTML`, including the ones Vue generates for `v-html`, so **never use `v-html`** in our components.
+
+- Plain text (e.g. i18n messages) goes through text interpolation (`{{ }}`) or `textContent`.
+- HTML coming from our own files (the changelog entries in `OPTAB_About.vue`) is parsed in an inert document with `DOMParser`, reduced to a whitelist (text, `<a href="http(s)://…">`, `<b>`, `<i>`, `<strong>`, `<em>`) and rendered as Vue nodes with `h()`.
+
+Documentation: https://webextension-api.thunderbird.net/en/mv3/guides/innerHTML.html
 
 ---
 
@@ -201,7 +211,7 @@ Only request permissions that are actually needed. Unnecessary permissions may c
 ThunderStats uses Vite as a build tool, so it falls under the "advanced developer" path requiring source code submission:
 
 - Upload the source code archive during the ATN submission process
-- Include a `DEVELOPER.md` file in the root of the source archive with build instructions:
+- Include a `DEVELOPER.md` file in the root of the source archive with build instructions (if `DEVELOPER.md` exists in the repo root, `build.js` also adds it to the XPI):
   ```
   npm ci
   npm run build
@@ -224,7 +234,7 @@ Before finalizing any code that uses Thunderbird APIs, produce an audit table:
 | `browser.mailTabs.query()` | `array of MailTab` | `result[0]` | (none) |
 | `browser.tabs.query()` | `array of Tab` | `result[0]` | (none) |
 | `browser.folders.query()` | `array of MailFolder` | `result[0]` | accountsRead |
-| `browser.storage.local.get()` | `object` | `result.keyName` | storage |
+| `browser.storage.sync.get()` | `object` | `result.keyName` | storage |
 | `browser.i18n.getMessage()` | `string` | direct | (none) |
 
 For each method used, verify:
@@ -241,7 +251,7 @@ For each method used, verify:
 1. Re-read the official API documentation for the exact method signature.
 2. Check that the required permission is in `manifest.json`.
 3. Verify the return type — do not assume it is a direct array (see Section 4 above).
-4. Check the Thunderbird version — the API may not be available in `strict_min_version: 115.0`.
+4. Check the Thunderbird version — the API may not be available in `strict_min_version: 140.0`.
 
 ### "Experiment not loading"
 1. Check `manifest.json` has the correct `experiment_apis` entry.

@@ -15,10 +15,10 @@ The addon has two separate UI surfaces, each a self-contained Vue 3 application:
 
 - **Manifest Version:** 2
 - **Gecko ID:** `thunderstats@micz.it`
-- **Min Thunderbird version:** 115.0
+- **Min Thunderbird version:** 140.0
 - **Browser action:** toolbar button that opens the stats window
 - **Options UI:** `index.ts-options.html` (opens in a tab)
-- **Background page:** `background.html`
+- **Background page:** `background.html` (loads `background.js`)
 
 ### Permissions
 - `addressBooks` — access address book data
@@ -35,10 +35,13 @@ The addon has two separate UI surfaces, each a self-contained Vue 3 application:
 ├── index.thunderstats.html       # Main UI entry point
 ├── index.ts-options.html         # Options UI entry point
 ├── vite.config.js                # Vite build config
+├── build.js                      # XPI packager (production build)
+├── LANG.md                       # Locales shipped in the XPI
 ├── package.json                  # Dependencies
 ├── public/
 │   ├── manifest.json             # Addon manifest
 │   ├── background.html           # Background page
+│   ├── background.js             # Background script
 │   ├── images/                   # Addon icons (16px, 32px, 64px)
 │   └── _locales/                 # i18n message files
 ├── src/
@@ -50,11 +53,12 @@ The addon has two separate UI surfaces, each a self-contained Vue 3 application:
 │   │   ├── ThunderStatsView.vue  # Main stats dashboard
 │   │   └── OptionsView.vue       # Settings dashboard
 │   └── components/               # All reusable components
-│       ├── tabs/                 # 5 main tab components
-│       ├── charts/               # 10 chart components
-│       ├── counters/             # 6 counter/display components
-│       ├── widgets/              # 4 widget components
-│       ├── options_tabs/         # 6 options tab components
+│       ├── tabs/                 # Main stats tabs
+│       ├── charts/               # Chart components
+│       ├── counters/             # Counter/display components
+│       ├── widgets/              # Widgets wrapping charts/counters
+│       ├── options_tabs/         # Options page sections
+│       ├── options/              # Options page controls (row, switch, number, tag input)
 │       └── tables/               # Table components
 ├── statslib/
 │   ├── mzts-statscore.js         # Main stats engine
@@ -65,7 +69,11 @@ The addon has two separate UI surfaces, each a self-contained Vue 3 application:
 │   ├── mzts-options-default.js   # Default settings
 │   ├── mzts-i18n.js              # i18n resolver
 │   ├── mzts-logger.js            # Debug logging
-│   ├── mzts-store.js             # Global state
+│   ├── mzts-store.js             # Shared reactive state (tsStore)
+│   ├── mzts-theme.js             # Light/dark theme (tsTheme)
+│   ├── mzts-insights.js          # Dashboard metrics (tsInsights)
+│   ├── mzts-daymodel.js          # Single-day dashboard model (tsDayModel)
+│   ├── mzts-periodmodel.js       # Many-days dashboard model (tsPeriodModel)
 │   └── chartjs-lib/              # Custom Chart.js plugins
 └── dist/                         # Compiled addon output
 ```
@@ -83,6 +91,10 @@ Vue Tab Components (TAB_Today, TAB_Yesterday, TAB_ManyDays, TAB_CustomQry)
        │
        ▼
 Chart/Counter/Widget Components (display only, receive data as props)
+
+Shared state (current account, business day settings, colors, dark mode): statslib/mzts-store.js
+Theme: statslib/mzts-theme.js sets tsStore.darkmode and the data-theme attribute on <html>; all colors come from the CSS tokens in src/assets/tokens.css
+Preferences: browser.storage.sync via statslib/mzts-options.js
 ```
 
 ## Path Aliases (Vite)

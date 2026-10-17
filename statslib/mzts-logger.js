@@ -25,9 +25,13 @@ export class tsLogger {
         this.do_debug = do_debug;
         this.prefix = "[ThunderStats Logger | " + prefix + "] ";
     }
+    // msg can be a function returning the message: it is called only when debugging is on,
+    // so expensive messages (JSON.stringify of big results) cost nothing otherwise
     log(msg, do_debug = -1) {
         if(do_debug !== -1) this.do_debug = do_debug;
-        if(this.do_debug === true) console.log(this.prefix + msg);
+        if(this.do_debug !== true) return;
+        if(typeof msg === 'function') msg = msg();
+        console.log(this.prefix + msg);
     }
     error(msg) {
         console.error(this.prefix + msg);

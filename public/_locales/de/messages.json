@@ -31,7 +31,7 @@
         "message": "Empfangen"
     },
     "DonateLink": {
-        "message": "Etwas spenden!"
+        "message": "Spenden"
     },
     "ChooseAccount": {
         "message": "Konto auswählen"
@@ -55,13 +55,163 @@
         "message": "Gestern"
     },
     "today_small": {
-        "message": "heute"
+        "message": "Heute"
     },
     "yesterday_small": {
-        "message": "gestern"
+        "message": "Gestern"
+    },
+    "InboxAgeWeek": {
+        "message": "2–7 Tage"
+    },
+    "InboxAgeMonth": {
+        "message": "8–30 Tage"
+    },
+    "InboxAgeQuarter": {
+        "message": "1–3 Monate"
+    },
+    "InboxAgeOlder": {
+        "message": "Älter"
     },
     "days": {
         "message": "Tage"
+    },
+    "Opt_DatePickerLocaleHint": {
+        "message": "Ein Sprachcode wie de-DE oder en-US für das Datumsformat der Datumsauswahl"
+    },
+    "Opt_MarkInboxBarsHint": {
+        "message": "Mehrtägige Ansichten"
+    },
+    "Opt_InboxAgeHint": {
+        "message": "Eintägige Ansichten: Heute, Gestern und die benutzerdefinierte Abfrage eines einzelnen Tages. Auch der Pfeil am Zähler öffnet und schließt die Anzeige"
+    },
+    "Opt_InternalMail": {
+        "message": "Interne E-Mails"
+    },
+    "Opt_ShowInternalShareHint": {
+        "message": "Erfordert interne Domains –"
+    },
+    "Opt_SetInternalDomains": {
+        "message": "legen Sie sie unter „Identitäten & Domänen“ fest"
+    },
+    "Opt_ThemeHint": {
+        "message": "„Automatisch“ folgt dem System; auch die Sonne/Mond-Schaltfläche in der Symbolleiste schaltet um"
+    },
+    "Opt_ArchiveFolders": {
+        "message": "Archivordner"
+    },
+    "Opt_FilterDupHint": {
+        "message": "Langsamer, vermeidet aber Doppelzählungen"
+    },
+    "Opt_PerAccount": {
+        "message": "Pro Konto"
+    },
+    "Opt_ArchiveFoldersNote": {
+        "message": "Die Ordnerzahlen in „Wo die E-Mails gelandet sind“ zeigen immer alle E-Mails – eine Nachricht, die in zwei Ordnern liegt, erscheint in beiden."
+    },
+    "Opt_TopRowsHint": {
+        "message": "Top-Absender und -Empfänger"
+    },
+    "Opt_WarnLongPeriods": {
+        "message": "Bei langen Zeiträumen warnen"
+    },
+    "Opt_Performance": {
+        "message": "Leistung & Fehlerbehebung"
+    },
+    "Opt_PerformanceDesc": {
+        "message": "Wie ThunderStats Ihre E-Mails beim Laden der Statistiken liest."
+    },
+    "Opt_ConcurrentQueries": {
+        "message": "Gleichzeitige Nachrichtenabfragen"
+    },
+    "Opt_RecentDaysCache": {
+        "message": "Cache der letzten Tage"
+    },
+    "Opt_DebugLogHint": {
+        "message": "Schreibt ausführliche Meldungen in die Fehlerkonsole von Thunderbird"
+    },
+    "Opt_BusinessDaysDesc": {
+        "message": "Freie Tage werden bei Durchschnittswerten nicht berücksichtigt, damit ein ruhiger Sonntag Ihren Vergleichswert nicht nach unten zieht."
+    },
+    "Opt_WorkingWeek": {
+        "message": "Arbeitswoche"
+    },
+    "Opt_HolidaysNone": {
+        "message": "Keine festen arbeitsfreien Tage"
+    },
+    "Opt_HolidaysOne": {
+        "message": "1 fester arbeitsfreier Tag"
+    },
+    "Opt_HolidaysCount": {
+        "message": "$NUM$ feste arbeitsfreie Tage",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "5"
+            }
+        }
+    },
+    "Opt_PlusEaster": {
+        "message": "+ Ostern"
+    },
+    "Opt_AddHoliday": {
+        "message": "Arbeitsfreien Tag hinzufügen"
+    },
+    "Opt_HolidayNamePlaceholder": {
+        "message": "z. B. Tag der Deutschen Einheit",
+        "description": "Placeholder of the holiday name field. Replace the example with the name of a national holiday of a country where your language is spoken."
+    },
+    "Opt_YearOnly": {
+        "message": "Nur $YEAR$",
+        "placeholders": {
+            "year": {
+                "content": "$1",
+                "example": "2026"
+            }
+        }
+    },
+    "Opt_Add": {
+        "message": "Hinzufügen"
+    },
+    "Opt_EasterHint": {
+        "message": "Wird jedes Jahr berechnet – $EASTER$ und $MONDAY$ im Jahr $YEAR$",
+        "placeholders": {
+            "easter": {
+                "content": "$1",
+                "example": "5 April"
+            },
+            "monday": {
+                "content": "$2",
+                "example": "6 April"
+            },
+            "year": {
+                "content": "$3",
+                "example": "2026"
+            }
+        }
+    },
+    "Opt_IdentitiesDesc": {
+        "message": "Teilen Sie ThunderStats mit, welche Adressen Ihnen gehören und welche Domains intern sind."
+    },
+    "Opt_AccountIdentitiesDesc": {
+        "message": "Aus den Kontoeinstellungen von Thunderbird gelesen"
+    },
+    "Opt_NoIdentities": {
+        "message": "Dieses Konto hat keine Identitäten."
+    },
+    "Opt_AddAddress": {
+        "message": "Adresse eingeben und Enter drücken"
+    },
+    "Opt_InvalidAddress": {
+        "message": "Keine gültige Adresse und kein gültiges Muster: verwenden Sie name@example.com, *@example.com oder @example.com."
+    },
+    "Opt_AddDomain": {
+        "message": "Domain eingeben und Enter drücken"
+    },
+    "Opt_InvalidDomain": {
+        "message": "Keine gültige Domain: verwenden Sie example.com oder *.example.com."
+    },
+    "Remove": {
+        "message": "Entfernen"
     },
     "TotalDays": {
         "message": "Tage gesamt"
@@ -73,16 +223,287 @@
         "message": "Lade"
     },
     "SentMails": {
-        "message": "Gesendete Mails"
+        "message": "Gesendet"
+    },
+    "InboxZero": {
+        "message": "Inbox Zero",
+        "description": "Inbox Zero label: status badge, options card and calendar widget title"
+    },
+    "KeepingUp": {
+        "message": "Im Griff",
+        "description": "Status badge"
+    },
+    "BacklogGrowing": {
+        "message": "Rückstand wächst",
+        "description": "Status badge"
+    },
+    "FullDayRange": {
+        "message": "Ganzer Tag · $START$ → $END$",
+        "description": "Time range of a whole day",
+        "placeholders": {
+            "start": {
+                "content": "$1",
+                "example": "00:00"
+            },
+            "end": {
+                "content": "$2",
+                "example": "23:59"
+            }
+        }
+    },
+    "Arrived": {
+        "message": "Eingegangen",
+        "description": "Mails received in the period"
+    },
+    "FiledOrAnswered": {
+        "message": "Abgelegt oder beantwortet",
+        "description": "Received mails that left the inbox"
     },
     "ReceivedMails": {
-        "message": "Empfangene Mails"
+        "message": "Empfangen"
     },
     "InboxZeroStatus": {
         "message": "'Inbox Zero' Status"
     },
     "TotalInbox": {
-        "message": "Gesamte Mails Posteingang"
+        "message": "Rückstand im Posteingang"
+    },
+    "InboxBacklogDeltaTooltip": {
+        "message": "An diesem Tag empfangene E-Mails, die noch im Posteingang sind"
+    },
+    "InboxBacklogSub": {
+        "message": "$UNREAD$ ungelesen · älteste $DAYS$ Tage",
+        "placeholders": {
+            "unread": {
+                "content": "$1",
+                "example": "112"
+            },
+            "days": {
+                "content": "$2",
+                "example": "46"
+            }
+        }
+    },
+    "InternalTraffic": {
+        "message": "Interner Verkehr"
+    },
+    "InternalTrafficSub": {
+        "message": "empfangen · $PERCENT$ dessen, was Sie gesendet haben",
+        "placeholders": {
+            "percent": {
+                "content": "$1",
+                "example": "58%"
+            }
+        }
+    },
+    "InboxZeroDayLeft": {
+        "message": "$DATE$: $NUM$ noch im Posteingang",
+        "description": "Tooltip of a day in the Inbox Zero strip",
+        "placeholders": {
+            "date": {
+                "content": "$1",
+                "example": "Thu 30 Jul"
+            },
+            "num": {
+                "content": "$2",
+                "example": "3"
+            }
+        }
+    },
+    "InboxZeroStreak": {
+        "message": "Inbox-Zero-Serie"
+    },
+    "InboxZeroStreakSub": {
+        "message": "Tage · $ZERO$ der letzten $NUM$ bei null",
+        "placeholders": {
+            "zero": {
+                "content": "$1",
+                "example": "9"
+            },
+            "num": {
+                "content": "$2",
+                "example": "14"
+            }
+        }
+    },
+    "InboxZeroStreakTooltip": {
+        "message": "Ein Tag zählt, wenn keine der an diesem Tag empfangenen E-Mails mehr im Posteingang ist."
+    },
+    "ChartTodayTitle": {
+        "message": "Heute im Vergleich zu Ihrem normalen Tag"
+    },
+    "ChartDayTitle": {
+        "message": "$DAY$ im Vergleich zu Ihrem normalen Tag",
+        "placeholders": {
+            "day": {
+                "content": "$1",
+                "example": "29 July"
+            }
+        }
+    },
+    "UsualRange": {
+        "message": "Üblicher Bereich",
+        "description": "Range of the same weekday in the previous weeks"
+    },
+    "CalloutReceived": {
+        "message": "$TIME$ · $NUM$ empfangen",
+        "placeholders": {
+            "time": {
+                "content": "$1",
+                "example": "18:04"
+            },
+            "num": {
+                "content": "$2",
+                "example": "47"
+            }
+        }
+    },
+    "UsualByNow": {
+        "message": "üblich bis jetzt: $LOW$–$HIGH$",
+        "placeholders": {
+            "low": {
+                "content": "$1",
+                "example": "39"
+            },
+            "high": {
+                "content": "$2",
+                "example": "44"
+            }
+        }
+    },
+    "UsualByEndOfDay": {
+        "message": "üblich bis Tagesende: $LOW$–$HIGH$",
+        "placeholders": {
+            "low": {
+                "content": "$1",
+                "example": "40"
+            },
+            "high": {
+                "content": "$2",
+                "example": "49"
+            }
+        }
+    },
+    "ChartNoteBusier": {
+        "message": "Mehr los als an einem üblichen $WEEKDAY$.",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            }
+        }
+    },
+    "ChartNoteQuieter": {
+        "message": "Ruhiger als an einem üblichen $WEEKDAY$.",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            }
+        }
+    },
+    "ChartNoteUsual": {
+        "message": "Wie an einem üblichen $WEEKDAY$.",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            }
+        }
+    },
+    "NoCorrespondents": {
+        "message": "Keine Korrespondenten"
+    },
+    "EndedUpNote": {
+        "message": "$MOVED$ von $TOTAL$ E-Mails haben den Posteingang verlassen – die meisten landeten in $FOLDER$.",
+        "placeholders": {
+            "moved": {
+                "content": "$1",
+                "example": "18"
+            },
+            "total": {
+                "content": "$2",
+                "example": "48"
+            },
+            "folder": {
+                "content": "$3",
+                "example": "Projects"
+            }
+        }
+    },
+    "EndedUpNoteAllMoved": {
+        "message": "Alle $TOTAL$ E-Mails haben den Posteingang verlassen – die meisten landeten in $FOLDER$.",
+        "placeholders": {
+            "total": {
+                "content": "$1",
+                "example": "48"
+            },
+            "folder": {
+                "content": "$2",
+                "example": "Projects"
+            }
+        }
+    },
+    "EndedUpNoteNoneMoved": {
+        "message": "Keine der $TOTAL$ E-Mails hat den Posteingang bisher verlassen.",
+        "placeholders": {
+            "total": {
+                "content": "$1",
+                "example": "48"
+            }
+        }
+    },
+    "KpiReceivedToday": {
+        "message": "Heute empfangen"
+    },
+    "KpiSentToday": {
+        "message": "Heute gesendet"
+    },
+    "KpiReceivedYesterday": {
+        "message": "Gestern empfangen"
+    },
+    "KpiSentYesterday": {
+        "message": "Gestern gesendet"
+    },
+    "KpiReceivedDay": {
+        "message": "An diesem Tag empfangen"
+    },
+    "KpiSentDay": {
+        "message": "An diesem Tag gesendet"
+    },
+    "TopCorrespondentsToday": {
+        "message": "Top-Korrespondenten heute"
+    },
+    "TopCorrespondentsYesterday": {
+        "message": "Top-Korrespondenten gestern"
+    },
+    "TopCorrespondentsDay": {
+        "message": "Top-Korrespondenten an diesem Tag"
+    },
+    "EndedUpToday": {
+        "message": "Wo die heutigen E-Mails gelandet sind"
+    },
+    "EndedUpYesterday": {
+        "message": "Wo die gestrigen E-Mails gelandet sind"
+    },
+    "EndedUpDay": {
+        "message": "Wo die E-Mails dieses Tages gelandet sind"
+    },
+    "ShowLess": {
+        "message": "Weniger anzeigen"
+    },
+    "SeeAllCorrespondents": {
+        "message": "Alle $NUM$ anzeigen →",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "10"
+            }
+        }
+    },
+    "CorrespondentsListsBelow": {
+        "message": "Vollständige Absender- und Empfängerlisten unten ↓",
+        "description": "Link in the top correspondents card, shown when the full lists are open; it scrolls to them"
     },
     "TotalInboxUnread": {
         "message": "ungelesen"
@@ -97,7 +518,11 @@
         "message": "empfangen"
     },
     "FolderLocation": {
-        "message": "Verzeichnis-Diagram"
+        "message": "Wo die E-Mails gelandet sind"
+    },
+    "OpenFolder": {
+        "message": "Ordner öffnen",
+        "description": "Tooltip of a folder row that opens the folder in Thunderbird"
     },
     "InboxZeroFolderLocationNote": {
         "message": "In diesem Diagramm werden alle Nachrichten berücksichtigt, einschließlich Duplikate, die in den anderen Diagrammen gefiltert werden. Wenn Sie also Gmail verwenden, sehen Sie Nachrichten sowohl im Ordner, in dem sie sich befinden, als auch im Ordner \"Alle Nachrichten\"."
@@ -106,7 +531,7 @@
         "message": "Keine Emails empfangen"
     },
     "InboxMailsDateSpreading": {
-        "message": "Zeit-Verteilung der empfangenen Mails"
+        "message": "Wie alt ist Ihr Posteingang"
     },
     "NoMailsInbox": {
         "message": "Keine Mails im Eingangsordner!"
@@ -187,10 +612,13 @@
         "message": "Daten extrahieren für"
     },
     "DateRange": {
-        "message": "Datumsbereich"
+        "message": "Zeitraum"
+    },
+    "CompareNotOnSingleDay": {
+        "message": "Der Vergleich erfordert einen Zeitraum von mehr als einem Tag"
     },
     "Bookmarks_Menu": {
-        "message": "Wählen Sie einen vordefinierten Zeitraum"
+        "message": "Schnellauswahl"
     },
     "CurrentWeek": {
         "message": "Aktuelle Woche"
@@ -235,10 +663,10 @@
         }
     },
     "GlobalDescSettingTab": {
-        "message": "Benutzen Sie diese Einstellungen um ihr persönliches Thunderstats-Erlebnis anzupassen!"
+        "message": "Wie ThunderStats startet, Daten lädt und seine Diagramme zeichnet."
     },
     "AdvancedSettingTabDesc": {
-        "message": "Dies sind erweiterte Optionen, verwenden Sie sie, wenn Sie wissen, was Sie tun."
+        "message": "Feinabstimmung, wie E-Mails gezählt werden. Die Standardwerte passen für die meisten."
     },
     "TabSettings.label": {
         "message": "Allgemein"
@@ -253,7 +681,7 @@
         "message": "Identitäten & Domänen"
     },
     "Identities": {
-        "message": "Identitäten"
+        "message": "Kontoidentitäten"
     },
     "InfoMainDesc": {
         "message": "Diese Erweiterung ist frei und wird in meiner Freizeit entwickelt. Falls Sie es täglich nutzen, können Sie diese gerne mit einer kleinen Spende unterstützen. Klicken Sie einfach auf den Link unten - vielen Dank!!"
@@ -262,13 +690,13 @@
         "message": "Für diese Änderung muss der ThunderStats Tab geschlossen und neu geöffnet werden."
     },
     "StartupAccount": {
-        "message": "Start Konto"
+        "message": "Startkonto"
     },
     "ManageCustomIdentitites": {
         "message": "Verwalten sie hier zusätzliche Identitäten"
     },
     "ManageCustomIdentititesDesc_1": {
-        "message": "Eine benutzerdefinierte Identität ist eine E-Mail-Adresse, die sich von den für das Konto registrierten Adressen unterscheidet und mit der Sie E-Mails empfangen."
+        "message": "Weitere Adressen, an die Sie E-Mails erhalten – typischerweise Mailinglisten, bei denen Ihre eigene Adresse nicht in An oder Cc steht."
     },
     "ManageCustomIdentititesDesc_2": {
         "message": "In der regel handelt es sich dabei um e-mail-adressen von mailinglisten, bei denen Ihre e-mail-adresse in keinem \"an\"- oder \"cc\"-feld verwendet wird."
@@ -277,28 +705,38 @@
         "message": "Konto"
     },
     "CustomIdentititesAccount": {
-        "message": "Zusätzliche Identitäten für das selektierte Konto"
+        "message": "Benutzerdefinierte Identitäten"
     },
     "CustomIdentititesAccount.Info": {
-        "message": "Fügen Sie pro Zeile eine E-Mail-Adresse hinzu oder trennen Sie diese durch ein Komma. Verwenden Sie * als Platzhalter (z. B. *@example.com) oder einfach @domain.com, um alle Adressen einer Domain zu erfassen."
+        "message": "Verwenden Sie $PATTERN1$ oder $PATTERN2$, um eine ganze Domain zu erfassen.",
+        "placeholders": {
+            "pattern1": {
+                "content": "$1",
+                "example": "*@example.com"
+            },
+            "pattern2": {
+                "content": "$2",
+                "example": "@example.com"
+            }
+        }
     },
     "ActivateDebug": {
-        "message": "Diagnose System aktivieren"
+        "message": "Debug-Protokollierung"
     },
     "TodayTimeChartShowYesterday": {
-        "message": "Zeigen Sie auch die gestrigen E-Mails im heutigen Zeitdiagramm an"
+        "message": "Gestern im heutigen Diagramm überlagern"
     },
     "TimeChartProgressive": {
-        "message": "Zeigen Sie kumulative Werte in den Zeitdiagrammen für heute und gestern an"
+        "message": "Kumulative Werte anzeigen"
     },
     "ManyDaysChart": {
         "message": "Mehrere-Tage-Diagramm"
     },
     "ManyDays": {
-        "message": "Anzahl der Tage die angezeigt werden sollen"
+        "message": "Angezeigte Tage in „Letzte Tage“"
     },
     "CustomQueryBookmarkImmediateUpdate": {
-        "message": "Bei Verwendung benutzerdefinierter Szenarien Statistiken sofort aktualisieren"
+        "message": "Daten sofort laden, wenn Sie in „Benutzerdefiniert“ einen vordefinierten Zeitraum wählen"
     },
     "EmailAddresses": {
         "message": "e-mail-adressen"
@@ -328,7 +766,7 @@
         "message": "Samstag"
     },
     "DatePickerLocale": {
-        "message": "Ländereinstellung für den Datumsauswahl-Widget"
+        "message": "Sprache der Datumsauswahl"
     },
     "ShowRelNotes1x": {
         "message": "Anzeigen der Versionshinweise für Version 1.x"
@@ -340,19 +778,28 @@
         "message": "Statistik mit benutzerdefiniertes Datumsbereich"
     },
     "folderspreadchart_openinfirsttab": {
-        "message": "Öffnen Sie im Diagramm der E-Mail-Ordnerstandorte den Ordner immer im ersten Tab"
+        "message": "In „Wo die E-Mails gelandet sind“ angeklickte Ordner im ersten Mail-Tab öffnen"
+    },
+    "MaxConcurrentQueries": {
+        "message": "Verringern Sie den Wert, wenn Thunderbird beim Laden ruckelt, erhöhen Sie ihn, wenn das Laden zu langsam ist (1–10)"
+    },
+    "RecentDaysCacheDays_1": {
+        "message": "Tage vor heute, die in einem Durchgang gelesen und von den Ansichten gemeinsam genutzt werden (43–365)."
+    },
+    "RecentDaysCacheDays_2": {
+        "message": "Erhöhen Sie den Wert, wenn „Letzte Tage“ mehr als 24 Tage umfasst; ein größerer Wert verlangsamt das erste Laden."
     },
     "InvolvedNum": {
-        "message": "Anzahl der Empfänger / Absender die in den \"Top\" Tabellen angezeigt werden sollen"
+        "message": "Zeilen in den „Top“-Tabellen"
     },
     "Other": {
         "message": "Andere"
     },
     "prefs_FirstDayWeek": {
-        "message": "Wählen Sie den ersten Tag der Woche aus"
+        "message": "Erster Tag der Woche"
     },
     "prefs_remember_last_tab": {
-        "message": "Den zuletzt geöffneten Tab merken"
+        "message": "Den zuletzt verwendeten Tab wieder öffnen"
     },
     "prefs_always_reload_tab_data": {
         "message": "Daten neu laden, wenn der Tab gewechselt wird"
@@ -361,7 +808,7 @@
         "message": "Daten neu laden, wenn das Konto gewechselt wird"
     },
     "prefs_filter_duplicates_multi_account": {
-        "message": "Duplikate Nachrichten filtern, wenn mehrere Konten ausgewählt sind"
+        "message": "Duplikate filtern, wenn mehrere Konten ausgewählt sind"
     },
     "prefs_include_archive_multi_account": {
         "message": "Archive einbeziehen, wenn mehrere Konten ausgewählt sind"
@@ -373,7 +820,7 @@
         "message": "Duplikate Nachrichten filtern"
     },
     "ImportantInfoText_1": {
-        "message": "Einige E-Mail-Anbieter, wie Gmail, haben einen \"Archiv\"-Ordner, der alle Nachrichten enthält. Dieselben Nachrichten sind jedoch auch in einzelnen Ordnern vorhanden. Die Berücksichtigung der \"Archiv\"-Ordner in den Statistiken könnte dazu führen, dass sie doppelt gezählt werden."
+        "message": "Anbieter wie Gmail bewahren jede Nachricht sowohl in einem Archiv-Ordner als auch in ihrem eigenen Ordner auf, daher kann das Mitzählen der Archive Ihre Zahlen verdoppeln. Schließen Sie Archive aus oder behalten Sie sie und filtern Sie Duplikate – langsamer, aber genauer."
     },
     "ImportantInfoText_1b": {
         "message": "Auf der Seite für erweiterte Optionen können Sie festlegen, wie diese Konten verwaltet werden sollen. Wenn ein Konto eine \"gmail.com\"-Adresse hat, wird es korrekt eingerichtet; andernfalls müssen Sie es manuell einrichten."
@@ -403,7 +850,7 @@
         "message": "Archiv einbeziehen"
     },
     "FilterDuplicateMessages": {
-        "message": "Duplikate Nachrichten filtern"
+        "message": "Duplikate filtern"
     },
     "AdvancedAccountList_Desc": {
         "message": "Unten können Sie wählen, ob Sie die Archivordner ignorieren oder die doppelten Nachrichten herausfiltern möchten. Das Filtern von Nachrichten erhöht die Zeit, die zur Berechnung der Statistiken benötigt wird, liefert jedoch bessere Ergebnisse. Wenn Sie die Archivierungsfunktion von Gmail nicht verwenden, können Sie diese Funktion deaktivieren und die Archivordner direkt ausschließen. Das 'Inbox Zero' Ordnerstandorte-Diagramm zeigt immer alle E-Mails an. Wenn also eine E-Mail empfangen wird und in zwei Ordnern erscheint, wird sie in beiden Ordnern im Diagramm angezeigt."
@@ -418,10 +865,10 @@
         "message": "Standard festlegen"
     },
     "Label_bday_use_last_business_day": {
-        "message": "Wenn gestern kein Werktag war, zeige stattdessen den letzten Werktag an."
+        "message": "Wenn gestern ein freier Tag war, den letzten Werktag anzeigen"
     },
     "Label_bday_default_only": {
-        "message": "Nur Werktage in aggregierten Statistiken berücksichtigen (Max, Min, Durchschnitt)."
+        "message": "Werktage nur für Durchschnitt, Minimum und Maximum verwenden"
     },
     "Non-BDays": {
         "message": "Arbeitsfreie Tage"
@@ -430,7 +877,7 @@
         "message": "Date"
     },
     "Description": {
-        "message": "Description"
+        "message": "Name"
     },
     "New": {
         "message": "Neu"
@@ -457,7 +904,7 @@
         "message": "Sind Sie sicher, dass Sie diesen arbeitsfreien Tag löschen möchten?"
     },
     "EasterNoBusinessDay": {
-        "message": "Ostern und der Ostermontag sind keine Werktage."
+        "message": "Ostern und Ostermontag"
     },
     "Year": {
         "message": "Jahr"
@@ -490,16 +937,16 @@
         "message": "Diese Werte berücksichtigen nur Werktage."
     },
     "TimeChartNoFutureHours": {
-        "message": "Zeigen Sie keine zukünftigen Stunden im heutigen Zeitdiagramm an"
+        "message": "Noch nicht vergangene Stunden ausblenden"
     },
     "Miscellaneous": {
         "message": "Verschiedenes"
     },
     "TimeChart": {
-        "message": "Zeitdiagramm"
+        "message": "Diagramm Heute & Gestern"
     },
     "LastExecution": {
-        "message": "Letzte Ausführung"
+        "message": "Aktualisiert"
     },
     "ExportData": {
         "message": "Datenexport"
@@ -514,7 +961,7 @@
         "message": "Tageszeit"
     },
     "FolderLocation_percent_handled": {
-        "message": "E-Mails aus dem Posteingangsordner verschoben"
+        "message": "Im Zeitraum empfangene E-Mails, die nicht mehr im Posteingang sind"
     },
     "AskUserWarningTitle": {
         "message": "Warnung"
@@ -529,16 +976,31 @@
         }
     },
     "CustmQryWarnOnLongPeriod_1": {
-        "message": "Anzahl der Tage, nach denen der Benutzer gewarnt wird, dass die Erstellung der Statistiken lange dauern kann."
+        "message": "In „Benutzerdefiniert“ einen Hinweis „Dies kann eine Weile dauern“ für Zeiträume anzeigen, die länger als dieser Wert sind"
     },
     "CustmQryWarnOnLongPeriod_2": {
-        "message": "Nie warnen"
+        "message": "nie"
     },
     "ShowAdvFilters": {
         "message": "Erweiterte Filter anzeigen"
     },
     "AdvFilters": {
-        "message": "Erweiterte Filter"
+        "message": "Filter"
+    },
+    "AddFilter": {
+        "message": "+ Filter hinzufügen",
+        "description": "Custom query panel, opens the advanced filters"
+    },
+    "CloseFilters": {
+        "message": "Filter schließen",
+        "description": "Custom query panel, closes the advanced filters"
+    },
+    "RemoveFilter": {
+        "message": "Diesen Filter entfernen"
+    },
+    "ChoosePeriodAndRun": {
+        "message": "Wählen Sie einen Zeitraum und führen Sie die Abfrage aus.",
+        "description": "Shown in the Custom Query tab before the first query"
     },
     "ChooseFoldersFilter": {
         "message": "Ordner auswählen"
@@ -553,7 +1015,7 @@
         "message": "Wählen Sie einen oder mehrere Ordner..."
     },
     "prefs_customqry_always_open_adv_filters": {
-        "message": "Das Fenster „Erweiterte Filter“ in der benutzerdefinierten Ansicht immer öffnen"
+        "message": "Erweiterte Filter in „Benutzerdefiniert“ immer aufklappen"
     },
     "TimeDay": {
         "message": "Tageszeit"
@@ -595,7 +1057,63 @@
         "message": "Tags"
     },
     "InboxMailsDateSpreadingExtended": {
-        "message": "Posteingang - Datumsdetailansicht"
+        "message": "Details nach Datum"
+    },
+    "InboxAgeByAge": {
+        "message": "Zurück zu den Altersgruppen",
+        "description": "Link that goes back to the inbox mails by age"
+    },
+    "InboxAgeNote": {
+        "message": "$NUM$ E-Mails warten seit mehr als einem Monat.",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "24"
+            }
+        }
+    },
+    "InboxAgeNoteFresh": {
+        "message": "Nichts im Posteingang ist älter als ein Monat."
+    },
+    "InboxAgeKpiLink": {
+        "message": "$NUM$ warten seit über einem Monat ›",
+        "description": "Link in the Inbox backlog KPI that opens the How old is your inbox strip",
+        "placeholders": {
+            "num": {
+                "content": "$1"
+            }
+        }
+    },
+    "InboxAgeKpiLinkFresh": {
+        "message": "Wie alt ist Ihr Posteingang ›",
+        "description": "Link in the Inbox backlog KPI that opens the How old is your inbox strip, when nothing is older than a month"
+    },
+    "InboxAgeToggle": {
+        "message": "Anzeigen oder ausblenden, wie alt Ihr Posteingang ist",
+        "description": "Tooltip of the toggle button in the Inbox backlog KPI"
+    },
+    "InboxAgeHide": {
+        "message": "Ausblenden",
+        "description": "Closes the How old is your inbox strip"
+    },
+    "InboxAgeSegmentTooltip": {
+        "message": "$NAME$: $NUM$ E-Mails ($PERCENT$ %)",
+        "description": "Tooltip of a segment of the inbox age bar",
+        "placeholders": {
+            "name": {
+                "content": "$1"
+            },
+            "num": {
+                "content": "$2"
+            },
+            "percent": {
+                "content": "$3"
+            }
+        }
+    },
+    "prefs_inbox_age_expanded": {
+        "message": "Unter dem Zähler „Rückstand im Posteingang“ anzeigen, wie alt der Posteingang ist",
+        "description": "Option: keeps the How old is your inbox strip open in the single-day views"
     },
     "OrderBy": {
         "message": "Sortieren nach"
@@ -616,7 +1134,7 @@
         "message": "Ordner anzeigen"
     },
     "prefs_customqry_loaddata_when_opening_addon": {
-        "message": "Daten laden, auch wenn die benutzerdefinierte Ansicht der erste geöffnete Tab in ThunderStats ist"
+        "message": "Daten laden, wenn „Benutzerdefiniert“ der erste geöffnete Tab ist"
     },
     "WeeklyMails": {
         "message": "Wochenmails"
@@ -642,8 +1160,140 @@
     "PeriodA": {
         "message": "Zeitraum A"
     },
+    "PeriodAShort": {
+        "message": "A",
+        "description": "Short label before a Period A value, e.g. A 42, and A button of the Period A / Period B switch"
+    },
+    "DaysAtZeroPeriodB": {
+        "message": "von $NUM$ Tagen bei null in Zeitraum B",
+        "description": "Inbox Zero calendar, Custom Query comparison",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "14"
+            }
+        }
+    },
+    "Opt_Options": {
+        "message": "Optionen"
+    },
+    "Opt_SavedAutomatically": {
+        "message": "Änderungen werden automatisch gespeichert"
+    },
+    "Opt_ReloadThunderStats": {
+        "message": "ThunderStats neu laden"
+    },
+    "Opt_DonateSidebar": {
+        "message": "ThunderStats ist kostenlos und wird in der Freizeit entwickelt. Wenn es zu Ihrem Alltag gehört, unterstützen Sie es doch."
+    },
+    "Opt_About": {
+        "message": "Über"
+    },
+    "Opt_ByAuthor": {
+        "message": "von Mic"
+    },
+    "Opt_DonateBanner": {
+        "message": "ThunderStats ist kostenlos und wird in der Freizeit entwickelt. Wenn es zu Ihrem Alltag gehört, hält eine kleine Spende es am Leben."
+    },
+    "Opt_ReleaseNotes": {
+        "message": "Versionshinweise"
+    },
+    "Opt_FullChangelog": {
+        "message": "Vollständiges Änderungsprotokoll"
+    },
+    "Opt_OneChange": {
+        "message": "1 Änderung"
+    },
+    "Opt_NChanges": {
+        "message": "$NUM$ Änderungen",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "5"
+            }
+        }
+    },
+    "Opt_LicenseName": {
+        "message": "GNU General Public License v3 oder später"
+    },
+    "Opt_HideFullText": {
+        "message": "Volltext ausblenden"
+    },
+    "Opt_ShowFullText": {
+        "message": "Volltext anzeigen"
+    },
+    "Opt_LicenseSummary": {
+        "message": "Freie Software: Sie können sie unter der GPL weitergeben und verändern. Sie wird ohne Gewährleistung bereitgestellt."
+    },
+    "Opt_Attributions": {
+        "message": "Danksagungen:"
+    },
+    "Opt_InDevelopment": {
+        "message": "In Entwicklung"
+    },
+    "Opt_Startup": {
+        "message": "Start"
+    },
+    "Opt_StartupAccountHint": {
+        "message": "Das Konto, das beim Öffnen von ThunderStats angezeigt wird"
+    },
+    "Opt_RememberLastAccountHint": {
+        "message": "Hat Vorrang vor dem Startkonto"
+    },
+    "Opt_LoadingData": {
+        "message": "Daten laden"
+    },
+    "Opt_LoadCustomFirstTabHint": {
+        "message": "Andernfalls wartet „Benutzerdefiniert“, bis Sie eine Abfrage ausführen"
+    },
+    "Opt_LoadCustomOnRangeHint": {
+        "message": "Andernfalls wird der Zeitraum nur in der Datumsauswahl gesetzt"
+    },
+    "Opt_TodayOnly": {
+        "message": "Nur Heute"
+    },
+    "Opt_ManyDaysCustom": {
+        "message": "Letzte Tage & Benutzerdefiniert"
+    },
+    "Opt_ManyDaysNumHint": {
+        "message": "Für mehr als 24 Tage erhöhen Sie den Cache der letzten Tage unter „Fortgeschritten“"
+    },
     "PeriodB": {
         "message": "Zeitraum B"
+    },
+    "Appearance": {
+        "message": "Darstellung",
+        "description": "Options group title for the color theme settings"
+    },
+    "prefs_theme_mode": {
+        "message": "Farbschema"
+    },
+    "ThemeAuto": {
+        "message": "Automatisch (dem System folgen)"
+    },
+    "ThemeLight": {
+        "message": "Hell",
+        "description": "Light color theme"
+    },
+    "ThemeDark": {
+        "message": "Dunkel",
+        "description": "Dark color theme"
+    },
+    "prefs_time_format": {
+        "message": "Zeitformat"
+    },
+    "TimeFormatAuto": {
+        "message": "Automatisch (Thunderbird-Sprache)",
+        "description": "Time format that follows the Thunderbird UI language"
+    },
+    "TimeFormat24": {
+        "message": "24 Stunden (14:30)"
+    },
+    "TimeFormat12": {
+        "message": "12 Stunden (2:30 PM)"
+    },
+    "Opt_TimeFormatHint": {
+        "message": "„Automatisch“ verwendet das Uhrzeitformat der Thunderbird-Sprache; wählen Sie 24 oder 12 Stunden, wenn es von Ihren Datums- und Zeiteinstellungen in Thunderbird abweicht"
     },
     "ComparisonSentChange": {
         "message": "Änderung der gesendeten Anzahl"
@@ -655,22 +1305,108 @@
         "message": "Alle E-Mails"
     },
     "InternalDomainsAccount": {
-        "message": "Interne Domains für das ausgewählte Konto"
+        "message": "Interne Domains"
     },
     "InternalDomainsAccount.Desc": {
-        "message": "Interne Domains sind Domains, die zu Ihrer Organisation gehören. Sie dienen dazu, den internen vom externen E-Mail-Verkehr in Ihren Statistiken zu unterscheiden."
+        "message": "Domains, die zu Ihrer Organisation gehören. Damit wird in Ihren Statistiken der interne vom externen Verkehr getrennt."
     },
     "InternalDomainsAccount.Info": {
-        "message": "Fügen Sie pro Zeile eine Domain hinzu oder trennen Sie diese durch ein Komma. Verwenden Sie * als Platzhalter (z. B. *.example.com, um alle Subdomains zu erfassen)."
+        "message": "Verwenden Sie $PATTERN$, um alle Subdomains zu erfassen.",
+        "placeholders": {
+            "pattern": {
+                "content": "$1",
+                "example": "*.example.com"
+            }
+        }
     },
     "ManyDaysShowInbox": {
-        "message": "Posteingangs-E-Mails im Empfangs-Diagramm anzeigen"
+        "message": "Noch im Posteingang befindliche E-Mails in den Diagrammbalken markieren"
     },
     "prefs_remember_last_account": {
         "message": "Zuletzt verwendeten Account merken"
     },
     "FolderLocation_percent_remaining": {
-        "message": "E-Mails, die sich noch im Posteingang befinden"
+        "message": "Noch im Posteingang"
+    },
+    "OfInboxTotal": {
+        "message": "von insgesamt $TOTAL$",
+        "description": "Next to the mails still in the inbox",
+        "placeholders": {
+            "total": {
+                "content": "$1",
+                "example": "124"
+            }
+        }
+    },
+    "BacklogTrend": {
+        "message": "Entwicklung des Rückstands"
+    },
+    "SinceWeekday": {
+        "message": "seit $WEEKDAY$",
+        "description": "e.g. since Mon",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Mon"
+            }
+        }
+    },
+    "BacklogTrendTooltip": {
+        "message": "Seit Wochenbeginn empfangene E-Mails, die noch im Posteingang sind"
+    },
+    "ClearIn": {
+        "message": "Leer in",
+        "description": "Time needed to empty the inbox"
+    },
+    "WorkingDaysSmall": {
+        "message": "Arbeitstagen"
+    },
+    "ClearInTooltip": {
+        "message": "Arbeitstage, die nötig sind, um den Posteingang in Ihrem üblichen Tempo zu leeren (E-Mails, die den Posteingang pro Arbeitstag in den letzten $NUM$ Tagen verlassen haben)",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "BaselineTooltip": {
+        "message": "Verglichen mit demselben Wochentag in den letzten $NUM$ Wochen",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "6"
+            }
+        }
+    },
+    "NoWeekdayHistory": {
+        "message": "Noch keine Daten für diesen Wochentag"
+    },
+    "VsUsualByNow": {
+        "message": "vs. Ihr üblicher $WEEKDAY$ bis jetzt ($NUM$)",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            },
+            "num": {
+                "content": "$2",
+                "example": "42"
+            }
+        }
+    },
+    "VsWeekdayAverage": {
+        "message": "vs. Ihr $WEEKDAY$-Durchschnitt ($NUM$)",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            },
+            "num": {
+                "content": "$2",
+                "example": "42"
+            }
+        }
     },
     "ResetAdvFilters": {
         "message": "Filter zurücksetzen"
@@ -679,7 +1415,7 @@
         "message": "Prozentualen Anteil der E-Mails im Posteingang anzeigen"
     },
     "prefs_show_internal_mail_percent": {
-        "message": "Prozentualen Anteil interner E-Mails anzeigen (Konfiguration interner Domains erforderlich)"
+        "message": "Anteil interner E-Mails anzeigen"
     },
     "InternalMailLabel": {
         "message": "Interne"
@@ -701,5 +1437,378 @@
     },
     "WaitForProcessing": {
         "message": "Bitte warten Sie, bis loer laufende Vorgang abgeschlossen ist"
+    },
+    "AggregationDays": {
+        "message": "Tage"
+    },
+    "AggregationWeeks": {
+        "message": "Wochen",
+        "description": "Grouping of the main chart"
+    },
+    "AggregationMonths": {
+        "message": "Monate",
+        "description": "Grouping of the main chart"
+    },
+    "AggregationYears": {
+        "message": "Jahre",
+        "description": "Grouping of the main chart"
+    },
+    "FilterChipFolders": {
+        "message": "Ordner: $FOLDERS$",
+        "description": "Active filter chip",
+        "placeholders": {
+            "folders": {
+                "content": "$1",
+                "example": "Inbox, Projects"
+            }
+        }
+    },
+    "FilterChipSubject": {
+        "message": "Betreff enthält „$TEXT$“",
+        "description": "Active filter chip",
+        "placeholders": {
+            "text": {
+                "content": "$1",
+                "example": "invoice"
+            }
+        }
+    },
+    "VsPeriodB": {
+        "message": "vs. Zeitraum B ($NUM$)",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "269"
+            }
+        }
+    },
+    "WeekLabel": {
+        "message": "KW$WEEK$ $YEAR$",
+        "description": "Label of a week in the charts, e.g. W12 2026",
+        "placeholders": {
+            "week": {
+                "content": "$1",
+                "example": "12"
+            },
+            "year": {
+                "content": "$2",
+                "example": "2026"
+            }
+        }
+    },
+    "PeriodBShort": {
+        "message": "B",
+        "description": "Short label before a Period B value, e.g. B 42"
+    },
+    "InternalTag": {
+        "message": "interne"
+    },
+    "ShowMoreRows": {
+        "message": "+ $NUM$ weitere",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "5"
+            }
+        }
+    },
+    "NoTaggedMails": {
+        "message": "Keine E-Mails mit Schlagwörtern"
+    },
+    "ComparisonCardTitle": {
+        "message": "Verglichen mit einem anderen Tag"
+    },
+    "PreviousDaysTitle": {
+        "message": "Vorherige $NUM$ Tage",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "QueryResult": {
+        "message": "Abfrageergebnis",
+        "description": "Status badge of a custom query"
+    },
+    "PeriodDaysInfo": {
+        "message": "$DAYS$ Tage · $WORKING$ Arbeitstage",
+        "placeholders": {
+            "days": {
+                "content": "$1",
+                "example": "7"
+            },
+            "working": {
+                "content": "$2",
+                "example": "5"
+            }
+        }
+    },
+    "AddedToBacklog": {
+        "message": "zum Rückstand hinzugekommen",
+        "description": "Next to the mails of the period still in the inbox"
+    },
+    "PerWorkingDay": {
+        "message": "Pro Arbeitstag"
+    },
+    "BusiestDay": {
+        "message": "Geschäftigster Tag"
+    },
+    "NumReceived": {
+        "message": "$NUM$ empfangen",
+        "description": "Number of received mails: busiest day sub-label and heatmap cell tooltip",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "63"
+            }
+        }
+    },
+    "DailyStats": {
+        "message": "max. $MAX$ · min. $MIN$ · Ø $AVG$ pro Tag",
+        "placeholders": {
+            "max": {
+                "content": "$1",
+                "example": "63"
+            },
+            "min": {
+                "content": "$2",
+                "example": "5"
+            },
+            "avg": {
+                "content": "$3",
+                "example": "41"
+            }
+        }
+    },
+    "PlusToday": {
+        "message": "+$NUM$ heute",
+        "description": "Mails of today, not counted in the period total",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "12"
+            }
+        }
+    },
+    "VsPreviousPeriod": {
+        "message": "vs. vorherige $DAYS$ Tage ($NUM$)",
+        "placeholders": {
+            "days": {
+                "content": "$1",
+                "example": "7"
+            },
+            "num": {
+                "content": "$2",
+                "example": "269"
+            }
+        }
+    },
+    "AvgPerDay": {
+        "message": "Ø $NUM$ pro Tag",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "38.5"
+            }
+        }
+    },
+    "ReplyRatio": {
+        "message": "Antwortquote"
+    },
+    "ReplyRatioSub": {
+        "message": "eine gesendete E-Mail pro $NUM$ empfangene",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "3.2"
+            }
+        }
+    },
+    "ChartPeriodTitle": {
+        "message": "Letzte $NUM$ Tage, Tag für Tag",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "ChartPeriodTitleCustom": {
+        "message": "Tag für Tag"
+    },
+    "ChartZoomHint": {
+        "message": "Im Diagramm ziehen zum Zoomen",
+        "description": "Hint next to the main chart of the custom query: dragging selects a range to zoom on."
+    },
+    "ChartZoomReset": {
+        "message": "Den ganzen Zeitraum anzeigen",
+        "description": "Tooltip of the x on the zoom chip of the main chart."
+    },
+    "ChartZoomRunQuery": {
+        "message": "Die Abfrage für diesen Zeitraum ausführen",
+        "description": "Link next to the zoom chip: runs a new custom query on the zoomed period with the same filters."
+    },
+    "PeriodNotePeak": {
+        "message": "Spitze am $DAY$ mit $NUM$.",
+        "placeholders": {
+            "day": {
+                "content": "$1",
+                "example": "Mon 27"
+            },
+            "num": {
+                "content": "$2",
+                "example": "63"
+            }
+        }
+    },
+    "PeriodNoteWorkingDays": {
+        "message": "An Arbeitstagen wurden durchschnittlich $WORKING$ empfangen, an anderen Tagen $OTHER$.",
+        "placeholders": {
+            "working": {
+                "content": "$1",
+                "example": "55"
+            },
+            "other": {
+                "content": "$2",
+                "example": "7"
+            }
+        }
+    },
+    "AvgChip": {
+        "message": "Ø",
+        "description": "Label of the average line in the day-by-day chart"
+    },
+    "AvgPerWorkingDayChip": {
+        "message": "Ø Arbeitstag",
+        "description": "Label of the average line when only business days are counted"
+    },
+    "AvgReceivedPerDay": {
+        "message": "Ø empfangen pro Tag"
+    },
+    "AvgSentPerDay": {
+        "message": "Ø gesendet pro Tag"
+    },
+    "TimeOfDayTitle": {
+        "message": "Tageszeit · Durchschnitt pro Tag"
+    },
+    "TimeOfDayNote": {
+        "message": "Die meisten E-Mails kommen zwischen $FROM$ und $TO$ an; Sie senden die meisten Ihrer E-Mails zwischen $SENTFROM$ und $SENTTO$.",
+        "placeholders": {
+            "from": {
+                "content": "$1",
+                "example": "09:00"
+            },
+            "to": {
+                "content": "$2",
+                "example": "11:00"
+            },
+            "sentfrom": {
+                "content": "$3",
+                "example": "15:00"
+            },
+            "sentto": {
+                "content": "$4",
+                "example": "17:00"
+            }
+        }
+    },
+    "TimeOfDayNoteReceived": {
+        "message": "Die meisten E-Mails kommen zwischen $FROM$ und $TO$ an.",
+        "placeholders": {
+            "from": {
+                "content": "$1",
+                "example": "09:00"
+            },
+            "to": {
+                "content": "$2",
+                "example": "11:00"
+            }
+        }
+    },
+    "ClosedAtZero": {
+        "message": "Bei null beendet",
+        "description": "Inbox Zero calendar legend"
+    },
+    "FewLeft": {
+        "message": "≤ 5 übrig",
+        "description": "Inbox Zero calendar legend"
+    },
+    "Missed": {
+        "message": "Verfehlt",
+        "description": "Inbox Zero calendar legend"
+    },
+    "DaysAtZero": {
+        "message": "von $NUM$ Tagen bei null",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "30"
+            }
+        }
+    },
+    "StreakAtEnd": {
+        "message": "Tage Serie am Ende"
+    },
+    "HeatTitle": {
+        "message": "Wann E-Mails ankommen"
+    },
+    "HeatFewer": {
+        "message": "weniger",
+        "description": "Heatmap scale"
+    },
+    "HeatMore": {
+        "message": "mehr",
+        "description": "Heatmap scale"
+    },
+    "HeatNote": {
+        "message": "Die meisten E-Mails kommen zwischen $FROM$ und $TO$ an; $WEEKDAY$ ist der geschäftigste Tag.",
+        "placeholders": {
+            "from": {
+                "content": "$1",
+                "example": "09:00"
+            },
+            "to": {
+                "content": "$2",
+                "example": "11:00"
+            },
+            "weekday": {
+                "content": "$3",
+                "example": "Monday"
+            }
+        }
+    },
+    "WeekdayTitle": {
+        "message": "Nach Wochentag · Durchschnitt pro Tag"
+    },
+    "WeekdayTooltip": {
+        "message": "$RECEIVED$ empfangen, $SENT$ gesendet pro Tag",
+        "placeholders": {
+            "received": {
+                "content": "$1",
+                "example": "41"
+            },
+            "sent": {
+                "content": "$2",
+                "example": "12"
+            }
+        }
+    },
+    "WeekdayNote": {
+        "message": "$BUSIEST$ bringt die meisten E-Mails; $LIGHTEST$ ist etwa $PERCENT$ % ruhiger.",
+        "placeholders": {
+            "busiest": {
+                "content": "$1",
+                "example": "Monday"
+            },
+            "lightest": {
+                "content": "$2",
+                "example": "Friday"
+            },
+            "percent": {
+                "content": "$3",
+                "example": "18"
+            }
+        }
     }
 }

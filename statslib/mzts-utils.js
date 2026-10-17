@@ -16,9 +16,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { tsStore } from "./mzts-store.js";
+
 export const tsUtils = {
 
-    regexEmail: /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
+    // The local part may contain + (sub-addressing), % and apostrophes, but does not start with an apostrophe
+    // (so a quoted 'name@x.com' display name is not taken with its quote). Letters and digits of any
+    // alphabet are accepted (internationalized addresses, e.g. josé@exämple.com)
+    regexEmail: /[\p{L}\p{N}._%+-][\p{L}\p{N}._%+'-]*@[\p{L}\p{N}.-]+\.\p{L}{2,}/u,
+
+    // Lower case address of an author or recipient ("Name <addr>" or "addr"), null when there is none.
+    // The address in angle brackets wins over an address written in the display name
+    // ("anna@x.com" <mario@y.com> -> mario@y.com)
+    extractEmail(text) {
+        if (typeof text !== 'string') return null;
+        const bracketed = [...text.matchAll(/<([^<>]*)>/g)].map(match => match[1]).filter(inner => inner.includes('@')).pop();
+        const match = (bracketed !== undefined ? bracketed.match(tsUtils.regexEmail) : null) || text.match(tsUtils.regexEmail);
+        return match ? match[0].toLowerCase() : null;
+    },
     
     dateToYYYYMMDD(originalDate) {
         // Extract the year from the date
@@ -57,16 +72,15 @@ export const tsUtils = {
     },
 
     dateToYYYYWW(originalDate) {
-      // Extract the year from the date
-      let year = originalDate.getFullYear();
-  
       // Create a copy of the date to avoid modifying the original
       let date = new Date(originalDate.getTime());
       date.setHours(0, 0, 0, 0);
-  
+
       // Set the date to the nearest Thursday (ISO week starts on Monday and counts from the first Thursday)
       date.setDate(date.getDate() + 4 - (date.getDay() || 7));
-      let yearStart = new Date(date.getFullYear(), 0, 1);
+      // The ISO week belongs to the year of its Thursday (e.g. 2024-12-30 is in week 1 of 2025)
+      let year = date.getFullYear();
+      let yearStart = new Date(year, 0, 1);
       
       // Calculate the week number
       let weekNumber = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
@@ -152,9 +166,10 @@ export const tsUtils = {
         
         const differenceInTime = to - from;
         
+        // Both dates are at noon, so the difference is a whole number of days give or take the DST hour
         const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-        
-        return Math.ceil(differenceInDays) +1;
+
+        return Math.round(differenceInDays) +1;
     },
 
     isToday(date) {
@@ -251,31 +266,49 @@ export const tsUtils = {
         return last_year_day;
     },
 
+    // Date pattern of a locale for the date picker (date-fns tokens), e.g. 'dd/MM/yyyy'.
+    // Built from the parts of a formatted date, so it works with any numbering system (e.g. Arabic digits);
+    // literals with Latin letters are quoted, since date-fns would read them as tokens.
     formatDateStringLocale(locale) {
-        const date = new Date(2000, 6, 27);
-
         const formatter = new Intl.DateTimeFormat(locale, {
           day: '2-digit',
           month: '2-digit',
           year: 'numeric'
         });
+        const tokens = { day: 'dd', month: 'MM', year: 'yyyy' };
 
-        const formattedDate = formatter.format(date);
-        //console.log(">>>>>>>>>>>>>> formattedDate: " + formattedDate);
-        const formatString = formattedDate.replace('27', 'dd')
-                                          .replace('07', 'MM')
-                                          .replace('2000', 'yyyy');
-
-        //console.log(">>>>>>>>>>>>>> formatString: " + formatString);
-        return formatString;
+        return formatter.formatToParts(new Date(2000, 6, 27)).map(part => {
+            if (tokens[part.type]) return tokens[part.type];
+            if (/[a-zA-Z]/.test(part.value)) return "'" + part.value.replace(/'/g, "''") + "'";
+            return part.value;
+        }).join('');
     },
 
-    safeConcat(dataArray, index) {
-        return (dataArray[index] && dataArray[index].data) ? dataArray[index].data : [];
+    // Clock time (hours and minutes) following the 'time_format' pref (kept in tsStore):
+    // 'auto' uses the convention of the Thunderbird UI language, '24' and '12' force the 24-hour or 12-hour clock.
+    // No WebExtension API exposes the date and time format chosen in the Thunderbird settings.
+    formatTime(date, time_format = tsStore.time_format) {
+        const options = { hour: '2-digit', minute: '2-digit' };
+        if (time_format == '24') options.hourCycle = 'h23';
+        else if (time_format == '12') options.hourCycle = 'h12';
+        return date.toLocaleTimeString(browser.i18n.getUILanguage(), options);
     },
 
-    isDarkMode() {
-        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Start of an hour of the day (0-23, wrapped), e.g. '09:00' or '09:00 AM'
+    formatHour(hour, time_format = tsStore.time_format) {
+        return this.formatTime(new Date(2000, 0, 1, ((hour % 24) + 24) % 24, 0), time_format);
+    },
+
+    // Compact hour for chart axes and the heatmap rows, without minutes: '09' on the 24-hour clock, '9 AM' on the 12-hour one
+    formatHourShort(hour, time_format = tsStore.time_format) {
+        const options = { hour: 'numeric' };
+        if (time_format == '24') options.hourCycle = 'h23';
+        else if (time_format == '12') options.hourCycle = 'h12';
+        const date = new Date(2000, 0, 1, ((hour % 24) + 24) % 24, 0);
+        if (new Intl.DateTimeFormat(browser.i18n.getUILanguage(), options).resolvedOptions().hour12) {
+            return date.toLocaleTimeString(browser.i18n.getUILanguage(), options);
+        }
+        return date.toLocaleTimeString(browser.i18n.getUILanguage(), { hour: '2-digit', hourCycle: 'h23' });
     },
 
     // convertToMilliseconds(timeStr) {
@@ -316,80 +349,22 @@ export const tsUtils = {
         return result.trim();
     },
 
+    // Days ({idx: 0 = Sunday ... 6 = Saturday}) ordered starting from firstDayWeek, as a new array
     sortDays(firstDayWeek, days) {
-        const sortedDays = [...days]; // Create a shallow copy of the days array
-
-        if (firstDayWeek == 0) {
-          // Sort days normally by index if the first day of the week is 0 (Sunday)
-          sortedDays.sort((a, b) => a.idx - b.idx);
-        } else if (firstDayWeek == 6) {
-          // Custom sort for when the first day of the week is 6 (Saturday)
-          sortedDays.sort((a, b) => {
-            if (a.idx === 6) return -1; // Move Saturday to the front
-            if (b.idx === 6) return 1;
-            if (a.idx === 0) return -1; // Then move Sunday to the second position
-            if (b.idx === 0) return 1;
-            return a.idx - b.idx; // Sort the rest normally
-          });
-        }
-
-        return sortedDays; // Return the sorted copy
-      },
-
-      sortWeekdays(firstDayWeek, msg_weekdays) {
-        // console.log(">>>>>>>>>> sortWeekdays: msg_weekdays: " + JSON.stringify(msg_weekdays));
-        // console.log(">>>>>>>>>> sortWeekdays: firstDayWeek: " + firstDayWeek);
-        // Convert the object to an array of entries to sort
-        const weekdaysArray = Object.entries(msg_weekdays).map(([key, value]) => ({
-          idx: parseInt(key),
-          ...value
-        }));
-        // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
-        // Sort the array based on the firstDayWeek value
-        weekdaysArray.sort((a, b) => {
-          const aAdjusted = (a.idx - firstDayWeek + 7) % 7;
-          const bAdjusted = (b.idx - firstDayWeek + 7) % 7;
-          return aAdjusted - bAdjusted;
-        });
-        // console.log(">>>>>>>>>>>> sortWeekdays: weekdaysArray: " + JSON.stringify(weekdaysArray));
-        
-        return weekdaysArray;
-      },
-      
-      async isThunderbird128OrGreater(){
-        try {
-          const info = await browser.runtime.getBrowserInfo();
-          const version = info.version;
-          // console.log(">>>>>>>>>> version: " + info.version)
-          // console.log(">>>>>>>>>> isThunderbird128OrGreater: " + tsUtils.compareThunderbirdVersions(version, '128.0') >= 0)
-          return tsUtils.compareThunderbirdVersions(version, '128.0') >= 0;
-        } catch (error) {
-          console.error('[ThunderStats] Error retrieving browser information:', error);
-          return false;
-        }
-      },
-
-      compareThunderbirdVersions(v1, v2) {
-        const v1parts = v1.split('.').map(Number);
-        const v2parts = v2.split('.').map(Number);
-
-        for (let i = 0; i < Math.max(v1parts.length, v2parts.length); i++) {
-          const v1part = v1parts[i] || 0;
-          const v2part = v2parts[i] || 0;
-          if (v1part > v2part) return 1;
-          if (v1part < v2part) return -1;
-        }
-        return 0;
-      },
-
+        const first = Number(firstDayWeek) || 0;
+        const position = (idx) => (idx - first + 7) % 7;
+        return [...days].sort((a, b) => position(a.idx) - position(b.idx));
+    },
 }
 
 export class EmailMatcher {
+  // The comparison ignores the case, also for the exact addresses
   constructor(emails) {
     this.exactEmails = new Set();
     this.patterns = [];
 
-    for (const entry of emails) {
+    for (const raw of emails) {
+      const entry = raw.trim().toLowerCase();
       if (entry.includes('*') || entry.startsWith('@')) {
         this.patterns.push(this._patternToRegex(entry));
       } else {
@@ -409,9 +384,10 @@ export class EmailMatcher {
   }
 
   matches(email) {
-    if (this.exactEmails.has(email)) return true;
+    const e = email.toLowerCase();
+    if (this.exactEmails.has(e)) return true;
     for (const regex of this.patterns) {
-      if (regex.test(email)) return true;
+      if (regex.test(e)) return true;
     }
     return false;
   }

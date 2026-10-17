@@ -19,7 +19,7 @@
 -->
 
 <template>
-    <HeadingNAV @chooseAccount="updateStats" :is_loading="is_loading" :elapsed_time="elapsed_time" :last_exec_datetime="last_exec_datetime" :currentTab="currentTab" ref="HeadingNAV_ref"/>
+    <HeadingNAV @chooseAccount="updateStats" @selectTab="selectTab" @exportData="openExportMenu" :tabs="tabs_list" :is_loading="is_loading" :elapsed_time="elapsed_time" :last_exec_datetime="last_exec_datetime" :currentTab="currentTab" ref="HeadingNAV_ref"/>
   
     <main>
       <tabs :options="{ defaultTabHash: 'tab-today', storageKey: 'tabs-storage-key' }" :cache-lifetime="cache_lifetime"  @changed="tabChanged" ref="statsTabs_ref">
@@ -44,20 +44,21 @@
   
   
 <script setup>
-import { ref, onMounted, nextTick, onBeforeMount } from 'vue'
+import { ref, computed, watch, onMounted, nextTick, onBeforeMount } from 'vue'
 import HeadingNAV from "@/components/HeadingNAV.vue";
 import TAB_Info from "@/components/tabs/TAB_Info.vue";
 import TAB_Today from '@/components/tabs/TAB_Today.vue';
 import TAB_Yesterday from '@/components/tabs/TAB_Yesterday.vue';
 import TAB_ManyDays from '@/components/tabs/TAB_ManyDays.vue';
 import TAB_CustomQry from '@/components/tabs/TAB_CustomQry.vue';
-import { thunderStastsCore } from "@statslib/mzts-statscore.js";
+import { thunderStastsCore, clearCoreCaches, setMaxConcurrentQueries, setRecentDaysCacheDays } from "@statslib/mzts-statscore.js";
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsPrefs } from '@statslib/mzts-options.js';
 import { tsLogger } from "@statslib/mzts-logger.js";
 import { tsStore } from '@statslib/mzts-store';
-import { tsUtils } from '@statslib/mzts-utils';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
+import { tsUtils } from '@statslib/mzts-utils';
+import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
 
   let statsTabs_ref = ref(null);
   let TAB_Today_ref = ref(null);
@@ -70,7 +71,7 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
   let accountEmails = ref([]);
   let internalDomains = ref([]);
   let _many_days_text = ref("");
-  let _yesterday_text = ref("__MSG_Yesterday__");
+  let _yesterday_text = ref(browser.i18n.getMessage("Yesterday"));
   let cache_lifetime = ref(120000);
   let elapsed_time = ref(0);
   let last_exec_datetime = ref([]);
@@ -121,6 +122,7 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
       "bday_weekdays_4",
       "bday_weekdays_5",
       "bday_weekdays_6",
+      "time_format",
     ]);
     remember_last_tab = prefs.remember_last_tab;
     always_reload_tab_data = prefs.always_reload_tab_data;
@@ -134,8 +136,18 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
     tsStore.bday_weekdays_4 = prefs.bday_weekdays_4;
     tsStore.bday_weekdays_5 = prefs.bday_weekdays_5;
     tsStore.bday_weekdays_6 = prefs.bday_weekdays_6;
+    tsStore.time_format = prefs.time_format;
     if(remember_last_tab) {
       cache_lifetime.value = 120000;
+      // The Info tab must never be restored on opening (it is reached from the toolbar icon)
+      try {
+        let stored_tab = JSON.parse(localStorage.getItem('tabs-storage-key'));
+        if(stored_tab && stored_tab.value == '#tab-info') {
+          localStorage.removeItem('tabs-storage-key');
+        }
+      } catch(e) {
+        localStorage.removeItem('tabs-storage-key');
+      }
     } else {
       cache_lifetime.value = 0;
       localStorage.removeItem('tabs-storage-key');
@@ -143,9 +155,6 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
     }
     // console.log(">>>>>>>>>>>>>>>>> cache_lifetime: " + cache_lifetime.value);
     // console.log(">>>>>>>>>>>>>>>>> tabs-storage-key: " + JSON.stringify(localStorage.getItem('tabs-storage-key')));
-    if(tsStore.darkmode === undefined) {
-      tsStore.darkmode = tsUtils.isDarkMode();
-    }
   });
 
   onMounted(async () => {
@@ -183,9 +192,13 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
     updateElapsed(0);
     last_exec_datetime.value[currentTab.value] = '';
     tsLog.log("updateStats", account_id);
+    clearCoreCaches();
+    let load_prefs = await tsPrefs.getPrefs(["max_concurrent_queries", "recent_days_cache_days"]);
+    setMaxConcurrentQueries(load_prefs.max_concurrent_queries);
+    setRecentDaysCacheDays(load_prefs.recent_days_cache_days);
     activeAccount.value = account_id;
     accountEmails.value = await tsCore.getAccountEmails(account_id);
-    tsLog.log("accountEmails: " + JSON.stringify(accountEmails.value));
+    tsLog.log(() => "accountEmails: " + JSON.stringify(accountEmails.value));
     let rawInternalDomains = await tsCoreUtils.getAccountInternalDomains(account_id);
     if(account_id == 0) {
       let allDomains = [];
@@ -196,7 +209,7 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
     } else {
       internalDomains.value = Array.isArray(rawInternalDomains) ? rawInternalDomains : [];
     }
-    tsLog.log("internalDomains: " + JSON.stringify(internalDomains.value));
+    tsLog.log(() => "internalDomains: " + JSON.stringify(internalDomains.value));
 //    resetStatsDone();
     nextTick(() => {
       // console.log(">>>>>>>>>>>>>> ThunderStatsView updateStats statsTabs_ref.value.activeTabHash: " + statsTabs_ref.value.activeTabHash);
@@ -227,6 +240,18 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
     //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsLog: " + JSON.stringify(tsLog));
     currentTab.value = id.tab.computedId;
     tsStore.currentTab = id.tab.computedId;
+    if(remember_last_tab && (id.tab.computedId == "tab-info")) {
+      // The tabs component saves the selected tab right after emitting "changed":
+      // keep the last statistics tab saved instead of the Info tab
+      let previous_stored_tab = localStorage.getItem('tabs-storage-key');
+      nextTick(() => {
+        if(previous_stored_tab === null) {
+          localStorage.removeItem('tabs-storage-key');
+        } else {
+          localStorage.setItem('tabs-storage-key', previous_stored_tab);
+        }
+      });
+    }
     if(!mounted_ok) { return; }
     updateElapsed(0);
     is_loading.value = false;
@@ -236,7 +261,7 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
     }
     // console.log(">>>>>>>>>>>>> tabChanged: " + JSON.stringify(id));
      //console.log(">>>>>>>>>>>>> tabChanged always_reload_tab_data: " + JSON.stringify(always_reload_tab_data));
-    tsLog.log("tabChanged: " + JSON.stringify(id.tab.computedId));
+    tsLog.log(() => "tabChanged: " + JSON.stringify(id.tab.computedId));
     //console.log(">>>>>>>>>>>>>> tabChanged: " + JSON.stringify(id.tab.computedId));
      //console.log(">>>>>>>>>>>>> stats_done[id.tab.computedId]: " + stats_done[id.tab.computedId]);
     if((id.tab.computedId != "tab-customqry") && (id.tab.computedId != "tab-info") && ((!stats_done[id.tab.computedId]) || always_reload_tab_data)) {
@@ -244,10 +269,6 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
       // console.log(">>>>>>>>>>>>>> tabChanged ==> Loading Data...");
       await updateStats(HeadingNAV_ref.value.getCurrentIdn());  //TODO use the new tsStore
       //statsDone(id.tab.computedId);
-    }
-    if(id.tab.computedId == "tab-customqry"){
-      await nextTick();
-      TAB_CustomQry_ref.value.updateAdvFiltersPosition();
     }
   }
 
@@ -264,7 +285,7 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
     // console.log(">>>>>>>>>>>>> updateElapsed elapsed_time.value: " + elapsed_time.value);
     //if(elapsed_time.value < elapsed) elapsed_time.value = elapsed;
     elapsed_time.value = elapsed;
-    if(elapsed > 0) last_exec_datetime.value[currentTab.value] = (new Date()).toLocaleTimeString();
+    if(elapsed > 0) last_exec_datetime.value[currentTab.value] = tsUtils.formatTime(new Date());
   }
 
   function customQryUserCancelled() {
@@ -276,15 +297,38 @@ import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
     _yesterday_text.value = name;
   }
 
+  // Tabs shown in the toolbar segmented control (the Info tab is reached from the toolbar icon)
+  let tabs_list = computed(() => [
+    { id: "tab-today", label: browser.i18n.getMessage("Today") },
+    { id: "tab-yesterday", label: _yesterday_text.value },
+    { id: "tab-manydays", label: _many_days_text.value },
+    { id: "tab-customqry", label: browser.i18n.getMessage("CustomQry") },
+  ]);
+
+  function selectTab(id) {
+    statsTabs_ref.value.selectTab('#' + id);
+  }
+
+  function openExportMenu(anchor_el) {
+    let tab_refs = {
+      "tab-today": TAB_Today_ref,
+      "tab-yesterday": TAB_Yesterday_ref,
+      "tab-manydays": TAB_ManyDays_ref,
+      "tab-customqry": TAB_CustomQry_ref,
+    };
+    let tab_ref = tab_refs[currentTab.value];
+    if(tab_ref && tab_ref.value) {
+      tab_ref.value.openExportMenu(anchor_el);
+    }
+  }
+
+  watch(() => tsStore.darkmode, (is_dark) => applyChartTheme(is_dark), { immediate: true });
+
   </script>
   
   
   
   
   <style scoped>
-  main{
-    position: relative;
-    top: 28px;
-  }
   </style>
   

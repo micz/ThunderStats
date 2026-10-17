@@ -1,0 +1,25 @@
+{
+    "manifest_version": 2,
+    "name": "ThunderStats Mailbox Dump (dev)",
+    "description": "Development tool: exports the headers of the local mailbox as a JSON dump for the ThunderStats real data tests.",
+    "version": "1.0.0",
+    "author": "Mic (m@micz.it)",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "thunderstats-dump@micz.it",
+            "strict_min_version": "140.0"
+        }
+    },
+    "browser_action": {
+        "default_title": "ThunderStats Mailbox Dump"
+    },
+    "permissions": [
+        "addressBooks",
+        "messagesRead",
+        "accountsRead",
+        "messagesTagsList"
+    ],
+    "background": {
+        "scripts": ["background.js"]
+    }
+}

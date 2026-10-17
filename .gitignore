@@ -28,3 +28,6 @@ coverage
 dist
 
 .claude
+# Mailbox dumps of the real data tests (personal data)
+tests/real/data/*
+!tests/real/data/.gitkeep

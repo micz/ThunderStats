@@ -25,6 +25,7 @@ export const prefs_default = {
     'today_time_chart_do_no_show_future': true,
     '_time_chart_progressive': false,
     'inbox0_openFolderInFirstTab': false,
+    'inbox_age_expanded': false,      // "How old is your inbox" strip open under the Inbox backlog KPI (single-day views)
     'startup_account': 0,
     'remember_last_tab': false,
     'remember_last_account': false,
@@ -39,7 +40,7 @@ export const prefs_default = {
     'internal_domains': {},
     'include_archive_multi_account': true,
     'filter_duplicates_multi_account': false,
-    'accounts_adv_settings': {},
+    'accounts_adv_settings': [],    // [{id, include_archive, filter_duplicates}]
     'bday_use_last_business_day': false,
     'bday_default_only': false,
     'bday_weekdays_0': false,   //Sunday
@@ -52,7 +53,10 @@ export const prefs_default = {
     'bday_custom_days': [],
     'bday_easter': true,
     'customqry_warn_onlongperiod_days': 90,
+    'recent_days_cache_days': 49,   // days before today kept in the recent days cache (43-365)
+    'max_concurrent_queries': 2,    // message queries run at the same time while loading the stats (1-10)
     'customqry_always_open_adv_filters': false,
-    'inbox_percent_remaining': false,
     'show_internal_mail_percent': false,
+    'theme_mode': 'auto',    // 'auto' follows the system color scheme, 'light' or 'dark' force it
+    'time_format': 'auto',   // 'auto' follows the Thunderbird UI language, '24' or '12' force the clock
 }

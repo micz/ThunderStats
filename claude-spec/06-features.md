@@ -2,85 +2,79 @@
 
 ## Main Statistics Window
 
-The main window has five tabs accessible via the toolbar button.
+The main window opens from the Thunderbird toolbar button. Its sticky top toolbar holds the account selector, a segmented control for the four stats tabs (Today, Yesterday, Many Days, Custom Query), the last-update time, Refresh / Export / Settings / Info icon buttons and a round theme toggle icon (a sun that morphs into a moon in dark mode). The Info tab is reached from the Info icon, not from the segmented control. Tab content is laid out as a responsive grid of cards (design tokens in `src/assets/tokens.css`).
 
 ---
 
 ### Tab: Today
 
-Displays statistics for the current day (from midnight to now).
+Displays statistics for the current day (from midnight to now), putting each number in context against the user's own usual day. Layout (`WidgetDayDashboard`, data shaped by `tsDayModel`):
 
-- **Sent / Received counters** — total sent and received emails
-- **Inbox count** — current number of messages in the inbox
-- **Inbox percent** — percentage of day's emails moved from inbox (or still in inbox, toggled via `inbox_percent_remaining` option)
-- **Yesterday-at-this-time comparison** — compares current counts to the same time yesterday (or last business day). The "Yesterday" / "Last business day" label is clickable to open a date picker and choose any past day as the comparison. The custom day selection is session-only (resets when the TS tab is closed) but persists across data refreshes.
-- **Time-of-day chart** — hourly distribution of sent and received emails
-- **Weekday chart** — distribution across days of the week
-- **Top correspondents table** — configurable number of top senders and recipients
-- **Domains widget** — top sender domains
-- **Folders/Tags widget** — email distribution by folder and tag
-- **Inbox Zero widget** — history of inbox zero achievements with embedded charts
+- **Status strip** — badge ("Inbox zero", "Keeping up" when the inbox can be cleared in ≤ 5 working days at the usual pace, otherwise "Backlog growing"), date and time range; flow Arrived → Filed or answered (received mails no longer in the inbox, with %) → Still in inbox (of the inbox total); Backlog trend (mails received since the first day of the week still in the inbox); Clear in (~N working days); proportional bar
+- **KPI cards** — Received / Sent today with the change against the usual same weekday by now (average of the last 6 weeks); Inbox backlog (total, mails of the day still there, unread, age of the oldest, a "N waiting over a month ›" link and a toggle that open How old is your inbox); Internal traffic (only with `show_internal_mail_percent` and internal domains); Inbox Zero streak with a 14-day strip
+- **Today against your normal day** — line chart (cumulative with `_time_chart_progressive`, hourly otherwise) with the usual range of the same weekday, the "now" line and a callout ("usual by now"); future hours hidden with `today_time_chart_do_no_show_future`; the comparison day as dashed lines with `today_time_chart_show_yesterday`; computed note (busier / quieter / in line with a usual weekday)
+- **Right rail** — the **yesterday-at-this-time comparison** (with `today_time_chart_show_yesterday`): compares current counts to the same time yesterday (or last business day). The "Yesterday" / "Last business day" label is clickable to open a date picker and choose any past day as the comparison. The custom day selection is session-only (resets when the TS tab is closed) but persists across data refreshes; the **previous days summary** (total/max/min/average over the previous `_many_days` days, excluding today); last, the top 5 correspondents (senders and recipients merged): "See all" opens the full Top N Recipients / Top N Senders lists under the main grid, scrolls them into view and briefly highlights them; while open, a "lists shown below" link in the card scrolls back to them
+- **Domains** — sent and received bars per domain, "internal" tag, first 8 rows expandable
+- **Where today's mails ended up** — received mails by folder (inbox first) or by tag, with a computed footnote; clicking a folder opens it in Thunderbird (in the first mail tab with `inbox0_openFolderInFirstTab`); with `filter_duplicates` an info icon explains that duplicates are counted in every folder they are in. The same applies to "Where mails ended up" in Many Days
+- **How old is your inbox** — a full-width strip under the KPI row, opened and closed from the Inbox backlog KPI (toggle or link) or its Hide button, the state remembered in `inbox_age_expanded`: mails still in the inbox by age as one stacked bar with a legend, with "Details by date" (one row per arrival date, sortable by date or by mails). It replaces the old Inbox Zero widget in Today and Yesterday: inbox total and unread are in the Inbox backlog KPI, the moved-out percentage in the status strip ("Filed or answered"), the day's folder distribution in "Where today's mails ended up".
+
+The Inbox Zero streak, Backlog trend and Clear in are approximations (Thunderbird keeps no inbox history): see `tsInsights` in [02-statslib.md](02-statslib.md).
 
 ---
 
 ### Tab: Yesterday
 
-Same layout as Today but showing full statistics for the previous day.
+Same layout as Today, without the "yesterday at this time" comparison, showing full statistics for the previous day: comparisons use the full-day average of the same weekday, the chart has no "now" line and its callout shows the "usual by end of day" range. With `bday_use_last_business_day` enabled and yesterday not a business day, it shows the last business day instead (tab renamed "Last business day").
 
 ---
 
 ### Tab: Many Days
 
-Shows aggregated statistics for the last N days (default: 7, configurable in options).
+Shows statistics for the last N days (default: 7, configurable in options), ending yesterday; today is shown apart. Layout (`WidgetPeriodDashboard`, data shaped by `tsPeriodModel`):
 
-- **Summary table** — max, min, and average sent/received over the period
-- **Daily/weekly/monthly/yearly charts** — aggregated line/bar charts
-- **Time-of-day chart** — hourly distribution aggregated over the period
-- **Weekday chart** — per-weekday totals over the period
-- **Business days support** — statistics can exclude non-business days
+- **Status strip** — keeping-up badge (as in Today), date range, days and working days; Arrived → Filed or answered → Still in inbox ("added to backlog"); received per working day; busiest day
+- **KPI cards** — Received and Sent with the change against the previous N days and "+N today", plus max / min / average per day (business days only with `bday_default_only`, explained in the tooltip); Internal traffic (with `show_internal_mail_percent` and internal domains); Reply ratio (1 : received/sent)
+- **Day by day** — grouped bars per day (received, sent); with `many_days_show_inbox` the received mails still in the inbox are stacked on top in the warning color; today's bars are lighter; non-business days have muted labels; dashed lines for the average received and sent per day (per working day with `bday_default_only`); computed note (working days vs other days, peak day)
+- **Time of day · average per day** — average received / sent per hour (today left out, like every average of the tab), with a note on the peak hours
+- **Inbox Zero** — calendar of the period with closed at zero / ≤ 5 left / missed days (shown range under the title, day number in the cell corner with the month where it starts, full date in the tooltip), days at zero, streak at end (same approximation as Today)
+- **When mail arrives** — heatmap of received mails by hour and weekday, 07–20 or 24h
+- **By weekday · average per day** — received / sent averages per weekday (today left out), with a note on the busiest and lightest business weekday
+- **Domains, Where mails ended up, Top N Recipients / Top N Senders**
 
 ---
 
 ### Tab: Custom Query
 
-Advanced filtering and analysis for an arbitrary date range.
+Analysis of an arbitrary date range. The query panel is a card at the top of the tab; the results use the same layouts as the other tabs.
 
-#### Date Range
-- Date picker with manual date input
-- Start date and end date selection
-- Preset periods via context menu: Current Week, Last Week, Last 2 Weeks, Current Month, Last Month, Current Year, Last Year, All Emails
-- "All Emails" queries the oldest message date to set the start of the range
-
-#### Aggregation Level
-- Daily
-- Weekly
-- Monthly
-- Yearly
+#### Query panel
+- **Period** — date range picker with manual date input
+- **Compare periods** switch — shows the Period B start date picker; the end date is auto-calculated to match the length of the period. Disabled when the period is a single day
+- **Working days only** switch (`bday_default_only` as default) — totals/max/min/average and the average lines count business days only. Disabled for a single day
+- **Run query** button (the query also runs when a range or a quick range is chosen, with `customqry_loaddata_when_selectingrange`)
+- **Quick ranges** chips: Yesterday, Current Week, Last Week, Last 2 Weeks, Current Month, Last Month, Current Year, Last Year, All Emails (the chosen chip stays highlighted until the dates are changed by hand). "All Emails" starts the range on 1 January 1970
+- **Filters**: each active advanced filter is a removable chip; "+ Add filter" opens the advanced filters panel (`customqry_always_open_adv_filters` opens it at start)
+- After a query: the account addresses (all of them in a tooltip when there are many) and the number of days
+- Ranges longer than `customqry_warn_onlongperiod_days` ask for confirmation
 
 #### Advanced Filters
-- **Folders** — restrict to specific folders (with optional subfolder inclusion)
+- **Folders** — restrict to specific folders (with optional subfolder inclusion); needs a single account
 - **Read/Unread** — all, read only, or unread only
 - **Starred/Unstarred** — all, starred only, or unstarred only
-- **Subject keyword** — filter messages containing a keyword in the subject
-- **Reset button** — clears all advanced filters back to defaults; disabled when no filters are active
+- **Subject keyword** — filter messages containing a keyword in the subject (case sensitive)
+- **Reset filters** — clears all advanced filters; disabled when no filters are active
+
+#### Results
+- **One day** — the Today/Yesterday layout (`WidgetDayDashboard`) with a "Query result" badge: comparison with the usual same weekday (not shown when filters are active, since the usual day is not filtered), pace from the 7 previous days, "How old is your inbox"
+- **Longer range** — the Many Days layout (`WidgetPeriodDashboard`) with a "Query result" badge and no comparison with a previous period. The main chart has a **Days / Weeks / Months / Years** toggle; the default depends on the length of the range (days up to 62 days, weeks up to ~6 months, months up to 3 years, then years). Dragging on the main chart selects a range of bars, even a single one (the whole band is highlighted; a plain click does not zoom) and zooms the chart on it, regrouped with the same default for its length; only the chart changes, the rest of the dashboard and the average lines stay those of the whole range. A chip shows the zoomed range with an x to go back to the whole range, next to a "Run the query on this period" link that runs a new query on those days with the same filters (and Period B moved by the same offset). The Inbox Zero calendar shows at most the last 6 weeks of the range. When the range ends today, the totals include today but every average (per day, per working day, max/min/average, average lines, time of day, weekdays) leaves the day in progress out, as in Many Days
 
 #### Compare Periods
-- Toggle button enables comparison mode
-- User selects only the start date for Period B; the end date is auto-calculated to match Period A's length
-- Period B data is overlaid on all charts with distinct colors (coral red for bars, purple/red for line charts)
-- Delta summary row shows percentage change in sent and received between periods (green for increase, red for decrease)
-- Disabled in single-day mode
-- Categorical charts (domains, folders, tags) merge labels from both periods
-
-#### Statistics Output
-- Aggregated sent/received chart (based on selected aggregation level)
-- Time-of-day distribution chart
-- Weekday distribution chart
-- Tags distribution chart
-- Folders distribution chart
-- Domains distribution chart
-- Top correspondents table
-- Max / min / average summary
+- KPI cards show the change of Period A against Period B
+- Period B is drawn as dotted lines on the main chart (in the chosen grouping, aligned by position; when zoomed, cut with the same offset) and as dashed lines on the time-of-day chart
+- The status strip shows the Period B value under each value ("Period B: 42"); the internal traffic and reply ratio KPIs show the Period B value ("vs Period B")
+- The Inbox Zero calendar adds the Period B days at zero (same number of days, at the end of Period B); the heatmap shows the Period B count only in the cell tooltips, on a second line ("Period B: N received")
+- Weekdays show the Period B averages of received and sent under each column ("B 42 · 7")
+- Domains, folders/tags, top recipients and top senders have an A / B switch that shows the Period A or the Period B list; domain, folder and tag rows show the count of the other period ("B 42" / "A 42")
 
 #### Export
 - CSV export of query results (multiple data types available)
@@ -88,55 +82,64 @@ Advanced filtering and analysis for an arbitrary date range.
 
 ---
 
-### Tab: Info
 
-Displays add-on version, credits, and links.
+Displays add-on version, credits, and links. Opened from the toolbar Info icon.
 
 ---
 
 ## Options / Settings
 
-Accessible via the addon options page (opens in a Thunderbird tab).
+Accessible via the addon options page (opens in a Thunderbird tab). Sidebar with five sections (General, Advanced, Business days, Identities & domains, About), settings as cards with one setting per row (toggle switches, selects, number inputs, tag inputs). Every change is saved at once (typed numbers and text after 400 ms); there is no Save button. After a change the header shows a "Reload ThunderStats" button. The sidebar also holds a donation card and the version.
 
-### Tab: Main
-- **Number of days** for the Many Days view (default: 7)
-- **Number of correspondents** (top senders/recipients count, default: 10)
-- **Account-specific settings** toggle
-- **Show inbox remaining %** (`inbox_percent_remaining`) — when enabled, the inbox percentage shows mails still in inbox instead of mails moved out (default: off)
-- **Remember last tab** (`remember_last_tab`) — restore the last opened tab on startup (default: off)
-- **Remember last account** (`remember_last_account`) — restore the last used account on startup, overriding the startup account setting (default: off)
+### Section: General
+Pref keys and defaults: `statslib/mzts-options-default.js`.
+- **Startup** — startup account (`startup_account`, disabled while the last account is remembered), remember last account (`remember_last_account`, overrides the startup account)
+- **Loading data** — reload when changing account (`load_data_changing_account`), reload on every tab switch (`always_reload_tab_data`), reopen last tab (`remember_last_tab`), Custom: load data when it is the first tab / when picking a predefined period, always expand the advanced filters
+- **Today & Yesterday chart** — show yesterday (`today_time_chart_show_yesterday`), progressive/cumulative lines (`_time_chart_progressive`), hide future hours (`today_time_chart_do_no_show_future`)
+- **Many days & Custom** — number of days (`_many_days`, default 7, 2-365), date picker locale (`datepicker_locale`)
+- **Inbox Zero** — show inbox mails in the bars (`many_days_show_inbox`), open the folder clicked in "Where mails ended up" in the first mail tab (`inbox0_openFolderInFirstTab`), keep How old is your inbox open under the Inbox backlog KPI in the single-day views (`inbox_age_expanded`, default: off; the same state the KPI toggle changes)
+- **Show internal mail percentage** (`show_internal_mail_percent`) — shows the Internal traffic KPI card (received internal %, and % of the sent) in every stats tab, when internal domains are configured (default: off)
+- **Appearance: color theme** (`theme_mode`) — `auto` (default, follows the system), `light` or `dark`. The toolbar theme toggle icon sets it too; changes apply live to every open ThunderStats page
+- **Appearance: time format** (`time_format`) — `auto` (default, clock of the Thunderbird UI language), `24` or `12`. Applies to every clock time shown, chart axes and heatmap hours included; read when the stats page opens (a WebExtension cannot read the Thunderbird date/time settings)
 
-### Tab: Advanced
+### Section: Advanced
+- **Number of correspondents** (`_involved_num`, default 10, 3-50)
+- **First day of the week** (`first_day_week`)
+- **Custom Query long period warning** (`customqry_warn_onlongperiod_days`, default 90, 0 = never)
+- **Concurrent message queries** (`max_concurrent_queries`, default 2, 1-10) — how many `messages.query` run at the same time while loading; lower it if Thunderbird stutters while loading, raise it if loading is too slow
+- **Recent days cache size** (`recent_days_cache_days`, default 49, 43-365) — days before today read in one pass, together with today, and shared by the tabs (today, yesterday, baseline, previous days, previous period); raise it when the Many Days period is longer than 24 days
+- **Debug logging** (`do_debug`)
 - **Filter duplicates** — deduplicate messages that appear in multiple folders (e.g., sent + archive)
 - **Include archive folders** — whether to count archived emails in statistics
 - **Per-account advanced settings** — configure archive inclusion and duplicate filtering per account
 
-### Tab: Business Days
-- Define which weekdays are business days (Mon–Fri by default)
-- Add custom holiday dates to exclude from business day count
-- Toggle Easter holiday detection (automatic)
+### Section: Business days
+- Define which weekdays are business days (Mon–Fri by default), as day buttons
+- Non-business days (`bday_custom_days`): add, edit (click the row) and delete fixed non-business days, every year or only one year, inline form
+- Exclude Easter Sunday and Monday (`bday_easter`, default on)
+- Use only business days by default (`bday_default_only`)
+- Use the last business day instead of yesterday (`bday_use_last_business_day`) in the Yesterday tab and the Today comparison counter
 - Business day stats are used in Many Days and Custom Query aggregations
 
-### Tab: Identities & Domains (Custom Identities + Internal Domains)
-- Define additional email addresses that belong to the user
+### Section: Identities & domains (Custom Identities + Internal Domains)
+- Per account (pill switcher): the account identities (read-only) and the custom ones, as chips
+- Define additional email addresses that belong to the user (`custom_identities`, wildcards `*@example.com` and `@example.com`)
 - These are used to correctly classify "sent" vs "received" emails when the user has addresses not registered as Thunderbird account identities
 - **Internal Domains** — define per-account domain lists that identify domains belonging to the user's organization
   - Used to distinguish internal from external email traffic in statistics (domain entries gain an `internal: true/false` flag)
   - Supports wildcard patterns (e.g., `*.example.com`)
   - Stored in the `internal_domains` preference
-- **Show internal mail percentage** (`show_internal_mail_percent`) — when enabled, displays the percentage of internal mails (based on configured internal domains) next to the sent/received counters in the Today, Yesterday, and Custom Query (single-day) tabs
+  - The percentage display is toggled in General (`show_internal_mail_percent`)
+- Entries are validated (address or pattern / hostname); invalid ones are not saved
 
-### Tab: License
-- Displays the full GNU General Public License v3 text
-
-### Tab: Info
-- Shows current add-on version and author information
+### Section: About
+- Donation banner, release notes (accordion from `CHANGELOG.md`, 1.x notes on request), GPL v3 license with the full text on request, attributions link
 
 ---
 
 ## CSV Export
 
-Available in the Custom Query tab and via the export menu in other tabs.
+Available via the toolbar Export button, which opens the export menu of the current stats tab (Today, Yesterday, Many Days, Custom Query). When `show_internal_mail_percent` is enabled and internal domains are configured, exports can include internal/external counts.
 
 **Exportable data types:**
 
@@ -161,8 +164,8 @@ The business days feature (in `mzts-statscore.utils.js`) allows filtering statis
 
 - Configurable per-weekday (any combination of Mon–Sun)
 - Supports a list of custom holiday dates (excluded even if they fall on a configured business day)
-- Optional **Easter detection**: automatically calculates Easter Sunday (and optionally Monday) for any year and excludes it
-- Applied in: Many Days aggregation, Custom Query aggregation
+- Optional **Easter** exclusion: calculates Easter Sunday for any year and excludes both Sunday and Monday
+- Applied in: Many Days and Custom Query aggregation (total/max/min/avg), and the "last business day" logic in Today and Yesterday
 
 ---
 
@@ -175,9 +178,11 @@ The business days feature (in `mzts-statscore.utils.js`) allows filtering statis
 
 ---
 
-## Caching
+## Tab Data Loading
 
-Tab data is cached for ~2 minutes to avoid redundant API calls when switching between tabs. The cache is invalidated when the user changes the selected account or refreshes manually.
+Each stats tab loads its data the first time it is opened in a session and is not reloaded on later visits, unless `always_reload_tab_data` is enabled (`ThunderStatsView.vue`, `tabChanged`). Custom Query loading is controlled by its own prefs. Changing account reloads data if `load_data_changing_account` is enabled.
+
+When `remember_last_tab` is enabled, the selected tab is remembered by vue3-tabs-component for 2 minutes (`cache-lifetime` = 120000 ms); this is tab selection memory, not a data cache. Note: vue3-tabs-component interprets `cache-lifetime` in minutes, so 120000 actually means about 83 days. The Info tab (opened from the toolbar icon) is never remembered: when it is selected, `tabChanged` restores the previously saved entry of `tabs-storage-key` after the component writes it, and on opening a stale `#tab-info` entry is discarded.
 
 ---
 

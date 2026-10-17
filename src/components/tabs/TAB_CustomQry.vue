@@ -19,175 +19,102 @@
 -->
 
 <template>
-        <ExportMenu :export_data="_export_data" :currentTab="tabId" :showInternalExternal="show_internal_mail_percent" v-if="job_done" :singleDay="singleDay" />
-        <div id="customqry_dashboard">
-            <div id="customqry_menu">
-                <img src="@/assets/images/mzts-customqry-view.png" @click="openBookmarkMenu" @contextmenu="openBookmarkMenu" title="__MSG_Bookmarks_Menu__" class="bookmarkmenu"/>
-            </div>
-                <img :src="compare_icon" @click="toggleCompare" title="__MSG_ComparePeriods__" class="filters_btn" :class="{ 'compare_disabled': do_single_day }"/>
-                <span style="margin: 0px 10px;">__MSG_DateRange__</span> <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" ></VueDatePicker>
-                <img :src="advanced_filters_icon" @click="toggleAdvancedFilters" title="__MSG_ShowAdvFilters__" class="filters_btn"/>
-                <button type="button" id="customqry_update_btn" @click="update">__MSG_UpdateCustomQry__</button>
-                <input type="checkbox" id="customqry_only_bd" v-model="doOnlyBD" :disabled="customqry_only_bd_disabled" /> __MSG_OnlyBDCustomQry__
-                <div id="customqry_compare_row" v-if="compareEnabled">
-                  <span style="margin: 0px 10px;">__MSG_PeriodBStart__</span>
-                  <VueDatePicker v-model="dateQryB_start" @update:model-value="periodBChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :max-date="maxDateB" :enable-time-picker="false" :clearable="false" :auto-apply="true" :disabled="do_run && is_loading_counter_sent_rcvd" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" style="max-width: 180px; display: inline-block;" />
-                  <span v-if="dateQryB_end" class="compare_end_date">→ {{ formatDateB(dateQryB_end) }}</span>
-                  <span id="customqry_compare_delta" v-if="do_run && !is_loading_compare">
-                    <span class="compare_delta_label">__MSG_ComparisonSentChange__: </span>
-                    <span :class="deltaSentClass" v-text="deltaSentText"></span>
-                    <span class="compare_delta_label" style="margin-left:2em;">__MSG_ComparisonRcvdChange__: </span>
-                    <span :class="deltaRcvdClass" v-text="deltaRcvdText"></span>
-                  </span>
+    <ExportMenu ref="ExportMenu_ref" :export_data="_export_data" :currentTab="tabId" :showInternalExternal="show_internal_mail_percent" v-if="job_done" :singleDay="singleDay" />
+    <div class="ts-dashboard-stack">
+        <!-- query panel -->
+        <div class="ts-card ts-query-panel">
+            <div class="ts-query-fields">
+                <div class="ts-query-field">
+                    <div class="ts-section-label">{{ labels.period }}</div>
+                    <VueDatePicker v-model="dateQry" @update:model-value="rangeChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :range="{ partialRange: false }" :max-date="new Date()" :multi-calendars="{ solo: false, static: true }" :enable-time-picker="false" :clearable="false" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" class="ts-query-date"></VueDatePicker>
                 </div>
-                <div id="customqry_datamsg" v-if="do_run">__MSG_CustomQryDataMsg__: <div class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></div> - __MSG_TotalDays__: <span v-text="customqry_totaldays_num"></span></div>
-                <div id="customqry_adv_filters" v-if="show_advanced_filters">
-                  <div class="adv_filters_title_row"><div class="adv_filters_main_title">__MSG_AdvFilters__</div><button type="button" class="btn_small btn_small_single" :disabled="!advanced_filters_set" @click="resetAdvFilters">__MSG_ResetAdvFilters__</button></div>
-                  <table id="customqry_adv_filters_table">
-                    <tr>
-                      <td>
-                        <div id="filterFolder_container">
-                          <span class="adv_filters_title">__MSG_ChooseFoldersFilter__<span v-if="tsStore.current_account_id == 0"> (__MSG_ChooseAccountToFilterFolders__)</span></span>
-                          <br><Multiselect
-                            v-model="filterFolder"
-                            id="filterFolder"
-                            name="filterFolder"
-                            :options="folderList"
-                            :searchable="true"
-                            :close-on-select="true"
-                            :show-labels="false"
-                            :allow-empty="true"
-                            :create-option="false"
-                            mode="tags"
-                            :disabled="tsStore.current_account_id == 0"
-                            :placeholder="folderFiltersPlaceholder"
-                            ref="filterFolder_ref"
-                          >
-                          </Multiselect>
-                          <div style="margin-top:2px;">
-                            <input type="checkbox" id="filterFolder_do_subfolders" v-model="filterFolder_do_subfolders" /><span @click="filterFolder_do_subfolders = !filterFolder_do_subfolders" style="cursor: pointer;"> __MSG_FilterFoldersIncludeSubfolders__</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td colspan="2">
-                        <span class="adv_filters_title">__MSG_FilterSubject__</span>
-                      <br><input type="text" id="filterSubject" name="filterSubject" v-model="filterSubject" @input="updateAdvFiltersSet" @change="updateAdvFiltersPosition" />
-                      <br>__MSG_WarnSearchCaseSensitive__
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td class="td-30">
-                        <span class="adv_filters_title">__MSG_ReadStatus__</span><br>
-                        <select id="filterReadUnread" v-model="filterReadUnread" @change="updateAdvFiltersSet">
-                          <option value="0">__MSG_FilterFoldersAll__</option>
-                          <option value="1">__MSG_FilterFoldersOnlyRead__</option>
-                          <option value="2">__MSG_FilterFoldersOnlyUnread__</option>
-                        </select>
-                      </td>
-                      <td class="td-30">
-                        <span class="adv_filters_title">__MSG_FlagStatus__</span><br>
-                        <select id="filterFlaggedUnflagged" v-model="filterFlaggedUnflagged" @change="updateAdvFiltersSet">
-                          <option value="0">__MSG_FilterFoldersAll__</option>
-                          <option value="1">__MSG_FilterFoldersOnlyFlagged__</option>
-                          <option value="2">__MSG_FilterFoldersOnlyUnflagged__</option>
-                        </select>
-                    </td>
-                    </tr>
-                  </table>
+                <div class="ts-query-field" v-if="compareEnabled && !single_day_selected">
+                    <div class="ts-section-label">{{ labels.period_b }}</div>
+                    <div class="ts-query-b">
+                        <VueDatePicker v-model="dateQryB_start" @update:model-value="periodBChoosen" :dark="isDark" :format="datepickerFormat" :locale="prefLocale" :max-date="maxDateB" :enable-time-picker="false" :clearable="false" :auto-apply="true" :text-input="{ selectOnFocus: true, enterSubmit: true, tabSubmit: false }" class="ts-query-date ts-query-date-b" />
+                        <span class="ts-query-b-end" v-if="dateQryB_end">&rarr; {{ formatDate(dateQryB_end) }}</span>
+                    </div>
+                </div>
+                <label class="ts-switch" :class="{ 'is-disabled': single_day_selected }" :title="single_day_selected ? labels.compare_single_day : ''">
+                    <input type="checkbox" v-model="compareEnabled" :disabled="single_day_selected" />
+                    <span class="ts-switch-track"><span class="ts-switch-knob"></span></span>{{ labels.compare }}
+                </label>
+                <label class="ts-switch" :class="{ 'is-disabled': single_day_selected }">
+                    <input type="checkbox" v-model="doOnlyBD" :disabled="single_day_selected" />
+                    <span class="ts-switch-track"><span class="ts-switch-knob"></span></span>{{ labels.only_bd }}
+                </label>
+                <div class="ts-spacer"></div>
+                <button type="button" class="ts-primary-btn" @click="update">{{ labels.run }}</button>
+            </div>
+
+            <div class="ts-chip-row">
+                <span class="ts-chip-label">{{ labels.quick_ranges }}</span>
+                <button type="button" class="ts-chip" v-for="preset in presets" :key="preset.id" :class="{ 'is-active': active_preset == preset.id }" @click="setPeriod(preset.id)">{{ preset.label }}</button>
+                <span class="ts-chip-sep"></span>
+                <span class="ts-chip-label">{{ labels.filters }}</span>
+                <span class="ts-chip ts-chip-filter" v-for="filter in active_filters" :key="filter.id">{{ filter.text }}<button type="button" class="ts-chip-remove" :title="labels.remove_filter" @click="filter.clear()">&times;</button></span>
+                <button type="button" class="ts-chip ts-chip-add" @click="toggleAdvancedFilters">{{ show_advanced_filters ? labels.close_filters : labels.add_filter }}</button>
+            </div>
+
+            <div class="ts-adv-filters" v-if="show_advanced_filters">
+                <div class="ts-adv-field ts-adv-folders">
+                    <div class="ts-section-label">{{ labels.folders }}<span v-if="tsStore.current_account_id == 0"> ({{ labels.folders_need_account }})</span></div>
+                    <Multiselect
+                        v-model="filterFolder"
+                        id="filterFolder"
+                        name="filterFolder"
+                        :options="folderList"
+                        :searchable="true"
+                        :close-on-select="true"
+                        :show-labels="false"
+                        :allow-empty="true"
+                        :create-option="false"
+                        mode="tags"
+                        :disabled="tsStore.current_account_id == 0"
+                        :placeholder="labels.folders_placeholder"
+                        ref="filterFolder_ref"
+                    ></Multiselect>
+                    <label class="ts-adv-check"><input type="checkbox" v-model="filterFolder_do_subfolders" /> {{ labels.subfolders }}</label>
+                </div>
+                <div class="ts-adv-field">
+                    <div class="ts-section-label">{{ labels.subject }}</div>
+                    <input type="text" id="filterSubject" class="ts-input" v-model="filterSubject" @input="updateAdvFiltersSet" />
+                    <div class="ts-adv-hint">{{ labels.case_sensitive }}</div>
+                </div>
+                <div class="ts-adv-field">
+                    <div class="ts-section-label">{{ labels.read_status }}</div>
+                    <select id="filterReadUnread" class="ts-input" v-model="filterReadUnread" @change="updateAdvFiltersSet">
+                        <option value="0">{{ labels.all }}</option>
+                        <option value="1">{{ labels.only_read }}</option>
+                        <option value="2">{{ labels.only_unread }}</option>
+                    </select>
+                </div>
+                <div class="ts-adv-field">
+                    <div class="ts-section-label">{{ labels.flag_status }}</div>
+                    <select id="filterFlaggedUnflagged" class="ts-input" v-model="filterFlaggedUnflagged" @change="updateAdvFiltersSet">
+                        <option value="0">{{ labels.all }}</option>
+                        <option value="1">{{ labels.only_flagged }}</option>
+                        <option value="2">{{ labels.only_unflagged }}</option>
+                    </select>
+                </div>
+                <div class="ts-adv-actions">
+                    <button type="button" class="ts-link-btn" :disabled="!advanced_filters_set" @click="resetAdvFilters">{{ labels.reset_filters }}</button>
                 </div>
             </div>
-    <div class="square_container" id="customqry_square_container">
-    <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
-                        <h2 class="list_heading cropped">__MSG_SentMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ sent_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
-                        <div class="spacer" style="max-width:4.5em;" v-if="!do_run"></div>
-                        <div class="btn_group" style="flex-shrink:0;">
-                          <button type="button" @click="showDays" class="btn_small btn_small_start btn_disabled" ref="showDays_btn_ref" >Days</button>
-                          <button type="button" @click="showWeeks" class="btn_small" ref="showWeeks_btn_ref" >Weeks</button>
-                          <button type="button" @click="showMonths" class="btn_small" ref="showMonths_btn_ref" >Months</button>
-                          <button type="button" @click="showYears" class="btn_small btn_small_end" ref="showYears_btn_ref" >Years</button>
-                        </div>
-                        <div class="spacer" v-if="!do_run"></div>
-                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_sent_total" :_max="counter_customqry_sent_max" :_min="counter_customqry_sent_min" :_avg="counter_customqry_sent_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
-                      </div>
-                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady">
-                        <h2 class="list_heading cropped">__MSG_PeriodB__: <span v-if="!is_loading_compare">{{ sent_total_B }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_compare"/></h2>
-                        <CounterManyDays_Row :is_loading="is_loading_compare" :_total="counter_customqry_B_sent_total" :_max="counter_customqry_B_sent_max" :_min="counter_customqry_B_sent_min" :_avg="counter_customqry_B_sent_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
-                      </div>
-                      <ChartCustomQry v-if="do_run" ref="chartCustomQrySent_ref" :data_type="chartdata_type" :chartData="chartData_Sent" :chart_width="chart_width" :is_loading="is_loading_sent_chart" :is_comparing="compareIsReady" :key="chartData_Sent_length"/>
-    </div>
-    <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper"><h2 class="list_heading cropped">__MSG_Mails__</h2>
+
+            <div class="ts-query-info" v-if="do_run">
+                {{ labels.data_for }}: <span class="email_list_container" @mouseover="showEmailListTooltip" @mouseleave="hideEmailListTooltip"><span v-text="customqry_current_account" :class="props.accountEmails.length > max_direct_accounts ? 'email_list_span' : ''"></span><span class="email_list_tooltip_text" v-if="emailListTooltipVisible" v-text="customqry_current_account_tooltip"></span></span>
+                &middot; {{ labels.total_days }}: {{ customqry_totaldays_num }}
+            </div>
         </div>
-        <span class="list_heading_date" v-html="singleday_date_str"></span>
-        <CounterSentReceived :is_loading="is_loading_counter_sent_rcvd" :_sent="sent_total" :_rcvd="rcvd_total" :show_internal_percent="show_internal_mail_percent && do_single_day" :internal_sent_percent="internal_sent_percent" :internal_rcvd_percent="internal_rcvd_percent" />
-        <div class="singleday_spacing"></div>
-        <ChartTime :chartData="chartData_SingleDay" :is_loading="is_loading_singleday_chart" :day_type="1" />
+
+        <!-- results -->
+        <template v-if="do_run">
+            <WidgetDayDashboard v-if="do_single_day" v-bind="day_model" :loading="day_loading" :inbox_dates="result_inbox ? result_inbox.dates : {}" :inbox_loading="is_loading_inbox" />
+            <WidgetPeriodDashboard v-else v-bind="period_model" :loading="period_loading" :aggregations="aggregation_choices" :aggregation="aggregation" @aggregation="aggregation = $event" :zoomable="true" @zoom="zoomChart" @zoom_reset="resetZoom" @zoom_query="runZoomQuery" />
+        </template>
+        <div class="ts-card ts-query-empty" v-else>{{ labels.choose_period }}</div>
     </div>
-    <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_ReceivedMails__: <span v-if="do_run && !is_loading_counter_sent_rcvd">{{ rcvd_total }}<InfoTooltip :showAnchor="doOnlyBD" :noteText="totalInfoTooltip_text"></InfoTooltip></span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="do_run && is_loading_counter_sent_rcvd"/></h2>
-                        <CounterManyDays_Row v-if="do_run" :is_loading="is_loading_counter_customqry" :_total="counter_customqry_rcvd_total" :_max="counter_customqry_rcvd_max" :_min="counter_customqry_rcvd_min" :_avg="counter_customqry_rcvd_avg" :showTotalInfoTooltip="doOnlyBD" :totalBDInfoTooltip_text="totalBDInfoTooltip_text"/>
-					  </div>
-                      <div class="list_heading_wrapper_compare" v-if="do_run && compareIsReady">
-                        <h2 class="list_heading cropped">__MSG_PeriodB__: <span v-if="!is_loading_compare">{{ rcvd_total_B }}</span><img src="@/assets/images/mzts-wait_line.svg" class="spinner_small" alt="__MSG_Loading__..." v-if="is_loading_compare"/></h2>
-                        <CounterManyDays_Row :is_loading="is_loading_compare" :_total="counter_customqry_B_rcvd_total" :_max="counter_customqry_B_rcvd_max" :_min="counter_customqry_B_rcvd_min" :_avg="counter_customqry_B_rcvd_avg" :showTotalInfoTooltip="false" :totalBDInfoTooltip_text="''"/>
-                      </div>
-					  <ChartCustomQry v-if="do_run" ref="chartCustomQryRcvd_ref" :data_type="chartdata_type" :chartData="chartData_Rcvd" :chart_width="chart_width" :is_loading="is_loading_rcvd_chart" :is_comparing="compareIsReady" :key="chartData_Rcvd_length"/>
-    </div>
-    <div v-if="do_single_day" class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped">__MSG_InboxZeroStatus__</h2>
-					  </div>
-            <WidgetInboxZero
-              :is_loading_counter_inbox="is_loading_counter_inbox"
-              :counter_inbox_total="counter_inbox_total"
-              :counter_inbox_unread="counter_inbox_unread"
-              :is_loading_counter_inbox_percent="is_loading_counter_inbox_percent"
-              :counter_inbox_percent="counter_inbox_percent"
-              :showFolderLocationNoteAnchor="showFolderLocationNoteAnchor"
-              :folderLocationNote_text="folderLocationNote_text"
-              :is_loading_counter_sent_rcvd="is_loading_counter_sent_rcvd"
-              :counter_rcvd="rcvd_total"
-              :chartData_InboxZeroFolders="chartData_InboxZeroFolders"
-              :inbox0_openFolderInFirstTab="inbox0_openFolderInFirstTab"
-              :inbox_percent_show_remaining="inbox_percent_remaining"
-              :is_loading_inbox_chart_folders="is_loading_inbox_chart_folders"
-              :no_mails_inbox="no_mails_inbox"
-              :chartData_InboxZeroDates="chartData_InboxZeroDates"
-              :chartData_InboxZeroDates_extended = "chartdata_inboxzero_dates"
-              :is_loading_inbox_chart_dates="is_loading_inbox_chart_dates"
-              :no_mails_received="no_mails_received"
-            />
-    </div>
-    <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped lowercase">__MSG_TimeDay__</h2>
-					  </div>
-            <ChartTime v-if="do_run" :chartData="chartData_TimeDay" :is_loading="is_loading_timeday_chart" :day_type="1"/>
-    </div>
-    <div v-if="!do_single_day" class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped lowercase">__MSG_Weekdays__</h2>
-					  </div>
-					<WidgetWeekDay v-if="do_run" :weekday_chartData="chartData_WeekDays" :is_loading="is_loading_weekdays_chart" />
-    </div>
-    <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped lowercase">__MSG_Domains__</h2>
-					  </div>
-           <WidgetDomains v-if="do_run" :chartData="chartData_Domains" chart_id="chart_domains_customqry" :chart_height="domains_chart_height" :is_loading="is_loading_domains_chart" />
-    </div>
-    <div class="square_item">
-                    <WidgetFoldersTags v-if="do_run" :chartDataFolders="chartData_Folders" :chartDataTags="chartData_Tags" :is_loading_folders="is_loading_folders_chart" :is_loading_tags="is_loading_tags_chart" />
-    </div>
-    <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped lowercase" v-text="top_recipients_title"></h2>
-					  </div>
-					  <TableInvolved :is_loading="is_loading_involved_table_recipients" :tableData="table_involved_recipients" v-if="do_run && (is_loading_involved_table_recipients || show_table_involved_recipients)" />
-                    <p class="chart_info_nomail" v-if="!is_loading_involved_table_recipients && !show_table_involved_recipients">__MSG_NoMailsSent__</p>
-    </div>
-    <div class="square_item"><div class="list_heading_wrapper">
-						<h2 class="list_heading cropped lowercase" v-text="top_senders_title"></h2>
-					  </div>
-                      <TableInvolved :is_loading="is_loading_involved_table_senders" :tableData="table_involved_senders" v-if="do_run && (is_loading_involved_table_senders || show_table_involved_senders)"/>
-                      <p class="chart_info_nomail" v-if="!is_loading_involved_table_senders && !show_table_involved_senders">__MSG_NoMailsReceived__</p>
-    </div>
-  </div>
 </template>
 
 
@@ -197,34 +124,23 @@ import { tsLogger } from '@statslib/mzts-logger';
 import { thunderStastsCore } from '@statslib/mzts-statscore';
 import { tsCoreUtils } from '@statslib/mzts-statscore.utils';
 import { tsUtils } from '@statslib/mzts-utils';
-import TableInvolved from '../tables/TableInvolved.vue';
-import ChartCustomQry from '../charts/ChartCustomQry.vue';
-import CounterManyDays_Row from '../counters/CounterManyDays_Row.vue';
 import ExportMenu from '../ExportMenu.vue';
-import InfoTooltip from '../InfoTooltip.vue';
 import { tsPrefs } from '@statslib/mzts-options';
 import { i18n } from "@statslib/mzts-i18n.js";
 import { tsStore } from '@statslib/mzts-store';
 import { tsExport } from '@statslib/mzts-export';
+import { tsDayModel } from '@statslib/mzts-daymodel';
+import { tsPeriodModel } from '@statslib/mzts-periodmodel';
+import { BASELINE_WEEKS } from '@statslib/mzts-insights';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import ContextMenu from '@imengyu/vue3-context-menu'
-import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
-import CounterSentReceived from '../counters/CounterSentReceived.vue';
-import ChartTime from '../charts/ChartTime.vue';
 import Multiselect from '@vueform/multiselect';
 import '@vueform/multiselect/themes/default.css';
-import advancedFiltersIconPath from '@/assets/images/mzts-customqry_adv_filters.svg';
-import advancedFiltersIconPath_Set from '@/assets/images/mzts-customqry_adv_filters_set.svg';
-import comparePeriodsIconPath from '@/assets/images/mzts-compare-periods.svg';
-import comparePeriodsIconPath_Active from '@/assets/images/mzts-compare-periods_active.svg';
-import WidgetWeekDay from '../widgets/WidgetWeekDay.vue';
-import WidgetDomains from '../widgets/WidgetDomains.vue';
-import WidgetInboxZero from '../widgets/WidgetInboxZero.vue';
-import WidgetFoldersTags from '../widgets/WidgetFoldersTags.vue';
+import WidgetDayDashboard from '../widgets/WidgetDayDashboard.vue';
+import WidgetPeriodDashboard from '../widgets/WidgetPeriodDashboard.vue';
 
 
-const emit = defineEmits(['updateCustomQry'],['updateElapsed'],['customQryUserCancelled']);
+const emit = defineEmits(['updateCustomQry', 'updateElapsed', 'customQryUserCancelled']);
 
 const props = defineProps({
     accountEmails: {
@@ -237,13 +153,59 @@ const props = defineProps({
     },
 });
 
+const msg = (key, subs) => browser.i18n.getMessage(key, subs);
+
+const labels = {
+    period: msg("DateRange"),
+    period_b: msg("PeriodB"),
+    compare: msg("ComparePeriods"),
+    compare_single_day: msg("CompareNotOnSingleDay"),
+    only_bd: msg("OnlyBDCustomQry"),
+    run: msg("UpdateCustomQry"),
+    quick_ranges: msg("Bookmarks_Menu"),
+    filters: msg("AdvFilters"),
+    add_filter: msg("AddFilter"),
+    close_filters: msg("CloseFilters"),
+    remove_filter: msg("RemoveFilter"),
+    folders: msg("ChooseFoldersFilter"),
+    folders_need_account: msg("ChooseAccountToFilterFolders"),
+    folders_placeholder: msg("FilterFoldersPlaceholder"),
+    subfolders: msg("FilterFoldersIncludeSubfolders"),
+    subject: msg("FilterSubject"),
+    case_sensitive: msg("WarnSearchCaseSensitive"),
+    read_status: msg("ReadStatus"),
+    flag_status: msg("FlagStatus"),
+    all: msg("FilterFoldersAll"),
+    only_read: msg("FilterFoldersOnlyRead"),
+    only_unread: msg("FilterFoldersOnlyUnread"),
+    only_flagged: msg("FilterFoldersOnlyFlagged"),
+    only_unflagged: msg("FilterFoldersOnlyUnflagged"),
+    reset_filters: msg("ResetAdvFilters"),
+    data_for: msg("CustomQryDataMsg"),
+    total_days: msg("TotalDays"),
+    choose_period: msg("ChoosePeriodAndRun"),
+};
+
+const presets = [
+    { id: "yesterday", label: msg("Yesterday") },
+    { id: "currentweek", label: msg("CurrentWeek") },
+    { id: "lastweek", label: msg("LastWeek") },
+    { id: "last2week", label: msg("Last2Week") },
+    { id: "currentmonth", label: msg("CurrentMonth") },
+    { id: "lastmonth", label: msg("LastMonth") },
+    { id: "currentyear", label: msg("CurrentYear") },
+    { id: "lastyear", label: msg("LastYear") },
+    { id: "allemails", label: msg("AllEmails") },
+];
+
+const aggregation_choices = [
+    { id: 'day', label: msg("AggregationDays") },
+    { id: 'week', label: msg("AggregationWeeks") },
+    { id: 'month', label: msg("AggregationMonths") },
+    { id: 'year', label: msg("AggregationYears") },
+];
+
 let filterFolder_ref = ref(null);
-let chartCustomQrySent_ref = ref(null);
-let chartCustomQryRcvd_ref = ref(null);
-let showDays_btn_ref = ref(null);
-let showWeeks_btn_ref = ref(null);
-let showMonths_btn_ref = ref(null);
-let showYears_btn_ref = ref(null);
 
 let max_direct_accounts = 1;
 let doing_update = false;
@@ -254,197 +216,76 @@ var tsCore = null;
 let tabId = ref("tab-customqry");
 
 let dateQry = ref();
+let active_preset = ref("");
 let do_run = ref(false);
+let do_single_day = ref(false);
+let singleDay = ref(null);
 let customqry_current_account = ref("");
 let customqry_current_account_tooltip = ref("");
 let customqry_totaldays_num = ref(0);
-let isDark = ref(false);
-let chart_width = ref("1500px");
+let isDark = computed(() => tsStore.darkmode);
 let emailListTooltipVisible = ref(false);
+let aggregation = ref('day');
+
+// advanced filters
 let show_advanced_filters = ref(false);
-let advanced_filters_set = ref(false)
+let advanced_filters_set = ref(false);
 let folderList = ref([]);
-let advanced_filters_icon = ref(advancedFiltersIconPath);
-let customqry_only_bd_disabled = ref(false);
 let filterFolder = ref([]);
 let filterFolder_do_subfolders = ref(true);
 let filterReadUnread = ref(0); // 0: all, 1: read, 2: unread
 let filterFlaggedUnflagged = ref(0); // 0: all, 1: flagged, 2: unflagged
 let filterSubject = ref("");
 
-// single day view
-let do_progressive = true;
-let inbox0_openFolderInFirstTab = ref(false);
-let inbox_percent_remaining = ref(false);
-let do_single_day = ref(false);
-let singleDay = ref(null);
-let singleday_date_str = ref("");
-let no_mails_received = ref("");
-
-let is_loading_singleday_chart = ref(true);
-let is_loading_inbox_chart_folders = ref(true);
-let is_loading_inbox_chart_dates = ref(true);
-let is_loading_counter_inbox = ref(true);
-let is_loading_counter_inbox_percent = ref(true);
-let is_loading_timeday_chart = ref(true);
-let is_loading_weekdays_chart = ref(true);
-
-let counter_inbox_total = ref(0);
-let counter_inbox_unread = ref(0);
-let counter_inbox_percent = ref(0);
-
-let chartData_SingleDay = ref({
-    labels: Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')),
-    datasets: []
-});
-
-let chartData_InboxZeroFolders = ref({
-    labels: [],
-    datasets: []
-});
-let chartData_InboxZeroDates = ref({
-    labels: [],
-    datasets: []
-});
-
-let chartData_Domains = ref({
-    labels: [],
-    datasets: []
-});
-
-let chartdata_singleday_hours_sent = ref([]);
-let chartdata_singleday_hours_rcvd = ref([]);
-let chartdata_inboxzero_folders = ref([]);
-let chartdata_inboxzero_dates = ref([]);
-
-let showFolderLocationNoteAnchor = ref(false);
-let folderLocationNote_text = ref("");
-// single day view - END
-
 let datepickerFormat = ref("dd-MM-yyyy");
 let prefLocale = ref("en-GB");
 
-let folderFiltersPlaceholder = ref("");
-
-let top_recipients_title = ref("");
-let top_senders_title = ref("");
-
-let sent_total = ref(0);
-let rcvd_total = ref(0);
+let doOnlyBD = ref(false);
 let show_internal_mail_percent = ref(false);
 let internal_sent_percent = ref('0.00%');
 let internal_rcvd_percent = ref('0.00%');
+let do_progressive = ref(false);
+let show_inbox_in_bars = ref(true);
+let inbox0_openFolderInFirstTab = ref(false);
+let filter_duplicates = ref(false);
+let first_day_week = ref(1);
+let _involved_num = 10;
 
-let is_loading_counter_sent_rcvd = ref(true);
-let is_loading_counter_customqry = ref(true);
-let is_loading_involved_table_recipients = ref(true);
-let is_loading_involved_table_senders = ref(true);
-let is_loading_sent_chart = ref(true);
-let is_loading_rcvd_chart = ref(true);
-let is_loading_domains_chart = ref(true);
-let is_loading_folders_chart = ref(true);
-let is_loading_tags_chart = ref(true);
-
-let counter_customqry_sent_total = ref(0);
-let counter_customqry_sent_max = ref(0);
-let counter_customqry_sent_min = ref(0);
-let counter_customqry_sent_avg = ref(0);
-let counter_customqry_rcvd_total = ref(0);
-let counter_customqry_rcvd_max = ref(0);
-let counter_customqry_rcvd_min = ref(0);
-let counter_customqry_rcvd_avg = ref(0);
-
-let table_involved_recipients = ref([]);
-let table_involved_senders = ref([]);
-let show_table_involved_recipients = ref(false);
-let show_table_involved_senders = ref(false);
-
-let chartdata_customqry_sent = ref([]);
-let chartdata_customqry_rcvd = ref([]);
-let chartdata_customqry_labels = ref([]);
-let chartdata_customqry_weeks_sent = ref([]);
-let chartdata_customqry_weeks_rcvd = ref([]);
-let chartdata_customqry_weeks_labels = ref([]);
-let chartdata_customqry_months_sent = ref([]);
-let chartdata_customqry_months_rcvd = ref([]);
-let chartdata_customqry_months_labels = ref([]);
-let chartdata_customqry_years_sent = ref([]);
-let chartdata_customqry_years_rcvd = ref([]);
-let chartdata_customqry_years_labels = ref([]);
-let chartdata_customqry_hours_sent = ref([]);
-let chartdata_customqry_hours_rcvd = ref([]);
-let chartdata_customqry_weekdays_sent = ref([]);
-let chartdata_customqry_weekdays_rcvd = ref([]);
-let chartdata_domains_sent = ref([]);
-let chartdata_domains_rcvd = ref([]);
-let chartdata_domains_labels = ref([]);
-let chartdata_domains_internal_flags = ref([]);
-let chartdata_folders_sent = ref([]);
-let chartdata_folders_rcvd = ref([]);
-let chartdata_folders_labels = ref([]);
-let chartdata_tags_sent = ref([]);
-let chartdata_tags_rcvd = ref([]);
-let chartdata_tags_labels = ref([]);
-
-let domains_chart_height = ref("275px");
-
-// comparison mode state
+// comparison mode
 let compareEnabled = ref(false);
 let dateQryB_start = ref(null);
-let compare_icon = ref(comparePeriodsIconPath);
-let is_loading_compare = ref(false);
-let result_customqry_B = null;
 
-// Period B raw chart data
-let chartdata_customqry_B_sent = ref([]);
-let chartdata_customqry_B_rcvd = ref([]);
-let chartdata_customqry_B_labels = ref([]);
-let chartdata_customqry_B_weeks_sent = ref([]);
-let chartdata_customqry_B_weeks_rcvd = ref([]);
-let chartdata_customqry_B_weeks_labels = ref([]);
-let chartdata_customqry_B_months_sent = ref([]);
-let chartdata_customqry_B_months_rcvd = ref([]);
-let chartdata_customqry_B_months_labels = ref([]);
-let chartdata_customqry_B_years_sent = ref([]);
-let chartdata_customqry_B_years_rcvd = ref([]);
-let chartdata_customqry_B_years_labels = ref([]);
-let chartdata_customqry_B_hours_sent = ref([]);
-let chartdata_customqry_B_hours_rcvd = ref([]);
-let chartdata_customqry_B_weekdays_sent = ref([]);
-let chartdata_customqry_B_weekdays_rcvd = ref([]);
-let chartdata_B_domains_sent = ref([]);
-let chartdata_B_domains_rcvd = ref([]);
-let chartdata_B_domains_labels = ref([]);
-let chartdata_B_folders_sent = ref([]);
-let chartdata_B_folders_rcvd = ref([]);
-let chartdata_B_folders_labels = ref([]);
-let chartdata_B_tags_sent = ref([]);
-let chartdata_B_tags_rcvd = ref([]);
-let chartdata_B_tags_labels = ref([]);
+// raw results used to build the dashboards
+let result_qry = ref(null);
+let result_B = ref(null);
+let result_inbox = ref(null);
+let baseline_days = ref(null);
+let result_prev_days = ref(null);
+let query_days = ref([]);
+let zoom_days = ref(null);          // days shown in the main chart when zoomed, a slice of query_days
+let query_b_start = null;           // Period B start of the last query, or null without comparison
+let query_filtered = ref(false);
 
-// Period B counters
-let sent_total_B = ref(0);
-let rcvd_total_B = ref(0);
-let counter_customqry_B_sent_total = ref(0);
-let counter_customqry_B_sent_max = ref(0);
-let counter_customqry_B_sent_min = ref(0);
-let counter_customqry_B_sent_avg = ref(0);
-let counter_customqry_B_rcvd_total = ref(0);
-let counter_customqry_B_rcvd_max = ref(0);
-let counter_customqry_B_rcvd_min = ref(0);
-let counter_customqry_B_rcvd_avg = ref(0);
+let is_loading_data = ref(true);
+let is_loading_inbox = ref(true);
+let is_loading_extra = ref(true);     // single day: baseline and previous days
 
-// Delta summary
-let deltaSentText = ref('');
-let deltaRcvdText = ref('');
-let deltaSentClass = ref('');
-let deltaRcvdClass = ref('');
+let _export_data = ref({});
+
+let elapsed = {
+    'getCustomQryData': 0,
+    'getInboxZeroData': 0,
+    'getExtraData': 0,
+}
+
+let ExportMenu_ref = ref(null);
 
 // Period B end date auto-calculation (using calendar days to avoid DST/ms drift)
 const periodDays = computed(() => {
   if (!dateQry.value?.[0] || !dateQry.value?.[1]) return 0;
   return tsUtils.daysBetween(dateQry.value[0], dateQry.value[1]);
 });
+const single_day_selected = computed(() => periodDays.value == 1);
 const dateQryB_end = computed(() => {
   if (!dateQryB_start.value || !periodDays.value) return null;
   const end = new Date(dateQryB_start.value);
@@ -458,190 +299,102 @@ const maxDateB = computed(() => {
   return max;
 });
 const compareIsReady = computed(() => {
-  return compareEnabled.value && dateQryB_start.value != null;
+  return compareEnabled.value && !single_day_selected.value && dateQryB_start.value != null;
 });
 
-function formatDateB(date) {
-  if (!date) return '';
-  return date.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
-}
+let job_done = computed(() => do_run.value && !is_loading_data.value && !is_loading_inbox.value && !is_loading_extra.value);
 
-let _export_data = ref({});
-
-let _involved_num = 10;
-let first_day_week = 1;
-
-let totalInfoTooltip_text = ref("");
-let totalBDInfoTooltip_text = ref("");
-
-let doOnlyBD = ref(false);
-
-let chartData_Sent = ref({
-    labels: [],
-    datasets: []
-});
-let chartData_Sent_length = computed(() => (chartData_Sent.value.datasets.length + Math.floor(Math.random() * 101)));
-
-let chartData_Rcvd = ref({
-    labels: [],
-    datasets: []
-});
-let chartData_Rcvd_length = computed(() => (chartData_Rcvd.value.datasets.length + Math.floor(Math.random() * 101)));
-
-let chartData_Sent_Original = ref({
-    labels: [],
-    datasets: []
+// active filters shown as removable chips
+let active_filters = computed(() => {
+    let output = [];
+    if(filterFolder.value.length > 0) {
+        let names = filterFolder.value.map(id => {
+            let folder = folderList.value.find(f => f.value == id);
+            return folder ? folder.label : id;
+        });
+        output.push({ id: 'folders', text: msg("FilterChipFolders", [names.join(", ")]), clear: () => { filterFolder_ref.value ? filterFolder_ref.value.clear() : (filterFolder.value = []); } });
+    }
+    if(filterSubject.value.trim().length > 0) {
+        output.push({ id: 'subject', text: msg("FilterChipSubject", [filterSubject.value.trim()]), clear: () => { filterSubject.value = ""; updateAdvFiltersSet(); } });
+    }
+    if(filterReadUnread.value > 0) {
+        output.push({ id: 'read', text: filterReadUnread.value == 1 ? labels.only_read : labels.only_unread, clear: () => { filterReadUnread.value = 0; updateAdvFiltersSet(); } });
+    }
+    if(filterFlaggedUnflagged.value > 0) {
+        output.push({ id: 'flagged', text: filterFlaggedUnflagged.value == 1 ? labels.only_flagged : labels.only_unflagged, clear: () => { filterFlaggedUnflagged.value = 0; updateAdvFiltersSet(); } });
+    }
+    return output;
 });
 
-let chartData_Rcvd_Original = ref({
-    labels: [],
-    datasets: []
-});
+let day_model = computed(() => tsDayModel.build({
+    kind: 'day',
+    day: singleDay.value ? new Date(singleDay.value) : new Date(),
+    result: result_qry.value,
+    inbox: result_inbox.value,
+    // the usual day is not filtered, so it is not compared with a filtered query
+    baseline_days: query_filtered.value ? [] : baseline_days.value,
+    prev_days: result_prev_days.value,
+    prev_days_num: 7,
+    progressive: do_progressive.value,
+    hide_future: false,
+    cmp: null,
+    internal: { enabled: show_internal_mail_percent.value, sent_percent: internal_sent_percent.value, rcvd_percent: internal_rcvd_percent.value },
+    involved_num: _involved_num,
+    first_day_week: first_day_week.value,
+    duplicates_note: filter_duplicates.value,
+    open_folder_in_first_tab: inbox0_openFolderInFirstTab.value,
+    neutral_badge: true,
+}));
 
-let chartData_Weeks_Sent = ref({
-    labels: [],
-    datasets: []
-});
+let day_loading = computed(() => ({
+    strip: is_loading_data.value,
+    chart: is_loading_data.value || is_loading_extra.value,
+    involved: is_loading_data.value,
+    domains: is_loading_data.value,
+    folders: is_loading_data.value,
+}));
 
-let chartData_Weeks_Rcvd = ref({
-    labels: [],
-    datasets: []
-});
+let period_model = computed(() => tsPeriodModel.build({
+    kind: 'custom',
+    days: query_days.value,
+    stat_days: query_days.value,
+    today_key: null,
+    result: result_qry.value,
+    inbox: result_inbox.value,
+    prev: null,
+    aggregate: result_qry.value ? result_qry.value.aggregate : null,
+    only_businessdays: doOnlyBD.value,
+    show_inbox: show_inbox_in_bars.value,
+    internal: { enabled: show_internal_mail_percent.value, sent_percent: internal_sent_percent.value, rcvd_percent: internal_rcvd_percent.value },
+    involved_num: _involved_num,
+    first_day_week: first_day_week.value,
+    duplicates_note: filter_duplicates.value,
+    open_folder_in_first_tab: inbox0_openFolderInFirstTab.value,
+    aggregation: aggregation.value,
+    zoom_days: zoom_days.value,
+    cmp_result: result_B.value,
+}));
 
-let chartData_Months_Sent = ref({
-    labels: [],
-    datasets: []
-});
-
-let chartData_Months_Rcvd = ref({
-    labels: [],
-    datasets: []
-});
-
-let chartData_Years_Sent = ref({
-    labels: [],
-    datasets: []
-});
-
-let chartData_Years_Rcvd = ref({
-    labels: [],
-    datasets: []
-});
-
-let chartData_TimeDay = ref({
-    labels: Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')),
-    datasets: []
-});
-
-let chartData_WeekDays = ref({
-    labels: Array.from({length: 7}, (_, i) => i),
-    datasets: []
-});
-
-let chartData_Folders = ref({
-    labels: [],
-    datasets: []
-});
-
-let chartData_Tags = ref({
-    labels: [],
-    datasets: []
-});
-
-let chartdata_type = ref("YYYYMMDD"); // "YYYY" | "YYYYMM" | "YYYYWW" | "YYYYMMDD"
-
-let elapsed = {
-    'getCustomQryData':0,
-}
-
-let job_done = computed(() => {
-  if(!do_single_day.value){
-    return !is_loading_counter_sent_rcvd.value &&
-    !is_loading_counter_customqry.value &&
-    !is_loading_involved_table_recipients.value &&
-    !is_loading_involved_table_senders.value &&
-    !is_loading_sent_chart.value &&
-    !is_loading_rcvd_chart.value &&
-    !is_loading_timeday_chart.value &&
-    !is_loading_weekdays_chart.value &&
-    !is_loading_domains_chart.value &&
-    !is_loading_tags_chart.value &&
-    !is_loading_folders_chart.value;
-  }else{
-    return !is_loading_counter_sent_rcvd.value &&
-    !is_loading_singleday_chart.value &&
-    !is_loading_involved_table_recipients.value &&
-    !is_loading_involved_table_senders.value &&
-    !is_loading_counter_inbox.value &&
-    !is_loading_counter_inbox_percent.value &&
-    !is_loading_inbox_chart_folders.value &&
-    !is_loading_inbox_chart_dates.value &&
-    !is_loading_domains_chart.value &&
-    !is_loading_tags_chart.value &&
-    !is_loading_folders_chart.value;
-  }
-});
+let period_loading = computed(() => ({
+    strip: is_loading_data.value,
+    chart: is_loading_data.value,
+    involved: is_loading_data.value,
+    domains: is_loading_data.value,
+    folders: is_loading_data.value,
+}));
 
 watch(() => tsStore.current_account_id, async (newValue, oldValue) => {
   if(newValue == 0) {
-    filterFolder_ref.value.clear();
-    await nextTick();
-    i18n.updateDocument();
+    filterFolder.value = [];
+    if(filterFolder_ref.value) filterFolder_ref.value.clear();
+    updateAdvFiltersSet();
   }else{
     folderList.value = await tsCoreUtils.getAccountFoldersNames(tsStore.current_account_id);
   }
 });
 
-watch(() => advanced_filters_set.value, async (newValue, oldValue) => {
-  updateAdvFiltersIcon();
-});
-
 watch(() => filterFolder.value, async (newValue, oldValue) => {
   updateAdvFiltersSet();
-});
-
-watch(() => do_single_day.value, async (newValue, oldValue) => {
-  if(newValue == true){
-    doOnlyBD.value = false;
-    customqry_only_bd_disabled.value = true;
-    compareEnabled.value = false;
-    compare_icon.value = comparePeriodsIconPath;
-  }else{
-    let prefs_bday = await tsPrefs.getPref("bday_default_only");
-    customqry_only_bd_disabled.value = false;
-    doOnlyBD.value = prefs_bday;
-  }
-});
-
-watch(() => chartdata_type.value, async (newValue, oldValue) => {
-  switch(newValue){
-    case "YYYYMMDD":
-      showDays_btn_ref.value.classList.add("btn_disabled");
-      break;
-    case "YYYYWW":
-      showWeeks_btn_ref.value.classList.add("btn_disabled");
-      break;
-    case "YYYYMM":
-      showMonths_btn_ref.value.classList.add("btn_disabled");
-      break;
-    case "YYYY":
-      showYears_btn_ref.value.classList.add("btn_disabled");
-      break;
-  }
-  switch(oldValue){
-    case "YYYYMMDD":
-      showDays_btn_ref.value.classList.remove("btn_disabled");
-      break;
-    case "YYYYWW":
-      showWeeks_btn_ref.value.classList.remove("btn_disabled");
-      break;
-    case "YYYYMM":
-      showMonths_btn_ref.value.classList.remove("btn_disabled");
-      break;
-    case "YYYY":
-      showYears_btn_ref.value.classList.remove("btn_disabled");
-      break;
-  }
 });
 
 onBeforeMount(async () => {
@@ -649,33 +402,20 @@ onBeforeMount(async () => {
   tsPrefs.logger = tsLog;
   prefLocale.value = await tsPrefs.getPref("datepicker_locale");
   datepickerFormat.value = tsUtils.formatDateStringLocale(prefLocale.value);
-  if(tsStore.darkmode === undefined) {
-    tsStore.darkmode = tsUtils.isDarkMode();
-  }
-  isDark.value = tsStore.darkmode;
 })
 
 onMounted(async () => {
     const endDate = new Date();
     const startDate = new Date(new Date().setDate(endDate.getDate() - 6));
-    // dateQry.value = [new Date('2024-08-19'),new Date('2024-08-19')];
     dateQry.value = [startDate, endDate];
     let prefs = await tsPrefs.getPrefs(["first_day_week", "_involved_num", "bday_default_only", "customqry_always_open_adv_filters"]);
-    //console.log(">>>>>>>>>>> prefs: " + JSON.stringify(prefs));
-    if(prefs.customqry_always_open_adv_filters) toggleAdvancedFilters();
-    first_day_week = prefs.first_day_week;
+    if(prefs.customqry_always_open_adv_filters) show_advanced_filters.value = true;
+    first_day_week.value = Number(prefs.first_day_week);
     _involved_num = prefs._involved_num;
-    top_recipients_title.value = browser.i18n.getMessage("TopRecipients", _involved_num);
-    top_senders_title.value = browser.i18n.getMessage("TopSenders", _involved_num);
     doOnlyBD.value = prefs.bday_default_only;
-    totalInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_AllMails");
-    totalBDInfoTooltip_text.value = browser.i18n.getMessage("InfoTotal_BDMails_Only");
-    folderLocationNote_text.value = browser.i18n.getMessage("InboxZeroFolderLocationNote");
-    folderFiltersPlaceholder.value = browser.i18n.getMessage("FilterFoldersPlaceholder");
     if(tsStore.current_account_id != 0) {
       folderList.value = await tsCoreUtils.getAccountFoldersNames(tsStore.current_account_id);
     }
-    no_mails_received.value = browser.i18n.getMessage("NoMailsReceived");
 });
 
 function update(){
@@ -684,45 +424,12 @@ function update(){
     return;
   }
   doing_update = true;
-  // console.log(">>>>>>>>>>> TAB_CustomQry update");
   tsLog.log("Update requested");
   emit('updateCustomQry');
 }
 
-function showDays(){
-  tsLog.log("Show days");
-  chartData_Sent.value = {...chartData_Sent_Original.value};
-  chartData_Rcvd.value = {...chartData_Rcvd_Original.value};
-  chartdata_type.value = "YYYYMMDD";
-  setChartWidth();
-}
-
-function showWeeks(){
-  tsLog.log("Show weeks");
-  chartData_Sent.value = {...chartData_Weeks_Sent.value};
-  chartData_Rcvd.value = {...chartData_Weeks_Rcvd.value};
-  chartdata_type.value = "YYYYWW";
-  setChartWidth();
-}
-
-function showMonths(){
-  tsLog.log("Show months");
-  chartData_Sent.value = {...chartData_Months_Sent.value};
-  chartData_Rcvd.value = {...chartData_Months_Rcvd.value};
-  chartdata_type.value = "YYYYMM";
-  setChartWidth();
-}
-
-function showYears(){
-  tsLog.log("Show years");
-  chartData_Sent.value = {...chartData_Years_Sent.value};
-  chartData_Rcvd.value = {...chartData_Years_Rcvd.value};
-  chartdata_type.value = "YYYY";
-  setChartWidth();
-}
-
 async function rangeChoosen(modelData){
-  //console.log(">>>>>>>>>>>>>>> rangeChoosen: " + JSON.stringify(modelData));
+  active_preset.value = "";
   if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
     update();
   }
@@ -734,133 +441,42 @@ async function periodBChoosen(){
   }
 }
 
-async function toggleCompare() {
-  if (do_single_day.value) return;
-  compareEnabled.value = !compareEnabled.value;
-  compare_icon.value = compareEnabled.value ? comparePeriodsIconPath_Active : comparePeriodsIconPath;
-  await nextTick();
-  i18n.updateDocument();
-  updateAdvFiltersPosition();
-}
-
-const updateAdvFiltersIcon = () => {
-  advanced_filters_icon.value = advanced_filters_set.value ? advancedFiltersIconPath_Set : advancedFiltersIconPath;
+function toggleAdvancedFilters(){
+  show_advanced_filters.value = !show_advanced_filters.value;
 }
 
 const updateAdvFiltersSet = () => {
-  let out_value = false;
-
-  if(filterFolder.value.length > 0){
-    out_value = true;
-  }
-  if(filterReadUnread.value > 0){
-    out_value = true;
-  }
-  if(filterFlaggedUnflagged.value > 0){
-    out_value = true;
-  }
-  if(filterSubject.value.length > 0){
-    out_value = true;
-  }
-
-  advanced_filters_set.value = out_value;
+  advanced_filters_set.value = (filterFolder.value.length > 0) || (filterReadUnread.value > 0) || (filterFlaggedUnflagged.value > 0) || (filterSubject.value.length > 0);
 }
 
 function resetAdvFilters() {
-  filterFolder_ref.value.clear();
+  if(filterFolder_ref.value) filterFolder_ref.value.clear();
+  filterFolder.value = [];
   filterSubject.value = "";
   filterReadUnread.value = 0;
   filterFlaggedUnflagged.value = 0;
   updateAdvFiltersSet();
-  updateAdvFiltersPosition();
-}
-
-function openBookmarkMenu(e){
-    e.preventDefault();
-    let menu_icon = document.getElementById("customqry_menu").getBoundingClientRect();
-    let x = menu_icon.x + menu_icon.width/2;
-    let y = menu_icon.y + menu_icon.height/2;
-    ContextMenu.showContextMenu({
-      theme: tsStore.darkmode ? "mac dark" : "mac",
-      x: x,
-      y: y,
-      items: [
-        { 
-          label: browser.i18n.getMessage("CurrentWeek"), 
-          onClick: () => {
-            setPeriod("currentweek");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("LastWeek"), 
-          onClick: () => {
-            setPeriod("lastweek");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("Last2Week"), 
-          onClick: () => {
-            setPeriod("last2week");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("CurrentMonth"), 
-          onClick: () => {
-            setPeriod("currentmonth");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("LastMonth"),
-          onClick: () => {
-            setPeriod("lastmonth");
-          }
-        },
-        { 
-          label: browser.i18n.getMessage("CurrentYear"),
-          onClick: () => {
-            setPeriod("currentyear");
-          }
-        },
-        {
-          label: browser.i18n.getMessage("LastYear"),
-          onClick: () => {
-            setPeriod("lastyear");
-          }
-        },
-        {
-          label: browser.i18n.getMessage("AllEmails"),
-          divided: 'up',
-          onClick: () => {
-            setPeriod("allemails");
-          }
-        },
-        /*{
-          label: "A submenu", 
-          children: [
-            { label: "Item1" },
-            { label: "Item2" },
-            { label: "Item3" },
-          ]
-        },*/
-      ]
-  });
 }
 
 async function setPeriod(period){
     switch(period){
+        case "yesterday":
+            let yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            dateQry.value = [yesterday, new Date(yesterday)];
+            break;
         case "currentweek":
-        //console.log(">>>>>>>>>>> getLastMonday: "+JSON.stringify(tsUtils.getLastMonday()));
-            dateQry.value = [tsUtils.getLastWeekday(first_day_week), new Date()];
+            dateQry.value = [tsUtils.getLastWeekday(first_day_week.value), new Date()];
             break;
         case "lastweek":
-            let last_weekday = tsUtils.getLastWeekday(first_day_week);
+            let last_weekday = tsUtils.getLastWeekday(first_day_week.value);
             last_weekday = new Date(last_weekday.setDate(last_weekday.getDate() - 1));
-            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday, tsStore.first_day_week), last_weekday];
+            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday, first_day_week.value), last_weekday];
             break;
         case "last2week":
-            let last_weekday2 = tsUtils.getLastWeekday(first_day_week);
+            let last_weekday2 = tsUtils.getLastWeekday(first_day_week.value);
             last_weekday2 = new Date(last_weekday2.setDate(last_weekday2.getDate() - 1));
-            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday2, tsStore.first_day_week), new Date()];
+            dateQry.value = [tsUtils.getPreviousWeekday(last_weekday2, first_day_week.value), new Date()];
             break;
         case "currentmonth":
             dateQry.value = [tsUtils.getFirstDayOfCurrentMonth(), new Date()];
@@ -878,37 +494,88 @@ async function setPeriod(period){
             dateQry.value = [new Date(0), new Date()];
             break;
     }
+    active_preset.value = period;
     if(await tsPrefs.getPref("customqry_loaddata_when_selectingrange")){
-      // console.log(">>>>>>>>>>>>>> customqry_loaddata_when_selectingrange do update");
       update();
     }
 }
 
+// Default grouping of the main chart for the length of the range
+function defaultAggregation(num_days) {
+  if(num_days <= 62) return 'day';
+  if(num_days <= 190) return 'week';
+  if(num_days <= 1100) return 'month';
+  return 'year';
+}
+
+// Zoom on the bars from..to of the main chart: the days they cover, grouped for their length
+function zoomChart(from, to) {
+  let bars = period_model.value.chart.days;
+  if(!bars[from] || !bars[to]) return;
+  let first = bars[from].first, last = bars[to].last;
+  let shown = zoom_days.value || query_days.value;
+  zoom_days.value = shown.filter(k => k >= first && k <= last);
+  aggregation.value = defaultAggregation(zoom_days.value.length);
+}
+
+function resetZoom() {
+  zoom_days.value = null;
+  aggregation.value = defaultAggregation(query_days.value.length);
+}
+
+// New query on the zoomed days with the same filters; Period B moves by the same offset
+function runZoomQuery() {
+  if(!zoom_days.value || zoom_days.value.length == 0) return;
+  let offset = query_days.value.indexOf(zoom_days.value[0]);
+  if(query_b_start && offset >= 0) {
+    let start_b = new Date(query_b_start);
+    start_b.setDate(start_b.getDate() + offset);
+    dateQryB_start.value = start_b;
+  }
+  dateQry.value = [tsUtils.parseYYYYMMDDToDate(zoom_days.value[0]), tsUtils.parseYYYYMMDDToDate(zoom_days.value[zoom_days.value.length - 1])];
+  active_preset.value = "";
+  update();
+}
+
+function dayKeys(from_date, to_date) {
+  let keys = [];
+  let day = new Date(from_date);
+  day.setHours(12, 0, 0, 0);
+  let last = new Date(to_date);
+  last.setHours(12, 0, 0, 0);
+  while(day <= last) {
+    keys.push(tsUtils.dateToYYYYMMDD(day));
+    day.setDate(day.getDate() + 1);
+  }
+  return keys;
+}
+
 async function doQry(){
-  if(tsStore.current_account_id == 0) filterFolder_ref.value.clear();
-  tsLog.log("filterFolder.value: "+JSON.stringify(filterFolder.value));
+  if(tsStore.current_account_id == 0) {
+    filterFolder.value = [];
+    if(filterFolder_ref.value) filterFolder_ref.value.clear();
+  }
+  tsLog.log(() => "filterFolder.value: "+JSON.stringify(filterFolder.value));
   customqry_totaldays_num.value = tsUtils.daysBetween(dateQry.value[0],dateQry.value[1]);
   let pref_warn_days = await tsPrefs.getPref("customqry_warn_onlongperiod_days");
   if(pref_warn_days > 0 && customqry_totaldays_num.value > pref_warn_days){
     if(!confirm(browser.i18n.getMessage("CustomViewTooMuchDaysText",customqry_totaldays_num.value))){
-      // console.log(">>>>>>>>>>>>> CustomQry cancelled");
-      do_run.value = false;
       emit('customQryUserCancelled');
       doing_update = false;
       return;
     }
   }
   loadingDo();
-  chartdata_type.value = "YYYYMMDD";
   do_single_day.value = (customqry_totaldays_num.value == 1);
-  elapsed.getInboxZeroData = 1;
+  aggregation.value = defaultAggregation(customqry_totaldays_num.value);
+  zoom_days.value = null;
+  query_days.value = dayKeys(dateQry.value[0], dateQry.value[1]);
+  query_filtered.value = advanced_filters_set.value;
   tabId.value = "tab-customqry";
   if(do_single_day.value){
     tsLog.log("Doing single day view...");
     tabId.value = "tab-customqry-single-day";
     singleDay.value = dateQry.value[0];
-    singleday_date_str.value = singleDay.value.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
-    elapsed.getInboxZeroData = 0;
   }
   if(props.accountEmails.length > max_direct_accounts){
     customqry_current_account.value = props.accountEmails.length + " " + browser.i18n.getMessage("EmailAddresses");
@@ -918,733 +585,96 @@ async function doQry(){
     customqry_current_account_tooltip.value = "";
   }
   do_run.value = true;
-  await nextTick(); 
-  i18n.updateDocument();
-  updateData();
-}
-
-function setChartWidth(){
-  let chart_container_width = document.querySelector('.chart_customqry').clientWidth;
-  let chart_ipotetic_width = chartData_Rcvd.value.labels.length * 60;
-  if(chart_ipotetic_width > 30000) chart_ipotetic_width = 30000;
-  if(chart_container_width < chart_ipotetic_width){
-    chart_width.value = String(chart_ipotetic_width) + "px";
-  } else {
-    chart_width.value = String(chart_container_width) + "px";
-  }
+  await updateData();
 }
 
 async function updateData() {
-    while(props.updated == false){
-        await new Promise(r => setTimeout(r, 100));
-    }
-    let prefs = await tsPrefs.getPrefs(["_time_chart_progressive", "accounts_adv_settings"]);
-    do_progressive = prefs._time_chart_progressive;
-    let accounts_adv_settings = prefs.accounts_adv_settings;
-    inbox_percent_remaining.value = await tsPrefs.getPref("inbox_percent_remaining");
-    show_internal_mail_percent.value = (await tsPrefs.getPref("show_internal_mail_percent")) && props.internalDomains.length > 0;
-    tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: accounts_adv_settings});
-    tsLog.log("props.accountEmails: " + JSON.stringify(props.accountEmails));
-    tsLog.log("dateQry: " + JSON.stringify(dateQry.value));
+    let prefs = await tsPrefs.getPrefs(["_time_chart_progressive", "accounts_adv_settings", "show_internal_mail_percent", "many_days_show_inbox", "inbox0_openFolderInFirstTab", "first_day_week"]);
+    do_progressive.value = prefs._time_chart_progressive;
+    show_inbox_in_bars.value = prefs.many_days_show_inbox;
+    inbox0_openFolderInFirstTab.value = prefs.inbox0_openFolderInFirstTab;
+    first_day_week.value = Number(prefs.first_day_week);
+    show_internal_mail_percent.value = prefs.show_internal_mail_percent && props.internalDomains.length > 0;
+    filter_duplicates.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id);
+    tsCore = new thunderStastsCore({do_debug: tsStore.do_debug, _involved_num: _involved_num, accounts_adv_settings: prefs.accounts_adv_settings});
+    tsLog.log(() => "props.accountEmails: " + JSON.stringify(props.accountEmails));
+    tsLog.log(() => "dateQry: " + JSON.stringify(dateQry.value));
+    // main data first, then the secondary queries: every query runs on Thunderbird's main thread
     await getCustomQryData();
-    if(!do_single_day.value){
-      chartData_Sent_Original.value.datasets = [];
-      chartData_Sent_Original.value.datasets.push({
-          label: 'Sent',
-          data: chartdata_customqry_sent.value,
-          borderColor: tsStore.chart_colors.many_days_default,
-          backgroundColor: tsStore.chart_colors.many_days_default,
-          borderWidth: 2,
-          pointRadius: 1,
-          //maxBarThickness: 15,
-          minBarThickness: 15,
-      });
-      tsLog.log("chartdata_customqry_sent.value: " + JSON.stringify(chartdata_customqry_sent.value));
-      chartData_Sent_Original.value.labels = chartdata_customqry_labels.value;
-      if (compareIsReady.value) {
-        chartData_Sent_Original.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
-          data: chartdata_customqry_B_sent.value,
-          borderColor: tsStore.chart_colors.compare_default,
-          backgroundColor: tsStore.chart_colors.compare_default + '88',
-          borderWidth: 2,
-          pointRadius: 1,
-          minBarThickness: 15,
-        });
-      }
-      chartData_Sent.value = chartData_Sent_Original.value;
-      chartData_Rcvd_Original.value.datasets = [];
-      chartData_Rcvd_Original.value.datasets.push({
-          label: 'Received',
-          data: chartdata_customqry_rcvd.value,
-          borderColor: tsStore.chart_colors.many_days_default,
-          backgroundColor: tsStore.chart_colors.many_days_default,
-          borderWidth: 2,
-          pointRadius: 1,
-          //maxBarThickness: 15,
-          minBarThickness: 15,
-      });
-      tsLog.log("chartdata_customqry_rcvd.value: " + JSON.stringify(chartdata_customqry_rcvd.value));
-      chartData_Rcvd_Original.value.labels = chartdata_customqry_labels.value;
-      if (compareIsReady.value) {
-        chartData_Rcvd_Original.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
-          data: chartdata_customqry_B_rcvd.value,
-          borderColor: tsStore.chart_colors.compare_default,
-          backgroundColor: tsStore.chart_colors.compare_default + '88',
-          borderWidth: 2,
-          pointRadius: 1,
-          minBarThickness: 15,
-        });
-      }
-      chartData_Rcvd.value = chartData_Rcvd_Original.value;
-      is_loading_sent_chart.value = false;
-      is_loading_rcvd_chart.value = false;
-      setChartWidth();
-      //weeks
-      chartData_Weeks_Sent.value.datasets = [];
-      chartData_Weeks_Sent.value.datasets.push({
-          label: 'Sent',
-          data: chartdata_customqry_weeks_sent.value,
-          borderColor: tsStore.chart_colors.many_days_default,
-          backgroundColor: tsStore.chart_colors.many_days_default,
-          borderWidth: 2,
-          pointRadius: 1,
-          //maxBarThickness: 15,
-          minBarThickness: 15,
-      });
-      chartData_Weeks_Sent.value.labels = chartdata_customqry_weeks_labels.value;
-      if (compareIsReady.value) {
-        chartData_Weeks_Sent.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
-          data: chartdata_customqry_B_weeks_sent.value,
-          borderColor: tsStore.chart_colors.compare_default,
-          backgroundColor: tsStore.chart_colors.compare_default + '88',
-          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
-        });
-      }
-      chartData_Weeks_Rcvd.value.datasets = [];
-      chartData_Weeks_Rcvd.value.datasets.push({
-          label: 'Received',
-          data: chartdata_customqry_weeks_rcvd.value,
-          borderColor: tsStore.chart_colors.many_days_default,
-          backgroundColor: tsStore.chart_colors.many_days_default,
-          borderWidth: 2,
-          pointRadius: 1,
-          //maxBarThickness: 15,
-          minBarThickness: 15,
-      });
-      chartData_Weeks_Rcvd.value.labels = chartdata_customqry_weeks_labels.value;
-      if (compareIsReady.value) {
-        chartData_Weeks_Rcvd.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
-          data: chartdata_customqry_B_weeks_rcvd.value,
-          borderColor: tsStore.chart_colors.compare_default,
-          backgroundColor: tsStore.chart_colors.compare_default + '88',
-          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
-        });
-      }
-      //months
-      chartData_Months_Sent.value.datasets = [];
-      chartData_Months_Sent.value.datasets.push({
-          label: 'Sent',
-          data: chartdata_customqry_months_sent.value,
-          borderColor: tsStore.chart_colors.many_days_default,
-          backgroundColor: tsStore.chart_colors.many_days_default,
-          borderWidth: 2,
-          pointRadius: 1,
-          //maxBarThickness: 15,
-          minBarThickness: 15,
-      });
-      chartData_Months_Sent.value.labels = chartdata_customqry_months_labels.value;
-      if (compareIsReady.value) {
-        chartData_Months_Sent.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
-          data: chartdata_customqry_B_months_sent.value,
-          borderColor: tsStore.chart_colors.compare_default,
-          backgroundColor: tsStore.chart_colors.compare_default + '88',
-          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
-        });
-      }
-      chartData_Months_Rcvd.value.datasets = [];
-      chartData_Months_Rcvd.value.datasets.push({
-          label: 'Received',
-          data: chartdata_customqry_months_rcvd.value,
-          borderColor: tsStore.chart_colors.many_days_default,
-          backgroundColor: tsStore.chart_colors.many_days_default,
-          borderWidth: 2,
-          pointRadius: 1,
-          //maxBarThickness: 15,
-          minBarThickness: 15,
-      });
-      chartData_Months_Rcvd.value.labels = chartdata_customqry_months_labels.value;
-      if (compareIsReady.value) {
-        chartData_Months_Rcvd.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
-          data: chartdata_customqry_B_months_rcvd.value,
-          borderColor: tsStore.chart_colors.compare_default,
-          backgroundColor: tsStore.chart_colors.compare_default + '88',
-          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
-        });
-      }
-      //years
-      chartData_Years_Sent.value.datasets = [];
-      chartData_Years_Sent.value.datasets.push({
-          label: 'Sent',
-          data: chartdata_customqry_years_sent.value,
-          borderColor: tsStore.chart_colors.many_days_default,
-          backgroundColor: tsStore.chart_colors.many_days_default,
-          borderWidth: 2,
-          pointRadius: 1,
-          //maxBarThickness: 15,
-          minBarThickness: 15,
-      });
-      chartData_Years_Sent.value.labels = chartdata_customqry_years_labels.value;
-      if (compareIsReady.value) {
-        chartData_Years_Sent.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
-          data: chartdata_customqry_B_years_sent.value,
-          borderColor: tsStore.chart_colors.compare_default,
-          backgroundColor: tsStore.chart_colors.compare_default + '88',
-          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
-        });
-      }
-      chartData_Years_Rcvd.value.datasets = [];
-      chartData_Years_Rcvd.value.datasets.push({
-          label: 'Received',
-          data: chartdata_customqry_years_rcvd.value,
-          borderColor: tsStore.chart_colors.many_days_default,
-          backgroundColor: tsStore.chart_colors.many_days_default,
-          borderWidth: 2,
-          pointRadius: 1,
-          //maxBarThickness: 15,
-          minBarThickness: 15,
-      });
-      chartData_Years_Rcvd.value.labels = chartdata_customqry_years_labels.value;
-      if (compareIsReady.value) {
-        chartData_Years_Rcvd.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
-          data: chartdata_customqry_B_years_rcvd.value,
-          borderColor: tsStore.chart_colors.compare_default,
-          backgroundColor: tsStore.chart_colors.compare_default + '88',
-          borderWidth: 2, pointRadius: 1, minBarThickness: 15,
-        });
-      }
-      tsLog.log("chartdata_customqry_hours_sent.value: " + JSON.stringify(chartdata_customqry_hours_sent.value));
-      tsLog.log("chartdata_customqry_hours_rcvd.value: " + JSON.stringify(chartdata_customqry_hours_rcvd.value));
-      chartData_TimeDay.value.datasets = [];
-      chartData_TimeDay.value.datasets.push({
-          label: 'ysent',
-          data: chartdata_customqry_hours_sent.value,
-          borderColor: tsStore.chart_colors._time_sent,
-          backgroundColor: tsStore.chart_colors._time_sent,
-          borderWidth: 2,
-          pointRadius: 1,
-      });
-      chartData_TimeDay.value.datasets.push({
-          label: 'yrcvd',
-          data: chartdata_customqry_hours_rcvd.value,
-          borderColor: tsStore.chart_colors._time_rcvd,
-          backgroundColor: tsStore.chart_colors._time_rcvd,
-          borderWidth: 2,
-          pointRadius: 1,
-      });
-      if (compareIsReady.value) {
-        chartData_TimeDay.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
-          data: chartdata_customqry_B_hours_sent.value,
-          borderColor: tsStore.chart_colors.compare_time_sent,
-          backgroundColor: tsStore.chart_colors.compare_time_sent,
-          borderWidth: 2,
-          pointRadius: 1,
-          borderDash: [5, 5],
-        });
-        chartData_TimeDay.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
-          data: chartdata_customqry_B_hours_rcvd.value,
-          borderColor: tsStore.chart_colors.compare_time_rcvd,
-          backgroundColor: tsStore.chart_colors.compare_time_rcvd,
-          borderWidth: 2,
-          pointRadius: 1,
-          borderDash: [5, 5],
-        });
-      }
-      // week days
-      tsLog.log("chartdata_customqry_hours_sent.value: " + JSON.stringify(chartdata_customqry_weekdays_rcvd.value));
-      tsLog.log("chartdata_customqry_hours_rcvd.value: " + JSON.stringify(chartdata_customqry_weekdays_sent.value));
-      chartData_WeekDays.value.datasets = [];
-      chartData_WeekDays.value.datasets.push({
-          label: 'ysent',
-          data: chartdata_customqry_weekdays_sent.value,
-          borderColor: tsStore.chart_colors._weekday_sent,
-          backgroundColor: tsStore.chart_colors._weekday_sent,
-          borderWidth: 2,
-          pointRadius: 1,
-      })
-      chartData_WeekDays.value.datasets.push({
-          label: 'yrcvd',
-          data: chartdata_customqry_weekdays_rcvd.value,
-          borderColor: tsStore.chart_colors._weekday_rcvd,
-          backgroundColor: tsStore.chart_colors._weekday_rcvd,
-          borderWidth: 2,
-          pointRadius: 1,
-      })
-      if (compareIsReady.value) {
-        chartData_WeekDays.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
-          data: chartdata_customqry_B_weekdays_sent.value,
-          borderColor: tsStore.chart_colors.compare_weekday_sent,
-          backgroundColor: tsStore.chart_colors.compare_weekday_sent + '88',
-          borderWidth: 2,
-          pointRadius: 1,
-        });
-        chartData_WeekDays.value.datasets.push({
-          label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
-          data: chartdata_customqry_B_weekdays_rcvd.value,
-          borderColor: tsStore.chart_colors.compare_weekday_rcvd,
-          backgroundColor: tsStore.chart_colors.compare_weekday_rcvd + '88',
-          borderWidth: 2,
-          pointRadius: 1,
-        });
-      }
-    }else{    //single day
-      getInboxZeroData();
-      // chart single day hours
-      tsLog.log("chartdata_singleday_hours_sent.value: " + JSON.stringify(chartdata_singleday_hours_sent.value));
-      tsLog.log("chartdata_singleday_hours_rcvd.value: " + JSON.stringify(chartdata_singleday_hours_rcvd.value));
-      chartData_SingleDay.value.datasets = [];
-      chartData_SingleDay.value.datasets.push({
-          label: 'ysent',
-          data: chartdata_singleday_hours_sent.value,
-          borderColor: tsStore.chart_colors._time_sent,
-          backgroundColor: tsStore.chart_colors._time_sent,
-          borderWidth: 2,
-          pointRadius: 1,
-      })
-      chartData_SingleDay.value.datasets.push({
-          label: 'yrcvd',
-          data: chartdata_singleday_hours_rcvd.value,
-          borderColor: tsStore.chart_colors._time_rcvd,
-          backgroundColor: tsStore.chart_colors._time_rcvd,
-          borderWidth: 2,
-          pointRadius: 1,
-      })
-      // chart inbox zero folders
-      let given_folders = tsCoreUtils.filterReceivedFolders(chartdata_inboxzero_folders.value);
-      let folders_data = tsCoreUtils.getFoldersLabelsColors(given_folders);
-      if("folders" in folders_data){
-        chartData_InboxZeroFolders.value.folders = folders_data.folders;
-      }
-      chartData_InboxZeroFolders.value.folder_paths = folders_data.folder_paths;
-      chartData_InboxZeroFolders.value.labels = folders_data.labels;
-      chartData_InboxZeroFolders.value.datasets = [];
-      chartData_InboxZeroFolders.value.datasets.push({data:tsCoreUtils.getFoldersCounts(given_folders), backgroundColor: folders_data.colors, borderColor: folders_data.colors});
-      tsLog.log("chartData_InboxZeroFolders.value: " + JSON.stringify(chartData_InboxZeroFolders.value));
-      // chart inbox zero dates
-      inbox0_openFolderInFirstTab.value = await tsPrefs.getPref("inbox0_openFolderInFirstTab");
-    }
-
-    // chart domains
-    let _domains_labels = chartdata_domains_labels.value;
-    let _domains_sent_A = chartdata_domains_sent.value;
-    let _domains_rcvd_A = chartdata_domains_rcvd.value;
-    let _domains_sent_B = null;
-    let _domains_rcvd_B = null;
-    if (compareIsReady.value) {
-      let merged = tsCoreUtils.mergeCategoricalComparisonData(_domains_labels, _domains_sent_A, _domains_rcvd_A, chartdata_B_domains_labels.value, chartdata_B_domains_sent.value, chartdata_B_domains_rcvd.value);
-      _domains_labels = merged.labels;
-      _domains_sent_A = merged.sentA;
-      _domains_rcvd_A = merged.rcvdA;
-      _domains_sent_B = merged.sentB;
-      _domains_rcvd_B = merged.rcvdB;
-    }
-    let chart_container_height = document.getElementById('chart_domains_customqry').clientHeight;
-    let chart_ipotetic_height = _domains_labels.length * 60;
-    if(chart_container_height < chart_ipotetic_height){
-        domains_chart_height.value = String(chart_ipotetic_height) + "px";
+    getInboxZeroData();
+    if(do_single_day.value) {
+      getExtraData();
     } else {
-        domains_chart_height.value = String(chart_container_height) + "px";
+      is_loading_extra.value = false;
+      updateElapsed('getExtraData', 1);
     }
-    chartData_Domains.value.labels = _domains_labels;
-    chartData_Domains.value.internal_flags = chartdata_domains_internal_flags.value;
-    chartData_Domains.value.datasets = [];
-    chartData_Domains.value.datasets.push({
-        label: 'tsent',
-        data: _domains_sent_A,
-        borderColor: tsStore.chart_colors._time_sent,
-        backgroundColor: tsStore.chart_colors._time_sent,
-        borderWidth: 2,
-        pointRadius: 1,
-    });
-    chartData_Domains.value.datasets.push({
-        label: 'trcvd',
-        data: _domains_rcvd_A,
-        borderColor: tsStore.chart_colors._time_rcvd,
-        backgroundColor: tsStore.chart_colors._time_rcvd,
-        borderWidth: 2,
-        pointRadius: 1,
-    });
-    if (compareIsReady.value) {
-      chartData_Domains.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
-        data: _domains_sent_B,
-        borderColor: tsStore.chart_colors.compare_time_sent,
-        backgroundColor: tsStore.chart_colors.compare_time_sent + '88',
-        borderWidth: 2,
-        pointRadius: 1,
-      });
-      chartData_Domains.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
-        data: _domains_rcvd_B,
-        borderColor: tsStore.chart_colors.compare_time_rcvd,
-        backgroundColor: tsStore.chart_colors.compare_time_rcvd + '88',
-        borderWidth: 2,
-        pointRadius: 1,
-      });
-    }
-    tsLog.log("chartData_Domains.value: " + JSON.stringify(chartData_Domains.value));
-    tsLog.log("chartData_Domains.value.labels: " + JSON.stringify(chartData_Domains.value.labels));
-
-    // chart folders
-    let _folders_labels = chartdata_folders_labels.value;
-    let _folders_sent_A = chartdata_folders_sent.value;
-    let _folders_rcvd_A = chartdata_folders_rcvd.value;
-    let _folders_sent_B = null;
-    let _folders_rcvd_B = null;
-    if (compareIsReady.value) {
-      let merged = tsCoreUtils.mergeCategoricalComparisonData(_folders_labels, _folders_sent_A, _folders_rcvd_A, chartdata_B_folders_labels.value, chartdata_B_folders_sent.value, chartdata_B_folders_rcvd.value);
-      _folders_labels = merged.labels;
-      _folders_sent_A = merged.sentA;
-      _folders_rcvd_A = merged.rcvdA;
-      _folders_sent_B = merged.sentB;
-      _folders_rcvd_B = merged.rcvdB;
-    }
-    chartData_Folders.value.labels = _folders_labels;
-    chartData_Folders.value.datasets = [];
-    chartData_Folders.value.datasets.push({
-        label: 'tsent',
-        data: _folders_sent_A,
-        borderColor: tsStore.chart_colors._time_sent,
-        backgroundColor: tsStore.chart_colors._time_sent,
-        borderWidth: 2,
-        pointRadius: 1,
-    });
-    chartData_Folders.value.datasets.push({
-        label: 'trcvd',
-        data: _folders_rcvd_A,
-        borderColor: tsStore.chart_colors._time_rcvd,
-        backgroundColor: tsStore.chart_colors._time_rcvd,
-        borderWidth: 2,
-        pointRadius: 1,
-    });
-    if (compareIsReady.value) {
-      chartData_Folders.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
-        data: _folders_sent_B,
-        borderColor: tsStore.chart_colors.compare_time_sent,
-        backgroundColor: tsStore.chart_colors.compare_time_sent + '88',
-        borderWidth: 2, pointRadius: 1,
-      });
-      chartData_Folders.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
-        data: _folders_rcvd_B,
-        borderColor: tsStore.chart_colors.compare_time_rcvd,
-        backgroundColor: tsStore.chart_colors.compare_time_rcvd + '88',
-        borderWidth: 2, pointRadius: 1,
-      });
-    }
-    tsLog.log("chartData_Folders.value: " + JSON.stringify(chartData_Folders.value));
-    tsLog.log("chartData_Folders.value.labels: " + JSON.stringify(chartData_Folders.value.labels));
-
-    // chart tags
-    let _tags_labels = chartdata_tags_labels.value;
-    let _tags_sent_A = chartdata_tags_sent.value;
-    let _tags_rcvd_A = chartdata_tags_rcvd.value;
-    let _tags_sent_B = null;
-    let _tags_rcvd_B = null;
-    if (compareIsReady.value) {
-      let merged = tsCoreUtils.mergeCategoricalComparisonData(_tags_labels, _tags_sent_A, _tags_rcvd_A, chartdata_B_tags_labels.value, chartdata_B_tags_sent.value, chartdata_B_tags_rcvd.value);
-      _tags_labels = merged.labels;
-      _tags_sent_A = merged.sentA;
-      _tags_rcvd_A = merged.rcvdA;
-      _tags_sent_B = merged.sentB;
-      _tags_rcvd_B = merged.rcvdB;
-    }
-    chartData_Tags.value.labels = _tags_labels;
-    chartData_Tags.value.datasets = [];
-    chartData_Tags.value.datasets.push({
-        label: 'tsent',
-        data: _tags_sent_A,
-        borderColor: tsStore.chart_colors._time_sent,
-        backgroundColor: tsStore.chart_colors._time_sent,
-        borderWidth: 2,
-        pointRadius: 1,
-    });
-    chartData_Tags.value.datasets.push({
-        label: 'trcvd',
-        data: _tags_rcvd_A,
-        borderColor: tsStore.chart_colors._time_rcvd,
-        backgroundColor: tsStore.chart_colors._time_rcvd,
-        borderWidth: 2,
-        pointRadius: 1,
-    });
-    if (compareIsReady.value) {
-      chartData_Tags.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Sent"),
-        data: _tags_sent_B,
-        borderColor: tsStore.chart_colors.compare_time_sent,
-        backgroundColor: tsStore.chart_colors.compare_time_sent + '88',
-        borderWidth: 2, pointRadius: 1,
-      });
-      chartData_Tags.value.datasets.push({
-        label: browser.i18n.getMessage("PeriodB") + '  ' + browser.i18n.getMessage("TimeChart.Rcvd"),
-        data: _tags_rcvd_B,
-        borderColor: tsStore.chart_colors.compare_time_rcvd,
-        backgroundColor: tsStore.chart_colors.compare_time_rcvd + '88',
-        borderWidth: 2, pointRadius: 1,
-      });
-    }
-    tsLog.log("chartData_Tags.value: " + JSON.stringify(chartData_Tags.value));
-    tsLog.log("chartData_Tags.value.labels: " + JSON.stringify(chartData_Tags.value.labels));
-
-    nextTick(async () => {
-        if(do_single_day.value){
-          is_loading_singleday_chart.value = false;
-          is_loading_inbox_chart_folders.value = false;
-          // is_loading_inbox_chart_dates.value = false;
-          showFolderLocationNoteAnchor.value = await tsCoreUtils.getFilterDuplicatesPreference(tsStore.current_account_id);
-          await nextTick();
-        }
+    nextTick(() => {
         i18n.updateDocument();
     });
 };
 
- // get many days data
     function getCustomQryData () {
         return new Promise(async (resolve) => {
             let start_time = performance.now();
-            let fromDate = dateQry.value[0];
-            let toDate = dateQry.value[1];
-            let advFilters = {};
-            advFilters.folders = filterFolder.value;
-            advFilters.folders_do_subfolders = filterFolder_do_subfolders.value;
-            advFilters.read_unread = filterReadUnread.value;
-            advFilters.flagged_unflagged = filterFlaggedUnflagged.value;
-            advFilters.filterSubject = filterSubject.value.trim();
-            tsLog.log("advFilters: " + JSON.stringify(advFilters, null, 2));
-            let result_customqry = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters, props.internalDomains);
-            tsLog.log("result_customqry: " + JSON.stringify(result_customqry, null, 2));
+            let fromDate = new Date(dateQry.value[0]);
+            let toDate = new Date(dateQry.value[1]);
+            let advFilters = {
+              folders: filterFolder.value,
+              folders_do_subfolders: filterFolder_do_subfolders.value,
+              read_unread: filterReadUnread.value,
+              flagged_unflagged: filterFlaggedUnflagged.value,
+              filterSubject: filterSubject.value.trim(),
+            };
+            tsLog.log(() => "advFilters: " + JSON.stringify(advFilters, null, 2));
+            let result = await tsCore.getCustomQryData(fromDate, toDate, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters, props.internalDomains);
+            tsLog.log(() => "result_customqry: " + JSON.stringify(result, null, 2));
             // export data
             if(!do_single_day.value){
-              _export_data.value[tsExport.export.daily_mails.type] = result_customqry.dates;
-              _export_data.value[tsExport.export.weekdays.type] = result_customqry.msg_weekdays;
-              _export_data.value[tsExport.export.weekly_mails.type] = result_customqry.dates_weeks;
-              _export_data.value[tsExport.export.monthly_mails.type] = result_customqry.dates_months;
-              _export_data.value[tsExport.export.yearly_mails.type] = result_customqry.dates_years;
+              _export_data.value[tsExport.export.daily_mails.type] = result.dates;
+              _export_data.value[tsExport.export.weekdays.type] = result.msg_weekdays;
+              _export_data.value[tsExport.export.weekly_mails.type] = result.dates_weeks;
+              _export_data.value[tsExport.export.monthly_mails.type] = result.dates_months;
+              _export_data.value[tsExport.export.yearly_mails.type] = result.dates_years;
             }
-            _export_data.value[tsExport.export.time_emails.type] = result_customqry.msg_hours;
-            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeRecipientsAndSenders(result_customqry.senders, result_customqry.recipients);
-            _export_data.value[tsExport.export.tags.type] = result_customqry.tags;
-            _export_data.value[tsExport.export.folders.type] = result_customqry.folders;
-            _export_data.value[tsExport.export.domains.type] = result_customqry.domains;
-            //top senders list
-            show_table_involved_senders.value =  Object.keys(result_customqry.senders).length > 0;
-            table_involved_senders.value = result_customqry.senders;
-            is_loading_involved_table_senders.value = false;
-            //top recipients list
-            show_table_involved_recipients.value =  Object.keys(result_customqry.recipients).length > 0;
-            table_involved_recipients.value = result_customqry.recipients;
-            is_loading_involved_table_recipients.value = false;
-            //sent and received counters
-            sent_total.value = result_customqry.sent;
-            rcvd_total.value = result_customqry.received;
-            tsLog.log("sent_total: " + sent_total.value + " rcvd_total: " + rcvd_total.value);
-            if(show_internal_mail_percent.value && do_single_day.value) {
-                let internalData = tsCoreUtils.getInternalMailLabel(result_customqry.domains);
+            _export_data.value[tsExport.export.time_emails.type] = result.msg_hours;
+            _export_data.value[tsExport.export.correspondents.type] = tsExport.mergeSendersAndRecipients(result.senders, result.recipients);
+            _export_data.value[tsExport.export.tags.type] = result.tags;
+            _export_data.value[tsExport.export.folders.type] = result.folders;
+            _export_data.value[tsExport.export.domains.type] = result.domains;
+            if(show_internal_mail_percent.value) {
+                let internalData = tsCoreUtils.getInternalMailLabel(result.domains);
                 internal_sent_percent.value = internalData.sentPercent;
                 internal_rcvd_percent.value = internalData.receivedPercent;
             }
-            is_loading_counter_sent_rcvd.value = false;
-            if(!do_single_day.value){
-              // chart day hours
-              const _hours_data = tsCoreUtils.transformCountDataToDataset(result_customqry.msg_hours, false); // the false is to not to it progressive
-              chartdata_customqry_hours_sent.value = _hours_data.dataset_sent;
-              chartdata_customqry_hours_rcvd.value = _hours_data.dataset_rcvd;
-              is_loading_timeday_chart.value = false;
-              //aggregated data
-              let aggregate = result_customqry.aggregate;
-              tsLog.log("dates: " + JSON.stringify(result_customqry.dates, null, 2));
-              tsLog.log("aggregate: " + JSON.stringify(aggregate, null, 2));
-              counter_customqry_rcvd_total.value = aggregate.total_received;
-              counter_customqry_rcvd_max.value = aggregate.max_received;
-              counter_customqry_rcvd_min.value = aggregate.min_received;
-              counter_customqry_rcvd_avg.value = aggregate.avg_received;
-              counter_customqry_sent_total.value = aggregate.total_sent;
-              counter_customqry_sent_max.value = aggregate.max_sent;
-              counter_customqry_sent_min.value = aggregate.min_sent;
-              counter_customqry_sent_avg.value = aggregate.avg_sent;
-              is_loading_counter_customqry.value = false;
-              // sent and received charts
-              const customqry_data = tsCoreUtils.transformCountDataToDataset(result_customqry.dates, false, true);
-              tsLog.log("customqry_data: " + JSON.stringify(customqry_data));
-              chartdata_customqry_labels.value = customqry_data.labels;
-              // sent chart
-              chartdata_customqry_sent.value = customqry_data.dataset_sent;
-              if (!compareIsReady.value) is_loading_sent_chart.value = false;
-              // received chart
-              chartdata_customqry_rcvd.value = customqry_data.dataset_rcvd;
-              if (!compareIsReady.value) is_loading_rcvd_chart.value = false;
-              // weeks view
-              const customqry_weeks = tsCoreUtils.transformCountDataToDataset(result_customqry.dates_weeks, false, true);
-              tsLog.log("customqry_weeks: " + JSON.stringify(customqry_weeks));
-              chartdata_customqry_weeks_labels.value = customqry_weeks.labels;
-              chartdata_customqry_weeks_sent.value = customqry_weeks.dataset_sent;
-              chartdata_customqry_weeks_rcvd.value = customqry_weeks.dataset_rcvd;
-              // months view
-              const customqry_months = tsCoreUtils.transformCountDataToDataset(result_customqry.dates_months, false, true);
-              tsLog.log("customqry_months: " + JSON.stringify(customqry_months));
-              chartdata_customqry_months_labels.value = customqry_months.labels;
-              chartdata_customqry_months_sent.value = customqry_months.dataset_sent;
-              chartdata_customqry_months_rcvd.value = customqry_months.dataset_rcvd;
-              // years view
-              const customqry_years = tsCoreUtils.transformCountDataToDataset(result_customqry.dates_years, false, true);
-              tsLog.log("customqry_years: " + JSON.stringify(customqry_years));
-              chartdata_customqry_years_labels.value = customqry_years.labels;
-              chartdata_customqry_years_sent.value = customqry_years.dataset_sent;
-              chartdata_customqry_years_rcvd.value = customqry_years.dataset_rcvd;
-              // chart weekdays
-              let first_day_week = tsStore.first_day_week;
-              const _weekdays_data = tsCoreUtils.transformCountDataToDataset(tsUtils.sortWeekdays(first_day_week, result_customqry.msg_weekdays), false); // the false is to not do it progressive
-              chartdata_customqry_weekdays_sent.value = _weekdays_data.dataset_sent;
-              chartdata_customqry_weekdays_rcvd.value = _weekdays_data.dataset_rcvd;
-              is_loading_weekdays_chart.value = false;
-            }else{  // single day view
-              // console.log(">>>>>>>>>>>>>> count_total_rcvd: " + result_customqry.received);
-              // console.log(">>>>>>>>>>>>>> count_in_inbox: " + result_customqry.count_in_inbox);
-              if(result_customqry.received > 0){
-                let ratio = inbox_percent_remaining.value ? (result_customqry.count_in_inbox / result_customqry.received) : (1 - (result_customqry.count_in_inbox / result_customqry.received));
-                counter_inbox_percent.value = (Math.round(ratio * 10000) / 100).toFixed(2) + '%';
-              }else{
-                counter_inbox_percent.value = '0%';
-              }
-              is_loading_counter_inbox_percent.value = false;
-              const singleday_hours_data = tsCoreUtils.transformCountDataToDataset(result_customqry.msg_hours, do_progressive);
-              chartdata_singleday_hours_sent.value = singleday_hours_data.dataset_sent;
-              chartdata_singleday_hours_rcvd.value = singleday_hours_data.dataset_rcvd;
-              is_loading_singleday_chart.value = false;
-              // inbox zero folders
-              chartdata_inboxzero_folders.value = result_customqry.folders;
-            }
-            // domains
-            const domains_data = tsCoreUtils.transformCountDataToDataset(result_customqry.domains, false, true);
-            // console.log(">>>>>>>>>>>>> domains_data: " + JSON.stringify(domains_data, null, 2));
-            chartdata_domains_sent.value = domains_data.dataset_sent;
-            chartdata_domains_rcvd.value = domains_data.dataset_rcvd;
-            chartdata_domains_labels.value = domains_data.labels;
-            chartdata_domains_internal_flags.value = domains_data.internal_flags || [];
-            is_loading_domains_chart.value = false;
-            // folders
-            const folders_data = tsCoreUtils.transformCountDataToDataset(result_customqry.folders, false, true);
-            //  console.log(">>>>>>>>>>>>> folders_data: " + JSON.stringify(folders_data, null, 2));
-            chartdata_folders_sent.value = folders_data.dataset_sent;
-            chartdata_folders_rcvd.value = folders_data.dataset_rcvd;
-            chartdata_folders_labels.value = folders_data.labels;
-            is_loading_folders_chart.value = false;
-            // tags
-            const tags_data = tsCoreUtils.transformCountDataToDataset(result_customqry.tags, false, true);
-            //  console.log(">>>>>>>>>>>>> tags_data: " + JSON.stringify(tags_data, null, 2));
-            chartdata_tags_sent.value = tags_data.dataset_sent;
-            chartdata_tags_rcvd.value = tags_data.dataset_rcvd;
-            chartdata_tags_labels.value = await tsCoreUtils.transformTagsLabels(tags_data.labels);
-            is_loading_tags_chart.value = false;
             // Period B comparison data
             if (compareIsReady.value && dateQryB_end.value) {
-              is_loading_compare.value = true;
               let fromDateB = new Date(dateQryB_start.value);
               fromDateB.setHours(0, 0, 0, 0);
               let toDateB = new Date(dateQryB_end.value);
               toDateB.setHours(23, 59, 59, 999);
-              result_customqry_B = await tsCore.getCustomQryData(fromDateB, toDateB, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters, props.internalDomains);
-              tsLog.log("result_customqry_B: " + JSON.stringify(result_customqry_B, null, 2));
-              sent_total_B.value = result_customqry_B.sent;
-              rcvd_total_B.value = result_customqry_B.received;
-              if (!do_single_day.value && result_customqry_B.aggregate) {
-                let aggregate_B = result_customqry_B.aggregate;
-                counter_customqry_B_sent_total.value = aggregate_B.total_sent;
-                counter_customqry_B_sent_max.value = aggregate_B.max_sent;
-                counter_customqry_B_sent_min.value = aggregate_B.min_sent;
-                counter_customqry_B_sent_avg.value = aggregate_B.avg_sent;
-                counter_customqry_B_rcvd_total.value = aggregate_B.total_received;
-                counter_customqry_B_rcvd_max.value = aggregate_B.max_received;
-                counter_customqry_B_rcvd_min.value = aggregate_B.min_received;
-                counter_customqry_B_rcvd_avg.value = aggregate_B.avg_received;
-              }
-              if (!do_single_day.value) {
-                // hours
-                const _hours_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.msg_hours, false);
-                chartdata_customqry_B_hours_sent.value = _hours_data_B.dataset_sent;
-                chartdata_customqry_B_hours_rcvd.value = _hours_data_B.dataset_rcvd;
-                // sent and received charts
-                const customqry_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.dates, false, true);
-                chartdata_customqry_B_labels.value = customqry_data_B.labels;
-                chartdata_customqry_B_sent.value = customqry_data_B.dataset_sent;
-                chartdata_customqry_B_rcvd.value = customqry_data_B.dataset_rcvd;
-                // weeks
-                const customqry_weeks_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.dates_weeks, false, true);
-                chartdata_customqry_B_weeks_labels.value = customqry_weeks_B.labels;
-                chartdata_customqry_B_weeks_sent.value = customqry_weeks_B.dataset_sent;
-                chartdata_customqry_B_weeks_rcvd.value = customqry_weeks_B.dataset_rcvd;
-                // months
-                const customqry_months_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.dates_months, false, true);
-                chartdata_customqry_B_months_labels.value = customqry_months_B.labels;
-                chartdata_customqry_B_months_sent.value = customqry_months_B.dataset_sent;
-                chartdata_customqry_B_months_rcvd.value = customqry_months_B.dataset_rcvd;
-                // years
-                const customqry_years_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.dates_years, false, true);
-                chartdata_customqry_B_years_labels.value = customqry_years_B.labels;
-                chartdata_customqry_B_years_sent.value = customqry_years_B.dataset_sent;
-                chartdata_customqry_B_years_rcvd.value = customqry_years_B.dataset_rcvd;
-                // weekdays
-                const _weekdays_data_B = tsCoreUtils.transformCountDataToDataset(tsUtils.sortWeekdays(first_day_week, result_customqry_B.msg_weekdays), false);
-                chartdata_customqry_B_weekdays_sent.value = _weekdays_data_B.dataset_sent;
-                chartdata_customqry_B_weekdays_rcvd.value = _weekdays_data_B.dataset_rcvd;
-              }
-              // domains
-              const domains_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.domains, false, true);
-              chartdata_B_domains_sent.value = domains_data_B.dataset_sent;
-              chartdata_B_domains_rcvd.value = domains_data_B.dataset_rcvd;
-              chartdata_B_domains_labels.value = domains_data_B.labels;
-              // folders
-              const folders_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.folders, false, true);
-              chartdata_B_folders_sent.value = folders_data_B.dataset_sent;
-              chartdata_B_folders_rcvd.value = folders_data_B.dataset_rcvd;
-              chartdata_B_folders_labels.value = folders_data_B.labels;
-              // tags
-              const tags_data_B = tsCoreUtils.transformCountDataToDataset(result_customqry_B.tags, false, true);
-              chartdata_B_tags_sent.value = tags_data_B.dataset_sent;
-              chartdata_B_tags_rcvd.value = tags_data_B.dataset_rcvd;
-              chartdata_B_tags_labels.value = await tsCoreUtils.transformTagsLabels(tags_data_B.labels);
+              let result_period_b = await tsCore.getCustomQryData(fromDateB, toDateB, tsStore.current_account_id, props.accountEmails, doOnlyBD.value, advFilters, props.internalDomains);
+              tsLog.log(() => "result_customqry_B: " + JSON.stringify(result_period_b, null, 2));
               // export comparison data
-              if (!do_single_day.value) {
-                _export_data.value['compare_' + tsExport.export.daily_mails.type] = result_customqry_B.dates;
-                _export_data.value['compare_' + tsExport.export.weekdays.type] = result_customqry_B.msg_weekdays;
-                _export_data.value['compare_' + tsExport.export.weekly_mails.type] = result_customqry_B.dates_weeks;
-                _export_data.value['compare_' + tsExport.export.monthly_mails.type] = result_customqry_B.dates_months;
-                _export_data.value['compare_' + tsExport.export.yearly_mails.type] = result_customqry_B.dates_years;
-              }
-              _export_data.value['compare_' + tsExport.export.time_emails.type] = result_customqry_B.msg_hours;
-              _export_data.value['compare_' + tsExport.export.tags.type] = result_customqry_B.tags;
-              _export_data.value['compare_' + tsExport.export.folders.type] = result_customqry_B.folders;
-              _export_data.value['compare_' + tsExport.export.domains.type] = result_customqry_B.domains;
-              computeDeltas();
-              is_loading_compare.value = false;
-              await nextTick();
-              updateAdvFiltersPosition();
+              _export_data.value['compare_' + tsExport.export.daily_mails.type] = result_period_b.dates;
+              _export_data.value['compare_' + tsExport.export.weekdays.type] = result_period_b.msg_weekdays;
+              _export_data.value['compare_' + tsExport.export.weekly_mails.type] = result_period_b.dates_weeks;
+              _export_data.value['compare_' + tsExport.export.monthly_mails.type] = result_period_b.dates_months;
+              _export_data.value['compare_' + tsExport.export.yearly_mails.type] = result_period_b.dates_years;
+              _export_data.value['compare_' + tsExport.export.time_emails.type] = result_period_b.msg_hours;
+              _export_data.value['compare_' + tsExport.export.tags.type] = result_period_b.tags;
+              _export_data.value['compare_' + tsExport.export.folders.type] = result_period_b.folders;
+              _export_data.value['compare_' + tsExport.export.domains.type] = result_period_b.domains;
+              result_B.value = result_period_b;
+              query_b_start = fromDateB;
             } else {
-              // Clear comparison data when not comparing
-              result_customqry_B = null;
-              is_loading_compare.value = false;
+              query_b_start = null;
+              for(let key of Object.keys(_export_data.value)) {
+                if(key.startsWith('compare_')) delete _export_data.value[key];
+              }
+              result_B.value = null;
             }
+            result_qry.value = result;
+            is_loading_data.value = false;
             let stop_time = performance.now();
             updateElapsed('getCustomQryData', stop_time - start_time);
             doing_update = false;
@@ -1654,146 +684,58 @@ async function updateData() {
 
     function getInboxZeroData () {
         return new Promise(async (resolve) => {
-            let result_inbox = await tsCore.getInboxZeroDates(tsStore.current_account_id, props.accountEmails);
-            counter_inbox_total.value = result_inbox.total;
-            counter_inbox_unread.value = result_inbox.unread;
-            // inbox zero dates
-            chartdata_inboxzero_dates.value = result_inbox.dates;
-            is_loading_counter_inbox.value = false;
-            chartData_InboxZeroDates.value.labels = ['date'];
-            chartData_InboxZeroDates.value.datasets = [];
-            chartData_InboxZeroDates.value.datasets = tsCoreUtils.transformInboxZeroDatesDataToDataset(chartdata_inboxzero_dates.value);
-            tsLog.log("chartData_InboxZeroDates.value: " + JSON.stringify(chartData_InboxZeroDates.value));
-            nextTick(() => {
-                is_loading_inbox_chart_dates.value = false;
-            });
-            updateElapsed('getInboxZeroData', result_inbox.elapsed);
+            let result = await tsCore.getInboxZeroDates(tsStore.current_account_id);
+            result_inbox.value = result;
+            is_loading_inbox.value = false;
+            updateElapsed('getInboxZeroData', result.elapsed);
             resolve(true);
         });
     };
 
-function computeDeltas() {
-  // Sent delta: variation of Period A relative to Period B
-  let sentA = sent_total.value;
-  let sentB = sent_total_B.value;
-  if (sentA === 0 && sentB === 0) {
-    deltaSentText.value = '0%';
-    deltaSentClass.value = 'delta_neutral';
-  } else if (sentB === 0) {
-    deltaSentText.value = '+100%';
-    deltaSentClass.value = 'delta_positive';
-  } else {
-    let pct = ((sentA - sentB) / sentB * 100).toFixed(1);
-    deltaSentText.value = (pct > 0 ? '+' : '') + pct + '%';
-    deltaSentClass.value = pct > 0 ? 'delta_positive' : pct < 0 ? 'delta_negative' : 'delta_neutral';
-  }
-  // Received delta: variation of Period A relative to Period B
-  let rcvdA = rcvd_total.value;
-  let rcvdB = rcvd_total_B.value;
-  if (rcvdA === 0 && rcvdB === 0) {
-    deltaRcvdText.value = '0%';
-    deltaRcvdClass.value = 'delta_neutral';
-  } else if (rcvdB === 0) {
-    deltaRcvdText.value = '+100%';
-    deltaRcvdClass.value = 'delta_positive';
-  } else {
-    let pct = ((rcvdA - rcvdB) / rcvdB * 100).toFixed(1);
-    deltaRcvdText.value = (pct > 0 ? '+' : '') + pct + '%';
-    deltaRcvdClass.value = pct > 0 ? 'delta_positive' : pct < 0 ? 'delta_negative' : 'delta_neutral';
-  }
-}
+    // single day: the same weekday in the previous weeks and the previous days
+    function getExtraData () {
+        return new Promise(async (resolve) => {
+            let day = new Date(dateQry.value[0]);
+            day.setHours(0, 0, 0, 0);
+            let [baseline, prev] = await Promise.all([
+              tsCore.getWeekdayBaseline(new Date(day), tsStore.current_account_id, props.accountEmails, BASELINE_WEEKS),
+              tsCore.getDaysBefore(new Date(day), 7, tsStore.current_account_id, props.accountEmails),
+            ]);
+            baseline_days.value = baseline.days;
+            result_prev_days.value = prev.msg_days;
+            is_loading_extra.value = false;
+            updateElapsed('getExtraData', Math.max(baseline.elapsed, prev.elapsed));
+            resolve(true);
+        });
+    };
 
 function loadingDo(){
-    is_loading_counter_sent_rcvd.value = true;
-    is_loading_counter_customqry.value = true;
-    is_loading_involved_table_recipients.value = true;
-    is_loading_involved_table_senders.value = true;
-    is_loading_sent_chart.value = true;
-    is_loading_rcvd_chart.value = true;
-    is_loading_singleday_chart.value = true;
-    is_loading_counter_inbox.value = true;
-    is_loading_counter_inbox_percent.value = true;
-    is_loading_inbox_chart_folders.value = true;
-    is_loading_inbox_chart_dates.value = true;
-    is_loading_timeday_chart.value = true;
-    is_loading_weekdays_chart.value = true;
-    is_loading_domains_chart.value = true;
-    is_loading_folders_chart.value = true;
-    is_loading_tags_chart.value = true;
-    if (compareIsReady.value) {
-      is_loading_compare.value = true;
+    is_loading_data.value = true;
+    is_loading_inbox.value = true;
+    is_loading_extra.value = true;
+    result_qry.value = null;
+    result_B.value = null;
+    result_inbox.value = null;
+    baseline_days.value = null;
+    result_prev_days.value = null;
+    elapsed = {
+        'getCustomQryData': 0,
+        'getInboxZeroData': 0,
+        'getExtraData': 0,
     }
 }
 
 function updateElapsed(function_name, time) {
     elapsed[function_name] = time;
-    //console.log(">>>>>>>>>>>>> updateElapsed: " + JSON.stringify(elapsed));
     const allNonZero = Object.values(elapsed).every(value => value !== 0);
     if (allNonZero) {
         emit('updateElapsed', Math.max(...Object.values(elapsed)));
     }
 }
 
-async function toggleAdvancedFilters(){
-  // let container = document.getElementById('customqry_square_container');
-  // let currentMarginTop = window.getComputedStyle(container).marginTop;
-  // let currentMarginTopValue = parseFloat(currentMarginTop);
-  show_advanced_filters.value = !show_advanced_filters.value;
-  await nextTick();
-  updateAdvFiltersPosition();
-  // if(show_advanced_filters.value){
-  //   let adv_filters = document.getElementById('customqry_adv_filters');
-  //   if(adv_filters) {
-  //     // let heightOfElementA = adv_filters.offsetHeight;
-  //     let height = adv_filters.offsetHeight;
-  //     let style = getComputedStyle(adv_filters);
-  //     let marginTop = parseFloat(style.marginTop);
-  //     let marginBottom = parseFloat(style.marginBottom);
-  //     let totalHeight = height + marginTop + marginBottom;
-  //     container.style.marginTop = `${currentMarginTopValue - totalHeight}px`;
-  //     show_advanced_filters.value = false;
-  //     console.log(">>>>>>>>>>>>> totalHeight: " + totalHeight);
-  //     console.log(">>>>>>>>>>>>> container.style.marginTop: " + container.style.marginTop);
-  //     console.log(">>>>>>>>>>>>> height: " + height + " marginTop: " + marginTop + " marginBottom: " + marginBottom);
-  //   }
-  // }else{
-  //   show_advanced_filters.value = true;
-  //   await nextTick();
-  //   let adv_filters = document.getElementById('customqry_adv_filters');
-  //   if(adv_filters) {
-  //     // let heightOfElementA = adv_filters.offsetHeight;
-  //     let height = adv_filters.offsetHeight;
-  //     let style = getComputedStyle(adv_filters);
-  //     let marginTop = parseFloat(style.marginTop);
-  //     let marginBottom = parseFloat(style.marginBottom);
-  //     let totalHeight = height + marginTop + marginBottom;
-  //     container.style.marginTop = `${currentMarginTopValue + totalHeight}px`;
-  //     console.log(">>>>>>>>>>>>> totalHeight: " + totalHeight);
-  //     console.log(">>>>>>>>>>>>> container.style.marginTop: " + container.style.marginTop);
-  //     console.log(">>>>>>>>>>>>> height: " + height + " marginTop: " + marginTop + " marginBottom: " + marginBottom);
-  //   }
-    i18n.updateDocument();
-  // }
-}
-
-function updateAdvFiltersPosition(){
-  let container = document.getElementById('customqry_square_container');
-  let customqry_adv_filters = document.getElementById('customqry_adv_filters');
-  let currentMarginTopValue = parseFloat(getComputedStyle(document.documentElement).fontSize) * 4.6; // 4.6em base
-  if(compareEnabled.value){
-    let compareRow = document.getElementById('customqry_compare_row');
-    if(compareRow){
-      currentMarginTopValue += compareRow.offsetHeight + 4;
-    }
-  }
-  if(show_advanced_filters.value && customqry_adv_filters){
-    let height = customqry_adv_filters.offsetHeight;
-    let style = getComputedStyle(customqry_adv_filters);
-    let marginTop = parseFloat(style.marginTop);
-    let marginBottom = parseFloat(style.marginBottom);
-    currentMarginTopValue += height + marginTop + marginBottom + 10;
-  }
-  container.style.marginTop = `${currentMarginTopValue}px`;
+function formatDate(date) {
+  if (!date) return '';
+  return date.toLocaleDateString(undefined, {day: '2-digit', month: '2-digit', year: 'numeric'});
 }
 
 function showEmailListTooltip(){
@@ -1804,51 +746,278 @@ function hideEmailListTooltip(){
   emailListTooltipVisible.value = false;
 }
 
-defineExpose({ doQry, updateAdvFiltersPosition });
+function openExportMenu(anchor_el) {
+  if(ExportMenu_ref.value) ExportMenu_ref.value.openExportMenu(null, anchor_el);
+}
+
+defineExpose({ doQry, openExportMenu });
 
 </script>
 
 <style scoped>
-.square_container {
-    margin-top: 4.6em;
+.ts-dashboard-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-:deep(.chart_inbox0_percent){
-  top: 5.2em;
+
+.ts-query-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 20px;
 }
-.delta_positive { color: #2bc285; font-weight: bold; }
-.delta_negative { color: #E86850; font-weight: bold; }
-.delta_neutral { color: #888; }
-#customqry_compare_delta {
+
+.ts-query-fields {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+}
+
+.ts-query-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ts-query-date {
+  min-width: 250px;
+}
+
+.ts-query-date-b {
+  min-width: 170px;
+  max-width: 190px;
+}
+
+.ts-query-b {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ts-query-b-end {
+  font-size: 13px;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+.ts-spacer {
+  flex: 1;
+}
+
+.ts-switch {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 0;
+  font-size: 13px;
+  color: var(--text2);
+  cursor: pointer;
+}
+
+.ts-switch.is-disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+.ts-switch input {
   position: absolute;
-  right: 8px;
-  border: 3px solid #7FB5DA;
-  padding: 4px;
-  border-radius: 5px;
-  background: #96D5FF6E;
+  opacity: 0;
+  pointer-events: none;
 }
-.compare_delta_label {
-  font-weight: bold;
-}
-.compare_end_date {
-  font-size: 15px;
-  margin-left: 8px;
-}
-#customqry_compare_row {
+
+.ts-switch-track {
+  width: 28px;
+  height: 16px;
+  border-radius: 8px;
+  background: var(--surface3);
   display: flex;
   align-items: center;
-  margin-top: 4px;
-  position: relative;
-  padding-left:39px;
+  padding: 2px;
+  box-sizing: border-box;
 }
-.compare_disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+
+.ts-switch-knob {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--text3);
+  transition: transform .15s;
 }
-.list_heading_wrapper_compare {
+
+.ts-switch input:checked + .ts-switch-track {
+  background: var(--accent);
+}
+
+.ts-switch input:checked + .ts-switch-track .ts-switch-knob {
+  background: #ffffff;
+  transform: translateX(12px);
+}
+
+.ts-switch input:focus-visible + .ts-switch-track {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.ts-primary-btn {
+  border: 0;
+  padding: 9px 20px;
+  border-radius: var(--radius-input);
+  background: var(--accent);
+  color: #ffffff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 640;
+  cursor: pointer;
+}
+
+.ts-primary-btn:hover {
+  filter: brightness(1.08);
+}
+
+.ts-chip-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ts-chip-label {
+  font-size: 12px;
+  color: var(--text3);
+  margin-right: 4px;
+}
+
+.ts-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text2);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ts-chip:hover {
+  color: var(--text);
+}
+
+.ts-chip.is-active {
+  border-color: transparent;
+  background: var(--accentSoft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.ts-chip-filter {
+  padding-right: 6px;
+  border-color: transparent;
+  background: var(--surface3);
+  color: var(--text);
+  cursor: default;
+}
+
+.ts-chip-remove {
+  border: 0;
   padding: 0 2px;
-  color: -moz-nativehyperlinktext;
+  background: transparent;
+  color: var(--text3);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ts-chip-remove:hover {
+  color: var(--warn);
+}
+
+.ts-chip-add {
+  border-style: dashed;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.ts-chip-sep {
+  width: 1px;
+  height: 18px;
+  margin: 0 6px;
+  background: var(--line);
+}
+
+.ts-adv-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 14px 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-input);
+  background: var(--surface);
+}
+
+.ts-adv-folders {
+  grid-column: span 2;
+}
+
+@media (max-width: 760px) {
+  .ts-adv-folders {
+    grid-column: auto;
+  }
+}
+
+.ts-adv-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ts-adv-check {
+  font-size: 12px;
+  color: var(--text2);
+  cursor: pointer;
+}
+
+.ts-adv-hint {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.ts-adv-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.ts-adv-actions .ts-link-btn:disabled {
+  color: var(--text3);
+  cursor: default;
+  text-decoration: none;
+}
+
+.ts-input {
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-input);
+  background: var(--surface2);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+}
+
+.ts-query-info {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.ts-query-empty {
+  font-size: 13px;
+  color: var(--text2);
 }
 </style>

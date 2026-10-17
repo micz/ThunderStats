@@ -2,58 +2,49 @@
 
 ## Component Hierarchy
 
+Source of truth: the `import` statements in each `.vue` file.
+
 ```
 App_ThunderStats.vue
 └── ThunderStatsView.vue
-    ├── HeadingNAV.vue              (account selector + navigation)
-    ├── SelectAccount.vue           (account dropdown)
-    ├── ExportMenu.vue              (CSV export trigger)
+    ├── HeadingNAV.vue
+    │   └── SelectAccount.vue
     └── [tab-based navigation]
         ├── TAB_Today.vue
-        │   ├── CounterSentReceived.vue
-        │   ├── CounterInbox.vue
-        │   ├── CounterInboxPercent.vue
-        │   ├── CounterYesterdayThisTime.vue
-        │   ├── ChartTime.vue
-        │   ├── ChartWeekDays.vue
-        │   ├── WidgetDomains.vue
-        │   ├── WidgetFoldersTags.vue
-        │   ├── WidgetInboxZero.vue
-        │   │   ├── ChartInboxZeroDates.vue
-        │   │   ├── ChartInboxZeroDatesExtended.vue
-        │   │   └── ChartInboxZeroFolders.vue
-        │   └── TableInvolved.vue
+        │   ├── ExportMenu.vue
+        │   └── WidgetDayDashboard.vue
+        │       └── rail slot:   CounterYesterdayThisTime.vue, CounterManyDays_Table.vue (previous N days summary)
         ├── TAB_Yesterday.vue
-        │   └── (same counter/chart structure as Today)
+        │   └── (same as Today, without CounterYesterdayThisTime)
         ├── TAB_ManyDays.vue
-        │   ├── CounterManyDays_Table.vue
-        │   ├── CounterManyDays_Row.vue
-        │   ├── ChartManyDays.vue
-        │   ├── ChartTime.vue
-        │   └── ChartWeekDays.vue
+        │   ├── ExportMenu.vue
+        │   └── WidgetPeriodDashboard.vue
         ├── TAB_CustomQry.vue
-        │   ├── ChartCustomQry.vue
-        │   ├── ChartTime.vue
-        │   ├── ChartWeekDays.vue
-        │   ├── ChartTags.vue
-        │   ├── ChartFolders.vue
-        │   ├── ChartDomains.vue
-        │   └── TableInvolved.vue
+        │   ├── ExportMenu.vue
+        │   ├── query panel (VueDatePicker, Multiselect for the folders filter)
+        │   ├── WidgetDayDashboard.vue      (one-day range)
+        │   └── WidgetPeriodDashboard.vue   (longer range)
         └── TAB_Info.vue
 
+Widget children:
+    WidgetDayDashboard.vue    → WidgetStatusStrip, CounterKpi, WidgetInboxAge (opened from the Inbox backlog KPI),
+                                ChartDayVsNormal, WidgetTopCorrespondents, TableInvolved (when "See all" is open),
+                                WidgetDomainBars, WidgetEndedUp
+    WidgetPeriodDashboard.vue → WidgetStatusStrip, CounterKpi, ChartPeriodDays, ChartHourlyAverage, WidgetInboxZeroCalendar,
+                                WidgetHeatmap, WidgetWeekdayBars, WidgetDomainBars, WidgetEndedUp, TableInvolved,
+                                PeriodSwitch (A / B list of domains, folders/tags, recipients, senders)
+
 App_Options.vue
-└── OptionsView.vue
-    ├── OptionDonationHeader.vue
-    ├── OptionDonationFooter.vue
-    ├── AdvancedAccountList.vue
-    └── [options tab navigation]
-        ├── OPTAB_Main.vue
-        ├── OPTAB_Advanced.vue
-        ├── OPTAB_BusinessDays.vue
-        ├── OPTAB_CustomIds.vue
-        ├── OPTAB_License.vue
-        └── OPTAB_Info.vue
+└── OptionsView.vue                 (header with ThemeToggle, sidebar nav + donation card)
+    └── [one section at a time]
+        ├── OPTAB_Main.vue          → OptRow, OptNumber
+        ├── OPTAB_Advanced.vue      → OptRow, OptSwitch, OptNumber
+        ├── OPTAB_BusinessDays.vue  → OptRow
+        ├── OPTAB_CustomIds.vue     → OptTagInput
+        └── OPTAB_About.vue
 ```
+
+The tabs load the data and build the props of the two dashboard layouts with `tsDayModel` and `tsPeriodModel` (see [02-statslib.md](02-statslib.md)); the widgets only display what they receive.
 
 ---
 
@@ -79,71 +70,69 @@ App_Options.vue
 
 | File | Description |
 |---|---|
-| `TAB_Today.vue` | Statistics for today: sent/received counts, time chart, top correspondents, domain/folder/tag widgets, inbox zero |
-| `TAB_Yesterday.vue` | Same layout as Today but for yesterday's data |
-| `TAB_ManyDays.vue` | Multi-day overview (default: last 7 days + today), aggregated charts |
-| `TAB_CustomQry.vue` | Advanced query with date range picker, filters (read/unread, starred, subject, folders), aggregation level selector, and CSV export |
+| `TAB_Today.vue` | Today (midnight to now): loads the day, inbox, previous days, comparison day and weekday baseline, builds the dashboard with `tsDayModel` and renders `WidgetDayDashboard`; rail adds the "yesterday at this time" comparison (with custom day picker) and the previous N days summary; passes the inbox dates for the "How old is your inbox" strip |
+| `TAB_Yesterday.vue` | Same dashboard for yesterday (or the last business day with `bday_use_last_business_day`), without the comparison card |
+| `TAB_ManyDays.vue` | Last `_many_days` days plus today: loads the period, the inbox and the previous period, builds the dashboard with `tsPeriodModel` and renders `WidgetPeriodDashboard` |
+| `TAB_CustomQry.vue` | Query panel (period, Period B when comparing, "Compare periods" and "Working days only" switches, Run query, quick range chips, active filter chips, advanced filters panel) and the results: a one-day range renders `WidgetDayDashboard` (`kind: 'day'`, "Query result" badge, weekday baseline and previous 7 days loaded apart), a longer range renders `WidgetPeriodDashboard` (`kind: 'custom'`) with the Days / Weeks / Months / Years toggle of the main chart and Period B. Zoom on the main chart: the selected bars become `zoom_days` (the days they cover) with the default grouping for their length; the reset goes back to the whole range, "Run the query on this period" sets the dates to the zoomed days (Period B start moved by the same offset), keeps the filters and runs the query; every new query clears the zoom |
 | `TAB_Info.vue` | About page with version and credits |
 
 ---
 
 ## Chart Components (`src/components/charts/`)
 
-All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper.
+All charts use `chart.js` v4 with `vue-chartjs` as the Vue wrapper. Colors come from the CSS tokens (`themeColor`) and are recomputed when the theme changes.
 
 | File | Description |
 |---|---|
-| `ChartTime.vue` | Hourly sent/received distribution (bar chart) |
-| `ChartWeekDays.vue` | Sent/received per weekday |
-| `ChartManyDays.vue` | Daily/weekly/monthly/yearly bar chart for a date range. Supports stacked bars (used by the Received chart to show inbox messages as a red segment on top of non-inbox). Datalabels show stacked totals. |
-| `ChartCustomQry.vue` | Chart for custom query results, adapts to selected aggregation level. Accepts `is_comparing` prop to enable legend, tooltips, and suppress Period B datalabels when comparing periods. |
-| `ChartInboxZeroDates.vue` | Timeline of inbox zero achievements |
-| `ChartInboxZeroDatesExtended.vue` | Extended inbox zero history |
-| `ChartInboxZeroFolders.vue` | Inbox zero by folder |
-| `ChartTags.vue` | Email count by tag (doughnut/bar) |
-| `ChartFolders.vue` | Email count by folder |
-| `ChartDomains.vue` | Email count by sender domain |
+| `ChartDayVsNormal.vue` | Line chart of a single day (cumulative or hourly, per `_time_chart_progressive`): received and sent lines with an end dot, usual-range band of the same weekday, optional dashed comparison day, dashed "now" line and an HTML callout kept on its left |
+| `ChartPeriodDays.vue` | Grouped bars per day, week, month or year (received, optionally with the mails still in the inbox stacked in `--warn`; sent), today lighter, non-business days with muted labels, dashed average lines with label chips (first left, second right); optional Period B as dotted lines; with `selectable`, dragging selects a range of bars, even a single one (`chart-range-select.js`; a plain click selects nothing) and emits `zoom(from_index, to_index)` |
+| `ChartHourlyAverage.vue` | Average received / sent per hour of the day, lines with a light area fill; optional Period B as dashed lines |
 
 ---
 
 ## Counter Components (`src/components/counters/`)
 
-Small display components that show a single statistic value.
-
 | File | Description |
 |---|---|
-| `CounterSentReceived.vue` | Shows total sent and received counts. Accepts optional `show_internal_percent` and `internal_percent` props to display the internal mail percentage (based on configured internal domains) when enabled. |
-| `CounterInbox.vue` | Shows current inbox count |
-| `CounterInboxPercent.vue` | Shows inbox zero percentage |
+| `CounterKpi.vue` | KPI card: uppercase label, big value, delta, aside text, sub line, optional second sub line, default slot (Inbox Zero strip). With `expandable` a toggle button (chevron, `expanded` state) sits next to the label and emits `toggle`; `link` adds a text button under the sub lines that emits `expand` |
 | `CounterYesterdayThisTime.vue` | Compares current count to yesterday (or last business day, or user-chosen day) at the same time. The day label is clickable and opens an inline date picker to select a custom comparison day. Emits `customDaySelected` event. |
-| `CounterManyDays_Table.vue` | Summary table (max/min/avg) for many-days view |
-| `CounterManyDays_Row.vue` | A single row within the many-days summary table |
+| `CounterManyDays_Table.vue` | Total/max/min/avg sent and received over the previous `_many_days` days (excluding today), as a compact grid (columns Total / Average / Max / Min, one row each for sent and received with a colored marker and the total emphasized in the sent/received color; the period is in the rail card title); used in Today and Yesterday |
 
 ---
 
 ## Widget Components (`src/components/widgets/`)
 
-Composite components that combine multiple data points or sub-charts.
-
 | File | Description |
 |---|---|
-| `WidgetDomains.vue` | Shows top email domains with counts |
-| `WidgetFoldersTags.vue` | Shows folder and tag distribution |
-| `WidgetWeekDay.vue` | Highlights the busiest weekday |
-| `WidgetInboxZero.vue` | Inbox Zero summary with embedded charts |
+| `WidgetDayDashboard.vue` | Single-day layout: status strip, KPI row, chart card + right rail (`rail` slot, then the top correspondents card last, so it sits right above the lists it opens), full recipients/senders tables when "See all" is open (opening them scrolls the page so their top stops just under the sticky heading `#heading_wrapper`, and briefly outlines them in `--accent`; the card's "lists shown below" link scrolls back to them), domains + folders/tags row. The KPI with `expandable` (Inbox backlog) opens `WidgetInboxAge` as a full-width strip right under the KPI row, from its toggle or its link (`inbox_dates`, `inbox_loading` props); the open state is the `inbox_age_expanded` pref, saved on every toggle and kept in sync through `storage.onChanged` across the single-day tabs and the options page |
+| `WidgetPeriodDashboard.vue` | Many-days layout: status strip, KPI grid, main chart (optional grouping toggle, emits `aggregation`; with `zoomable`, a "Drag on the chart to zoom" hint, or the zoomed range chip with its reset and the "Run the query on this period" link, emits `zoom`, `zoom_reset`, `zoom_query`), time of day + Inbox Zero calendar, heatmap + weekday bars, domains + folders/tags, Top N recipients + senders, `bottom` slot |
+| `WidgetStatusStrip.vue` | Status badge (good / warn / neutral), date lines, flow values (Arrived → Filed or answered → Still in inbox), side values and the proportional bar; optional Period B text (`cmp`) under each value |
+| `WidgetTopCorrespondents.vue` | Rail card: top 5 merged senders/recipients with stacked bars (received part in `--rcvd`, sent part in `--sent`), a "See all" / "Show less" toggle (`toggleAll`) and, while open, a "Full sender and recipient lists shown below" link (`reveal`) |
+| `WidgetDomainBars.vue` | Domains as two horizontal bars (sent, received) with the "internal" tag on its own line under the domain name; with `rows_b` (Period B) an A / B switch (`PeriodSwitch`) picks the list shown, each row showing the count of the other period ("B n" / "A n"); first 8 rows, expandable |
+| `WidgetEndedUp.vue` | "Where mails ended up": Folders / Tags toggle; inbox bar in `--rcvd`, filed folders in `--good`, tags in their own color; with `folder_rows_b` / `tag_rows_b` (Period B) an A / B switch (`PeriodSwitch`) picks the lists shown, each row showing the count of the other period; computed footnote (Period A only). Folder rows open the folder in Thunderbird (`tsCoreUtils.openFolder`, first mail tab with `inbox0_openFolderInFirstTab`); an info icon explains that folder counts include duplicates when `filter_duplicates` is on |
+| `WidgetInboxAge.vue` | "How old is your inbox" strip: mails still in the inbox by age (today, yesterday, 2–7 days, 8–30 days, 1–3 months, older) as one stacked horizontal bar (segments sized by count, from a light `--rcvd` for the freshest to `--warn` for older than a month, tooltip with count and share) and a legend with the counts, plus a note; "Details by date", next to the title, shows one row per arrival date, sortable by date or by mails; the Hide button emits `close` |
+| `WidgetInboxZeroCalendar.vue` | Inbox Zero calendar: one cell per day aligned on the first day of the week (at most the last 6 weeks), states closed at zero / ≤ 5 left / missed; the shown range under the title (`range_label`), each cell with the day number in the top-left corner and the short month on the first cell and where a new month starts, full-date tooltip; days at zero and streak at end, optional Period B days at zero (`cmp_zero` of `cmp_total`) |
+| `WidgetHeatmap.vue` | "When mail arrives": received mails by hour (rows) and weekday (columns), 07–20 / 24h toggle, cell color mixes `--rcvd` with `--surface3`; optional Period B grid (`cmp_msg_weekday_hours`) shown only in the cell tooltips |
+| `WidgetWeekdayBars.vue` | Average received / sent per weekday as paired columns, both averages on top in the bar colors, optional Period B averages ("B received · sent"), computed note |
+| `PeriodSwitch.vue` | A / B toggle (`v-model`: `'a'` or `'b'`) of the cards that list Period A or Period B in a Custom Query comparison (domains, folders/tags, top recipients, top senders) |
 
 ---
 
-## Options Tab Components (`src/components/options_tabs/`)
+## Options Page (`src/views/OptionsView.vue`, `src/components/options_tabs/`, `src/components/options/`)
+
+Sidebar + card layout on the dashboard tokens (`tokens.css`, plus `--bg`, `--switchOff`, `--onAccent`; page styles in `src/assets/options.css`). `OptionsView` loads every pref (`browser.storage.sync.get(prefs_default)`) into a reactive object and provides it as `optPrefs` = `{ values, set(key, value, debounce) }`; `set` writes to storage at once (number and text inputs debounce 400 ms) and shows the "Reload ThunderStats" header button (`reloadThunderStats` message to the background, then closes the tab). The header is sticky at the top of the page so the reload button stays visible while scrolling (the sidebar sticks just below it). `theme_mode` goes through `tsTheme.setMode` and applies live. External storage changes (e.g. the toolbar theme toggle) update `values`. It also provides `optGoto(section)`. The section is in the URL hash (`#general`, `#advanced`, `#business`, `#identities`, `#about`). There is no Save button anywhere. Strings come from `browser.i18n.getMessage` (no `__MSG_` placeholders, so the `v-if` sections are always localized).
 
 | File | Description |
 |---|---|
-| `OPTAB_Main.vue` | Basic settings (number of days, involved count, etc.) |
-| `OPTAB_Advanced.vue` | Advanced settings (duplicate filtering, archive inclusion, per-account settings) |
-| `OPTAB_BusinessDays.vue` | Configure which days are business days; define custom holidays; Easter detection |
-| `OPTAB_CustomIds.vue` | "Identities & Domains" tab: define custom email identities for sent mail detection, and configure per-account Internal Domains (domain lists that identify domains belonging to the user's organization, used to distinguish internal from external email traffic) |
-| `OPTAB_License.vue` | Displays the GPL v3 license text |
-| `OPTAB_Info.vue` | Add-on version and info |
+| `OPTAB_Main.vue` | General: Startup (startup account select, disabled while "remember the last used account" is on), Loading data, Today & Yesterday chart, Many days & Custom (`_many_days`, date picker locale with a "Set default" button), Inbox Zero (`many_days_show_inbox`, `inbox0_openFolderInFirstTab`, `inbox_age_expanded`), Internal mail (disabled while off and no internal domain is set, link to Identities & domains), Appearance (`theme_mode`, `time_format`) |
+| `OPTAB_Advanced.vue` | Archive folders (global switches + per-account grid saved in `accounts_adv_settings`), Other (first day of the week saved as a number, Top rows, long period warning), Performance & troubleshooting (concurrent queries, recent days cache, debug) |
+| `OPTAB_BusinessDays.vue` | Working week day buttons (ordered by `first_day_week`, short names from `Intl`), business-days switches, Non-Business Days card (`bday_custom_days`: sorted by month/day, inline add/edit form opened by "Add non-business day" or by clicking a row, day validated against the month, empty name → "Non-Business Day", "Every year" or "<year> only", delete with confirm), Easter row with this year's dates |
+| `OPTAB_CustomIds.vue` | Identities & domains: pill account switcher, read-only account identities, custom identities and internal domains as tag inputs (per account in `custom_identities` / `internal_domains`, saved lowercase) |
+| `OPTAB_About.vue` | Donation banner, release notes accordion parsed from `CHANGELOG.md` (+ `CHANGELOG_v1.md` on request; latest version open, empty entries skipped; each entry is parsed with `DOMParser` and rendered as Vue nodes keeping only text, http(s) links and bold/italic, no `v-html`), license card with expandable full text and attributions link |
+| `options/OptRow.vue` | Setting row: label, optional hint (or `hint` slot), control on the right; with `pref` it renders an `OptSwitch` bound to that boolean option |
+| `options/OptSwitch.vue` | Toggle switch (`role="switch"`, `aria-checked`, animated knob) |
+| `options/OptNumber.vue` | Number input bound to a pref: valid values saved while typing (debounced), clamped to `[min, max]` on change |
+| `options/OptTagInput.vue` | Chip input: Enter, comma or blur adds; pasted text split on commas/whitespace; duplicates ignored; invalid entries stay in the field with a message; invalid stored entries get a warning border; Backspace on an empty field removes the last chip |
 
 ---
 
@@ -151,14 +140,11 @@ Composite components that combine multiple data points or sub-charts.
 
 | File | Description |
 |---|---|
-| `HeadingNAV.vue` | Top navigation bar with account selector and controls |
-| `SelectAccount.vue` | Account dropdown (uses `@vueform/multiselect`) |
-| `ExportMenu.vue` | Context menu for CSV export (uses `@imengyu/vue3-context-menu`) |
-| `AdvancedAccountList.vue` | Per-account advanced settings list in options |
-| `InfoTooltip.vue` | Reusable info tooltip icon |
-| `OptionDonationHeader.vue` | Donation banner shown at top of options page |
-| `OptionDonationFooter.vue` | Donation banner shown at bottom of options page |
-| `tables/TableInvolved.vue` | Table of top senders and recipients |
+| `HeadingNAV.vue` | Sticky toolbar on a three-column grid (left and right sides of equal width, so the centered tabs and the right-aligned icons never move when the side contents change; falls back to wrapping flex below 900px). Left: brand, account pill (`SelectAccount`), business-days-only icon. Center: tab segmented control (tabs list passed by `ThunderStatsView`, emits `selectTab`). Right: warning message, last-update time, Refresh / Export / Settings / Info icon buttons (Export emits `exportData` with the button as anchor), `ThemeToggle`. Applies the startup/remembered account |
+| `ThemeToggle.vue` | Round theme toggle icon (sun morphing into a moon, title names the theme it switches to, `tsTheme.setMode`); in the dashboard toolbar and the options header |
+| `SelectAccount.vue` | Account dropdown (native `select`) |
+| `ExportMenu.vue` | CSV export menu, embedded in each stats tab (uses `@imengyu/vue3-context-menu`). Its own icon is hidden; each tab exposes `openExportMenu(anchor_el)`, which `ThunderStatsView` calls when the toolbar Export button is clicked |
+| `tables/TableInvolved.vue` | Ranked list of top senders or recipients: rank, name over address, bar, count. `kind` = `sent` (recipients, `--sent` bars) or `rcvd` (senders) |
 
 ---
 
@@ -166,9 +152,8 @@ Composite components that combine multiple data points or sub-charts.
 
 | Library | Usage |
 |---|---|
-| `vue3-tabs-component` | Tab navigation in main and options views |
-| `@vueform/multiselect` | Account selector dropdown |
-| `@vuepic/vue-datepicker` | Date range picker in Custom Query tab |
-| `@imengyu/vue3-context-menu` | Right-click export context menu |
+| `vue3-tabs-component` | Tab panels in the main view (its tab strip is hidden; `HeadingNAV` drives `selectTab`) |
+| `@vueform/multiselect` | Folders filter of the Custom Query |
+| `@vuepic/vue-datepicker` | Date pickers of the Custom Query and of the comparison day (Today) |
+| `@imengyu/vue3-context-menu` | Export menu |
 | `vue-chartjs` + `chart.js` | All chart components |
-| `chartjs-plugin-datalabels` | Data labels on charts |

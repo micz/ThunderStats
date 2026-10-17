@@ -7,13 +7,13 @@ Do you remember the good old Eudora statistics? Do you miss them? With ThunderSt
 <br>
 
 ## What's new in 3.0
+- Much faster statistics, thanks to caching and optimized folder scanning.
 - Brand new look, with a light/dark theme you can switch on the fly.
 - New Today/Yesterday dashboard: compare with your usual weekday and get inbox insights.
 - New Many Days dashboard: day-by-day chart, averages, Inbox Zero calendar, activity heatmap, weekday chart and comparison with the previous period.
 - New "How old is your inbox" card and folder details in "Where mails ended up".
 - Redesigned Custom View, with quick date ranges and filter chips.
 - Redesigned Options page, with automatic saving.
-- Much faster statistics, thanks to caching and optimized folder scanning.
 
 ThunderStats 3.0 requires **Thunderbird 140** or later.<br>
 If you are using Thunderbird 115 or 128, you can still use [ThunderStats 2.4](https://github.com/micz/ThunderStats/releases/tag/v2.4.0).

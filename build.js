@@ -135,7 +135,7 @@ export function createXpi() {
     }
   }
 
-  const xpiName = `../thunderstats-${version}.xpi`;
+  const xpiName = `../thunderstats-v${version}.xpi`;
   zip('dist', xpiName, exclude, extraFiles);
   console.log(`\n✓ XPI created: ${xpiName}`);
 }

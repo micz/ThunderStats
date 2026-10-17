@@ -33,7 +33,7 @@
 ```bash
 npm install          # Install dependencies (first time only)
 npm run dev          # Watch mode — auto-rebuild on changes, no minification
-npm run build        # Production build with minification → dist/ + ../thunderstats-<version>.xpi
+npm run build        # Production build with minification → dist/ + ../thunderstats-v<version>.xpi
 ```
 
 The compiled addon lives in `dist/`; the production build also packages it as an XPI in the parent folder of the repo (`build.js`). Load `dist/manifest.json` in Thunderbird's addon debug page to install for development.

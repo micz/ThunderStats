@@ -93,7 +93,7 @@ Every build (dev or production) writes the unpacked addon to `dist/`: the two HT
 
 `npm run build` (production mode only) also runs `createXpi()` after bundling:
 
-- Output: `../thunderstats-<version>.xpi` (parent folder of the repo), version read from `package.json`
+- Output: `../thunderstats-v<version>.xpi` (parent folder of the repo), version read from `package.json`
 - Zips the content of `dist/`
 - **Locale filter:** every `_locales/<code>` folder not listed in `LANG.md` is excluded. `LANG.md` is the author-maintained list of locales ready to ship; do not edit it.
 - Adds `VENDORS.md`, `DEVELOPER.md`, and `LICENSE` from the repo root, if they exist

@@ -3,7 +3,7 @@
 
 
 
-<h3>Version 3.0.0 - ??/??/2026</h3>
+<h3>Version 3.0.0 - 17/10/2026</h3>
 <ul>
       <li>Complete graphic redesign, with a new light/dark theme that can be switched on the fly.</li>
       <li>New Today/Yesterday dashboard: comparison with the usual weekday and inbox insights.</li>

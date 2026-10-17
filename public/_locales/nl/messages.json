@@ -80,6 +80,40 @@
     "SentMails": {
         "message": "Verzonden"
     },
+    "InboxZero": {
+        "message": "Inbox Zero",
+        "description": "Inbox Zero label: status badge, options card and calendar widget title"
+    },
+    "KeepingUp": {
+        "message": "Bijgewerkt",
+        "description": "Status badge"
+    },
+    "BacklogGrowing": {
+        "message": "Achterstand groeit",
+        "description": "Status badge"
+    },
+    "FullDayRange": {
+        "message": "Hele dag · $START$ → $END$",
+        "description": "Time range of a whole day",
+        "placeholders": {
+            "start": {
+                "content": "$1",
+                "example": "00:00"
+            },
+            "end": {
+                "content": "$2",
+                "example": "23:59"
+            }
+        }
+    },
+    "Arrived": {
+        "message": "Binnengekomen",
+        "description": "Mails received in the period"
+    },
+    "FiledOrAnswered": {
+        "message": "Gearchiveerd of beantwoord",
+        "description": "Received mails that left the inbox"
+    },
     "ReceivedMails": {
         "message": "Ontvangen"
     },
@@ -130,6 +164,9 @@
     },
     "DateRange": {
         "message": "Periode"
+    },
+    "CompareNotOnSingleDay": {
+        "message": "De vergelijking vereist een periode van meer dan één dag"
     },
     "Bookmarks_Menu": {
         "message": "Snelle perioden"
@@ -200,6 +237,243 @@
     "TotalInbox": {
         "message": "Achterstand in Postvak IN"
     },
+    "InboxBacklogDeltaTooltip": {
+        "message": "Die dag ontvangen e-mails die nog in Postvak IN staan"
+    },
+    "InboxBacklogSub": {
+        "message": "$UNREAD$ ongelezen · oudste $DAYS$ dagen",
+        "placeholders": {
+            "unread": {
+                "content": "$1",
+                "example": "112"
+            },
+            "days": {
+                "content": "$2",
+                "example": "46"
+            }
+        }
+    },
+    "InternalTraffic": {
+        "message": "Intern verkeer"
+    },
+    "InternalTrafficSub": {
+        "message": "ontvangen · $PERCENT$ van wat u verzond",
+        "placeholders": {
+            "percent": {
+                "content": "$1",
+                "example": "58%"
+            }
+        }
+    },
+    "InboxZeroDayLeft": {
+        "message": "$DATE$: $NUM$ nog in Postvak IN",
+        "description": "Tooltip of a day in the Inbox Zero strip",
+        "placeholders": {
+            "date": {
+                "content": "$1",
+                "example": "Thu 30 Jul"
+            },
+            "num": {
+                "content": "$2",
+                "example": "3"
+            }
+        }
+    },
+    "InboxZeroStreak": {
+        "message": "Inbox Zero-reeks"
+    },
+    "InboxZeroStreakSub": {
+        "message": "dagen · $ZERO$ van de laatste $NUM$ op nul",
+        "placeholders": {
+            "zero": {
+                "content": "$1",
+                "example": "9"
+            },
+            "num": {
+                "content": "$2",
+                "example": "14"
+            }
+        }
+    },
+    "InboxZeroStreakTooltip": {
+        "message": "Een dag telt als geen van de die dag ontvangen e-mails nog in Postvak IN staat."
+    },
+    "ChartTodayTitle": {
+        "message": "Vandaag vergeleken met een normale dag"
+    },
+    "ChartDayTitle": {
+        "message": "$DAY$ vergeleken met een normale dag",
+        "placeholders": {
+            "day": {
+                "content": "$1",
+                "example": "29 July"
+            }
+        }
+    },
+    "UsualRange": {
+        "message": "Gebruikelijk bereik",
+        "description": "Range of the same weekday in the previous weeks"
+    },
+    "CalloutReceived": {
+        "message": "$TIME$ · $NUM$ ontvangen",
+        "placeholders": {
+            "time": {
+                "content": "$1",
+                "example": "18:04"
+            },
+            "num": {
+                "content": "$2",
+                "example": "47"
+            }
+        }
+    },
+    "UsualByNow": {
+        "message": "gebruikelijk tot nu toe: $LOW$–$HIGH$",
+        "placeholders": {
+            "low": {
+                "content": "$1",
+                "example": "39"
+            },
+            "high": {
+                "content": "$2",
+                "example": "44"
+            }
+        }
+    },
+    "UsualByEndOfDay": {
+        "message": "gebruikelijk aan het eind van de dag: $LOW$–$HIGH$",
+        "placeholders": {
+            "low": {
+                "content": "$1",
+                "example": "40"
+            },
+            "high": {
+                "content": "$2",
+                "example": "49"
+            }
+        }
+    },
+    "ChartNoteBusier": {
+        "message": "Drukker dan een gebruikelijke $WEEKDAY$.",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            }
+        }
+    },
+    "ChartNoteQuieter": {
+        "message": "Rustiger dan een gebruikelijke $WEEKDAY$.",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            }
+        }
+    },
+    "ChartNoteUsual": {
+        "message": "In lijn met een gebruikelijke $WEEKDAY$.",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            }
+        }
+    },
+    "NoCorrespondents": {
+        "message": "Geen correspondenten"
+    },
+    "EndedUpNote": {
+        "message": "$MOVED$ van de $TOTAL$ e-mails hebben Postvak IN verlaten — de meeste gingen naar $FOLDER$.",
+        "placeholders": {
+            "moved": {
+                "content": "$1",
+                "example": "18"
+            },
+            "total": {
+                "content": "$2",
+                "example": "48"
+            },
+            "folder": {
+                "content": "$3",
+                "example": "Projects"
+            }
+        }
+    },
+    "EndedUpNoteAllMoved": {
+        "message": "Alle $TOTAL$ e-mails hebben Postvak IN verlaten — de meeste gingen naar $FOLDER$.",
+        "placeholders": {
+            "total": {
+                "content": "$1",
+                "example": "48"
+            },
+            "folder": {
+                "content": "$2",
+                "example": "Projects"
+            }
+        }
+    },
+    "EndedUpNoteNoneMoved": {
+        "message": "Geen van de $TOTAL$ e-mails heeft Postvak IN al verlaten.",
+        "placeholders": {
+            "total": {
+                "content": "$1",
+                "example": "48"
+            }
+        }
+    },
+    "KpiReceivedToday": {
+        "message": "Vandaag ontvangen"
+    },
+    "KpiSentToday": {
+        "message": "Vandaag verzonden"
+    },
+    "KpiReceivedYesterday": {
+        "message": "Gisteren ontvangen"
+    },
+    "KpiSentYesterday": {
+        "message": "Gisteren verzonden"
+    },
+    "KpiReceivedDay": {
+        "message": "Die dag ontvangen"
+    },
+    "KpiSentDay": {
+        "message": "Die dag verzonden"
+    },
+    "TopCorrespondentsToday": {
+        "message": "Topcorrespondenten vandaag"
+    },
+    "TopCorrespondentsYesterday": {
+        "message": "Topcorrespondenten gisteren"
+    },
+    "TopCorrespondentsDay": {
+        "message": "Topcorrespondenten die dag"
+    },
+    "EndedUpToday": {
+        "message": "Waar de e-mails van vandaag terecht zijn gekomen"
+    },
+    "EndedUpYesterday": {
+        "message": "Waar de e-mails van gisteren terecht zijn gekomen"
+    },
+    "EndedUpDay": {
+        "message": "Waar de e-mails van die dag terecht zijn gekomen"
+    },
+    "ShowLess": {
+        "message": "Minder tonen"
+    },
+    "SeeAllCorrespondents": {
+        "message": "Alle $NUM$ bekijken →",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "10"
+            }
+        }
+    },
+    "CorrespondentsListsBelow": {
+        "message": "Volledige lijsten van afzenders en ontvangers hieronder ↓",
+        "description": "Link in the top correspondents card, shown when the full lists are open; it scrolls to them"
+    },
     "ChooseAccount": {
         "message": "Account kiezen"
     },
@@ -221,6 +495,18 @@
     "yesterday_small": {
         "message": "Gisteren"
     },
+    "InboxAgeWeek": {
+        "message": "2–7 dagen"
+    },
+    "InboxAgeMonth": {
+        "message": "8–30 dagen"
+    },
+    "InboxAgeQuarter": {
+        "message": "1–3 maanden"
+    },
+    "InboxAgeOlder": {
+        "message": "Ouder"
+    },
     "NoMailsReceived": {
         "message": "Geen e-mailberichten ontvangen"
     },
@@ -235,6 +521,144 @@
     },
     "days": {
         "message": "dagen"
+    },
+    "Opt_DatePickerLocaleHint": {
+        "message": "Een taalcode zoals nl-NL of en-US, voor de datumnotatie van de datumkiezers"
+    },
+    "Opt_MarkInboxBarsHint": {
+        "message": "Weergaven van meerdere dagen"
+    },
+    "Opt_InboxAgeHint": {
+        "message": "Weergaven van één dag: Vandaag, Gisteren en de aangepaste zoekopdracht van één dag. De pijl op de teller opent en sluit het ook"
+    },
+    "Opt_InternalMail": {
+        "message": "Interne e-mail"
+    },
+    "Opt_ShowInternalShareHint": {
+        "message": "Vereist interne domeinen —"
+    },
+    "Opt_SetInternalDomains": {
+        "message": "stel ze in bij Identiteiten & domeinen"
+    },
+    "Opt_ThemeHint": {
+        "message": "Automatisch volgt het systeem; de zon/maan-knop in de werkbalk schakelt het ook om"
+    },
+    "Opt_ArchiveFolders": {
+        "message": "Archiefmappen"
+    },
+    "Opt_FilterDupHint": {
+        "message": "Trager, maar voorkomt dubbel tellen"
+    },
+    "Opt_PerAccount": {
+        "message": "Per account"
+    },
+    "Opt_ArchiveFoldersNote": {
+        "message": "De aantallen per map in ‘Waar de e-mails terecht zijn gekomen’ tonen altijd alle e-mail — een bericht dat in twee mappen staat, verschijnt in beide."
+    },
+    "Opt_TopRowsHint": {
+        "message": "Topafzenders en -ontvangers"
+    },
+    "Opt_WarnLongPeriods": {
+        "message": "Waarschuwen bij lange periodes"
+    },
+    "Opt_Performance": {
+        "message": "Prestaties & probleemoplossing"
+    },
+    "Opt_PerformanceDesc": {
+        "message": "Hoe ThunderStats uw e-mail leest tijdens het laden van de statistieken."
+    },
+    "Opt_ConcurrentQueries": {
+        "message": "Gelijktijdige berichtzoekopdrachten"
+    },
+    "Opt_RecentDaysCache": {
+        "message": "Cache van recente dagen"
+    },
+    "Opt_DebugLogHint": {
+        "message": "Schrijft gedetailleerde berichten naar de foutconsole van Thunderbird"
+    },
+    "Opt_BusinessDaysDesc": {
+        "message": "Vrije dagen worden buiten de gemiddelden gelaten, zodat een rustige zondag uw referentie niet omlaag trekt."
+    },
+    "Opt_WorkingWeek": {
+        "message": "Werkweek"
+    },
+    "Opt_HolidaysNone": {
+        "message": "Geen vaste niet-werkdagen"
+    },
+    "Opt_HolidaysOne": {
+        "message": "1 vaste niet-werkdag"
+    },
+    "Opt_HolidaysCount": {
+        "message": "$NUM$ vaste niet-werkdagen",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "5"
+            }
+        }
+    },
+    "Opt_PlusEaster": {
+        "message": "+ Pasen"
+    },
+    "Opt_AddHoliday": {
+        "message": "Niet-werkdag toevoegen"
+    },
+    "Opt_HolidayNamePlaceholder": {
+        "message": "bijv. Koningsdag",
+        "description": "Placeholder of the holiday name field. Replace the example with the name of a national holiday of a country where your language is spoken."
+    },
+    "Opt_YearOnly": {
+        "message": "Alleen $YEAR$",
+        "placeholders": {
+            "year": {
+                "content": "$1",
+                "example": "2026"
+            }
+        }
+    },
+    "Opt_Add": {
+        "message": "Toevoegen"
+    },
+    "Opt_EasterHint": {
+        "message": "Elk jaar berekend — $EASTER$ en $MONDAY$ in $YEAR$",
+        "placeholders": {
+            "easter": {
+                "content": "$1",
+                "example": "5 April"
+            },
+            "monday": {
+                "content": "$2",
+                "example": "6 April"
+            },
+            "year": {
+                "content": "$3",
+                "example": "2026"
+            }
+        }
+    },
+    "Opt_IdentitiesDesc": {
+        "message": "Vertel ThunderStats welke adressen van u zijn en welke domeinen intern zijn."
+    },
+    "Opt_AccountIdentitiesDesc": {
+        "message": "Gelezen uit de accountinstellingen van Thunderbird"
+    },
+    "Opt_NoIdentities": {
+        "message": "Deze account heeft geen identiteiten."
+    },
+    "Opt_AddAddress": {
+        "message": "Voeg een adres toe en druk op Enter"
+    },
+    "Opt_InvalidAddress": {
+        "message": "Geen geldig adres of patroon: gebruik naam@example.com, *@example.com of @example.com."
+    },
+    "Opt_AddDomain": {
+        "message": "Voeg een domein toe en druk op Enter"
+    },
+    "Opt_InvalidDomain": {
+        "message": "Geen geldig domein: gebruik example.com of *.example.com."
+    },
+    "Remove": {
+        "message": "Verwijderen"
     },
     "InboxZeroStatus": {
         "message": "Postvak IN-nulstatus"
@@ -256,6 +680,10 @@
     },
     "FolderLocation": {
         "message": "Waar de e-mails terecht zijn gekomen"
+    },
+    "OpenFolder": {
+        "message": "De map openen",
+        "description": "Tooltip of a folder row that opens the folder in Thunderbird"
     },
     "InboxMailsDateSpreading": {
         "message": "Hoe oud is uw Postvak IN"
@@ -480,6 +908,21 @@
     "AdvFilters": {
         "message": "Filters"
     },
+    "AddFilter": {
+        "message": "+ Filter toevoegen",
+        "description": "Custom query panel, opens the advanced filters"
+    },
+    "CloseFilters": {
+        "message": "Filters sluiten",
+        "description": "Custom query panel, closes the advanced filters"
+    },
+    "RemoveFilter": {
+        "message": "Dit filter verwijderen"
+    },
+    "ChoosePeriodAndRun": {
+        "message": "Kies een periode en voer de zoekopdracht uit.",
+        "description": "Shown in the Custom Query tab before the first query"
+    },
     "WeeklyMails": {
         "message": "Wekelijkse e-mailberichten"
     },
@@ -597,6 +1040,62 @@
     "InboxMailsDateSpreadingExtended": {
         "message": "Details per datum"
     },
+    "InboxAgeByAge": {
+        "message": "Terug naar leeftijden",
+        "description": "Link that goes back to the inbox mails by age"
+    },
+    "InboxAgeNote": {
+        "message": "$NUM$ e-mails wachten al meer dan een maand.",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "24"
+            }
+        }
+    },
+    "InboxAgeNoteFresh": {
+        "message": "Niets in Postvak IN is ouder dan een maand."
+    },
+    "InboxAgeKpiLink": {
+        "message": "$NUM$ wachten al meer dan een maand ›",
+        "description": "Link in the Inbox backlog KPI that opens the How old is your inbox strip",
+        "placeholders": {
+            "num": {
+                "content": "$1"
+            }
+        }
+    },
+    "InboxAgeKpiLinkFresh": {
+        "message": "Hoe oud is uw Postvak IN ›",
+        "description": "Link in the Inbox backlog KPI that opens the How old is your inbox strip, when nothing is older than a month"
+    },
+    "InboxAgeToggle": {
+        "message": "Tonen of verbergen hoe oud uw Postvak IN is",
+        "description": "Tooltip of the toggle button in the Inbox backlog KPI"
+    },
+    "InboxAgeHide": {
+        "message": "Verbergen",
+        "description": "Closes the How old is your inbox strip"
+    },
+    "InboxAgeSegmentTooltip": {
+        "message": "$NAME$: $NUM$ e-mails ($PERCENT$%)",
+        "description": "Tooltip of a segment of the inbox age bar",
+        "placeholders": {
+            "name": {
+                "content": "$1"
+            },
+            "num": {
+                "content": "$2"
+            },
+            "percent": {
+                "content": "$3"
+            }
+        }
+    },
+    "prefs_inbox_age_expanded": {
+        "message": "Onder de teller ‘Achterstand in Postvak IN’ tonen hoe oud Postvak IN is",
+        "description": "Option: keeps the How old is your inbox strip open in the single-day views"
+    },
     "AllEmails": {
         "message": "Alle e-mailberichten"
     },
@@ -621,6 +1120,15 @@
     "folderspreadchart_openinfirsttab": {
         "message": "In ‘Waar de e-mails terecht zijn gekomen’ aangeklikte mappen openen in het eerste e-mailtabblad"
     },
+    "MaxConcurrentQueries": {
+        "message": "Verlaag deze waarde als Thunderbird hapert tijdens het laden, verhoog hem als het laden te traag is (1–10)"
+    },
+    "RecentDaysCacheDays_1": {
+        "message": "Dagen vóór vandaag die in één keer worden gelezen en door de weergaven worden gedeeld (43–365)."
+    },
+    "RecentDaysCacheDays_2": {
+        "message": "Verhoog deze waarde als ‘Laatste dagen’ meer dan 24 dagen beslaat; een hogere waarde maakt het eerste laden trager."
+    },
     "InvolvedNum": {
         "message": "Rijen in de ‘Top’-tabellen"
     },
@@ -635,6 +1143,86 @@
     },
     "FolderLocation_percent_remaining": {
         "message": "Nog in Postvak IN"
+    },
+    "OfInboxTotal": {
+        "message": "van $TOTAL$ in totaal",
+        "description": "Next to the mails still in the inbox",
+        "placeholders": {
+            "total": {
+                "content": "$1",
+                "example": "124"
+            }
+        }
+    },
+    "BacklogTrend": {
+        "message": "Verloop van de achterstand"
+    },
+    "SinceWeekday": {
+        "message": "sinds $WEEKDAY$",
+        "description": "e.g. since Mon",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Mon"
+            }
+        }
+    },
+    "BacklogTrendTooltip": {
+        "message": "Sinds het begin van de week ontvangen e-mails die nog in Postvak IN staan"
+    },
+    "ClearIn": {
+        "message": "Leeg in",
+        "description": "Time needed to empty the inbox"
+    },
+    "WorkingDaysSmall": {
+        "message": "werkdagen"
+    },
+    "ClearInTooltip": {
+        "message": "Werkdagen die nodig zijn om Postvak IN in uw gebruikelijke tempo leeg te maken (e-mails die Postvak IN per werkdag verlieten in de laatste $NUM$ dagen)",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "BaselineTooltip": {
+        "message": "Vergeleken met dezelfde weekdag in de laatste $NUM$ weken",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "6"
+            }
+        }
+    },
+    "NoWeekdayHistory": {
+        "message": "Nog geen geschiedenis voor deze weekdag"
+    },
+    "VsUsualByNow": {
+        "message": "vs. uw gebruikelijke $WEEKDAY$ tot nu toe ($NUM$)",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            },
+            "num": {
+                "content": "$2",
+                "example": "42"
+            }
+        }
+    },
+    "VsWeekdayAverage": {
+        "message": "vs. uw gemiddelde op $WEEKDAY$ ($NUM$)",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            },
+            "num": {
+                "content": "$2",
+                "example": "42"
+            }
+        }
     },
     "ResetAdvFilters": {
         "message": "Filters opnieuw instellen"
@@ -675,8 +1263,140 @@
     "PeriodA": {
         "message": "Periode A"
     },
+    "PeriodAShort": {
+        "message": "A",
+        "description": "Short label before a Period A value, e.g. A 42, and A button of the Period A / Period B switch"
+    },
+    "DaysAtZeroPeriodB": {
+        "message": "van $NUM$ dagen op nul in Periode B",
+        "description": "Inbox Zero calendar, Custom Query comparison",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "14"
+            }
+        }
+    },
+    "Opt_Options": {
+        "message": "Opties"
+    },
+    "Opt_SavedAutomatically": {
+        "message": "Wijzigingen worden automatisch opgeslagen"
+    },
+    "Opt_ReloadThunderStats": {
+        "message": "ThunderStats opnieuw laden"
+    },
+    "Opt_DonateSidebar": {
+        "message": "ThunderStats is gratis en wordt in de vrije tijd ontwikkeld. Als het deel uitmaakt van uw routine, overweeg dan om het te steunen."
+    },
+    "Opt_About": {
+        "message": "Over"
+    },
+    "Opt_ByAuthor": {
+        "message": "door Mic"
+    },
+    "Opt_DonateBanner": {
+        "message": "ThunderStats is gratis en wordt in de vrije tijd ontwikkeld. Als het deel uitmaakt van uw dagelijkse routine, houdt een kleine donatie het draaiende."
+    },
+    "Opt_ReleaseNotes": {
+        "message": "Uitgaveopmerkingen"
+    },
+    "Opt_FullChangelog": {
+        "message": "Volledig wijzigingslogboek"
+    },
+    "Opt_OneChange": {
+        "message": "1 wijziging"
+    },
+    "Opt_NChanges": {
+        "message": "$NUM$ wijzigingen",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "5"
+            }
+        }
+    },
+    "Opt_LicenseName": {
+        "message": "GNU General Public License v3 of later"
+    },
+    "Opt_HideFullText": {
+        "message": "Volledige tekst verbergen"
+    },
+    "Opt_ShowFullText": {
+        "message": "Volledige tekst tonen"
+    },
+    "Opt_LicenseSummary": {
+        "message": "Vrije software: u mag het verspreiden en aanpassen onder de GPL. Het wordt geleverd zonder enige garantie."
+    },
+    "Opt_Attributions": {
+        "message": "Vermeldingen:"
+    },
+    "Opt_InDevelopment": {
+        "message": "In ontwikkeling"
+    },
+    "Opt_Startup": {
+        "message": "Opstarten"
+    },
+    "Opt_StartupAccountHint": {
+        "message": "De account die wordt getoond bij het openen van ThunderStats"
+    },
+    "Opt_RememberLastAccountHint": {
+        "message": "Heeft voorrang op de opstartaccount"
+    },
+    "Opt_LoadingData": {
+        "message": "Gegevens laden"
+    },
+    "Opt_LoadCustomFirstTabHint": {
+        "message": "Anders wacht Aangepast beeld tot u een zoekopdracht uitvoert"
+    },
+    "Opt_LoadCustomOnRangeHint": {
+        "message": "Anders wordt de periode alleen in de datumkiezer ingesteld"
+    },
+    "Opt_TodayOnly": {
+        "message": "Alleen Vandaag"
+    },
+    "Opt_ManyDaysCustom": {
+        "message": "Laatste dagen & Aangepast beeld"
+    },
+    "Opt_ManyDaysNumHint": {
+        "message": "Verhoog voor meer dan 24 dagen de cache van recente dagen in Geavanceerd"
+    },
     "PeriodB": {
         "message": "Periode B"
+    },
+    "Appearance": {
+        "message": "Uiterlijk",
+        "description": "Options group title for the color theme settings"
+    },
+    "prefs_theme_mode": {
+        "message": "Kleurenthema"
+    },
+    "ThemeAuto": {
+        "message": "Automatisch (systeem volgen)"
+    },
+    "ThemeLight": {
+        "message": "Licht",
+        "description": "Light color theme"
+    },
+    "ThemeDark": {
+        "message": "Donker",
+        "description": "Dark color theme"
+    },
+    "prefs_time_format": {
+        "message": "Tijdnotatie"
+    },
+    "TimeFormatAuto": {
+        "message": "Automatisch (taal van Thunderbird)",
+        "description": "Time format that follows the Thunderbird UI language"
+    },
+    "TimeFormat24": {
+        "message": "24-uurs (14:30)"
+    },
+    "TimeFormat12": {
+        "message": "12-uurs (2:30 PM)"
+    },
+    "Opt_TimeFormatHint": {
+        "message": "Automatisch gebruikt de klok van de taal van Thunderbird; kies 24-uurs of 12-uurs als die afwijkt van uw datum- en tijdinstellingen in Thunderbird"
     },
     "PeriodBStart": {
         "message": "Periode B vergelijken"
@@ -720,7 +1440,374 @@
     "AggregationDays": {
         "message": "Dagen"
     },
+    "AggregationWeeks": {
+        "message": "Weken",
+        "description": "Grouping of the main chart"
+    },
+    "AggregationMonths": {
+        "message": "Maanden",
+        "description": "Grouping of the main chart"
+    },
+    "AggregationYears": {
+        "message": "Jaren",
+        "description": "Grouping of the main chart"
+    },
+    "FilterChipFolders": {
+        "message": "Mappen: $FOLDERS$",
+        "description": "Active filter chip",
+        "placeholders": {
+            "folders": {
+                "content": "$1",
+                "example": "Inbox, Projects"
+            }
+        }
+    },
+    "FilterChipSubject": {
+        "message": "Onderwerp bevat ‘$TEXT$’",
+        "description": "Active filter chip",
+        "placeholders": {
+            "text": {
+                "content": "$1",
+                "example": "invoice"
+            }
+        }
+    },
+    "VsPeriodB": {
+        "message": "vs. Periode B ($NUM$)",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "269"
+            }
+        }
+    },
+    "WeekLabel": {
+        "message": "W$WEEK$ $YEAR$",
+        "description": "Label of a week in the charts, e.g. W12 2026",
+        "placeholders": {
+            "week": {
+                "content": "$1",
+                "example": "12"
+            },
+            "year": {
+                "content": "$2",
+                "example": "2026"
+            }
+        }
+    },
+    "PeriodBShort": {
+        "message": "B",
+        "description": "Short label before a Period B value, e.g. B 42"
+    },
     "InternalTag": {
         "message": "intern"
+    },
+    "ShowMoreRows": {
+        "message": "+ nog $NUM$",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "5"
+            }
+        }
+    },
+    "NoTaggedMails": {
+        "message": "Geen e-mails met labels"
+    },
+    "ComparisonCardTitle": {
+        "message": "Vergeleken met een andere dag"
+    },
+    "PreviousDaysTitle": {
+        "message": "Vorige $NUM$ dagen",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "QueryResult": {
+        "message": "Zoekresultaat",
+        "description": "Status badge of a custom query"
+    },
+    "PeriodDaysInfo": {
+        "message": "$DAYS$ dagen · $WORKING$ werkdagen",
+        "placeholders": {
+            "days": {
+                "content": "$1",
+                "example": "7"
+            },
+            "working": {
+                "content": "$2",
+                "example": "5"
+            }
+        }
+    },
+    "AddedToBacklog": {
+        "message": "toegevoegd aan achterstand",
+        "description": "Next to the mails of the period still in the inbox"
+    },
+    "PerWorkingDay": {
+        "message": "Per werkdag"
+    },
+    "BusiestDay": {
+        "message": "Drukste dag"
+    },
+    "NumReceived": {
+        "message": "$NUM$ ontvangen",
+        "description": "Number of received mails: busiest day sub-label and heatmap cell tooltip",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "63"
+            }
+        }
+    },
+    "DailyStats": {
+        "message": "max $MAX$ · min $MIN$ · gem. $AVG$ per dag",
+        "placeholders": {
+            "max": {
+                "content": "$1",
+                "example": "63"
+            },
+            "min": {
+                "content": "$2",
+                "example": "5"
+            },
+            "avg": {
+                "content": "$3",
+                "example": "41"
+            }
+        }
+    },
+    "PlusToday": {
+        "message": "+$NUM$ vandaag",
+        "description": "Mails of today, not counted in the period total",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "12"
+            }
+        }
+    },
+    "VsPreviousPeriod": {
+        "message": "vs. vorige $DAYS$ dagen ($NUM$)",
+        "placeholders": {
+            "days": {
+                "content": "$1",
+                "example": "7"
+            },
+            "num": {
+                "content": "$2",
+                "example": "269"
+            }
+        }
+    },
+    "AvgPerDay": {
+        "message": "gem. $NUM$ per dag",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "38.5"
+            }
+        }
+    },
+    "ReplyRatio": {
+        "message": "Antwoordverhouding"
+    },
+    "ReplyRatioSub": {
+        "message": "één e-mail verzonden per $NUM$ ontvangen",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "3.2"
+            }
+        }
+    },
+    "ChartPeriodTitle": {
+        "message": "Laatste $NUM$ dagen, dag voor dag",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "ChartPeriodTitleCustom": {
+        "message": "Dag voor dag"
+    },
+    "ChartZoomHint": {
+        "message": "Sleep over de grafiek om in te zoomen",
+        "description": "Hint next to the main chart of the custom query: dragging selects a range to zoom on."
+    },
+    "ChartZoomReset": {
+        "message": "De hele periode tonen",
+        "description": "Tooltip of the x on the zoom chip of the main chart."
+    },
+    "ChartZoomRunQuery": {
+        "message": "De zoekopdracht uitvoeren op deze periode",
+        "description": "Link next to the zoom chip: runs a new custom query on the zoomed period with the same filters."
+    },
+    "PeriodNotePeak": {
+        "message": "Piek op $DAY$ met $NUM$.",
+        "placeholders": {
+            "day": {
+                "content": "$1",
+                "example": "Mon 27"
+            },
+            "num": {
+                "content": "$2",
+                "example": "63"
+            }
+        }
+    },
+    "PeriodNoteWorkingDays": {
+        "message": "Op werkdagen werden gemiddeld $WORKING$ e-mails ontvangen, op andere dagen $OTHER$.",
+        "placeholders": {
+            "working": {
+                "content": "$1",
+                "example": "55"
+            },
+            "other": {
+                "content": "$2",
+                "example": "7"
+            }
+        }
+    },
+    "AvgChip": {
+        "message": "gem.",
+        "description": "Label of the average line in the day-by-day chart"
+    },
+    "AvgPerWorkingDayChip": {
+        "message": "gem. werkdag",
+        "description": "Label of the average line when only business days are counted"
+    },
+    "AvgReceivedPerDay": {
+        "message": "Gem. ontvangen per dag"
+    },
+    "AvgSentPerDay": {
+        "message": "Gem. verzonden per dag"
+    },
+    "TimeOfDayTitle": {
+        "message": "Tijdstip van de dag · gemiddeld per dag"
+    },
+    "TimeOfDayNote": {
+        "message": "De meeste e-mail komt binnen tussen $FROM$ en $TO$; u verzendt de meeste van uw e-mails tussen $SENTFROM$ en $SENTTO$.",
+        "placeholders": {
+            "from": {
+                "content": "$1",
+                "example": "09:00"
+            },
+            "to": {
+                "content": "$2",
+                "example": "11:00"
+            },
+            "sentfrom": {
+                "content": "$3",
+                "example": "15:00"
+            },
+            "sentto": {
+                "content": "$4",
+                "example": "17:00"
+            }
+        }
+    },
+    "TimeOfDayNoteReceived": {
+        "message": "De meeste e-mail komt binnen tussen $FROM$ en $TO$.",
+        "placeholders": {
+            "from": {
+                "content": "$1",
+                "example": "09:00"
+            },
+            "to": {
+                "content": "$2",
+                "example": "11:00"
+            }
+        }
+    },
+    "ClosedAtZero": {
+        "message": "Afgesloten op nul",
+        "description": "Inbox Zero calendar legend"
+    },
+    "FewLeft": {
+        "message": "≤ 5 over",
+        "description": "Inbox Zero calendar legend"
+    },
+    "Missed": {
+        "message": "Gemist",
+        "description": "Inbox Zero calendar legend"
+    },
+    "DaysAtZero": {
+        "message": "van $NUM$ dagen op nul",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "30"
+            }
+        }
+    },
+    "StreakAtEnd": {
+        "message": "dagen reeks aan het eind"
+    },
+    "HeatTitle": {
+        "message": "Wanneer e-mail binnenkomt"
+    },
+    "HeatFewer": {
+        "message": "minder",
+        "description": "Heatmap scale"
+    },
+    "HeatMore": {
+        "message": "meer",
+        "description": "Heatmap scale"
+    },
+    "HeatNote": {
+        "message": "De meeste e-mail komt binnen tussen $FROM$ en $TO$; $WEEKDAY$ is de drukste dag.",
+        "placeholders": {
+            "from": {
+                "content": "$1",
+                "example": "09:00"
+            },
+            "to": {
+                "content": "$2",
+                "example": "11:00"
+            },
+            "weekday": {
+                "content": "$3",
+                "example": "Monday"
+            }
+        }
+    },
+    "WeekdayTitle": {
+        "message": "Per weekdag · gemiddeld per dag"
+    },
+    "WeekdayTooltip": {
+        "message": "$RECEIVED$ ontvangen, $SENT$ verzonden per dag",
+        "placeholders": {
+            "received": {
+                "content": "$1",
+                "example": "41"
+            },
+            "sent": {
+                "content": "$2",
+                "example": "12"
+            }
+        }
+    },
+    "WeekdayNote": {
+        "message": "$BUSIEST$ brengt de meeste e-mail; $LIGHTEST$ is ongeveer $PERCENT$% rustiger.",
+        "placeholders": {
+            "busiest": {
+                "content": "$1",
+                "example": "Monday"
+            },
+            "lightest": {
+                "content": "$2",
+                "example": "Friday"
+            },
+            "percent": {
+                "content": "$3",
+                "example": "18"
+            }
+        }
     }
 }

@@ -60,8 +60,101 @@
     "yesterday_small": {
         "message": "Ieri"
     },
+    "InboxAgeWeek": {
+        "message": "2–7 giorni"
+    },
+    "InboxAgeMonth": {
+        "message": "8–30 giorni"
+    },
+    "InboxAgeQuarter": {
+        "message": "1–3 mesi"
+    },
+    "InboxAgeOlder": {
+        "message": "Più vecchie"
+    },
     "days": {
         "message": "giorni"
+    },
+    "Opt_DatePickerLocaleHint": {
+        "message": "Un codice lingua come it-IT o en-US, per il formato della data nei calendari"
+    },
+    "Opt_MarkInboxBarsHint": {
+        "message": "Viste di più giorni"
+    },
+    "Opt_InboxAgeHint": {
+        "message": "Viste di un solo giorno: Oggi, Ieri e la query personalizzata di un giorno. Anche la freccia sul contatore la apre e la chiude"
+    },
+    "Opt_InternalMail": {
+        "message": "Posta interna"
+    },
+    "Opt_ShowInternalShareHint": {
+        "message": "Richiede i domini interni —"
+    },
+    "Opt_SetInternalDomains": {
+        "message": "impostali in Identità & domini"
+    },
+    "Opt_ThemeHint": {
+        "message": "Automatico segue il sistema; anche il pulsante sole/luna nella barra degli strumenti lo cambia"
+    },
+    "Opt_ArchiveFolders": {
+        "message": "Cartelle di archivio"
+    },
+    "Opt_FilterDupHint": {
+        "message": "Più lento, ma evita di contare due volte"
+    },
+    "Opt_PerAccount": {
+        "message": "Per account"
+    },
+    "Opt_ArchiveFoldersNote": {
+        "message": "I conteggi delle cartelle in “Dove sono finite le email” mostrano sempre tutta la posta — un messaggio presente in due cartelle compare in entrambe."
+    },
+    "Opt_TopRowsHint": {
+        "message": "Mittenti e destinatari principali"
+    },
+    "Opt_WarnLongPeriods": {
+        "message": "Avvisa per i periodi lunghi"
+    },
+    "Opt_Performance": {
+        "message": "Prestazioni & risoluzione dei problemi"
+    },
+    "Opt_PerformanceDesc": {
+        "message": "Come ThunderStats legge la tua posta durante il caricamento delle statistiche."
+    },
+    "Opt_ConcurrentQueries": {
+        "message": "Query sui messaggi contemporanee"
+    },
+    "Opt_RecentDaysCache": {
+        "message": "Cache dei giorni recenti"
+    },
+    "Opt_DebugLogHint": {
+        "message": "Scrive messaggi dettagliati nella console degli errori di Thunderbird"
+    },
+    "Opt_BusinessDaysDesc": {
+        "message": "I giorni liberi sono esclusi dalle medie, così una domenica tranquilla non abbassa il tuo riferimento."
+    },
+    "Opt_WorkingWeek": {
+        "message": "Settimana lavorativa"
+    },
+    "Opt_HolidaysNone": {
+        "message": "Nessun giorno non lavorativo fisso"
+    },
+    "Opt_HolidaysOne": {
+        "message": "1 giorno non lavorativo fisso"
+    },
+    "Opt_HolidaysCount": {
+        "message": "$NUM$ giorni non lavorativi fissi",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "5"
+            }
+        }
+    },
+    "Opt_PlusEaster": {
+        "message": "+ Pasqua"
+    },
+    "Opt_AddHoliday": {
+        "message": "Aggiungi giorno non lavorativo"
     },
     "TotalDays": {
         "message": "Giorni totali"
@@ -75,6 +168,40 @@
     "SentMails": {
         "message": "Inviate"
     },
+    "InboxZero": {
+        "message": "Inbox Zero",
+        "description": "Inbox Zero label: status badge, options card and calendar widget title"
+    },
+    "KeepingUp": {
+        "message": "Sotto controllo",
+        "description": "Status badge"
+    },
+    "BacklogGrowing": {
+        "message": "Arretrato in crescita",
+        "description": "Status badge"
+    },
+    "FullDayRange": {
+        "message": "Giornata intera · $START$ → $END$",
+        "description": "Time range of a whole day",
+        "placeholders": {
+            "start": {
+                "content": "$1",
+                "example": "00:00"
+            },
+            "end": {
+                "content": "$2",
+                "example": "23:59"
+            }
+        }
+    },
+    "Arrived": {
+        "message": "Arrivate",
+        "description": "Mails received in the period"
+    },
+    "FiledOrAnswered": {
+        "message": "Archiviate o con risposta",
+        "description": "Received mails that left the inbox"
+    },
     "ReceivedMails": {
         "message": "Ricevute"
     },
@@ -83,6 +210,243 @@
     },
     "TotalInbox": {
         "message": "Arretrato nella posta in arrivo"
+    },
+    "InboxBacklogDeltaTooltip": {
+        "message": "Email ricevute quel giorno ancora nella posta in arrivo"
+    },
+    "InboxBacklogSub": {
+        "message": "$UNREAD$ non lette · la più vecchia $DAYS$ giorni",
+        "placeholders": {
+            "unread": {
+                "content": "$1",
+                "example": "112"
+            },
+            "days": {
+                "content": "$2",
+                "example": "46"
+            }
+        }
+    },
+    "InternalTraffic": {
+        "message": "Traffico interno"
+    },
+    "InternalTrafficSub": {
+        "message": "ricevute · $PERCENT$ di quelle che hai inviato",
+        "placeholders": {
+            "percent": {
+                "content": "$1",
+                "example": "58%"
+            }
+        }
+    },
+    "InboxZeroDayLeft": {
+        "message": "$DATE$: $NUM$ ancora nella posta in arrivo",
+        "description": "Tooltip of a day in the Inbox Zero strip",
+        "placeholders": {
+            "date": {
+                "content": "$1",
+                "example": "Thu 30 Jul"
+            },
+            "num": {
+                "content": "$2",
+                "example": "3"
+            }
+        }
+    },
+    "InboxZeroStreak": {
+        "message": "Serie Inbox Zero"
+    },
+    "InboxZeroStreakSub": {
+        "message": "giorni · $ZERO$ degli ultimi $NUM$ a zero",
+        "placeholders": {
+            "zero": {
+                "content": "$1",
+                "example": "9"
+            },
+            "num": {
+                "content": "$2",
+                "example": "14"
+            }
+        }
+    },
+    "InboxZeroStreakTooltip": {
+        "message": "Un giorno conta quando nessuna delle email ricevute quel giorno è ancora nella posta in arrivo."
+    },
+    "ChartTodayTitle": {
+        "message": "Oggi rispetto a una giornata normale"
+    },
+    "ChartDayTitle": {
+        "message": "$DAY$ rispetto a una giornata normale",
+        "placeholders": {
+            "day": {
+                "content": "$1",
+                "example": "29 July"
+            }
+        }
+    },
+    "UsualRange": {
+        "message": "Intervallo abituale",
+        "description": "Range of the same weekday in the previous weeks"
+    },
+    "CalloutReceived": {
+        "message": "$TIME$ · $NUM$ ricevute",
+        "placeholders": {
+            "time": {
+                "content": "$1",
+                "example": "18:04"
+            },
+            "num": {
+                "content": "$2",
+                "example": "47"
+            }
+        }
+    },
+    "UsualByNow": {
+        "message": "solito a quest'ora: $LOW$–$HIGH$",
+        "placeholders": {
+            "low": {
+                "content": "$1",
+                "example": "39"
+            },
+            "high": {
+                "content": "$2",
+                "example": "44"
+            }
+        }
+    },
+    "UsualByEndOfDay": {
+        "message": "solito a fine giornata: $LOW$–$HIGH$",
+        "placeholders": {
+            "low": {
+                "content": "$1",
+                "example": "40"
+            },
+            "high": {
+                "content": "$2",
+                "example": "49"
+            }
+        }
+    },
+    "ChartNoteBusier": {
+        "message": "Più intenso di un $WEEKDAY$ abituale.",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            }
+        }
+    },
+    "ChartNoteQuieter": {
+        "message": "Più tranquillo di un $WEEKDAY$ abituale.",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            }
+        }
+    },
+    "ChartNoteUsual": {
+        "message": "In linea con un $WEEKDAY$ abituale.",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            }
+        }
+    },
+    "NoCorrespondents": {
+        "message": "Nessun corrispondente"
+    },
+    "EndedUpNote": {
+        "message": "$MOVED$ email su $TOTAL$ sono uscite dalla posta in arrivo — la maggior parte è finita in $FOLDER$.",
+        "placeholders": {
+            "moved": {
+                "content": "$1",
+                "example": "18"
+            },
+            "total": {
+                "content": "$2",
+                "example": "48"
+            },
+            "folder": {
+                "content": "$3",
+                "example": "Projects"
+            }
+        }
+    },
+    "EndedUpNoteAllMoved": {
+        "message": "Tutte le $TOTAL$ email sono uscite dalla posta in arrivo — la maggior parte è finita in $FOLDER$.",
+        "placeholders": {
+            "total": {
+                "content": "$1",
+                "example": "48"
+            },
+            "folder": {
+                "content": "$2",
+                "example": "Projects"
+            }
+        }
+    },
+    "EndedUpNoteNoneMoved": {
+        "message": "Nessuna delle $TOTAL$ email è ancora uscita dalla posta in arrivo.",
+        "placeholders": {
+            "total": {
+                "content": "$1",
+                "example": "48"
+            }
+        }
+    },
+    "KpiReceivedToday": {
+        "message": "Ricevute oggi"
+    },
+    "KpiSentToday": {
+        "message": "Inviate oggi"
+    },
+    "KpiReceivedYesterday": {
+        "message": "Ricevute ieri"
+    },
+    "KpiSentYesterday": {
+        "message": "Inviate ieri"
+    },
+    "KpiReceivedDay": {
+        "message": "Ricevute quel giorno"
+    },
+    "KpiSentDay": {
+        "message": "Inviate quel giorno"
+    },
+    "TopCorrespondentsToday": {
+        "message": "Corrispondenti principali di oggi"
+    },
+    "TopCorrespondentsYesterday": {
+        "message": "Corrispondenti principali di ieri"
+    },
+    "TopCorrespondentsDay": {
+        "message": "Corrispondenti principali di quel giorno"
+    },
+    "EndedUpToday": {
+        "message": "Dove sono finite le email di oggi"
+    },
+    "EndedUpYesterday": {
+        "message": "Dove sono finite le email di ieri"
+    },
+    "EndedUpDay": {
+        "message": "Dove sono finite le email di quel giorno"
+    },
+    "ShowLess": {
+        "message": "Mostra meno"
+    },
+    "SeeAllCorrespondents": {
+        "message": "Vedi tutti i $NUM$ →",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "10"
+            }
+        }
+    },
+    "CorrespondentsListsBelow": {
+        "message": "Elenchi completi di mittenti e destinatari qui sotto ↓",
+        "description": "Link in the top correspondents card, shown when the full lists are open; it scrolls to them"
     },
     "TotalInboxUnread": {
         "message": "non lette"
@@ -98,6 +462,10 @@
     },
     "FolderLocation": {
         "message": "Dove sono finite le email"
+    },
+    "OpenFolder": {
+        "message": "Apri la cartella",
+        "description": "Tooltip of a folder row that opens the folder in Thunderbird"
     },
     "InboxZeroFolderLocationNote": {
         "message": "In questo grafico sono considerati tutti i messaggi, inclusi i duplicati che vengono filtrati negli altri grafici. Quindi, ad esempio, se usi Gmail, vedrai i messaggi sia nella cartella in cui si trovano che nella cartella \"Tutti i messaggi\"."
@@ -188,6 +556,9 @@
     },
     "DateRange": {
         "message": "Periodo"
+    },
+    "CompareNotOnSingleDay": {
+        "message": "Il confronto richiede un periodo di più di un giorno"
     },
     "Bookmarks_Menu": {
         "message": "Periodi predefiniti"
@@ -351,6 +722,15 @@
     },
     "folderspreadchart_openinfirsttab": {
         "message": "Apri le cartelle in “Dove sono finite le email” nella prima scheda della posta"
+    },
+    "MaxConcurrentQueries": {
+        "message": "Abbassalo se Thunderbird va a scatti durante il caricamento, alzalo se il caricamento è troppo lento (1–10)"
+    },
+    "RecentDaysCacheDays_1": {
+        "message": "Giorni prima di oggi letti in un'unica passata e condivisi dalle viste (43–365)."
+    },
+    "RecentDaysCacheDays_2": {
+        "message": "Alzalo se “Ultimi giorni” copre più di 24 giorni; un valore più alto rende più lento il primo caricamento."
     },
     "InvolvedNum": {
         "message": "Righe nelle tabelle “Top”"
@@ -550,6 +930,21 @@
     "AdvFilters": {
         "message": "Filtri"
     },
+    "AddFilter": {
+        "message": "+ Aggiungi filtro",
+        "description": "Custom query panel, opens the advanced filters"
+    },
+    "CloseFilters": {
+        "message": "Chiudi filtri",
+        "description": "Custom query panel, closes the advanced filters"
+    },
+    "RemoveFilter": {
+        "message": "Rimuovi questo filtro"
+    },
+    "ChoosePeriodAndRun": {
+        "message": "Scegli un periodo ed esegui la query.",
+        "description": "Shown in the Custom Query tab before the first query"
+    },
     "ChooseFoldersFilter": {
         "message": "Scegli le cartelle"
     },
@@ -607,6 +1002,62 @@
     "InboxMailsDateSpreadingExtended": {
         "message": "Dettagli per data"
     },
+    "InboxAgeByAge": {
+        "message": "Torna alle età",
+        "description": "Link that goes back to the inbox mails by age"
+    },
+    "InboxAgeNote": {
+        "message": "$NUM$ email aspettano da più di un mese.",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "24"
+            }
+        }
+    },
+    "InboxAgeNoteFresh": {
+        "message": "Niente nella posta in arrivo è più vecchio di un mese."
+    },
+    "InboxAgeKpiLink": {
+        "message": "$NUM$ in attesa da oltre un mese ›",
+        "description": "Link in the Inbox backlog KPI that opens the How old is your inbox strip",
+        "placeholders": {
+            "num": {
+                "content": "$1"
+            }
+        }
+    },
+    "InboxAgeKpiLinkFresh": {
+        "message": "Quanto è vecchia la tua posta in arrivo ›",
+        "description": "Link in the Inbox backlog KPI that opens the How old is your inbox strip, when nothing is older than a month"
+    },
+    "InboxAgeToggle": {
+        "message": "Mostra o nascondi quanto è vecchia la tua posta in arrivo",
+        "description": "Tooltip of the toggle button in the Inbox backlog KPI"
+    },
+    "InboxAgeHide": {
+        "message": "Nascondi",
+        "description": "Closes the How old is your inbox strip"
+    },
+    "InboxAgeSegmentTooltip": {
+        "message": "$NAME$: $NUM$ email ($PERCENT$%)",
+        "description": "Tooltip of a segment of the inbox age bar",
+        "placeholders": {
+            "name": {
+                "content": "$1"
+            },
+            "num": {
+                "content": "$2"
+            },
+            "percent": {
+                "content": "$3"
+            }
+        }
+    },
+    "prefs_inbox_age_expanded": {
+        "message": "Mostra quanto è vecchia la posta in arrivo sotto il contatore Arretrato nella posta in arrivo",
+        "description": "Option: keeps the How old is your inbox strip open in the single-day views"
+    },
     "OrderBy": {
         "message": "Ordina per"
     },
@@ -646,8 +1097,140 @@
     "PeriodA": {
         "message": "Periodo A"
     },
+    "PeriodAShort": {
+        "message": "A",
+        "description": "Short label before a Period A value, e.g. A 42, and A button of the Period A / Period B switch"
+    },
+    "DaysAtZeroPeriodB": {
+        "message": "giorni a zero su $NUM$ nel Periodo B",
+        "description": "Inbox Zero calendar, Custom Query comparison",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "14"
+            }
+        }
+    },
+    "Opt_Options": {
+        "message": "Opzioni"
+    },
+    "Opt_SavedAutomatically": {
+        "message": "Le modifiche vengono salvate automaticamente"
+    },
+    "Opt_ReloadThunderStats": {
+        "message": "Ricarica ThunderStats"
+    },
+    "Opt_DonateSidebar": {
+        "message": "ThunderStats è gratuito e sviluppato nel tempo libero. Se fa parte della tua routine, valuta di sostenerlo."
+    },
+    "Opt_About": {
+        "message": "Informazioni"
+    },
+    "Opt_ByAuthor": {
+        "message": "di Mic"
+    },
+    "Opt_DonateBanner": {
+        "message": "ThunderStats è gratuito e sviluppato nel tempo libero. Se fa parte della tua routine quotidiana, una piccola donazione lo aiuta ad andare avanti."
+    },
+    "Opt_ReleaseNotes": {
+        "message": "Note di rilascio"
+    },
+    "Opt_FullChangelog": {
+        "message": "Elenco completo delle modifiche"
+    },
+    "Opt_OneChange": {
+        "message": "1 modifica"
+    },
+    "Opt_NChanges": {
+        "message": "$NUM$ modifiche",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "5"
+            }
+        }
+    },
+    "Opt_LicenseName": {
+        "message": "GNU General Public License v3 o successiva"
+    },
+    "Opt_HideFullText": {
+        "message": "Nascondi il testo completo"
+    },
+    "Opt_ShowFullText": {
+        "message": "Mostra il testo completo"
+    },
+    "Opt_LicenseSummary": {
+        "message": "Software libero: puoi ridistribuirlo e modificarlo secondo i termini della GPL. Viene fornito senza alcuna garanzia."
+    },
+    "Opt_Attributions": {
+        "message": "Riconoscimenti:"
+    },
+    "Opt_InDevelopment": {
+        "message": "In sviluppo"
+    },
+    "Opt_Startup": {
+        "message": "Avvio"
+    },
+    "Opt_StartupAccountHint": {
+        "message": "L'account mostrato all'apertura di ThunderStats"
+    },
+    "Opt_RememberLastAccountHint": {
+        "message": "Ha la precedenza sull'account di avvio"
+    },
+    "Opt_LoadingData": {
+        "message": "Caricamento dati"
+    },
+    "Opt_LoadCustomFirstTabHint": {
+        "message": "Altrimenti Personalizzato aspetta che tu esegua una query"
+    },
+    "Opt_LoadCustomOnRangeHint": {
+        "message": "Altrimenti il periodo viene solo impostato nel calendario"
+    },
+    "Opt_TodayOnly": {
+        "message": "Solo Oggi"
+    },
+    "Opt_ManyDaysCustom": {
+        "message": "Ultimi giorni & Personalizzato"
+    },
+    "Opt_ManyDaysNumHint": {
+        "message": "Oltre 24 giorni, alza la cache dei giorni recenti in Avanzato"
+    },
     "PeriodB": {
         "message": "Periodo B"
+    },
+    "Appearance": {
+        "message": "Aspetto",
+        "description": "Options group title for the color theme settings"
+    },
+    "prefs_theme_mode": {
+        "message": "Tema colori"
+    },
+    "ThemeAuto": {
+        "message": "Automatico (segui il sistema)"
+    },
+    "ThemeLight": {
+        "message": "Chiaro",
+        "description": "Light color theme"
+    },
+    "ThemeDark": {
+        "message": "Scuro",
+        "description": "Dark color theme"
+    },
+    "prefs_time_format": {
+        "message": "Formato dell'ora"
+    },
+    "TimeFormatAuto": {
+        "message": "Automatico (lingua di Thunderbird)",
+        "description": "Time format that follows the Thunderbird UI language"
+    },
+    "TimeFormat24": {
+        "message": "24 ore (14:30)"
+    },
+    "TimeFormat12": {
+        "message": "12 ore (2:30 PM)"
+    },
+    "Opt_TimeFormatHint": {
+        "message": "Automatico usa l'orologio della lingua di Thunderbird; scegli 24 ore o 12 ore se è diverso dalle impostazioni di data e ora di Thunderbird"
     },
     "PeriodBStart": {
         "message": "Confronto Periodo B"
@@ -688,6 +1271,86 @@
     "FolderLocation_percent_remaining": {
         "message": "Ancora nella posta in arrivo"
     },
+    "OfInboxTotal": {
+        "message": "su $TOTAL$ totali",
+        "description": "Next to the mails still in the inbox",
+        "placeholders": {
+            "total": {
+                "content": "$1",
+                "example": "124"
+            }
+        }
+    },
+    "BacklogTrend": {
+        "message": "Andamento dell'arretrato"
+    },
+    "SinceWeekday": {
+        "message": "da $WEEKDAY$",
+        "description": "e.g. since Mon",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Mon"
+            }
+        }
+    },
+    "BacklogTrendTooltip": {
+        "message": "Email ricevute dall'inizio della settimana ancora nella posta in arrivo"
+    },
+    "ClearIn": {
+        "message": "Svuotata in",
+        "description": "Time needed to empty the inbox"
+    },
+    "WorkingDaysSmall": {
+        "message": "giorni lavorativi"
+    },
+    "ClearInTooltip": {
+        "message": "Giorni lavorativi necessari per svuotare la posta in arrivo al tuo ritmo abituale (email uscite dalla posta in arrivo per giorno lavorativo negli ultimi $NUM$ giorni)",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "BaselineTooltip": {
+        "message": "Confrontato con lo stesso giorno della settimana nelle ultime $NUM$ settimane",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "6"
+            }
+        }
+    },
+    "NoWeekdayHistory": {
+        "message": "Ancora nessuno storico per questo giorno della settimana"
+    },
+    "VsUsualByNow": {
+        "message": "vs il tuo solito $WEEKDAY$ a quest'ora ($NUM$)",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            },
+            "num": {
+                "content": "$2",
+                "example": "42"
+            }
+        }
+    },
+    "VsWeekdayAverage": {
+        "message": "vs la tua media del $WEEKDAY$ ($NUM$)",
+        "placeholders": {
+            "weekday": {
+                "content": "$1",
+                "example": "Thursday"
+            },
+            "num": {
+                "content": "$2",
+                "example": "42"
+            }
+        }
+    },
     "ResetAdvFilters": {
         "message": "Resetta i filtri"
     },
@@ -721,11 +1384,431 @@
     "AggregationDays": {
         "message": "Giorni"
     },
+    "AggregationWeeks": {
+        "message": "Settimane",
+        "description": "Grouping of the main chart"
+    },
+    "AggregationMonths": {
+        "message": "Mesi",
+        "description": "Grouping of the main chart"
+    },
+    "AggregationYears": {
+        "message": "Anni",
+        "description": "Grouping of the main chart"
+    },
+    "FilterChipFolders": {
+        "message": "Cartelle: $FOLDERS$",
+        "description": "Active filter chip",
+        "placeholders": {
+            "folders": {
+                "content": "$1",
+                "example": "Inbox, Projects"
+            }
+        }
+    },
+    "FilterChipSubject": {
+        "message": "L'oggetto contiene \"$TEXT$\"",
+        "description": "Active filter chip",
+        "placeholders": {
+            "text": {
+                "content": "$1",
+                "example": "invoice"
+            }
+        }
+    },
+    "VsPeriodB": {
+        "message": "vs Periodo B ($NUM$)",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "269"
+            }
+        }
+    },
+    "WeekLabel": {
+        "message": "S$WEEK$ $YEAR$",
+        "description": "Label of a week in the charts, e.g. W12 2026",
+        "placeholders": {
+            "week": {
+                "content": "$1",
+                "example": "12"
+            },
+            "year": {
+                "content": "$2",
+                "example": "2026"
+            }
+        }
+    },
+    "PeriodBShort": {
+        "message": "B",
+        "description": "Short label before a Period B value, e.g. B 42"
+    },
     "InternalTag": {
         "message": "interne"
     },
+    "ShowMoreRows": {
+        "message": "+ altri $NUM$",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "5"
+            }
+        }
+    },
+    "NoTaggedMails": {
+        "message": "Nessuna email con tag"
+    },
+    "ComparisonCardTitle": {
+        "message": "Confronto con un altro giorno"
+    },
+    "PreviousDaysTitle": {
+        "message": "$NUM$ giorni precedenti",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "QueryResult": {
+        "message": "Risultato della query",
+        "description": "Status badge of a custom query"
+    },
+    "PeriodDaysInfo": {
+        "message": "$DAYS$ giorni · $WORKING$ giorni lavorativi",
+        "placeholders": {
+            "days": {
+                "content": "$1",
+                "example": "7"
+            },
+            "working": {
+                "content": "$2",
+                "example": "5"
+            }
+        }
+    },
+    "AddedToBacklog": {
+        "message": "aggiunte all'arretrato",
+        "description": "Next to the mails of the period still in the inbox"
+    },
+    "PerWorkingDay": {
+        "message": "Per giorno lavorativo"
+    },
+    "BusiestDay": {
+        "message": "Giorno più intenso"
+    },
+    "NumReceived": {
+        "message": "$NUM$ ricevute",
+        "description": "Number of received mails: busiest day sub-label and heatmap cell tooltip",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "63"
+            }
+        }
+    },
+    "DailyStats": {
+        "message": "max $MAX$ · min $MIN$ · media $AVG$ al giorno",
+        "placeholders": {
+            "max": {
+                "content": "$1",
+                "example": "63"
+            },
+            "min": {
+                "content": "$2",
+                "example": "5"
+            },
+            "avg": {
+                "content": "$3",
+                "example": "41"
+            }
+        }
+    },
+    "PlusToday": {
+        "message": "+$NUM$ oggi",
+        "description": "Mails of today, not counted in the period total",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "12"
+            }
+        }
+    },
+    "VsPreviousPeriod": {
+        "message": "vs i $DAYS$ giorni precedenti ($NUM$)",
+        "placeholders": {
+            "days": {
+                "content": "$1",
+                "example": "7"
+            },
+            "num": {
+                "content": "$2",
+                "example": "269"
+            }
+        }
+    },
+    "AvgPerDay": {
+        "message": "media $NUM$ al giorno",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "38.5"
+            }
+        }
+    },
+    "ReplyRatio": {
+        "message": "Rapporto di risposta"
+    },
+    "ReplyRatioSub": {
+        "message": "una email inviata ogni $NUM$ ricevute",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "3.2"
+            }
+        }
+    },
+    "ChartPeriodTitle": {
+        "message": "Ultimi $NUM$ giorni, giorno per giorno",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "7"
+            }
+        }
+    },
+    "ChartPeriodTitleCustom": {
+        "message": "Giorno per giorno"
+    },
+    "ChartZoomHint": {
+        "message": "Trascina sul grafico per ingrandire",
+        "description": "Hint next to the main chart of the custom query: dragging selects a range to zoom on."
+    },
+    "ChartZoomReset": {
+        "message": "Mostra tutto il periodo",
+        "description": "Tooltip of the x on the zoom chip of the main chart."
+    },
+    "ChartZoomRunQuery": {
+        "message": "Esegui la query su questo periodo",
+        "description": "Link next to the zoom chip: runs a new custom query on the zoomed period with the same filters."
+    },
+    "PeriodNotePeak": {
+        "message": "Picco il $DAY$ con $NUM$.",
+        "placeholders": {
+            "day": {
+                "content": "$1",
+                "example": "Mon 27"
+            },
+            "num": {
+                "content": "$2",
+                "example": "63"
+            }
+        }
+    },
+    "PeriodNoteWorkingDays": {
+        "message": "Nei giorni lavorativi sono arrivate in media $WORKING$ email, negli altri giorni $OTHER$.",
+        "placeholders": {
+            "working": {
+                "content": "$1",
+                "example": "55"
+            },
+            "other": {
+                "content": "$2",
+                "example": "7"
+            }
+        }
+    },
+    "AvgChip": {
+        "message": "media",
+        "description": "Label of the average line in the day-by-day chart"
+    },
+    "AvgPerWorkingDayChip": {
+        "message": "media giorno lavorativo",
+        "description": "Label of the average line when only business days are counted"
+    },
+    "AvgReceivedPerDay": {
+        "message": "Media ricevute al giorno"
+    },
+    "AvgSentPerDay": {
+        "message": "Media inviate al giorno"
+    },
+    "TimeOfDayTitle": {
+        "message": "Ora del giorno · media giornaliera"
+    },
+    "TimeOfDayNote": {
+        "message": "La maggior parte della posta arriva tra le $FROM$ e le $TO$; tu invii la maggior parte delle tue email tra le $SENTFROM$ e le $SENTTO$.",
+        "placeholders": {
+            "from": {
+                "content": "$1",
+                "example": "09:00"
+            },
+            "to": {
+                "content": "$2",
+                "example": "11:00"
+            },
+            "sentfrom": {
+                "content": "$3",
+                "example": "15:00"
+            },
+            "sentto": {
+                "content": "$4",
+                "example": "17:00"
+            }
+        }
+    },
+    "TimeOfDayNoteReceived": {
+        "message": "La maggior parte della posta arriva tra le $FROM$ e le $TO$.",
+        "placeholders": {
+            "from": {
+                "content": "$1",
+                "example": "09:00"
+            },
+            "to": {
+                "content": "$2",
+                "example": "11:00"
+            }
+        }
+    },
+    "ClosedAtZero": {
+        "message": "Chiuso a zero",
+        "description": "Inbox Zero calendar legend"
+    },
+    "FewLeft": {
+        "message": "≤ 5 rimaste",
+        "description": "Inbox Zero calendar legend"
+    },
+    "Missed": {
+        "message": "Mancato",
+        "description": "Inbox Zero calendar legend"
+    },
+    "DaysAtZero": {
+        "message": "giorni a zero su $NUM$",
+        "placeholders": {
+            "num": {
+                "content": "$1",
+                "example": "30"
+            }
+        }
+    },
+    "StreakAtEnd": {
+        "message": "giorni di serie alla fine"
+    },
+    "HeatTitle": {
+        "message": "Quando arriva la posta"
+    },
+    "HeatFewer": {
+        "message": "meno",
+        "description": "Heatmap scale"
+    },
+    "HeatMore": {
+        "message": "più",
+        "description": "Heatmap scale"
+    },
+    "HeatNote": {
+        "message": "La maggior parte della posta arriva tra le $FROM$ e le $TO$; $WEEKDAY$ è il giorno più intenso.",
+        "placeholders": {
+            "from": {
+                "content": "$1",
+                "example": "09:00"
+            },
+            "to": {
+                "content": "$2",
+                "example": "11:00"
+            },
+            "weekday": {
+                "content": "$3",
+                "example": "Monday"
+            }
+        }
+    },
+    "WeekdayTitle": {
+        "message": "Per giorno della settimana · media giornaliera"
+    },
+    "WeekdayTooltip": {
+        "message": "$RECEIVED$ ricevute, $SENT$ inviate al giorno",
+        "placeholders": {
+            "received": {
+                "content": "$1",
+                "example": "41"
+            },
+            "sent": {
+                "content": "$2",
+                "example": "12"
+            }
+        }
+    },
+    "WeekdayNote": {
+        "message": "$BUSIEST$ porta più posta; $LIGHTEST$ è circa il $PERCENT$% più leggero.",
+        "placeholders": {
+            "busiest": {
+                "content": "$1",
+                "example": "Monday"
+            },
+            "lightest": {
+                "content": "$2",
+                "example": "Friday"
+            },
+            "percent": {
+                "content": "$3",
+                "example": "18"
+            }
+        }
+    },
     "Opt_HolidayNamePlaceholder": {
-    "message": "e.g. Festa della Repubblica",
-    "description": ""
-  }
+        "message": "es. Festa della Repubblica",
+        "description": ""
+    },
+    "Opt_YearOnly": {
+        "message": "Solo $YEAR$",
+        "placeholders": {
+            "year": {
+                "content": "$1",
+                "example": "2026"
+            }
+        }
+    },
+    "Opt_Add": {
+        "message": "Aggiungi"
+    },
+    "Opt_EasterHint": {
+        "message": "Calcolata ogni anno — $EASTER$ e $MONDAY$ nel $YEAR$",
+        "placeholders": {
+            "easter": {
+                "content": "$1",
+                "example": "5 April"
+            },
+            "monday": {
+                "content": "$2",
+                "example": "6 April"
+            },
+            "year": {
+                "content": "$3",
+                "example": "2026"
+            }
+        }
+    },
+    "Opt_IdentitiesDesc": {
+        "message": "Indica a ThunderStats quali indirizzi sono tuoi e quali domini sono interni."
+    },
+    "Opt_AccountIdentitiesDesc": {
+        "message": "Lette dalle impostazioni dell'account di Thunderbird"
+    },
+    "Opt_NoIdentities": {
+        "message": "Questo account non ha identità."
+    },
+    "Opt_AddAddress": {
+        "message": "Aggiungi un indirizzo e premi Invio"
+    },
+    "Opt_InvalidAddress": {
+        "message": "Indirizzo o modello non valido: usa nome@example.com, *@example.com o @example.com."
+    },
+    "Opt_AddDomain": {
+        "message": "Aggiungi un dominio e premi Invio"
+    },
+    "Opt_InvalidDomain": {
+        "message": "Dominio non valido: usa example.com o *.example.com."
+    },
+    "Remove": {
+        "message": "Rimuovi"
+    }
 }

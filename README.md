@@ -84,7 +84,7 @@ The process watches for file changes and automatically recompiles the addon into
 ## Credits
 Original Author: [Mic](https://github.com/micz)
 
-Contributing Author: [Christopher Leidigh](https://github.com/cleidigh)
+Contributing Author for version 1.*: [Christopher Leidigh](https://github.com/cleidigh)
 
 <br>
 

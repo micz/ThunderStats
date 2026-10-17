@@ -139,6 +139,15 @@ import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
     tsStore.time_format = prefs.time_format;
     if(remember_last_tab) {
       cache_lifetime.value = 120000;
+      // The Info tab must never be restored on opening (it is reached from the toolbar icon)
+      try {
+        let stored_tab = JSON.parse(localStorage.getItem('tabs-storage-key'));
+        if(stored_tab && stored_tab.value == '#tab-info') {
+          localStorage.removeItem('tabs-storage-key');
+        }
+      } catch(e) {
+        localStorage.removeItem('tabs-storage-key');
+      }
     } else {
       cache_lifetime.value = 0;
       localStorage.removeItem('tabs-storage-key');
@@ -231,6 +240,18 @@ import { applyChartTheme } from '@statslib/chartjs-lib/chart-theme.js';
     //console.log(">>>>>>>>>>>> ThunderStatsView tabChanged tsLog: " + JSON.stringify(tsLog));
     currentTab.value = id.tab.computedId;
     tsStore.currentTab = id.tab.computedId;
+    if(remember_last_tab && (id.tab.computedId == "tab-info")) {
+      // The tabs component saves the selected tab right after emitting "changed":
+      // keep the last statistics tab saved instead of the Info tab
+      let previous_stored_tab = localStorage.getItem('tabs-storage-key');
+      nextTick(() => {
+        if(previous_stored_tab === null) {
+          localStorage.removeItem('tabs-storage-key');
+        } else {
+          localStorage.setItem('tabs-storage-key', previous_stored_tab);
+        }
+      });
+    }
     if(!mounted_ok) { return; }
     updateElapsed(0);
     is_loading.value = false;

@@ -182,7 +182,7 @@ The business days feature (in `mzts-statscore.utils.js`) allows filtering statis
 
 Each stats tab loads its data the first time it is opened in a session and is not reloaded on later visits, unless `always_reload_tab_data` is enabled (`ThunderStatsView.vue`, `tabChanged`). Custom Query loading is controlled by its own prefs. Changing account reloads data if `load_data_changing_account` is enabled.
 
-When `remember_last_tab` is enabled, the selected tab is remembered by vue3-tabs-component for 2 minutes (`cache-lifetime` = 120000 ms); this is tab selection memory, not a data cache.
+When `remember_last_tab` is enabled, the selected tab is remembered by vue3-tabs-component for 2 minutes (`cache-lifetime` = 120000 ms); this is tab selection memory, not a data cache. Note: vue3-tabs-component interprets `cache-lifetime` in minutes, so 120000 actually means about 83 days. The Info tab (opened from the toolbar icon) is never remembered: when it is selected, `tabChanged` restores the previously saved entry of `tabs-storage-key` after the component writes it, and on opening a stale `#tab-info` entry is discarded.
 
 ---
 

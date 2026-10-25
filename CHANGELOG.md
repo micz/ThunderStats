@@ -3,6 +3,10 @@
 
 
 
+<h3>Version 3.0.2 - 25/10/2026</h3>
+<ul>
+      <li>...</li>
+</ul>
 <h3>Version 3.0.1 - 25/10/2026</h3>
 <ul>
       <li>Libraries updated.</li>

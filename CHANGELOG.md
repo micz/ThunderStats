@@ -5,7 +5,8 @@
 
 <h3>Version 3.0.2 - 25/10/2026</h3>
 <ul>
-      <li>...</li>
+      <li>All links are now pointing to the https URL.</li>
+      <li>Fix: Opening a folder from the statistics could use a mail tab of another Thunderbird window instead of the current one.</li>
 </ul>
 <h3>Version 3.0.1 - 25/10/2026</h3>
 <ul>

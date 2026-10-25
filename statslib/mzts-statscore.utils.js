@@ -69,7 +69,7 @@ export const tsCoreUtils = {
     // Shows a folder in a Thunderbird mail tab: the first mail tab when in_first_tab is true, otherwise a new one
     async openFolder(folder_data, in_first_tab = false) {
         let first_mail_tab = null;
-        let tabs = await browser.tabs.query({windowId: browser.mailTabs.WINDOW_ID_CURRENT});
+        let tabs = await browser.tabs.query({windowId: browser.windows.WINDOW_ID_CURRENT});
         for(let tab of tabs) {
             if(tab.mailTab) {
                 first_mail_tab = tab;

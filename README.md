@@ -81,6 +81,32 @@ The process watches for file changes and automatically recompiles the addon into
 
 <br>
 
+## Tests
+
+`npm test`
+
+Runs the unit, integration and component tests (Vitest), on a mocked Thunderbird API.
+
+`npm run test:real`
+
+Runs the statistics engine on real mailbox dumps placed in `tests/real/data/`. See `tools/mailbox-dump/README.md` to create a dump.
+
+### Store screenshots
+
+The screenshots for the addons.thunderbird.net page are captured automatically: the real add-on pages run in a normal browser on top of the mocked Thunderbird API, filled with a fictional mailbox (two accounts, about 14 months of mail, only reserved domains that cannot exist).
+
+1. Start the preview server and leave it running:
+
+   `npm run screenshots:serve`
+
+2. In another terminal, capture the screenshots with headless Microsoft Edge:
+
+   `npm run screenshots`
+
+The 1280×800 PNG files are written to `tools/screenshots/out/`: Today in light and dark theme, Last 7 days and Custom View in light theme (each one at the top of the page and then scrolled down: one more screen for Today, two more for Last 7 days and Custom View), and every Options section. To use another Chromium browser, pass its path: `npm run screenshots -- "C:/path/to/chrome.exe"`. More details in `tools/screenshots/README.md`.
+
+<br>
+
 ## Credits
 Original Author: [Mic](https://github.com/micz)
 

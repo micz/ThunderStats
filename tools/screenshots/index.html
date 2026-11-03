@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link href="/src/assets/tabs-component.css" rel="stylesheet">
+    <!-- the dashboard sets no font-family: use the same stack as the options page -->
+    <style>body { font-family: ui-sans-serif, -apple-system, "Segoe UI", "Noto Sans", sans-serif; }</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThunderStats</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      await import('./setup.js');
+      await import('/src/index.thunderstats.js');
+    </script>
+  </body>
+</html>

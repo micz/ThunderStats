@@ -56,6 +56,7 @@ The compiled addon lives in `dist/`; the production build also packages it as an
 | `dist/` | Build output (compiled addon) |
 | `tests/` | Vitest suites (`tests/real/`: real data tests on mailbox dumps, `npm run test:real`) |
 | `tools/mailbox-dump/` | Development extension that exports a mailbox dump for the real data tests (not in the XPI) |
+| `tools/screenshots/` | Store screenshots: the real pages on a fake API and mailbox, captured with headless Edge (not in the XPI) |
 
 ## Entry Points
 

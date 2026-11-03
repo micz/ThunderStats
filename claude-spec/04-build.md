@@ -134,6 +134,12 @@ Code that reads the current date is tested with `vi.useFakeTimers()` + `vi.setSy
 
 ---
 
+## Store Screenshots
+
+`tools/screenshots/` (not built, not in the XPI) renders the real main and options pages in a desktop browser for the addons.thunderbird.net screenshots. `setup.js` installs `createBrowserMock()` with a seeded fictional mailbox (`fake-mailbox.js`: Work and Personal accounts, about 14 months, only `.example` and `.invalid` domains, which cannot exist), the real English strings, stubs for `runtime`/`tabs`/`mailTabs` and a fixed clock (today at 17:20, `time=HH:MM` in the query string), then imports the app. `npm run screenshots:serve` serves it on port 5199; `npm run screenshots` drives headless Edge through the DevTools protocol and writes 1280×800 PNG files to `tools/screenshots/out/` (ignored by git), several per stats page while scrolling: `-a` (top), `-b` (one screen down), `-c` (two screens down; Last 7 days and Custom View only), plus one per Options section (opened by the URL hash, not scrolled). Today is shot in light and dark theme with `_time_chart_progressive` on; everything else in light theme only. Details in `tools/screenshots/README.md`.
+
+---
+
 ## Installing for Development in Thunderbird
 
 1. Run `npm run dev` to build and watch for changes.
